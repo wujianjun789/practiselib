@@ -22,10 +22,12 @@
     "enzyme": "^2.5.1",
     "eventsource-polyfill": "^0.9.6",
     "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
     "gulp-rename": "^1.2.2",
     "gulp-typescript": "^3.1.2",
     "gulp-uglify": "^2.0.0",
     "gulp-watch": "^4.3.10",
+    "html-webpack-plugin": "^2.24.1",
     "jest": "^16.0.2",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
@@ -53,6 +55,7 @@
   },
   "scripts": {
     "test": "jest",
+    "build": "gulp",
     "server": "cd server & npm start",
     "dev": "webpack-dev-server --hot --inline --content-base=./app/public  --host=0.0.0.0"
   },

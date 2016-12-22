@@ -3,18 +3,22 @@ var webpack = require('webpack-stream');
 var path = require('path')
 var dest_app = path.join(__dirname, './dist/app/public');
 var config_app = require('./webpack.app.config');
-
+var clean = require('gulp-clean');
+gulp.task('clean', function () {
+    return gulp.src('dist/', { read: false })
+        .pipe(clean());
+})
 gulp.task('app.webpack', function () {
     return webpack(config_app)
         .pipe(gulp.dest(dest_app));
 });
 
 gulp.task('app.public', function () {
-    return gulp.src('./app/public/**/*.*', { base: '' })
+    return gulp.src(['./app/public/**/*.*', '!./app/public/static/**/*.*'], { base: '' })
         .pipe(gulp.dest(dest_app));
 });
 
-gulp.task('app', ['app.webpack', 'app.public']);
+gulp.task('app', ['clean','app.webpack', 'app.public']);
 
 
 var dest_server = path.join(__dirname, './dist/server');
@@ -32,8 +36,6 @@ gulp.task('server.webpack', function () {
     return webpack(config_server)
         .pipe(gulp.dest(dest_server));
 })
-gulp.task('server', ['server.webpack', 'server.config', 'server.package']);
+gulp.task('server', ['clean','server.webpack', 'server.config', 'server.package']);
 
-gulp.task('default', ['app', 'server'], function () {
-    // 将你的默认的任务代码放在这
-});
+gulp.task('default',['app','server']);

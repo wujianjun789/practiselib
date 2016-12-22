@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlwebpackPlugin = require('html-webpack-plugin');
 var entry = {
     app: ['babel-polyfill', './app/src/root']
 };
@@ -26,6 +27,12 @@ module.exports = {
             "process.env": {
                 NODE_ENV: JSON.stringify("production")
             }
+        }),
+         new HtmlwebpackPlugin({
+            filename: 'index.html',
+            template: 'app/src/templates/index.html',
+            inject: true,
+            hash: true
         })
     ],
 

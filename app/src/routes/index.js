@@ -7,7 +7,6 @@ import TestContainer from '../containers/TestContainer';
 export default (
     <Route>
         <Route path="/" component={TestContainer} />
-
     </Route>
 )
 
