@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlwebpackPlugin = require('html-webpack-plugin');
 var entry = {
     app: ['babel-polyfill', 'webpack-hot-middleware/client', './app/src/root/index']
 };
@@ -20,7 +21,13 @@ module.exports = {
             "process.env": {
                 NODE_ENV: JSON.stringify("development")
             }
-        }) 
+        }),
+        new HtmlwebpackPlugin({
+            filename: 'index.html',
+            template: 'app/src/templates/index.html',
+            inject: true,
+            hash: false
+        })
     ],
 
 
@@ -41,7 +48,8 @@ module.exports = {
             },
             {
                 test: /\.less$/, loader: "style-loader!css-loader!less-loader"
-            }
+            },
+
         ]
 
     }
