@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
 // error handlers
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
-   res.sendfile(path.resolve(__dirname , '../app/public/index.html'));
+   res.sendFile(path.resolve(__dirname , '../app/public/index.html'));
 });
 
 
