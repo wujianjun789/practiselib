@@ -12,9 +12,11 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'app', 'public'),
         filename: '[name].bundle.js',
-        publicPath: '/'
+        publicPath: '/',
+        chunkFilename: '[name].[chunkhash].chunk.js',
     },
     plugins: [
+
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
@@ -26,7 +28,7 @@ module.exports = {
             filename: 'index.html',
             template: 'app/src/templates/index.html',
             inject: true,
-            hash: false
+            hash: true
         })
     ],
 

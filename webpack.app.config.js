@@ -10,6 +10,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist', 'app', 'public'),
         filename: '[name].bundle.js',
+        chunkFilename: '[name].[chunkhash].chunk.js',
         publicPath: '/'
     },
     plugins: [

@@ -1,14 +1,23 @@
 import React from 'react'
 import { Route } from 'react-router'
 
-import TestContainer from '../containers/TestContainer';
-import NoMatch from '../containers/NoMatch';
-
 export default (
     <Route>
-        <Route path="/" component={TestContainer} />
-        <Route path="/test" component={TestContainer} />
-        <Route path="*" component={NoMatch} />
+        <Route path="/" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('../containers/pages/Home').default)
+            }, 'home')
+        } } />
+        <Route path="/about" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('../containers/pages/About').default)
+            }, 'about')
+        } } />
+        <Route path="*" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('../containers/NoMatch').default)
+            }, 'nomatch')
+        } } />
     </Route>
 )
 
