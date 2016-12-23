@@ -14,7 +14,11 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify("production")
+            }
+        }),
         new webpack.optimize.UglifyJsPlugin({
             output: {
                 comments: false,  // remove all comments
@@ -23,12 +27,7 @@ module.exports = {
                 warnings: false
             }
         }),
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            }
-        }),
-         new HtmlwebpackPlugin({
+        new HtmlwebpackPlugin({
             filename: 'index.html',
             template: 'app/src/templates/index.html',
             inject: true,
