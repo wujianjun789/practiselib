@@ -18,7 +18,7 @@ gulp.task('app.public', function () {
         .pipe(gulp.dest(dest_app));
 });
 
-gulp.task('app', ['clean','app.webpack', 'app.public']);
+gulp.task('app', ['app.webpack', 'app.public']);
 
 
 var dest_server = path.join(__dirname, './dist/server');
@@ -36,6 +36,8 @@ gulp.task('server.webpack', function () {
     return webpack(config_server)
         .pipe(gulp.dest(dest_server));
 })
-gulp.task('server', ['clean','server.webpack', 'server.config', 'server.package']);
+gulp.task('server', ['server.webpack', 'server.config', 'server.package']);
 
-gulp.task('default',['app','server']);
+gulp.task('default', ['clean'], function () {
+    gulp.start(['app', 'server']);
+});

@@ -57,7 +57,7 @@
     "test": "jest",
     "build": "gulp",
     "server": "cd server & npm start",
-    "dev": "webpack-dev-server --hot --inline --content-base=./app/public  --host=0.0.0.0"
+    "dev": "webpack-dev-server --hot --inline --content-base=./app/public  --host=0.0.0.0 --history-api-fallback"
   },
   "author": "刘夏",
   "license": "ISC"
