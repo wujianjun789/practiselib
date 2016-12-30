@@ -62,5 +62,6 @@
     "prod": "cd dist & npm run start"
   },
   "author": "刘夏",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": "http://202.11.11.201/liuxia/web-template.git"
 }
