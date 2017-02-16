@@ -1,0 +1,1 @@
+export const TEST_INC = 'TEST_INC';
