@@ -12,7 +12,7 @@ export  class About extends Component {
                   About page.
                </h1>
                <List list={this.props.list}/>
-               <button>click</button>
+               <button>set</button><button>add</button><button>del</button>
             </div>
         )
     }
