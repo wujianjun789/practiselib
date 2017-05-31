@@ -12,6 +12,9 @@ export default class Header extends Component {
                 <li>
                     <Link to="/about" activeStyle={{ color: 'red' }}>About</Link>
                 </li>
+                <li>
+                    <Link to="/course" activeStyle={{ color: 'red' }}>Course</Link>
+                </li>
             </ul>
         )
     }

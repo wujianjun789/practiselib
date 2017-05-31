@@ -13,6 +13,11 @@ export default (
                 cb(null, require('../containers/pages/About').default)
             }, 'about')
         } } />
+        <Route path="/course" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+                cb(null, require('../containers/pages/Course').default)
+            }, 'about')
+        } } />
         <Route path="*" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('../containers/NoMatch').default)

@@ -1,0 +1,185 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Microsoft YaHei";
+}
+input::-ms-clear {
+  display: none;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.container .box {
+  height: 100%;
+  box-sizing: border-box;
+}
+.container .box.left {
+  min-width: 320px;
+  max-width: 320px;
+  background-color: #f2f2f2;
+}
+.container .box.mid {
+  flex-grow: 1;
+  min-width: 320px;
+  max-width: 500px;
+  background-color: #298fcc;
+}
+.container .box.right {
+  flex-grow: 1;
+  min-width: 320px;
+}
+.title {
+  padding-left: 10px;
+  height: 50px;
+  box-sizing: border-box;
+  font-size: 28px;
+  line-height: 50px;
+}
+.title button {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  line-height: 24px;
+  float: right;
+  padding: 12px;
+}
+.search-container {
+  padding: 10px;
+  position: relative;
+}
+.search-container .search {
+  padding: 3px 35px 3px 10px;
+  outline: none;
+  font-size: 18px;
+  border: 2px solid #7a7a7a;
+  background-color: white;
+}
+.search-container .search:hover {
+  border-color: #171717;
+}
+.search-container .search:focus {
+  border-color: #298fcc;
+}
+.search-container .search input {
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  font-size: 18px;
+}
+.search-container .search button {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  padding: 9px;
+}
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  outline: none;
+  background-color: transparent;
+}
+.primary-background-btn:hover {
+  background-color: #3e9ad1;
+}
+.primary-background-btn:hover:active {
+  background-color: #54a5d6;
+}
+.normal-background-btn:hover {
+  background-color: #dadada;
+}
+.normal-background-btn:hover:active {
+  background-color: #c2c2c2;
+}
+.clear-btn:hover {
+  color: #298fcc;
+}
+.entities {
+  margin-top: 20px;
+}
+.entity {
+  display: table;
+}
+.entity:hover {
+  background-color: #dadada;
+}
+.entity:hover:active {
+  background-color: #c2c2c2;
+}
+.entity.active {
+  background-color: #a1cae3;
+}
+.entity.active:hover {
+  background-color: #7ab7db;
+}
+.entity.active:active {
+  background-color: #65acd7;
+}
+.entity .p1 {
+  display: table-cell;
+  vertical-align: middle;
+  height: 50px;
+  padding-left: 10px;
+  text-align: center;
+}
+.entity .p1 .person-icon {
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center center;
+  background-color: #298fcc;
+  color: transparent;
+}
+.entity .p2 {
+  display: table-cell;
+  vertical-align: middle;
+  white-space: nowrap;
+  padding-left: 10px;
+  width: 100%;
+}
+.tools {
+  height: 50px;
+}
+.tools button {
+  color: white;
+  width: 70px;
+  height: 50px;
+  font-size: 24px;
+  line-height: 24px;
+  float: right;
+  padding: 12px;
+}
+.tools button.last {
+  font-size: 18px;
+  line-height: 18px;
+  padding: 15px;
+  width: 50px;
+}
+.details {
+  color: white;
+}
+.hidden {
+  display: none;
+}

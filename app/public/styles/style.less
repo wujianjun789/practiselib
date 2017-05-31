@@ -1,0 +1,217 @@
+@primary-color: rgb(41, 143, 204);
+@hover-primary-background-btn: rgb(62, 154, 209);
+@hover-active-primary-background-btn: rgb(84, 165, 214);
+@hover-color: rgb(23, 23, 23);
+@normal-color: rgb(122, 122, 122);
+@label-color: rgb(0, 96, 253);
+@background-color: rgb(242, 242, 242);
+@hover-list-color: rgb(218, 218, 218);
+@hover-active-list-color: rgb(194, 194, 194);
+@active-list-color: rgb(161, 202, 227);
+@active-hover-list-color: rgb(122, 183, 219);
+@active-active-list-color: rgb(101, 172, 215);
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Microsoft YaHei"
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    .box {
+        height: 100%;
+        box-sizing: border-box;
+        &.left {
+            min-width: 320px;
+            max-width: 320px;
+            background-color: @background-color;
+        }
+        &.mid {
+            flex-grow: 1;
+            min-width: 320px;
+            max-width: 500px;
+            background-color: @primary-color;
+        }
+        &.right {
+            flex-grow: 1;
+            min-width: 320px;
+        }
+    }
+}
+
+.title {
+    padding-left: 10px;
+    height: 50px;
+    box-sizing: border-box;
+    font-size: 28px;
+    line-height: 50px;
+    button {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        line-height: 24px;
+        float: right;
+        padding: 12px;
+    }
+}
+
+.search-container {
+    padding: 10px;
+    position: relative;
+    .search {
+        padding: 3px 35px 3px 10px;
+        outline: none;
+        font-size: 18px;
+        border: 2px solid @normal-color;
+        background-color: white;
+        &:hover {
+            border-color: @hover-color;
+        }
+        &:focus {
+            border-color: @primary-color;
+        }
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            font-size: 18px;
+        }
+        button {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
+            padding: 9px;
+        }
+    }
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    outline: none;
+    background-color: transparent;
+}
+
+.primary-background-btn {
+    &:hover {
+        background-color: @hover-primary-background-btn;
+        &:active {
+            background-color: @hover-active-primary-background-btn;
+        }
+    }
+}
+
+.normal-background-btn {
+    &:hover {
+        background-color: @hover-list-color;
+        &:active {
+            background-color: @hover-active-list-color;
+        }
+    }
+}
+
+.clear-btn {
+    &:hover {
+        color: @primary-color;
+    }
+}
+
+.entities {
+    margin-top: 20px;
+}
+
+.entity {
+    display: table;
+    &:hover {
+        background-color: @hover-list-color;
+        &:active {
+            background-color: @hover-active-list-color;
+        }
+    }
+    &.active {
+        background-color: @active-list-color;
+        &:hover {
+            background-color: @active-hover-list-color;
+        }
+        &:active {
+            background-color: @active-active-list-color;
+        }
+    }
+    .p1 {
+        display: table-cell;
+        vertical-align: middle;
+        height: 50px;
+        padding-left: 10px;
+        text-align: center;
+        .person-icon {
+            height: 40px;
+            width: 40px;
+            font-size: 20px;
+            line-height: 40px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center center;
+            background-color: @primary-color;
+            // background-image: url(/images/91f297b4-7ddf-46ba-ad0e-457091068781.jpg);
+            color: transparent;
+        }
+    }
+    .p2 {
+        display: table-cell;
+        vertical-align: middle;
+        white-space: nowrap;
+        padding-left: 10px;
+        width: 100%;
+    }
+}
+
+.tools {
+    button {
+        float: right;
+        color: white;
+        width: 70px;
+        height: 50px;
+        font-size: 24px;
+        line-height: 24px;
+        float: right;
+        padding: 12px;
+        &.last {
+            font-size: 18px;
+            line-height: 18px;
+            padding: 15px;
+            width: 50px;
+        }
+    }
+    height: 50px;
+}
+
+.details {
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
