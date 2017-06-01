@@ -21,7 +21,7 @@ test('active', () => {
 });
 test('search', () => {
     const before = {
-        active: 0,
+        active: 1,
         search: '',
         results: [
             { avatar: "/images/1.jpg", name: "Liuxia@sansi.com" },

@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
 import * as React from 'react';
 import configureStore from '../../src/store/configureStore'
-import Page, { Course } from '../../src/containers/pages/Course'
+import Page, { Course, results_filter } from '../../src/containers/pages/Course'
 import Results from '../../src/course/Results'
 import Search from '../../src/course/Search'
 import Item from '../../src/course/Item'
@@ -13,6 +13,13 @@ describe('test course', () => {
         { avatar: "", name: "Hello World" },
     ]
     const active = 0;
+    test('filter', () => {
+        expect(results_filter('Liuxia', results)).toEqual([{ avatar: "/images/1.jpg", name: "LiuXia@sansi.com" }]);
+        expect(results_filter(' Liuxia', results)).toEqual([{ avatar: "/images/1.jpg", name: "LiuXia@sansi.com" }]);
+        expect(results_filter('liuxia', results)).toEqual([{ avatar: "/images/1.jpg", name: "LiuXia@sansi.com" }]);
+        expect(results_filter('dd', results)).toEqual([]);
+
+    })
     test('normal', () => {
         const root = mount(
             <Course search="LiuXia" results={results} active={0} />

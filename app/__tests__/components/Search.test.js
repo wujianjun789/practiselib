@@ -22,8 +22,9 @@ test('render empty', () => {
 })
 
 test('vdom render normal', () => {
+    const onSearch = jest.fn();
     const search = mount(
-        <Search value='hello' />
+        <Search value='hello' onSearch={onSearch} />
     );
     const input = search.find('input');
     expect(input.prop('value')).toBe('hello');
@@ -31,6 +32,11 @@ test('vdom render normal', () => {
     const button = search.find('button.hidden');
     expect(button.length).toBe(0);
 
+    input.simulate('change', { target: { value: 'haha' } });
+    expect(onSearch).toBeCalled();
+
+    search.find('button').simulate('click');
+    expect(onSearch).toBeCalled();
 })
 
 test('vdom render when value is empty', () => {

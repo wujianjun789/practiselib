@@ -1,5 +1,5 @@
 
-import { ACTIVE_CHANGE,SEARCH } from '../actionTypes';
+import { ACTIVE_CHANGE, SEARCH } from '../actionTypes';
 const initialState = {
     active: 0,
     results: [
@@ -22,5 +22,5 @@ export function active(state, index) {
 }
 
 export function search(state, value) {
-    return Object.assign({}, state, { search: value })
+    return Object.assign({}, state, { search: value, active: 0 })
 }

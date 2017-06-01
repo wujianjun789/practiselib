@@ -63,16 +63,20 @@ class Right extends Component {
         )
     }
 }
+export function results_filter(search, results) {
+    if (search) {
+        return results.filter((v) => {
+            return v.name.toLowerCase().startsWith(search.trim().toLowerCase())
+        })
+    }
+    return results;
+
+}
+
 export class Course extends Component {
     results_filter() {
         const { search = '', results = [] } = this.props;
-        if (search) {
-            return results.filter((v) => {
-                return v.name.startsWith(search)
-            })
-        }
-
-        return results;
+        return results_filter(search, results);
     }
     render() {
         const { search = '', active = 0, onSearch, onActive } = this.props;
