@@ -1,9 +1,14 @@
 import React from 'react'
 import { Route } from 'react-router'
-
+import App from '../App/container/index'
+import Login from '../login/container/Login'
 export default (
     <Route>
-        <Route path="/" getComponent={(nextState, cb) => {
+        <Route path="/" component={App}>
+        </Route>
+        <Route path="/login" component={Login}>
+        </Route>
+        <Route path="/home" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('../containers/pages/Home').default)
             }, 'home')

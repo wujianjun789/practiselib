@@ -1,5 +1,5 @@
 
-import { active, search } from '../../src/reducers/course';
+import { active, search } from '../../src/reducer/course';
 test('active', () => {
     const before = {
         active: 0,

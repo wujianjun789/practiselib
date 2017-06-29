@@ -9,3 +9,6 @@ dist
 
 #yarn
 yarn*
+
+#idea
+.idea
