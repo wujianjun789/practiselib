@@ -75,10 +75,7 @@ function initMap(data, option) {
                 zoomControl: false
             });
         }
-
-        // map.on("click", function (event) {
-        //     console.log(event.latlng);
-        // })
+        
     }
 }
 

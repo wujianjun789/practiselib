@@ -111,7 +111,6 @@ export function getToken() {
     }
 }
 
-
 export function login(data, responseCall, errCall) {
     httpRequest('/login', {
         method: 'POST',
