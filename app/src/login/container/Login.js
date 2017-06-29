@@ -13,6 +13,11 @@ class Login extends Component {
         this.login = this.login.bind(this);
     }
 
+    componentWillMount(){
+        const query = this.props.location.query;
+        console.log(this.props);
+    }
+
     login(){
         this.props.actions.loginHandler(true);
     }
