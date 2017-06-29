@@ -1,7 +1,7 @@
 {
-  "name": "web-template",
+  "name": "starriver_pro_web",
   "version": "1.0.0",
-  "description": "web-template",
+  "description": "starriver_pro_web",
   "dependencies": {
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
@@ -64,5 +64,5 @@
   },
   "author": "刘夏",
   "license": "ISC",
-  "repository": "http://202.11.11.201/liuxia/web-template.git"
+  "repository": "http://202.11.11.201/led-control/sr_pro/starriver_pro_web.git"
 }
