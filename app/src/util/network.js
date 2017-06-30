@@ -23,6 +23,7 @@ export const statusCode = {
  *  unresolved 代表需要用户手动处理,返回response
  */
 export function httpRequest(url, option, responseCall, responseParam, errorCall, errorParam) {
+
     var args = Array.prototype.slice.call(arguments);
     if (option) {
         // option.redirect = !!option.redirect?option.redirect:'same-origin';
@@ -46,7 +47,7 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
         })
     }
 
-    fetch(url, option)
+     fetch(url, option)
         .then(checkStatus)
         .then(parseJSON)
         .then(({
@@ -66,8 +67,6 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
 }
 
 function checkStatus(response) {
-    console.log(response);
-
     if (response.status >= 200 && response.status < 300) {
         return response
     } else if (statusCode[response.status]) {

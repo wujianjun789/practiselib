@@ -12,6 +12,7 @@
     "express-session": "^1.15.3",
     "isomorphic-fetch": "^2.2.1",
     "morgan": "~1.7.0",
+    "nock": "^9.0.13",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

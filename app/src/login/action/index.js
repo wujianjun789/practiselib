@@ -13,11 +13,17 @@ export function loginHandler(username, password) {
             return dispatch(loginFail());
         }
 
-        login(data, response=>{
-            dispatch({ type: STARRIVER_LOGIN_SUCCESS });
+        login({username:username, password:password}, response=>{
+            dispatch(loginSuccess());
         }, err=>{
             dispatch(loginFail());
         })
+    }
+}
+
+export function loginSuccess() {
+    return {
+        type: STARRIVER_LOGIN_SUCCESS
     }
 }
 

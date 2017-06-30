@@ -12,10 +12,10 @@ const initialState = {
 };
 
 
-export default function app (state=Immutable.fromJS(initialState), action) {
+export default function login (state=Immutable.fromJS(initialState), action) {
     switch(action.type) {
         case STARRIVER_LOGIN_SUCCESS:
-            location.href = '/'
+            location.href = location.host;
             return state;
         case STARRIVER_LOGIN_FAIL:
             return state;
