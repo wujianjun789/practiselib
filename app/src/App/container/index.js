@@ -11,6 +11,7 @@ export default class App extends Component{
         return (
             <div>
                 welcome to starriver
+                <button onClick={()=>location.href="/login"}>单击</button>
             </div>
         )
     }

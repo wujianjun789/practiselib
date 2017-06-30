@@ -1,20 +1,28 @@
 /**
  * Created by a on 2017/4/21.
  */
-import {getHttpHeader, httpRequest} from '../../util/network';
+import {login} from '../../util/network';
 
 import {
-    STARRIVER_LOGIN_HANDLE
+    STARRIVER_LOGIN_SUCCESS,
+    STARRIVER_LOGIN_FAIL
 } from '../actionType/index'
-export function loginHandler(state) {
+export function loginHandler(username, password) {
     return dispatch=>{
-        let headers = getHttpHeader();
+        if(username.length <= 2 || password.length <= 4){
+            return dispatch(loginFail());
+        }
 
-        dispatch({
-            type: STARRIVER_LOGIN_HANDLE,
-            data: state
+        login(data, response=>{
+            dispatch({ type: STARRIVER_LOGIN_SUCCESS });
+        }, err=>{
+            dispatch(loginFail());
         })
+    }
+}
 
-        location.href = '/';
+export function loginFail() {
+    return {
+        type: STARRIVER_LOGIN_FAIL
     }
 }

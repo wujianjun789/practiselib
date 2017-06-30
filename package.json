@@ -8,6 +8,8 @@
     "debug": "~2.2.0",
     "es6-promise": "^4.1.1",
     "express": "~4.13.4",
+    "express-http-proxy": "^1.0.4",
+    "express-session": "^1.15.3",
     "isomorphic-fetch": "^2.2.1",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0"
@@ -59,10 +61,12 @@
   "scripts": {
     "test": "jest",
     "build": "gulp",
-    "server": "cd server & npm start",
-    "dev": "webpack-dev-server --hot --inline --content-base=./app/public  --host=0.0.0.0 --history-api-fallback",
+    "start": "cd dist & npm start",
+    "dev:server": "cd server & node server --dev ",
+    "dev:client": "webpack-dev-server --hot --inline --content-base=./app/public  --host=0.0.0.0 --port=18080 --history-api-fallback",
+    "dev": "start npm run dev:server && start npm run dev:client ",
     "preprod": "npm run build",
-    "prod": "cd dist & npm run start"
+    "prod": "npm start"
   },
   "author": "刘夏",
   "license": "ISC",

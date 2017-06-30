@@ -15,7 +15,6 @@ class Login extends Component {
 
     componentWillMount(){
         const query = this.props.location.query;
-        console.log(this.props);
     }
 
     login(){
