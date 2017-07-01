@@ -183,3 +183,38 @@ input::-ms-clear {
 .hidden {
   display: none;
 }
+
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree-list{
+  width: 250px;
+  background: #343743;
+  color: #fff;
+
+  border: solid 1px #000;
+  cursor: pointer;
+}
+
+.tree-1 > li > div{
+  height: 40px;
+  padding: 10px 20px;
+  line-height: 20px;
+}
+
+.tree-2 > li > div{
+  height: 34px;
+  padding: 4px 50px;
+  line-height: 30px;
+}
+
+.tree-list .tree-1> li > div{
+  background: #43475b;
+}
+
+.tree-list .tree-2 .active > div {
+  background: #39befe;
+}
