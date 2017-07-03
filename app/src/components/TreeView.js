@@ -11,7 +11,7 @@ export default class TreeView extends Component{
     }
 
     onToggle(node){
-        if(this.curNode){
+        if(this.curNode && node.toggled == undefined){
             this.setState(Object.assign(this.curNode, {active:false}))
         }
 
@@ -29,7 +29,7 @@ export default class TreeView extends Component{
                     if(node.active && curIndex > 1){
                         this.curNode = node;
                     }
-                    return <li key={index} className={node.active ? 'active':''}>
+                    return <li key={index} className={'node '+(node.active ? 'active':'')}>
                         <div onClick={()=>this.onToggle(node)}><span className={'glyphicon '+(curIndex > 1 ? node.class : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
                             {node.name}</div>
                         {node.toggled && node.children && this.renderTree(node.children, nextIndex)}

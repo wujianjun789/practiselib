@@ -1,0 +1,47 @@
+exports[`test TreeView renders 1`] = `
+<div
+  className="tree-list">
+  <ul
+    className="tree-1">
+    <li
+      className="node active">
+      <div
+        onClick={[Function]}>
+        <span
+          className="glyphicon glyphicon-triangle-bottom" />
+        资产管理
+      </div>
+      <ul
+        className="tree-2">
+        <li
+          className="node ">
+          <div
+            onClick={[Function]}>
+            <span
+              className="glyphicon glyphicon-list-alt" />
+            灯集中控制器灯集中控
+          </div>
+        </li>
+        <li
+          className="node ">
+          <div
+            onClick={[Function]}>
+            <span
+              className="glyphicon glyphicon-lamp" />
+            LED灯
+          </div>
+        </li>
+      </ul>
+    </li>
+    <li
+      className="node active">
+      <div
+        onClick={[Function]}>
+        <span
+          className="glyphicon glyphicon-triangle-right" />
+        资产统计
+      </div>
+    </li>
+  </ul>
+</div>
+`;

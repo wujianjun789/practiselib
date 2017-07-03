@@ -25,7 +25,6 @@ describe('async httpRequest', ()=>{
             headers: getHttpHeader,
             method: 'GET'
         },(response=>{
-            console.log(response);
             expect(response).toEqual(expectedData)
             done();
         }))
