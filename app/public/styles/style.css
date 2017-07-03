@@ -191,28 +191,35 @@ ul{
 }
 
 .tree-list{
-  width: 250px;
+  width: 200px;
   background: #343743;
   color: #fff;
 
   border: solid 1px #000;
   cursor: pointer;
+
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
-.tree-1 > li > div{
+.tree-list ul li span{
+  padding-right: 10px;
+}
+
+.tree-list .tree-1 > li > div{
   height: 40px;
-  padding: 10px 20px;
+  padding: 10px 0px 10px 20px;
   line-height: 20px;
-}
-
-.tree-2 > li > div{
-  height: 34px;
-  padding: 4px 50px;
-  line-height: 30px;
-}
-
-.tree-list .tree-1> li > div{
   background: #43475b;
+}
+
+.tree-list .tree-2 > li > div{
+  height: 34px;
+  padding: 4px 0px 4px 20px;
+  line-height: 30px;
 }
 
 .tree-list .tree-2 .active > div {
