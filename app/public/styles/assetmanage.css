@@ -3,7 +3,8 @@
     margin-right: 20px;
     margin-left: 20px;
 
-    background: #e6e6e6;
+    background: #fff;
+    border: solid 1px #e6e6e6;
 }
 
 .asset-manage .row span{
@@ -34,4 +35,45 @@
     float: left;
     margin-left: 40px;
     margin-bottom: 20px;
+}
+
+.asset-manage .equipment{
+    width: 560px;
+    /*border: solid 1px #e6e6e6;*/
+    text-align: center;
+
+    margin: 20px 0 20px 40px;
+}
+
+.asset-manage .equipment thead{
+    color: #808080;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.asset-manage .equipment thead tr th{
+    text-align: center;
+    border-top: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
+    border-bottom: solid 1px #e6e6e6;
+
+    height: 40px;
+    line-height: 40px;
+}
+
+.asset-manage .equipment thead tr th:first-child, .asset-manage .equipment tbody tr td:first-child{
+    border-left: solid 1px #e6e6e6;
+}
+
+.asset-manage .equipment tbody{
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+.asset-manage .equipment tbody td{
+    border-right: solid 1px #e6e6e6;
+    border-bottom: solid 1px #e6e6e6;
+
+    height: 40px;
+    line-height: 40px;
 }
