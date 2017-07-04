@@ -1,0 +1,5 @@
+/**
+ * Created by a on 2017/4/21.
+ */
+export const STARRIVER_LOGIN_SUCCESS = 'STARRIVER_LOGIN_SUCCESS';
+export const STARRIVER_LOGIN_FAIL = 'STARRIVER_LOGIN_FAIL';

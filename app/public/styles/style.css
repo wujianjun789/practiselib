@@ -12,6 +12,37 @@ input::-ms-clear {
   flex-direction: row;
   height: 100%;
 }
+
+.head{
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+
+  height: 60px;
+  background: #00d8ff;
+}
+
+.sidebar{
+  position: absolute;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+
+  width: 180px;
+  background: #e4e6ea;
+}
+
+.content{
+  position: absolute;
+  top: 60px;
+  right: 0;
+  bottom: 0;
+  left: 180px;
+
+  background: #f2f2f4;
+}
+
 .container .box {
   height: 100%;
   box-sizing: border-box;
