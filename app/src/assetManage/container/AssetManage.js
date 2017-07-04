@@ -25,7 +25,17 @@ class AssetManage extends Component {
                 <HeadBar moduleName="资产管理"/>
                 <SideBar TreeData={TreeData}/>
                 <Content>
-                    content
+                    <div className="row">
+                        <div className="property"><span></span>设备属性</div>
+                        <ul className="property-list">
+                            <li>软件版本</li>
+                            <li>系统版本</li>
+                            <li>内核版本</li>
+                        </ul>
+                    </div>
+                    <div className="row">
+                        <div className="type"><span></span>设备类别</div>
+                    </div>
                 </Content>
             </div>
         )

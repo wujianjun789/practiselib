@@ -1,0 +1,39 @@
+.asset-manage .row{
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+
+    background: #e6e6e6;
+}
+
+.asset-manage .row span{
+    border-right: solid 2px #00d8ff;
+    margin-right: 5px;
+}
+
+.asset-manage .row .property, .asset-manage .row .type{
+    font-size: 14px;
+    color: #333744;
+
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.asset-manage ul{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: #808080;
+    font-size: 14px;
+}
+
+.asset-manage .property-list{
+    list-style: disc;
+    list-style-position: outside;
+}
+
+.asset-manage .row ul li{
+    float: left;
+    margin-left: 40px;
+    margin-bottom: 20px;
+}
