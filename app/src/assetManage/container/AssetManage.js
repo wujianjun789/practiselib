@@ -9,10 +9,13 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
+import Table from '../../components/Table'
 import {TreeData} from '../../data/treeData'
+
 class AssetManage extends Component {
     constructor(props) {
         super(props);
+        this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
     }
 
     componentWillMount(){
@@ -20,6 +23,7 @@ class AssetManage extends Component {
     }
 
     render() {
+        const { data } = this.props
         return (
             <div className="container asset-manage">
                 <HeadBar moduleName="资产管理"/>
@@ -35,6 +39,30 @@ class AssetManage extends Component {
                     </div>
                     <div className="row">
                         <div className="type"><span></span>设备类别</div>
+                        <table className="equipment">
+                            <thead>
+                                <tr>
+                                {
+                                    this.columns.map((column,index)=>{
+                                        return <th key={index}>{column.title}</th>
+                                    })
+                                }
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                data.map((row, index)=>{
+                                    return <tr key={index}>
+                                        {
+                                            this.columns.map((column,index)=>{
+                                                return <td key={index}>{row.get(column.field)}</td>
+                                            })
+                                        }
+                                    </tr>
+                                })
+                            }
+                            </tbody>
+                        </table>
                     </div>
                 </Content>
             </div>
@@ -44,7 +72,7 @@ class AssetManage extends Component {
 
 function mapStateToProps(state) {
     return {
-        isLogin: state.login.get('isLogin')
+        data: state.assetManage.get('data')
     }
 }
 

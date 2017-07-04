@@ -4,10 +4,15 @@
 
 import Immutable from 'immutable';
 const initialState = {
+    data: [
+        {type:"LC300", detail:"LC300灯控"},
+        {type:"LC600", detail:"LC600灯控"},
+        {type:"LCMINI", detail:"智慧路灯用"}
+    ]
 };
 
 
-export default function login (state=Immutable.fromJS(initialState), action) {
+export default function assetManage (state=Immutable.fromJS(initialState), action) {
     switch(action.type) {
         default:
             return state;

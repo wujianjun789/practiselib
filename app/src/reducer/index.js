@@ -6,12 +6,14 @@ import course from './course';
 import app from '../App/reducer/index';
 
 import login from '../login/reducer/index'
+import assetManage from '../assetManage/reducer/index'
 const reducer = combineReducers({
     routing,
     course,
     test,
 
     login,
-    app
+    app,
+    assetManage
 });
 export default reducer;
