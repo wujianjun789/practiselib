@@ -29,20 +29,34 @@ input::-ms-clear {
 
 .head .home{
   display: inline-block;
+  padding: 18px;
+
   border-right: solid 1px #343a45;
 
-  padding: 18px;
   vertical-align: top;
 }
 
-.head .home span{
+.head .avatar{
+  float: right;
+  padding: 18px;
+
+  border-left: solid 1px #343a45;
+}
+.head .home span, .head .avatar span{
   display: block;
 
   width: 25px;
   height: 25px;
 
-  background: url("../images/icon_home.png");
   background-size: 25px 25px;
+}
+
+.head .home span{
+  background: url("../images/icon_home.png");
+}
+
+.head .avatar span{
+  background: url("../images/icon_avatar.png");
 }
 
 .head .title{

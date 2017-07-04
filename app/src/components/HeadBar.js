@@ -14,7 +14,9 @@ export default class HeadBar extends Component{
                 <span className="icon"></span>
             </div>
             <span className="title">{moduleName}</span>
-            <div className="people"></div>
+            <div className="avatar">
+                <span className="icon"></span>
+            </div>
         </div>
     }
 }
