@@ -19,15 +19,13 @@
     padding-left: 15px;
 }
 
-.asset-manage ul{
+.asset-manage .property-list{
     margin-top: 20px;
     margin-bottom: 20px;
     margin-left: 20px;
     color: #808080;
     font-size: 14px;
-}
 
-.asset-manage .property-list{
     list-style: disc;
     list-style-position: outside;
 }
