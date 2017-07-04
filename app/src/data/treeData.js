@@ -8,37 +8,37 @@ export  const TreeData=[
         "active": true,
         "children": [
             {
-                "name":"灯集中控制器灯集中控",
-                "class":"glyphicon-list-alt",
-                "active":false
-            },
-            {
-                "name":"LED灯",
-                "class":"glyphicon-lamp",
-                "active":false
-            },{
-                "name":"PLC回路控制器",
-                "class":"glyphicon-sort",
+                "name":"灯集中控制器",
+                "class":"icon_light_control",
                 "active":true
             },
             {
+                "name":"LED灯",
+                "class":"icon_led_light",
+                "active":false
+            },{
+                "name":"PLC回路控制器",
+                "class":"icon_plc_control",
+                "active":false
+            },
+            {
                 "name":"智慧电表",
-                "class":"glyphicon-modal-window",
+                "class":"icon_ammeter",
                 "active":false
             },
             {
                 "name":"灯杆",
-                "class":"glyphicon-flag",
+                "class":"icon_pole",
                 "active":false
             },
             {
                 "name":"广告屏",
-                "class":"glyphicon-phone",
+                "class":"icon_screen",
                 "active":false
             },
             {
                 "name":"数据采集仪",
-                "class":"glyphicon-object-align-horizontal",
+                "class":"icon_collect",
                 "active":false
             }
         ]

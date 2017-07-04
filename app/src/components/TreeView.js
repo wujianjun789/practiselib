@@ -30,7 +30,7 @@ export default class TreeView extends Component{
                         this.curNode = node;
                     }
                     return <li key={index} className={'node '+(node.active ? 'active':'')}>
-                        <div onClick={()=>this.onToggle(node)}><span className={'glyphicon '+(curIndex > 1 ? node.class : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
+                        <div onClick={()=>this.onToggle(node)}><span className={'glyphicon '+(curIndex > 1 ? (node.class+(node.active ? '_hover':'')) : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
                             {node.name}</div>
                         {node.toggled && node.children && this.renderTree(node.children, nextIndex)}
                     </li>

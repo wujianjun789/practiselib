@@ -5,29 +5,28 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import HeadBar from '../../components/HeadBar'
+import SideBar from '../../components/SideBar'
+import Content from '../../components/Content'
+
+import {TreeData} from '../../data/treeData'
 class AssetManage extends Component {
     constructor(props) {
         super(props);
-
-        this.login = this.login.bind(this);
     }
 
     componentWillMount(){
         const query = this.props.location.query;
     }
 
-    login(){
-        this.props.actions.loginHandler(true);
-    }
-
     render() {
         return (
-            <div className="container">
-                <div className="head">
-                    资产管理
-                </div>
-                <div className="sidebar">资产模型</div>
-                <div className="content">content</div>
+            <div className="container asset-manage">
+                <HeadBar moduleName="资产管理"/>
+                <SideBar TreeData={TreeData}/>
+                <Content>
+                    content
+                </Content>
             </div>
         )
     }

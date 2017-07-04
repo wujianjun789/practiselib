@@ -20,7 +20,42 @@ input::-ms-clear {
   left: 0;
 
   height: 60px;
-  background: #00d8ff;
+  background: #3b404f;
+}
+
+.head{
+  color: #00d8ff;
+}
+
+.head .home{
+  display: inline-block;
+  border-right: solid 1px #343a45;
+
+  padding: 18px;
+  vertical-align: top;
+}
+
+.head .home span{
+  display: block;
+
+  width: 25px;
+  height: 25px;
+
+  background: url("../images/icon_home.png");
+  background-size: 25px 25px;
+}
+
+.head .title{
+  display: inline-block;
+
+  color: #00d8ff;
+  font-size: 18px;
+  font-weight: bold;
+
+  padding-top: 3px;
+  padding-left: 25px;
+
+  vertical-align: top;
 }
 
 .sidebar{
@@ -222,11 +257,11 @@ ul{
 }
 
 .tree-list{
-  width: 200px;
-  background: #343743;
-  color: #fff;
-
-  border: solid 1px #000;
+  width: 180px;
+  /*background: #343743;*/
+  color: #4d4d4d;
+  font-size: 14px;
+  /*border: solid 1px #000;*/
   cursor: pointer;
 
   -webkit-transition: all 0.3s;
@@ -236,23 +271,64 @@ ul{
   transition: all 0.3s;
 }
 
-.tree-list ul li span{
-  padding-right: 10px;
-}
-
 .tree-list .tree-1 > li > div{
   height: 40px;
-  padding: 10px 0px 10px 20px;
+  padding: 10px 0px 10px 25px;
   line-height: 20px;
-  background: #43475b;
+  background: #d3d8dd;
+}
+
+.tree-list .tree-1 > li span{
+  margin-right: 12px;
 }
 
 .tree-list .tree-2 > li > div{
-  height: 34px;
-  padding: 4px 0px 4px 20px;
+  padding: 5px 0px 5px 22px;
   line-height: 30px;
+  /*background: #d3d8dd;*/
+}
+
+.tree-list .tree-2 > li span{
+  margin-right: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.tree-list .tree-2 > li > div:hover{
+  background: #cce7ed;
 }
 
 .tree-list .tree-2 .active > div {
-  background: #39befe;
+  background: linear-gradient(to right, #00bcff,  #00d8ff);
+  color: #ffffff;
+}
+
+.tree-list .icon_light_control{
+  background: url("../images/icon_light_control.png");
+}.tree-list .icon_led_light{
+  background: url("../images/icon_led_light.png");
+}.tree-list .icon_plc_control{
+  background: url("../images/icon_plc_control.png");
+}.tree-list .icon_ammeter{
+   background: url("../images/icon_ammeter.png");
+ }.tree-list .icon_pole{
+  background: url("../images/icon_pole.png");
+}.tree-list .icon_screen{
+  background: url("../images/icon_screen.png");
+}.tree-list .icon_collect{
+  background: url("../images/icon_collect.png");
+}.tree-list .icon_light_control_hover{
+  background: url("../images/icon_light_control_hover.png");
+}.tree-list .icon_led_light_hover{
+  background: url("../images/icon_led_light_hover.png");
+}.tree-list .icon_plc_control_hover{
+  background: url("../images/icon_plc_control_hover.png");
+}.tree-list .icon_ammeter_hover{
+   background: url("../images/icon_ammeter_hover.png");
+ }.tree-list .icon_pole_hover{
+  background: url("../images/icon_pole_hover.png");
+}.tree-list .icon_screen_hover{
+  background: url("../images/icon_screen_hover.png");
+}.tree-list .icon_collect_hover{
+  background: url("../images/icon_collect_hover.png");
 }
