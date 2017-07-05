@@ -23,7 +23,7 @@ export function updateMap(data) {
     var options = {
         mapOffline: 0,
         mapType: "google",
-        center: [22.55251334323103, 114.07610893249512],
+        center: [31.239658843127756, 121.49971691534425],
         zoom: 16,
         minZoom: 10,
         maxZoom: 18,

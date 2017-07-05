@@ -10,7 +10,6 @@ import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
 import Table from '../../components/Table'
-import SideBarInfo from '../../components/SideBarInfo'
 import {TreeData} from '../../data/treeData'
 
 class AssetManage extends Component {
@@ -65,7 +64,6 @@ class AssetManage extends Component {
                             </tbody>
                         </table>
                     </div>
-
                 </Content>
 
             </div>
@@ -73,7 +71,7 @@ class AssetManage extends Component {
     }
 }
 
-// <SideBarInfo />
+
 function mapStateToProps(state) {
     return {
         data: state.assetManage.get('data')

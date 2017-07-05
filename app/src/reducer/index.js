@@ -7,6 +7,7 @@ import app from '../App/reducer/index';
 
 import login from '../login/reducer/index'
 import assetManage from '../assetManage/reducer/index'
+import assetStatistics from '../assetStatistics/reducer/index'
 const reducer = combineReducers({
     routing,
     course,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
 
     login,
     app,
-    assetManage
+    assetManage,
+    assetStatistics
 });
 export default reducer;
