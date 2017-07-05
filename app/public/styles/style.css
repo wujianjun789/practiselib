@@ -53,6 +53,9 @@ input::-ms-clear {
 
 .head .home span{
   background: url("../images/icon_home.png");
+  background-size: 100% 100%;
+
+  cursor: pointer;
 }
 
 .head .avatar span{

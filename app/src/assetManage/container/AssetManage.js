@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import '../../../public/styles/assetmanage.less';
+
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
