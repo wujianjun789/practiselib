@@ -26,7 +26,7 @@ export default class UserCenter extends Component{
         const {className=""} = this.props;
         return (
             <div className={`header-right ${className}`} onClick={this.userListToggle}>
-                <div className="user-icon clearfix"><span className="icon icon-user"></span></div>
+                <div className="user-icon clearfix"><span className="icon icon-usr"></span></div>
                 <ul className={`user-list ${active ? '' : 'hidden'}`}>
                 {
                     list.map(item => <li key={item.key}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
