@@ -3,19 +3,17 @@
  */
 @card-radius: 9px;
 @header-height: 60px;
+@min-width: 1430px;
 
 a {
     text-decoration: none!important;
 }
-/******** icon style *************/
-.icon-fill(@image, @image_active) {
-    background-image: @image;
-    background-size: 100% 100%;
-    .active & {
-        background-image: @image-active;
-    }
-}
 
+#root {
+    min-width: @min-width;
+    background-color: #f2f2f2;
+}
+/******** icon style *************/
 .icon-orig(@image) {
     background-image: @image;
     background-size: 100% 100%;
@@ -62,10 +60,13 @@ a {
 .card {
     width: 17em;
     font-size: 14px;
-    box-shadow: 0 0 7px rgba(61, 61, 61, .2);
+    box-shadow: 0 0 10px 1px rgba(61, 61, 61, .2);
     border-radius: @card-radius;
     > .ico {
         padding: 2.3em 5em;
+        background-color: #fff;
+        border-top-left-radius: @card-radius;
+        border-top-right-radius: @card-radius;
         > span {
             display: inline-block;
             width: 7em;
@@ -87,13 +88,13 @@ a {
 
 .card-color-fill(@colorLeft, @colorRight) {
     > .title {
+        background: -webkit-gradient(linear, left 0, right 0, from(@colorLeft), to(@colorRight));   /*  for safari */
         background-image: linear-gradient(to right, @colorLeft, @colorRight);
     }
 }
 /*************** card unique style ***************/
 .card-asset,
-.card-permission,
-.card-report {
+.card-permission {
     .card-color-fill(#00beff, #00d8ff);
 }
 
@@ -102,6 +103,7 @@ a {
     .card-color-fill(#ff5c68, #ff7f7f);
 }
 
+.card-report,
 .card-visual,
 .card-publish {
     .card-color-fill(#2c2f54, #4a5064);
@@ -110,8 +112,8 @@ a {
 /************************* page style**************************/
 .app {
     > .header {
-        width: 100%;
         height: @header-height;
+        background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));  /* for safari */
         background-image: linear-gradient(to right, #333744, #4a5064);
         > .header-left {
             display: inline-block;
@@ -124,9 +126,11 @@ a {
                 float: left;
             }
             > .icon.icon-logo {
+                position: relative;
+                top: 50%;
                 width: 1em;
                 height: 1em;
-                margin-top: 0.4375em;
+                margin-top: -0.5em;
             }
             
             > .tit {
@@ -167,14 +171,16 @@ a {
                     border-bottom: 1px solid #f8f8f8;
                     font-size: 12px;
                     color: #000;
+                    background-color: #fff;
+                    cursor: pointer;
                     &:last-child {
                         border-bottom: none;
                     }
 
                     > .icon {
                         display: inline-block;
-                        width: 1em;
-                        height: 1em;
+                        width: 15px;
+                        height: 15px;
                         margin-left: 10px;
                         margin-right: 10px;
                         vertical-align: middle;
@@ -185,12 +191,26 @@ a {
     }
 
     > .cont {
-        padding-top: 96px;
-        padding-left: 110px;
-        // padding-right: 110px;
-        ul > li {
-            float: left;
-            margin: 0 24px 70px;
+        padding-top: 26px;
+        text-align: center;
+        > ul {
+            display: inline-block;
+            > li {
+                float: left;
+                margin: 70px 24px 0;
+            }
         }
+    }
+}
+
+@media screen and (min-width: 1716px) {
+    .app  > .cont > ul {
+        width: 1716px;
+    }
+}
+
+@media screen and (max-width: 1716px) {
+    .app > .cont> ul {
+        width: @min-width;
     }
 }
