@@ -10,6 +10,7 @@ import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
 import Table from '../../components/Table'
+import SideBarInfo from '../../components/SideBarInfo'
 import {TreeData} from '../../data/treeData'
 
 class AssetManage extends Component {
@@ -29,7 +30,7 @@ class AssetManage extends Component {
                 <HeadBar moduleName="资产管理"/>
                 <SideBar TreeData={TreeData}/>
                 <Content>
-                    <div className="row">
+                    <div className="row heading">
                         <div className="property"><span></span>设备属性</div>
                         <ul className="property-list">
                             <li>软件版本</li>
@@ -37,7 +38,7 @@ class AssetManage extends Component {
                             <li>内核版本</li>
                         </ul>
                     </div>
-                    <div className="row">
+                    <div className="row heading">
                         <div className="type"><span></span>设备类别</div>
                         <table className="equipment">
                             <thead>
@@ -64,12 +65,15 @@ class AssetManage extends Component {
                             </tbody>
                         </table>
                     </div>
+
                 </Content>
+
             </div>
         )
     }
 }
 
+// <SideBarInfo />
 function mapStateToProps(state) {
     return {
         data: state.assetManage.get('data')

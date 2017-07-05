@@ -1,4 +1,4 @@
-.asset-manage .row{
+.asset-manage .heading{
     margin-top: 20px;
     margin-right: 20px;
     margin-left: 20px;
@@ -7,12 +7,12 @@
     border: solid 1px #e6e6e6;
 }
 
-.asset-manage .row span{
+.asset-manage .heading span{
     border-right: solid 2px #00d8ff;
     margin-right: 5px;
 }
 
-.asset-manage .row .property, .asset-manage .row .type{
+.asset-manage .heading .property, .asset-manage .heading .type{
     font-size: 14px;
     color: #333744;
 
