@@ -1,0 +1,74 @@
+exports[`<UserCenter /> user Info list toggle snapshot 1`] = `
+<div
+  className="header-right "
+  onClick={[Function]}>
+  <div
+    className="user-icon clearfix">
+    <span
+      className="icon icon-user" />
+  </div>
+  <ul
+    className="user-list hidden">
+    <li>
+      <span
+        className="icon icon-alter" />
+      修改密码
+    </li>
+    <li>
+      <span
+        className="icon icon-exit" />
+      退出管理系统
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`<UserCenter /> user Info list toggle snapshot 2`] = `
+<div
+  className="header-right "
+  onClick={[Function]}>
+  <div
+    className="user-icon clearfix">
+    <span
+      className="icon icon-user" />
+  </div>
+  <ul
+    className="user-list ">
+    <li>
+      <span
+        className="icon icon-alter" />
+      修改密码
+    </li>
+    <li>
+      <span
+        className="icon icon-exit" />
+      退出管理系统
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`<UserCenter /> user Info list toggle snapshot 3`] = `
+<div
+  className="header-right "
+  onClick={[Function]}>
+  <div
+    className="user-icon clearfix">
+    <span
+      className="icon icon-user" />
+  </div>
+  <ul
+    className="user-list hidden">
+    <li>
+      <span
+        className="icon icon-alter" />
+      修改密码
+    </li>
+    <li>
+      <span
+        className="icon icon-exit" />
+      退出管理系统
+    </li>
+  </ul>
+</div>
+`;

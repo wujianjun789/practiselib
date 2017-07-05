@@ -23,10 +23,10 @@ export default class UserCenter extends Component{
 
     render() {
         const {active, list} = this.state;
-        const {className} = this.props;
+        const {className=""} = this.props;
         return (
-            <div className={className}>
-                <div className="user-icon clearfix" onClick={this.userListToggle}><span className="icon icon-user"></span></div>
+            <div className={`header-right ${className}`} onClick={this.userListToggle}>
+                <div className="user-icon clearfix"><span className="icon icon-user"></span></div>
                 <ul className={`user-list ${active ? '' : 'hidden'}`}>
                 {
                     list.map(item => <li key={item.key}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
@@ -35,5 +35,4 @@ export default class UserCenter extends Component{
             </div>
         )
     }
-    
 }

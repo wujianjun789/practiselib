@@ -7,7 +7,7 @@ import '../../../public/styles/app.less';
 import {Card} from './Card';
 import UserCenter from './UserCenter';
 
-class App extends Component{
+export class App extends Component{
     constructor(props){
         super(props);
     }
@@ -22,11 +22,11 @@ class App extends Component{
                         <span className="tit">{title}</span>
                         <span className="name">{name}</span>
                     </div>
-                    <UserCenter className="header-right" />
+                    <UserCenter />
                 </div>
                 <div className="cont">
                     <ul className="clearfix">
-                        {items.map((item, index)=><li key={index}><Card _key={item.key} title={item.title} link={item.link}/></li>)}
+                        {items.map((item, index)=><li key={item.key}><Card _key={item.key} title={item.title} link={item.link}/></li>)}
                     </ul>
                 </div>
             </div>

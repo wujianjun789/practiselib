@@ -1,0 +1,18 @@
+exports[`<Card /> snapshot 1`] = `
+<a
+  onClick={[Function]}
+  style={Object {}}>
+  <div
+    className="card card-asset">
+    <div
+      className="ico">
+      <span
+        className="icon icon-asset" />
+    </div>
+    <div
+      className="title">
+      资产管理
+    </div>
+  </div>
+</a>
+`;

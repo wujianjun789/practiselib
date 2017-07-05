@@ -1,0 +1,171 @@
+exports[`<App /> snapshot 1`] = `
+<div
+  className="app">
+  <div
+    className="header clearfix">
+    <div
+      className="header-left clearfix">
+      <span
+        className="icon icon-logo" />
+      <span
+        className="tit">
+        Star
+      </span>
+      <span
+        className="name">
+        智慧照明
+      </span>
+    </div>
+    <div
+      className="header-right "
+      onClick={[Function]}>
+      <div
+        className="user-icon clearfix">
+        <span
+          className="icon icon-user" />
+      </div>
+      <ul
+        className="user-list hidden">
+        <li>
+          <span
+            className="icon icon-alter" />
+          修改密码
+        </li>
+        <li>
+          <span
+            className="icon icon-exit" />
+          退出管理系统
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="cont">
+    <ul
+      className="clearfix">
+      <li>
+        <a
+          onClick={[Function]}
+          style={Object {}}>
+          <div
+            className="card card-asset">
+            <div
+              className="ico">
+              <span
+                className="icon icon-asset" />
+            </div>
+            <div
+              className="title">
+              资产管理
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a
+          onClick={[Function]}
+          style={Object {}}>
+          <div
+            className="card card-permission">
+            <div
+              className="ico">
+              <span
+                className="icon icon-permission" />
+            </div>
+            <div
+              className="title">
+              权限管理
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<App /> snapshot with props.title=undefined, props.name=undefined 1`] = `
+<div
+  className="app">
+  <div
+    className="header clearfix">
+    <div
+      className="header-left clearfix">
+      <span
+        className="icon icon-logo" />
+      <span
+        className="tit">
+        StarRiver
+      </span>
+      <span
+        className="name">
+        智慧路灯管理系统
+      </span>
+    </div>
+    <div
+      className="header-right "
+      onClick={[Function]}>
+      <div
+        className="user-icon clearfix">
+        <span
+          className="icon icon-user" />
+      </div>
+      <ul
+        className="user-list hidden">
+        <li>
+          <span
+            className="icon icon-alter" />
+          修改密码
+        </li>
+        <li>
+          <span
+            className="icon icon-exit" />
+          退出管理系统
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="cont">
+    <ul
+      className="clearfix">
+      <li>
+        <a
+          onClick={[Function]}
+          style={Object {}}>
+          <div
+            className="card card-asset">
+            <div
+              className="ico">
+              <span
+                className="icon icon-asset" />
+            </div>
+            <div
+              className="title">
+              资产管理
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a
+          onClick={[Function]}
+          style={Object {}}>
+          <div
+            className="card card-permission">
+            <div
+              className="ico">
+              <span
+                className="icon icon-permission" />
+            </div>
+            <div
+              className="title">
+              权限管理
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
