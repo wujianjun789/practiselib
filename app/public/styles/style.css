@@ -12,7 +12,7 @@ input::-ms-clear {
   flex-direction: row;
   height: 100%;
 }
-
+/**********************************************************************************/
 .head{
   position: fixed;
   top: 0;
@@ -92,6 +92,7 @@ input::-ms-clear {
   background: #f2f2f4;
 }
 
+/***********************************************************************************************/
 .container .box {
   height: 100%;
   box-sizing: border-box;
@@ -284,6 +285,14 @@ ul{
   transition: all 0.3s;
 }
 
+.tree-list .tree-1, .tree-list .tree-2{
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;  
+}
+
 .tree-list .tree-1 > li > div{
   height: 40px;
   padding: 10px 0px 10px 25px;
@@ -461,3 +470,17 @@ footer{
 .btn-login:hover{
   color: #fff;
 }       
+
+.sidebar-info .icon_verital{
+  background: url("../images/icon_verital.png");
+  background-size: 100% 100%;
+}.sidebar-info .icon_horizontal{
+  background: url("../images/icon_horizontal.png");
+  background-size: 100% 100%;
+}.sidebar-info .icon_statistics{
+  background: url("../images/icon_statistics.png");
+  background-size: 100% 100%;
+}.sidebar-info .icon_map_position{
+  background: url("../images/icon_map_position.png");
+  background-size: 100% 100%;
+}

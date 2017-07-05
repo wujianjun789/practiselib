@@ -3,12 +3,14 @@
  */
 @card-radius: 9px;
 @header-height: 60px;
+@min-width: 1430px;
 
 a {
     text-decoration: none!important;
 }
 
 #root {
+    min-width: @min-width;
     background-color: #f2f2f2;
 }
 /******** icon style *************/
@@ -92,8 +94,7 @@ a {
 }
 /*************** card unique style ***************/
 .card-asset,
-.card-permission,
-.card-report {
+.card-permission {
     .card-color-fill(#00beff, #00d8ff);
 }
 
@@ -102,6 +103,7 @@ a {
     .card-color-fill(#ff5c68, #ff7f7f);
 }
 
+.card-report,
 .card-visual,
 .card-publish {
     .card-color-fill(#2c2f54, #4a5064);
@@ -189,12 +191,26 @@ a {
     }
 
     > .cont {
-        padding-top: 96px;
-        padding-left: 110px;
-        // padding-right: 110px;
-        ul > li {
-            float: left;
-            margin: 0 24px 70px;
+        padding-top: 26px;
+        text-align: center;
+        > ul {
+            display: inline-block;
+            > li {
+                float: left;
+                margin: 70px 24px 0;
+            }
         }
+    }
+}
+
+@media screen and (min-width: 1716px) {
+    .app  > .cont > ul {
+        width: 1716px;
+    }
+}
+
+@media screen and (max-width: 1716px) {
+    .app > .cont> ul {
+        width: @min-width;
     }
 }
