@@ -328,6 +328,11 @@ ul{
   color: #ffffff;
 }
 
+.pull-center{
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
 .tree-list .icon_light_control{
   background: url("../images/icon_light_control.png");
 }.tree-list .icon_led_light{

@@ -45,7 +45,7 @@ export default class Table extends Component {
         let {columns=[], data=[], allChecked, keyField, isEdit, className=''} = this.props;
         return (
             <div className={`table-responsive ${className}`}>
-                <table className="table table-striped table-hover">
+                <table className="table table-hover">
                     <thead>
                     <tr>
                         <th className={allChecked === undefined?'hidden':''}><input type="checkbox"
