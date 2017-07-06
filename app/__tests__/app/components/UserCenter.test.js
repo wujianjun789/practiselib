@@ -12,7 +12,7 @@ describe('<UserCenter />', () => {
         const userIcon = container.find('.user-icon.clearfix');
         expect(userIcon.length).toBe(1);
 
-        const icon = userIcon.find('.icon.icon-user');
+        const icon = userIcon.find('.icon.icon-usr');
         expect(icon.length).toBe(1);
 
         const _ul = container.find('ul.user-list');
