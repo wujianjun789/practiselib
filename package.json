@@ -39,6 +39,7 @@
     "jest": "^16.0.2",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "prop-types": "^15.5.10",
     "pump": "^1.0.2",
     "react": "^15.3.2",
     "react-addons-css-transition-group": "^15.4.0",

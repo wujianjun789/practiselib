@@ -3,10 +3,15 @@
  */
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
 import {Card} from './Card';
 import UserCenter from './UserCenter';
-
+/**
+ * @param {String} title required
+ * @param {String} name  required
+ * @param {Array}  items required
+ */
 export class App extends Component{
     constructor(props){
         super(props);
@@ -44,3 +49,15 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 export default connect(mapStateToProps)(App);
+
+App.propTypes = {
+    title: PropTypes.string,
+    name: PropTypes.string,
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            key: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            link: PropTypes.string.isRequired
+        })
+    ).isRequired
+}

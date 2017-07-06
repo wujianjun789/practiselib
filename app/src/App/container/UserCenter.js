@@ -2,6 +2,10 @@
  * create by Azrael on 2017/7/4
  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+/**
+ * @param {String} className  optional
+ */
 export default class UserCenter extends Component{
     constructor(props) {
         super(props);
@@ -35,4 +39,8 @@ export default class UserCenter extends Component{
             </div>
         )
     }
+}
+
+UserCenter.propTypes = {
+    className: PropTypes.string
 }
