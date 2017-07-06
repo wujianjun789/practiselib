@@ -5,8 +5,10 @@
 @header-height: 60px;
 @min-width: 1430px;
 
-a {
-    text-decoration: none!important;
+.app {
+    a {
+        text-decoration: none!important;
+    }
 }
 
 #root {
@@ -14,103 +16,103 @@ a {
     background-color: #f2f2f2;
 }
 /******** icon style *************/
-.icon-orig(@image) {
-    background-image: @image;
-    background-size: 100% 100%;
-    // margin-top: 1px;
-}
+.app {
+    .icon-orig(@image) {
+        background-image: @image;
+        background-size: 100% 100%;
+        // margin-top: 1px;
+    }
 
-.icon{
-    &.icon-asset {
-        .icon-orig(url(/images/icon_asset.png));
-    }
-    &.icon-visual {
-        .icon-orig(url(/images/icon_visual.png));
-    }
-    &.icon-permission {
-        .icon-orig(url(/images/icon_permission.png));
-    }
-    &.icon-report {
-        .icon-orig(url(/images/icon_report.png));
-    }
-    &.icon-control {
-        .icon-orig(url(/images/icon_control.png));
-    }
-    &.icon-maintenance {
-        .icon-orig(url(/images/icon_maintenance.png));
-    }
-    &.icon-publish {
-        .icon-orig(url(/images/icon_publish.png));
-    }
-    &.icon-logo {
-        .icon-orig(url(/images/logo.png));
-    }
-    &.icon-usr {
-        .icon-orig(url(/images/icon_avatar.png));
-    }
-    &.icon-alter {
-        .icon-orig(url(/images/icon_alter.png));
-    }
-    &.icon-exit {
-        .icon-orig(url(/images/icon_exit.png));
-    }
-}
-
-/***************** card common style ***************/
-.card {
-    width: 17em;
-    font-size: 14px;
-    box-shadow: 0 0 10px 1px rgba(61, 61, 61, .2);
-    border-radius: @card-radius;
-    > .ico {
-        padding: 2.3em 5em;
-        background-color: #fff;
-        border-top-left-radius: @card-radius;
-        border-top-right-radius: @card-radius;
-        > span {
-            display: inline-block;
-            width: 7em;
-            height: 7em;
+    .icon{
+        &.icon-asset {
+            .icon-orig(url(/images/icon_asset.png));
+        }
+        &.icon-visual {
+            .icon-orig(url(/images/icon_visual.png));
+        }
+        &.icon-permission {
+            .icon-orig(url(/images/icon_permission.png));
+        }
+        &.icon-report {
+            .icon-orig(url(/images/icon_report.png));
+        }
+        &.icon-control {
+            .icon-orig(url(/images/icon_control.png));
+        }
+        &.icon-maintenance {
+            .icon-orig(url(/images/icon_maintenance.png));
+        }
+        &.icon-publish {
+            .icon-orig(url(/images/icon_publish.png));
+        }
+        &.icon-logo {
+            .icon-orig(url(/images/logo.png));
+        }
+        &.icon-usr {
+            .icon-orig(url(/images/icon_avatar.png));
+        }
+        &.icon-alter {
+            .icon-orig(url(/images/icon_alter.png));
+        }
+        &.icon-exit {
+            .icon-orig(url(/images/icon_exit.png));
         }
     }
 
-    > .title {
-        font-size: 2em;
-        height: 2em;
-        line-height: 2em;
-        text-align: center;
-        border-bottom-left-radius: @card-radius;
-        border-bottom-right-radius: @card-radius;
-        color: #fff;
-        padding: 0;
+    /***************** card common style ***************/
+    .card {
+        width: 17em;
+        font-size: 14px;
+        box-shadow: 0 0 10px 1px rgba(61, 61, 61, .2);
+        border-radius: @card-radius;
+        > .ico {
+            padding: 2.3em 5em;
+            background-color: #fff;
+            border-top-left-radius: @card-radius;
+            border-top-right-radius: @card-radius;
+            > span {
+                display: inline-block;
+                width: 7em;
+                height: 7em;
+            }
+        }
+
+        > .title {
+            font-size: 2em;
+            height: 2em;
+            line-height: 2em;
+            text-align: center;
+            border-bottom-left-radius: @card-radius;
+            border-bottom-right-radius: @card-radius;
+            color: #fff;
+            padding: 0;
+        }
     }
-}
 
-.card-color-fill(@colorLeft, @colorRight) {
-    > .title {
-        background: -webkit-gradient(linear, left 0, right 0, from(@colorLeft), to(@colorRight));   /*  for safari */
-        background-image: linear-gradient(to right, @colorLeft, @colorRight);
+    .card-color-fill(@colorLeft, @colorRight) {
+        > .title {
+            background: -webkit-gradient(linear, left 0, right 0, from(@colorLeft), to(@colorRight));   /*  for safari */
+            background-image: linear-gradient(to right, @colorLeft, @colorRight);
+        }
     }
-}
-/*************** card unique style ***************/
-.card-asset,
-.card-permission {
-    .card-color-fill(#00beff, #00d8ff);
-}
+    /*************** card unique style ***************/
+    .card-asset,
+    .card-permission {
+        .card-color-fill(#00beff, #00d8ff);
+    }
 
-.card-control,
-.card-maintenance {
-    .card-color-fill(#ff5c68, #ff7f7f);
-}
+    .card-control,
+    .card-maintenance {
+        .card-color-fill(#ff5c68, #ff7f7f);
+    }
 
-.card-report,
-.card-visual,
-.card-publish {
-    .card-color-fill(#2c2f54, #4a5064);
-}
+    .card-report,
+    .card-visual,
+    .card-publish {
+        .card-color-fill(#2c2f54, #4a5064);
+    }
 
-/************************* page style**************************/
-.app {
+    /************************* page style**************************/
     > .header {
         height: @header-height;
         background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));  /* for safari */
