@@ -5,14 +5,14 @@ import {
     STARRIVER_LOGIN_SUCCESS,
     STARRIVER_LOGIN_FAIL,
     STARRIVER_LOGIN_CHANGE,
-    STARRIVER_LOGIN_ONFOCUS
+    STARRIVER_LOGIN_FOCUS
 } from '../actionType/index';
 
 import Immutable from 'immutable';
-const initialState = {
+export const initialState = {
     style: { visibility: 'hidden' },
     user: { 
-        username: 'admin',
+        username: '',
         password: '',
     }
 };
@@ -27,14 +27,14 @@ export default function login (state=initialState, action) {
             return state;
         case STARRIVER_LOGIN_FAIL:
             return setStyle(state, 'visible');
-        case  STARRIVER_LOGIN_ONFOCUS:
+        case STARRIVER_LOGIN_FOCUS:
             return setStyle(state, 'hidden');
         default:
             return state;
     }
 }
 
-function updateData(state, action) {
+export function updateData(state, action) {
     if(action.data.id == 'username'){
         state.user.username = action.data.data;
     }else{
@@ -43,7 +43,7 @@ function updateData(state, action) {
 
     return Object.assign({}, state);
 }
-function setStyle(state, value) {
+export function setStyle(state, value) {
     state.style = { visibility: value }
     return Object.assign({}, state);
 }

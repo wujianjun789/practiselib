@@ -5,7 +5,7 @@ import * as actions from '../../../src/login/action/index'
 import * as types from '../../../src/login/actionType/index'
 
 describe('actions', ()=>{
-    it('should create an action to login success', ()=>{
+    it('should create an action to login success/fail/focus', ()=>{
         const expectedAction_success = {
             type: types.STARRIVER_LOGIN_SUCCESS
         }
@@ -14,7 +14,17 @@ describe('actions', ()=>{
             type: types.STARRIVER_LOGIN_FAIL
         }
 
-        expect(actions.loginSuccess()).toEqual(expectedAction_success)
-        expect(actions.loginFail()).toEqual(expectedAction_fail)
+        const expectedAction_change = {
+            type: types.STARRIVER_LOGIN_CHANGE
+        }
+
+        const expectedAction_focus = {
+            type: types.STARRIVER_LOGIN_FOCUS
+        }
+
+        expect(actions.loginSuccess()).toEqual(expectedAction_success);
+        expect(actions.loginFail()).toEqual(expectedAction_fail);
+        expect(actions.onChange()).toEqual(expectedAction_change);
+        expect(actions.onFocus()).toEqual(expectedAction_focus);
     })
 })

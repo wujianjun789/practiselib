@@ -17,9 +17,16 @@ class Login extends Component {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
-    componentWillMount(){
-        const query = this.props.location.query;
-    }
+    // componentDidMount() {
+    //     if (SYS.ie && window.addEventListener) {
+    //         this.changeHack = () => { this.onChange('username', this.refs.username.value) };
+    //     } 
+    //     this.refs.username.addEventListener('change', this.changeHack);
+    // }
+    // componentWillUnmount() {
+    //     if (this.changeHack) 
+    //         this.refs.username.removeEventListener('change', this.changeHack);
+    // }
 
     onChange(id,value){
         this.props.actions.onChange({id: id,data: value});

@@ -7,7 +7,7 @@ import {
     STARRIVER_LOGIN_SUCCESS,
     STARRIVER_LOGIN_FAIL,
     STARRIVER_LOGIN_CHANGE,
-    STARRIVER_LOGIN_ONFOCUS
+    STARRIVER_LOGIN_FOCUS
 } from '../actionType/index'
 
 export function loginHandler(username, password) {
@@ -45,6 +45,6 @@ export function onChange(data) {
 
 export function onFocus() {
     return {
-        type: STARRIVER_LOGIN_ONFOCUS
+        type: STARRIVER_LOGIN_FOCUS
     }
 }
