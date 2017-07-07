@@ -5,8 +5,11 @@ import {login} from '../../util/network';
 
 import {
     STARRIVER_LOGIN_SUCCESS,
-    STARRIVER_LOGIN_FAIL
+    STARRIVER_LOGIN_FAIL,
+    STARRIVER_LOGIN_CHANGE,
+    STARRIVER_LOGIN_ONFOCUS
 } from '../actionType/index'
+
 export function loginHandler(username, password) {
     return dispatch=>{
         if(username.length <= 2 || password.length <= 4){
@@ -30,5 +33,18 @@ export function loginSuccess() {
 export function loginFail() {
     return {
         type: STARRIVER_LOGIN_FAIL
+    }
+}
+
+export function onChange(data) {
+    return {
+        type: STARRIVER_LOGIN_CHANGE,
+        data: data
+    }
+}
+
+export function onFocus() {
+    return {
+        type: STARRIVER_LOGIN_ONFOCUS
     }
 }
