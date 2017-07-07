@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 let round = Math.PI*2*160;
+let normalRound = round+round*3/4-round*14/360
 export default class Pie extends PureComponent {
     constructor(props) {
         super(props)
@@ -30,7 +31,7 @@ export default class Pie extends PureComponent {
     }
 
     progressScale(data,range){
-        return round-round*(data.val-range[0])/(range[1]-range[0]);
+        return round+(round*3/4*(data.val-range[0])/(range[1]-range[0])-round*14/360);
     }
 
     draw(isFirst){
@@ -53,10 +54,9 @@ export default class Pie extends PureComponent {
             .attr('stroke','#eed3d7')
             .attr('stroke-width',32)
             .attr('stroke-linecap','round')
-            .attr('stroke-dasharray',round+" 3000")
-
-    //         .attr('stroke-dashoffset', round/4)
-    // .attr('transform','rotate(-83 200 200)')
+            .attr('stroke-dasharray',round)
+            .attr('stroke-dashoffset', normalRound)
+            .attr('transform','rotate(-97 200 200)')
 
         if(isFirst&&data.val){
             svg.select('.progress-circle')
@@ -67,21 +67,20 @@ export default class Pie extends PureComponent {
             .attr('stroke',`url(#${className}-img)`)
             .attr('stroke-width',32)
             .attr('stroke-linecap','round')
-            .attr('stroke-dasharray',round+" 3000")
-            .attr('transform','rotate(-80 200 200)')
-            .attr('stroke-dashoffset',round)
+            .attr('stroke-dasharray',round)
+            .attr('transform','rotate(-97 200 200)')
+            .attr('stroke-dashoffset',normalRound)
             .transition()
             .duration(500)
             .ease(d3.easeLinear)
             .attr('stroke-dashoffset',this.progressScale(data,range));
         }
         else{
-            console.log(data, this.progressScale(data, range));
             svg.select('.progress-circle')
             .transition()
             .duration(500)
             .ease(d3.easeLinear)
-            .attr('stroke-dashoffset',this.progressScale(data,range));
+            .attr('stroke-dashoffset', this.progressScale(data,range));
         }
         
         let label;
@@ -103,7 +102,7 @@ export default class Pie extends PureComponent {
             .text(label);
 
         svg.select('.val')
-            .text(data.val+(data.unit?data.unit:''));
+            .text((data.unit ? parseInt(data.val*100/range[1]):data.val)+(data.unit?data.unit:''));
     }
 
     render() {
@@ -113,11 +112,11 @@ export default class Pie extends PureComponent {
             <svg className={`${className}PieChart`}>        
                 <defs>
                     <pattern id="noise-img" patternUnits="userSpaceOnUse" width='400' height='400'>
-                        <image xlinkHref="/svg/noise.svg" x='0' y='0' width='400' height='400' transform="rotate(83 200 200)">
+                        <image xlinkHref="/svg/noise.svg" x='0' y='0' width='400' height='400' transform="rotate(97 200 200)">
                         </image>
                     </pattern>
                     <pattern id="temps-img" patternUnits="userSpaceOnUse" width='400' height='400'>
-                        <image xlinkHref="/svg/temps.svg" x='0' y='0' width='400' height='400' transform="rotate(83 200 200)">
+                        <image xlinkHref="/svg/temps.svg" x='0' y='0' width='400' height='400' transform="rotate(97 200 200)">
                         </image>
                     </pattern>
                 </defs>

@@ -20,7 +20,7 @@ input::-ms-clear {
   left: 0;
 
   height: 60px;
-  background: #3b404f;
+  background: linear-gradient(to right, #333744,  #4a5064);
 }
 
 .head{
@@ -326,6 +326,34 @@ ul{
 .tree-list .tree-2 .active > div {
   background: linear-gradient(to right, #00bcff,  #00d8ff);
   color: #ffffff;
+}
+
+.select{
+  border: solid 1px #ddd;
+}
+
+.searchText{
+  display: inline-block;
+
+  position: relative;
+
+  min-width: 200px;
+  min-height: 26px;
+}
+
+.searchText input{
+  width: 100%;
+  height: 100%;
+
+  border: solid 1px #ddd;
+}
+
+.searchText .glyphicon-search{
+  position: absolute;
+  top: 8px;
+  right: 5px;
+
+  cursor: pointer;
 }
 
 .pull-center{
