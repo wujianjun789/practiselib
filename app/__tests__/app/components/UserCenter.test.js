@@ -45,13 +45,13 @@ describe('<UserCenter />', () => {
         let userCenter = shallow(<UserCenter/>);
         let head_right = userCenter.find('.header-right');
 
-        let ul_hidden = userCenter.find('.user-list.hidden');
-        expect(ul_hidden.length).toBe(1);
+        let ul_hidden = userCenter.find('.user-list');
+        expect(ul_hidden.hasClass('hidden')).toBe(true);
 
         head_right.simulate('click');
 
-        ul_hidden = userCenter.find('.user-list.hidden');
-        expect(ul_hidden.length).toBe(0);
+        ul_hidden = userCenter.find('.user-list');
+        expect(ul_hidden.hasClass('hidden')).not.toBe(true);
 
     });
 
