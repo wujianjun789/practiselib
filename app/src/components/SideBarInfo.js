@@ -4,6 +4,7 @@
 import React, {Component} from 'react'
 import '../../public/styles/sideBarInfo.less';
 
+import Pie from './SensorParamsPie'
 import {updateMap, updateMapDevice, destory} from '../util/map'
 export default class SideBarInfo extends Component{
     constructor(props){
@@ -40,6 +41,7 @@ export default class SideBarInfo extends Component{
 
     render(){
         const {collapse} = this.state
+        let width=145,height=145;
         return <div className={"container-fluid sidebar-info "+(collapse ? "sidebar-collapse":"")}>
                 <div className="row collapse-container" onClick={()=>this.collpseHandler()}>
                     <span className={collapse ? "icon_horizontal":"icon_verital"}></span>
@@ -49,7 +51,12 @@ export default class SideBarInfo extends Component{
                         <span className="icon_statistics"></span>设备统计信息
                     </div>
                     <div className="panel-body view">
-                        Panel content
+                        <div className="circle1" id="circle1">
+                            <Pie data={{type:"NOISE",val:30}} width={width} height={height} color="#E6BC00" className="noise" range={[0, 150]}></Pie>
+                        </div>
+                        <div className="circle2" id="circle2">
+                            <Pie data={{type:"TEMPS", val:30, unit:'%'}} width={width} height={height} color="#E6BC00" className="temps" range={[0, 150]}></Pie>
+                        </div>
                     </div>
                 </div>
                 <div className="panel panel-default map-position">
