@@ -16,7 +16,7 @@ export function loginHandler(username, password) {
             return dispatch(loginFail());
         }
 
-        login({username:username, password:password}, response=>{
+        login({name:username, password:password}, response=>{
             dispatch(loginSuccess());
         }, err=>{
             dispatch(loginFail());

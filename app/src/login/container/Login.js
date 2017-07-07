@@ -39,7 +39,7 @@ class Login extends Component {
     }
 
     onKeyDown(event) {
-        if (event.key == keyboard_key_enter) {
+        if (event.key == 'Enter') {
             this.submitHandler();
         }
         event.stopPropagation();
@@ -68,7 +68,7 @@ class Login extends Component {
                             <span className = "login_user form-control-feedback"></span>
                         </div>
                         <div className="form-group has-feedback">
-                            <input type="text" className="form-control" onFocus={this.onFocus} onChange = {(event) => this.onChange('password',event.target.value)}/>
+                            <input type="password" className="form-control" onFocus={this.onFocus} onChange = {(event) => this.onChange('password',event.target.value)}/>
                             <span className = "login_password form-control-feedback"></span>
                         </div>
                         <p style={data.style}>用户名或密码错误</p>
