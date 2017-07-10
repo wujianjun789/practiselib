@@ -18,6 +18,10 @@ export default class TreeView extends Component{
         this.setState(Object.assign(node, {toggled: node.children && !node.toggled, active:true}))
 
         this.props.onToggle && this.props.onToggle(node);
+
+        if(node.link){
+            location.href = location.origin+node.link;;
+        }
     }
 
     renderTree(datalist, index){

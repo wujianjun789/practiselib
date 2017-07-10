@@ -18,6 +18,8 @@ import Page from '../../components/Page'
 import SideBarInfo from '../../components/SideBarInfo'
 import {TreeData} from '../../data/treeData'
 
+import {onChange} from '../action/index';
+
 import Immutable from 'immutable';
 class AssetStatistics extends Component {
     constructor(props) {
@@ -37,8 +39,33 @@ class AssetStatistics extends Component {
             {field:"core_v", title:"内核版本"}, {field:"har_v", title:"硬件版本"},
             {field:"vendor_info", title:"厂商信息"}, {field:"con_type", title:"控制器类型"}]
 
+        this.onToggle = this.onToggle.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
+        this.tableClick = this.tableClick.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.domainChange = this.domainChange.bind(this);
+        this.deviceChange = this.deviceChange.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+    }
+
+    componentWillMount(){
+        const query = this.props.location.query;
+    }
+
+    onToggle(node){
+        // console.log(node);
+    }
+
+    domainChange(selectIndex){
+        this.props.actions.onChange('domain', selectIndex);
+    }
+
+    deviceChange(selectIndex){
+        this.props.actions.onChange('device', selectIndex);
+    }
+
+    searchChange(value){
+        this.props.actions.onChange('search', value);
     }
 
     onChange(current, pageSize) {
@@ -46,8 +73,8 @@ class AssetStatistics extends Component {
         this.setState(this.page);
     }
 
-    componentWillMount(){
-        const query = this.props.location.query;
+    tableClick(data){
+        console.log(data);
     }
 
     collpseHandler(){
@@ -55,20 +82,23 @@ class AssetStatistics extends Component {
     }
 
     render() {
-        const { data } = this.props
+        const { data, domain, device, search } = this.props
         const { collapse } = this.state;
         return (
             <div className={"container-fluid asset-statistics "+(collapse?'collapsed':'')}>
                 <HeadBar moduleName="资产统计"/>
-                <SideBar TreeData={TreeData}/>
+                <SideBar TreeData={TreeData} onToggle={(node)=>this.onToggle(node)}/>
                 <Content>
                     <div className="heading">
-                        <Select className="domain" data={{list:[{id:1, value:'域'},{id:2, value:'域2'}], value:'域'}}/>
-                        <Select className="device" data={{list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], value:'域'}}/>
-                        <SearchText className="search" placeholder="输入素材名称"/>
+                        <Select className="domain" data={domain}
+                                onChange={(selectIndex)=>this.domainChange(selectIndex)}/>
+                        <Select className="device" data={device}
+                                onChange={(selectIndex)=>this.deviceChange(selectIndex)}/>
+                        <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}
+                            onChange={value=>this.searchChange(value)}/>
                     </div>
                     <div className="table-container">
-                        <Table columns={this.columns} data={data}/>
+                        <Table columns={this.columns} data={data} rowClick={(row)=>this.tableClick(row)}/>
                         <Page className="pull-center" showSizeChanger pageSize={this.page.get('pageSize')}
                               current={this.page.get('current')} total={this.page.get('total')} onChange={this.onChange} />
                     </div>
@@ -84,13 +114,17 @@ class AssetStatistics extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.assetStatistics.get('data')
+        data: state.assetStatistics.get('data'),
+        domain: state.assetStatistics.get('domain'),
+        device: state.assetStatistics.get('device'),
+        search: state.assetStatistics.get('search'),
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
+            onChange: onChange
         }, dispatch)
     }
 }

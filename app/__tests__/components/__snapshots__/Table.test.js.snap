@@ -1,0 +1,20 @@
+exports[`test SidebarInfo renders 1`] = `
+<div
+  className="table-responsive ">
+  <table
+    className="table table-hover">
+    <thead>
+      <tr>
+        <th
+          className="hidden">
+          <input
+            checked={undefined}
+            onChange={[Function]}
+            type="checkbox" />
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+</div>
+`;

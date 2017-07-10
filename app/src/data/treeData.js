@@ -46,6 +46,7 @@ export  const TreeData=[
     {
         "name":"资产统计",
         "toggled": false,
-        "active": true
+        "active": true,
+        "link": "/assetStatistics"
     }
 ]

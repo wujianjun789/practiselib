@@ -2,6 +2,7 @@
  * Created by a on 2017/7/7.
  */
 import React,{Component} from 'react'
+import Immutable from 'immutable';
 
 export default class Select extends Component{
     constructor(props){
@@ -10,15 +11,16 @@ export default class Select extends Component{
     }
 
     onChange(event){
-        this.props.onChange && this.prop.onChange(event.target.selectedIndex);
+        this.props.onChange && this.props.onChange(event.target.selectedIndex);
     }
 
     render(){
-        const {className='', data={list:[],value:''}} = this.props;
-        return <select className={"select "+className} value={data.value} onChange={this.onChange}>
+        const {className='', data=Immutable.fromJS({list:[],value:''})} = this.props;
+        return <select className={"select "+className} value={data.get('value')} onChange={this.onChange}>
             {
-                 data.list.map((option, index)=>{
-                    return <option key={index} value={option.value}>{option.value}</option>
+                 data.get('list').map((option, index)=>{
+                     let value = option.get('value');
+                    return <option key={index} value={value}>{value}</option>
                 })
             }
 

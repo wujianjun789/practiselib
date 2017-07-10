@@ -24,6 +24,10 @@ export default class SideBarInfo extends Component{
 
     }
 
+    componentWillUnmount(){
+        destory();
+    }
+
     collpseHandler(){
         this.setState({collapse:!this.state.collapse});
 
@@ -51,10 +55,10 @@ export default class SideBarInfo extends Component{
                         <span className="icon_statistics"></span>设备统计信息
                     </div>
                     <div className="panel-body view">
-                        <div className="circle1" id="circle1">
+                        <div className="circle1">
                             <Pie data={{type:"NOISE",val:150}} width={width} height={height} color="#E6BC00" className="noise" range={[0, 150]}></Pie>
                         </div>
-                        <div className="circle2" id="circle2">
+                        <div className="circle2">
                             <Pie data={{type:"TEMPS", val:95, unit:'%'}} width={width} height={height} color="#E6BC00" className="temps" range={[0, 150]}></Pie>
                         </div>
                     </div>
