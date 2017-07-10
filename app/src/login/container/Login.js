@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import Page from '../../components/Page';
 import {loginHandler,onChange,onFocus} from '../action/index'
 import '../../../public/styles/login.less';
-class Login extends Component {
+export class Login extends Component {
     constructor(props) {
         super(props);
         this.submitHandler = this.submitHandler.bind(this);
@@ -17,6 +17,7 @@ class Login extends Component {
         this.onKeyDown = this.onKeyDown.bind(this);
     }
 
+    //兼容ie下的清除事件
     // componentDidMount() {
     //     if (SYS.ie && window.addEventListener) {
     //         this.changeHack = () => { this.onChange('username', this.refs.username.value) };
@@ -54,7 +55,7 @@ class Login extends Component {
 
     render() {
         const {data} = this.props;
-
+        const style = data.style?data.style:'hidden';
         return (
             <div className="container-login" onKeyDown={this.onKeyDown}>
                 <header>
@@ -78,7 +79,7 @@ class Login extends Component {
                             <input type="password" className="form-control" onFocus={this.onFocus} onChange = {(event) => this.onChange('password',event.target.value)}/>
                             <span className = "login_password form-control-feedback"></span>
                         </div>
-                        <p style={data.style}>用户名或密码错误</p>
+                        <p style={style}>用户名或密码错误</p>
                         <button type="button" className="btn btn-block btn-login" onClick={this.handleClick}>登录</button>
                     </div>
                 </div>

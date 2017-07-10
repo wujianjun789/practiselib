@@ -35,15 +35,20 @@ export default function login (state=initialState, action) {
 }
 
 export function updateData(state, action) {
+    let user = state.user;
     if(action.data.id == 'username'){
-        state.user.username = action.data.data;
+        // state.user.username = action.data.data;
+        user.username = action.data.data;
+        
     }else{
-        state.user.password = action.data.data;
+        // state.user.password = action.data.data;
+        user.password = action.data.data;
     }
-
-    return Object.assign({}, state);
+    
+    // return Object.assign({}, state);
+    return Object.assign({}, state,{user:user});
 }
 export function setStyle(state, value) {
-    state.style = { visibility: value }
-    return Object.assign({}, state);
+    // state.style = { visibility: value }
+    return Object.assign({}, state,{style:{visibility: value}});
 }
