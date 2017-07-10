@@ -1,6 +1,6 @@
 import React from 'react'
 import {Route} from 'react-router'
-import App from '../App/container/index'
+import App from '../app/container/index'
 import Login from '../login/container/Login'
 import AssetManage from '../assetManage/container/AssetManage'
 import AssetStatistics from '../assetStatistics/container/AssetStatistics'

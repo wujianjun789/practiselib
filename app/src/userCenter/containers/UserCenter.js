@@ -3,10 +3,12 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 /**
  * @param {String} className  optional
  */
-export default class UserCenter extends Component{
+export class UserCenter extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -17,6 +19,7 @@ export default class UserCenter extends Component{
             ]
         }
         this.userListToggle = this.userListToggle.bind(this);
+        this.itemClick = this.itemClick.bind(this);
     }
 
     userListToggle() {
@@ -25,21 +28,41 @@ export default class UserCenter extends Component{
         });
     }
 
+    itemClick(key) {
+
+    }
+
     render() {
         const {active, list} = this.state;
         const {className=""} = this.props;
         return (
-            <div className={`header-right ${className}`} onClick={this.userListToggle}>
+            <div className={`user-center ${className}`} onClick={this.userListToggle}>
                 <div className="user-icon clearfix"><span className="icon icon-usr"></span></div>
                 <ul className={`user-list ${active ? '' : 'hidden'}`}>
                 {
-                    list.map(item => <li key={item.key}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
+                    list.map(item => <li key={item.key} onClick={(key)=>this.itemClick(key)}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
                 }
                 </ul>
             </div>
         )
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        actions: bindActionCreators({
+
+        }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserCenter);
 
 UserCenter.propTypes = {
     className: PropTypes.string

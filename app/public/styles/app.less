@@ -48,9 +48,6 @@
         &.icon-logo {
             .icon-orig(url(/images/logo.png));
         }
-        &.icon-usr {
-            .icon-orig(url(/images/icon_avatar.png));
-        }
         &.icon-alter {
             .icon-orig(url(/images/icon_alter.png));
         }
@@ -146,48 +143,6 @@
                 font-size: 0.75em;
                 padding-left: 10px;
                 padding-right: 10px;
-            }
-        }
-
-        > .header-right {
-            float: right;
-            position: relative;
-            > .user-icon {
-                padding: 17px 17px 18px 17px;
-                border-left: 1px solid #353b4e;
-                cursor: pointer;
-                > .icon.icon-usr {
-                    float: left;
-                    width: 25px;
-                    height: 25px;
-                }
-            }
-            > ul.user-list {
-                position: absolute;
-                top: @header-height;
-                right: 0;
-                > li {
-                    width: 120px;
-                    height: 40px;
-                    line-height: 40px;
-                    border-bottom: 1px solid #f8f8f8;
-                    font-size: 12px;
-                    color: #000;
-                    background-color: #fff;
-                    cursor: pointer;
-                    &:last-child {
-                        border-bottom: none;
-                    }
-
-                    > .icon {
-                        display: inline-block;
-                        width: 15px;
-                        height: 15px;
-                        margin-left: 10px;
-                        margin-right: 10px;
-                        vertical-align: middle;
-                    }
-                }
             }
         }
     }
