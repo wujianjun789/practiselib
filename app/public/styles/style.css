@@ -524,6 +524,15 @@ ul {
     vertical-align: middle;
 }
 
+.user-center .icon.icon-alter {
+  background-image: url(/images/icon_alter.png);
+  background-size: 100% 100%;
+}
+
+.user-center .icon.icon-exit {
+  background-image: url(/images/icon_exit.png);
+  background-size: 100% 100%;
+}
 /********************* overlayer style ****************************/
 .overlayer {
     position: fixed;

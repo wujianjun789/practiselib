@@ -34,7 +34,7 @@ describe('<UserCenter />', () => {
         expect(span1.length).toBe(1);
     });
 
-    it('render with props.className="user-center"', () => {
+    it('render with props.className="user_center"', () => {
         const userCenter = shallow(<UserCenter className="user_center" />);
         const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
@@ -42,6 +42,7 @@ describe('<UserCenter />', () => {
     });
 
     it('user Info list toggle', () => {
+        // let itemClick = jest.fn();
         let userCenter = shallow(<UserCenter/>);
         let head_right = userCenter.find('.user-center');
 
@@ -53,6 +54,9 @@ describe('<UserCenter />', () => {
         ul_hidden = userCenter.find('.user-list');
         expect(ul_hidden.hasClass('hidden')).not.toBe(true);
 
+        // let item = ul_hidden.find('li').at(0);
+        // item.simulate('click');
+        // expect(itemClick).toHaveBeenCalledTimes(1);
     });
 
     it('user Info list toggle snapshot', () => {

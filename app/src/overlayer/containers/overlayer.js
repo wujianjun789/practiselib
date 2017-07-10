@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-class Overlayer extends Component {
+export class Overlayer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,7 +41,7 @@ class Overlayer extends Component {
         this.handlerBodyScrollBar(isShowDialog);
         
         return (
-            <div id={'overlayer'} className={`ruantong overlayer ${isShowDialog?'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
+            <div id='overlayer' className={`overlayer ${isShowDialog?'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
                 <div className={this.state.overlayerPulse ? 'overlayer-pulse' : ''}>
                     {page}
                 </div>

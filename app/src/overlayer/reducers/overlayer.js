@@ -6,7 +6,7 @@ import {
     OVERLAYER_SHOW
 } from '../actionTypes/overlayer';
 
-const initialState = {
+export const initialState = {
     isShowDialog: false,
     page: null
 };

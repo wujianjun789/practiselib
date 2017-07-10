@@ -11,7 +11,7 @@ import {
  */
 export function overlayerHide() {
     return {
-        type: 'OVERLAYER_HIDDEN'
+        type: OVERLAYER_HIDDEN
     }
 }
 
@@ -21,7 +21,7 @@ export function overlayerHide() {
  */
 export function overlayerShow(page) {
     return {
-        type: 'OVERLAYER_SHOW',
+        type: OVERLAYER_SHOW,
         page
     }
 }
