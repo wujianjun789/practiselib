@@ -25,14 +25,29 @@ class AssetStatistics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapse:false
+            collapse:false,
+            page: Immutable.fromJS({
+                pageSize:10,
+                current: 1,
+                total: 21
+            }),
+            deviceInfo:{
+                total: 150,
+                normal: 98
+            },
+            selectDevice:{
+                position:{
+                    "device_id":1,
+                    "device_type":'DEVICE',
+                    x:121.49971691534425,
+                    y:31.239658843127756
+                },
+                data:{
+                    id:1,
+                    name:'example'
+                }
+            }
         }
-
-        this.page = Immutable.fromJS({
-            pageSize:10,
-            current: 1,
-            total: 21
-        })
 
         this.columns = [{field:"domain", title:"域"}, {field:"deviceName", title:"设备名称"},
             {field:"soft_v", title:"软件版本"}, {field:"sys_v", title:"系统版本"},
@@ -69,8 +84,8 @@ class AssetStatistics extends Component {
     }
 
     onChange(current, pageSize) {
-        this.page = this.page.set('current', current);
-        this.setState(this.page);
+        let page = this.state.page.set('current', current);
+        this.setState({page: page});
     }
 
     tableClick(data){
@@ -83,7 +98,7 @@ class AssetStatistics extends Component {
 
     render() {
         const { data, domain, device, search } = this.props
-        const { collapse } = this.state;
+        const { collapse, page, deviceInfo, selectDevice } = this.state;
         return (
             <div className={"container-fluid asset-statistics "+(collapse?'collapsed':'')}>
                 <HeadBar moduleName="资产统计"/>
@@ -99,11 +114,11 @@ class AssetStatistics extends Component {
                     </div>
                     <div className="table-container">
                         <Table columns={this.columns} data={data} rowClick={(row)=>this.tableClick(row)}/>
-                        <Page className="pull-center" showSizeChanger pageSize={this.page.get('pageSize')}
-                              current={this.page.get('current')} total={this.page.get('total')} onChange={this.onChange} />
+                        <Page className="pull-center" showSizeChanger pageSize={page.get('pageSize')}
+                              current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
 
-                    <SideBarInfo collpseHandler={this.collpseHandler}/>
+                    <SideBarInfo deviceInfo={deviceInfo} mapDevice={selectDevice} collpseHandler={this.collpseHandler}/>
                 </Content>
 
             </div>

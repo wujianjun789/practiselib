@@ -4,13 +4,18 @@
 import React, { Component } from 'react'
 export default class HeadBar extends Component{
     constructor(props){
-        super(props)
+        super(props);
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick(event){
+        location.href = location.origin;
     }
 
     render(){
         const {moduleName} = this.props
         return <div className="head">
-            <div className="home">
+            <div className="home" onClick={this.onClick}>
                 <span className="icon"></span>
             </div>
             <span className="title">{moduleName}</span>

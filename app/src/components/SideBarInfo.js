@@ -35,16 +35,33 @@ export default class SideBarInfo extends Component{
     }
 
     renderMap(ref) {
+        const {mapDevice} = this.props;
         if (ref) {
             updateMap({latlng:this.latlng});
-            // if (this.props.data.size > 0) {
-                updateMapDevice([{"device_id":1, "device_type":'DEVICE', x:121.49971691534425, y:31.239658843127756}], {lamp:[{id:1, name:'example'}]})
-            // }
+            let key = 'lamp';
+            switch(mapDevice.position["device_type"]){
+                case "DEVICE":
+                    key = 'lamp';
+                    break;
+                case "CONTROLLER":
+                    key = 'controller';
+                    break;
+                case "ISTREETLIGHT":
+                    key = 'intelligent';
+                    break;
+                case "CHARGER":
+                    key = 'charger';
+                    break;
+            }
+
+            updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
         }
     }
 
     render(){
-        const {collapse} = this.state
+        const {collapse} = this.state;
+        let {deviceInfo={total:0, normal:0}} = this.props;
+        const {total, normal} = deviceInfo;
         let width=145,height=145;
         return <div className={"container-fluid sidebar-info "+(collapse ? "sidebar-collapse":"")}>
                 <div className="row collapse-container" onClick={()=>this.collpseHandler()}>
@@ -56,10 +73,10 @@ export default class SideBarInfo extends Component{
                     </div>
                     <div className="panel-body view">
                         <div className="circle1">
-                            <Pie data={{type:"NOISE",val:150}} width={width} height={height} color="#E6BC00" className="noise" range={[0, 150]}></Pie>
+                            <Pie data={{type:"NOISE",val:total}} width={width} height={height} color="#E6BC00" className="noise" range={[0, total]}></Pie>
                         </div>
                         <div className="circle2">
-                            <Pie data={{type:"TEMPS", val:95, unit:'%'}} width={width} height={height} color="#E6BC00" className="temps" range={[0, 150]}></Pie>
+                            <Pie data={{type:"TEMPS", val:normal, unit:'%'}} width={width} height={height} color="#E6BC00" className="temps" range={[0, total]}></Pie>
                         </div>
                     </div>
                 </div>

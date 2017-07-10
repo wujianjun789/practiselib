@@ -6,6 +6,7 @@ export  const TreeData=[
         "name":"资产管理",
         "toggled": true,
         "active": true,
+        "link": "/assetManage",
         "children": [
             {
                 "name":"灯集中控制器",
