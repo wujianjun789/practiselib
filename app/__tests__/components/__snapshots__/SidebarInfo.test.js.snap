@@ -1,0 +1,139 @@
+exports[`test SidebarInfo renders 1`] = `
+<div
+  className="container-fluid sidebar-info ">
+  <div
+    className="row collapse-container"
+    onClick={[Function]}>
+    <span
+      className="icon_verital" />
+  </div>
+  <div
+    className="panel panel-default device-statics-info">
+    <div
+      className="panel-heading">
+      <span
+        className="icon_statistics" />
+      设备统计信息
+    </div>
+    <div
+      className="panel-body view">
+      <div
+        className="circle1">
+        <svg
+          className="noisePieChart">
+          <defs>
+            <pattern
+              height="400"
+              id="noise-img"
+              patternUnits="userSpaceOnUse"
+              width="400">
+              <image
+                height="400"
+                transform="rotate(97 200 200)"
+                width="400"
+                x="0"
+                xlinkHref="/svg/noise.svg"
+                y="0" />
+            </pattern>
+            <pattern
+              height="400"
+              id="temps-img"
+              patternUnits="userSpaceOnUse"
+              width="400">
+              <image
+                height="400"
+                transform="rotate(97 200 200)"
+                width="400"
+                x="0"
+                xlinkHref="/svg/temps.svg"
+                y="0" />
+            </pattern>
+          </defs>
+          <g
+            className="circle">
+            <circle
+              className="base-circle" />
+            <circle
+              className="progress-circle" />
+          </g>
+          <g
+            className="text">
+            <text
+              className="type"
+              x="200"
+              y="140" />
+            <text
+              className="val"
+              x="200"
+              y="240" />
+          </g>
+        </svg>
+      </div>
+      <div
+        className="circle2">
+        <svg
+          className="tempsPieChart">
+          <defs>
+            <pattern
+              height="400"
+              id="noise-img"
+              patternUnits="userSpaceOnUse"
+              width="400">
+              <image
+                height="400"
+                transform="rotate(97 200 200)"
+                width="400"
+                x="0"
+                xlinkHref="/svg/noise.svg"
+                y="0" />
+            </pattern>
+            <pattern
+              height="400"
+              id="temps-img"
+              patternUnits="userSpaceOnUse"
+              width="400">
+              <image
+                height="400"
+                transform="rotate(97 200 200)"
+                width="400"
+                x="0"
+                xlinkHref="/svg/temps.svg"
+                y="0" />
+            </pattern>
+          </defs>
+          <g
+            className="circle">
+            <circle
+              className="base-circle" />
+            <circle
+              className="progress-circle" />
+          </g>
+          <g
+            className="text">
+            <text
+              className="type"
+              x="200"
+              y="140" />
+            <text
+              className="val"
+              x="200"
+              y="240" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div
+    className="panel panel-default map-position">
+    <div
+      className="panel-heading">
+      <span
+        className="icon_map_position" />
+      地图位置
+    </div>
+    <div
+      className="panel-body map"
+      id="map" />
+  </div>
+</div>
+`;

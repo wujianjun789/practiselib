@@ -69,7 +69,7 @@ export default class Pie extends PureComponent {
             .attr('stroke-linecap','round')
             .attr('stroke-dasharray',round)
             .attr('transform','rotate(-97 200 200)')
-            .attr('stroke-dashoffset',normalRound)
+            .attr('stroke-dashoffset',round)
             .transition()
             .duration(500)
             .ease(d3.easeLinear)

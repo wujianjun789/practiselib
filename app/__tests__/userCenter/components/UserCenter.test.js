@@ -1,12 +1,12 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import UserCenter from '../../../src/App/container/UserCenter';
+import {UserCenter} from '../../../src/userCenter/containers/UserCenter';
 
 describe('<UserCenter />', () => {
     it('render with props.className=undefined', () => {
         const userCenter = shallow(<UserCenter />);
-        const container = userCenter.find('div.header-right');
+        const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
 
         const userIcon = container.find('.user-icon.clearfix');
@@ -35,15 +35,15 @@ describe('<UserCenter />', () => {
     });
 
     it('render with props.className="user-center"', () => {
-        const userCenter = shallow(<UserCenter className="user-center" />);
+        const userCenter = shallow(<UserCenter className="user_center" />);
         const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
-        expect(container.prop('className')).toBe('header-right user-center');
+        expect(container.prop('className')).toBe('user-center user_center');
     });
 
     it('user Info list toggle', () => {
         let userCenter = shallow(<UserCenter/>);
-        let head_right = userCenter.find('.header-right');
+        let head_right = userCenter.find('.user-center');
 
         let ul_hidden = userCenter.find('.user-list');
         expect(ul_hidden.hasClass('hidden')).toBe(true);
