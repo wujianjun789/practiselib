@@ -3,10 +3,13 @@
  */
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
 import {Card} from './Card';
-import UserCenter from './UserCenter';
+import UserCenter from '../../userCenter/containers/UserCenter';
+import Overlayer from '../../overlayer/containers/overlayer';
+
 /**
  * @param {String} title required
  * @param {String} name  required
@@ -34,6 +37,7 @@ export class App extends Component{
                         {items.map((item, index)=><li key={item.key}><Card _key={item.key} title={item.title} link={item.link}/></li>)}
                     </ul>
                 </div>
+                <Overlayer />
             </div>
         )
     }
@@ -48,7 +52,15 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        actions: bindActionCreators({
+
+        }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 App.propTypes = {
     title: PropTypes.string,

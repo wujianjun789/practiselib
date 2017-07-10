@@ -1,6 +1,6 @@
 exports[`<UserCenter /> user Info list toggle snapshot 1`] = `
 <div
-  className="header-right "
+  className="user-center "
   onClick={[Function]}>
   <div
     className="user-icon clearfix">
@@ -9,12 +9,14 @@ exports[`<UserCenter /> user Info list toggle snapshot 1`] = `
   </div>
   <ul
     className="user-list hidden">
-    <li>
+    <li
+      onClick={[Function]}>
       <span
         className="icon icon-alter" />
       修改密码
     </li>
-    <li>
+    <li
+      onClick={[Function]}>
       <span
         className="icon icon-exit" />
       退出管理系统
@@ -25,7 +27,7 @@ exports[`<UserCenter /> user Info list toggle snapshot 1`] = `
 
 exports[`<UserCenter /> user Info list toggle snapshot 2`] = `
 <div
-  className="header-right "
+  className="user-center "
   onClick={[Function]}>
   <div
     className="user-icon clearfix">
@@ -34,12 +36,14 @@ exports[`<UserCenter /> user Info list toggle snapshot 2`] = `
   </div>
   <ul
     className="user-list ">
-    <li>
+    <li
+      onClick={[Function]}>
       <span
         className="icon icon-alter" />
       修改密码
     </li>
-    <li>
+    <li
+      onClick={[Function]}>
       <span
         className="icon icon-exit" />
       退出管理系统
@@ -50,7 +54,7 @@ exports[`<UserCenter /> user Info list toggle snapshot 2`] = `
 
 exports[`<UserCenter /> user Info list toggle snapshot 3`] = `
 <div
-  className="header-right "
+  className="user-center "
   onClick={[Function]}>
   <div
     className="user-icon clearfix">
@@ -59,12 +63,14 @@ exports[`<UserCenter /> user Info list toggle snapshot 3`] = `
   </div>
   <ul
     className="user-list hidden">
-    <li>
+    <li
+      onClick={[Function]}>
       <span
         className="icon icon-alter" />
       修改密码
     </li>
-    <li>
+    <li
+      onClick={[Function]}>
       <span
         className="icon icon-exit" />
       退出管理系统
