@@ -2,6 +2,7 @@
  * Created by a on 2017/7/4.
  */
 import React, { Component } from 'react'
+import UserCenter from '../userCenter/containers/UserCenter'
 export default class HeadBar extends Component{
     constructor(props){
         super(props);
@@ -19,9 +20,12 @@ export default class HeadBar extends Component{
                 <span className="icon"></span>
             </div>
             <span className="title">{moduleName}</span>
-            <div className="avatar">
-                <span className="icon"></span>
-            </div>
+            <UserCenter />
         </div>
     }
 }
+
+
+// <div className="avatar">
+//     <span className="icon"></span>
+//     </div>
