@@ -3,6 +3,8 @@
  */
 import React, { Component } from 'react'
 import UserCenter from '../userCenter/containers/UserCenter'
+
+import {history} from '../root/index'
 export default class HeadBar extends Component{
     constructor(props){
         super(props);
@@ -10,7 +12,7 @@ export default class HeadBar extends Component{
     }
 
     onClick(event){
-        location.href = location.origin;
+        history.push('/');
     }
 
     render(){

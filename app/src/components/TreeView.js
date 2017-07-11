@@ -2,6 +2,8 @@
  * Created by a on 2017/7/3.
  */
 import React, { Component } from 'react'
+
+import {history} from '../root/index'
 export default class TreeView extends Component{
     constructor(props){
         super(props)
@@ -20,7 +22,7 @@ export default class TreeView extends Component{
         this.props.onToggle && this.props.onToggle(node);
 
         if(node.link){
-            location.href = location.origin+node.link;;
+            history.push(node.link);
         }
     }
 
