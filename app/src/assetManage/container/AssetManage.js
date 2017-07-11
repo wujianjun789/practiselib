@@ -11,7 +11,6 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
-import Table from '../../components/Table'
 import {TreeData} from '../../data/treeData'
 
 class AssetManage extends Component {
@@ -25,7 +24,7 @@ class AssetManage extends Component {
     }
 
     render() {
-        const { data } = this.props
+        const { data, devicePro } = this.props
         return (
             <div className="container asset-manage">
                 <HeadBar moduleName="资产管理"/>
@@ -34,9 +33,11 @@ class AssetManage extends Component {
                     <div className="row heading">
                         <div className="property"><span></span>设备属性</div>
                         <ul className="property-list">
-                            <li>软件版本</li>
-                            <li>系统版本</li>
-                            <li>内核版本</li>
+                            {
+                                devicePro.map((item,index)=>{
+                                    return <li key={index}>{item}</li>
+                                })
+                            }
                         </ul>
                     </div>
                     <div className="row heading">
@@ -76,7 +77,8 @@ class AssetManage extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.assetManage.get('data')
+        data: state.assetManage.get('data'),
+        devicePro: state.assetManage.get('devicePro')
     }
 }
 

@@ -14,27 +14,29 @@ export default (
         </Route>
         <Route path="/assetStatistics" component={AssetStatistics}>
         </Route>
-        <Route path="/home" getComponent={(nextState, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('../containers/pages/Home').default)
-            }, 'home')
-        } }/>
-        <Route path="/about" getComponent={(nextState, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('../containers/pages/About').default)
-            }, 'about')
-        } }/>
-        <Route path="/course" getComponent={(nextState, cb) => {
-            require.ensure([], (require) => {
-                cb(null, require('../containers/pages/Course').default)
-            }, 'about')
-        } }/>
+
         <Route path="*" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-                cb(null, require('../containers/NoMatch').default)
+                cb(null, require('../common/containers/NoMatch').default)
             }, 'nomatch')
         } }/>
     </Route>
 )
+
+/*<Route path="/home" getComponent={(nextState, cb) => {
+ require.ensure([], (require) => {
+ cb(null, require('./pages/Home').default)
+ }, 'home')
+ } }/>
+ <Route path="/about" getComponent={(nextState, cb) => {
+ require.ensure([], (require) => {
+ cb(null, require('./pages/About').default)
+ }, 'about')
+ } }/>
+ <Route path="/course" getComponent={(nextState, cb) => {
+ require.ensure([], (require) => {
+ cb(null, require('./pages/Course').default)
+ }, 'about')
+ } }/>*/
 
 
