@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {overlayerShow, overlayerHide} from '../../overlayer/actions/overlayer';
+import ExitPopup from '../components/ExitPopup';
+import AlterPwPopup from './AlterPwPopup';
 /**
  * @param {String} className  optional
  */
@@ -20,6 +23,8 @@ export class UserCenter extends Component{
         }
         this.userListToggle = this.userListToggle.bind(this);
         this.itemClick = this.itemClick.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.confirm = this.confirm.bind(this);
     }
 
     userListToggle() {
@@ -28,8 +33,21 @@ export class UserCenter extends Component{
         });
     }
 
-    itemClick(key) {
+    cancel() {
+        this.props.actions.overlayerHide();
+    }
 
+    confirm() {
+        this.props.actions.overlayerHide();
+    }
+
+    itemClick(key) {
+        if(key == 'alter') {
+            this.props.actions.overlayerShow(<AlterPwPopup className='alter-pw-popup'/>);
+        } else {
+            this.props.actions.overlayerShow(<ExitPopup cancel={this.cancel} confirm={this.confirm}/>);
+        }
+        
     }
 
     render() {
@@ -40,7 +58,7 @@ export class UserCenter extends Component{
                 <div className="user-icon clearfix"><span className="icon icon-usr"></span></div>
                 <ul className={`user-list ${active ? '' : 'hidden'}`}>
                 {
-                    list.map(item => <li key={item.key} onClick={(key)=>this.itemClick(key)}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
+                    list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
                 }
                 </ul>
             </div>
@@ -57,7 +75,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         actions: bindActionCreators({
-
+            overlayerShow,
+            overlayerHide
         }, dispatch)
     }
 }

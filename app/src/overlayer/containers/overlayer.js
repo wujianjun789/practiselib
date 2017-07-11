@@ -24,7 +24,7 @@ export class Overlayer extends Component {
 
     /**
      * 显示弹框时，隐藏body滚动条
-     * @param {Boolean} show 
+     * @param {Boolean} show
      */
     handlerBodyScrollBar(show) {
         if(show) {
@@ -41,7 +41,7 @@ export class Overlayer extends Component {
         this.handlerBodyScrollBar(isShowDialog);
         
         return (
-            <div id='overlayer' className={`overlayer ${isShowDialog?'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
+            <div id='overlayer' className={`overlayer ${isShowDialog ? 'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
                 <div className={this.state.overlayerPulse ? 'overlayer-pulse' : ''}>
                     {page}
                 </div>

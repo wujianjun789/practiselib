@@ -174,8 +174,8 @@ input::-ms-clear {
     position: absolute;
     right: 12px;
     top: 12px;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     font-size: 12px;
     padding: 9px;
 }
@@ -357,7 +357,7 @@ ul {
 
 .tree-list .tree-2 > li > div {
     padding: 5px 0px 5px 22px;
-    line-height: 30px;
+    line-height: 20px;
     /*background: #d3d8dd;*/
 }
 
@@ -548,6 +548,7 @@ ul {
   background-image: url(/images/icon_exit.png);
   background-size: 100% 100%;
 }
+
 /********************* overlayer style ****************************/
 .overlayer {
     position: fixed;
@@ -662,4 +663,117 @@ ul {
     -moz-animation: pulse .1s;
     -ms-animation: pulse .1s;
     animation: pulse .1s;
+}
+
+/****************** 修改密码弹框 ************************/
+.alter-pw-popup {
+    width: 460px;
+
+}
+.alter-pw-popup .panel .panel-heading {
+    height: 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: center;
+    font-size: 16px;
+    color: #808080;
+    border-bottom: 1px solid #919191;
+}
+.alter-pw-popup .panel-heading h3 {
+    height: 50px;
+    line-height: 50px;
+}
+.alter-pw-popup .panel-heading .close{
+    margin-top: -42px;
+    font-size: 30px;
+}
+
+.alter-pw-popup .panel-body {
+    padding: 20px 20px 10px;
+    font-size: 14px;
+}
+
+.alter-pw-popup .panel-body .form-group .control-label{
+    text-align: right;
+    padding-right: 0;
+    height: 40px;
+    line-height: 40px;
+    color: #4d4d4d;
+}
+
+.alter-pw-popup .panel-body .form-group .form-control{
+    height: 40px;
+    color: #b3b3b3;
+}
+
+.alter-pw-popup .panel-footer {
+    border-top: none;
+    background-color: transparent;
+    padding-top: 0;
+    padding-bottom: 20px;
+}
+.alter-pw-popup .panel-footer .btn-toolbar{
+    margin-right: 45px;
+}
+.alter-pw-popup .panel-footer button{
+    width: 110px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 5px;
+}
+.alter-pw-popup .panel-footer .btn-group:last-child{
+    margin-left: 15px;
+}
+.alter-pw-popup .panel-footer .btn-group:last-child .btn{
+    background-color: #00d6ff;
+    border-color: #00d6ff;
+}
+.alter-pw-popup .panel-footer .btn-group:first-child .btn{
+    color: #808080;
+}
+/****************** 退出弹框 ************************/
+.usr-exit {
+    width: 320px;
+    height: 180px;
+    border-radius: 9px;
+    background-color: #fff;
+    text-align: center;
+    padding: 28px 42px 25px;
+}
+
+.usr-exit > div {
+    text-align: center;
+    font-size: 16px;
+    color: #808080;
+}
+
+.usr-exit .icon.icon-popup-exit {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-image: url(/images/icon_popup_exit.png);
+    background-size: 100% 100%;
+    margin-bottom: 5px;
+}
+
+.usr-exit .btn-toolbar {
+    margin-top: 20px;
+    margin-left: 0;
+}
+.usr-exit button {
+    width: 110px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 5px;
+}
+
+.usr-exit .btn-group {
+    margin: 0;
+}
+.usr-exit .btn-group:last-child {
+    margin-left: 16px;
+}
+.usr-exit .btn.btn-primary {
+    background-color: #00d6ff;
+    border-color: #00d6ff;
 }
