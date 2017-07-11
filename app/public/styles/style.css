@@ -324,6 +324,18 @@ ul {
     transition: all 0.3s;
 }
 
+.tree-list a {
+    color: #4d4d4d;
+}
+
+.tree-list a:hover{
+    text-decoration: none;
+}
+
+.tree-list a:visited{
+    text-decoration: none;
+}
+
 .tree-list .tree-1, .tree-list .tree-2 {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
@@ -361,6 +373,9 @@ ul {
 
 .tree-list .tree-2 .active > div {
     background: linear-gradient(to right, #00bcff, #00d8ff);
+}
+
+.tree-list .tree-2 .active > div > a{
     color: #ffffff;
 }
 

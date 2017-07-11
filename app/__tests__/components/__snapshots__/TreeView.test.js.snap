@@ -7,9 +7,13 @@ exports[`test TreeView renders 1`] = `
       className="node active">
       <div
         onClick={[Function]}>
-        <span
-          className="glyphicon glyphicon-triangle-bottom" />
-        资产管理
+        <a
+          onClick={[Function]}
+          style={Object {}}>
+          <span
+            className="glyphicon glyphicon-triangle-bottom" />
+          资产管理
+        </a>
       </div>
       <ul
         className="tree-2">
@@ -17,18 +21,26 @@ exports[`test TreeView renders 1`] = `
           className="node ">
           <div
             onClick={[Function]}>
-            <span
-              className="glyphicon glyphicon-list-alt" />
-            灯集中控制器灯集中控
+            <a
+              onClick={[Function]}
+              style={Object {}}>
+              <span
+                className="glyphicon glyphicon-list-alt" />
+              灯集中控制器灯集中控
+            </a>
           </div>
         </li>
         <li
           className="node ">
           <div
             onClick={[Function]}>
-            <span
-              className="glyphicon glyphicon-lamp" />
-            LED灯
+            <a
+              onClick={[Function]}
+              style={Object {}}>
+              <span
+                className="glyphicon glyphicon-lamp" />
+              LED灯
+            </a>
           </div>
         </li>
       </ul>
@@ -37,9 +49,13 @@ exports[`test TreeView renders 1`] = `
       className="node active">
       <div
         onClick={[Function]}>
-        <span
-          className="glyphicon glyphicon-triangle-right" />
-        资产统计
+        <a
+          onClick={[Function]}
+          style={Object {}}>
+          <span
+            className="glyphicon glyphicon-triangle-right" />
+          资产统计
+        </a>
       </div>
     </li>
   </ul>

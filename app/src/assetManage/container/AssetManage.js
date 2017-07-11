@@ -12,23 +12,43 @@ import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
 import {TreeData} from '../../data/treeData'
+import Immutable from 'immutable';
 
 class AssetManage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            devicePro:Immutable.fromJS([
+                "软件版本",
+                "系统版本",
+                "内核版本"
+            ]),
+            data:Immutable.fromJS([
+                {type:"LC300", detail:"LC300灯控"},
+                {type:"LC600", detail:"LC600灯控"},
+                {type:"LCMINI", detail:"智慧路灯用"}
+            ])
+        }
+
         this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
+
+        this.onToggle = this.onToggle.bind(this);
     }
 
     componentWillMount(){
         const query = this.props.location.query;
     }
 
+    onToggle(node){
+        // console.log(node.id);
+    }
+
     render() {
-        const { data, devicePro } = this.props
+        const { data, devicePro } = this.state
         return (
             <div className="container asset-manage">
                 <HeadBar moduleName="资产管理"/>
-                <SideBar TreeData={TreeData}/>
+                <SideBar TreeData={TreeData} onToggle={this.onToggle}/>
                 <Content>
                     <div className="row heading">
                         <div className="property"><span></span>设备属性</div>
@@ -77,8 +97,6 @@ class AssetManage extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.assetManage.get('data'),
-        devicePro: state.assetManage.get('devicePro')
     }
 }
 

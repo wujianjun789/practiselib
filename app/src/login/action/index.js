@@ -10,6 +10,8 @@ import {
     STARRIVER_LOGIN_FOCUS
 } from '../actionType/index'
 
+import {history} from '../../root/index'
+
 export function loginHandler(username, password) {
     return dispatch=>{
         if(username.length <= 2 || password.length <= 4){
@@ -21,12 +23,15 @@ export function loginHandler(username, password) {
         }, err=>{
             dispatch(loginFail());
         })
+        // dispatch(loginSuccess());
     }
 }
 
 export function loginSuccess() {
-    return {
-        type: STARRIVER_LOGIN_SUCCESS
+
+    return dispatch=>{
+        dispatch({type: STARRIVER_LOGIN_SUCCESS})
+        history.push('/');
     }
 }
 
