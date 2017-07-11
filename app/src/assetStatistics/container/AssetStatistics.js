@@ -25,6 +25,15 @@ class AssetStatistics extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: Immutable.fromJS([
+                {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
+                    vendor_info:"上海三思", con_type:485},
+                {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
+                    vendor_info:"上海三思", con_type:485}
+            ]),
+            domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], value:'域'}),
+            device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], value:'灯集中控制器'}),
+            search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
             collapse:false,
             page: Immutable.fromJS({
                 pageSize:10,
@@ -72,15 +81,22 @@ class AssetStatistics extends Component {
     }
 
     domainChange(selectIndex){
-        this.props.actions.onChange('domain', selectIndex);
+        // this.props.actions.onChange('domain', selectIndex);
+        this.setState({domain:this.state.domain.update('value', v=>{
+            return this.state.domain.getIn(['list', selectIndex, 'value']);
+        })})
     }
 
     deviceChange(selectIndex){
-        this.props.actions.onChange('device', selectIndex);
+        // this.props.actions.onChange('device', selectIndex);
+        this.setState({device:this.state.device.update('value', v=>{
+            return this.state.device.getIn(['list', selectIndex, 'value']);
+        })})
     }
 
     searchChange(value){
-        this.props.actions.onChange('search', value);
+        // this.props.actions.onChange('search', value);
+        this.setState({search:this.state.search.update('value', v=>value)});
     }
 
     onChange(current, pageSize) {
@@ -97,8 +113,8 @@ class AssetStatistics extends Component {
     }
 
     render() {
-        const { data, domain, device, search } = this.props
-        const { collapse, page, deviceInfo, selectDevice } = this.state;
+        const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
+
         return (
             <div className={"container-fluid asset-statistics "+(collapse?'collapsed':'')}>
                 <HeadBar moduleName="资产统计"/>
@@ -129,17 +145,14 @@ class AssetStatistics extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.assetStatistics.get('data'),
-        domain: state.assetStatistics.get('domain'),
-        device: state.assetStatistics.get('device'),
-        search: state.assetStatistics.get('search'),
+
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            onChange: onChange
+            // onChange: onChange
         }, dispatch)
     }
 }

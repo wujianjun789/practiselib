@@ -2,8 +2,9 @@
  * Created by a on 2017/7/3.
  */
 import React, { Component } from 'react'
+import {Link} from 'react-router';
 
-import {history} from '../root/index'
+// import {history} from '../root/index';
 export default class TreeView extends Component{
     constructor(props){
         super(props)
@@ -21,9 +22,9 @@ export default class TreeView extends Component{
 
         this.props.onToggle && this.props.onToggle(node);
 
-        if(node.link){
-            history.push(node.link);
-        }
+        // if(node.link){
+        //     history.push(node.link);
+        // }
     }
 
     renderTree(datalist, index){
@@ -36,8 +37,8 @@ export default class TreeView extends Component{
                         this.curNode = node;
                     }
                     return <li key={index} className={'node '+(node.active ? 'active':'')}>
-                        <div onClick={()=>this.onToggle(node)}><span className={'glyphicon '+(curIndex > 1 ? (node.class+(node.active ? '_hover':'')) : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
-                            {node.name}</div>
+                        <div onClick={()=>this.onToggle(node)}><Link to={node.link}><span className={'glyphicon '+(curIndex > 1 ? (node.class+(node.active ? '_hover':'')) : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
+                            {node.name}</Link></div>
                         {node.toggled && node.children && this.renderTree(node.children, nextIndex)}
                     </li>
                 })
