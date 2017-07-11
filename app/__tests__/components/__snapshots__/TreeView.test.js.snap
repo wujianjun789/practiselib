@@ -5,58 +5,58 @@ exports[`test TreeView renders 1`] = `
     className="tree-1">
     <li
       className="node active">
-      <div
-        onClick={[Function]}>
-        <a
-          onClick={[Function]}
-          style={Object {}}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        <div
+          onClick={[Function]}>
           <span
             className="glyphicon glyphicon-triangle-bottom" />
           资产管理
-        </a>
-      </div>
+        </div>
+      </a>
       <ul
         className="tree-2">
         <li
           className="node ">
-          <div
-            onClick={[Function]}>
-            <a
-              onClick={[Function]}
-              style={Object {}}>
+          <a
+            onClick={[Function]}
+            style={Object {}}>
+            <div
+              onClick={[Function]}>
               <span
                 className="glyphicon glyphicon-list-alt" />
               灯集中控制器灯集中控
-            </a>
-          </div>
+            </div>
+          </a>
         </li>
         <li
           className="node ">
-          <div
-            onClick={[Function]}>
-            <a
-              onClick={[Function]}
-              style={Object {}}>
+          <a
+            onClick={[Function]}
+            style={Object {}}>
+            <div
+              onClick={[Function]}>
               <span
                 className="glyphicon glyphicon-lamp" />
               LED灯
-            </a>
-          </div>
+            </div>
+          </a>
         </li>
       </ul>
     </li>
     <li
       className="node active">
-      <div
-        onClick={[Function]}>
-        <a
-          onClick={[Function]}
-          style={Object {}}>
+      <a
+        onClick={[Function]}
+        style={Object {}}>
+        <div
+          onClick={[Function]}>
           <span
             className="glyphicon glyphicon-triangle-right" />
           资产统计
-        </a>
-      </div>
+        </div>
+      </a>
     </li>
   </ul>
 </div>

@@ -344,7 +344,7 @@ ul {
     transition: all 0.3s;
 }
 
-.tree-list .tree-1 > li > div {
+.tree-list .tree-1 > li > a > div {
     height: 40px;
     padding: 10px 0px 10px 25px;
     line-height: 20px;
@@ -355,27 +355,28 @@ ul {
     margin-right: 12px;
 }
 
-.tree-list .tree-2 > li > div {
-    padding: 5px 0px 5px 22px;
+.tree-list .tree-2 > li > a > div {
+    padding: 9.5px 0px 9.5px 22px;
     line-height: 20px;
     /*background: #d3d8dd;*/
 }
 
 .tree-list .tree-2 > li span {
+   top: 3px;
     margin-right: 16px;
     width: 16px;
     height: 16px;
 }
 
-.tree-list .tree-2 > li > div:hover {
+.tree-list .tree-2 > li > a > div:hover {
     background: #cce7ed;
 }
 
-.tree-list .tree-2 .active > div {
+.tree-list .tree-2 .active > a > div {
     background: linear-gradient(to right, #00bcff, #00d8ff);
 }
 
-.tree-list .tree-2 .active > div > a{
+.tree-list .tree-2 .active > a > div{
     color: #ffffff;
 }
 

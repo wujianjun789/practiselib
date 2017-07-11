@@ -5,8 +5,6 @@ import React from 'react';
 import {shallow} from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import '../../public/js/jquery-3.1.1.min';
-import '../../public/leaflet/leaflet';
 import TreeView from '../../src/components/TreeView';
 
 const TreeData=[
