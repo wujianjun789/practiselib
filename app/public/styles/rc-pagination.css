@@ -182,3 +182,7 @@
     display: none;
   }
 }
+
+.rc-pagination li{
+  outline:none;
+}

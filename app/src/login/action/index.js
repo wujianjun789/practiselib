@@ -10,7 +10,7 @@ import {
     STARRIVER_LOGIN_FOCUS
 } from '../actionType/index'
 
-import {history} from '../../root/index'
+// import {history} from '../../root/index'
 
 export function loginHandler(username, password) {
     return dispatch=>{
@@ -31,7 +31,8 @@ export function loginSuccess() {
 
     return dispatch=>{
         dispatch({type: STARRIVER_LOGIN_SUCCESS})
-        history.push('/');
+        // history.push('/');
+        location.href = location.origin;
     }
 }
 
