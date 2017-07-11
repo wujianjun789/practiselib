@@ -5,6 +5,10 @@ body {
     font-family: "Microsoft YaHei";
 }
 
+button{
+    outline: none!important;
+}
+
 input::-ms-clear {
     display: none;
 }
