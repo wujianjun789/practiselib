@@ -23,7 +23,7 @@ export default function login (state=initialState, action) {
         case STARRIVER_LOGIN_CHANGE:
             return updateData(state, action);
         case STARRIVER_LOGIN_SUCCESS:
-            location.href = location.host;
+            // location.href = location.host;
             return state;
         case STARRIVER_LOGIN_FAIL:
             return setStyle(state, 'visible');
