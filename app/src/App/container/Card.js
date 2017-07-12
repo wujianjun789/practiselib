@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
  * @param {String} link     direct to where when card click 
  * 
  */
-export const Card = ({_key, title, link}) => {
+const Card = ({_key, title, link}) => {
     return <Link to={link}>
         <div className={`card card-${_key}`}>
             <div className="ico"><span className={`icon icon-${_key}`}></span></div>
@@ -26,3 +26,5 @@ Card.propTypes = {
     title: PropTypes.string,
     link: PropTypes.string
 }
+
+export default Card;

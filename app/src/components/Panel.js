@@ -3,7 +3,6 @@
  */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import {FormattedMessage} from 'react-intl';
 /**
  * Panel component
  * @param {String}      className   'panel theme,default:　panel-primary'
@@ -15,37 +14,24 @@ import PropTypes from 'prop-types';
  * @param {Func}        closeClick  'panel close button handler'
  * 
  */
-export default class Panel extends Component {
-
-    closeClick() {
-        this.props.closeClick ? this.props.closeClick() : null;
-    }
-
-    render() {
-        let clsName = 'panel ' + (!!this.props.className ? this.props.className : 'panel-primary');
-        let style = this.props.style ? this.props.style : null;
-        let props = this.props;
-        let _props = {
-            title: props.title ? props.title : '　',
-            body: props.body ? props.body : 
-                <div className="row pull-center">{props.text ? props.text : '无相关数据'}</div>,
-            footer: props.footer ? <div className="panel-footer clearfix">{props.footer}</div> : null,
-            closeBtn: props.closeBtn ? true : false
-        };
-        
-        return (
-            <div className={clsName} style={style}>
-                <div className="panel-heading clearfix">
-                    <h3 className="panel-title">{_props.title}</h3>
-                    {_props.closeBtn ? <button type="button" className="close" onClick={()=>this.closeClick()}><span>&times;</span></button> : null}
-                </div>
-                <div className="panel-body">
-                {this.props.children ? this.props.children : _props.body }
-                </div>
-                { _props.footer }
+const Panel = (props) => {
+    let {className, closeClick=null, title='', text, body, footer, closeBtn, children} = props;
+    let clsName = `panel ${!!className ? className : 'panel-primary'}`;
+    body = body ? body : <div className="row pull-center">{text ? text : '无相关数据'}</div>;
+    footer = footer ? <div className="panel-footer clearfix">{footer}</div> : null,
+    closeBtn =  closeBtn ? true : false;
+    return (
+        <div className={clsName}>
+            <div className="panel-heading clearfix">
+                <h3 className="panel-title">{title}</h3>
+                {closeBtn ? <button type="button" className="close" onClick={closeClick}><span>&times;</span></button> : null}
             </div>
-        )
-    }
+            <div className="panel-body">
+            {children ? children : body }
+            </div>
+            { footer }
+        </div>
+    )
 }
 
 Panel.propTypes = {
@@ -63,3 +49,5 @@ Panel.propTypes = {
     closeBtn: PropTypes.bool,
     closeClick: PropTypes.func
 }
+
+export default Panel;

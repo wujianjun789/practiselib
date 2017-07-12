@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
-import {Card} from './Card';
+import Card from './Card';
 import UserCenter from '../../userCenter/containers/UserCenter';
 import Overlayer from '../../overlayer/containers/overlayer';
 
