@@ -2,7 +2,12 @@ exports[`test TreeView renders 1`] = `
 <div
   className="tree-list">
   <ul
-    className="tree-1">
+    className="tree-1"
+    style={
+      Object {
+        "height": "auto",
+      }
+    }>
     <li
       className="node active">
       <a
@@ -16,7 +21,12 @@ exports[`test TreeView renders 1`] = `
         </div>
       </a>
       <ul
-        className="tree-2">
+        className="tree-2"
+        style={
+          Object {
+            "height": "80px",
+          }
+        }>
         <li
           className="node ">
           <a
