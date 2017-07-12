@@ -11,7 +11,7 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
-import {TreeData} from '../../data/treeData'
+import {getModelData, TreeData} from '../../data/treeData'
 import Immutable from 'immutable';
 
 class AssetManage extends Component {
@@ -37,6 +37,7 @@ class AssetManage extends Component {
 
     componentWillMount(){
         const query = this.props.location.query;
+        getModelData();
     }
 
     onToggle(node){

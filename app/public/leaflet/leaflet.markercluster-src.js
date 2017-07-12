@@ -1992,7 +1992,7 @@ L.MarkerCluster.include({
 
 		res.length = count;
 
-		// Higher index, closer position to cluster center.
+		// Higher assetManage, closer position to cluster center.
 		for (i = count - 1; i >= 0; i--) {
 			angle += separation / legLength + i * 0.0005;
 			res[i] = new L.Point(centerPt.x + legLength * Math.cos(angle), centerPt.y + legLength * Math.sin(angle))._round();

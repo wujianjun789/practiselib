@@ -3,7 +3,7 @@
  */
 import {HOST_IP, getHttpHeader, httpRequest} from '../../util/network'
 
-export function getAssetModel(cb) {
+export function getAssetModelList(cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'model-summaries', {
         headers: headers,

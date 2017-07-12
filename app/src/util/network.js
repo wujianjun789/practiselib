@@ -7,6 +7,8 @@ import 'es6-promise'
 import { getCookie } from './cache'
 import {getRequestValue} from './string'
 
+export const HOST_IP = "http://localhost:3000/api/"
+
 let  HEADERS_CONTENT_TYPE_JSON = { "Accept": "application/json", "Content-Type": "application/json" };
 
 export const statusCode = {

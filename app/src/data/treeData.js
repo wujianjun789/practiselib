@@ -1,6 +1,7 @@
 /**
  * Created by a on 2017/7/3.
  */
+import {getAssetModelList} from '../api/assetManage/index'
 export  const TreeData=[
     {
         "id": 1,
@@ -60,3 +61,11 @@ export  const TreeData=[
         "link": "/assetStatistics"
     }
 ]
+
+function initData(response) {
+    console.log(response);
+}
+
+export function getModelData() {
+    getAssetModelList(initData);
+}
