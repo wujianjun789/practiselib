@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
  */
 export default class PanelFooter extends PureComponent {
     render() {
-        const {funcNames, btnTitles, btnDisabled=[false, false], btnClassName=['btn-primary','btn-default']} = this.props;
+        const {funcNames, btnTitles, btnDisabled=[false, false], btnClassName=['btn-default','btn-primary']} = this.props;
         return (
             <div className="row">
                 <div className="btn-toolbar pull-right padding-right" role="toolbar" aria-label="toolbar">
@@ -26,5 +26,5 @@ export default class PanelFooter extends PureComponent {
 PanelFooter.PropTypes = {
     funcNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     btnTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
-    btnTitles: PropTypes.arrayOf(PropTypes.bool)
+    btnDisabled: PropTypes.arrayOf(PropTypes.bool)
 }

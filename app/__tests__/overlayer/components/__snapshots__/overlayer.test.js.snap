@@ -18,8 +18,7 @@ exports[`<Overlayer /> snapshot show 1`] = `
     <div
       className="alter-pw-popup">
       <div
-        className="panel panel-custom"
-        style={null}>
+        className="panel panel-custom">
         <div
           className="panel-heading clearfix">
           <h3
@@ -49,8 +48,10 @@ exports[`<Overlayer /> snapshot show 1`] = `
               <input
                 className="form-control"
                 id="oldPw"
+                onChange={[Function]}
                 placeholder="输入旧密码"
-                type="text" />
+                type="text"
+                value="" />
             </div>
           </div>
           <div
@@ -65,8 +66,10 @@ exports[`<Overlayer /> snapshot show 1`] = `
               <input
                 className="form-control"
                 id="newPw"
+                onChange={[Function]}
                 placeholder="输入新密码"
-                type="text" />
+                type="text"
+                value="" />
             </div>
           </div>
           <div
@@ -81,8 +84,10 @@ exports[`<Overlayer /> snapshot show 1`] = `
               <input
                 className="form-control"
                 id="repPw"
+                onChange={[Function]}
                 placeholder="再次输入新密码"
-                type="text" />
+                type="text"
+                value="" />
             </div>
           </div>
         </div>
@@ -101,7 +106,7 @@ exports[`<Overlayer /> snapshot show 1`] = `
                 <button
                   className="btn btn-default"
                   disabled={false}
-                  onClick={undefined}
+                  onClick={[Function]}
                   type="button">
                   取消
                 </button>
@@ -112,8 +117,8 @@ exports[`<Overlayer /> snapshot show 1`] = `
                 role="group">
                 <button
                   className="btn btn-primary"
-                  disabled={true}
-                  onClick={undefined}
+                  disabled={false}
+                  onClick={[Function]}
                   type="button">
                   确认
                 </button>

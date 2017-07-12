@@ -1,0 +1,102 @@
+exports[`<Panel /> snapshot with body=<div className="test">test</div>, footer=<div className="footer">footer</div> 1`] = `
+<div
+  className="panel panel-primary">
+  <div
+    className="panel-heading clearfix">
+    <h3
+      className="panel-title">
+      
+    </h3>
+  </div>
+  <div
+    className="panel-body">
+    <div
+      className="test">
+      test
+    </div>
+  </div>
+  <div
+    className="panel-footer clearfix">
+    <div
+      className="footer">
+      footer
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Panel /> snapshot with children=<div className="test">test</div> 1`] = `
+<div
+  className="panel panel-primary">
+  <div
+    className="panel-heading clearfix">
+    <h3
+      className="panel-title">
+      
+    </h3>
+    <button
+      className="close"
+      onClick={[Function]}
+      type="button">
+      <span>
+        ×
+      </span>
+    </button>
+  </div>
+  <div
+    className="panel-body">
+    <div
+      className="test">
+      test
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Panel /> snapshot with className="panel-default", title=box, text="body text", closeBtn=true 1`] = `
+<div
+  className="panel panel-default">
+  <div
+    className="panel-heading clearfix">
+    <h3
+      className="panel-title">
+      box
+    </h3>
+    <button
+      className="close"
+      onClick={null}
+      type="button">
+      <span>
+        ×
+      </span>
+    </button>
+  </div>
+  <div
+    className="panel-body">
+    <div
+      className="row pull-center">
+      body text
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Panel /> snapshot with no props passed 1`] = `
+<div
+  className="panel panel-primary">
+  <div
+    className="panel-heading clearfix">
+    <h3
+      className="panel-title">
+      
+    </h3>
+  </div>
+  <div
+    className="panel-body">
+    <div
+      className="row pull-center">
+      无相关数据
+    </div>
+  </div>
+</div>
+`;
