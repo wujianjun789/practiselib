@@ -20,6 +20,10 @@ export default class TreeView extends Component{
 
         this.setState(Object.assign(node, {toggled: node.children && !node.toggled, active:true}))
 
+        if(node.toggled && node.children){
+
+        }
+
         this.props.onToggle && this.props.onToggle(node);
 
         // if(node.link){
@@ -27,10 +31,11 @@ export default class TreeView extends Component{
         // }
     }
 
-    renderTree(datalist, index){
+    renderTree(datalist, index, toggled){
         let curIndex = index;
         let nextIndex = index + 1;
-        return <ul className={"tree-"+curIndex}>
+        let style = {"height":index>1 ? (toggled ? datalist.length*40+'px':'0'):'auto'};
+        return <ul className={"tree-"+curIndex} style={style}>
             {
                 datalist.map((node, index)=> {
                     if(node.active && curIndex > 1){
@@ -40,7 +45,7 @@ export default class TreeView extends Component{
                         <Link to={node.link}>
                         <div onClick={()=>this.onToggle(node)}><span className={'glyphicon '+(curIndex > 1 ? (node.class+(node.active ? '_hover':'')) : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
                             {node.name}</div></Link>
-                        {node.toggled && node.children && this.renderTree(node.children, nextIndex)}
+                        { node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                     </li>
                 })
             }
