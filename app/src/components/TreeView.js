@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router';
 
-// import {history} from '../root/index';
+// import {history} from '../root/assetManage';
 export default class TreeView extends Component{
     constructor(props){
         super(props)

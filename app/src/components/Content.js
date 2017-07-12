@@ -1,7 +1,9 @@
 /**
  * Created by a on 2017/7/4.
  */
-import React,{Component} from 'react'
+import React,{Component} from 'react';
+
+import  Overlayer from '../overlayer/containers/overlayer'
 
 export default class Content extends Component{
     constructor(props){
@@ -9,6 +11,9 @@ export default class Content extends Component{
     }
 
     render(){
-        return <div className="content">{this.props.children}</div>
+        return <div className="content">
+            {this.props.children}
+            <Overlayer />
+        </div>
     }
 }

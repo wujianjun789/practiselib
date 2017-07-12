@@ -1,11 +1,11 @@
 /**
  * Created by a on 2017/7/11.
  */
-import {getHttpHeader, httpRequest} from '../../util/network'
+import {HOST_IP, getHttpHeader, httpRequest} from '../../util/network'
 
-export function getAssetManageModule(cb) {
+export function getAssetModel(cb) {
     let headers = getHttpHeader();
-    httpRequest('/', {
+    httpRequest(HOST_IP+'model-summaries', {
         headers: headers,
         method: 'GET'
     }, response=>{
