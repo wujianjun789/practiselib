@@ -7,7 +7,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {overlayerShow, overlayerHide} from '../../overlayer/actions/overlayer';
 import ExitPopup from '../components/ExitPopup';
-import AlterPwPopup from './AlterPwPopup';
+import AlterPwPopup from '../components/AlterPwPopup';
+import {confirmExit} from '../actions';
 /**
  * @param {String} className  optional
  */
@@ -39,13 +40,15 @@ export class UserCenter extends Component{
 
     confirm() {
         this.props.actions.overlayerHide();
+        this.props.actions.confirmExit();
     }
 
     itemClick(key) {
+        let {overlayerHide, overlayerShow} = this.props.actions;
         if(key == 'alter') {
-            this.props.actions.overlayerShow(<AlterPwPopup className='alter-pw-popup'/>);
+            overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} />);
         } else {
-            this.props.actions.overlayerShow(<ExitPopup cancel={this.cancel} confirm={this.confirm}/>);
+            overlayerShow(<ExitPopup cancel={this.cancel} confirm={this.confirm}/>);
         }
         
     }
@@ -76,7 +79,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         actions: bindActionCreators({
             overlayerShow,
-            overlayerHide
+            overlayerHide,
+            confirmExit
         }, dispatch)
     }
 }

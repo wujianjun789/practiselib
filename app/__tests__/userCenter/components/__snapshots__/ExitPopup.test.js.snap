@@ -1,0 +1,32 @@
+exports[`<ExitPopup /> snapshot 1`] = `
+<div
+  className="usr-exit">
+  <div
+    className="tips">
+    <div>
+      <span
+        className="icon icon-popup-exit" />
+    </div>
+    是否退出？
+  </div>
+  <div
+    className="btn-toolbar">
+    <div
+      className="btn-group">
+      <button
+        className="btn btn-default"
+        onClick={[Function]}>
+        Cancel
+      </button>
+    </div>
+    <div
+      className="btn-group">
+      <button
+        className="btn btn-primary"
+        onClick={[Function]}>
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default ({cancel, confirm}) => {
+const ExitPopup = ({cancel, confirm}) => {
     return <div className="usr-exit">
-        <div>
+        <div className='tips'>
             <div><span className="icon icon-popup-exit"></span></div>
             是否退出？
         </div>
@@ -12,3 +12,5 @@ export default ({cancel, confirm}) => {
         </div>
     </div>
 }
+
+export default ExitPopup;

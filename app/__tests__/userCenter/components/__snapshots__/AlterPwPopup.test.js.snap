@@ -1,0 +1,115 @@
+exports[`<AlterPwPopup /> snapshot 1`] = `
+<div
+  className="">
+  <div
+    className="panel panel-custom">
+    <div
+      className="panel-heading clearfix">
+      <h3
+        className="panel-title">
+        修改密码
+      </h3>
+      <button
+        className="close"
+        onClick={[Function]}
+        type="button">
+        <span>
+          ×
+        </span>
+      </button>
+    </div>
+    <div
+      className="panel-body">
+      <div
+        className="form-group clearfix">
+        <label
+          className="col-sm-3 control-label"
+          htmlFor="oldPw">
+          旧密码：
+        </label>
+        <div
+          className="col-sm-9">
+          <input
+            className="form-control"
+            id="oldPw"
+            onChange={[Function]}
+            placeholder="输入旧密码"
+            type="text"
+            value="" />
+        </div>
+      </div>
+      <div
+        className="form-group clearfix">
+        <label
+          className="col-sm-3 control-label"
+          htmlFor="newPw">
+          新密码：
+        </label>
+        <div
+          className="col-sm-9">
+          <input
+            className="form-control"
+            id="newPw"
+            onChange={[Function]}
+            placeholder="输入新密码"
+            type="text"
+            value="" />
+        </div>
+      </div>
+      <div
+        className="form-group clearfix">
+        <label
+          className="col-sm-3 control-label"
+          htmlFor="repPw">
+          重复密码：
+        </label>
+        <div
+          className="col-sm-9">
+          <input
+            className="form-control"
+            id="repPw"
+            onChange={[Function]}
+            placeholder="再次输入新密码"
+            type="text"
+            value="" />
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel-footer clearfix">
+      <div
+        className="row">
+        <div
+          aria-label="toolbar"
+          className="btn-toolbar pull-right padding-right"
+          role="toolbar">
+          <div
+            aria-label="group"
+            className="btn-group"
+            role="group">
+            <button
+              className="btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button">
+              取消
+            </button>
+          </div>
+          <div
+            aria-label="group"
+            className="btn-group"
+            role="group">
+            <button
+              className="btn btn-primary"
+              disabled={false}
+              onClick={[Function]}
+              type="button">
+              确认
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
