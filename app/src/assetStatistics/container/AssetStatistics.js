@@ -16,9 +16,10 @@ import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
 import SideBarInfo from '../../components/SideBarInfo'
-import {TreeData} from '../../data/models'
+import {getModelData, TreeData} from '../../data/models'
 
 import {onChange} from '../action/index';
+import {getSearchAssets, getAssetsCount} from '../../api/assetStatistics/index'
 
 import Immutable from 'immutable';
 class AssetStatistics extends Component {
@@ -55,7 +56,8 @@ class AssetStatistics extends Component {
                     id:1,
                     name:'example'
                 }
-            }
+            },
+            treeData:[]
         }
 
         this.columns = [{field:"domain", title:"域"}, {field:"deviceName", title:"设备名称"},
@@ -70,10 +72,28 @@ class AssetStatistics extends Component {
         this.domainChange = this.domainChange.bind(this);
         this.deviceChange = this.deviceChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.initTreeData = this.initTreeData.bind(this);
+        this.searchResult = this.searchResult.bind(this);
+        this.deviceTotal = this.deviceTotal.bind(this);
     }
 
     componentWillMount(){
         const query = this.props.location.query;
+        getModelData(this.initTreeData);
+        getSearchAssets('', '', this.searchResult);
+        getAssetsCount(this.deviceTotal)
+    }
+
+    initTreeData(){
+        this.setState({treeData:TreeData})
+    }
+
+    searchResult(data){
+        console.log(data);
+    }
+
+    deviceTotal(data){
+        console.log(data);
     }
 
     onToggle(node){
@@ -113,12 +133,12 @@ class AssetStatistics extends Component {
     }
 
     render() {
-        const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
+        const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice, treeData } = this.state;
 
         return (
             <div className={"container-fluid asset-statistics "+(collapse?'collapsed':'')}>
                 <HeadBar moduleName="资产统计"/>
-                <SideBar TreeData={TreeData} onToggle={(node)=>this.onToggle(node)}/>
+                <SideBar TreeData={treeData} onToggle={(node)=>this.onToggle(node)}/>
                 <Content>
                     <div className="heading">
                         <Select className="domain" data={domain}

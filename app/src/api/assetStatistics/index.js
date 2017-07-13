@@ -1,21 +1,23 @@
 /**
- * Created by a on 2017/7/11.
+ * Created by a on 2017/7/13.
  */
 import {HOST_IP, getHttpHeader, httpRequest} from '../../util/network'
 
-export function getAssetModelList(cb) {
+export function getSearchAssets(domain, name, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/model-summaries', {
+    let param = JSON.stringify({"include":"extend","where":{"domain":domain, "name":name}})
+    httpRequest(HOST_IP+'/assets?filter='+param, {
         headers: headers,
         method: 'GET'
     }, response=>{
+        // console.log(response);
         cb && cb(response);
     })
 }
 
-export function getDeviceProperty(cb) {
+export function getAssetsCount(cb) {
     let headers = getHttpHeader();
-    httpRequest('/', {
+    httpRequest(HOST_IP+'/assets/count', {
         headers: headers,
         method: 'GET'
     }, response=>{
