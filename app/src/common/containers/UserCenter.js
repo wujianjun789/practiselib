@@ -5,10 +5,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {overlayerShow, overlayerHide} from '../../overlayer/actions/overlayer';
-import ExitPopup from '../components/ExitPopup';
-import AlterPwPopup from '../components/AlterPwPopup';
-import {confirmExit} from '../actions';
+import {overlayerShow, overlayerHide} from '../actions/overlayer';
+import ExitPopup from '../../components/ExitPopup';
+import AlterPwPopup from '../../components/AlterPwPopup';
+import {confirmExit} from '../actions/userCenter';
 /**
  * @param {String} className  optional
  */

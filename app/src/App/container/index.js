@@ -7,8 +7,8 @@ import {bindActionCreators} from 'redux'
 import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
 import Card from './Card';
-import UserCenter from '../../userCenter/containers/UserCenter';
-import Overlayer from '../../overlayer/containers/overlayer';
+import UserCenter from '../../common/containers/UserCenter';
+import Overlayer from '../../common/containers/Overlayer';
 
 /**
  * @param {String} title required

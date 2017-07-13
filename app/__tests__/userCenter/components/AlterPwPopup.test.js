@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import AlterPwPopup from '../../../src/userCenter/components/AlterPwPopup';
+import AlterPwPopup from '../../../src/components/AlterPwPopup';
 import PanelFooter from '../../../src/components/PanelFooter';
 
 describe('<AlterPwPopup />', () => {

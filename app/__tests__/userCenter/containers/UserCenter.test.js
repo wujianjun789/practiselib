@@ -2,9 +2,9 @@ import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import configureStore from '../../../src/store/configureStore';
-import UserCenter from '../../../src/userCenter/containers/UserCenter';
+import UserCenter from '../../../src/common/containers/UserCenter';
 import {initialState as state} from '../../../src/App/reducer';
-import Overlayer from '../../../src/overlayer/containers/overlayer';
+import Overlayer from '../../../src/common/containers/Overlayer';
 
 describe('<UserCenter /> HOC', () => {
     const store = configureStore();

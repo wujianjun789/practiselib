@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {UserCenter} from '../../../src/userCenter/containers/UserCenter';
+import {UserCenter} from '../../../src/common/containers/UserCenter';
 
 describe('<UserCenter />', () => {
     it('render with props.className=undefined', () => {

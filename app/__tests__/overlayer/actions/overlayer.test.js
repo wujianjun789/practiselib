@@ -1,5 +1,5 @@
-import * as overlayer from '../../../src/overlayer/actions/overlayer';
-import * as actionTypes from '../../../src/overlayer/actionTypes/overlayer';
+import * as overlayer from '../../../src/common/actions/overlayer';
+import * as actionTypes from '../../../src/common/actionTypes/overlayer';
 
 describe('overlayer action creators', () => {
     let page = 'my page';

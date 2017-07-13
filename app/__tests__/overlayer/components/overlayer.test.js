@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {Overlayer} from '../../../src/overlayer/containers/overlayer';
-import AlterPwPopup from '../../../src/userCenter/components/AlterPwPopup';
+import {Overlayer} from '../../../src/common/containers/Overlayer';
+import AlterPwPopup from '../../../src/components/AlterPwPopup';
 
 describe('<Overlayer />', () => {
     let data1 = {

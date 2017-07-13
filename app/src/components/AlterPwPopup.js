@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
-import Panel from '../../components/Panel';
-import PanelFooter from '../../components/PanelFooter';
+import Panel from './Panel';
+import PanelFooter from './PanelFooter';
 
 export default class AlterPwPopup extends PureComponent {
     constructor(props) {
