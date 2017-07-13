@@ -26,7 +26,7 @@ module.exports = {
         }),
         new HtmlwebpackPlugin({
             filename: 'index.html',
-            template: 'app/src/templates/assetManage.html',
+            template: 'app/src/templates/index.html',
             inject: true,
             hash: true
         })
