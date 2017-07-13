@@ -2,13 +2,20 @@
  * Created by a on 2017/7/3.
  */
 import {getAssetModelList} from '../api/assetManage/index'
+import {intlFormat, getClassByModel} from '../util/index'
+
+let models=[
+
+]
+
 export  const TreeData=[
     {
-        "id": 1,
+        "id": "assetManage",
         "name":"资产管理",
         "toggled": true,
         "active": true,
         "link": "/assetManage",
+        "level":1,
         "children": [
             {
                 "id": 11,
@@ -54,18 +61,64 @@ export  const TreeData=[
         ]
     },
     {
-        "id": 2,
+        "id": "assetStatistics",
         "name":"资产统计",
         "toggled": false,
         "active": true,
-        "link": "/assetStatistics"
+        "link": "/assetStatistics",
+        "level": 1
     }
 ]
 
-function initData(response) {
-    console.log(response);
+export let first_child = {}
+export function getModelData(cb) {
+    getAssetModelList(response=>{
+        models = response;
+        TreeData.map(item=>{
+            if(item.children){
+                item.children = [];
+                response.map((data, index)=>{
+                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:index==0?true:false};
+                    if(index == 0){
+                        first_child = child;
+                    }
+                    item.children.push(child)
+                })
+            }
+        })
+
+        cb && cb();
+    });
 }
 
-export function getModelData() {
-    getAssetModelList(initData);
+export function getModelById(id) {
+    for(let key in models){
+        if(models[key].key == id){
+            return models[key];
+        }
+    }
+
+    return null;
+}
+
+export function getModelProps(id) {
+    let model = getModelById(id)
+    let list = []
+    for(var i=0;i<model.props.length;i++){
+        let prop = model.props[i];
+        list.push(intlFormat(model.intl.props[prop]))
+    }
+
+    return list;
+}
+
+export function getModelTypes(id) {
+    let model = getModelById(id)
+    let list = []
+    for(var i=0;i<model.types.length;i++){
+        let type = model.types[i];
+        list.push({type:type, detail:intlFormat(model.intl.types[type])})
+    }
+
+    return list;
 }

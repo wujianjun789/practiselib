@@ -11,7 +11,7 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
-import {getModelData, TreeData} from '../../data/treeData'
+import {getModelData, getModelProps, getModelTypes, TreeData, first_child} from '../../data/models'
 import Immutable from 'immutable';
 
 class AssetManage extends Component {
@@ -27,29 +27,46 @@ class AssetManage extends Component {
                 {type:"LC300", detail:"LC300灯控"},
                 {type:"LC600", detail:"LC600灯控"},
                 {type:"LCMINI", detail:"智慧路灯用"}
-            ])
+            ]),
+            treeData:[]
         }
 
         this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
 
         this.onToggle = this.onToggle.bind(this);
+        this.initTreeData = this.initTreeData.bind(this);
     }
 
     componentWillMount(){
         const query = this.props.location.query;
-        getModelData();
+        getModelData(this.initTreeData);
+    }
+
+    initTreeData(){
+        this.setState({
+            treeData:TreeData,
+            devicePro:Immutable.fromJS(getModelProps(first_child.id)),
+            data: Immutable.fromJS(getModelTypes(first_child.id))
+        })
     }
 
     onToggle(node){
-        // console.log(node.id);
+       if(node.hasOwnProperty('level') && node.level==1){
+           return;
+       }
+
+        this.setState({
+            devicePro:Immutable.fromJS(getModelProps(node.id)),
+            data: Immutable.fromJS(getModelTypes(node.id))
+        })
     }
 
     render() {
-        const { data, devicePro } = this.state
+        const { data, devicePro, treeData } = this.state
         return (
             <div className="container asset-manage">
                 <HeadBar moduleName="资产管理"/>
-                <SideBar TreeData={TreeData} onToggle={this.onToggle}/>
+                <SideBar TreeData={treeData} onToggle={this.onToggle}/>
                 <Content>
                     <div className="row heading">
                         <div className="property"><span></span>设备属性</div>

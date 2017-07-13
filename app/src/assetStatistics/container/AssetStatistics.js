@@ -16,7 +16,7 @@ import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
 import SideBarInfo from '../../components/SideBarInfo'
-import {TreeData} from '../../data/treeData'
+import {TreeData} from '../../data/models'
 
 import {onChange} from '../action/index';
 
