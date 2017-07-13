@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import ExitPopup from '../../../src/userCenter/components/ExitPopup';
+import ExitPopup from '../../../src/components/ExitPopup';
 
 describe('<ExitPopup />', () => {
     it('default render', () => {

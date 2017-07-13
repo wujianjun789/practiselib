@@ -1,5 +1,5 @@
-import * as actionTypes from '../../../src/userCenter/actionTypes';
-import userCenter from '../../../src/userCenter/reducers/index';
+import * as actionTypes from '../../../src/common/actions/userCenter';
+import userCenter from '../../../src/common/reducer/userCenter';
 
 describe('userCenter reducer', () => {
     it('default', () => {

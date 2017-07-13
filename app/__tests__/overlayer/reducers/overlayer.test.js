@@ -1,5 +1,5 @@
-import overlayer, {initialState as state} from '../../../src/overlayer/reducers/overlayer';
-import * as actionTypes from '../../../src/overlayer/actionTypes/overlayer';
+import overlayer, {initialState as state} from '../../../src/common/reducer/overlayer';
+import * as actionTypes from '../../../src/common/actionTypes/overlayer';
 
 describe('overlayer reducer', () => {
     it('overlay', () => {

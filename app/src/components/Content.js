@@ -3,7 +3,7 @@
  */
 import React,{Component} from 'react';
 
-import  Overlayer from '../overlayer/containers/overlayer'
+import Overlayer from '../common/containers/Overlayer';
 
 export default class Content extends Component{
     constructor(props){

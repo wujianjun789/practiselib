@@ -2,7 +2,7 @@
  * Created by a on 2017/7/4.
  */
 import React, { Component } from 'react'
-import UserCenter from '../userCenter/containers/UserCenter'
+import UserCenter from '../common/containers/UserCenter'
 
 import {history} from '../root/index'
 export default class HeadBar extends Component{
