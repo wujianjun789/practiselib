@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route} from 'react-router'
 import App from '../app/container/index'
-import {Login} from '../login/container/Login'
+import {Login} from '../login/components/Login'
 import AssetManage from '../assetManage/container/AssetManage'
 import AssetStatistics from '../assetStatistics/container/AssetStatistics'
 export default (
