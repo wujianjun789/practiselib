@@ -16,10 +16,10 @@ import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
 import SideBarInfo from '../../components/SideBarInfo'
-import {getModelData, TreeData} from '../../data/models'
+import {getModelData, getModelList, TreeData} from '../../data/models'
 
 import {onChange} from '../action/index';
-import {getSearchAssets, getAssetsCount} from '../../api/assetStatistics/index'
+import {getSearchAssets, getDomainList, getAssetsCount} from '../../api/assetStatistics/index'
 
 import Immutable from 'immutable';
 class AssetStatistics extends Component {
@@ -28,9 +28,9 @@ class AssetStatistics extends Component {
         this.state = {
             data: Immutable.fromJS([
                 {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
-                    vendor_info:"上海三思", con_type:485},
+                    vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
                 {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
-                    vendor_info:"上海三思", con_type:485}
+                    vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}}
             ]),
             domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], value:'域'}),
             device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], value:'灯集中控制器'}),
@@ -73,19 +73,46 @@ class AssetStatistics extends Component {
         this.deviceChange = this.deviceChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.initTreeData = this.initTreeData.bind(this);
+        this.initDomain = this.initDomain.bind(this);
         this.searchResult = this.searchResult.bind(this);
         this.deviceTotal = this.deviceTotal.bind(this);
+        this.requestSearch = this.requestSearch.bind(this);
     }
 
     componentWillMount(){
         const query = this.props.location.query;
         getModelData(this.initTreeData);
-        getSearchAssets('', '', this.searchResult);
+        getDomainList(this.initDomain);
+
         getAssetsCount(this.deviceTotal)
     }
 
+    requestSearch(){
+        const {domain, device, search, page} = this.state;
+        let cur = page.get('current');
+        let size = page.get('pageSize');
+        let offset = (cur-1)*size;
+        getSearchAssets(domain.get('value'), device.get('value'), search.get('value'), offset, size, this.searchResult);
+    }
+
     initTreeData(){
-        this.setState({treeData:TreeData})
+        let modelList = getModelList();
+        let list = [];
+        modelList.map(model=>{
+            list.push({id:model, value:model.name})
+        })
+
+        this.setState({treeData:TreeData, device:Immutable.fromJS({list:list, value:list.length>0?list[0].value:''})})
+        this.requestSearch();
+    }
+
+    initDomain(data){
+        console.log(data);
+        if(data){
+            this.setState({domain:Immutable.fromJS({list:data}), value:data.length>0?data[0]:''})
+        }
+
+        this.requestSearch();
     }
 
     searchResult(data){
@@ -125,7 +152,7 @@ class AssetStatistics extends Component {
     }
 
     tableClick(data){
-        console.log(data);
+        console.log(data.getIn(["latlng", "lng"]));
     }
 
     collpseHandler(){

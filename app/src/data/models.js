@@ -91,6 +91,16 @@ export function getModelData(cb) {
     });
 }
 
+export function getModelList() {
+    let list = []
+    for(let key in models){
+        let model = models[key]
+        list.push({id:model.key, name:intlFormat(model.intl.name)})
+    }
+
+    return list;
+}
+
 export function getModelById(id) {
     for(let key in models){
         if(models[key].key == id){
