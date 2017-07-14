@@ -34,7 +34,7 @@ exports[`<AlterPwPopup /> snapshot 1`] = `
             id="oldPw"
             onChange={[Function]}
             placeholder="输入旧密码"
-            type="text"
+            type="password"
             value="" />
         </div>
       </div>
@@ -52,7 +52,7 @@ exports[`<AlterPwPopup /> snapshot 1`] = `
             id="newPw"
             onChange={[Function]}
             placeholder="输入新密码"
-            type="text"
+            type="password"
             value="" />
         </div>
       </div>
@@ -70,7 +70,7 @@ exports[`<AlterPwPopup /> snapshot 1`] = `
             id="repPw"
             onChange={[Function]}
             placeholder="再次输入新密码"
-            type="text"
+            type="password"
             value="" />
         </div>
       </div>

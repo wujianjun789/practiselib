@@ -1,33 +1,35 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {Login} from '../../../src/login/container/Login';
+import {Login} from '../../../src/login/components/Login';
 
 describe('<Login />',() => {
-    let data = {
-        style: { visibility: 'hidden' },
-        user: { 
-            username: 'admin',
-            password: 'xxx',
-        }
-    }
+    const login = shallow(<Login/>);
 
-    let data2 = {
-        user: { 
-            username: '',
-            password: '',
-        }
-    }
+    it('input change',() =>{
+        let username = login.find('#username');
+        expect(username.prop('value')).toBe('');
+        username.simulate('change',{target:{value:'a'}});
+        username = login.find('input').at(0);
+        expect(username.prop('value')).toBe('a');
+
+        let password = login.find('#password');
+        console.log(password)
+        expect(password.prop('value')).toBe('');
+        password.simulate('change',{target:{value:'b'}});
+        password = login.find('input').at(1);
+        expect(password.prop('value')).toBe('b');
+
+    })
+
+    it('renderer',() =>{
+        expect(login.find('.container-login').length).toBe(1);
+    })
 
     it('snapshot', () => {
-        const cmp = renderer.create(<Login data = {data}/>);
+        const cmp = renderer.create(<Login/>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });
-
-    it('snapshot with props.title=undefined', () => {
-        const cmp = renderer.create(<Login data = {data2}/>);
-        const tree = cmp.toJSON();
-        expect(tree).toMatchSnapshot();
-    });
+    
 })

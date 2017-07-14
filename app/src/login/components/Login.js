@@ -5,16 +5,24 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Page from '../../components/Page';
-import {loginHandler,onChange,onFocus} from '../action/index'
+import {loginHandler} from '../../api/login/index'
 import '../../../public/styles/login.less';
 export class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            style: { visibility: 'hidden' },
+            user: { 
+                username: '',
+                password: '',
+            }
+        }
         this.submitHandler = this.submitHandler.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onChange = this.onChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
+        this.loginFail = this.loginFail.bind(this);
     }
 
     //兼容ie下的清除事件
@@ -30,11 +38,11 @@ export class Login extends Component {
     // }
 
     onChange(id,value){
-        this.props.actions.onChange({id: id,data: value});
+        this.setState({user:Object.assign({},this.state.user,{[id]:value})});
     }
 
     onFocus() {
-        this.props.actions.onFocus();
+        this.setState({style:{visibility: 'hidden'}})
     }
 
     handleClick(event) {
@@ -43,7 +51,7 @@ export class Login extends Component {
     }
 
     submitHandler() {
-        this.props.actions.loginHandler(this.props.data.user.username, this.props.data.user.password);
+        loginHandler(this.state.user.username, this.state.user.password,this.loginFail);
     }
 
     onKeyDown(event) {
@@ -53,9 +61,12 @@ export class Login extends Component {
         event.stopPropagation();
     }
 
+    loginFail(){
+        this.setState({style:{visibility: 'visible'}})
+    }
     render() {
-        const {data} = this.props;
-        const style = data.style?data.style:'hidden';
+        const style = this.state.style?this.state.style:{ visibility: 'hidden' };
+
         return (
             <div className="container-login" onKeyDown={this.onKeyDown}>
                 <header>
@@ -72,11 +83,11 @@ export class Login extends Component {
                     <div className="login-right pull-right">
                         <p>用户登录</p>
                         <div className="form-group has-feedback">
-                            <input type="text" className="form-control" onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
+                            <input id = 'username' type="text" className="form-control" value={this.state.user.username} onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
                             <span className = "login_user form-control-feedback"></span>
                         </div>
                         <div className="form-group has-feedback">
-                            <input type="password" className="form-control" onFocus={this.onFocus} onChange = {(event) => this.onChange('password',event.target.value)}/>
+                            <input id = 'password' type="password" className="form-control" value={this.state.user.password} onFocus={this.onFocus} onChange = {(event) => this.onChange('password',event.target.value)}/>
                             <span className = "login_password form-control-feedback"></span>
                         </div>
                         <p style={style}>用户名或密码错误</p>
@@ -88,23 +99,3 @@ export class Login extends Component {
         )
     }
 }
-
-function mapStateToProps(state) {
-    return {
-        data: state.login
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators({
-            loginHandler: loginHandler,
-            onFocus: onFocus,
-            onChange: onChange
-        }, dispatch)
-    }
-}
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Login);

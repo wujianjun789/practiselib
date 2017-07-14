@@ -32,6 +32,9 @@ describe('<App />', () => {
 
         const cardList = app.find('.cont > .clearfix > li');
         expect(cardList.length).toBe(data.items.length);
+        cardList.forEach((node, index) => {
+            expect(node.key()).toBe(data.items[index].key);
+        });
         
         const card1 = cardList.at(1).find('Card');
         expect(card1.prop('_key')).toBe(data.items[1].key);

@@ -5,7 +5,7 @@ import { routerReducer as routing } from 'react-router-redux';
 import app from '../../App/reducer/index';
 import overlayer from './overlayer';
 
-import login from '../../login/reducer/index'
+// import login from '../../login/reducer/index'
 import assetManage from '../../assetManage/reducer/index'
 import assetStatistics from '../../assetStatistics/reducer/index'
 import userCenter from './userCenter';
@@ -14,7 +14,7 @@ const reducer = combineReducers({
     overlayer,
 
     userCenter,
-    login,
+    // login,
     app,
     assetManage,
     assetStatistics
