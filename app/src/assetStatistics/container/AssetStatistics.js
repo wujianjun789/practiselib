@@ -73,6 +73,7 @@ class AssetStatistics extends Component {
         this.domainChange = this.domainChange.bind(this);
         this.deviceChange = this.deviceChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
         this.initTreeData = this.initTreeData.bind(this);
         this.initDomain = this.initDomain.bind(this);
         this.searchResult = this.searchResult.bind(this);
@@ -95,8 +96,7 @@ class AssetStatistics extends Component {
         let offset = (cur-1)*size;
 
         let model = device.getIn(['list', device.get('index')]);
-        console.log(model);
-        getSearchAssets(domain.get('value'), model.get('id'), search.get('value'), offset, size, this.searchResult);
+        getSearchAssets(domain.get('value'), model && model.get('id'), search.get('value'), offset, size, this.searchResult);
     }
 
     initTreeData(){
@@ -111,7 +111,6 @@ class AssetStatistics extends Component {
     }
 
     initDomain(data){
-        console.log(data);
         if(data){
             this.setState({domain:Immutable.fromJS({list:data}), value:data.length>0?data[0]:''})
         }
@@ -120,17 +119,25 @@ class AssetStatistics extends Component {
     }
 
     searchResult(data){
-        console.log(data);
         let list = [];
         data.map(item=>{
             list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
-console.log(list);
         this.setState({data:Immutable.fromJS(list)})
+
+        if(this.state.data && this.state.data.size>0){
+            let data = this.state.data.get(0);
+            this.tableClick(data);
+        }
+
     }
 
     deviceTotal(data){
-        console.log(data);
+        this.setState({deviceInfo:{total:data.count, normal:data.count-1}});
+    }
+
+    searchSubmit(){
+        this.requestSearch();
     }
 
     onToggle(node){
@@ -160,7 +167,9 @@ console.log(list);
 
     onChange(current, pageSize) {
         let page = this.state.page.set('current', current);
-        this.setState({page: page});
+        this.setState({page: page}, ()=>{
+            this.requestSearch();
+        });
     }
 
     tableClick(data){
@@ -188,7 +197,7 @@ console.log(list);
                         <Select className="device" data={device}
                                 onChange={(selectIndex)=>this.deviceChange(selectIndex)}/>
                         <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}
-                            onChange={value=>this.searchChange(value)}/>
+                            onChange={value=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>
                     </div>
                     <div className="table-container">
                         <Table columns={this.columns} data={data} rowClick={(row)=>this.tableClick(row)}/>

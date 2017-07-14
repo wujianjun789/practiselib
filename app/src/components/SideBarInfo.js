@@ -27,7 +27,6 @@ export default class SideBarInfo extends Component{
     }
 
     componentDidUpdate(){
-        console.log('update update');
         // const {mapDevice} = this.props;
         // let key = transformDeviceType(mapDevice.position["device_type"]);
         // updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
@@ -58,7 +57,6 @@ export default class SideBarInfo extends Component{
 
     renderMap(ref) {
         if (ref) {
-            console.log('update map update map');
             this.initMap();
         }
     }
