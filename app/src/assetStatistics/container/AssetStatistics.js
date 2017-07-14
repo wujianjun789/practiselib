@@ -20,6 +20,7 @@ import {getModelData, getModelList, TreeData} from '../../data/models'
 
 import {onChange} from '../action/index';
 import {getSearchAssets, getDomainList, getAssetsCount} from '../../api/assetStatistics/index'
+import {getDeviceTypeByModel} from '../../util/index'
 
 import Immutable from 'immutable';
 class AssetStatistics extends Component {
@@ -32,8 +33,8 @@ class AssetStatistics extends Component {
                 {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}}
             ]),
-            domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], value:'域'}),
-            device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], value:'灯集中控制器'}),
+            domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], index:0, value:'域'}),
+            device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
             search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
             collapse:false,
             page: Immutable.fromJS({
@@ -92,7 +93,10 @@ class AssetStatistics extends Component {
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
-        getSearchAssets(domain.get('value'), device.get('value'), search.get('value'), offset, size, this.searchResult);
+
+        let model = device.getIn(['list', device.get('index')]);
+        console.log(model);
+        getSearchAssets(domain.get('value'), model.get('id'), search.get('value'), offset, size, this.searchResult);
     }
 
     initTreeData(){
@@ -102,7 +106,7 @@ class AssetStatistics extends Component {
             list.push({id:model, value:model.name})
         })
 
-        this.setState({treeData:TreeData, device:Immutable.fromJS({list:list, value:list.length>0?list[0].value:''})})
+        this.setState({treeData:TreeData, device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:''})})
         this.requestSearch();
     }
 
@@ -117,6 +121,12 @@ class AssetStatistics extends Component {
 
     searchResult(data){
         console.log(data);
+        let list = [];
+        data.map(item=>{
+            list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
+        })
+console.log(list);
+        this.setState({data:Immutable.fromJS(list)})
     }
 
     deviceTotal(data){
@@ -129,6 +139,7 @@ class AssetStatistics extends Component {
 
     domainChange(selectIndex){
         // this.props.actions.onChange('domain', selectIndex);
+        this.setState({domain:this.state.domain.update('index', v=>selectIndex)})
         this.setState({domain:this.state.domain.update('value', v=>{
             return this.state.domain.getIn(['list', selectIndex, 'value']);
         })})
@@ -136,6 +147,7 @@ class AssetStatistics extends Component {
 
     deviceChange(selectIndex){
         // this.props.actions.onChange('device', selectIndex);
+        this.setState({device:this.state.device.update('index', v=>selectIndex)});
         this.setState({device:this.state.device.update('value', v=>{
             return this.state.device.getIn(['list', selectIndex, 'value']);
         })})
@@ -152,7 +164,10 @@ class AssetStatistics extends Component {
     }
 
     tableClick(data){
-        console.log(data.getIn(["latlng", "lng"]));
+        this.setState({selectDevice:{
+            position:{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), x:data.getIn(["latlng", "lng"]), y:data.getIn(["latlng", "lat"])},
+            data:{id:data.get('id'), name:data.get('deviceName')}
+        }})
     }
 
     collpseHandler(){

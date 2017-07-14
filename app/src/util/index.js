@@ -55,3 +55,39 @@ export function getClassByModel(key) {
             return 'icon_led_light';
     }
 }
+
+export function getDeviceTypeByModel(key) {
+    switch (key){
+        case 'lightController':
+            return 'CONTROLLER';
+        case 'led':
+            return 'DEVICE';
+        case 'plc':
+            return 'PLC';
+        case 'ammeter':
+            return 'icon_ammeter';
+        case 'pole':
+            return 'POLE';
+        case 'screen':
+            return 'SCREEN';
+        case 'collect':
+            return 'POLE'
+        default:
+            return 'DEVICE';
+    }
+}
+
+export function transformDeviceType(deviceType) {
+    switch(deviceType){
+        case "DEVICE":
+            return 'lamp';
+        case "CONTROLLER":
+            return 'controller';
+        case "ISTREETLIGHT":
+            return 'intelligent';
+        case "CHARGER":
+            return 'charger';
+        default:
+            return null;
+    }
+}

@@ -113,6 +113,10 @@ export function updateMapDevice(data, deviceData, callFun) {
 }
 
 export function mapPanTo(latlng) {
+    if(!latlng || !latlng.lat || latlng.lng){
+        return;
+    }
+
     map.panTo([latlng.lat, latlng.lng]);
 }
 

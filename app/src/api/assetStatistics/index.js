@@ -7,12 +7,12 @@ export function getSearchAssets(domain, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
 
     let param = {}
-    if(domain){
-        Object.assign(param, {"domain":domain})
-    }
-    if(model){
-        Object.assign(param, {"model":model})
-    }
+    // if(domain){
+    //     Object.assign(param, {"domain":domain})
+    // }
+    // if(model){
+    //     Object.assign(param, {"model":model})
+    // }
     if(name){
         Object.assign(param, {"name":name})
     }

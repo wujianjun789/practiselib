@@ -5,7 +5,8 @@ import React, {Component} from 'react'
 import '../../public/styles/sideBarInfo.less';
 
 import Pie from './SensorParamsPie'
-import {updateMap, updateMapDevice, destory} from '../util/map'
+import {updateMap, updateMapDevice, mapPanTo, destory} from '../util/map'
+import {transformDeviceType} from '../util/index'
 export default class SideBarInfo extends Component{
     constructor(props){
         super(props)
@@ -16,12 +17,23 @@ export default class SideBarInfo extends Component{
 
         this.latlng = {};
 
+        this.initMap = this.initMap.bind(this);
         this.renderMap = this.renderMap.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
     }
 
     componentWillMount(){
 
+    }
+
+    componentDidUpdate(){
+        console.log('update update');
+        // const {mapDevice} = this.props;
+        // let key = transformDeviceType(mapDevice.position["device_type"]);
+        // updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
+        // mapPanTo({lng:mapDevice.position.x, lat:mapDevice.position.y});
+        // destory();
+        this.initMap();
     }
 
     componentWillUnmount(){
@@ -34,27 +46,20 @@ export default class SideBarInfo extends Component{
         this.props.collpseHandler && this.props.collpseHandler();
     }
 
-    renderMap(ref) {
+    initMap(){
         const {mapDevice} = this.props;
-        if (ref) {
-            updateMap({latlng:this.latlng});
-            let key = 'lamp';
-            switch(mapDevice.position["device_type"]){
-                case "DEVICE":
-                    key = 'lamp';
-                    break;
-                case "CONTROLLER":
-                    key = 'controller';
-                    break;
-                case "ISTREETLIGHT":
-                    key = 'intelligent';
-                    break;
-                case "CHARGER":
-                    key = 'charger';
-                    break;
-            }
+        if(mapDevice){
+            updateMap({latlng:{lng:mapDevice.position.x, lat:mapDevice.position.y}});
+            let key = transformDeviceType(mapDevice.position["device_type"]);
 
             updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
+        }
+    }
+
+    renderMap(ref) {
+        if (ref) {
+            console.log('update map update map');
+            this.initMap();
         }
     }
 
