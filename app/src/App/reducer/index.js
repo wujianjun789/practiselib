@@ -5,7 +5,7 @@ export const initialState = {
     title: "StarRiver",
     name: "智慧路灯管理系统",
     items: [
-        {key: 'asset', title: '资产管理', link: '/assetManage'},
+        {key: 'asset', title: '资产管理', link: '/assetManage/manage'},
         {key: 'permission', title: '权限管理', link: '/'},
         {key: 'maintenance', title: '系统运维', link: '/'},
         {key: 'control', title: '系统控制', link: '/'},

@@ -11,7 +11,8 @@ export default class Content extends Component{
     }
 
     render(){
-        return <div className="content">
+        const {className} = this.props;
+        return <div className={"content "+className}>
             {this.props.children}
             <Overlayer />
         </div>

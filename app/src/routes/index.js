@@ -2,8 +2,7 @@ import React from 'react'
 import {Route} from 'react-router'
 import App from '../app/container/index'
 import {Login} from '../login/components/Login'
-import AssetManage from '../assetManage/container/AssetManage'
-import AssetStatistics from '../assetStatistics/container/AssetStatistics'
+import AssetManage from '../assetManage/container/index'
 export default (
     <Route>
         <Route path="/" component={App}>
@@ -11,8 +10,16 @@ export default (
         <Route path="/login" component={Login}>
         </Route>
         <Route path="/assetManage" component={AssetManage}>
-        </Route>
-        <Route path="/assetStatistics" component={AssetStatistics}>
+            <Route path="manage" getComponent={(nextState, cb)=>{
+                        require.ensure([], (require)=>{
+                            cb(null, require('../assetManage/container/AssetManage').default)
+                        }, 'starriverpro.assetmanage.manage')
+            }}/>
+            <Route path="statistics" getComponent={(nextState, cb)=>{
+                        require.ensure([], (require)=>{
+                            cb(null, require('../assetStatistics/container/AssetStatistics').default)
+                        }, 'starriverpro.assetmanage.statistics')
+            }}/>
         </Route>
 
         <Route path="*" getComponent={(nextState, cb) => {

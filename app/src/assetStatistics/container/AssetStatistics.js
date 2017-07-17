@@ -7,8 +7,6 @@ import {bindActionCreators} from 'redux';
 
 import '../../../public/styles/assetStatistics.less'
 
-import HeadBar from '../../components/HeadBar'
-import SideBar from '../../components/SideBar'
 import Content from '../../components/Content'
 
 import Select from '../../components/Select';
@@ -58,7 +56,6 @@ class AssetStatistics extends Component {
                     name:'example'
                 }
             },
-            treeData:[]
         }
 
         this.columns = [{field:"domain", title:"域"}, {field:"deviceName", title:"设备名称"},
@@ -106,7 +103,7 @@ class AssetStatistics extends Component {
             list.push({id:model, value:model.name})
         })
 
-        this.setState({treeData:TreeData, device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:''})})
+        this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:''})})
         this.requestSearch();
     }
 
@@ -133,7 +130,7 @@ class AssetStatistics extends Component {
     }
 
     deviceTotal(data){
-        this.setState({deviceInfo:{total:data.count, normal:data.count-1}});
+        this.setState({deviceInfo:{total:data.count, normal:data.count==0 ? 0:data.count-1}});
     }
 
     searchSubmit(){
@@ -187,10 +184,7 @@ class AssetStatistics extends Component {
         const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice, treeData } = this.state;
 
         return (
-            <div className={"container-fluid asset-statistics "+(collapse?'collapsed':'')}>
-                <HeadBar moduleName="资产统计"/>
-                <SideBar TreeData={treeData} onToggle={(node)=>this.onToggle(node)}/>
-                <Content>
+                <Content className={(collapse?'collapsed':'')}>
                     <div className="heading">
                         <Select className="domain" data={domain}
                                 onChange={(selectIndex)=>this.domainChange(selectIndex)}/>
@@ -207,8 +201,6 @@ class AssetStatistics extends Component {
 
                     <SideBarInfo deviceInfo={deviceInfo} mapDevice={selectDevice} collpseHandler={this.collpseHandler}/>
                 </Content>
-
-            </div>
         )
     }
 }

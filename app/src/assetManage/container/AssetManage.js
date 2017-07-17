@@ -7,11 +7,10 @@ import {bindActionCreators} from 'redux';
 
 import '../../../public/styles/assetmanage.less';
 
-import HeadBar from '../../components/HeadBar'
-import SideBar from '../../components/SideBar'
+
 import Content from '../../components/Content'
 
-import {getModelData, getModelProps, getModelTypes, TreeData, first_child} from '../../data/models'
+import {getModelData, getModelProps, getModelTypes, first_child} from '../../data/models'
 import Immutable from 'immutable';
 
 class AssetManage extends Component {
@@ -28,7 +27,7 @@ class AssetManage extends Component {
                 {type:"LC600", detail:"LC600灯控"},
                 {type:"LCMINI", detail:"智慧路灯用"}
             ]),
-            treeData:[]
+            
         }
 
         this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
@@ -44,7 +43,6 @@ class AssetManage extends Component {
 
     initTreeData(){
         this.setState({
-            treeData:TreeData,
             devicePro:Immutable.fromJS(getModelProps(first_child.id)),
             data: Immutable.fromJS(getModelTypes(first_child.id))
         })
@@ -62,11 +60,8 @@ class AssetManage extends Component {
     }
 
     render() {
-        const { data, devicePro, treeData } = this.state
+        const { data, devicePro } = this.state
         return (
-            <div className="container asset-manage">
-                <HeadBar moduleName="资产管理"/>
-                <SideBar TreeData={treeData} onToggle={this.onToggle}/>
                 <Content>
                     <div className="row heading">
                         <div className="property"><span></span>设备属性</div>
@@ -106,8 +101,6 @@ class AssetManage extends Component {
                         </table>
                     </div>
                 </Content>
-
-            </div>
         )
     }
 }

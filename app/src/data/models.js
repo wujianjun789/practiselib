@@ -14,7 +14,7 @@ export  const TreeData=[
         "name":"资产管理",
         "toggled": true,
         "active": true,
-        "link": "/assetManage",
+        "link": "/assetManage/manage",
         "level":1,
         "children": [
             {
@@ -65,13 +65,18 @@ export  const TreeData=[
         "name":"资产统计",
         "toggled": false,
         "active": true,
-        "link": "/assetStatistics",
+        "link": "/assetManage/statistics",
         "level": 1
     }
 ]
 
 export let first_child = {}
 export function getModelData(cb) {
+    if(models && models.length>0){
+        cb && cb();
+        return
+    }
+
     getAssetModelList(response=>{
         models = response;
         TreeData.map(item=>{
