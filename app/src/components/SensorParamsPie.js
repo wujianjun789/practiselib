@@ -31,6 +31,10 @@ export default class Pie extends PureComponent {
     }
 
     progressScale(data,range){
+        if(data.val-range[0]==0 || range[1]-range[0]==0){
+            return round;
+        }
+
         return round+(round*3/4*(data.val-range[0])/(range[1]-range[0])-round*14/360);
     }
 
@@ -102,7 +106,7 @@ export default class Pie extends PureComponent {
             .text(label);
 
         svg.select('.val')
-            .text((data.unit ? parseInt(data.val*100/range[1]):data.val)+(data.unit?data.unit:''));
+            .text((data.unit ? parseInt(range[1]==0 ? 0:data.val*100/range[1]):data.val)+(data.unit?data.unit:''));
     }
 
     render() {
