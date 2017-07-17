@@ -2,28 +2,35 @@
  * Created by a on 2017/7/4.
  */
 import React,{Component} from 'react'
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
 import TreeView from './TreeView'
 
 import {getModelData, TreeData} from '../data/models'
-export default class SideBar extends Component{
+import {treeViewInit} from '../common/actions/treeView'
+class SideBar extends Component{
     constructor(props){
-        super(props)
-        this.state = {
-            treeData:[]
-        }
+        super(props);
 
         this.onToggle = this.onToggle.bind(this);
         this.initTreeData = this.initTreeData.bind(this);
     }
 
     componentWillMount(){
+        // getModelData(this.initTreeData);
+    }
+
+    componentDidMount(){
+        getModelData(this.initTreeData);
+    }
+
+    componentDidUpdate(){
         getModelData(this.initTreeData);
     }
 
     initTreeData(){
-        this.setState({
-            treeData:TreeData
-        })
+        this.props.actions.treeViewInit(TreeData)
     }
 
     onToggle(node){
@@ -31,9 +38,26 @@ export default class SideBar extends Component{
     }
 
     render(){
-        const {treeData} = this.state;
         return <div className="sidebar">
-            <TreeView datalist={treeData} onToggle={(node)=>this.onToggle(node)}/>
+            <TreeView onToggle={(node)=>this.onToggle(node)}/>
         </div>
     }
 }
+
+function mapStateToProps(state) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            treeViewInit: treeViewInit
+        }, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SideBar);

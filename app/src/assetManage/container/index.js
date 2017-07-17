@@ -2,13 +2,21 @@
  * Created by a on 2017/7/17.
  */
 import React,{Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
-import Content from '../../components/Content'
-export default class AssetManageIndex extends Component{
+
+import {sideBarToggled} from '../action/index'
+class AssetManageIndex extends Component{
     constructor(props){
         super(props);
+        this.onToggle = this.onToggle.bind(this);
+    }
+
+    onToggle(node){
+        this.props.actions.sideBarToggled(node);
     }
 
     render(){
@@ -20,3 +28,20 @@ export default class AssetManageIndex extends Component{
         </div>
     }
 }
+
+function mapStateToProps(state) {
+    return {
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            sideBarToggled: sideBarToggled
+        }, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AssetManageIndex);

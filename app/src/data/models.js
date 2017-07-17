@@ -72,10 +72,10 @@ export  const TreeData=[
 
 export let first_child = {}
 export function getModelData(cb) {
-    if(models && models.length>0){
-        cb && cb();
-        return
-    }
+    // if(models && models.length>0){
+    //     cb && cb();
+    //     return
+    // }
 
     getAssetModelList(response=>{
         models = response;

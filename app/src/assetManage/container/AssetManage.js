@@ -41,6 +41,13 @@ class AssetManage extends Component {
         getModelData(this.initTreeData);
     }
 
+    componentWillReceiveProps(nextProps){
+        const {sidebarNode} = nextProps;
+        if(sidebarNode){
+            this.onToggle(sidebarNode);
+        }
+    }
+
     initTreeData(){
         this.setState({
             devicePro:Immutable.fromJS(getModelProps(first_child.id)),
@@ -108,6 +115,7 @@ class AssetManage extends Component {
 
 function mapStateToProps(state) {
     return {
+        sidebarNode: state.assetManage.get('sidebarNode')
     }
 }
 
