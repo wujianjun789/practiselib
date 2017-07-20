@@ -22,7 +22,7 @@ class AssetManageIndex extends Component{
     render(){
         let path = this.props.children.props.route.path;
         return <div className={"container "+"asset-"+path}>
-            <HeadBar moduleName="资产管理"/>
+            <HeadBar moduleName="资产管理" router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
         </div>

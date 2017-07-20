@@ -18,14 +18,6 @@ class SideBar extends Component{
     }
 
     componentWillMount(){
-        // getModelData(this.initTreeData);
-    }
-
-    componentDidMount(){
-        getModelData(this.initTreeData);
-    }
-
-    componentDidUpdate(){
         getModelData(this.initTreeData);
     }
 

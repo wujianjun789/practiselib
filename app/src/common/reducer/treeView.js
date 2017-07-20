@@ -34,8 +34,13 @@ function update(list, index, data) {
     let curIndex = index;
     let nextIndex = index + 1;
     return list.map(node=>{
+        if(!node.children){
+            return node;
+        }
+
         if(curIndex == 1 && node.id == data.id){
             node.toggled = !node.toggled;
+            return node;
         }
 
         if(curIndex == 2){

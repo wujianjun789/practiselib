@@ -6,7 +6,6 @@ import {Link} from 'react-router';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-// import {history} from '../root/assetManage';
 import {onToggle} from '../common/actions/treeView'
 class TreeView extends Component{
     constructor(props){
@@ -34,9 +33,6 @@ class TreeView extends Component{
         this.props.actions.onToggle(node)
         this.props.onToggle && this.props.onToggle(node);
 
-        // if(node.link){
-        //     history.push(node.link);
-        // }
     }
 
     renderTree(datalist, index, toggled){

@@ -4,7 +4,6 @@
 import React, { Component } from 'react'
 import UserCenter from '../common/containers/UserCenter'
 
-import {history} from '../root/index'
 export default class HeadBar extends Component{
     constructor(props){
         super(props);
@@ -12,7 +11,8 @@ export default class HeadBar extends Component{
     }
 
     onClick(event){
-        history.push('/');
+        const {router} = this.props;
+        router.push('/');
     }
 
     render(){
