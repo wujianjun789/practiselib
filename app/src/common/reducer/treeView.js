@@ -34,7 +34,7 @@ function update(list, index, data) {
     let curIndex = index;
     let nextIndex = index + 1;
     return list.map(node=>{
-        if(!node.children){
+        if(curIndex == 1 && !node.children){
             return node;
         }
 
