@@ -2,7 +2,8 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
 import {Login} from '../../../src/login/components/Login';
-
+import {loginHandler} from '../../../src/api/login/index';
+import {login} from '../../../src/util/network'
 describe('<Login />',() => {
     const login = shallow(<Login/>);
 
@@ -14,7 +15,6 @@ describe('<Login />',() => {
         expect(username.prop('value')).toBe('a');
 
         let password = login.find('#password');
-        console.log(password)
         expect(password.prop('value')).toBe('');
         password.simulate('change',{target:{value:'b'}});
         password = login.find('input').at(1);
@@ -32,4 +32,11 @@ describe('<Login />',() => {
         expect(tree).toMatchSnapshot();
     });
     
+    it('loginHandler ',()=>{
+        const fn = jest.fn();
+        const fn1 = jest.fn();
+        loginHandler('','',fn,fn1);
+        expect(fn1).toHaveBeenCalled();
+    })
+
 })

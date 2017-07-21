@@ -1,15 +1,16 @@
 import {login} from '../../util/network';
 
-export function loginHandler(username, password,cb) {
+export function loginHandler(username, password,cbSuccess,cbFail) {
     if(username.length <= 2 || password.length <= 4){
-        cb && cb();
+        cbFail && cbFail();
+        return;
     }
 
     login({name:username, password:password}, response=>{
-        location.href = location.origin;
+        cbSuccess && cbSuccess();
     }, err=>{
-        cb && cb();
+        cbFail && cbFail();
     })
-        // location.href = location.origin;
+        // cbSuccess && cbSuccess();
     
 }
