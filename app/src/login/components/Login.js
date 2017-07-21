@@ -23,6 +23,7 @@ export class Login extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.loginFail = this.loginFail.bind(this);
+        this.loginSuccess = this.loginSuccess.bind(this);
     }
 
     //兼容ie下的清除事件
@@ -51,7 +52,7 @@ export class Login extends Component {
     }
 
     submitHandler() {
-        loginHandler(this.state.user.username, this.state.user.password,this.loginFail);
+        loginHandler(this.state.user.username, this.state.user.password,this.loginSuccess, this.loginFail);
     }
 
     onKeyDown(event) {
@@ -64,6 +65,11 @@ export class Login extends Component {
     loginFail(){
         this.setState({style:{visibility: 'visible'}})
     }
+
+    loginSuccess(){
+        this.props.router.push('/')
+    }
+    
     render() {
         const style = this.state.style?this.state.style:{ visibility: 'hidden' };
 
