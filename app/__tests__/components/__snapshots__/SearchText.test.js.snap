@@ -1,4 +1,4 @@
-exports[`test SidebarInfo renders 1`] = `
+exports[`test SearchText renders 1`] = `
 <div
   className="searchText ">
   <input

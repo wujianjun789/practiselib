@@ -1,4 +1,4 @@
-exports[`test SidebarInfo renders 1`] = `
+exports[`test table renders 1`] = `
 <div
   className="table-responsive ">
   <table
@@ -12,9 +12,44 @@ exports[`test SidebarInfo renders 1`] = `
             onChange={[Function]}
             type="checkbox" />
         </th>
+        <th />
+        <th />
       </tr>
     </thead>
-    <tbody />
+    <tbody>
+      <tr
+        onClick={[Function]}>
+        <td
+          className="hidden">
+          <input
+            checked={undefined}
+            onChange={[Function]}
+            type="checkbox" />
+        </td>
+        <td>
+          xiaohong
+        </td>
+        <td>
+          shanghai
+        </td>
+      </tr>
+      <tr
+        onClick={[Function]}>
+        <td
+          className="hidden">
+          <input
+            checked={undefined}
+            onChange={[Function]}
+            type="checkbox" />
+        </td>
+        <td>
+          xiaogang
+        </td>
+        <td>
+          beijing
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>
 `;

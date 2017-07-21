@@ -9,7 +9,7 @@ import Select from '../../src/components/Select';
 import Immutable from 'immutable';
 
 const data = Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], index:0, value:'域'})
-test('SidebarInfo renders', ()=>{
+test('Select renders', ()=>{
 
     const component = renderer.create(
         <Select data={data}/>

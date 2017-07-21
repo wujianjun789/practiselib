@@ -10,7 +10,7 @@ import { shallow } from 'enzyme';
 import SearchText from '../../src/components/SearchText';
 
 const value='hello world';
-test('SidebarInfo renders', ()=>{
+test('SearchText renders', ()=>{
 
     const component = renderer.create(
         <SearchText value={value}/>
