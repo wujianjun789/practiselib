@@ -1,9 +1,6 @@
 /**
  * Created by a on 2017/7/21.
  */
-/**
- * Created by a on 2017/7/21.
- */
 import React from 'react';
 import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme';
