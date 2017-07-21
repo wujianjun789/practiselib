@@ -13,7 +13,7 @@ import Content from '../../components/Content'
 import {getModelData, getModelProps, getModelTypes, first_child} from '../../data/models'
 import Immutable from 'immutable';
 
-class AssetManage extends Component {
+export class AssetManage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,7 +37,6 @@ class AssetManage extends Component {
     }
 
     componentWillMount(){
-        const query = this.props.location.query;
         getModelData(this.initTreeData);
     }
 

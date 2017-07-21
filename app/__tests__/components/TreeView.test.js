@@ -5,7 +5,7 @@ import React from 'react';
 import {shallow} from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import TreeView from '../../src/components/TreeView';
+import {TreeView} from '../../src/components/TreeView';
 
 const TreeData=[
     {
@@ -33,19 +33,19 @@ const TreeData=[
 ]
 test('TreeView renders', ()=>{
 
-    // const component = renderer.create(
-    //     <TreeView datalist={TreeData} />
-    // )
-    //
-    // let tree = component.toJSON();
-    // expect(tree).toMatchSnapshot();
+    const component = renderer.create(
+        <TreeView datalist={TreeData} />
+    )
+
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
 })
 
-/*test('TreeView div click', ()=>{
+test('TreeView div click', ()=>{
     const component = shallow(<TreeView datalist={TreeData}/>)
 
     expect(component.find('.node').length).toEqual(4);
 
     // component.find('.node').at(1).find('div').simulate('click');
     // expect(component.find('.node').at(1).props().className).toEqual('node active');
-})*/
+})

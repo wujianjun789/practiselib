@@ -7,7 +7,7 @@ import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {onToggle} from '../common/actions/treeView'
-class TreeView extends Component{
+export class TreeView extends Component{
     constructor(props){
         super(props)
 
@@ -21,21 +21,16 @@ class TreeView extends Component{
     }
 
     onToggle(node){
-        // if(this.curNode && node.toggled == undefined){
-        //     this.setState(Object.assign(this.curNode, {active:false}))
-        // }
-        //
-        // this.setState({node:this.curNode});
-        // this.setState(Object.assign(node, {toggled: node.children && !node.toggled, active:true}))
-        // if(node.toggled && node.children){
-        //
-        // }
-        this.props.actions.onToggle(node)
+        const {actions} = this.props
+        actions && actions.onToggle(node)
         this.props.onToggle && this.props.onToggle(node);
 
     }
 
     renderTree(datalist, index, toggled){
+        if(!datalist){
+            return null;
+        }
         let curIndex = index;
         let nextIndex = index + 1;
         let style = {"height":index>1 ? (toggled ? datalist.length*40+'px':'0'):'auto'};

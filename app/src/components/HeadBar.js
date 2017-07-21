@@ -12,7 +12,7 @@ export default class HeadBar extends Component{
 
     onClick(event){
         const {router} = this.props;
-        router.push('/');
+        router && router.push('/');
     }
 
     render(){
