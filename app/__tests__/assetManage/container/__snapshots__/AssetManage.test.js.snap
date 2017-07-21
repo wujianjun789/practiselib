@@ -1,0 +1,72 @@
+exports[`test AssetManage renders 1`] = `
+<div
+  className="content undefined">
+  <div
+    className="row heading">
+    <div
+      className="property">
+      <span />
+      设备属性
+    </div>
+    <ul
+      className="property-list">
+      <li>
+        软件版本
+      </li>
+      <li>
+        系统版本
+      </li>
+      <li>
+        内核版本
+      </li>
+    </ul>
+  </div>
+  <div
+    className="row heading">
+    <div
+      className="type">
+      <span />
+      设备类别
+    </div>
+    <table
+      className="equipment">
+      <thead>
+        <tr>
+          <th>
+            型号
+          </th>
+          <th>
+            描述
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            LC300
+          </td>
+          <td>
+            LC300灯控
+          </td>
+        </tr>
+        <tr>
+          <td>
+            LC600
+          </td>
+          <td>
+            LC600灯控
+          </td>
+        </tr>
+        <tr>
+          <td>
+            LCMINI
+          </td>
+          <td>
+            智慧路灯用
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

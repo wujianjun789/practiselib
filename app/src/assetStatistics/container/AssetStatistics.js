@@ -21,7 +21,7 @@ import {getSearchAssets, getDomainList, getAssetsCount} from '../../api/assetSta
 import {getDeviceTypeByModel} from '../../util/index'
 
 import Immutable from 'immutable';
-class AssetStatistics extends Component {
+export class AssetStatistics extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -79,7 +79,7 @@ class AssetStatistics extends Component {
     }
 
     componentWillMount(){
-        const query = this.props.location.query;
+        // const query = this.props.location.query;
         getModelData(this.initTreeData);
         getDomainList(this.initDomain);
 

@@ -1,0 +1,353 @@
+exports[`test AssetManage renders 1`] = `
+<div
+  className="content ">
+  <div
+    className="heading">
+    <select
+      className="select domain"
+      onChange={[Function]}
+      value="域">
+      <option
+        value="域">
+        域
+      </option>
+      <option
+        value="域2">
+        域2
+      </option>
+    </select>
+    <select
+      className="select device"
+      onChange={[Function]}
+      value="灯集中控制器">
+      <option
+        value="灯集中控制器">
+        灯集中控制器
+      </option>
+      <option
+        value="集中控制">
+        集中控制
+      </option>
+    </select>
+    <div
+      className="searchText search">
+      <input
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        placeholder="输入素材名称"
+        type="search"
+        value="" />
+      <span
+        className="glyphicon glyphicon-search"
+        onClick={[Function]} />
+    </div>
+  </div>
+  <div
+    className="table-container">
+    <div
+      className="table-responsive ">
+      <table
+        className="table table-hover">
+        <thead>
+          <tr>
+            <th
+              className="hidden">
+              <input
+                checked={undefined}
+                onChange={[Function]}
+                type="checkbox" />
+            </th>
+            <th>
+              域
+            </th>
+            <th>
+              设备名称
+            </th>
+            <th>
+              软件版本
+            </th>
+            <th>
+              系统版本
+            </th>
+            <th>
+              内核版本
+            </th>
+            <th>
+              硬件版本
+            </th>
+            <th>
+              厂商信息
+            </th>
+            <th>
+              控制器类型
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            onClick={[Function]}>
+            <td
+              className="hidden">
+              <input
+                checked={undefined}
+                onChange={[Function]}
+                type="checkbox" />
+            </td>
+            <td>
+              闵行区
+            </td>
+            <td>
+              灯集中控制器
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              上海三思
+            </td>
+            <td>
+              485
+            </td>
+          </tr>
+          <tr
+            onClick={[Function]}>
+            <td
+              className="hidden">
+              <input
+                checked={undefined}
+                onChange={[Function]}
+                type="checkbox" />
+            </td>
+            <td>
+              闵行区
+            </td>
+            <td>
+              灯集中控制器
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              1.0
+            </td>
+            <td>
+              上海三思
+            </td>
+            <td>
+              485
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul
+      className="rc-pagination pull-center"
+      style={Object {}}
+      unselectable="unselectable">
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-prev"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="上一页">
+        <a />
+      </li>
+      <li
+        className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title={1}>
+        <a>
+          1
+        </a>
+      </li>
+      <li
+        className="rc-pagination-item rc-pagination-item-2"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title={2}>
+        <a>
+          2
+        </a>
+      </li>
+      <li
+        className="rc-pagination-item rc-pagination-item-3"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title={3}>
+        <a>
+          3
+        </a>
+      </li>
+      <li
+        aria-disabled={false}
+        className=" rc-pagination-next"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="下一页">
+        <a />
+      </li>
+      <div
+        className="rc-pagination-options" />
+    </ul>
+  </div>
+  <div
+    className="container-fluid sidebar-info ">
+    <div
+      className="row collapse-container"
+      onClick={[Function]}>
+      <span
+        className="icon_verital" />
+    </div>
+    <div
+      className="panel panel-default device-statics-info">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_statistics" />
+        设备统计信息
+      </div>
+      <div
+        className="panel-body view">
+        <div
+          className="circle1">
+          <svg
+            className="noisePieChart">
+            <defs>
+              <pattern
+                height="400"
+                id="noise-img"
+                patternUnits="userSpaceOnUse"
+                width="400">
+                <image
+                  height="400"
+                  transform="rotate(97 200 200)"
+                  width="400"
+                  x="0"
+                  xlinkHref="/svg/noise.svg"
+                  y="0" />
+              </pattern>
+              <pattern
+                height="400"
+                id="temps-img"
+                patternUnits="userSpaceOnUse"
+                width="400">
+                <image
+                  height="400"
+                  transform="rotate(97 200 200)"
+                  width="400"
+                  x="0"
+                  xlinkHref="/svg/temps.svg"
+                  y="0" />
+              </pattern>
+            </defs>
+            <g
+              className="circle">
+              <circle
+                className="base-circle" />
+              <circle
+                className="progress-circle" />
+            </g>
+            <g
+              className="text">
+              <text
+                className="type"
+                x="200"
+                y="140" />
+              <text
+                className="val"
+                x="200"
+                y="240" />
+            </g>
+          </svg>
+        </div>
+        <div
+          className="circle2">
+          <svg
+            className="tempsPieChart">
+            <defs>
+              <pattern
+                height="400"
+                id="noise-img"
+                patternUnits="userSpaceOnUse"
+                width="400">
+                <image
+                  height="400"
+                  transform="rotate(97 200 200)"
+                  width="400"
+                  x="0"
+                  xlinkHref="/svg/noise.svg"
+                  y="0" />
+              </pattern>
+              <pattern
+                height="400"
+                id="temps-img"
+                patternUnits="userSpaceOnUse"
+                width="400">
+                <image
+                  height="400"
+                  transform="rotate(97 200 200)"
+                  width="400"
+                  x="0"
+                  xlinkHref="/svg/temps.svg"
+                  y="0" />
+              </pattern>
+            </defs>
+            <g
+              className="circle">
+              <circle
+                className="base-circle" />
+              <circle
+                className="progress-circle" />
+            </g>
+            <g
+              className="text">
+              <text
+                className="type"
+                x="200"
+                y="140" />
+              <text
+                className="val"
+                x="200"
+                y="240" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-default map-position">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_map_position" />
+        地图位置
+      </div>
+      <div
+        className="panel-body map"
+        id="map" />
+    </div>
+  </div>
+</div>
+`;
