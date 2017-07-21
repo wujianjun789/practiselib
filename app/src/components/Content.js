@@ -3,8 +3,6 @@
  */
 import React,{Component} from 'react';
 
-import Overlayer from '../common/containers/Overlayer';
-
 export default class Content extends Component{
     constructor(props){
         super(props)
@@ -14,7 +12,6 @@ export default class Content extends Component{
         const {className} = this.props;
         return <div className={"content "+className}>
             {this.props.children}
-            <Overlayer />
         </div>
     }
 }

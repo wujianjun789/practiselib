@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
-
+import Overlayer from '../../common/containers/Overlayer'
 import {sideBarToggled} from '../action/index'
 class AssetManageIndex extends Component{
     constructor(props){
@@ -25,6 +25,7 @@ class AssetManageIndex extends Component{
             <HeadBar moduleName="资产管理" router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
+            <Overlayer />
         </div>
     }
 }
