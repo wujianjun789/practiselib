@@ -1,0 +1,15 @@
+exports[`test SidebarInfo renders 1`] = `
+<select
+  className="select "
+  onChange={[Function]}
+  value="域">
+  <option
+    value="域">
+    域
+  </option>
+  <option
+    value="域2">
+    域2
+  </option>
+</select>
+`;

@@ -12,9 +12,7 @@ export default class SearchText extends Component{
     }
 
     onChange(event) {
-        if (!!this.props.onChange) {
-            this.props.onChange(event.target.value);
-        }
+        this.props.onChange && this.props.onChange(event && event.target.value);
     }
 
     onFocus(){

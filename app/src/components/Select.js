@@ -11,7 +11,7 @@ export default class Select extends Component{
     }
 
     onChange(event){
-        this.props.onChange && this.props.onChange(event.target.selectedIndex);
+        this.props.onChange && this.props.onChange(event && event.target.selectedIndex);
     }
 
     render(){
