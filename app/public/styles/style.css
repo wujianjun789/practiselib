@@ -428,6 +428,36 @@ ul {
     cursor: pointer;
 }
 
+.searchText ul{
+    display: none;
+
+    position: absolute;
+
+    background-color: #fff;
+    border: solid 1px #ddd;
+
+    width: 100%;
+    /*height: 100%;*/
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.searchText ul li{
+    padding: 4px;
+
+    cursor: pointer;
+}
+
+.searchText ul li:hover{
+    background-color: #ddd;
+}
+
+.searchText .select-active{
+    display: block;
+    /*height: 60px;*/
+}
+
 .pull-center {
     margin-right: auto;
     margin-left: auto;
