@@ -79,11 +79,16 @@ export class AssetStatistics extends Component {
     }
 
     componentWillMount(){
+        this.mounted = false;
         // const query = this.props.location.query;
-        getModelData(this.initTreeData);
-        getDomainList(this.initDomain);
+        getModelData(()=>{!this.mounted && this.initTreeData()});
+        getDomainList(data=>{!this.mounted && this.initDomain(data)});
 
-        getAssetsCount(this.deviceTotal)
+        getAssetsCount(data=>{!this.mounted && this.deviceTotal(data)})
+    }
+
+    componentWillUnmount(){
+        this.mounted = true;
     }
 
     requestSearch(){

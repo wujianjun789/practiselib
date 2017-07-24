@@ -37,7 +37,8 @@ export class AssetManage extends Component {
     }
 
     componentWillMount(){
-        getModelData(this.initTreeData);
+        this.mounted = false;
+        getModelData(()=>{!this.mounted && this.initTreeData()});
     }
 
     componentWillReceiveProps(nextProps){
@@ -45,6 +46,10 @@ export class AssetManage extends Component {
         if(sidebarNode){
             this.onToggle(sidebarNode);
         }
+    }
+
+    componentWillUnmount(){
+        this.mounted = true;
     }
 
     initTreeData(){
