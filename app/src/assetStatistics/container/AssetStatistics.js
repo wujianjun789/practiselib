@@ -14,7 +14,7 @@ import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
 import SideBarInfo from '../../components/SideBarInfo'
-import {getModelData, getModelList, TreeData} from '../../data/models'
+import {getModelData, getModelList} from '../../data/assetModels'
 
 import {onChange} from '../action/index';
 import {getSearchAssets, getDomainList, getAssetsCount} from '../../api/assetStatistics/index'
@@ -186,7 +186,7 @@ export class AssetStatistics extends Component {
     }
 
     render() {
-        const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice, treeData } = this.state;
+        const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
 
         return (
                 <Content className={(collapse?'collapsed':'')}>

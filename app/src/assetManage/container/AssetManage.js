@@ -10,7 +10,7 @@ import '../../../public/styles/assetmanage.less';
 
 import Content from '../../components/Content'
 
-import {getModelData, getModelProps, getModelTypes, first_child} from '../../data/models'
+import {getModelData, getModelProps, getModelTypes, first_child} from '../../data/assetModels'
 import Immutable from 'immutable';
 
 export class AssetManage extends Component {

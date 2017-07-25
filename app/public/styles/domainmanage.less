@@ -1,0 +1,20 @@
+.domain-domainEdit{
+  .content {
+    right: 300px;
+
+    .addAnimation();
+
+    &.collapsed{
+      right: 60px;
+    }
+  }
+}
+
+.addAnimation{
+  @time: .3s;
+  -webkit-transition: all @time;
+  -moz-transition: all @time;
+  -ms-transition: all @time;
+  -o-transition: all @time;
+  transition: all @time;
+}
