@@ -4,6 +4,7 @@
 import React, {Component} from 'react'
 import '../../public/styles/sideBarInfo.less';
 
+import MapView from '../components/MapView'
 import {updateMap, updateMapDevice, mapPanTo, destory} from '../util/map'
 import {transformDeviceType} from '../util/index'
 /**
@@ -77,7 +78,9 @@ export default class SideBarInfo extends Component{
                     <div className="panel-heading">
                         <span className="icon_map_position"></span>地图位置
                     </div>
-                    <div ref={this.renderMap} id="map" className="panel-body map"></div>
+                    <div className="map-container panel-body">
+                        <MapView  mapData={this.props.mapDevice} />
+                    </div>
                 </div>
         </div>
     }

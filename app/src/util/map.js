@@ -477,7 +477,7 @@ var markerList = []
 
 function drawMarker(type, id, position, icon, digital) {
     // position = L.latLng(-100, 100)
-    var marker = L.marker(position, { icon: icon, type: type, id: id, digital:digital, riseOnHover:true })
+    var marker = L.marker(position, { icon: icon, type: type, id: id, digital:digital, riseOnHover:true, draggable:true })
     // item.getLatLng();
     return marker;
 }
@@ -514,13 +514,33 @@ function loadMarkerLabel(marker, labelInfo) {
     // }
     loadMarkerPopup(marker);
     loadMarkerMouseover(marker);
+    loadMarkerDrag(marker);
     if (!!labelInfo) {
         marker.bindLabel(labelInfo, { noHide: true }).addTo(drawItems).showLabel();
     }
 }
 
+function loadMarkerDrag(marker) {
+    marker.on('dragstart', function () {
+        marker.off("mouseover", mapObject.markerOver);
+        marker.off("mouseout", mapObject.markerOut);
+    })
+    marker.on('dragend', mapObject.markerDragEnd)
+}
+
 function loadMarkerMouseover(marker) {
     marker.on('mouseover', mapObject.markerOver);
+}
+
+mapObject.markerDragEnd = function (event) {
+    var marker = event.target;
+    markerDragendHandler({
+        id: marker.options.id,
+        type: marker.options.type,
+        latlng: marker.getLatLng()
+    })
+
+    marker.on("mouseover", mapObject.markerOver);
 }
 
 mapObject.markerOver = function (event) {
@@ -671,6 +691,12 @@ function drawEvent() {
 
         markerHandler('delete', deletedData);
     })
+}
+
+function markerDragendHandler(data) {
+    if(_callFun != null &&　_callFun.markerDragendHandler){
+        _callFun.markerDragendHandler(data);
+    }
 }
 
 function markerMouseOverHandler(data) {
