@@ -102,16 +102,16 @@ input::-ms-clear {
     left: 180px;
 
     background: #f2f2f4;
+}
+
+.content.offset-right{
+    right: 300px;
 
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
     -ms-transition: all .3s;
     -o-transition: all .3s;
     transition: all .3s;
-}
-
-.content.offset-right{
-    right: 300px;
 }
 
 .content.collapsed{
