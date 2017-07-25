@@ -14,6 +14,9 @@ import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
 import SideBarInfo from '../../components/SideBarInfo'
+
+import Pie from '../../components/SensorParamsPie'
+
 import {getModelData, getModelList} from '../../data/assetModels'
 
 import {onChange} from '../action/index';
@@ -187,9 +190,10 @@ export class AssetStatistics extends Component {
 
     render() {
         const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
-
+        const {total=0, normal=0} = deviceInfo;
+        let width=145,height=145;
         return (
-                <Content className={(collapse?'collapsed':'')}>
+                <Content className={'offset-right '+(collapse?'collapsed':'')}>
                     <div className="heading">
                         <Select className="domain" data={domain}
                                 onChange={(selectIndex)=>this.domainChange(selectIndex)}/>
@@ -204,7 +208,21 @@ export class AssetStatistics extends Component {
                               current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
 
-                    <SideBarInfo deviceInfo={deviceInfo} mapDevice={selectDevice} collpseHandler={this.collpseHandler}/>
+                    <SideBarInfo  mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
+                        <div className="panel panel-default device-statics-info">
+                            <div className="panel-heading">
+                                <span className="icon_statistics"></span>设备统计信息
+                            </div>
+                            <div className="panel-body view">
+                                <div className="circle1">
+                                    <Pie data={{type:"NOISE",val:total}} width={width} height={height} color="#E6BC00" className="noise" range={[0, total]}></Pie>
+                                </div>
+                                <div className="circle2">
+                                    <Pie data={{type:"TEMPS", val:normal, unit:'%'}} width={width} height={height} color="#E6BC00" className="temps" range={[0, total]}></Pie>
+                                </div>
+                            </div>
+                        </div>
+                        </SideBarInfo>
                 </Content>
         )
     }

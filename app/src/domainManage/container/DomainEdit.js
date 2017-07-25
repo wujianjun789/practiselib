@@ -69,7 +69,7 @@ export class DomainEdit extends Component {
     render() {
         const { collapse, selectDevice } = this.state
         return (
-            <Content className={(collapse?'collapsed':'')}>
+            <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}/>
             </Content>
         )
