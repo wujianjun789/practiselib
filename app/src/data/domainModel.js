@@ -12,12 +12,12 @@ export const TreeData=[
         "level":1,
         "children": [
             {
-                "id": 'list mode',
+                "id": 'list-mode',
                 "name":"列表模式",
                 "active":true
             },
             {
-                "id": 'topology mode',
+                "id": 'topology-mode',
                 "name":"拓扑图",
                 "active":false
             }

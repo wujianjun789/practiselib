@@ -1,7 +1,17 @@
 /**
- * Created by a on 2017/7/13.
+ * Created by a on 2017/7/26.
  */
-import {HOST_IP, getHttpHeader, httpRequest} from '../../util/network'
+import {HOST_IP, getHttpHeader, httpRequest} from '../util/network'
+
+export function getAssetModelList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/model-summaries', {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
 
 export function getSearchAssets(domain, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
@@ -37,14 +47,3 @@ export function getAssetsCount(cb) {
         cb && cb(response);
     })
 }
-
-export function getDomainList(cb) {
-    let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/domains', {
-        headers: headers,
-        method: 'GET'
-    }, response=>{
-        cb && cb(response);
-    })
-}
-

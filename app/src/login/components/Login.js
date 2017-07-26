@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Page from '../../components/Page';
-import {loginHandler} from '../../api/login/index'
+import {loginHandler} from '../../api/login'
 import '../../../public/styles/login.less';
 export class Login extends Component {
     constructor(props) {

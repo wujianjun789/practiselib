@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
 import {Login} from '../../../src/login/components/Login';
-import {loginHandler} from '../../../src/api/login/index';
+import {loginHandler} from '../../../src/api/login';
 import {login} from '../../../src/util/network'
 describe('<Login />',() => {
     const login = shallow(<Login/>);

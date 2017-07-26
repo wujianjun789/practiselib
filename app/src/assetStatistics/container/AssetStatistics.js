@@ -19,8 +19,8 @@ import Pie from '../../components/SensorParamsPie'
 
 import {getModelData, getModelList} from '../../data/assetModels'
 
-import {onChange} from '../action/index';
-import {getSearchAssets, getDomainList, getAssetsCount} from '../../api/assetStatistics/index'
+import {getSearchAssets, getAssetsCount} from '../../api/asset'
+import {getDomainList} from '../../api/domain'
 import {getDeviceTypeByModel} from '../../util/index'
 
 import Immutable from 'immutable';
@@ -29,9 +29,9 @@ export class AssetStatistics extends Component {
         super(props);
         this.state = {
             data: Immutable.fromJS([
-                {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
+                {id:1,domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
-                {domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
+                {id:2, domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}}
             ]),
             domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], index:0, value:'域'}),
@@ -203,7 +203,7 @@ export class AssetStatistics extends Component {
                             onChange={value=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>
                     </div>
                     <div className="table-container">
-                        <Table columns={this.columns} data={data} rowClick={(row)=>this.tableClick(row)}/>
+                        <Table columns={this.columns} data={data} activeId={selectDevice.data.id} rowClick={(row)=>this.tableClick(row)}/>
                         <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
                               current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>

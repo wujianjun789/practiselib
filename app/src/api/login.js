@@ -1,4 +1,7 @@
-import {login} from '../../util/network';
+/**
+ * Created by a on 2017/7/26.
+ */
+import {login} from '../util/network';
 
 export function loginHandler(username, password,cbSuccess,cbFail) {
     if(username.length <= 2 || password.length <= 4){
@@ -11,6 +14,6 @@ export function loginHandler(username, password,cbSuccess,cbFail) {
     }, err=>{
         cbFail && cbFail();
     })
-        // cbSuccess && cbSuccess();
-    
+    // cbSuccess && cbSuccess();
+
 }

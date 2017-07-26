@@ -43,7 +43,7 @@ export default class Table extends Component {
     }
 
     render() {
-        let {columns=[], data=[], allChecked, keyField, isEdit, className=''} = this.props;
+        let {columns=[], data=[], allChecked, keyField, isEdit, className='', activeId} = this.props;
         return (
             <div className={`table-responsive ${className}`}>
                 <table className="table table-hover">
@@ -66,7 +66,8 @@ export default class Table extends Component {
                     <tbody>
                     {
                         data.map((row, index)=> {
-                            return <tr key={index} onClick={()=>this.rowClick(row)}>
+                            let curId = row.get('id');
+                            return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
                                     {
                                         <input type="checkbox" checked={row.get('checked')} onChange={(e)=>keyField && this.rowCheckChange(row.get(keyField),e.target.checked)}/>

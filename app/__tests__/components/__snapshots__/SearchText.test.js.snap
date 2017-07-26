@@ -8,6 +8,8 @@ exports[`test SearchText renders 1`] = `
     placeholder=""
     type="search"
     value="hello world" />
+  <ul
+    className="" />
   <span
     className="glyphicon glyphicon-search"
     onClick={[Function]} />

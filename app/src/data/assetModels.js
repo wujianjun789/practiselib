@@ -1,7 +1,7 @@
 /**
  * Created by a on 2017/7/3.
  */
-import {getAssetModelList} from '../api/assetManage/index'
+import {getAssetModelList} from '../api/asset'
 import {intlFormat, getClassByModel} from '../util/index'
 
 let models=[

@@ -1,6 +1,6 @@
 exports[`test AssetManage renders 1`] = `
 <div
-  className="content undefined">
+  className="content ">
   <div
     className="row heading">
     <div

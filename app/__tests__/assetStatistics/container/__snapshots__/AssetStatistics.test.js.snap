@@ -1,6 +1,6 @@
 exports[`test AssetManage renders 1`] = `
 <div
-  className="content ">
+  className="content offset-right ">
   <div
     className="heading">
     <select
@@ -38,6 +38,8 @@ exports[`test AssetManage renders 1`] = `
         placeholder="输入素材名称"
         type="search"
         value="" />
+      <ul
+        className="" />
       <span
         className="glyphicon glyphicon-search"
         onClick={[Function]} />
@@ -86,6 +88,7 @@ exports[`test AssetManage renders 1`] = `
         </thead>
         <tbody>
           <tr
+            className="active"
             onClick={[Function]}>
             <td
               className="hidden">
@@ -120,6 +123,7 @@ exports[`test AssetManage renders 1`] = `
             </td>
           </tr>
           <tr
+            className=""
             onClick={[Function]}>
             <td
               className="hidden">
@@ -157,7 +161,7 @@ exports[`test AssetManage renders 1`] = `
       </table>
     </div>
     <ul
-      className="rc-pagination pull-center"
+      className="rc-pagination page"
       style={Object {}}
       unselectable="unselectable">
       <li
@@ -345,8 +349,11 @@ exports[`test AssetManage renders 1`] = `
         地图位置
       </div>
       <div
-        className="panel-body map"
-        id="map" />
+        className="map-container panel-body">
+        <div
+          className="map-view "
+          id="map" />
+      </div>
     </div>
   </div>
 </div>
