@@ -22,11 +22,8 @@ exports[`<Panel /> snapshot with body=<div className="test">test</div>, footer=<
         </div>
       </div>
       <div
-        className="modal-footer">
-        <div
-          className="footer">
-          footer
-        </div>
+        className="footer">
+        footer
       </div>
     </div>
   </div>

@@ -102,23 +102,20 @@ exports[`<Overlayer /> snapshot show 1`] = `
             </div>
             <div
               className="modal-footer">
-              <div
-                className="modal-footer">
-                <button
-                  className="btn btn-default"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button">
-                  取消
-                </button>
-                <button
-                  className="btn btn-primary"
-                  disabled={false}
-                  onClick={[Function]}
-                  type="button">
-                  确认
-                </button>
-              </div>
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button">
+                取消
+              </button>
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button">
+                确认
+              </button>
             </div>
           </div>
         </div>
