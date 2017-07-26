@@ -10,7 +10,6 @@ describe('<AlterPwPopup />', () => {
 
         let panel = cmp.find('Panel');
         expect(panel.length).toBe(1);
-        expect(panel.hasClass('panel-custom')).toBeTruthy();
         expect(panel.props().title).toBe('修改密码');
         expect(panel.props().closeBtn).toBeTruthy();
 

@@ -1,25 +1,33 @@
 exports[`<Panel /> snapshot with body=<div className="test">test</div>, footer=<div className="footer">footer</div> 1`] = `
 <div
-  className="panel panel-primary">
+  className="modal "
+  role="dialog">
   <div
-    className="panel-heading clearfix">
-    <h3
-      className="panel-title">
-      
-    </h3>
-  </div>
-  <div
-    className="panel-body">
+    className="modal-dialog"
+    role="document">
     <div
-      className="test">
-      test
-    </div>
-  </div>
-  <div
-    className="panel-footer clearfix">
-    <div
-      className="footer">
-      footer
+      className="modal-content">
+      <div
+        className="modal-header">
+        <h4
+          className="modal-title">
+          
+        </h4>
+      </div>
+      <div
+        className="modal-body">
+        <div
+          className="test">
+          test
+        </div>
+      </div>
+      <div
+        className="modal-footer">
+        <div
+          className="footer">
+          footer
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -27,55 +35,77 @@ exports[`<Panel /> snapshot with body=<div className="test">test</div>, footer=<
 
 exports[`<Panel /> snapshot with children=<div className="test">test</div> 1`] = `
 <div
-  className="panel panel-primary">
+  className="modal "
+  role="dialog">
   <div
-    className="panel-heading clearfix">
-    <h3
-      className="panel-title">
-      
-    </h3>
-    <button
-      className="close"
-      onClick={[Function]}
-      type="button">
-      <span>
-        ×
-      </span>
-    </button>
-  </div>
-  <div
-    className="panel-body">
+    className="modal-dialog"
+    role="document">
     <div
-      className="test">
-      test
+      className="modal-content">
+      <div
+        className="modal-header">
+        <button
+          aria-label="Close"
+          className="close"
+          data-dismiss="modal"
+          onClick={[Function]}
+          type="button">
+          <span
+            aria-hidden="true">
+            ×
+          </span>
+        </button>
+        <h4
+          className="modal-title">
+          
+        </h4>
+      </div>
+      <div
+        className="modal-body">
+        <div
+          className="test">
+          test
+        </div>
+      </div>
     </div>
   </div>
 </div>
 `;
 
-exports[`<Panel /> snapshot with className="panel-default", title=box, text="body text", closeBtn=true 1`] = `
+exports[`<Panel /> snapshot with className="modal-default", title=box, text="body text", closeBtn=true 1`] = `
 <div
-  className="panel panel-default">
+  className="modal modal-default"
+  role="dialog">
   <div
-    className="panel-heading clearfix">
-    <h3
-      className="panel-title">
-      box
-    </h3>
-    <button
-      className="close"
-      onClick={null}
-      type="button">
-      <span>
-        ×
-      </span>
-    </button>
-  </div>
-  <div
-    className="panel-body">
+    className="modal-dialog"
+    role="document">
     <div
-      className="row pull-center">
-      body text
+      className="modal-content">
+      <div
+        className="modal-header">
+        <button
+          aria-label="Close"
+          className="close"
+          data-dismiss="modal"
+          onClick={null}
+          type="button">
+          <span
+            aria-hidden="true">
+            ×
+          </span>
+        </button>
+        <h4
+          className="modal-title">
+          box
+        </h4>
+      </div>
+      <div
+        className="modal-body">
+        <div
+          className="row pull-center">
+          body text
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -83,19 +113,27 @@ exports[`<Panel /> snapshot with className="panel-default", title=box, text="bod
 
 exports[`<Panel /> snapshot with no props passed 1`] = `
 <div
-  className="panel panel-primary">
+  className="modal "
+  role="dialog">
   <div
-    className="panel-heading clearfix">
-    <h3
-      className="panel-title">
-      
-    </h3>
-  </div>
-  <div
-    className="panel-body">
+    className="modal-dialog"
+    role="document">
     <div
-      className="row pull-center">
-      无相关数据
+      className="modal-content">
+      <div
+        className="modal-header">
+        <h4
+          className="modal-title">
+          
+        </h4>
+      </div>
+      <div
+        className="modal-body">
+        <div
+          className="row pull-center">
+          无相关数据
+        </div>
+      </div>
     </div>
   </div>
 </div>

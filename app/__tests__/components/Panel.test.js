@@ -7,35 +7,34 @@ describe('<Panel />', () => {
     it('render with no props passed', () => {
         const panel = shallow(<Panel />);
 
-        const container = panel.find('.panel');
+        const container = panel.find('.modal');
         expect(container.length).toBe(1);
-        expect(container.hasClass('panel-primary')).toBeTruthy();
 
-        const tit = panel.find('.panel-title');
+        const tit = panel.find('.modal-title');
         expect(tit.length).toBe(1);
         expect(tit.text()).toBe('');
 
         expect(panel.find('button.close').length).toBe(0);
 
-        const body = panel.find('.panel-body');
+        const body = panel.find('.modal-body');
         expect(body.length).toBe(1);
         const bodyChild = body.find('.row.pull-center');
         expect(bodyChild.length).toBe(1);
         expect(bodyChild.text()).toBe('无相关数据');
     });
 
-    it('render with className="panel-default", title=box, text="body text", closeBtn=true', () => {
-        const panel = shallow(<Panel className="panel-default" title="box" text="body text" closeBtn/>);
+    it('render with className="modal-default", title=box, text="body text", closeBtn=true', () => {
+        const panel = shallow(<Panel className="modal-default" title="box" text="body text" closeBtn/>);
 
-        const container = panel.find('.panel');
-        expect(container.hasClass('panel-default')).toBeTruthy();
+        const container = panel.find('.modal');
+        expect(container.hasClass('modal-default')).toBeTruthy();
 
-        const tit = panel.find('.panel-title');
+        const tit = panel.find('.modal-title');
         expect(tit.text()).toBe('box');
 
         expect(panel.find('button.close').length).toBe(1);
 
-        const body = panel.find('.panel-body');
+        const body = panel.find('.modal-body');
         const bodyChild = body.find('.row.pull-center');
         expect(bodyChild.text()).toBe('body text');
     });
@@ -76,8 +75,8 @@ describe('<Panel />', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    it('snapshot with className="panel-default", title=box, text="body text", closeBtn=true', () => {
-        const panel = renderer.create(<Panel className="panel-default" title="box" text="body text" closeBtn/>);
+    it('snapshot with className="modal-default", title=box, text="body text", closeBtn=true', () => {
+        const panel = renderer.create(<Panel className="modal-default" title="box" text="body text" closeBtn/>);
         let tree = panel.toJSON();
         expect(tree).toMatchSnapshot();
     });
