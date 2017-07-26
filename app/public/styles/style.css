@@ -441,8 +441,10 @@ ul {
 
 .searchText .glyphicon-search {
     position: absolute;
-    top: 8px;
+    top: 50%;
     right: 5px;
+
+    margin-top: -7px;
 
     cursor: pointer;
 }

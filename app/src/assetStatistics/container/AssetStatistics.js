@@ -204,7 +204,7 @@ export class AssetStatistics extends Component {
                     </div>
                     <div className="table-container">
                         <Table columns={this.columns} data={data} rowClick={(row)=>this.tableClick(row)}/>
-                        <Page className="pull-center" showSizeChanger pageSize={page.get('pageSize')}
+                        <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
                               current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
 
@@ -222,7 +222,7 @@ export class AssetStatistics extends Component {
                                 </div>
                             </div>
                         </div>
-                        </SideBarInfo>
+                    </SideBarInfo>
                 </Content>
         )
     }

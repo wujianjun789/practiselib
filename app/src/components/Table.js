@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+import '../../public/styles/table.less'
 /**
  * Table 组件
  * keyField:string 指定key
