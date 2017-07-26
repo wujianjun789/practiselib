@@ -9,15 +9,9 @@ export default class PanelFooter extends PureComponent {
     render() {
         const {funcNames, btnTitles, btnDisabled=[false, false], btnClassName=['btn-default','btn-primary']} = this.props;
         return (
-            <div className="row">
-                <div className="btn-toolbar pull-right padding-right" role="toolbar" aria-label="toolbar">
-                    <div className="btn-group" role='group' aria-label="group">
-                        <button type="button" className={`btn ${btnClassName[0]}`} disabled={btnDisabled[0]} onClick={this.props[funcNames[0]]}>{btnTitles[0]}</button>
-                    </div>
-                    <div className="btn-group" role="group" aria-label="group">
-                        <button type="button" className={`btn ${btnClassName[1]}`} disabled={btnDisabled[1]} onClick={this.props[funcNames[1]]}>{btnTitles[1]}</button>
-                    </div>
-                </div>
+            <div className="modal-footer">
+                <button type="button" className={`btn ${btnClassName[0]}`} disabled={btnDisabled[0]} onClick={this.props[funcNames[0]]}>{btnTitles[0]}</button>
+                <button type="button" className={`btn ${btnClassName[1]}`} disabled={btnDisabled[1]} onClick={this.props[funcNames[1]]}>{btnTitles[1]}</button>
             </div>
         )
     }

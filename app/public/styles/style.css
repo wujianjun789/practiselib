@@ -736,36 +736,46 @@ ul {
     -ms-animation: pulse .1s;
     animation: pulse .1s;
 }
+/*********************** modal *******************************/
+.modal {
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    display: inline-block;
+}
+.modal .modal-dialog {
+    min-width: 450px;
+    width: auto;
+}
 
 /****************** 修改密码弹框 ************************/
+
 .alter-pw-popup {
     width: 460px;
+    overflow: hidden;
 
 }
-.alter-pw-popup .panel .panel-heading {
+.alter-pw-popup .modal .modal-header {
     height: 50px;
-    padding-top: 0;
-    padding-bottom: 0;
     text-align: center;
     font-size: 16px;
     color: #808080;
-    border-bottom: 1px solid #919191;
+    border-bottom-color:#919191;     
 }
-.alter-pw-popup .panel-heading h3 {
-    height: 50px;
-    line-height: 50px;
-}
-.alter-pw-popup .panel-heading .close{
-    margin-top: -42px;
+
+.alter-pw-popup .modal-header .close{
     font-size: 30px;
+    margin-top: -7px;
 }
 
-.alter-pw-popup .panel-body {
-    padding: 20px 20px 10px;
+ .alter-pw-popup .modal-body {
+    padding: 20px 30px 10px;
     font-size: 14px;
-}
+} 
 
-.alter-pw-popup .panel-body .form-group .control-label{
+ .alter-pw-popup .modal-body .form-group .control-label{
     text-align: right;
     padding-right: 0;
     height: 40px;
@@ -773,34 +783,32 @@ ul {
     color: #4d4d4d;
 }
 
-.alter-pw-popup .panel-body .form-group .form-control{
+.alter-pw-popup .modal-body .form-group .form-control{
     height: 40px;
     color: #b3b3b3;
 }
 
-.alter-pw-popup .panel-footer {
+.alter-pw-popup .modal-footer {
     border-top: none;
     background-color: transparent;
     padding-top: 0;
-    padding-bottom: 20px;
 }
-.alter-pw-popup .panel-footer .btn-toolbar{
+.alter-pw-popup .modal-footer .btn-toolbar{
     margin-right: 45px;
 }
-.alter-pw-popup .panel-footer button{
+.alter-pw-popup .modal-footer button{
     width: 110px;
     padding-top: 7px;
     padding-bottom: 7px;
     border-radius: 5px;
 }
-.alter-pw-popup .panel-footer .btn-group:last-child{
-    margin-left: 15px;
-}
-.alter-pw-popup .panel-footer .btn-group:last-child .btn{
+
+.alter-pw-popup .modal-footer .btn:last-child{
     background-color: #00d6ff;
     border-color: #00d6ff;
+    margin-left: 15px;
 }
-.alter-pw-popup .panel-footer .btn-group:first-child .btn{
+.alter-pw-popup .modal-footer .btn:first-child{
     color: #808080;
 }
 /****************** 退出弹框 ************************/
