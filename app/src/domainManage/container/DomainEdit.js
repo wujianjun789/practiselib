@@ -11,7 +11,10 @@ import SideBarInfo from '../../components/SideBarInfo'
 import Table from '../../components/Table';
 import SearchText from '../../components/SearchText'
 import Page from '../../components/Page'
+
 import {TreeData} from '../../data/domainModel'
+import {getDomainListByName, deleteDomainById} from '../../api/domain'
+
 import Immutable from 'immutable';
 
 export class DomainEdit extends Component {
@@ -20,7 +23,7 @@ export class DomainEdit extends Component {
         this.state = {
             listMode: true,
             collapse: false,
-            selectDevice: {
+            selectDomain: {
                 position: {
                     "device_id": 1,
                     "device_type": 'DEVICE',
@@ -51,13 +54,19 @@ export class DomainEdit extends Component {
         this.initTreeData = this.initTreeData.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.tableClick = this.tableClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
+
+        this.requestSearch = this.requestSearch.bind(this);
+        this.initDomainList = this.initDomainList.bind(this);
     }
 
     componentWillMount() {
+        this.mounted = false;
         this.initTreeData();
+        // this.requestSearch('');
     }
 
     componentWillReceiveProps(nextProps) {
@@ -71,12 +80,33 @@ export class DomainEdit extends Component {
         this.mounted = true;
     }
 
+    requestSearch(name){
+        getDomainListByName(name, data=>{!this.mounted && this.initDomainList(data)})
+    }
+
+    initDomainList(data){
+        this.setState({data:Immutable.fromJS(data)});
+        if(data.length){
+            let item1 = data[0]
+            let selectDomain = this.state.selectDomain;
+            selectDomain.data.id = item1.id;
+            selectDomain.data.name = item1.name;
+            this.setState({selectDomain:selectDomain});
+        }
+    }
+
     initTreeData() {
 
     }
 
     domainHandler(id){
         console.log(id);
+        const {selectDomain} = this.state
+        switch(id){
+            case 'delete':
+                deleteDomainById(selectDomain.data.id);
+                break;
+        }
     }
 
     pageChange(current, pageSize) {
@@ -85,8 +115,17 @@ export class DomainEdit extends Component {
         });
     }
 
+    tableClick(row){
+        const {selectDomain} = this.state;
+        selectDomain.data.id = row.get('id');
+        selectDomain.data.name = row.get('name');
+        this.setState({selectDomain:selectDomain})
+    }
+
     searchSubmit(){
         console.log('submit');
+        const {search} = this.state
+        this.requestSearch(search.get('value'));
     }
 
     searchChange(value){
@@ -110,7 +149,7 @@ export class DomainEdit extends Component {
     }
 
     render() {
-        const {listMode, collapse, selectDevice, page, search, data} = this.state
+        const {listMode, collapse, selectDomain, page, search, data} = this.state
         return (
             <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -122,20 +161,21 @@ export class DomainEdit extends Component {
                     listMode ?
                         <div className="list-mode">
                             <div className="table-container">
-                                <Table columns={this.columns} data={data} activeId={selectDevice.data.id}/>
+                                <Table columns={this.columns} data={data} activeId={selectDomain.data.id}
+                                       rowClick={this.tableClick}/>
                                 <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
                                       current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                             </div>
                         </div> :
                         <div className="topology-mode">topology</div>
                 }
-                <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
+                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
                             <span className="icon_statistics"></span>域属性
                         </div>
                         <div className="panel-body domain-property">
-                            <span className="domain-name">{selectDevice.data.name}</span>
+                            <span className="domain-name">{selectDomain.data.name}</span>
                             <button className="btn btn-default pull-right" onClick={()=>this.domainHandler('delete')}>删除</button>
                             <button className="btn btn-default pull-right" onClick={()=>this.domainHandler('update')}>修改</button>
                         </div>
