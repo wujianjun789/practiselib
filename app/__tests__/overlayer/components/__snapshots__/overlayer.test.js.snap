@@ -1,20 +1,20 @@
 exports[`<Overlayer /> snapshot hidden 1`] = `
 <div
   className="overlayer "
-  id="overlayer"
   onClick={[Function]}>
   <div
-    className="" />
+    className=""
+    id="animate" />
 </div>
 `;
 
 exports[`<Overlayer /> snapshot show 1`] = `
 <div
   className="overlayer overlayer-show"
-  id="overlayer"
   onClick={[Function]}>
   <div
-    className="">
+    className=""
+    id="animate">
     <div
       className="alter-pw-popup">
       <div

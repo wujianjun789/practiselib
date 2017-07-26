@@ -647,10 +647,8 @@ ul {
 }
 
 .overlayer > div {
-    width: 450px;
-    margin-top: 150px;
-    margin-left: auto;
-    margin-right: auto;
+    height: 100%;
+    padding-top: 150px;
     opacity: 0;
     -webkit-transform: rotateX(-60deg);
     /* Safari 和 Chrome */
@@ -671,6 +669,12 @@ ul {
     -ms-transition: all .2s;
     transition: all .2s;
 }
+
+.overlayer > div > div {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
 .overlayer-show {
     visibility: visible;
@@ -730,7 +734,7 @@ ul {
     }
 }
 
-.overlayer-pulse {
+.overlayer-pulse > div {
     -webkit-animation: pulse .1s;
     -moz-animation: pulse .1s;
     -ms-animation: pulse .1s;
@@ -820,7 +824,6 @@ ul {
     background-color: #fff;
     text-align: center;
     padding: 28px 42px 25px;
-    margin: 0 auto;
 }
 
 .usr-exit > div {

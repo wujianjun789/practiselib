@@ -14,7 +14,7 @@ export class Overlayer extends Component {
     }
 
     overlayerClick(e) {
-        if(e.target.id == 'overlayer') {
+        if(e.target.id == 'animate') {
             this.setState({overlayerPulse: true});
             setTimeout(()=>{this.setState({overlayerPulse: false})}, 100);
         } else {
@@ -41,8 +41,8 @@ export class Overlayer extends Component {
         this.handlerBodyScrollBar(isShowDialog);
         
         return (
-            <div id='overlayer' className={`overlayer ${isShowDialog ? 'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
-                <div className={this.state.overlayerPulse ? 'overlayer-pulse' : ''}>
+            <div className={`overlayer ${isShowDialog ? 'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
+                <div id="animate" className={this.state.overlayerPulse ? 'overlayer-pulse' : ''}>
                     {page}
                 </div>
             </div>
