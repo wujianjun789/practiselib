@@ -314,6 +314,7 @@ function clickHandler(event) {
  * @param status设备状态
  */
 function getCustomMarkerByDeviceType(type, status, digital) {
+
     var color = '';
     switch (type) {
         case 'CONTROLLER':
@@ -343,6 +344,11 @@ function getCustomMarkerByDeviceType(type, status, digital) {
                 icon: ''+digital,
                 color: getColorByStatus(status),
                 digital: true
+            })
+        default:
+            return L.AwesomeMarkers.icon({
+                icon:'',
+                color:getColorByStatus(status)
             })
     }
 

@@ -3,11 +3,6 @@ exports[`test DomainEdit renders 1`] = `
   className="content offset-right ">
   <div
     className="heading">
-    <button
-      className="btn btn-default add-domain"
-      onClick={[Function]}>
-      添加
-    </button>
     <div
       className="searchText ">
       <input
@@ -23,6 +18,11 @@ exports[`test DomainEdit renders 1`] = `
         className="glyphicon glyphicon-search"
         onClick={[Function]} />
     </div>
+    <button
+      className="btn btn-default add-domain"
+      onClick={[Function]}>
+      添加
+    </button>
   </div>
   <div
     className="list-mode">
@@ -184,14 +184,14 @@ exports[`test DomainEdit renders 1`] = `
           上海市
         </span>
         <button
-          className="btn btn-default pull-right"
+          className="btn btn-primary pull-right"
           onClick={[Function]}>
-          删除
+          编辑
         </button>
         <button
-          className="btn btn-default pull-right"
+          className="btn btn-danger pull-right"
           onClick={[Function]}>
-          修改
+          删除
         </button>
       </div>
     </div>

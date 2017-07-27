@@ -1,0 +1,8 @@
+exports[`test MapPreview renders 1`] = `
+<div
+  className="content ">
+  <div
+    className="map-view "
+    id="map" />
+</div>
+`;

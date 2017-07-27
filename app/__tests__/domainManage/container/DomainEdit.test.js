@@ -25,6 +25,4 @@ test('DomainEdit div click', ()=>{
     const component = shallow(<DomainEdit />)
     expect(component.find('.heading').length).toEqual(1);
     expect(component.find('.table-container').length).toEqual(1);
-    
-    expect
 })
