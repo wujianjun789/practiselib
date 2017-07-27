@@ -1,69 +1,39 @@
 exports[`<PanelFooter /> snapshot with funcNames=["onCancel","onConfirm"], btnTitles=["Cancel","Confirm"] 1`] = `
 <div
-  className="row">
-  <div
-    aria-label="toolbar"
-    className="btn-toolbar pull-right padding-right"
-    role="toolbar">
-    <div
-      aria-label="group"
-      className="btn-group"
-      role="group">
-      <button
-        className="btn btn-default"
-        disabled={false}
-        onClick={undefined}
-        type="button">
-        Cancel
-      </button>
-    </div>
-    <div
-      aria-label="group"
-      className="btn-group"
-      role="group">
-      <button
-        className="btn btn-primary"
-        disabled={false}
-        onClick={undefined}
-        type="button">
-        Confirm
-      </button>
-    </div>
-  </div>
+  className="modal-footer">
+  <button
+    className="btn btn-default"
+    disabled={false}
+    onClick={undefined}
+    type="button">
+    Cancel
+  </button>
+  <button
+    className="btn btn-primary"
+    disabled={false}
+    onClick={undefined}
+    type="button">
+    Confirm
+  </button>
 </div>
 `;
 
 exports[`<PanelFooter /> snapshot with funcNames=["onCancel","onConfirm"], btnTitles=["Cancel","Confirm"],btnDisabled={[true, true]},btnClassName={["btn-custom1","btn-custom2"]} 1`] = `
 <div
-  className="row">
-  <div
-    aria-label="toolbar"
-    className="btn-toolbar pull-right padding-right"
-    role="toolbar">
-    <div
-      aria-label="group"
-      className="btn-group"
-      role="group">
-      <button
-        className="btn btn-custom1"
-        disabled={true}
-        onClick={undefined}
-        type="button">
-        Cancel
-      </button>
-    </div>
-    <div
-      aria-label="group"
-      className="btn-group"
-      role="group">
-      <button
-        className="btn btn-custom2"
-        disabled={true}
-        onClick={undefined}
-        type="button">
-        Confirm
-      </button>
-    </div>
-  </div>
+  className="modal-footer">
+  <button
+    className="btn btn-custom1"
+    disabled={true}
+    onClick={undefined}
+    type="button">
+    Cancel
+  </button>
+  <button
+    className="btn btn-custom2"
+    disabled={true}
+    onClick={undefined}
+    type="button">
+    Confirm
+  </button>
 </div>
 `;

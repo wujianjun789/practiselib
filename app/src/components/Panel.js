@@ -15,21 +15,24 @@ import PropTypes from 'prop-types';
  * 
  */
 const Panel = (props) => {
-    let {className, closeClick=null, title='', text, body, footer, closeBtn, children} = props;
-    let clsName = `panel ${!!className ? className : 'panel-primary'}`;
+    let {className='', closeClick=null, title='', text, body, footer, closeBtn, children} = props;
     body = body ? body : <div className="row pull-center">{text ? text : '无相关数据'}</div>;
-    footer = footer ? <div className="panel-footer clearfix">{footer}</div> : null,
+    footer = footer ? footer : null,
     closeBtn =  closeBtn ? true : false;
     return (
-        <div className={clsName}>
-            <div className="panel-heading clearfix">
-                <h3 className="panel-title">{title}</h3>
-                {closeBtn ? <button type="button" className="close" onClick={closeClick}><span>&times;</span></button> : null}
+        <div className={`modal ${className}`} role="dialog">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        {closeBtn ? <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeClick}><span aria-hidden="true">&times;</span></button> : null}
+                        <h4 className="modal-title">{title}</h4>
+                    </div>
+                    <div className="modal-body">
+                        {children ? children : body }
+                    </div>
+                    { footer }
+                </div>
             </div>
-            <div className="panel-body">
-            {children ? children : body }
-            </div>
-            { footer }
         </div>
     )
 }

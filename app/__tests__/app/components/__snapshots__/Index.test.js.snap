@@ -85,10 +85,10 @@ exports[`<App /> snapshot 1`] = `
   </div>
   <div
     className="overlayer "
-    id="overlayer"
     onClick={[Function]}>
     <div
-      className="" />
+      className=""
+      id="animate" />
   </div>
 </div>
 `;
@@ -180,10 +180,10 @@ exports[`<App /> snapshot with props.title=undefined, props.name=undefined 1`] =
   </div>
   <div
     className="overlayer "
-    id="overlayer"
     onClick={[Function]}>
     <div
-      className="" />
+      className=""
+      id="animate" />
   </div>
 </div>
 `;
