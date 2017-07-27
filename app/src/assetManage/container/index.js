@@ -38,7 +38,11 @@ class AssetManageIndex extends Component{
     }
 
     render(){
-        let path = this.props.children.props.route.path;
+        let path = "";
+        const {children} = this.props;
+        if(children){
+            path = children.props.route.path;
+        }
         return <div className={"container "+"asset-"+path}>
             <HeadBar moduleName={path=="manage"?"资产管理":"资产统计"} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>

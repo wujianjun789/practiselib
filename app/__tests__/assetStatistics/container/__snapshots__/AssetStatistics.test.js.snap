@@ -1,4 +1,4 @@
-exports[`test AssetManage renders 1`] = `
+exports[`test AssetStatistics renders 1`] = `
 <div
   className="content offset-right ">
   <div

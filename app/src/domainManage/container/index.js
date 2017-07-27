@@ -36,7 +36,11 @@ class DomainManageIndex extends Component{
     }
 
     render(){
-        let path = this.props.children.props.route.path;
+        let path = "";
+        const {children} = this.props;
+        if(children){
+            path = children.props.route.path;
+        }
         return <div className={"container "+"domain-"+path}>
             <HeadBar moduleName={path=="domainEdit"?"域编辑":"地图预览"} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>

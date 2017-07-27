@@ -1,5 +1,5 @@
 /**
- * Created by a on 2017/7/21.
+ * Created by a on 2017/7/27.
  */
 import React from 'react';
 import {shallow} from 'enzyme'
@@ -9,20 +9,22 @@ import '../../../public/js/jquery-3.1.1.min'
 import '../../../public/leaflet/leaflet';
 window.d3 = require('../../../public/js/d3.min')
 
-import {AssetStatistics} from '../../../src/assetStatistics/container/AssetStatistics';
+import {DomainEdit} from '../../../src/domainManage/container/DomainEdit';
 
 
-test('AssetStatistics renders', ()=>{
+test('DomainEdit renders', ()=>{
     const component = renderer.create(
-        <AssetStatistics />
+        <DomainEdit />
     )
 
-    let assetStatistics = component.toJSON();
-    expect(assetStatistics).toMatchSnapshot();
+    let domainEdit = component.toJSON();
+    expect(domainEdit).toMatchSnapshot();
 })
 
-test('AssetStatistics div click', ()=>{
-    const component = shallow(<AssetStatistics />)
+test('DomainEdit div click', ()=>{
+    const component = shallow(<DomainEdit />)
     expect(component.find('.heading').length).toEqual(1);
     expect(component.find('.table-container').length).toEqual(1);
+    
+    expect
 })
