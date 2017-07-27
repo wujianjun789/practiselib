@@ -18,7 +18,7 @@ Window.prototype.mapObject = {
     key:'map'
 };
 
-export function updateMap(data) {
+export function updateMap(data, option) {
 
     var options = {
         mapOffline: 0,
@@ -27,7 +27,12 @@ export function updateMap(data) {
         zoom: 16,
         minZoom: 10,
         maxZoom: 18,
-        maxClusterRadius: 50
+        maxClusterRadius: 50,
+        mapZoom:true
+    }
+
+    if(option){
+        options = Object.assign({}, options, option);
     }
 
     if (!document.getElementById('map')) {
@@ -60,9 +65,11 @@ function initMap(data, option) {
 
             map = L.map("map", options);
 
-            L.control.zoom({
-                position: 'bottomright'
-            }).addTo(map);
+            if(option.mapZoom){
+                L.control.zoom({
+                    position: 'bottomright'
+                }).addTo(map);
+            }
 
         } else if (mapOffline == 2) {
             map = L.map('map', {
@@ -307,6 +314,7 @@ function clickHandler(event) {
  * @param status设备状态
  */
 function getCustomMarkerByDeviceType(type, status, digital) {
+
     var color = '';
     switch (type) {
         case 'CONTROLLER':
@@ -336,6 +344,11 @@ function getCustomMarkerByDeviceType(type, status, digital) {
                 icon: ''+digital,
                 color: getColorByStatus(status),
                 digital: true
+            })
+        default:
+            return L.AwesomeMarkers.icon({
+                icon:'',
+                color:getColorByStatus(status)
             })
     }
 

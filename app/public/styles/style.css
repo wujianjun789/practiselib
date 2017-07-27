@@ -749,6 +749,7 @@ ul {
     left: auto;
     display: inline-block;
     width: 100%;
+    border-radius: 6px;
 }
 .modal .modal-dialog {
     width: 100%;
@@ -762,12 +763,13 @@ ul {
     overflow: hidden;
 
 }
+
 .alter-pw-popup .modal .modal-header {
     height: 50px;
     text-align: center;
     font-size: 16px;
     color: #808080;
-    border-bottom-color:#919191;     
+    border-bottom-color:#919191;    
 }
 
 .alter-pw-popup .modal-header .close{
@@ -797,6 +799,7 @@ ul {
     border-top: none;
     background-color: transparent;
     padding-top: 0;
+    padding-right:30px;
 }
 .alter-pw-popup .modal-footer .btn-toolbar{
     margin-right: 45px;

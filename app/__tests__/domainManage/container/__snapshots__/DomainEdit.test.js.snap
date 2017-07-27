@@ -1,0 +1,215 @@
+exports[`test DomainEdit renders 1`] = `
+<div
+  className="content offset-right ">
+  <div
+    className="heading">
+    <div
+      className="searchText ">
+      <input
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        placeholder="输入域名称"
+        type="search"
+        value="" />
+      <ul
+        className="" />
+      <span
+        className="glyphicon glyphicon-search"
+        onClick={[Function]} />
+    </div>
+    <button
+      className="btn btn-default add-domain"
+      onClick={[Function]}>
+      添加
+    </button>
+  </div>
+  <div
+    className="list-mode">
+    <div
+      className="table-container">
+      <div
+        className="table-responsive ">
+        <table
+          className="table table-hover">
+          <thead>
+            <tr>
+              <th
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </th>
+              <th>
+                域名称
+              </th>
+              <th>
+                上级域
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className="active"
+              onClick={[Function]}>
+              <td
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </td>
+              <td>
+                上海市
+              </td>
+              <td>
+                无
+              </td>
+            </tr>
+            <tr
+              className=""
+              onClick={[Function]}>
+              <td
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </td>
+              <td>
+                闵行区
+              </td>
+              <td>
+                上海市
+              </td>
+            </tr>
+            <tr
+              className=""
+              onClick={[Function]}>
+              <td
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </td>
+              <td>
+                徐汇区
+              </td>
+              <td>
+                上海市
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ul
+        className="rc-pagination page"
+        style={Object {}}
+        unselectable="unselectable">
+        <li
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-prev"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="上一页">
+          <a />
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={1}>
+          <a>
+            1
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-2"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={2}>
+          <a>
+            2
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-3"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={3}>
+          <a>
+            3
+          </a>
+        </li>
+        <li
+          aria-disabled={false}
+          className=" rc-pagination-next"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="下一页">
+          <a />
+        </li>
+        <div
+          className="rc-pagination-options" />
+      </ul>
+    </div>
+  </div>
+  <div
+    className="container-fluid sidebar-info ">
+    <div
+      className="row collapse-container"
+      onClick={[Function]}>
+      <span
+        className="icon_verital" />
+    </div>
+    <div
+      className="panel panel-default device-statics-info">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_statistics" />
+        域属性
+      </div>
+      <div
+        className="panel-body domain-property">
+        <span
+          className="domain-name">
+          上海市
+        </span>
+        <button
+          className="btn btn-primary pull-right"
+          onClick={[Function]}>
+          编辑
+        </button>
+        <button
+          className="btn btn-danger pull-right"
+          onClick={[Function]}>
+          删除
+        </button>
+      </div>
+    </div>
+    <div
+      className="panel panel-default map-position">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_map_position" />
+        地图位置
+      </div>
+      <div
+        className="map-container panel-body">
+        <div
+          className="map-view "
+          id="map" />
+      </div>
+    </div>
+  </div>
+</div>
+`;

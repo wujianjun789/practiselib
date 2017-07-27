@@ -48,7 +48,7 @@ export class UserCenter extends Component{
         if(key == 'alter') {
             overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} />);
         } else {
-            overlayerShow(<ExitPopup cancel={this.cancel} confirm={this.confirm}/>);
+            overlayerShow(<ExitPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
         
     }

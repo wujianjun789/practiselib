@@ -15,9 +15,8 @@ import PropTypes from 'prop-types';
  * 
  */
 const Panel = (props) => {
-    let {className='', closeClick=null, title='', text, body, footer, closeBtn, children} = props;
+    let {className='', closeClick=null, title='', text, body, footer=null, closeBtn, children} = props;
     body = body ? body : <div className="row pull-center">{text ? text : '无相关数据'}</div>;
-    footer = footer ? footer : null,
     closeBtn =  closeBtn ? true : false;
     return (
         <div className={`modal ${className}`} role="dialog">

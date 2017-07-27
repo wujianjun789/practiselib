@@ -6,13 +6,13 @@ import ExitPopup from '../../../src/components/ExitPopup';
 describe('<ExitPopup />', () => {
     it('default render', () => {
         const click = jest.fn();
-        const cmp = shallow(<ExitPopup cancel={click} confirm={click}/>);
+        const cmp = shallow(<ExitPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
 
-        let icon = cmp.find('.icon.icon-popup-exit');
+        let icon = cmp.find('.icon.icon-class');
         expect(icon.length).toBe(1);
 
         let txt = cmp.find('.tips');
-        expect(txt.text()).toBe('是否退出？');
+        expect(txt.text()).toBe('tips');
 
         let btnCancel = cmp.find('.btn.btn-default');
         expect(btnCancel.text()).toBe('Cancel');
@@ -23,7 +23,7 @@ describe('<ExitPopup />', () => {
 
     it('click simulate', () => {
         const click = jest.fn();
-        const cmp = shallow(<ExitPopup cancel={click} confirm={click}/>);
+        const cmp = shallow(<ExitPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
 
         let btnCancel = cmp.find('.btn.btn-default');
         btnCancel.simulate('click');
@@ -36,7 +36,7 @@ describe('<ExitPopup />', () => {
 
     it('snapshot', () => {
         const click = jest.fn();
-        const cmp = renderer.create(<ExitPopup cancel={click} confirm={click}/>);
+        const cmp = renderer.create(<ExitPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
         let tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

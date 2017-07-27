@@ -153,9 +153,9 @@ export class DomainEdit extends Component {
         return (
             <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <div className="heading">
-                    <button className="btn btn-default add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
+                    <button className="btn btn-default add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
                 </div>
                 {
                     listMode ?
@@ -176,8 +176,9 @@ export class DomainEdit extends Component {
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data.name}</span>
-                            <button className="btn btn-default pull-right" onClick={()=>this.domainHandler('delete')}>删除</button>
-                            <button className="btn btn-default pull-right" onClick={()=>this.domainHandler('update')}>修改</button>
+                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')}>编辑</button>
+                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')}>删除</button>
+
                         </div>
                     </div>
                 </SideBarInfo>
