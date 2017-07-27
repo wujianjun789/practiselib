@@ -5,9 +5,9 @@ exports[`<ExitPopup /> snapshot 1`] = `
     className="tips">
     <div>
       <span
-        className="icon icon-popup-exit" />
+        className="icon icon-class" />
     </div>
-    是否退出？
+    tips
   </div>
   <div
     className="btn-toolbar">
