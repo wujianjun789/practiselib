@@ -4,6 +4,7 @@ import App from '../app/container/index'
 import {Login} from '../login/components/Login'
 import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
+import PermissionManage from '../permissionManage/container/index'
 export default (
     <Route>
         <Route path="/" component={App}>
@@ -33,6 +34,9 @@ export default (
                             cb(null, require('../domainMapPreview/container/MapPreview').default)
                         }, 'starriverpro.domainmappreview.mappreview')
             }}/>
+        </Route>
+        
+        <Route path="/permissionManage" component={PermissionManage}>
         </Route>
 
         <Route path="*" getComponent={(nextState, cb) => {
