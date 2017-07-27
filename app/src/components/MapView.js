@@ -23,9 +23,9 @@ export default class MapView extends Component{
     }
 
     initMap(){
-        const {mapData} = this.props;
+        const {option, mapData} = this.props;
         if(mapData){
-            updateMap({latlng:{lng:mapData.position.x, lat:mapData.position.y}});
+            updateMap({latlng:{lng:mapData.position.x, lat:mapData.position.y}}, option);
             let key = transformDeviceType(mapData.position["device_type"]);
 
             updateMapDevice([mapData.position], {[key]:[mapData.data]})

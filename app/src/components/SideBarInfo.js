@@ -79,7 +79,7 @@ export default class SideBarInfo extends Component{
                         <span className="icon_map_position"></span>地图位置
                     </div>
                     <div className="map-container panel-body">
-                        <MapView  mapData={this.props.mapDevice} />
+                        <MapView  option={{mapZoom:false}} mapData={this.props.mapDevice} />
                     </div>
                 </div>
         </div>
