@@ -16,17 +16,18 @@ import {sideBarToggled} from '../action/index'
 class AssetManageIndex extends Component{
     constructor(props){
         super(props);
+
         this.initTreeData = this.initTreeData.bind(this);
         this.onToggle = this.onToggle.bind(this);
     }
 
     componentWillMount(){
-        this.mounted = false;
-        getModelData(()=>{!this.mounted && this.initTreeData()});
+        this.mounted = true;
+        getModelData(()=>{this.mounted && this.initTreeData()});
     }
 
     componentWillUnmount(){
-        this.mounted = true;
+        this.mounted = false;
     }
 
     initTreeData(){
@@ -34,7 +35,8 @@ class AssetManageIndex extends Component{
     }
 
     onToggle(node){
-        this.props.actions.sideBarToggled(node);
+        const {actions} = this.props;
+        actions.sideBarToggled(node);
     }
 
     render(){

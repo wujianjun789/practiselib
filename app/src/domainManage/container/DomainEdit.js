@@ -133,15 +133,15 @@ export class DomainEdit extends Component {
     }
 
     onToggle(node) {
-        let mode = true;
-        if(node.id == "list-mode"){
+        let mode = undefined;
 
+        if(node.id == "list-mode"){
             mode = true;
-        }else{
+        }else if(node.id == 'topology-mode'){
             mode = false;
         }
 
-        this.setState({listMode:mode});
+        mode != undefined && this.setState({listMode:mode});
     }
 
     collpseHandler() {
