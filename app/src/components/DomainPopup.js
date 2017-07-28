@@ -2,6 +2,18 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Panel from './Panel';
 import PanelFooter from './PanelFooter';
+/**
+ * Domain component
+ * @param {String}      title       'domain title,
+ * @param {Object}      data        'domain data,  example:{domainName:"域名", lng:35, lat: 65, prevDomain: "上级域"}　'
+ * @param {Object}      domainList  
+ * @param {String}      domainList.titileKey 
+ * @param {String}      domainList.vlaueKey  
+ * @param {Array}       domainList.options     'example:[{id:0, value:"上级域1", title:"上级域1"}]'
+ * @param {Func}        onConfirm   'panel save button handler'
+ * @param {Func}        onCancel    'panel close button handler'
+ * 
+ */
 
 import MapView from './MapView'
 
@@ -41,7 +53,7 @@ export default class DomainPopup extends PureComponent {
             btnClassName={['btn-default', 'btn-primary']} 
             btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return <div className="domain-popup">
-            <Panel title="添加域" closeBtn={true} footer={footer} closeClick={this.onCancel} >
+            <Panel title={this.props.title} closeBtn={true} footer={footer} closeClick={this.onCancel} >
                 <div className="row">
                     <div className="col-sm-6 popup-left">
                         <div className="form-group row">
@@ -83,6 +95,7 @@ export default class DomainPopup extends PureComponent {
 }
 
 DomainPopup.propTypes = {
+    title: PropTypes.string.isRequired,
     data: PropTypes.shape({
         domainName: PropTypes.string.isRequired,
         lat: PropTypes.number.isRequired,
