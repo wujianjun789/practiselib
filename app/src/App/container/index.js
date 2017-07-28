@@ -28,7 +28,7 @@ export class App extends Component{
                     <div className="header-left clearfix">
                         <span className="icon icon-logo"></span>
                         <span className="tit">{title}</span>
-                        <span className="name">{name}</span>
+                        <span className="name"><span>{name}</span></span>
                     </div>
                     <UserCenter />
                 </div>

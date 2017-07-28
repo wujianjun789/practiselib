@@ -13,7 +13,9 @@ exports[`<App /> snapshot 1`] = `
       </span>
       <span
         className="name">
-        智慧照明
+        <span>
+          智慧照明
+        </span>
       </span>
     </div>
     <div
@@ -108,7 +110,9 @@ exports[`<App /> snapshot with props.title=undefined, props.name=undefined 1`] =
       </span>
       <span
         className="name">
-        智慧路灯管理系统
+        <span>
+          智慧路灯管理系统
+        </span>
       </span>
     </div>
     <div

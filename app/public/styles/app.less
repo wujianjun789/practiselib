@@ -46,6 +46,9 @@
         &.icon-publish {
             .icon-orig(url(/images/icon_publish.png));
         }
+        &.icon-domain {
+            .icon-orig(url(/images/icon_domain.png));
+        }
         &.icon-logo {
             .icon-orig(url(/images/logo.png));
         }
@@ -100,7 +103,8 @@
 
     .card-report,
     .card-visual,
-    .card-publish {
+    .card-publish,
+    .card-domain {
         .card-color-fill(#2c2f54, #4a5064);
     }
 
@@ -136,8 +140,11 @@
             > .name {
                 color: #fff;
                 font-size: 0.75em;
-                padding-left: 10px;
                 padding-right: 10px;
+                > span {
+                    padding-left: 10px;
+                    border-left: 1px solid #616774;
+                }
             }
         }
     }
