@@ -12,7 +12,7 @@ export const initialState = {
         {key: 'report', title: '报表管理', link: '/'},
         {key: 'publish', title: '媒体发布', link: '/'},
         {key: 'visual', title: '可视化', link: '/'},
-        {key: 'domain', title: '域管理', link: '/domainManage'},
+        {key: 'domain', title: '域管理', link: '/domainManage/domainEdit'},
     ],
 };
 

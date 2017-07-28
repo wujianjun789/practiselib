@@ -77,5 +77,7 @@ export function deleteDomainById(domainId, cb) {
         method: 'DELETE',
     }, response=>{
         cb && cb(response)
-    })
+    },null, error=>{
+
+    }, null, "unresolved")
 }

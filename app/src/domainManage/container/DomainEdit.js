@@ -12,8 +12,11 @@ import Table from '../../components/Table';
 import SearchText from '../../components/SearchText'
 import Page from '../../components/Page'
 
-import {TreeData} from '../../data/domainModel'
-import {getDomainCountByName, getDomainListByName, deleteDomainById} from '../../api/domain'
+import DomainPopup from '../../components/DomainPopup'
+import ExitPopup from '../../components/ExitPopup'
+import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
+
+import {getDomainList, getDomainCountByName, getDomainListByName, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 
@@ -24,11 +27,12 @@ export class DomainEdit extends Component {
             listMode: true,
             collapse: false,
             selectDomain: {
+                id:"domain",
                 position: {
                     "device_id": 1,
                     "device_type": 'DEVICE',
-                    x: 121.49971691534425,
-                    y: 31.239658843127756
+                    lng: 121.49971691534425,
+                    lat: 31.239658843127756
                 },
                 data: {
                     id: 1,
@@ -42,7 +46,7 @@ export class DomainEdit extends Component {
                 total: 21
             }),
 
-            search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
+            search: Immutable.fromJS({placeholder: '  输入域名称', value: ''}),
             data: Immutable.fromJS([{id:1,name: '上海市', parentDomain: '无'},
                 {id:2, name: '闵行区', parentDomain: '上海市'},
                 {id:3, name: '徐汇区', parentDomain: '上海市'}])
@@ -112,11 +116,20 @@ export class DomainEdit extends Component {
     }
 
     domainHandler(id){
-        console.log(id);
         const {selectDomain} = this.state
+        const {actions} = this.props;
         switch(id){
+            case 'add':
+            case 'update':
+                actions.overlayerShow(<DomainPopup data={{domainId:selectDomain.data.id, domainName:selectDomain.data.name,
+                lat:selectDomain.position.lat, lng:selectDomain.position.lng, prevDomain:''}}
+                                                              domainList={{titleKey:'name', valueKey:'name', options:[]}}
+                                                              onConfirm={()=>{}} onCancel={()=>{actions.overlayerHide()}}/>);
+                break;
             case 'delete':
-                deleteDomainById(selectDomain.data.id);
+                actions.overlayerShow(<ExitPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
+                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(selectDomain.data.id,
+                                                 (response)=>{ })}}/>);
                 break;
         }
     }
@@ -124,6 +137,7 @@ export class DomainEdit extends Component {
     pageChange(current, pageSize) {
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=>{
+            this.requestSearch();
         });
     }
 
@@ -208,7 +222,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators({}, dispatch)
+        actions: bindActionCreators({
+            overlayerShow: overlayerShow,
+            overlayerHide: overlayerHide
+        }, dispatch)
     }
 }
 export default connect(

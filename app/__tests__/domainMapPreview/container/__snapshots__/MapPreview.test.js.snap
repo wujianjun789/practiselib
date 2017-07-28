@@ -3,6 +3,6 @@ exports[`test MapPreview renders 1`] = `
   className="content ">
   <div
     className="map-view "
-    id="map" />
+    id={undefined} />
 </div>
 `;

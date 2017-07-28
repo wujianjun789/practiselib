@@ -35,7 +35,7 @@ exports[`test AssetStatistics renders 1`] = `
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
-        placeholder="输入素材名称"
+        placeholder="  输入素材名称"
         type="search"
         value="" />
       <ul
@@ -352,7 +352,7 @@ exports[`test AssetStatistics renders 1`] = `
         className="map-container panel-body">
         <div
           className="map-view "
-          id="map" />
+          id="assetStatistics" />
       </div>
     </div>
   </div>

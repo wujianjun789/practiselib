@@ -5,8 +5,6 @@ import React, {Component} from 'react'
 import '../../public/styles/sideBarInfo.less';
 
 import MapView from '../components/MapView'
-import {updateMap, updateMapDevice, mapPanTo, destory} from '../util/map'
-import {transformDeviceType} from '../util/index'
 /**
  * 右侧栏带地图伸缩信息
  */
@@ -18,29 +16,10 @@ export default class SideBarInfo extends Component{
             collapse:false,
         }
 
-        this.latlng = {};
-
-        this.initMap = this.initMap.bind(this);
-        this.renderMap = this.renderMap.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
     }
 
-    componentWillMount(){
 
-    }
-
-    componentDidUpdate(){
-        // const {mapDevice} = this.props;
-        // let key = transformDeviceType(mapDevice.position["device_type"]);
-        // updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
-        // mapPanTo({lng:mapDevice.position.x, lat:mapDevice.position.y});
-        // destory();
-        this.initMap();
-    }
-
-    componentWillUnmount(){
-        destory();
-    }
 
     collpseHandler(){
         this.setState({collapse:!this.state.collapse});
@@ -48,21 +27,6 @@ export default class SideBarInfo extends Component{
         this.props.collpseHandler && this.props.collpseHandler();
     }
 
-    initMap(){
-        const {mapDevice} = this.props;
-        if(mapDevice){
-            updateMap({latlng:{lng:mapDevice.position.x, lat:mapDevice.position.y}});
-            let key = transformDeviceType(mapDevice.position["device_type"]);
-
-            updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
-        }
-    }
-
-    renderMap(ref) {
-        if (ref) {
-            this.initMap();
-        }
-    }
 
     render(){
         const {collapse} = this.state;
@@ -85,3 +49,4 @@ export default class SideBarInfo extends Component{
         </div>
     }
 }
+

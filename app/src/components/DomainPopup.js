@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import Panel from './Panel';
 import PanelFooter from './PanelFooter';
 
+import MapView from './MapView'
+
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
-        const {domainName, lat, lng, prevDomain} = this.props.data;
+        const {domainId, domainName, lat, lng, prevDomain} = this.props.data;
         this.state = {
+            domainId: domainId,
             domainName: domainName,
             lng: lng,
             lat: lat,
@@ -32,7 +35,7 @@ export default class DomainPopup extends PureComponent {
     }
 
     render() {
-         let {domainName, lng, lat, prevDomain} = this.state;
+         let {domainId, domainName, lng, lat, prevDomain} = this.state;
          let {titleKey, valueKey, options} = this.props.domainList;
          let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']} 
             btnClassName={['btn-default', 'btn-primary']} 
@@ -70,7 +73,9 @@ export default class DomainPopup extends PureComponent {
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-6 popup-map">右侧地图区域</div>
+                    <div className="col-sm-6 popup-map">
+                        <MapView option={{mapZoom:false}} mapData={{id:"domainPopup", position:{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}, data:{id:domainId, name:domainName}}}/>
+                    </div>
                 </div>
             </Panel>
         </div>

@@ -36,7 +36,7 @@ export class AssetStatistics extends Component {
             ]),
             domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], index:0, value:'域'}),
             device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
-            search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
+            search:Immutable.fromJS({placeholder:'  输入素材名称', value:''}),
             collapse:false,
             page: Immutable.fromJS({
                 pageSize:10,
@@ -48,11 +48,12 @@ export class AssetStatistics extends Component {
                 normal: 98
             },
             selectDevice:{
+                id:"assetStatistics",
                 position:{
                     "device_id":1,
                     "device_type":'DEVICE',
-                    x:121.49971691534425,
-                    y:31.239658843127756
+                    lng:121.49971691534425,
+                    lat:31.239658843127756
                 },
                 data:{
                     id:1,

@@ -9,7 +9,7 @@ exports[`test DomainEdit renders 1`] = `
         onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
-        placeholder="输入域名称"
+        placeholder="  输入域名称"
         type="search"
         value="" />
       <ul
@@ -207,7 +207,7 @@ exports[`test DomainEdit renders 1`] = `
         className="map-container panel-body">
         <div
           className="map-view "
-          id="map" />
+          id="domain" />
       </div>
     </div>
   </div>
