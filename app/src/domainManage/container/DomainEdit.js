@@ -13,7 +13,7 @@ import SearchText from '../../components/SearchText'
 import Page from '../../components/Page'
 
 import {TreeData} from '../../data/domainModel'
-import {getDomainListByName, deleteDomainById} from '../../api/domain'
+import {getDomainCountByName, getDomainListByName, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 
@@ -60,13 +60,14 @@ export class DomainEdit extends Component {
         this.domainHandler = this.domainHandler.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
         this.initDomainList = this.initDomainList.bind(this);
     }
 
     componentWillMount() {
-        this.mounted = false;
+        this.mounted = true;
         this.initTreeData();
-        // this.requestSearch('');
+        // this.requestSearch();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -77,11 +78,22 @@ export class DomainEdit extends Component {
     }
 
     componentWillUnmount() {
-        this.mounted = true;
+        this.mounted = false;
     }
 
-    requestSearch(name){
-        getDomainListByName(name, data=>{!this.mounted && this.initDomainList(data)})
+    requestSearch(){
+        const {search, page} = this.state
+        let name = search.get('value');
+        let cur = page.get('current');
+        let size = page.get('pageSize');
+        let offset = (cur-1)*size;
+        getDomainCountByName(name, data=>{this.mounted && this.initPageSize(data)})
+        getDomainListByName(name, offset, size, data=>{this.mounted && this.initDomainList(data)})
+    }
+
+    initPageSize(data){
+        let page = this.state.page.set('total', data.count);
+        this.setState({page:page});
     }
 
     initDomainList(data){
@@ -124,8 +136,8 @@ export class DomainEdit extends Component {
 
     searchSubmit(){
         console.log('submit');
-        const {search} = this.state
-        this.requestSearch(search.get('value'));
+
+        this.requestSearch();
     }
 
     searchChange(value){

@@ -19,7 +19,7 @@ import Pie from '../../components/SensorParamsPie'
 
 import {getModelData, getModelList} from '../../data/assetModels'
 
-import {getSearchAssets, getAssetsCount} from '../../api/asset'
+import {getSearchCount, getSearchAssets, getAssetsCount} from '../../api/asset'
 import {getDomainList} from '../../api/domain'
 import {getDeviceTypeByModel} from '../../util/index'
 
@@ -79,19 +79,20 @@ export class AssetStatistics extends Component {
         this.searchResult = this.searchResult.bind(this);
         this.deviceTotal = this.deviceTotal.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
+        this.initPageTotal = this.initPageTotal.bind(this);
     }
 
     componentWillMount(){
-        this.mounted = false;
+        this.mounted = true;
         // const query = this.props.location.query;
-        getModelData(()=>{!this.mounted && this.initTreeData()});
-        getDomainList(data=>{!this.mounted && this.initDomain(data)});
+        getModelData(()=>{this.mounted && this.initTreeData()});
+        getDomainList(data=>{this.mounted && this.initDomain(data)});
 
-        getAssetsCount(data=>{!this.mounted && this.deviceTotal(data)})
+        getAssetsCount(data=>{this.mounted && this.deviceTotal(data)})
     }
 
     componentWillUnmount(){
-        this.mounted = true;
+        this.mounted = false;
     }
 
     requestSearch(){
@@ -100,8 +101,13 @@ export class AssetStatistics extends Component {
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
 
+        let domainValue = domain.get('value')
         let model = device.getIn(['list', device.get('index')]);
-        getSearchAssets(domain.get('value'), model && model.get('id'), search.get('value'), offset, size, this.searchResult);
+        let modelId = model.get('id');
+        let name = search.get('value')
+
+        getSearchCount(domainValue, modelId, name, (data)=>this.mounted && this.initPageTotal(data))
+        getSearchAssets(domainValue, modelId, name, offset, size, data=>this.mounted && this.searchResult(data));
     }
 
     initTreeData(){
@@ -121,6 +127,11 @@ export class AssetStatistics extends Component {
         }
 
         this.requestSearch();
+    }
+
+    initPageTotal(data){
+        let page = this.state.page.set('total', data.count);
+        this.setState({page: page});
     }
 
     searchResult(data){

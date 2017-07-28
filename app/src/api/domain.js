@@ -12,9 +12,9 @@ export function getDomainList(cb) {
     })
 }
 
-export function getDomainListByName(domainName, cb) {
+export function getDomainListByName(domainName, offset, limit, cb) {
     let headers = getHttpHeader();
-    let param = JSON.stringify({"where":{name:domainName}})
+    let param = JSON.stringify({"where":{name:domainName}, "offset":offset,"limit":limit})
     let url = '';
     if(domainName){
         url = HOST_IP+'/domains?filter='+param;
@@ -22,6 +22,24 @@ export function getDomainListByName(domainName, cb) {
         url = HOST_IP+'/domains';
     }
     
+    httpRequest(url, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getDomainCountByName(domainName, cb) {
+    let headers = getHttpHeader();
+    let param = JSON.stringify({name:domainName})
+    let url = '';
+    if(domainName){
+        url = HOST_IP+'/domains/count?where='+param;
+    }else{
+        url = HOST_IP+'/domains/count';
+    }
+
     httpRequest(url, {
         headers: headers,
         method: 'GET'

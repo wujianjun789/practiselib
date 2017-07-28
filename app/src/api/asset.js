@@ -16,6 +16,31 @@ export function getAssetModelList(cb) {
 export function getSearchAssets(domain, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
 
+    let paramStr = JSON.stringify({"include":["extend"],"where":getSearchParam(domain, model, name),"offset":offset,"limit":limit})
+
+    httpRequest(HOST_IP+'/assets?filter='+paramStr, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        // console.log(response);
+        cb && cb(response);
+    })
+}
+
+export function getSearchCount(domain, model, name, cb) {
+    let headers = getHttpHeader();
+
+    let paramStr = JSON.stringify(getSearchParam(domain, model, name))
+    httpRequest(HOST_IP+'/assets/count?where='+paramStr, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        // console.log(response);
+        cb && cb(response);
+    })
+}
+
+function getSearchParam(domain, model, name) {
     let param = {}
     // if(domain){
     //     Object.assign(param, {"domain":domain})
@@ -27,15 +52,7 @@ export function getSearchAssets(domain, model, name, offset, limit, cb) {
         Object.assign(param, {"name":name})
     }
 
-    let paramStr = JSON.stringify({"include":["extend"],"where":param,"offset":offset,"limit":limit})
-
-    httpRequest(HOST_IP+'/assets?filter='+paramStr, {
-        headers: headers,
-        method: 'GET'
-    }, response=>{
-        // console.log(response);
-        cb && cb(response);
-    })
+    return param;
 }
 
 export function getAssetsCount(cb) {
