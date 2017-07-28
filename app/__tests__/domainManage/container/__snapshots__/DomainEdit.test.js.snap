@@ -174,7 +174,7 @@ exports[`test DomainEdit renders 1`] = `
       <div
         className="panel-heading">
         <span
-          className="icon_statistics" />
+          className="icon_domain_property" />
         域属性
       </div>
       <div

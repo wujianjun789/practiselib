@@ -541,6 +541,16 @@ ul {
     background: url("../images/icon_collect_hover.png");
 }
 
+.tree-list .icon_domain_list {
+    background: url("../images/icon_domain_list.png");
+}.tree-list .icon_domain_list_hover {
+    background: url("../images/icon_domain_list_hover.png");
+}.tree-list .icon_domain_topology {
+    background: url("../images/icon_domain_topology.png");
+}.tree-list .icon_domain_topology_hover {
+    background: url("../images/icon_domain_topology_hover.png");
+}
+
 .sidebar-info .icon_verital {
     background: url("../images/icon_verital.png");
     background-size: 100% 100%;
@@ -558,6 +568,11 @@ ul {
 
 .sidebar-info .icon_map_position {
     background: url("../images/icon_map_position.png");
+    background-size: 100% 100%;
+}
+
+.sidebar-info .icon_domain_property {
+    background: url("../images/icon_domain_property.png");
     background-size: 100% 100%;
 }
 

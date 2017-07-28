@@ -172,7 +172,7 @@ export class DomainEdit extends Component {
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <span className="icon_statistics"></span>域属性
+                            <span className="icon_domain_property"></span>域属性
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data.name}</span>

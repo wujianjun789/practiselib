@@ -14,11 +14,13 @@ export const TreeData=[
             {
                 "id": 'list-mode',
                 "name":"列表模式",
+                "class":"icon_domain_list",
                 "active":true
             },
             {
                 "id": 'topology-mode',
                 "name":"拓扑图",
+                "class":"icon_domain_topology",
                 "active":false
             }
         ]
