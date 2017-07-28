@@ -12,3 +12,6 @@ yarn*
 
 #idea
 .idea
+
+#npm-debug.log
+npm-debug.log
