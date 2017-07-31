@@ -1,9 +1,10 @@
 /**
  * Created by a on 2017/7/25.
  */
-import React,{Component} from 'react'
+import React,{Component} from 'react';
+import PropTypes from 'prop-types';
 
-import Map,{updateMap} from '../util/map'
+import Map from '../util/map'
 import {transformDeviceType} from '../util/index'
 
 export default class MapView extends Component{
@@ -27,14 +28,18 @@ export default class MapView extends Component{
     }
 
     initMap(){
-        const {option, mapData} = this.props;
+        const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
+
         if(mapData){
-            this.state[mapData.id] && this.state[mapData.id].destory();
-            this.state[mapData.id] = new Map();
-            this.state[mapData.id].updateMap({id:mapData.id, latlng:{lng:mapData.position.lng, lat:mapData.position.lat}}, option);
+            // this.state[mapData.id] && this.state[mapData.id].destory();
+            if(!this.state[mapData.id]){
+                this.state[mapData.id] = new Map();
+            }
+
+            this.state[mapData.id].updateMap({id:mapData.id, latlng:{lng:mapData.position.lng, lat:mapData.position.lat}}, option, mapCallFun);
             let key = transformDeviceType(mapData.position["device_type"]);
 
-            this.state[mapData.id].updateMapDevice([mapData.position], {[key]:[mapData.data]})
+            this.state[mapData.id].updateMapDevice([mapData.position], {[key]:[mapData.data]}, markerCallFun)
         }
     }
 
@@ -48,4 +53,10 @@ export default class MapView extends Component{
         const {className='', mapData} = this.props;
         return <div className={"map-view "+className} ref={this.renderMap} id={mapData && mapData.id}></div>
     }
+}
+
+MapView.propTypes = {
+    mapData: PropTypes.shape({
+        id: PropTypes.string.isRequired
+    }).isRequired
 }

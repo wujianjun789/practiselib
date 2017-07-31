@@ -121,7 +121,7 @@ export class DomainEdit extends Component {
         switch(id){
             case 'add':
             case 'update':
-                actions.overlayerShow(<DomainPopup data={{domainId:selectDomain.data.id, domainName:selectDomain.data.name,
+                actions.overlayerShow(<DomainPopup title={id=='add'?"添加域":"修改域属性"} data={{domainId:selectDomain.data.id, domainName:selectDomain.data.name,
                 lat:selectDomain.position.lat, lng:selectDomain.position.lng, prevDomain:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:[]}}
                                                               onConfirm={()=>{}} onCancel={()=>{actions.overlayerHide()}}/>);

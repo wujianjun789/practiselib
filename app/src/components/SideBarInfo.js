@@ -30,6 +30,7 @@ export default class SideBarInfo extends Component{
 
     render(){
         const {collapse} = this.state;
+        const {mapDevice={id:'example'}} = this.props;
 
         return <div className={"container-fluid sidebar-info "+(collapse ? "sidebar-collapse":"")}>
                 <div className="row collapse-container" onClick={()=>this.collpseHandler()}>
@@ -43,7 +44,7 @@ export default class SideBarInfo extends Component{
                         <span className="icon_map_position"></span>地图位置
                     </div>
                     <div className="map-container panel-body">
-                        <MapView  option={{mapZoom:false}} mapData={this.props.mapDevice} />
+                        <MapView  option={{mapZoom:false}} mapData={mapDevice} />
                     </div>
                 </div>
         </div>

@@ -1,13 +1,15 @@
 /**
  * Created by RJ on 2016/4/16.
  */
+var mapObject = {callFun:null, deviceList:{}};
+
 export default class Map{
     constructor(){
         this.map = null;
         this.drawFeatureGroup = L.featureGroup();
         this.drawItems = null;
-        this.deviceList = {}
-        this._callFun = null;
+        // this.deviceList = {}
+
         this.curDevice = {type:'', id:-1};
 
         this.updateTime = -1;
@@ -17,6 +19,7 @@ export default class Map{
 
         this.curMapData = null;
         this.layer = null;
+        // this._callFun = null;
 
         this.markerPosList = []
         this.markerList = []
@@ -27,7 +30,9 @@ export default class Map{
         this.activeBtn = null;
     }
 
-    updateMap(data, option) {
+    updateMap(data, option, callFun) {
+
+        initCallFun(callFun);
 
         var options = {
             mapOffline: 0,
@@ -60,11 +65,11 @@ export default class Map{
     }
 
     updateMapDevice(data, deviceData, callFun) {
-        this._callFun = callFun;
+        initCallFun(callFun);
 
         if (deviceData) {
             for (var key in deviceData) {
-                this.deviceList[key] = deviceData[key];
+                mapObject.deviceList[key] = deviceData[key];
             }
         }
         this.createMarker(data);
@@ -114,6 +119,8 @@ export default class Map{
             }
 
         }
+
+        this.map.on('moveend', mapMoveEnd);
     }
 
     setMapView(data, options) {
@@ -212,7 +219,7 @@ export default class Map{
                 status = item.comm_status == 'Normal' && item.lamp_status == 'Normal' ? 2 : 0;
                 status = status && item.brightness > 0 ? 1 : 0;
                 marker.options.status = status;
-                marker.setIcon(this.getCustomMarkerByDeviceType('DEVICE', status));
+                marker.setIcon(getCustomMarkerByDeviceType('DEVICE', status));
                 // loadMarkerPopup(marker, item);
             }
         })
@@ -222,7 +229,7 @@ export default class Map{
             if (cMarker != null) {
                 status = item.comm_state == 'Normal' ? 1 : 0;
                 marker.options.status = status;
-                cMarker.setIcon(this.getCustomMarkerByDeviceType('CONTROLLER', status))
+                cMarker.setIcon(getCustomMarkerByDeviceType('CONTROLLER', status))
             }
         })
 
@@ -246,7 +253,7 @@ export default class Map{
 
                 status = status && item.lamp.brightness > 0 ? 1 : 0
                 marker.options.status = status;
-                iMarker.setIcon(this.getCustomMarkerByDeviceType('ISTREETLIGHT', status))
+                iMarker.setIcon(getCustomMarkerByDeviceType('ISTREETLIGHT', status))
             }
         })
 
@@ -266,7 +273,7 @@ export default class Map{
                 }
 
                 marker.options.status = status;
-                chMarker.setIcon(this.getCustomMarkerByDeviceType('CHARGER', status))
+                chMarker.setIcon(getCustomMarkerByDeviceType('CHARGER', status))
             }
         })
     }
@@ -282,12 +289,12 @@ export default class Map{
     }
     updateMouseOverStatus (type, id) {
         var marker = this.getMarkerById(type, id)
-        marker && marker.setIcon(this.getCustomMarkerByDeviceType(type, 3, marker.options.digital))
+        marker && marker.setIcon(getCustomMarkerByDeviceType(type, 3, marker.options.digital))
     }
 
     updateMouseOutStatus (type, id) {
         var marker = this.getMarkerById(type, id)
-        marker && marker.setIcon(this.getCustomMarkerByDeviceType(marker.options.type, marker.options.id, marker.options.digital));
+        marker && marker.setIcon(getCustomMarkerByDeviceType(marker.options.type, marker.options.id, marker.options.digital));
     }
 
     staticPicture(data) {
@@ -312,70 +319,7 @@ export default class Map{
     }
 
 //__________________________________________________________________________________________________
-    /**
-     * @param type设备类型
-     * @param status设备状态
-     */
-     getCustomMarkerByDeviceType(type, status, digital) {
 
-        var color = '';
-        switch (type) {
-            case 'CONTROLLER':
-                return L.AwesomeMarkers.icon({
-                    icon: 'sitemap',
-                    color: this.getColorByStatus(status)
-                });
-            case 'DEVICE':
-                return L.AwesomeMarkers.icon({
-                    icon: 'lightbulb',
-                    color: this.getColorByStatus(status)
-                });
-            case 'ISTREETLIGHT':
-                return L.AwesomeMarkers.icon({
-                    icon: 'intelligent',
-                    color: this.getColorByStatus(status),
-                    linkImg: true
-                });
-            case 'CHARGER':
-                return L.AwesomeMarkers.icon({
-                    icon: 'charger',
-                    color: this.getColorByStatus(status),
-                    linkImg: true
-                })
-            case 'DIGITAL':
-                return L.AwesomeMarkers.icon({
-                    icon: '' + digital,
-                    color: this.getColorByStatus(status),
-                    digital: true
-                })
-            default:
-                return L.AwesomeMarkers.icon({
-                    icon: '',
-                    color: this.getColorByStatus(status)
-                })
-        }
-
-    }
-
-     getColorByStatus(status) {
-        var color = 'red'
-        switch (status) {
-            case 0:
-                color = 'red'
-                break;
-            case 1:
-                color = 'green';
-                break;
-            case 2:
-                color = 'cadetblue';
-                break;
-            case 3:
-                color = 'darkblue';
-                break;
-        }
-
-        return color;
-    }
 
      createMarker(list) {
 
@@ -394,9 +338,9 @@ export default class Map{
                 //     // markerList.splice(markerIndex);
             } else {
                 _this.markerPosList.push(data);
-                var device = _this.getDevicesByTypeAndId(data.device_type, data.device_id);
+                var device = getDevicesByTypeAndId(data.device_type, data.device_id);
                 var labelInfo = device ? device.name : '';
-                var newMarker = _this.drawMarker(data.device_type, data.device_id, L.latLng([data.lat, data.lng]), _this.getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
+                var newMarker = _this.drawMarker(data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
                 if (newMarker) {
                     _this.loadMarkerLabel(newMarker, labelInfo);
 
@@ -407,36 +351,6 @@ export default class Map{
         })
     }
 
-     getDevicesByTypeAndId(type, id) {
-         var deviceList = this.deviceList;
-
-        let list = [];
-        switch (type) {
-            case 'DEVICE':
-                list = deviceList.lamp;
-                break;
-            case 'CONTROLLER':
-                list = deviceList.controller;
-                break;
-            case 'ISTREETLIGHT':
-                list = deviceList.intelligent;
-                break;
-            case 'CHARGER':
-                list = deviceList.charger;
-                break;
-            case 'DIGITAL':
-                list = deviceList.digital;
-                break;
-        }
-
-        for (var i = 0; i < list.length; i++) {
-            if (list[i].id == id) {
-                return list[i]
-            }
-        }
-
-        return null;
-    }
 
      getMarkerById(type, id) {
         for (var index in this.markerList) {
@@ -506,9 +420,9 @@ export default class Map{
 
      removeMarker(marker) {
         if (marker) {
-            marker.off('click', this.markerClick);
-            marker.off('mouseover', this.markerOver);
-            marker.off('mouseout', this.markerOut);
+            marker.off('click', markerClick);
+            marker.off('mouseover', markerOver);
+            marker.off('mouseout', markerOut);
             if (this.drawItems.hasLayer(marker)) {
                 this.drawItems.removeLayer(marker);
             }
@@ -535,62 +449,30 @@ export default class Map{
 
      loadMarkerDrag(marker) {
         marker.on('dragstart', function () {
-            marker.off("mouseover", this.markerOver);
-            marker.off("mouseout", this.markerOut);
+            marker.off("mouseover", markerOver);
+            marker.off("mouseout", markerOut);
         })
         marker.on('dragend', this.markerDragEnd)
     }
 
      loadMarkerMouseover(marker) {
-        marker.on('mouseover', this.markerOver);
+        marker.on('mouseover', markerOver);
     }
 
     markerDragEnd(event) {
         var marker = event.target;
-        this.markerDragendHandler({
+        markerDragendHandler({
             id: marker.options.id,
             type: marker.options.type,
             latlng: marker.getLatLng()
         })
 
-        marker.on("mouseover", this.markerOver);
-    }
-
-    markerOver(event) {
-        var marker = event.target;
-        marker.off("mouseover", this.markerOver);
-        marker.on("mouseout", this.markerOut);
-        marker.setIcon(this.getCustomMarkerByDeviceType(marker.options.type, 3, marker.options.digital));
-        this.markerMouseOverHandler({
-            type: marker.options.type,
-            id: marker.options.id,
-        })
-    }
-
-    markerOut(event) {
-        var marker = event.target;
-        marker.on("mouseover", this.markerOver);
-        marker.off("mouseout", this.markerOut)
-        marker.setIcon(this.getCustomMarkerByDeviceType(marker.options.type, marker.options.status, marker.options.digital))
-        this.markerMouseOutHandler({
-            type: marker.options.type,
-            id: marker.options.id,
-        })
+        marker.on("mouseover", markerOver);
     }
 
      loadMarkerPopup(marker) {
-        marker.off('click', this.markerClick);
-        marker.on('click', this.markerClick);
-    }
-
-    markerClick(event) {
-        var marker = event.target;
-        this.markerClickHandler({
-            type: marker.options.type,
-            id: marker.options.id,
-            x: event.originalEvent.clientX,
-            y: event.originalEvent.clientY
-        });
+        marker.off('click', markerClick);
+        marker.on('click', markerClick);
     }
 
      markerControl(IsAdd, options) {
@@ -638,27 +520,27 @@ export default class Map{
         this.map.on('draw:created', function (e) {
 
             if (this.curDevice.id < 0) {
-                this.markerHandler('error', $.i18n.prop('select_device'));
+                markerHandler('error', $.i18n.prop('select_device'));
 
                 return;
             }
 
             if (this.getMarkerDataById(this.curDevice.type, this.curDevice.id)) {
-                this.markerHandler('error', $.i18n.prop('device_added'));
+                markerHandler('error', $.i18n.prop('device_added'));
                 return;
             }
 
 
             var type = e.layerType,
                 marker = e.layer;
-            marker.setIcon(this.getCustomMarkerByDeviceType(this.curDevice.type, 0));
+            marker.setIcon(getCustomMarkerByDeviceType(this.curDevice.type, 0));
             if (type === 'marker') {
             }
 
             marker.options.type = curDevice.type;
             marker.options.id = curDevice.id;
 
-            var device = this.getDevicesByTypeAndId(this.curDevice.type, this.curDevice.id);
+            var device = getDevicesByTypeAndId(this.curDevice.type, this.curDevice.id);
             var labelInfo = device ? device.name : '';
             this.loadMarkerLabel(marker, labelInfo);
 
@@ -670,7 +552,7 @@ export default class Map{
             this.curMapData ? (addData.map_id = this.curMapData.id) : ''
             this.addMarkerData(addData);
 
-            this.markerHandler('add', addData);
+            markerHandler('add', addData);
         });
         //
         map.on('draw:edited', function (e) {
@@ -685,7 +567,7 @@ export default class Map{
                 editData.push(markerData);
             });
 
-            this.markerHandler('edit', editData);
+            markerHandler('edit', editData);
         });
 
         map.on('draw:deleted', function (e) {
@@ -701,49 +583,13 @@ export default class Map{
                 this.delMarkerById(removeMarker.options.type, removeMarker.options.id)
             })
 
-            this.markerHandler('delete', deletedData);
+            markerHandler('delete', deletedData);
         })
-    }
-
-     markerDragendHandler(data) {
-        if (this._callFun != null && this._callFun.markerDragendHandler) {
-            this._callFun.markerDragendHandler(data);
-        }
-    }
-
-     markerMouseOverHandler(data) {
-        if (this._callFun != null && this._callFun.markerMouseOverHandler) {
-            this._callFun.markerMouseOverHandler(data);
-        }
-    }
-
-     markerMouseOutHandler(data) {
-        if (this._callFun != null && this._callFun.markerMouseOutHandler) {
-            this._callFun.markerMouseOutHandler(data);
-        }
-    }
-
-     markerClickHandler(data) {
-        if (this._callFun != null && this._callFun.markerClickHandler) {
-            this._callFun.markerClickHandler(data);
-        }
-    }
-
-    markerHandler(id, data) {
-        if (this._callFun != null && this._callFun.markerHandler) {
-            this._callFun.markerHandler(id, data)
-        }
-    }
-
-    lampBrightnessChange(id, mode, targetId, value) {
-        if (this._callFun != null && this._callFun.lampBrightnessChange) {
-            this._callFun.lampBrightnessChange.apply(null, [id, mode, targetId, value]);
-        }
     }
 
     customControl(data) {
         return;
-        if (!map || deviceControl) {
+        if (!this.map || this.deviceControl) {
             return;
         }
 
@@ -763,7 +609,7 @@ export default class Map{
                     var btn = L.DomUtil.create('button', className, container)
                     btn.id = item.id;
                     btn.innerText = item.name;
-                    btn.addEventListener('click', this.toggleHandler);
+                    btn.addEventListener('click', toggleHandler);
                     if (item.id == data.deviceBtn.active) {
                         activeBtn = btn;
                     }
@@ -776,19 +622,6 @@ export default class Map{
         this.deviceControl && this.map.addControl(this.deviceControl);
     }
 
-    toggleHandler(event) {
-        if (this._callFun != null && this._callFun.toggleMap) {
-            var id = event.target.id;
-            if (id == 'leftBtn' || id == 'rightBtn') {
-                id == 'leftBtn' ? this._callFun.toggleMap('GLOBAL_MAP') : this._callFun.toggleMap('LOCAL_MAP')
-            } else {
-                L.DomUtil.removeClass(activeBtn, 'active');
-                activeBtn = event.target;
-                L.DomUtil.addClass(activeBtn, 'active');
-                this. _callFun.toggleMap(id);
-            }
-        }
-    }
 
     createPolygon() {
         var circle = L.circle(position, 1500, {
@@ -831,5 +664,204 @@ export default class Map{
     destory () {
         clearTimeout(this.updateTime);
         this.destoryMap();
+    }
+}
+
+function mapMoveEnd(event) {
+
+    var map = event.target;
+    mapDragendHandler({
+        latlng:map.getCenter()
+    });
+}
+
+function markerOver(event) {
+    var marker = event.target;
+    marker.off("mouseover", markerOver);
+    marker.on("mouseout", markerOut);
+
+    var icon = getCustomMarkerByDeviceType(marker.options.type, 3, marker.options.digital)
+    marker.setIcon(icon);
+    markerMouseOverHandler({
+        type: marker.options.type,
+        id: marker.options.id,
+    })
+}
+
+function markerOut(event) {
+    var marker = event.target;
+    marker.on("mouseover", markerOver);
+    marker.off("mouseout", markerOut)
+    var icon = getCustomMarkerByDeviceType(marker.options.type, marker.options.status, marker.options.digital)
+    marker.setIcon(icon)
+    markerMouseOutHandler({
+        type: marker.options.type,
+        id: marker.options.id,
+    })
+}
+
+function markerClick(event) {
+    var marker = event.target;
+    markerClickHandler({
+        type: marker.options.type,
+        id: marker.options.id,
+        x: event.originalEvent.clientX,
+        y: event.originalEvent.clientY
+    });
+}
+
+function toggleHandler(event) {
+    if (mapObject.callFun != null && mapObject.callFun.toggleMap) {
+        var id = event.target.id;
+        if (id == 'leftBtn' || id == 'rightBtn') {
+            id == 'leftBtn' ? mapObject.callFun.toggleMap('GLOBAL_MAP') : mapObject.callFun.toggleMap('LOCAL_MAP')
+        } else {
+            L.DomUtil.removeClass(activeBtn, 'active');
+            activeBtn = event.target;
+            L.DomUtil.addClass(activeBtn, 'active');
+            mapObject.callFun.toggleMap(id);
+        }
+    }
+}
+/**
+ * @param type设备类型
+ * @param status设备状态
+ */
+function getCustomMarkerByDeviceType(type, status, digital) {
+
+    var color = '';
+    switch (type) {
+        case 'CONTROLLER':
+            return L.AwesomeMarkers.icon({
+                icon: 'sitemap',
+                color: getColorByStatus(status)
+            });
+        case 'DEVICE':
+            return L.AwesomeMarkers.icon({
+                icon: 'lightbulb',
+                color: getColorByStatus(status)
+            });
+        case 'ISTREETLIGHT':
+            return L.AwesomeMarkers.icon({
+                icon: 'intelligent',
+                color: getColorByStatus(status),
+                linkImg: true
+            });
+        case 'CHARGER':
+            return L.AwesomeMarkers.icon({
+                icon: 'charger',
+                color: getColorByStatus(status),
+                linkImg: true
+            })
+        case 'DIGITAL':
+            return L.AwesomeMarkers.icon({
+                icon: '' + digital,
+                color: getColorByStatus(status),
+                digital: true
+            })
+        default:
+            return L.AwesomeMarkers.icon({
+                icon: '',
+                color: getColorByStatus(status)
+            })
+    }
+
+}
+
+function getColorByStatus(status) {
+    var color = 'red'
+    switch (status) {
+        case 0:
+            color = 'red'
+            break;
+        case 1:
+            color = 'green';
+            break;
+        case 2:
+            color = 'cadetblue';
+            break;
+        case 3:
+            color = 'darkblue';
+            break;
+    }
+
+    return color;
+}
+
+function getDevicesByTypeAndId(type, id) {
+    var deviceList = mapObject.deviceList;
+    let list = [];
+    switch (type) {
+        case 'DEVICE':
+            list = deviceList.lamp;
+            break;
+        case 'CONTROLLER':
+            list = deviceList.controller;
+            break;
+        case 'ISTREETLIGHT':
+            list = deviceList.intelligent;
+            break;
+        case 'CHARGER':
+            list = deviceList.charger;
+            break;
+        case 'DIGITAL':
+            list = deviceList.digital;
+            break;
+    }
+
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].id == id) {
+            return list[i]
+        }
+    }
+
+    return null;
+}
+
+function initCallFun(callFun) {
+    if(!callFun){
+        return;
+    }
+
+    if(mapObject.callFun){
+        mapObject.callFun = Object.assign({}, mapObject.callFun, callFun)
+    }else{
+        mapObject.callFun = callFun
+    }
+}
+
+function mapDragendHandler(data){
+    if(mapObject.callFun != null && mapObject.callFun.mapDragendHandler){
+        mapObject.callFun.mapDragendHandler(data);
+    }
+}
+
+function markerDragendHandler(data) {
+    if (mapObject.callFun != null && mapObject.callFun.markerDragendHandler) {
+        mapObject.callFun().markerDragendHandler(data);
+    }
+}
+
+function markerMouseOverHandler(data) {
+    if (mapObject.callFun != null && mapObject.callFun.markerMouseOverHandler) {
+        mapObject.callFun.markerMouseOverHandler(data);
+    }
+}
+
+function markerMouseOutHandler(data) {
+    if (mapObject.callFun != null && mapObject.callFun.markerMouseOutHandler) {
+        mapObject.callFun.markerMouseOutHandler(data);
+    }
+}
+
+function markerClickHandler(data) {
+    if (mapObject.callFun != null && mapObject.callFun.markerClickHandler) {
+        mapObject.callFun.markerClickHandler(data);
+    }
+}
+
+function markerHandler(id, data) {
+    if (mapObject.callFun != null && mapObject.callFun.markerHandler) {
+        mapObject.callFun.markerHandler(id, data)
     }
 }

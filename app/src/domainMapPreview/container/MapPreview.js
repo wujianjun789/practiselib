@@ -10,6 +10,7 @@ export default class MapPreview extends Component{
         super(props)
         this.state = {
             selectDomain: {
+                id:"mapPreview",
                 position: {
                     "id":"mapPreview",
                     "device_id": 1,

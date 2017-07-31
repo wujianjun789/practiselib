@@ -12,6 +12,7 @@ window.d3 = require('../../public/js/d3.min')
 import MapView from '../../src/components/MapView';
 
 let data = {
+    id:'mapview',
     position: {
         "device_id": 1,
             "device_type": 'DEVICE',
