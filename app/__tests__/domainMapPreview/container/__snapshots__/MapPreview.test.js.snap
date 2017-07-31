@@ -1,8 +1,34 @@
 exports[`test MapPreview renders 1`] = `
 <div
-  className="content ">
+  className="content map-preview">
   <div
     className="map-view "
-    id="map" />
+    id="mapPreview" />
+  <div
+    className="searchText "
+    onBlur={[Function]}
+    onFocus={[Function]}>
+    <input
+      onChange={[Function]}
+      placeholder="  输入域名称搜索"
+      type="search"
+      value="" />
+    <ul
+      className="">
+      <li
+        onClick={[Function]}
+        value="domain1">
+        domain1
+      </li>
+      <li
+        onClick={[Function]}
+        value="domain2">
+        domain2
+      </li>
+    </ul>
+    <span
+      className="glyphicon glyphicon-search"
+      onClick={[Function]} />
+  </div>
 </div>
 `;

@@ -19,7 +19,7 @@ exports[`test SidebarInfo renders 1`] = `
       className="map-container panel-body">
       <div
         className="map-view "
-        id="map" />
+        id="example" />
     </div>
   </div>
 </div>

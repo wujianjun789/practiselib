@@ -5,8 +5,6 @@ import React, {Component} from 'react'
 import '../../public/styles/sideBarInfo.less';
 
 import MapView from '../components/MapView'
-import {updateMap, updateMapDevice, mapPanTo, destory} from '../util/map'
-import {transformDeviceType} from '../util/index'
 /**
  * 右侧栏带地图伸缩信息
  */
@@ -18,29 +16,10 @@ export default class SideBarInfo extends Component{
             collapse:false,
         }
 
-        this.latlng = {};
-
-        this.initMap = this.initMap.bind(this);
-        this.renderMap = this.renderMap.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
     }
 
-    componentWillMount(){
 
-    }
-
-    componentDidUpdate(){
-        // const {mapDevice} = this.props;
-        // let key = transformDeviceType(mapDevice.position["device_type"]);
-        // updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
-        // mapPanTo({lng:mapDevice.position.x, lat:mapDevice.position.y});
-        // destory();
-        this.initMap();
-    }
-
-    componentWillUnmount(){
-        destory();
-    }
 
     collpseHandler(){
         this.setState({collapse:!this.state.collapse});
@@ -48,24 +27,10 @@ export default class SideBarInfo extends Component{
         this.props.collpseHandler && this.props.collpseHandler();
     }
 
-    initMap(){
-        const {mapDevice} = this.props;
-        if(mapDevice){
-            updateMap({latlng:{lng:mapDevice.position.x, lat:mapDevice.position.y}});
-            let key = transformDeviceType(mapDevice.position["device_type"]);
-
-            updateMapDevice([mapDevice.position], {[key]:[mapDevice.data]})
-        }
-    }
-
-    renderMap(ref) {
-        if (ref) {
-            this.initMap();
-        }
-    }
 
     render(){
         const {collapse} = this.state;
+        const {mapDevice={id:'example'}} = this.props;
 
         return <div className={"container-fluid sidebar-info "+(collapse ? "sidebar-collapse":"")}>
                 <div className="row collapse-container" onClick={()=>this.collpseHandler()}>
@@ -79,9 +44,10 @@ export default class SideBarInfo extends Component{
                         <span className="icon_map_position"></span>地图位置
                     </div>
                     <div className="map-container panel-body">
-                        <MapView  option={{mapZoom:false}} mapData={this.props.mapDevice} />
+                        <MapView  option={{mapZoom:false}} mapData={mapDevice} />
                     </div>
                 </div>
         </div>
     }
 }
+

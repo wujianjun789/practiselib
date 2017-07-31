@@ -15,22 +15,32 @@ export default class SearchText extends Component{
         this.itemClick = this.itemClick.bind(this);
     }
 
-    itemClick(event){
-       this.setState({interactive:false})
-        this.props.onChange && this.props.onChange(event && event.target.value);
+    componentWillMount(){
+        this.timeOut = -1;
+    }
+
+    componentWillUnmount(){
+        clearTimeout(this.timeOut);
+    }
+
+    itemClick(data){
+        this.props.onChange && this.props.onChange(data);
+        this.setState({interactive:false})
     }
 
     onChange(event) {
-        this.setState({interactive:true});
         this.props.onChange && this.props.onChange(event && event.target.value);
+        this.setState({interactive:true});
     }
 
-    onFocus(){
+    onFocus(event){
         this.props.onFocus && this.props.onFocus();
+        this.setState({interactive:true});
     }
 
-    onBlur(){
+    onBlur(event){
         this.props.onBlur && this.props.onBlur();
+        this.timeOut = setTimeout(()=>{this.setState({interactive:false});}, 1000)
     }
 
     onClick(){
@@ -40,12 +50,12 @@ export default class SearchText extends Component{
     render(){
         const {interactive} = this.state;
         const {className='', placeholder='', value='', IsTip=false, datalist=[]} = this.props;
-        return <div className={"searchText "+className}>
-            <input type="search"  placeholder={placeholder} value={value} onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur}/>
+        return <div className={"searchText "+className} onFocus={this.onFocus} onBlur={this.onBlur}>
+            <input type="search"  placeholder={placeholder} value={value} onChange={this.onChange}/>
             <ul className={IsTip && interactive ? 'select-active':''}>
                 {
                     datalist.map((item, index)=>{
-                        return <li key={index} value={item.value} onClick={this.itemClick}>{item.value}</li>
+                        return <li key={index} value={item.value} onClick={()=>this.itemClick(item.value)}>{item.value}</li>
                     })
                 }
             </ul>
