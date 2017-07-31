@@ -53,7 +53,7 @@ export default class DomainPopup extends PureComponent {
             btnClassName={['btn-default', 'btn-primary']} 
             btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return <div className="domain-popup">
-            <Panel title={this.props.title} closeBtn={true} footer={footer} closeClick={this.onCancel} >
+            <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
                 <div className="row">
                     <div className="col-sm-6 popup-left">
                         <div className="form-group row">
@@ -84,6 +84,7 @@ export default class DomainPopup extends PureComponent {
                                 </select>
                             </div>
                         </div>
+                        {footer}
                     </div>
                     <div className="col-sm-6 popup-map">
                         <MapView option={{mapZoom:false}} mapData={{id:"domainPopup", position:{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}, data:{id:domainId, name:domainName}}}/>
