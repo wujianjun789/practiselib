@@ -87,7 +87,8 @@ export default class DomainPopup extends PureComponent {
                         {footer}
                     </div>
                     <div className="col-sm-6 popup-map">
-                        <MapView option={{mapZoom:false}} mapData={{id:"domainPopup", position:{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}, data:{id:domainId, name:domainName}}}/>
+                        <MapView option={{mapZoom:false}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
+                        position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}/>
                     </div>
                 </div>
             </Panel>

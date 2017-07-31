@@ -49,16 +49,17 @@ export class AssetStatistics extends Component {
             },
             selectDevice:{
                 id:"assetStatistics",
-                position:{
+                latlng:{lng:121.49971691534425, lat:31.239658843127756},
+                position:[{
                     "device_id":1,
                     "device_type":'DEVICE',
                     lng:121.49971691534425,
                     lat:31.239658843127756
-                },
-                data:{
+                }],
+                data:[{
                     id:1,
                     name:'example'
-                }
+                }]
             },
         }
 
@@ -191,8 +192,8 @@ export class AssetStatistics extends Component {
 
     tableClick(data){
         this.setState({selectDevice:{
-            position:{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), x:data.getIn(["latlng", "lng"]), y:data.getIn(["latlng", "lat"])},
-            data:{id:data.get('id'), name:data.get('deviceName')}
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["latlng", "lng"]), lat:data.getIn(["latlng", "lat"])}],
+            data:[{id:data.get('id'), name:data.get('deviceName')}]
         }})
     }
 
@@ -215,7 +216,7 @@ export class AssetStatistics extends Component {
                             onChange={value=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>
                     </div>
                     <div className="table-container">
-                        <Table columns={this.columns} data={data} activeId={selectDevice.data.id} rowClick={(row)=>this.tableClick(row)}/>
+                        <Table columns={this.columns} data={data} activeId={selectDevice.data[0].id} rowClick={(row)=>this.tableClick(row)}/>
                         <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
                               current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>

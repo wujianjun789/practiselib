@@ -76,7 +76,7 @@ export default class Map{
     }
 
     mapPanTo(latlng) {
-        if (!latlng || !latlng.lat || latlng.lng) {
+        if (!latlng || !latlng.lat || !latlng.lng) {
             return;
         }
 

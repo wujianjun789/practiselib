@@ -51,7 +51,7 @@ exports[`test DomainEdit renders 1`] = `
           </thead>
           <tbody>
             <tr
-              className="active"
+              className=""
               onClick={[Function]}>
               <td
                 className="hidden">
@@ -180,9 +180,7 @@ exports[`test DomainEdit renders 1`] = `
       <div
         className="panel-body domain-property">
         <span
-          className="domain-name">
-          上海市
-        </span>
+          className="domain-name" />
         <button
           className="btn btn-primary pull-right"
           onClick={[Function]}>

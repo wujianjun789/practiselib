@@ -28,16 +28,18 @@ export class DomainEdit extends Component {
             collapse: false,
             selectDomain: {
                 id:"domain",
-                position: {
+                latlng:{lng: 121.49971691534425,
+                    lat: 31.239658843127756},
+                position: [{
                     "device_id": 1,
                     "device_type": 'DEVICE',
                     lng: 121.49971691534425,
                     lat: 31.239658843127756
-                },
-                data: {
+                }],
+                data: [{
                     id: 1,
                     name: '上海市'
-                }
+                }]
             },
 
             page: Immutable.fromJS({
@@ -121,8 +123,8 @@ export class DomainEdit extends Component {
         switch(id){
             case 'add':
             case 'update':
-                actions.overlayerShow(<DomainPopup title={id=='add'?"添加域":"修改域属性"} data={{domainId:selectDomain.data.id, domainName:selectDomain.data.name,
-                lat:selectDomain.position.lat, lng:selectDomain.position.lng, prevDomain:''}}
+                actions.overlayerShow(<DomainPopup title={id=='add'?"添加域":"修改域属性"} data={{domainId:selectDomain.data[0].id, domainName:selectDomain.data[0].name,
+                lat:selectDomain.position[0].lat, lng:selectDomain.position[0].lng, prevDomain:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:[]}}
                                                               onConfirm={()=>{}} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;

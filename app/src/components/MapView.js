@@ -18,6 +18,12 @@ export default class MapView extends Component{
 
     componentDidUpdate(){
         this.initMap();
+
+        const {mapData, panLatlng, panCallFun} = this.props;
+        if(panLatlng){
+            this.state[mapData.id].mapPanTo(panLatlng);
+            // panCallFun && panCallFun()
+        }
     }
 
     componentWillUnmount(){
@@ -29,18 +35,19 @@ export default class MapView extends Component{
 
     initMap(){
         const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
+        const {latlng} = mapData
 
-        if(mapData){
-            // this.state[mapData.id] && this.state[mapData.id].destory();
-            if(!this.state[mapData.id]){
-                this.state[mapData.id] = new Map();
+            if(mapData){
+                // this.state[mapData.id] && this.state[mapData.id].destory();
+                if(!this.state[mapData.id]){
+                    this.state[mapData.id] = new Map();
+                }
+
+
+                this.state[mapData.id].updateMap({id:mapData.id, latlng:{lng:latlng.lng, lat:latlng.lat}}, option, mapCallFun);
+                let key = transformDeviceType(mapData.position[0]["device_type"]);
+                this.state[mapData.id].updateMapDevice(mapData.position, {[key]:mapData.data}, markerCallFun)
             }
-
-            this.state[mapData.id].updateMap({id:mapData.id, latlng:{lng:mapData.position.lng, lat:mapData.position.lat}}, option, mapCallFun);
-            let key = transformDeviceType(mapData.position["device_type"]);
-
-            this.state[mapData.id].updateMapDevice([mapData.position], {[key]:[mapData.data]}, markerCallFun)
-        }
     }
 
     renderMap(ref) {
@@ -57,6 +64,10 @@ export default class MapView extends Component{
 
 MapView.propTypes = {
     mapData: PropTypes.shape({
-        id: PropTypes.string.isRequired
+        id: PropTypes.string.isRequired,
+        latlng: PropTypes.shape({
+            lat: PropTypes.number.isRequired,
+            lng: PropTypes.number.isRequired,
+        })
     }).isRequired
 }

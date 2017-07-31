@@ -23,8 +23,9 @@ export default class SearchText extends Component{
         clearTimeout(this.timeOut);
     }
 
-    itemClick(data){
-        this.props.onChange && this.props.onChange(data);
+    itemClick(value, index){
+        this.props.itemClick && this.props.itemClick(index);
+        this.props.onChange && this.props.onChange(value);
         this.setState({interactive:false})
     }
 
@@ -55,7 +56,7 @@ export default class SearchText extends Component{
             <ul className={IsTip && interactive ? 'select-active':''}>
                 {
                     datalist.map((item, index)=>{
-                        return <li key={index} value={item.value} onClick={()=>this.itemClick(item.value)}>{item.value}</li>
+                        return <li key={index} value={item.value} onClick={()=>this.itemClick(item.value, index)}>{item.value}</li>
                     })
                 }
             </ul>
