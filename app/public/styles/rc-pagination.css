@@ -44,7 +44,8 @@
   color: /*#2db7f5*/#245580;
 }
 .rc-pagination-item-active {
-  background: linear-gradient(to right, #00bcff,  #00d8ff);
+  /*background: linear-gradient(to right, #00bcff,  #00d8ff);*/
+  background: #00bcff;
   /*border-color: !*#2db7f5*!#245580;*/
 }
 .rc-pagination-item-active a {

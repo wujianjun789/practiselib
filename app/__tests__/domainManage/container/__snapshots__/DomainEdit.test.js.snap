@@ -4,11 +4,11 @@ exports[`test DomainEdit renders 1`] = `
   <div
     className="heading">
     <div
-      className="searchText ">
+      className="searchText "
+      onBlur={[Function]}
+      onFocus={[Function]}>
       <input
-        onBlur={[Function]}
         onChange={[Function]}
-        onFocus={[Function]}
         placeholder="  输入域名称"
         type="search"
         value="" />

@@ -30,11 +30,11 @@ exports[`test AssetStatistics renders 1`] = `
       </option>
     </select>
     <div
-      className="searchText search">
+      className="searchText search"
+      onBlur={[Function]}
+      onFocus={[Function]}>
       <input
-        onBlur={[Function]}
         onChange={[Function]}
-        onFocus={[Function]}
         placeholder="  输入素材名称"
         type="search"
         value="" />
