@@ -7,9 +7,9 @@ import UserPopup from './UserPopup'
 import HeadBar from '../../components/HeadBar'
 import Page from '../../components/Page'
 import SearchText from '../../components/SearchText'
-import Table from '../../components/Table'
 import '../../../public/styles/permissionManage.less';
 import Immutable from 'immutable';
+import Table2 from '../../components/Table2'
 
 class PermissionManage extends Component{
     constructor(props){
@@ -22,6 +22,9 @@ class PermissionManage extends Component{
                 total: 21
             }),
         }
+        this.columns = [{field:"grade", title:" "}, {field:"userName", title:"用户名称"},
+            {field:"loginTime", title:"最后登录时间"}]
+
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -30,7 +33,8 @@ class PermissionManage extends Component{
     }
 
     onClick(){
-        this.props.action.overlayerShow(<UserPopup className='user-add-popup' />);
+        const popupinfo = this.props.permissionManage.popupinfo;
+        this.props.action.overlayerShow(<UserPopup className='user-add-popup' data={popupinfo}/>);
     }
 
     searchChange(value){
@@ -58,7 +62,12 @@ class PermissionManage extends Component{
 
     render() {
         const {permissionManage} = this.props;
+        let {datas} = permissionManage;
         const {search, page} = this.state;
+        datas = datas.map((item)=>{
+            item.grade = <div className='grade-icon'><span className={`icon ${item.grade}`}></span></div>;
+            return item;
+        })
         return(
             <div className='container permission-manage'>
                 <HeadBar moduleName='权限管理' router={this.props.router}/>
@@ -68,7 +77,7 @@ class PermissionManage extends Component{
                         <button className='btn btn-primary' onClick={this.onClick}>添加</button>
                     </div>
                     <div className="table-container">
-                        <Table />
+                        <Table2 columns={this.columns} data = {datas} isEdit/>
                         <Page className="page" showSizeChanger pageSize={page.get('pageSize')} current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
                 </div>

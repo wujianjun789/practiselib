@@ -790,6 +790,7 @@ ul {
 .modal .modal-footer .btn.btn-primary {
     background-color: #00d6ff;
     border-color: #00d6ff;
+    height: 36px;
 }
 .modal .modal-footer .btn.btn.btn-primary:hover {
     background-color: #00c1e6;
@@ -894,6 +895,19 @@ ul {
     border-color: #00d6ff;
 }
 
+.btn-primary{
+    width:60px;
+    height:30px;
+    background-color: #00bcff;
+    border-color: #00bcff;
+    padding:0;
+}
+
+.btn-primary:hover{
+    background-color: #00a9e6;
+    border-color: #00a9e6;
+}
+
 .usr-exit .icon.icon_popup_delete{
     display: inline-block;
     width: 40px;
@@ -905,4 +919,5 @@ ul {
 
     background: url("/images/icon_popup_delete.png");
     background-size: 100% 100%;
+
 }
