@@ -15,6 +15,7 @@
     "morgan": "~1.7.0",
     "nock": "^9.0.13",
     "rc-pagination": "^1.9.8",
+    "react-treebeard": "^2.0.3",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

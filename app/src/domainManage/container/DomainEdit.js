@@ -13,7 +13,7 @@ import SearchText from '../../components/SearchText'
 import Page from '../../components/Page'
 
 import DomainPopup from '../../components/DomainPopup'
-import ExitPopup from '../../components/ExitPopup'
+import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
 import {getDomainList, getDomainCountByName, getDomainListByName, deleteDomainById} from '../../api/domain'
@@ -129,7 +129,7 @@ export class DomainEdit extends Component {
                                                               onConfirm={()=>{}} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
-                actions.overlayerShow(<ExitPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
+                actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
                                                  cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(selectDomain.data.id,
                                                  (response)=>{ })}}/>);
                 break;

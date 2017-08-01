@@ -800,6 +800,17 @@ ul {
 .modal .modal-footer .btn.btn-default{
     color: #808080;
 }
+
+.btn-toolbar .btn-group .btn.btn-primary{
+    background-color: #00d6ff;
+    border-color: #00d6ff;
+    height: 36px;
+}
+
+.btn-toolbar .btn-group .btn.btn.btn-primary:hover {
+    background-color: #00c1e6;
+    border-color: #00c1e6;
+}
 /****************** 修改密码弹框 ************************/
 
 .alter-pw-popup {
