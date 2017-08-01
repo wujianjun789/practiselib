@@ -16,6 +16,8 @@ import DomainPopup from '../../components/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
+import Topology from './Topology';
+
 import {getDomainList, getDomainCountByName, getDomainListByName, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
@@ -195,7 +197,7 @@ export class DomainEdit extends Component {
                                       current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                             </div>
                         </div> :
-                        <div className="topology-mode">topology</div>
+                        <Topology />
                 }
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
