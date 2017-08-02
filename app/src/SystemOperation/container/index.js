@@ -1,5 +1,5 @@
 /**
- * Created by a on 2017/7/17.
+ * Created by a on 2017/8/1.
  */
 import React,{Component} from 'react';
 import {connect} from 'react-redux';
@@ -9,10 +9,10 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
-import {TreeData} from '.././../data/domainModel'
+import {TreeData} from '.././../data/systemModel'
 import {treeViewInit} from '../../common/actions/treeView'
 import {sideBarToggled} from '../action/index'
-class DomainManageIndex extends Component{
+class SystemOperationIndex extends Component{
     constructor(props){
         super(props);
         this.initTreeData = this.initTreeData.bind(this);
@@ -41,8 +41,8 @@ class DomainManageIndex extends Component{
         if(children){
             path = children.props.route.path;
         }
-        return <div className={"container "+"domain-"+path}>
-            <HeadBar moduleName={/*path=="domainEdit"?*/"域编辑"/*:"地图预览"*/} router={this.props.router}/>
+        return <div className={"container "+path}>
+            <HeadBar moduleName={"系统运维"} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />
@@ -66,4 +66,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DomainManageIndex);
+)(SystemOperationIndex);

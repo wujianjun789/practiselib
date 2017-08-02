@@ -543,12 +543,21 @@ ul {
 
 .tree-list .icon_domain_list {
     background: url("../images/icon_domain_list.png");
-}.tree-list .icon_domain_list_hover {
+}
+.tree-list .icon_domain_list_hover {
     background: url("../images/icon_domain_list_hover.png");
-}.tree-list .icon_domain_topology {
+}
+.tree-list .icon_domain_topology {
     background: url("../images/icon_domain_topology.png");
-}.tree-list .icon_domain_topology_hover {
+}
+.tree-list .icon_domain_topology_hover {
     background: url("../images/icon_domain_topology_hover.png");
+}
+.tree-list .icon_single_lamp_control {
+    background: url("../images/icon_single_lamp_control.png");
+}
+.tree-list .icon_single_lamp_control_hover {
+    background: url("../images/icon_single_lamp_control_hover.png");
 }
 
 .sidebar-info .icon_verital {

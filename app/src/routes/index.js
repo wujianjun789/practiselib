@@ -5,6 +5,7 @@ import {Login} from '../login/components/Login'
 import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
+import SystemOperation from '../systemOperation/container/index'
 export default (
     <Route>
         <Route path="/" component={App}>
@@ -35,10 +36,16 @@ export default (
                         }, 'starriverpro.domainmappreview.mappreview')
             }}/>
         </Route>
-        
+
         <Route path="/permissionManage" component={PermissionManage}>
         </Route>
-
+        <Route path="/systemOperation" component={SystemOperation}>
+            <Route path="lampConCenter" getComponent={(nextState, cb)=>{
+                        require.ensure([], (require)=>{
+                            cb(null, require('../systemOperation/container/LampConCenter').default)
+                        }, 'starriverpro.systemoperation.lampconcenter')
+            }}/>
+        </Route>
         <Route path="*" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
                 cb(null, require('../common/containers/NoMatch').default)
