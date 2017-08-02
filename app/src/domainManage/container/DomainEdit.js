@@ -30,14 +30,14 @@ export class DomainEdit extends Component {
             collapse: false,
             selectDomain: {
                 id:"domain",
-                latlng:{lng: 121.49971691534425,
-                    lat: 31.239658843127756},
+                latlng:{lng: 121.49971691534425, lat: 31.239658843127756},
                 position: [{
                     "device_id": 1,
                     "device_type": 'DEVICE',
                     lng: 121.49971691534425,
                     lat: 31.239658843127756
                 }],
+                parentId:null,
                 data: [{
                     id: 1,
                     name: '上海市'
@@ -51,12 +51,12 @@ export class DomainEdit extends Component {
             }),
 
             search: Immutable.fromJS({placeholder: '  输入域名称', value: ''}),
-            data: Immutable.fromJS([{id:1,name: '上海市', parentDomain: '无'},
-                {id:2, name: '闵行区', parentDomain: '上海市'},
-                {id:3, name: '徐汇区', parentDomain: '上海市'}])
+            data: Immutable.fromJS([{id:1,name: '上海市', parentId: null, parentName:'无'},
+                {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
+                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}])
         }
 
-        this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentDomain", title: "上级域"}]
+        this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
 
         this.onToggle = this.onToggle.bind(this);
         this.initTreeData = this.initTreeData.bind(this);
@@ -64,6 +64,9 @@ export class DomainEdit extends Component {
         this.searchChange = this.searchChange.bind(this);
         this.tableClick = this.tableClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
+        this.topologyItemClick = this.topologyItemClick.bind(this);
+        this.updateSelectDomain = this.updateSelectDomain.bind(this);
+
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
 
@@ -146,9 +149,23 @@ export class DomainEdit extends Component {
     }
 
     tableClick(row){
+        this.updateSelectDomain(row.toJS());
+
+    }
+
+    topologyItemClick(data){
+        this.updateSelectDomain(data);
+    }
+
+    updateSelectDomain(domain){
         const {selectDomain} = this.state;
-        selectDomain.data.id = row.get('id');
-        selectDomain.data.name = row.get('name');
+        selectDomain.latlng = domain.geoPoint;
+        selectDomain.position.splice(0)
+        selectDomain.position.push(Object.assign({"device_id":1, "device_type":"DEVICE"}, domain.geoPoint))
+        selectDomain.parentId = domain.parentId;
+        selectDomain.data.splice(0)
+        selectDomain.data.push({id:domain.id, name:domain.name});
+        console.log(selectDomain);
         this.setState({selectDomain:selectDomain})
     }
 
@@ -197,7 +214,7 @@ export class DomainEdit extends Component {
                                       current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                             </div>
                         </div> :
-                        <Topology />
+                        <Topology itemClick={this.topologyItemClick}/>
                 }
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">

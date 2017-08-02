@@ -81,3 +81,14 @@ export function deleteDomainById(domainId, cb) {
 
     }, null, "unresolved")
 }
+
+export function getDomainListByParentId(parentId, cb){
+    let headers = getHttpHeader();
+    let param = JSON.stringify({where:{parentId:parentId}})
+    httpRequest(HOST_IP+'/domains?filter='+param, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(parentId, response)
+    })
+}

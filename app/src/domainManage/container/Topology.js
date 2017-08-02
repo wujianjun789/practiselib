@@ -3,13 +3,15 @@
  */
 import React,{Component} from 'react'
 
+import {getDomainListByParentId} from '../../api/domain'
+
 import {getLanguage} from '../../util/index'
 export default class Topology extends Component{
     constructor(props){
         super(props)
         this.state = {
             language: getLanguage(),
-            domainList:{zh:[
+            domainList:getLanguage()=="zh"?[
                 {id:1, name:"中国中国中国", active:true, children:[
                     {id:11, name:"上海", active:true, children:[
                         {id:112, name:"徐汇"},
@@ -27,8 +29,7 @@ export default class Topology extends Component{
                     {id:12, name:"北京"}]
                 },
                 {id:2, name:"日本"}
-            ],
-            en:[
+            ]:[
                 {id:1, name:"ChinaChina", active:true, children:[
                     {id:11, name:"Shanghai", active:true, children:[
                         {id:112, name:"xuhui"},
@@ -46,24 +47,77 @@ export default class Topology extends Component{
                     {id:12, name:"beijing"}]
                 },
                 {id:2, name:"Japan"}
-            ]}
+            ]
         }
 
         this.getDatalist = this.getDatalist.bind(this);
         this.renderChild = this.renderChild.bind(this);
         this.itemClick = this.itemClick.bind(this);
+        this.requestDomain = this.requestDomain.bind(this);
+        this.initDomain = this.initDomain.bind(this);
+        this.updateDomain = this.updateDomain.bind(this);
     }
 
     componentWillMount(){
-
+        this.mounted = true;
+        this.requestDomain(null)
     }
 
     componentWillUnmount(){
+        this.mounted = false;
+    }
 
+    requestDomain(parentId){
+        getDomainListByParentId(parentId, (parentId,data)=>{this.mounted && this.initDomain(parentId, data)})
+    }
+
+    initDomain(parentId, data){
+        if(parentId == null){
+            this.setState({domainList:data})
+            return;
+        }
+
+        let newlist = this.updateDomain(parentId, data, this.state.domainList);
+        this.setState({domainList:newlist});
+    }
+
+    updateDomain(parentId, data, list){
+        return list.map(domain=>{
+            if(this.IsCurGroup(parentId, list)){
+                if(domain.id == parentId){
+                    if(data.length){
+                        domain.active = true;
+                    }
+
+                    domain.children = data;
+                    return domain;
+                }else{
+                    // if(!data.length){
+                        domain.active = false;
+                    // }
+                }
+            }
+
+            if(domain.children && domain.children.length){
+                this.updateDomain(parentId, data, domain.children)
+            }
+            return domain;
+        })
+    }
+
+    IsCurGroup(parentId, list){
+        for(let key in list){
+            if(list[key].id == parentId){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     itemClick(item){
-        console.log(item);
+        this.requestDomain(item.id);
+        this.props.itemClick && this.props.itemClick(item);
     }
 
     getDatalist(list, renderList){
@@ -88,7 +142,7 @@ export default class Topology extends Component{
     render(){
         const {language, domainList} = this.state;
 
-        let curDomain = domainList[language]
+        let curDomain = domainList
         let renderList = [];
         this.getDatalist(curDomain, renderList);
 
