@@ -928,6 +928,11 @@ ul {
     border-color: #00a9e6;
 }
 
+.btn-primary:focus{
+    background-color: #00a9e6;
+    border-color: #00a9e6;
+}
+
 .usr-exit .icon.icon_popup_delete{
     display: inline-block;
     width: 40px;

@@ -23,13 +23,13 @@ export default class InputCheck extends Component{
     }
 
     render(){
-        const {type = 'text',className = 'userName',label = '用户名',checked = 'fail',reminder = '',placeholder = '请输入用户名',value=''} = this.props;
+        const {type = 'text',className = 'userName',label = '用户名',checked = 'fail',reminder = '',placeholder = '请输入用户名',value='',disabled=false} = this.props;
         const style = this.state.style?this.state.style:{ visibility: 'hidden' };
 
         return <div className={"inputCheck "+className}>
                 <label className = 'col-sm-2 control-label'>{label}:</label>
                 <div className = {`has-feedback col-sm-4 ${checked=='success'?'has-success':checked=='fail'?'has-error':''}`}>
-                    <input type={type} id = {className} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
+                    <input disabled={!!disabled} type={type} id = {className} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
                     <span className={`glyphicon ${checked=='success'?'glyphicon-ok':checked=='fail'?'glyphicon-remove':''} form-control-feedback`} aria-hidden="true"></span>
                     <span className="reminder" style={style}>{reminder}</span>
                 </div>

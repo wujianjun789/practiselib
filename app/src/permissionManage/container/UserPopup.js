@@ -9,6 +9,7 @@ import InputCheck from '../../components/InputCheck';
 import Select from '../../components/Select';
 import Immutable from 'immutable';
 import {Treebeard} from 'react-treebeard';
+import treeStyle from '../../components/treeStyle'
 
 class UserPopup extends Component{
     constructor(props){
@@ -22,12 +23,64 @@ class UserPopup extends Component{
             password:Immutable.fromJS({value:!!data.password?data.password:'',checked:'',reminder:''}),
             rePassword:Immutable.fromJS({value:!!data.rePassword?data.rePassword:'',checked:'',reminder:''}),
             grade:Immutable.fromJS({list:[{id:1, value:'访客'},{id:2, value:'系统管理员'},{id:3, value:'设备管理员'},{id:4, value:'设备操作员'}], index:0, value:'访客'}),
-            domainList:['中国-杭州','中国-上海','中国-北京','中国-武汉','中国-长沙','中国-上海-闵行','中国-上海-闵行-莘庄']
+            domainList:['中国-杭州','中国-上海','中国-北京','中国-武汉','中国-长沙','中国-上海-闵行','中国-上海-闵行-莘庄'],
+            data:{
+                name: "中国",
+                toggled: true,
+                children: [
+                    {
+                        name: "上海",
+                        children: [
+                            {
+                                name: "闵行",
+                            },
+                            {
+                                name: "徐汇"
+                            }
+                        ],
+                        toggled: true
+                    },
+                    {
+                        name: "江苏",
+                        children: [
+                            {
+                                name: "南京",
+                                children: [
+                                    {
+                                        name: "江浦"
+                                    },
+                                    {
+                                        name: "江宁"
+                                    }
+                                ],
+                                toggled: true
+                            },
+                            {
+                                name: "苏州"
+                            }
+                        ],
+                        toggled: true
+                    },
+                    {
+                        name: "浙江",
+                        children: [
+                            {
+                                name: "杭州"
+                            },
+                            {
+                                name: "金华"
+                            }
+                        ],
+                        toggled: true
+                    }
+                ],
+            }
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.checkOut = this.checkOut.bind(this);
         this.toggleOpen = this.toggleOpen.bind(this);
+        this.selectDomain = this.selectDomain.bind(this);
     }
 
     onCancel(){
@@ -59,32 +112,37 @@ class UserPopup extends Component{
         this.setState({toggle:''});
     }
 
+    selectDomain(){
+        this.setState({toggle:'hidden'});
+    }
+
     render() {
-        let {className = '',modules} = this.props;
+        let {className = '',modules,isEdit=false} = this.props;
         let {userName,lastName,firstName,password,rePassword,toggle,domainList} = this.state;
         let footer = <PanelFooter funcNames={['onConfirm','onCancel']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <div className = {className}>
                 <Panel title = '用户资料' footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                     <div className = 'form-group row basic-info'>
-                        <InputCheck label='用户名' className='userName' placeholder='请输入用户名' value= {userName.get('value')} 
+                        <InputCheck label='用户名' className='userName' placeholder='请输入用户名' value= {userName.get('value')} disabled={isEdit?true:false}
                             checked={userName.get('checked')} reminder={userName.get('reminder')} onBlur = {(id)=>this.checkOut(id)} />
                         <label className="col-sm-2 control-label">用户等级:</label>
                         <Select className="grade" data={this.state.grade}
                                 onChange={(selectIndex)=>this.gradeChange(selectIndex)}/>
-                        <InputCheck label='姓氏' className='lastName' placeholder='请输入姓氏' value= {userName.get('value')} 
+                        <InputCheck label='姓氏' className='lastName' placeholder='请输入姓氏' value= {userName.get('value')} disabled={isEdit?true:false}
                             checked={userName.get('checked')} reminder={userName.get('reminder')} onBlur = {(id)=>this.checkOut(id)}/>
-                        <InputCheck label='名字' className='firstName' placeholder='请输入名字' value= {userName.get('value')} 
+                        <InputCheck label='名字' className='firstName' placeholder='请输入名字' value= {userName.get('value')} disabled={isEdit?true:false}
                             checked={userName.get('checked')} reminder={userName.get('reminder')} onBlur = {(id)=>this.checkOut(id)}/>
-                        <InputCheck label='密码' className='password' type='password' placeholder='请输入密码' value= {userName.get('value')} 
+                        <InputCheck label='密码' className={`password ${isEdit?'hidden':''}`} type='password' placeholder='请输入密码' value= {userName.get('value')} 
                             checked={userName.get('checked')} reminder={userName.get('reminder')} onBlur = {(id)=>this.checkOut(id)}/>
-                        <InputCheck label='重复密码' className='rePassword' type='password' placeholder='请再次输入密码' value= {userName.get('value')} 
+                        <InputCheck label='重复密码' className={`rePassword ${isEdit?'hidden':''}`} type='password' placeholder='请再次输入密码' value= {userName.get('value')} 
                             checked={userName.get('checked')} reminder={userName.get('reminder')} onBlur = {(id)=>this.checkOut(id)}/>
                     </div>
                     <div className = 'form-group row module-per'>
                         <label className="col-sm-2 control-label">模块权限:</label>
                         <div className="col-sm-10">
                             <div className = 'row'>
+                                
                                 {modules.slice(0,4).map(item=>{
                                     return <label className="checkbox-inline" key={item.key}>
                                         <input type="checkbox" id={item.key} value={item.key}/> {item.title}
@@ -92,7 +150,14 @@ class UserPopup extends Component{
                                 })}
                             </div>
                             {modules.length>4?<div className = 'row'>
-                                {modules.slice(5).map(item=>{
+                                {modules.slice(5,9).map(item=>{
+                                    return <label className="checkbox-inline" key={item.key}>
+                                        <input type="checkbox" id={item.key} value={item.key}/> {item.title}
+                                    </label>
+                                })}
+                            </div>:''}
+                            {modules.length>8?<div className = 'row'>
+                                {modules.slice(10).map(item=>{
                                     return <label className="checkbox-inline" key={item.key}>
                                         <input type="checkbox" id={item.key} value={item.key}/> {item.title}
                                     </label>
@@ -113,7 +178,7 @@ class UserPopup extends Component{
                                         <span className="glyphicon glyphicon-triangle-bottom"></span>
                                     </button>
                                      <div className="dropdown-menu" aria-labelledby="dropdownMenu1" >
-                                        
+                                        <Treebeard data={this.state.data} onToggle={(item)=>{this.selectDomain(item)}}/>
                                     </div> 
                                 </div>
                                 <ul className={`domain-list${toggle=='hidden'?'-l':''}`}>

@@ -81,6 +81,7 @@
         .row{
             margin: 6px 0 14px 0;
             >.checkbox-inline{
+                width: 106px;
                 padding-right: 30px;
                 color: #808080;
                 font-size: 14px;
@@ -96,14 +97,14 @@
             height:230px;
             border: 1px solid #ccc;
             .row{
-                padding:5px 0;
+                padding:10px 0;
                 >button{
                     display: block;
                     margin: 0 auto;
                 }
             }
             >.domain-list,>.domain-list-l{
-                height: 188px;
+                height: 178px;
                 overflow-y: scroll;
                 padding: 5px;
                 >li{
@@ -127,7 +128,7 @@
                 }
             }
             >.domain-list{
-                height: 158px;
+                height: 148px;
             }
             .dropdown{
                 >button{
@@ -144,6 +145,14 @@
                 }
                 .dropdown-menu{
                     width: 230px;
+                    height: 146px;
+                    overflow-y: scroll;
+                    ul{
+                        background-color: #fff!important;
+                        >li>div>:last-of-type{
+                            color: #808080!important;
+                        }
+                    }
                 }
             }
         }
