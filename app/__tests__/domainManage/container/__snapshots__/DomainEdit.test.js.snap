@@ -1,6 +1,6 @@
 exports[`test DomainEdit renders 1`] = `
 <div
-  className="content offset-right ">
+  className="content offset-right list-mode ">
   <div
     className="heading">
     <div

@@ -14,14 +14,13 @@ export function getDomainList(cb) {
 
 export function getDomainListByName(domainName, offset, limit, cb) {
     let headers = getHttpHeader();
-    let param = JSON.stringify({"where":{name:domainName}, "offset":offset,"limit":limit})
-    let url = '';
+    let obj = {include:["parent"], "offset":offset,"limit":limit}
     if(domainName){
-        url = HOST_IP+'/domains?filter='+param;
-    }else{
-        url = HOST_IP+'/domains';
+        obj = Object.assign({"where":{name:{like:domainName}}}, obj);
     }
-    
+    let param = JSON.stringify(obj);
+    let url = HOST_IP+'/domains?filter='+param;
+
     httpRequest(url, {
         headers: headers,
         method: 'GET'

@@ -42,8 +42,23 @@ export default class DomainPopup extends PureComponent {
     }
 
     onChange(e) {
+        console.log(e.target.value);
         let id = e.target.id;
-        this.setState({[id]: e.target.value}); 
+        let value = e.target.value;
+        let newValue='';
+        if(id == "lat" || id == "lng"){
+            for(let i=0;i<value.length;i++)
+            {
+                let s = value.slice(i, i+1);
+                if(s.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')){
+                    newValue += s;
+                }
+            }
+
+        }else{
+            newValue = value;
+        }
+        this.setState({[id]: newValue});
     }
 
     render() {
@@ -59,25 +74,26 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="domainName">域名称：</label>
                             <div className="col-sm-9">
-                                <input type="text" className="form-control" id="domainName" value={domainName} onChange={this.onChange} />
+                                <input type="text" className="form-control" id="domainName" placeholder="输入域名称" value={domainName} onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="form-group row">
                             <label className="col-sm-3 control-label " htmlFor="lng">经度：</label>
                             <div className="col-sm-9">
-                                <input type="email" className="form-control" id="lng" value={lng} onChange={this.onChange}/>
+                                <input type="email" className="form-control" id="lng" placeholder="输入GPS坐标" value={lng}
+                                        onChange={this.onChange}/>
                             </div>
                         </div> 
                         <div className="form-group row">   
                             <label className="col-sm-3 control-label" htmlFor="lat">纬度：</label>
                             <div className="col-sm-9">
-                                <input type="email" className="form-control" id="lat" value={lat} onChange={this.onChange}/>
+                                <input type="email" className="form-control" id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
                             </div>
                         </div>
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="prevDomain">上级域：</label>
                             <div className="col-sm-9">
-                                <select className="form-control" id="prevDomain" value={prevDomain} onChange={this.onChange}>
+                                <select className="form-control" id="prevDomain" placeholder="选择上级域" value={prevDomain} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }
@@ -87,8 +103,10 @@ export default class DomainPopup extends PureComponent {
                         {footer}
                     </div>
                     <div className="col-sm-6 popup-map">
-                        <MapView option={{mapZoom:false}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
+                        {
+                            lng && lat ? <MapView option={{mapZoom:false}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
                         position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}/>
+                        :''}
                     </div>
                 </div>
             </Panel>

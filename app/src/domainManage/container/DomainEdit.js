@@ -57,6 +57,7 @@ export class DomainEdit extends Component {
         }
 
         this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
+        this.domainList = [];
 
         this.onToggle = this.onToggle.bind(this);
         this.initTreeData = this.initTreeData.bind(this);
@@ -77,8 +78,9 @@ export class DomainEdit extends Component {
 
     componentWillMount() {
         this.mounted = true;
+        getDomainList(data=>{if(this.mounted)this.domainList=data});
         this.initTreeData();
-        // this.requestSearch();
+        this.requestSearch();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -108,13 +110,14 @@ export class DomainEdit extends Component {
     }
 
     initDomainList(data){
-        this.setState({data:Immutable.fromJS(data)});
+        let list = data.map(domain=>{
+            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:"无"})
+        })
+
+        this.setState({data:Immutable.fromJS(list)});
+
         if(data.length){
-            let item1 = data[0]
-            let selectDomain = this.state.selectDomain;
-            selectDomain.data.id = item1.id;
-            selectDomain.data.name = item1.name;
-            this.setState({selectDomain:selectDomain});
+            this.updateSelectDomain(data[0])
         }
     }
 
@@ -127,10 +130,15 @@ export class DomainEdit extends Component {
         const {actions} = this.props;
         switch(id){
             case 'add':
+                actions.overlayerShow(<DomainPopup title={"添加域"} data={{domainId:"", domainName:"",
+                lat:0, lng:0, prevDomain:''}}
+                                                   domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
+                                                   onConfirm={(data)=>{console.log(data)}} onCancel={()=>{actions.overlayerHide()}}/>);
+                break;
             case 'update':
-                actions.overlayerShow(<DomainPopup title={id=='add'?"添加域":"修改域属性"} data={{domainId:selectDomain.data[0].id, domainName:selectDomain.data[0].name,
+                actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:selectDomain.data[0].id, domainName:selectDomain.data[0].name,
                 lat:selectDomain.position[0].lat, lng:selectDomain.position[0].lng, prevDomain:''}}
-                                                              domainList={{titleKey:'name', valueKey:'name', options:[]}}
+                                                              domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                                               onConfirm={()=>{}} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
@@ -165,12 +173,10 @@ export class DomainEdit extends Component {
         selectDomain.parentId = domain.parentId;
         selectDomain.data.splice(0)
         selectDomain.data.push({id:domain.id, name:domain.name});
-        console.log(selectDomain);
         this.setState({selectDomain:selectDomain})
     }
 
     searchSubmit(){
-        console.log('submit');
 
         this.requestSearch();
     }
@@ -198,7 +204,7 @@ export class DomainEdit extends Component {
     render() {
         const {listMode, collapse, selectDomain, page, search, data} = this.state
         return (
-            <Content className={'offset-right '+(collapse?'collapsed':'')}>
+            <Content className={'offset-right '+(listMode?'list-mode ':'topology ')+(collapse?'collapsed':'')}>
                 <div className="heading">
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
