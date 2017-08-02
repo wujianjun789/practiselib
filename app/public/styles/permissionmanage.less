@@ -70,9 +70,11 @@
     .basic-info{
         margin-bottom: 10px;
         >.grade{
-            width: 196px;
+            width: 201px;
             height: 34px;
             margin: 0 0 30px 15px;
+            color: #808080;
+            padding-left: 9px;
         }
     }
     .module-per{
@@ -83,6 +85,71 @@
                 color: #808080;
                 font-size: 14px;
             }
+        }
+    }
+
+    .domain-per{
+        .col-sm-10{
+            padding-right: 0;
+        }
+        .domain-add{
+            height:230px;
+            border: 1px solid #ccc;
+            .row{
+                padding:5px 0;
+                >button{
+                    display: block;
+                    margin: 0 auto;
+                }
+            }
+            >.domain-list,>.domain-list-l{
+                height: 188px;
+                overflow-y: scroll;
+                padding: 5px;
+                >li{
+                    color: #808080;
+                    font-size: 14px;
+                    line-height: 30px;
+                    height: 30px;
+                    &:hover{
+                        background-color: #e5e5e5;
+                    }
+                    >span{
+                        float: right;
+                        background-image: url(/images/icon_delete.png);
+                        background-size: 100% 100%;
+                        display: block;
+                        width: 15px;
+                        height: 15px;
+                        margin-top: 7px;
+                        cursor: pointer;
+                    }
+                }
+            }
+            >.domain-list{
+                height: 158px;
+            }
+            .dropdown{
+                >button{
+                    width: 100%;
+                    border: 1px solid #ccc;
+                    background-color: #fff;
+                    color: #808080;
+                    height: 30px;
+                    text-align: left;
+                    >span{
+                        float: right;
+                        padding-top: 2px;
+                    }
+                }
+                .dropdown-menu{
+                    width: 230px;
+                }
+            }
+        }
+        .domain-add-map{
+            height:230px;
+            border: 1px solid #ccc;
         }
     }
 }

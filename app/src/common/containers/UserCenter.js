@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {overlayerShow, overlayerHide} from '../actions/overlayer';
-import ExitPopup from '../../components/ExitPopup';
+import ConfirmPopup from '../../components/ConfirmPopup';
 import AlterPwPopup from '../../components/AlterPwPopup';
 import {confirmExit} from '../actions/userCenter';
 /**
@@ -48,7 +48,7 @@ export class UserCenter extends Component{
         if(key == 'alter') {
             overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} />);
         } else {
-            overlayerShow(<ExitPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
+            overlayerShow(<ConfirmPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
         
     }

@@ -58,12 +58,12 @@ describe('<UserCenter /> HOC', () => {
         const li = root.find('.user-list li').at(1);
         li.simulate('click');
 
-        let exitPopup = root.find('ExitPopup');
+        let exitPopup = root.find('ConfirmPopup');
         expect(exitPopup.length).toBe(1);
         
         let btnCancel = exitPopup.find('.btn.btn-default');
         btnCancel.simulate('click');
-        exitPopup = root.find('ExitPopup');
+        exitPopup = root.find('ConfirmPopup');
         expect(exitPopup.length).toBe(0);
     });
 })

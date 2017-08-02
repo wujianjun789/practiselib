@@ -8,22 +8,26 @@ import '../../../public/styles/permissionManage.less';
 import InputCheck from '../../components/InputCheck';
 import Select from '../../components/Select';
 import Immutable from 'immutable';
+import {Treebeard} from 'react-treebeard';
 
 class UserPopup extends Component{
     constructor(props){
         super(props);
         const {data} = this.props;
         this.state={
+            toggle:'hidden',
             userName:Immutable.fromJS({value:!!data.userName?data.userName:'',checked:'',reminder:''}),
             lastName:Immutable.fromJS({value:!!data.lastName?data.lastName:'',checked:'',reminder:''}),
             firstName:Immutable.fromJS({value:!!data.firstName?data.firstName:'',checked:'',reminder:''}),
             password:Immutable.fromJS({value:!!data.password?data.password:'',checked:'',reminder:''}),
             rePassword:Immutable.fromJS({value:!!data.rePassword?data.rePassword:'',checked:'',reminder:''}),
             grade:Immutable.fromJS({list:[{id:1, value:'访客'},{id:2, value:'系统管理员'},{id:3, value:'设备管理员'},{id:4, value:'设备操作员'}], index:0, value:'访客'}),
+            domainList:['中国-杭州','中国-上海','中国-北京','中国-武汉','中国-长沙','中国-上海-闵行','中国-上海-闵行-莘庄']
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.checkOut = this.checkOut.bind(this);
+        this.toggleOpen = this.toggleOpen.bind(this);
     }
 
     onCancel(){
@@ -34,7 +38,7 @@ class UserPopup extends Component{
         this.props.action.overlayerHide();
     }
 
-    gradeChange(){
+    gradeChange(selectIndex){
         this.setState({grade:this.state.grade.update('index', v=>selectIndex)})
         this.setState({grade:this.state.grade.update('value', v=>{
             return this.state.grade.getIn(['list', selectIndex, 'value']);
@@ -51,9 +55,13 @@ class UserPopup extends Component{
         }
     }
 
+    toggleOpen(){
+        this.setState({toggle:''});
+    }
+
     render() {
-        let {className = ''} = this.props;
-        let {userName,lastName,firstName,password,rePassword} = this.state;
+        let {className = '',modules} = this.props;
+        let {userName,lastName,firstName,password,rePassword,toggle,domainList} = this.state;
         let footer = <PanelFooter funcNames={['onConfirm','onCancel']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <div className = {className}>
@@ -77,36 +85,49 @@ class UserPopup extends Component{
                         <label className="col-sm-2 control-label">模块权限:</label>
                         <div className="col-sm-10">
                             <div className = 'row'>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox1" value="option1"/> 报表管理
-                                </label>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox2" value="option2"/> 报表管理
-                                </label>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox3" value="option3"/> 报表管理
-                                </label>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox4" value="option4"/> 报表管理
-                                </label>
+                                {modules.slice(0,4).map(item=>{
+                                    return <label className="checkbox-inline" key={item.key}>
+                                        <input type="checkbox" id={item.key} value={item.key}/> {item.title}
+                                    </label>
+                                })}
                             </div>
-                            <div className = 'row'>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox1" value="option1"/> 报表管理
-                                </label>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox2" value="option2"/> 报表管理
-                                </label>
-                                <label className="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox3" value="option3"/> 报表管理
-                                </label>
-                            </div>
+                            {modules.length>4?<div className = 'row'>
+                                {modules.slice(5).map(item=>{
+                                    return <label className="checkbox-inline" key={item.key}>
+                                        <input type="checkbox" id={item.key} value={item.key}/> {item.title}
+                                    </label>
+                                })}
+                            </div>:''}
                         </div>
                     </div>
                     <div className = 'form-group row domain-per'>
                         <label className="col-sm-2 control-label">域权限:</label>
                         <div className="col-sm-10">
-
+                            <div className='col-sm-6 domain-add'>
+                                <div className='row'>
+                                    <button className="btn btn-primary" onClick = {this.toggleOpen}>添加域</button>
+                                </div>
+                                <div className={`dropdown ${toggle}`}>
+                                    <button className="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        选择区域
+                                        <span className="glyphicon glyphicon-triangle-bottom"></span>
+                                    </button>
+                                     <div className="dropdown-menu" aria-labelledby="dropdownMenu1" >
+                                        
+                                    </div> 
+                                </div>
+                                <ul className={`domain-list${toggle=='hidden'?'-l':''}`}>
+                                    {
+                                        domainList.map((item,index)=>{
+                                            return <li key = {index}>
+                                                <span className="icon-table-delete"></span>
+                                                    {item}
+                                            </li>
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                            <div className='col-sm-6 domain-add-map'></div>
                         </div>
                     </div>
                 </Panel>

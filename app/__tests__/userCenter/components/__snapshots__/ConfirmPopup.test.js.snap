@@ -1,4 +1,4 @@
-exports[`<ExitPopup /> snapshot 1`] = `
+exports[`<ConfirmPopup /> snapshot 1`] = `
 <div
   className="usr-exit">
   <div
@@ -16,7 +16,7 @@ exports[`<ExitPopup /> snapshot 1`] = `
       <button
         className="btn btn-default"
         onClick={[Function]}>
-        Cancel
+        取消
       </button>
     </div>
     <div
@@ -24,7 +24,7 @@ exports[`<ExitPopup /> snapshot 1`] = `
       <button
         className="btn btn-primary"
         onClick={[Function]}>
-        Confirm
+        确认
       </button>
     </div>
   </div>

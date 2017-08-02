@@ -1,12 +1,12 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import ExitPopup from '../../../src/components/ExitPopup';
+import ConfirmPopup from '../../../src/components/ConfirmPopup';
 
-describe('<ExitPopup />', () => {
+describe('<ConfirmPopup />', () => {
     it('default render', () => {
         const click = jest.fn();
-        const cmp = shallow(<ExitPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
+        const cmp = shallow(<ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
 
         let icon = cmp.find('.icon.icon-class');
         expect(icon.length).toBe(1);
@@ -15,15 +15,15 @@ describe('<ExitPopup />', () => {
         expect(txt.text()).toBe('tips');
 
         let btnCancel = cmp.find('.btn.btn-default');
-        expect(btnCancel.text()).toBe('Cancel');
+        expect(btnCancel.text()).toBe('取消');
 
         let btnConfirm = cmp.find('.btn.btn-primary');
-        expect(btnConfirm.text()).toBe('Confirm');
+        expect(btnConfirm.text()).toBe('确认');
     });
 
     it('click simulate', () => {
         const click = jest.fn();
-        const cmp = shallow(<ExitPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
+        const cmp = shallow(<ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
 
         let btnCancel = cmp.find('.btn.btn-default');
         btnCancel.simulate('click');
@@ -36,7 +36,7 @@ describe('<ExitPopup />', () => {
 
     it('snapshot', () => {
         const click = jest.fn();
-        const cmp = renderer.create(<ExitPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
+        const cmp = renderer.create(<ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
         let tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

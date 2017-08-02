@@ -7,15 +7,7 @@ const initialState = {
         {
             id:2,grade:'operator' ,userName :'admin002',loginTime:'2017/7/14 14:02'
         },
-    ],
-    popupinfo:{
-        userName:'',
-        lastName:'',
-        firstName:'',
-        password:'',
-        rePassword:''
-
-    },
+    ]
 };
 
 
