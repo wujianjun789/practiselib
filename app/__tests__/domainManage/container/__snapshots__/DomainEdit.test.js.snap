@@ -51,7 +51,7 @@ exports[`test DomainEdit renders 1`] = `
           </thead>
           <tbody>
             <tr
-              className=""
+              className="active"
               onClick={[Function]}>
               <td
                 className="hidden">
