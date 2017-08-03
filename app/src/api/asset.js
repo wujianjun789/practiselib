@@ -13,12 +13,12 @@ export function getAssetModelList(cb) {
     })
 }
 
-export function getSearchAssets(domain, model, name, offset, limit, cb) {
+export function getSearchAssets(domainId, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
 
-    let paramStr = JSON.stringify({"include":["extend"],"where":getSearchParam(domain, model, name),"offset":offset,"limit":limit})
+    let paramStr = JSON.stringify({"include":["extend"],"where":getSearchParam(domainId, model, name),"offset":offset,"limit":limit})
 
-    httpRequest(HOST_IP+'/assets?filter='+paramStr, {
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -27,27 +27,27 @@ export function getSearchAssets(domain, model, name, offset, limit, cb) {
     })
 }
 
-export function getSearchCount(domain, model, name, cb) {
+export function getSearchCount(domainId, model, name, cb) {
     let headers = getHttpHeader();
 
-    let paramStr = JSON.stringify(getSearchParam(domain, model, name))
-    httpRequest(HOST_IP+'/assets/count?where='+paramStr, {
+    let paramStr = JSON.stringify(getSearchParam(domainId, model, name))
+
+    httpRequest(HOST_IP+'/assets/count?where='+encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
     }, response=>{
-        // console.log(response);
         cb && cb(response);
     })
 }
 
-function getSearchParam(domain, model, name) {
+function getSearchParam(domainId, model, name) {
     let param = {}
-    // if(domain){
-    //     Object.assign(param, {"domain":domain})
-    // }
-    // if(model){
-    //     Object.assign(param, {"model":model})
-    // }
+    if(domainId){
+        Object.assign(param, {"domainId":domainId})
+    }
+    if(model){
+        Object.assign(param, {"extendType":model})
+    }
     if(name){
         Object.assign(param, {"name":name})
     }

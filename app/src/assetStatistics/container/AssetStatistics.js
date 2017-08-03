@@ -102,30 +102,30 @@ export class AssetStatistics extends Component {
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
-
-        let domainValue = domain.get('value')
-        let model = device.getIn(['list', device.get('index')]);
-        let modelId = model.get('id');
+        let domainId = domain.getIn(["list", domain.get("index"), "id"]);
+        let modelId = device.getIn(["list", device.get("index"), "id"]);
         let name = search.get('value')
-
-        getSearchCount(domainValue, modelId, name, (data)=>this.mounted && this.initPageTotal(data))
-        getSearchAssets(domainValue, modelId, name, offset, size, data=>this.mounted && this.searchResult(data));
+        getSearchCount(domainId, modelId, name, (data)=>this.mounted && this.initPageTotal(data))
+        getSearchAssets(domainId, modelId, name, offset, size, data=>this.mounted && this.searchResult(data));
     }
 
     initTreeData(){
         let modelList = getModelList();
-        let list = [];
-        modelList.map(model=>{
-            list.push({id:model, value:model.name})
+        let list = modelList.map(model=>{
+            return Object.assign({}, model, {value:model.name});
         })
 
-        this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:''})})
+        this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:""})})
         this.requestSearch();
     }
 
     initDomain(data){
         if(data){
-            this.setState({domain:Immutable.fromJS({list:data}), value:data.length>0?data[0]:''})
+            let list = data.map(domain=>{
+                return Object.assign({}, domain, {value:domain.name});
+            })
+
+            this.setState({domain:Immutable.fromJS({list:list, index:0, value:data.length>0?data[0]:""})})
         }
 
         this.requestSearch();

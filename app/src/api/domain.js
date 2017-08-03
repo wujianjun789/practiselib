@@ -19,7 +19,7 @@ export function getDomainListByName(domainName, offset, limit, cb) {
         obj = Object.assign({"where":{name:{like:domainName}}}, obj);
     }
     let param = JSON.stringify(obj);
-    let url = HOST_IP+'/domains?filter='+param;
+    let url = HOST_IP+'/domains?filter='+encodeURIComponent(param);
 
     httpRequest(url, {
         headers: headers,
@@ -34,7 +34,7 @@ export function getDomainCountByName(domainName, cb) {
     let param = JSON.stringify({name:domainName})
     let url = '';
     if(domainName){
-        url = HOST_IP+'/domains/count?where='+param;
+        url = HOST_IP+'/domains/count?where='+encodeURIComponent(param);
     }else{
         url = HOST_IP+'/domains/count';
     }
@@ -84,7 +84,7 @@ export function deleteDomainById(domainId, cb) {
 export function getDomainListByParentId(parentId, cb){
     let headers = getHttpHeader();
     let param = JSON.stringify({where:{parentId:parentId}})
-    httpRequest(HOST_IP+'/domains?filter='+param, {
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(param), {
         headers: headers,
         method: 'GET'
     }, response=>{
