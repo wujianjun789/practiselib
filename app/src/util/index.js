@@ -37,9 +37,9 @@ export function intlFormat(data) {
  */
 export function getClassByModel(key) {
     switch (key){
-        case 'lightController':
+        case 'lcc':
             return 'icon_light_control';
-        case 'led':
+        case 'lc':
             return 'icon_led_light';
         case 'plc':
             return 'icon_plc_control';
@@ -92,8 +92,48 @@ export function transformDeviceType(deviceType) {
     }
 }
 
-export function macAddressValid(str){
-    return str
+/**
+ *  对象每项验证
+ * @param value(字符串)
+ * @parm validFun(判断函数)
+ * @returns {string}
+ * @constructor
+ */
+export function ObjectPerValid(value, validFun) {
+    let newValue = "";
+    for(let i=0;i<value.length;i++)
+    {
+        let s = value.slice(i, i+1);
+        if(validFun(s)){
+            newValue += s;
+        }
+    }
+
+    return newValue;
+}
+
+export function numbersValid(number) {
+    return /^([1-9]\d*|0)$/.test(number)
+}
+
+export function NameValid(name) {
+    return /^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(name);
+}
+    
+export function IPValid(ip) {
+    return /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/.test(ip)
+}
+
+export function PORTValid(port) {
+    if(port < 1 || port > 65535){
+        return false;
+    }
+
+    return /^([1-9]\d*|0)$/.test(port)
+}
+
+export function MACValid(mac){
+    return /^[a-f0-9]*$/i.test(mac)
 }
 
 export function latlngValid(str){

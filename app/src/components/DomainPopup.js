@@ -17,7 +17,7 @@ import PanelFooter from './PanelFooter';
 
 import MapView from './MapView'
 
-import {latlngValid} from '../util/index'
+import {ObjectPerValid, NameValid, latlngValid} from '../util/index'
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
@@ -56,16 +56,9 @@ export default class DomainPopup extends PureComponent {
         let value = e.target.value;
         let newValue='';
         if(id == "lat" || id == "lng"){
-            for(let i=0;i<value.length;i++)
-            {
-                let s = value.slice(i, i+1);
-                if(latlngValid(s)){
-                    newValue += s;
-                }
-            }
-
-            newValue = Number(newValue);
-
+            newValue = Number(ObjectPerValid(value, latlngValid));
+        }else if(id == "domainName"){
+           newValue = ObjectPerValid(value, NameValid);
         }else{
             newValue = value;
         }
