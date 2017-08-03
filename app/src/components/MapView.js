@@ -43,7 +43,7 @@ export default class MapView extends Component{
                     this.state[mapData.id] = new Map();
                 }
 
-
+                this.state[mapData.id].clearMarker();
                 this.state[mapData.id].updateMap({id:mapData.id, latlng:{lng:latlng.lng, lat:latlng.lat}}, option, mapCallFun);
                 let key = transformDeviceType(mapData.position[0]["device_type"]);
                 this.state[mapData.id].updateMapDevice(mapData.position, {[key]:mapData.data}, markerCallFun)

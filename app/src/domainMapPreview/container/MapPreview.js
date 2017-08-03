@@ -9,6 +9,8 @@ import MapView from '../../components/MapView'
 
 import SearchText from '../../components/SearchText'
 
+import {getDomainList} from '../../api/domain'
+
 export default class MapPreview extends Component{
     constructor(props){
         super(props)
@@ -26,6 +28,20 @@ export default class MapPreview extends Component{
         this.itemClick = this.itemClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.panCallFun = this.panCallFun.bind(this);
+        this.initDomainList = this.initDomainList.bind(this);
+    }
+
+    componentWillMount(){
+        this.mounted = true;
+        getDomainList(data=>{ this.mounted && this.initDomainList(data)})
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    initDomainList(data){
+        this.setState({domainList:data});
     }
 
     onChange(value){
@@ -42,7 +58,6 @@ export default class MapPreview extends Component{
     }
 
     searchSubmit(){
-        console.log('search');
         const {domainList, search} = this.state;
         for(var key in domainList){
             let item = domainList[key];
@@ -59,9 +74,8 @@ export default class MapPreview extends Component{
 
     render(){
         const {mapId, domainList, search, curDomain, panLatlng} = this.state;
-
         let positionList = domainList.map(item=>{
-            return Object.assign(item.geoPoint, {"device_type":item["device_type"]}, {"device_id":item.id});
+            return Object.assign(item.geoPoint, {"device_type":"DEVICE"}, {"device_id":item.id});
         })
 
         let datalist = [];
