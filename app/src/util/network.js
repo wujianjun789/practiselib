@@ -108,29 +108,28 @@ export function getParam() {
 export function getToken() {
     let user = getCookie('user');
     return {
-        Authorization: 'Bearer ' + (user ? user.token : '')
+        Authorization: `${user['access_token']}`
     }
 }
 
 export function login(data, responseCall, errCall) {
-    httpRequest('/login', {
+    httpRequest(`${HOST_IP}/users/login`, {
         method: 'POST',
         headers: HEADERS_CONTENT_TYPE_JSON,
         credentials: 'same-origin',
         body: JSON.stringify({
-            name: data.name,
+            username: data.username,
             password: data.password
         })
     }, function (response) {
-        // console.log(response);
-        // alert(response);
-        if (response.success == true) {
-            responseCall && responseCall.apply(null);
+        console.log(response)
+        if (response.id) {
+            responseCall && responseCall.apply(null,[response]);
         } else {
-            errCall && errCall.apply(null);
+            errCall && errCall.apply(null, ['undefined user id']);
         }
-    }, 'success', function (response) {
-        errCall && errCall.apply(null);
+    }, 'success', function (error) {
+        errCall && errCall.apply(null, [error]);
     })
 
 }

@@ -7,10 +7,13 @@
  * @param value
  */
 export function setCookie(key, value) {
+    console.log(value);
     try {
-        $.cookie(key, JSON.stringify(value), {expires:1});
+        let cookie = document.cookie
+        document.cookie = key+"="+JSON.stringify(value);
+        // $.cookie(key, JSON.stringify(value), {expires:1});
     }catch (err){
-        // console.log('存cookie错误:'+key);
+        console.log('存cookie错误:'+key);
     }
 
 }
@@ -18,7 +21,16 @@ export function setCookie(key, value) {
 export function getCookie(key) {
     let user;
     try {
-        user = $.cookie(key);
+        // user = $.cookie(key);
+        var name = key + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) 
+        {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) {
+                user = c.substring(name.length,c.length);
+            } 
+        }
     }catch (err){
         // console.log('取cookie错误:'+key);
     }
