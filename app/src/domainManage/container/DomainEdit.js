@@ -18,7 +18,7 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
 import Topology from './Topology';
 
-import {getDomainList, getDomainCountByName, getDomainListByName, deleteDomainById} from '../../api/domain'
+import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 
@@ -133,18 +133,34 @@ export class DomainEdit extends Component {
                 actions.overlayerShow(<DomainPopup title={"添加域"} data={{domainId:"", domainName:"",
                 lat:0, lng:0, prevDomain:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
-                                                   onConfirm={(data)=>{console.log(data)}} onCancel={()=>{actions.overlayerHide()}}/>);
+                                                   onConfirm={(data)=>{
+                                                        let domain = {};
+                                                        domain.name = data.domainName;
+                                                        domain.geoType = 0;
+                                                        domain.geoPoint = {lat:data.lat, lng:data.lng};
+                                                        domain.parentId = data.prevDomain;
+
+                                                        addDomain(domain, ()=>{this.requestSearch(); actions.overlayerHide()});
+                                                   }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
                 actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:selectDomain.data[0].id, domainName:selectDomain.data[0].name,
                 lat:selectDomain.position[0].lat, lng:selectDomain.position[0].lng, prevDomain:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
-                                                              onConfirm={()=>{}} onCancel={()=>{actions.overlayerHide()}}/>);
+                                                              onConfirm={(data)=>{
+                                                                    let domain = {};
+                                                                    domain.id = data.domainId;
+                                                                    domain.name = data.domainName;
+                                                                    domain.geoType = 0;
+                                                                    domain.geoPoint = {lat:data.lat, lng:data.lng};
+                                                                    domain.parentId = data.prevDomain;
+                                                                    updateDomainById(domain, ()=>{this.requestSearch(); actions.overlayerHide()});
+                                                              }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
                 actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
-                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(selectDomain.data.id,
-                                                 (response)=>{ })}}/>);
+                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(selectDomain.data[0].id,
+                                                 ()=>{this.requestSearch();actions.overlayerHide()})}}/>);
                 break;
         }
     }
@@ -214,7 +230,7 @@ export class DomainEdit extends Component {
                     listMode ?
                         <div className="list-mode">
                             <div className="table-container">
-                                <Table columns={this.columns} data={data} activeId={selectDomain.data.id}
+                                <Table columns={this.columns} data={data} activeId={selectDomain.data[0].id}
                                        rowClick={this.tableClick}/>
                                 <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
                                       current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>

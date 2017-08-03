@@ -91,3 +91,11 @@ export function transformDeviceType(deviceType) {
             return null;
     }
 }
+
+export function macAddressValid(str){
+    return str
+}
+
+export function latlngValid(str){
+    return str.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')
+}

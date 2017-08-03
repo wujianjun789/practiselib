@@ -17,16 +17,19 @@ import PanelFooter from './PanelFooter';
 
 import MapView from './MapView'
 
+import {latlngValid} from '../util/index'
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
         const {domainId, domainName, lat, lng, prevDomain} = this.props.data;
+        let {options} = this.props.domainList;
+        let curDomain = options && options.length ? options[0]:null
         this.state = {
             domainId: domainId,
             domainName: domainName,
             lng: lng,
             lat: lat,
-            prevDomain: prevDomain
+            prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:"")
         }
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -42,18 +45,26 @@ export default class DomainPopup extends PureComponent {
     }
 
     onChange(e) {
-        console.log(e.target.value);
         let id = e.target.id;
+
+        if(id=="prevDomain"){
+            const {options} = this.props.domainList;
+            let curIndex = e.target.selectedIndex;
+            this.setState({[id]:options[curIndex].id});
+            return
+        }
         let value = e.target.value;
         let newValue='';
         if(id == "lat" || id == "lng"){
             for(let i=0;i<value.length;i++)
             {
                 let s = value.slice(i, i+1);
-                if(s.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')){
+                if(latlngValid(s)){
                     newValue += s;
                 }
             }
+
+            newValue = Number(newValue);
 
         }else{
             newValue = value;
@@ -67,6 +78,14 @@ export default class DomainPopup extends PureComponent {
          let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']} 
             btnClassName={['btn-default', 'btn-primary']} 
             btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let curDomain = null;
+        for(let key in options){
+            if(options[key].id == prevDomain){
+                curDomain = options[key];
+                break;
+            }
+        }
+
         return <div className="domain-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
                 <div className="row">
@@ -93,7 +112,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="prevDomain">上级域：</label>
                             <div className="col-sm-9">
-                                <select className="form-control" id="prevDomain" placeholder="选择上级域" value={prevDomain} onChange={this.onChange}>
+                                <select className="form-control" id="prevDomain" placeholder="选择上级域" value={curDomain.name} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }
