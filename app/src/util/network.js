@@ -97,7 +97,17 @@ function parseJSON(response) {
 }
 
 export function getHttpHeader(data) {
-    return Object.assign({}, HEADERS_CONTENT_TYPE_JSON, Object.assign(getToken(), data), {userId:getParam()})
+    let object = {};
+    let token = getToken();
+    if(token && data){
+        object = Object.assign(token, data)
+    }else if(token && !data){
+        object = token
+    }else if(!token && data){
+        object = data;
+    }
+
+    return Object.assign({}, HEADERS_CONTENT_TYPE_JSON, object, {userId:getParam()})
 }
 
 export function getParam() {
@@ -107,9 +117,21 @@ export function getParam() {
 
 export function getToken() {
     let user = getCookie('user');
-    return {
-        Authorization: `${user['access_token']}`
+
+    if(user){
+        return {
+            Authorization: `${user['access_token']}`
+        }
     }
+    else{
+        if(location && location.hostname)
+            {
+                location.href="http://"+location.hostname+":8080/login"
+            }
+
+            return null            
+    }
+    
 }
 
 export function login(data, responseCall, errCall) {
@@ -122,7 +144,6 @@ export function login(data, responseCall, errCall) {
             password: data.password
         })
     }, function (response) {
-        console.log(response)
         if (response.id) {
             responseCall && responseCall.apply(null,[response]);
         } else {

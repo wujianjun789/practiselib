@@ -7,7 +7,6 @@
  * @param value
  */
 export function setCookie(key, value) {
-    console.log(value);
     try {
         let cookie = document.cookie
         document.cookie = key+"="+JSON.stringify(value);
@@ -32,7 +31,7 @@ export function getCookie(key) {
             } 
         }
     }catch (err){
-        // console.log('取cookie错误:'+key);
+        console.log('取cookie错误:'+key);
     }
 
     if(!!user){
