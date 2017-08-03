@@ -1,5 +1,5 @@
-@topology-domain-list-height: 172px;
-@topology-domain-list-height-en: 152px;
+@topology-domain-list-height: 152px;
+@topology-domain-list-height-en: 142px;
 
 .domain-domainEdit{
   .content {
@@ -63,7 +63,9 @@
 
       &.zh{
         ul{
-          border-top: solid 1px #808080;
+          &.children{
+            border-top: solid 1px #808080;
+          }
 
           margin: 0 20px;
 
@@ -75,7 +77,7 @@
             vertical-align: top;
 
             margin-right: 20px;
-            padding: 20px 6px;
+            padding: 15px 6px;
 
             border-radius: 5px;
 
@@ -123,16 +125,18 @@
                 color: #fff;
                 background: #5478f0;
 
-                &:after{
-                  content:'';
-                  border-left: solid 1px #808080;
+                &.children{
+                  &:after{
+                    content:'';
+                    border-left: solid 1px #808080;
 
-                  width: 50px;
-                  height: 10px;
+                    width: 50px;
+                    height: 10px;
 
-                  position: absolute;
-                  bottom: -10px;
-                  left: 50%;
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%;
+                  }
                 }
               }
             }
@@ -163,7 +167,7 @@
 
               &.active {
                 background: #00bcff;
-
+                color: #fff;
                 .topology-bottom-line();
               }
             }
@@ -176,7 +180,7 @@
               .topology-zh-list();
               &.active {
                 background: #00bcff;
-
+                color: #fff;
                 .topology-bottom-line();
               }
             }
@@ -189,7 +193,7 @@
               .topology-zh-list();
               &.active {
                 background: #00bcff;
-
+                color: #fff;
                 .topology-bottom-line();
               }
             }
@@ -204,7 +208,10 @@
           padding-top: 10px;
           padding-bottom: 10px;
 
-          border-top: solid 1px #808080;
+          &.children{
+            border-top: solid 1px #808080;
+          }
+
           li {
             display: inline-block;
             vertical-align: top;
@@ -258,16 +265,18 @@
                 color: #fff;
                 background: #5478f0;
 
-                &:after{
-                  content:'';
-                  border-left: solid 1px #808080;
+                &.children{
+                  &:after{
+                    content:'';
+                    border-left: solid 1px #808080;
 
-                  width: 50px;
-                  height: 10px;
+                    width: 50px;
+                    height: 10px;
 
-                  position: absolute;
-                  bottom: -10px;
-                  left: 63px;
+                    position: absolute;
+                    bottom: -10px;
+                    left: 63px;
+                  }
                 }
               }
             }
@@ -298,7 +307,7 @@
 
               &.active {
                 background: #00bcff;
-
+                color: #fff;
                 .topology-bottom-line();
               }
             }
@@ -313,7 +322,7 @@
 
               &.active {
                 background: #00bcff;
-
+                color: #fff;
                 .topology-bottom-line();
               }
             }
@@ -328,7 +337,7 @@
 
               &.active {
                 background: #00bcff;
-
+                color: #fff;
                 .topology-bottom-line();
               }
             }
@@ -384,7 +393,7 @@
   &:before{
     content:'';
     border-left: solid 1px #808080;
-    border-top: solid 1px #808080;
+    //border-top: solid 1px #808080;
     border-radius: 1px;
 
     width: 50px;
@@ -403,23 +412,28 @@
 }
 
 .topology-bottom-line{
-  &:after{
-    content:'';
-    border-left: solid 1px #808080;
-    border-radius: 1px;
+  &.children{
+    &:after{
+      content:'';
+      border-left: solid 1px #808080;
+      border-radius: 1px;
 
-    width: 50px;
-    height: 10px;
+      width: 50px;
+      height: 10px;
 
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+    }
   }
 }
 
 .topology-zh-list{
   width: 30px;
   height: @topology-domain-list-height;
+  div{
+    line-height: 20px;
+  }
 }
 
 .topology-en-list{

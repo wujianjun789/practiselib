@@ -60,7 +60,7 @@ export default class Topology extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        this.requestDomain(null)
+        this.requestDomain(null);
     }
 
     componentWillUnmount(){
@@ -85,9 +85,9 @@ export default class Topology extends Component{
         return list.map(domain=>{
             if(this.IsCurGroup(parentId, list)){
                 if(domain.id == parentId){
-                    if(data.length){
+                    // if(data.length){
                         domain.active = true;
-                    }
+                    // }
 
                     domain.children = data;
                     return domain;
@@ -128,11 +128,11 @@ export default class Topology extends Component{
     }
 
     renderChild(list, depth){
-        return <ul key={depth} className={"topology-"+depth}>
+        return <ul key={depth} className={"topology-"+depth+" "+(list && list.length?'children':'')}>
             {
                 list.map(item=>{
                     let value = item.name.slice(0, this.state.language=='zh'?6:10);
-                    return <li key={item.id} className={item.active?'active':''} title={item.name}
+                    return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                     onClick={()=>this.itemClick(item)}><div>{value}</div></li>
                 })
             }

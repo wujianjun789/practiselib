@@ -37,7 +37,7 @@ export default class MapView extends Component{
         const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
         const {latlng} = mapData
 
-            if(mapData){
+            if(mapData &&　latlng){
                 // this.state[mapData.id] && this.state[mapData.id].destory();
                 if(!this.state[mapData.id]){
                     this.state[mapData.id] = new Map();
