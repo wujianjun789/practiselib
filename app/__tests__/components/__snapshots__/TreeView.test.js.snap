@@ -14,7 +14,8 @@ exports[`test TreeView renders 1`] = `
         onClick={[Function]}
         style={Object {}}>
         <div
-          onClick={[Function]}>
+          onClick={[Function]}
+          title="资产管理">
           <span
             className="glyphicon glyphicon-triangle-bottom" />
           资产管理
@@ -33,7 +34,8 @@ exports[`test TreeView renders 1`] = `
             onClick={[Function]}
             style={Object {}}>
             <div
-              onClick={[Function]}>
+              onClick={[Function]}
+              title="灯集中控制器灯集中控">
               <span
                 className="glyphicon glyphicon-list-alt" />
               灯集中控制器灯集中控
@@ -46,7 +48,8 @@ exports[`test TreeView renders 1`] = `
             onClick={[Function]}
             style={Object {}}>
             <div
-              onClick={[Function]}>
+              onClick={[Function]}
+              title="LED灯">
               <span
                 className="glyphicon glyphicon-lamp" />
               LED灯
@@ -61,7 +64,8 @@ exports[`test TreeView renders 1`] = `
         onClick={[Function]}
         style={Object {}}>
         <div
-          onClick={[Function]}>
+          onClick={[Function]}
+          title="资产统计">
           <span
             className="glyphicon glyphicon-triangle-right" />
           资产统计
