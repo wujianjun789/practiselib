@@ -29,6 +29,8 @@ export default class Map{
         this.myControl = null;
         this.deviceControl = null;
         this.activeBtn = null;
+
+        this.markerDraggable = false;
     }
 
     updateMap(data, option, callFun) {
@@ -44,6 +46,10 @@ export default class Map{
         }
 
         if (option) {
+            if(option.hasOwnProperty("markerDraggable")){
+                this.markerDraggable = option.markerDraggable;
+            }
+
             options = Object.assign({}, options, option);
         }
 
@@ -419,7 +425,7 @@ export default class Map{
             id: id,
             digital: digital,
             riseOnHover: true,
-            draggable: true
+            draggable: this.markerDraggable
         })
         // item.getLatLng();
         return marker;

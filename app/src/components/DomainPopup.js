@@ -133,7 +133,7 @@ export default class DomainPopup extends PureComponent {
                     </div>
                     <div className="col-sm-6 popup-map">
 
-                            <MapView option={{mapZoom:false}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
+                            <MapView option={{mapZoom:false, markerDraggable:true}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
                         position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}
                                      mapCallFun={{mapDragendHandler:this.mapDragend}} markerCallFun={{markerDragendHandler:this.mapDragend}}/>
                     </div>
