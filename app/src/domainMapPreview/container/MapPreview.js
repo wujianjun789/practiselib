@@ -33,7 +33,7 @@ export default class MapPreview extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        getDomainList(data=>{ this.mounted && this.initDomainList(data)})
+        // getDomainList(data=>{ this.mounted && this.initDomainList(data)})
     }
 
     componentWillUnmount(){
@@ -69,6 +69,7 @@ export default class MapPreview extends Component{
     }
 
     panCallFun(){
+        console.log('callFun');
         this.setState({panLatlng:null});
     }
 

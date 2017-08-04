@@ -7,7 +7,8 @@ exports[`test MapPreview renders 1`] = `
   <div
     className="searchText "
     onBlur={[Function]}
-    onFocus={[Function]}>
+    onFocus={[Function]}
+    onKeyDown={[Function]}>
     <input
       onChange={[Function]}
       placeholder="  输入域名称搜索"
@@ -16,11 +17,13 @@ exports[`test MapPreview renders 1`] = `
     <ul
       className="">
       <li
+        className=""
         onClick={[Function]}
         value="domain1">
         domain1
       </li>
       <li
+        className=""
         onClick={[Function]}
         value="domain2">
         domain2

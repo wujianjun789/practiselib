@@ -474,6 +474,10 @@ ul {
     background-color: #ddd;
 }
 
+.searchText ul li.active{
+    background-color: #ddd;
+}
+
 .searchText .select-active{
     display: block;
     /*height: 60px;*/
