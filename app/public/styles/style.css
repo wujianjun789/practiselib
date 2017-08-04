@@ -585,6 +585,16 @@ ul {
     background-size: 100% 100%;
 }
 
+.sidebar-info .icon_sys_select {
+    background: url("../images/icon_sys_select.png");
+    background-size: 100% 100%;
+}
+
+.sidebar-info .icon_sys_whitelist {
+    background: url("../images/icon_sys_whitelist.png");
+    background-size: 100% 100%;
+}
+
 /******************* user center styles ***********************/
 .user-center {
     float: right;
@@ -778,6 +788,11 @@ ul {
 .modal .modal-title {
     text-align: center;
 }
+
+.modal .modal-header {
+    border-bottom-color: #909090;
+}
+
 .modal .modal-header .close {
     font-size: 27px;
 }
