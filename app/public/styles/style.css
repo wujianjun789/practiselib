@@ -465,17 +465,26 @@ ul {
 }
 
 .searchText ul li{
-    padding: 4px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-right: 10px;
+    margin-left: 10px;
 
     cursor: pointer;
+
+    border-bottom: solid 1px #ccc;
+}
+
+.searchText ul li:last-child{
+    border-bottom: 0;
 }
 
 .searchText ul li:hover{
-    background-color: #ddd;
+    background-color: #f5f5f5;
 }
 
 .searchText ul li.active{
-    background-color: #ddd;
+    background-color: #f5f5f5;
 }
 
 .searchText .select-active{
