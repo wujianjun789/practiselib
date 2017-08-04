@@ -10,7 +10,7 @@ const initialState = {
 };
 
 
-export default function domainManage(state=Immutable.fromJS(initialState), action) {
+export default function sysOperation(state=Immutable.fromJS(initialState), action) {
     switch(action.type) {
         case SIDEBAR_TOGGLE:
             return state.update('sidebarNode', v=>action.data);

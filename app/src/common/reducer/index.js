@@ -12,6 +12,8 @@ import domainManage from '../../domainManage/reducer/index'
 import treeView from './treeView';
 import userCenter from './userCenter';
 import permissionManage from '../../permissionManage/reducer/index'
+import sysOperation from '../../systemOperation/reducer/index';
+import lampConCenter from '../../systemOperation/reducer/lampConCenter';
 const reducer = combineReducers({
     routing,
     overlayer,
@@ -24,6 +26,9 @@ const reducer = combineReducers({
     assetStatistics,
 
     domainManage,
-    permissionManage
+    permissionManage,
+
+    sysOperation,
+    lampConCenter
 });
 export default reducer;
