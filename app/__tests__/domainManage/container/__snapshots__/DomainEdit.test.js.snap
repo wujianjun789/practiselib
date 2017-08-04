@@ -6,7 +6,8 @@ exports[`test DomainEdit renders 1`] = `
     <div
       className="searchText "
       onBlur={[Function]}
-      onFocus={[Function]}>
+      onFocus={[Function]}
+      onKeyDown={[Function]}>
       <input
         onChange={[Function]}
         placeholder="  输入域名称"

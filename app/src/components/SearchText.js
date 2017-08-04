@@ -2,17 +2,21 @@
  * Created by a on 2017/7/7.
  */
 import React,{ Component } from 'react'
+
+import {keyboard_key_up, keyboard_key_down, keyboard_key_enter} from '../util/keyboard'
 export default class SearchText extends Component{
     constructor(props){
         super(props)
         this.state = {
-            interactive:false
+            interactive:false,
+            tableIndex: -1
         }
         this.onChange = this.onChange.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onClick = this.onClick.bind(this);
         this.itemClick = this.itemClick.bind(this);
+        this.onkeydown = this.onkeydown.bind(this);
     }
 
     componentWillMount(){
@@ -48,15 +52,43 @@ export default class SearchText extends Component{
         this.props.submit && this.props.submit();
     }
 
+    onkeydown(event){
+        let tableIndex = this.state.tableIndex;
+        const {datalist} = this.props;
+        switch(event.key){
+            case keyboard_key_up:
+                if(tableIndex>0){
+                    tableIndex--;
+                }
+                break;
+            case keyboard_key_down:
+                if(tableIndex<datalist.length-1){
+                    tableIndex++;
+                }
+                break;
+            case keyboard_key_enter:
+                if(tableIndex>-1&&tableIndex<datalist.length){
+                    let value = datalist[tableIndex].value;
+                    this.props.onChange && this.props.onChange(value);
+                    this.setState({interactive:false});
+                }
+
+                tableIndex = -1;
+                break;
+        }
+
+        this.setState({tableIndex:tableIndex});
+    }
+
     render(){
-        const {interactive} = this.state;
+        const {interactive, tableIndex} = this.state;
         const {className='', placeholder='', value='', IsTip=false, datalist=[]} = this.props;
-        return <div className={"searchText "+className} onFocus={this.onFocus} onBlur={this.onBlur}>
+        return <div className={"searchText "+className} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={(event)=>{IsTip && datalist && this.onkeydown(event)}}>
             <input type="search"  placeholder={placeholder} value={value} onChange={this.onChange}/>
-            <ul className={IsTip && interactive ? 'select-active':''}>
+            <ul className={IsTip && interactive ? 'select-active':''} >
                 {
                     datalist.map((item, index)=>{
-                        return <li key={index} value={item.value} onClick={()=>this.itemClick(item.value, index)}>{item.value}</li>
+                        return <li className={index==tableIndex?"active":""} key={index} value={item.value} onClick={()=>this.itemClick(item.value, index)}>{item.value}</li>
                     })
                 }
             </ul>
