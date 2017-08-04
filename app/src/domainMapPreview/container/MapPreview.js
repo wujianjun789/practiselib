@@ -75,7 +75,8 @@ export default class MapPreview extends Component{
     render(){
         const {mapId, domainList, search, curDomain, panLatlng} = this.state;
         let positionList = domainList.map(item=>{
-            return Object.assign(item.geoPoint, {"device_type":"DEVICE"}, {"device_id":item.id});
+            let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+            return Object.assign(geoPoint, {"device_type":"DEVICE"}, {"device_id":item.id});
         })
 
         let datalist = [];
@@ -86,8 +87,10 @@ export default class MapPreview extends Component{
             }
         }
 
+        let domain = domainList && domainList.length  ? domainList[curDomain]:null;
+        let latlng = domain && domain.geoPoint ? domain.geoPoint : null;
         return <Content className="map-preview">
-            <MapView mapData={{id:mapId, latlng:domainList[curDomain].geoPoint, position:positionList, data:domainList}}
+            <MapView mapData={{id:mapId, latlng:latlng, position:positionList, data:domainList}}
                      panLatlng={panLatlng} panCallFun={this.panCallFun}/>
             <SearchText IsTip={true} datalist={datalist} placeholder={search.placeholder} value={search.value}
                         onChange={this.onChange} itemClick={this.itemClick} submit={this.searchSubmit}/>

@@ -5,6 +5,7 @@ var mapObject = {callFun:null, deviceList:{}};
 
 export default class Map{
     constructor(){
+        this.id = "";
         this.map = null;
         this.drawFeatureGroup = L.featureGroup();
         this.drawItems = null;
@@ -31,9 +32,6 @@ export default class Map{
     }
 
     updateMap(data, option, callFun) {
-
-        initCallFun(callFun);
-
         var options = {
             mapOffline: 0,
             mapType: "google",
@@ -59,17 +57,24 @@ export default class Map{
             this.latlng = [data.latlng.lat, data.latlng.lng];
         }
 
+        this.id = data.id;
+
+        initCallFun(this.id, callFun);
+
         this.initMap(data, options);
 
         this.setMapView(data, options);
     }
 
     updateMapDevice(data, deviceData, callFun) {
-        initCallFun(callFun);
+        initCallFun(this.id, callFun);
 
         if (deviceData) {
             for (var key in deviceData) {
-                mapObject.deviceList[key] = deviceData[key];
+                if(!mapObject.deviceList[this.id]){
+                    mapObject.deviceList[this.id] ={};
+                }
+                mapObject.deviceList[this.id][key] = deviceData[key];
             }
         }
         this.createMarker(data);
@@ -117,10 +122,9 @@ export default class Map{
                     zoomControl: false
                 });
             }
-
         }
 
-        this.map.on('moveend', mapMoveEnd);
+        this.map.on('dragend', mapMoveEnd);
     }
 
     setMapView(data, options) {
@@ -337,15 +341,17 @@ export default class Map{
                 //     // removeMarker(marker)
                 //     // markerList.splice(markerIndex);
             } else {
-                _this.markerPosList.push(data);
-                var device = getDevicesByTypeAndId(data.device_type, data.device_id);
-                var labelInfo = device ? device.name : '';
-                var newMarker = _this.drawMarker(data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
-                if (newMarker) {
-                    _this.loadMarkerLabel(newMarker, labelInfo);
+                if(data.lat && data.lng){
+                    _this.markerPosList.push(data);
+                    var device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
+                    var labelInfo = device ? device.name : '';
+                    var newMarker = _this.drawMarker(data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
+                    if (newMarker) {
+                        _this.loadMarkerLabel(newMarker, labelInfo);
 
-                    _this.drawItems && _this.drawItems.addLayer(newMarker);
-                    _this.markerList.push(newMarker)
+                        _this.drawItems && _this.drawItems.addLayer(newMarker);
+                        _this.markerList.push(newMarker)
+                    }
                 }
             }
         })
@@ -409,6 +415,7 @@ export default class Map{
         var marker = L.marker(position, {
             icon: icon,
             type: type,
+            mapId:this.id,
             id: id,
             digital: digital,
             riseOnHover: true,
@@ -462,6 +469,7 @@ export default class Map{
     markerDragEnd(event) {
         var marker = event.target;
         markerDragendHandler({
+            mapId:marker.options.mapId,
             id: marker.options.id,
             type: marker.options.type,
             latlng: marker.getLatLng()
@@ -520,13 +528,13 @@ export default class Map{
         this.map.on('draw:created', function (e) {
 
             if (this.curDevice.id < 0) {
-                markerHandler('error', $.i18n.prop('select_device'));
+                markerHandler(this.id, 'error', $.i18n.prop('select_device'));
 
                 return;
             }
 
             if (this.getMarkerDataById(this.curDevice.type, this.curDevice.id)) {
-                markerHandler('error', $.i18n.prop('device_added'));
+                markerHandler(this.id, 'error', $.i18n.prop('device_added'));
                 return;
             }
 
@@ -540,7 +548,7 @@ export default class Map{
             marker.options.type = curDevice.type;
             marker.options.id = curDevice.id;
 
-            var device = getDevicesByTypeAndId(this.curDevice.type, this.curDevice.id);
+            var device = getDevicesByTypeAndId(this.id, this.curDevice.type, this.curDevice.id);
             var labelInfo = device ? device.name : '';
             this.loadMarkerLabel(marker, labelInfo);
 
@@ -552,7 +560,7 @@ export default class Map{
             this.curMapData ? (addData.map_id = this.curMapData.id) : ''
             this.addMarkerData(addData);
 
-            markerHandler('add', addData);
+            markerHandler(this.id, 'add', addData);
         });
         //
         map.on('draw:edited', function (e) {
@@ -567,7 +575,7 @@ export default class Map{
                 editData.push(markerData);
             });
 
-            markerHandler('edit', editData);
+            markerHandler(this.id, 'edit', editData);
         });
 
         map.on('draw:deleted', function (e) {
@@ -583,7 +591,7 @@ export default class Map{
                 this.delMarkerById(removeMarker.options.type, removeMarker.options.id)
             })
 
-            markerHandler('delete', deletedData);
+            markerHandler(this.id, 'delete', deletedData);
         })
     }
 
@@ -653,6 +661,14 @@ export default class Map{
         this.curMapData = null;
         this.layer = null;
 
+        if(mapObject.callFun && mapObject.callFun[this.id]){
+            delete mapObject.callFun[this.id];
+        }
+
+        if(mapObject.deviceList[this.id]){
+            delete mapObject.deviceList[this.id];
+        }
+
         this.map && this.map.hasLayer(this.drawItems) && this.map.removeLayer(this.drawItems);
         this.map && this.map.remove();
         this.map = null;
@@ -671,6 +687,7 @@ function mapMoveEnd(event) {
 
     var map = event.target;
     mapDragendHandler({
+        mapId:map.options.id,
         latlng:map.getCenter()
     });
 }
@@ -683,6 +700,7 @@ function markerOver(event) {
     var icon = getCustomMarkerByDeviceType(marker.options.type, 3, marker.options.digital)
     marker.setIcon(icon);
     markerMouseOverHandler({
+        mapId: marker.options.mapId,
         type: marker.options.type,
         id: marker.options.id,
     })
@@ -697,12 +715,14 @@ function markerOut(event) {
     markerMouseOutHandler({
         type: marker.options.type,
         id: marker.options.id,
+        mapId: marker.options.mapId
     })
 }
 
 function markerClick(event) {
     var marker = event.target;
     markerClickHandler({
+        mapId: marker.options.mapId,
         type: marker.options.type,
         id: marker.options.id,
         x: event.originalEvent.clientX,
@@ -788,8 +808,8 @@ function getColorByStatus(status) {
     return color;
 }
 
-function getDevicesByTypeAndId(type, id) {
-    var deviceList = mapObject.deviceList;
+function getDevicesByTypeAndId(mapId, type, id) {
+    var deviceList = mapObject.deviceList[mapId];
     let list = [];
     switch (type) {
         case 'DEVICE':
@@ -818,50 +838,54 @@ function getDevicesByTypeAndId(type, id) {
     return null;
 }
 
-function initCallFun(callFun) {
+function initCallFun(key, callFun) {
     if(!callFun){
         return;
     }
 
     if(mapObject.callFun){
-        mapObject.callFun = Object.assign({}, mapObject.callFun, callFun)
+        if(mapObject.callFun[key]){
+            mapObject.callFun[key] = Object.assign({}, mapObject.callFun[key], callFun)
+        }else{
+            mapObject.callFun[key] = callFun;
+        }
     }else{
-        mapObject.callFun = callFun
+        mapObject.callFun = {[key]:callFun}
     }
 }
 
 function mapDragendHandler(data){
-    if(mapObject.callFun != null && mapObject.callFun.mapDragendHandler){
-        mapObject.callFun.mapDragendHandler(data);
+    if(mapObject.callFun  && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].mapDragendHandler){
+        mapObject.callFun[data.mapId].mapDragendHandler(data);
     }
 }
 
 function markerDragendHandler(data) {
-    if (mapObject.callFun != null && mapObject.callFun.markerDragendHandler) {
-        mapObject.callFun().markerDragendHandler(data);
+    if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerDragendHandler) {
+        mapObject.callFun[data.mapId].markerDragendHandler(data);
     }
 }
 
 function markerMouseOverHandler(data) {
-    if (mapObject.callFun != null && mapObject.callFun.markerMouseOverHandler) {
-        mapObject.callFun.markerMouseOverHandler(data);
+    if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerMouseOverHandler) {
+        mapObject.callFun[data.mapId].markerMouseOverHandler(data);
     }
 }
 
 function markerMouseOutHandler(data) {
-    if (mapObject.callFun != null && mapObject.callFun.markerMouseOutHandler) {
-        mapObject.callFun.markerMouseOutHandler(data);
+    if (mapObject.callFun  && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerMouseOutHandler) {
+        mapObject.callFun[data.mapId].markerMouseOutHandler(data);
     }
 }
 
 function markerClickHandler(data) {
-    if (mapObject.callFun != null && mapObject.callFun.markerClickHandler) {
-        mapObject.callFun.markerClickHandler(data);
+    if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerClickHandler) {
+        mapObject.callFun[data.mapId].markerClickHandler(data);
     }
 }
 
-function markerHandler(id, data) {
-    if (mapObject.callFun != null && mapObject.callFun.markerHandler) {
+function markerHandler(mapId, id, data) {
+    if (mapObject.callFun && mapObject.callFun[mapId] && mapObject.callFun[mapId].markerHandler) {
         mapObject.callFun.markerHandler(id, data)
     }
 }

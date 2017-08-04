@@ -34,6 +34,15 @@ export default class DomainPopup extends PureComponent {
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.mapDragend = this.mapDragend.bind(this);
+    }
+
+    componentWillMount(){
+        this.mounted = false;
+    }
+
+    componentWillUnmout(){
+        this.mounted = true;
     }
 
     onConfirm() {
@@ -63,6 +72,14 @@ export default class DomainPopup extends PureComponent {
             newValue = value;
         }
         this.setState({[id]: newValue});
+    }
+
+    mapDragend(data){
+        for(let key in data.latlng){
+            let value = data.latlng[key];
+            let newValue = Number(ObjectPerValid(""+value, latlngValid), latlngValid);
+            this.setState({[key]:newValue});
+        }
     }
 
     render() {
@@ -115,10 +132,10 @@ export default class DomainPopup extends PureComponent {
                         {footer}
                     </div>
                     <div className="col-sm-6 popup-map">
-                        {
-                            lng && lat ? <MapView option={{mapZoom:false}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
-                        position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}/>
-                        :''}
+
+                            <MapView option={{mapZoom:false}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
+                        position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}
+                                     mapCallFun={{mapDragendHandler:this.mapDragend}} markerCallFun={{markerDragendHandler:this.mapDragend}}/>
                     </div>
                 </div>
             </Panel>
@@ -130,8 +147,8 @@ DomainPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
         domainName: PropTypes.string.isRequired,
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired,
+        // lat: PropTypes.number.isRequired,
+        // lng: PropTypes.number.isRequired,
         prevDomain: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.number

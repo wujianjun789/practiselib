@@ -94,7 +94,7 @@ export function transformDeviceType(deviceType) {
 
 /**
  *  对象每项验证
- * @param value(字符串)
+ * @param value(string)
  * @parm validFun(判断函数)
  * @returns {string}
  * @constructor

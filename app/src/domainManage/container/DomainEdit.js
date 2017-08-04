@@ -30,13 +30,13 @@ export class DomainEdit extends Component {
             collapse: false,
             selectDomain: {
                 id:"domain",
-                latlng:{lng: 121.49971691534425, lat: 31.239658843127756},
-                position: [{
+                latlng:{lng: null, lat: null},
+                position: [/*{
                     "device_id": 1,
                     "device_type": 'DEVICE',
                     lng: 121.49971691534425,
                     lat: 31.239658843127756
-                }],
+                }*/],
                 parentId:null,
                 data: [{
                     id: 1,
@@ -131,7 +131,7 @@ export class DomainEdit extends Component {
         switch(id){
             case 'add':
                 actions.overlayerShow(<DomainPopup title={"添加域"} data={{domainId:"", domainName:"",
-                lat:0, lng:0, prevDomain:''}}
+                lat:"", lng:"", prevDomain:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                                    onConfirm={(data)=>{
                                                         let domain = {};
@@ -144,8 +144,15 @@ export class DomainEdit extends Component {
                                                    }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
+                let lat="", lng="";
+
+                if(selectDomain.position && selectDomain.position.length){
+                    let latlng = selectDomain.position[0];
+                    lat = latlng.lat?latlng.lat:"";
+                    lng = latlng.lng?latlng.lng:"";
+                }
                 actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:selectDomain.data[0].id, domainName:selectDomain.data[0].name,
-                lat:selectDomain.position[0].lat, lng:selectDomain.position[0].lng, prevDomain:''}}
+                lat:lat, lng:lng, prevDomain:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                                               onConfirm={(data)=>{
                                                                     let domain = {};
