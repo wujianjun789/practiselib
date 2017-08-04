@@ -1,0 +1,19 @@
+exports[`<Select.1 />> snapshot 1`] = `
+<select
+  className="select select-primary"
+  onChange={undefined}
+  value="value02">
+  <option
+    value="value01">
+    value01
+  </option>
+  <option
+    value="value02">
+    value02
+  </option>
+  <option
+    value="value03">
+    value03
+  </option>
+</select>
+`;
