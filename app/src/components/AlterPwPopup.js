@@ -8,7 +8,8 @@ export default class AlterPwPopup extends PureComponent {
         this.state = {
             oldPw: '',
             newPw: '',
-            repPw: ''
+            repPw: '',
+            repPwState: false
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -20,18 +21,20 @@ export default class AlterPwPopup extends PureComponent {
     }
 
     onConfirm() {
-        this.props.overlayerHide();
-        console.log(this.state);
+        this.props.onConfirm && this.props.onConfirm(this.state);
     }
 
     onChange(e) {
         let id = e.target.id;
         this.setState({[id]: e.target.value});
+        if(id=='repPw') {
+            this.setState({repPwState: this.state.newPw != e.target.value ? true : false});
+        }
     }
 
     render() {
         let {className=''} = this.props;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, this.state.repPwState]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return <div className={className}>
             <Panel title='修改密码'  footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="form-group row">
@@ -40,13 +43,13 @@ export default class AlterPwPopup extends PureComponent {
                         <input type="password" className="form-control" id="oldPw" placeholder="输入旧密码" value={this.state.oldPw} onChange={this.onChange}/>
                     </div>
                 </div>
-                <div className="form-group row">
+                <div className={`form-group row`}>
                     <label htmlFor="newPw" className="col-sm-3 control-label">新密码：</label>
                     <div className="col-sm-9">
                         <input type="password" className="form-control" id="newPw" placeholder="输入新密码" value={this.state.newPw} onChange={this.onChange}/>
                     </div>
                 </div>
-                <div className="form-group row">
+                <div className={`form-group row ${this.state.repPwState ? 'has-error' : ''}`}>
                     <label htmlFor="repPw" className="col-sm-3 control-label">重复密码：</label>
                     <div className="col-sm-9">
                         <input type="password" className="form-control" id="repPw" placeholder="再次输入新密码" value={this.state.repPw} onChange={this.onChange}/>

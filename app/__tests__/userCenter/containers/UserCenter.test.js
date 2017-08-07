@@ -29,23 +29,23 @@ describe('<UserCenter /> HOC', () => {
         expect(alterPopup.length).toBe(0);
     });
 
-    it('alter Popup confirm btn click', () => {
-         const root = mount(<Provider store={store}>
-            <div>
-                <UserCenter />
-                <Overlayer />
-            </div>
-        </Provider>);
+    // it('alter Popup confirm btn click', () => {
+    //      const root = mount(<Provider store={store}>
+    //         <div>
+    //             <UserCenter />
+    //             <Overlayer />
+    //         </div>
+    //     </Provider>);
 
-        const li = root.find('.user-list li').at(0);
-        li.simulate('click');
-        let alterPopup = root.find('AlterPwPopup');
-        let btnConfirm = alterPopup.find('.btn.btn-primary');
-        btnConfirm.simulate('click');
-        alterPopup = root.find("AlterPwPopup");
-        expect(alterPopup.length).toBe(0);
+    //     const li = root.find('.user-list li').at(0);
+    //     li.simulate('click');
+    //     let alterPopup = root.find('AlterPwPopup');
+    //     let btnConfirm = alterPopup.find('.btn.btn-primary');
+    //     btnConfirm.simulate('click');
+    //     alterPopup = root.find("AlterPwPopup");
+    //     expect(alterPopup.length).toBe(0);
 
-    })
+    // })
 
     it('test exit popup cancel btn click', () => {
         const root = mount(<Provider store={store}>
