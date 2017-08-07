@@ -9,7 +9,7 @@ import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
-import Select from '../../components/Select';
+import Select from '../../components/Select.1';
 import WhiteListPopup from '../components/WhiteListPopup';
 import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
@@ -43,32 +43,6 @@ export class LampConCenter extends Component{
                     id: 1,
                     name: '灯集中控制器'
                 }]
-            },
-            domainList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {id: 1, title: 'domain01', value: 'domain01'},
-                    {id: 2, title: 'domain02', value: 'domain02'},
-                    {id: 3, title: 'domain03', value: 'domain03'},
-                    {id: 4, title: 'domain04', value: 'domain04'},
-                    {id: 5, title: 'domain05', value: 'domain05'},
-                    {id: 6, title: 'domain06', value: 'domain06'},
-                    {id: 7, title: 'domain07', value: 'domain07'}
-                ]
-            },
-            modelList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {id: 1, title: 'model01', value: 'model01'},
-                    {id: 2, title: 'model02', value: 'model02'},
-                    {id: 3, title: 'model03', value: 'model03'},
-                    {id: 4, title: 'model04', value: 'model04'},
-                    {id: 5, title: 'model05', value: 'model05'},
-                    {id: 6, title: 'model06', value: 'model06'},
-                    {id: 7, title: 'model07', value: 'model07'}
-                ]
             },
             data: {
                 id: 0,
@@ -149,7 +123,10 @@ export class LampConCenter extends Component{
 
     domainHandler(e){
         let id = e.target.id;
-        const {selectDomain, domainList, modelList} = this.state
+        const {selectDomain} = this.state
+        const {lampConCenter} = this.props;
+        const popupInfo = lampConCenter.get('popupInfo').toJS();
+        const {domainList, modelList, whiteListData} = popupInfo;
         const {overlayerShow, overlayerHide} = this.props.actions;
         switch(id) {
             case 'sys-add':
@@ -170,9 +147,7 @@ export class LampConCenter extends Component{
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-whitelist':
-                const popupInfo = this.props.lampConCenter.get('popupInfo').toJS();
-                const {data} = popupInfo;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={data} overlayerHide={overlayerHide}/>)
+                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whiteListData} overlayerHide={overlayerHide}/>)
                 break;
         }
     }
@@ -213,8 +188,8 @@ export class LampConCenter extends Component{
         this.setState({collapse: !this.state.collapse})
     }
 
-    domainSelect(index) {
-        this.props.actions.domainSelectChange(index);
+    domainSelect(e) {
+        this.props.actions.domainSelectChange(e.target.value);
     }
 
 
@@ -222,10 +197,10 @@ export class LampConCenter extends Component{
         const {listMode, collapse, search, selectDomain} = this.state;
         const page = this.props.lampConCenter.get('page');
         const data = this.props.lampConCenter.get('data');
-        const domain = this.props.lampConCenter.get('domain');
+        const domain = this.props.lampConCenter.get('domain').toJS();
         return <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <div className="heading">
-                    <Select data={domain} onChange={this.domainSelect}/>
+                    <Select titleField={domain.titleField} valueField={domain.valueField} options={domain.options} value={domain.value} onChange={this.domainSelect}/>
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
                     <button id="sys-add" className="btn btn-default add-domain" onClick={this.domainHandler}>添加</button>

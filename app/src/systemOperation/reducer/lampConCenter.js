@@ -7,7 +7,9 @@ import {
 const initialState = Immutable.fromJS({
     domain: {
         value: '',
-        list: [
+        titleField: 'value',
+        valueField: 'value',
+        options: [
             {value: 'domain1'},
             {value: 'domain2'},
             {value: 'domain3'},
@@ -21,8 +23,6 @@ const initialState = Immutable.fromJS({
             {value: 'domain11'},
         ]
     },
-    
-
     page: {
         pageSize: 10,
         current: 1,
@@ -42,7 +42,7 @@ const initialState = Immutable.fromJS({
         {id:11,deviceName: '灯集中控制器', model: '011', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'}
     ],
     popupInfo: {
-        whitelistData: [
+        whiteListData: [
             {id:1,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
             {id:2,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
             {id:3,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
@@ -87,8 +87,7 @@ const initialState = Immutable.fromJS({
 export default function lampConCenter(state=initialState, action) {
     switch(action.type) {
         case SYSTEM_OPERATION_DOMAIN_SELECT_CHANGE:
-            let val = state.get('domain').get('list').get(action.index).get('value');
-            state = state.updateIn(['domain','value'], () => val);
+            state = state.updateIn(['domain','value'], () => action.value);
             return state;
         case SYSTEM_OPERATION_PAGE_CHANGE:
             state = state.updateIn(['page', 'current'], () => action.current);
