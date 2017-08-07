@@ -1,0 +1,453 @@
+exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
+<div
+  className="centralized-popup">
+  <div
+    className="modal "
+    role="dialog">
+    <div
+      className="modal-dialog"
+      role="document">
+      <div
+        className="modal-content">
+        <div
+          className="modal-header">
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            onClick={[Function]}
+            type="button">
+            <span
+              aria-hidden="true">
+              ×
+            </span>
+          </button>
+          <h4
+            className="modal-title">
+            添加设备
+          </h4>
+        </div>
+        <div
+          className="modal-body">
+          <div
+            className="popup-left">
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="id">
+                设备编号：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  disabled={false}
+                  id="id"
+                  onChange={[Function]}
+                  placeholder="id"
+                  type="text"
+                  value="sdf" />
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="name">
+                名称：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  id="name"
+                  onChange={[Function]}
+                  placeholder="name"
+                  type="text"
+                  value="name01" />
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="model">
+                型号：
+              </label>
+              <div
+                className="col-sm-8">
+                <select
+                  className="select form-control"
+                  id="model"
+                  onChange={[Function]}
+                  value="model01">
+                  <option
+                    value="model01">
+                    model01
+                  </option>
+                  <option
+                    value="model02">
+                    model02
+                  </option>
+                  <option
+                    value="model03">
+                    model03
+                  </option>
+                  <option
+                    value="model04">
+                    model04
+                  </option>
+                  <option
+                    value="model05">
+                    model05
+                  </option>
+                  <option
+                    value="model06">
+                    model06
+                  </option>
+                  <option
+                    value="model07">
+                    model07
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="domain">
+                域：
+              </label>
+              <div
+                className="col-sm-8">
+                <select
+                  className="select form-control"
+                  id="domain"
+                  onChange={[Function]}
+                  value="domain01">
+                  <option
+                    value="domain01">
+                    domain01
+                  </option>
+                  <option
+                    value="domain02">
+                    domain02
+                  </option>
+                  <option
+                    value="domain03">
+                    domain03
+                  </option>
+                  <option
+                    value="domain04">
+                    domain04
+                  </option>
+                  <option
+                    value="domain05">
+                    domain05
+                  </option>
+                  <option
+                    value="domain06">
+                    domain06
+                  </option>
+                  <option
+                    value="domain07">
+                    domain07
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="lng">
+                经度：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  id="lng"
+                  onChange={[Function]}
+                  placeholder="lng"
+                  type="text"
+                  value={121.49971691534425} />
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="lat">
+                纬度：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  id="lat"
+                  onChange={[Function]}
+                  placeholder="lat"
+                  type="text"
+                  value={31.239658843127756} />
+              </div>
+            </div>
+            <div
+              className="modal-footer">
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button">
+                取消
+              </button>
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button">
+                确认
+              </button>
+            </div>
+          </div>
+          <div
+            className="popup-map">
+            <div
+              className="map-view "
+              id="domainPopup" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
+<div
+  className="centralized-popup">
+  <div
+    className="modal "
+    role="dialog">
+    <div
+      className="modal-dialog"
+      role="document">
+      <div
+        className="modal-content">
+        <div
+          className="modal-header">
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            onClick={[Function]}
+            type="button">
+            <span
+              aria-hidden="true">
+              ×
+            </span>
+          </button>
+          <h4
+            className="modal-title">
+            添加设备
+          </h4>
+        </div>
+        <div
+          className="modal-body">
+          <div
+            className="popup-left">
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="id">
+                设备编号：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  disabled={true}
+                  id="id"
+                  onChange={[Function]}
+                  placeholder="id"
+                  type="text"
+                  value="sdf" />
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="name">
+                名称：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  id="name"
+                  onChange={[Function]}
+                  placeholder="name"
+                  type="text"
+                  value="name01" />
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="model">
+                型号：
+              </label>
+              <div
+                className="col-sm-8">
+                <select
+                  className="select form-control"
+                  id="model"
+                  onChange={[Function]}
+                  value="model01">
+                  <option
+                    value="model01">
+                    model01
+                  </option>
+                  <option
+                    value="model02">
+                    model02
+                  </option>
+                  <option
+                    value="model03">
+                    model03
+                  </option>
+                  <option
+                    value="model04">
+                    model04
+                  </option>
+                  <option
+                    value="model05">
+                    model05
+                  </option>
+                  <option
+                    value="model06">
+                    model06
+                  </option>
+                  <option
+                    value="model07">
+                    model07
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="domain">
+                域：
+              </label>
+              <div
+                className="col-sm-8">
+                <select
+                  className="select form-control"
+                  id="domain"
+                  onChange={[Function]}
+                  value="domain01">
+                  <option
+                    value="domain01">
+                    domain01
+                  </option>
+                  <option
+                    value="domain02">
+                    domain02
+                  </option>
+                  <option
+                    value="domain03">
+                    domain03
+                  </option>
+                  <option
+                    value="domain04">
+                    domain04
+                  </option>
+                  <option
+                    value="domain05">
+                    domain05
+                  </option>
+                  <option
+                    value="domain06">
+                    domain06
+                  </option>
+                  <option
+                    value="domain07">
+                    domain07
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="lng">
+                经度：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  id="lng"
+                  onChange={[Function]}
+                  placeholder="lng"
+                  type="text"
+                  value={121.49971691534425} />
+              </div>
+            </div>
+            <div
+              className="form-group clearfix">
+              <label
+                className="col-sm-4 control-label"
+                htmlFor="lat">
+                纬度：
+              </label>
+              <div
+                className="col-sm-8">
+                <input
+                  className="form-control"
+                  id="lat"
+                  onChange={[Function]}
+                  placeholder="lat"
+                  type="text"
+                  value={31.239658843127756} />
+              </div>
+            </div>
+            <div
+              className="modal-footer">
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button">
+                取消
+              </button>
+              <button
+                className="btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button">
+                确认
+              </button>
+            </div>
+          </div>
+          <div
+            className="popup-map">
+            <div
+              className="map-view "
+              id="domainPopup" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

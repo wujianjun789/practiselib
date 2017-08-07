@@ -34,7 +34,8 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
             <div
               className="searchText "
               onBlur={[Function]}
-              onFocus={[Function]}>
+              onFocus={[Function]}
+              onKeyDown={[Function]}>
               <input
                 onChange={[Function]}
                 placeholder="输入素材名称"

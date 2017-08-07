@@ -4,8 +4,8 @@
 import React,{Component} from 'react'
 
 const Select = (props, context) => {
-    const {className='', titleField='value', valueField='value', options=[], value="", onChange} = props;
-    return <select className={`select ${className}`} value={value} onChange={onChange}>
+    const {id="", className='', titleField='value', valueField='value', options=[], value="", onChange} = props;
+    return <select id={id} className={`select ${className}`} value={value} onChange={onChange}>
         {
             options.map( (option, index) => <option key={index} value={option[valueField]}>{option[titleField]}</option> )
         }

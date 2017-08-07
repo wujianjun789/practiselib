@@ -3,6 +3,7 @@ import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
+import PropTypes from 'prop-types';
 
 export default class CentralizedControllerPopup extends Component {
     constructor(props) {
@@ -59,13 +60,13 @@ export default class CentralizedControllerPopup extends Component {
                         <div className="form-group clearfix">
                             <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
                             <div className="col-sm-8">
-                                <Select className="form-control" titleField={modelList.titleField} valueField={modelList.valueField} options={modelList.options} value={model} onChange={this.onChange} />
+                                <Select id="model" className="form-control" titleField={modelList.titleField} valueField={modelList.valueField} options={modelList.options} value={model} onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="domain" className="col-sm-4 control-label">域：</label>
                             <div className="col-sm-8">
-                                <Select className="form-control" titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options} value={domain} onChange={this.onChange} />
+                                <Select id="domain" className="form-control" titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options} value={domain} onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="form-group clearfix">
@@ -94,4 +95,8 @@ export default class CentralizedControllerPopup extends Component {
             </div>
         )
     }
+}
+
+CentralizedControllerPopup.propTypes = {
+    popId: PropTypes.string.isRequired
 }
