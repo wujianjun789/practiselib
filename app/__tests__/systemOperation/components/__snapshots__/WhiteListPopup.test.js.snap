@@ -2,169 +2,161 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
 <div
   className="white-popup">
   <div
-    className="modal "
-    role="dialog">
+    className="modal-content ">
     <div
-      className="modal-dialog"
-      role="document">
+      className="modal-header">
+      <button
+        aria-label="Close"
+        className="close"
+        data-dismiss="modal"
+        onClick={[Function]}
+        type="button">
+        <span
+          aria-hidden="true">
+          ×
+        </span>
+      </button>
+      <h4
+        className="modal-title">
+        白名单
+      </h4>
+    </div>
+    <div
+      className="modal-body">
       <div
-        className="modal-content">
+        className="row search-group">
         <div
-          className="modal-header">
-          <button
-            aria-label="Close"
-            className="close"
-            data-dismiss="modal"
-            onClick={[Function]}
-            type="button">
-            <span
-              aria-hidden="true">
-              ×
-            </span>
-          </button>
-          <h4
-            className="modal-title">
-            白名单
-          </h4>
+          className="searchText "
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}>
+          <input
+            onChange={[Function]}
+            placeholder="输入素材名称"
+            type="search"
+            value="" />
+          <ul
+            className="" />
+          <span
+            className="glyphicon glyphicon-search"
+            onClick={[Function]} />
         </div>
+        <button
+          className="btn btn-primary"
+          onClick={[Function]}>
+          添加
+        </button>
+      </div>
+      <div
+        className="table-list">
+        <ul
+          className="table-header">
+          <li
+            className="tables-cell">
+            名称
+          </li>
+          <li
+            className="tables-cell">
+            编号
+          </li>
+          <li
+            className="tables-cell" />
+        </ul>
         <div
-          className="modal-body">
-          <div
-            className="row search-group">
-            <div
-              className="searchText "
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}>
-              <input
-                onChange={[Function]}
-                placeholder="输入素材名称"
-                type="search"
-                value="" />
-              <ul
-                className="" />
-              <span
-                className="glyphicon glyphicon-search"
-                onClick={[Function]} />
-            </div>
-            <button
-              className="btn btn-primary"
-              onClick={[Function]}>
-              添加
-            </button>
-          </div>
-          <div
-            className="table-list">
-            <ul
-              className="table-header">
-              <li
+          className="table-body">
+          <ul>
+            <li
+              className="body-row clearfix">
+              <div
                 className="tables-cell">
-                名称
-              </li>
-              <li
+                灯集中控制器
+              </div>
+              <div
                 className="tables-cell">
-                编号
-              </li>
-              <li
-                className="tables-cell" />
-            </ul>
-            <div
-              className="table-body">
-              <ul>
-                <li
-                  className="body-row clearfix">
-                  <div
-                    className="tables-cell">
-                    灯集中控制器
-                  </div>
-                  <div
-                    className="tables-cell">
-                    00158D0000CABAD5
-                  </div>
-                  <div
-                    className="tables-cell">
-                    <span
-                      className="glyphicon glyphicon-trash"
-                      id={1}
-                      onClick={[Function]} />
-                  </div>
-                </li>
-                <li
-                  className="body-row clearfix">
-                  <div
-                    className="tables-cell">
-                    灯集中控制器
-                  </div>
-                  <div
-                    className="tables-cell">
-                    00158D0000CABAD5
-                  </div>
-                  <div
-                    className="tables-cell">
-                    <span
-                      className="glyphicon glyphicon-trash"
-                      id={2}
-                      onClick={[Function]} />
-                  </div>
-                </li>
-                <li
-                  className="body-row clearfix">
-                  <div
-                    className="tables-cell">
-                    灯集中控制器
-                  </div>
-                  <div
-                    className="tables-cell">
-                    00158D0000CABAD5
-                  </div>
-                  <div
-                    className="tables-cell">
-                    <span
-                      className="glyphicon glyphicon-trash"
-                      id={3}
-                      onClick={[Function]} />
-                  </div>
-                </li>
-                <li
-                  className="body-row clearfix">
-                  <div
-                    className="tables-cell">
-                    灯集中控制器
-                  </div>
-                  <div
-                    className="tables-cell">
-                    00158D0000CABAD5
-                  </div>
-                  <div
-                    className="tables-cell">
-                    <span
-                      className="glyphicon glyphicon-trash"
-                      id={4}
-                      onClick={[Function]} />
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div
-          className="modal-footer">
-          <button
-            className="btn btn-default"
-            disabled={false}
-            onClick={[Function]}
-            type="button">
-            取消
-          </button>
-          <button
-            className="btn btn-primary"
-            disabled={false}
-            onClick={[Function]}
-            type="button">
-            确认
-          </button>
+                00158D0000CABAD5
+              </div>
+              <div
+                className="tables-cell">
+                <span
+                  className="glyphicon glyphicon-trash"
+                  id={1}
+                  onClick={[Function]} />
+              </div>
+            </li>
+            <li
+              className="body-row clearfix">
+              <div
+                className="tables-cell">
+                灯集中控制器
+              </div>
+              <div
+                className="tables-cell">
+                00158D0000CABAD5
+              </div>
+              <div
+                className="tables-cell">
+                <span
+                  className="glyphicon glyphicon-trash"
+                  id={2}
+                  onClick={[Function]} />
+              </div>
+            </li>
+            <li
+              className="body-row clearfix">
+              <div
+                className="tables-cell">
+                灯集中控制器
+              </div>
+              <div
+                className="tables-cell">
+                00158D0000CABAD5
+              </div>
+              <div
+                className="tables-cell">
+                <span
+                  className="glyphicon glyphicon-trash"
+                  id={3}
+                  onClick={[Function]} />
+              </div>
+            </li>
+            <li
+              className="body-row clearfix">
+              <div
+                className="tables-cell">
+                灯集中控制器
+              </div>
+              <div
+                className="tables-cell">
+                00158D0000CABAD5
+              </div>
+              <div
+                className="tables-cell">
+                <span
+                  className="glyphicon glyphicon-trash"
+                  id={4}
+                  onClick={[Function]} />
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
+    </div>
+    <div
+      className="modal-footer">
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button">
+        取消
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={false}
+        onClick={[Function]}
+        type="button">
+        确认
+      </button>
     </div>
   </div>
 </div>

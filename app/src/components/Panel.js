@@ -19,19 +19,15 @@ const Panel = (props) => {
     body = body ? body : <div className="row pull-center">{text ? text : '无相关数据'}</div>;
     closeBtn =  closeBtn ? true : false;
     return (
-        <div className={`modal ${className}`} role="dialog">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        {closeBtn ? <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeClick}><span aria-hidden="true">&times;</span></button> : null}
-                        <h4 className="modal-title">{title}</h4>
-                    </div>
-                    <div className="modal-body">
-                        {children ? children : body }
-                    </div>
-                    { footer }
-                </div>
+        <div className={`modal-content ${className}`}>
+            <div className="modal-header">
+                {closeBtn ? <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeClick}><span aria-hidden="true">&times;</span></button> : null}
+                <h4 className="modal-title">{title}</h4>
             </div>
+            <div className="modal-body">
+                {children ? children : body }
+            </div>
+            { footer }
         </div>
     )
 }

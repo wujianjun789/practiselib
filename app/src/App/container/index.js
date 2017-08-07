@@ -30,7 +30,7 @@ export class App extends Component{
                         <span className="tit">{title}</span>
                         <span className="name"><span>{name}</span></span>
                     </div>
-                    <UserCenter />
+                    <UserCenter router={this.props.router}/>
                 </div>
                 <div className="cont">
                     <ul className="clearfix">
