@@ -7,7 +7,7 @@ describe('<Panel />', () => {
     it('render with no props passed', () => {
         const panel = shallow(<Panel />);
 
-        const container = panel.find('.modal');
+        const container = panel.find('.modal-content');
         expect(container.length).toBe(1);
 
         const tit = panel.find('.modal-title');
@@ -26,7 +26,7 @@ describe('<Panel />', () => {
     it('render with className="modal-default", title=box, text="body text", closeBtn=true', () => {
         const panel = shallow(<Panel className="modal-default" title="box" text="body text" closeBtn/>);
 
-        const container = panel.find('.modal');
+        const container = panel.find('.modal-content');
         expect(container.hasClass('modal-default')).toBeTruthy();
 
         const tit = panel.find('.modal-title');

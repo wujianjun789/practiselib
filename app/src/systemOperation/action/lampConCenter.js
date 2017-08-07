@@ -3,10 +3,10 @@ import {
     SYSTEM_OPERATION_PAGE_CHANGE
 } from '../actionType/lampConCenter';
 
-export function domainSelectChange(index) {
+export function domainSelectChange(value) {
     return {
         type: SYSTEM_OPERATION_DOMAIN_SELECT_CHANGE,
-        index
+        value
     }
 }
 

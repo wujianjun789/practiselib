@@ -2,15 +2,13 @@ import React,{Component} from 'react';
 export default class InputCheck extends Component{
     constructor(props){
         super(props)
-        this.state = {
-            style: { visibility: 'hidden' },
-        }
         this.onFocus = this.onFocus.bind(this);
         this.onBlur = this.onBlur.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
-    onFocus(){
-        this.setState({style:{visibility: 'hidden'}})
+    onFocus(event){
+        this.props.onFocus && this.props.onFocus(event.target.id);
     }
 
     onBlur(event){
@@ -23,15 +21,14 @@ export default class InputCheck extends Component{
     }
 
     render(){
-        const {type = 'text',className = 'userName',label = '用户名',checked = 'fail',reminder = '',placeholder = '请输入用户名',value='',disabled=false} = this.props;
-        const style = this.state.style?this.state.style:{ visibility: 'hidden' };
+        const {type = 'text',className = '',id='username',label = '用户名',checked = 'fail',reminder = '',placeholder = '请输入用户名',value='',disabled=false} = this.props;
 
         return <div className={"inputCheck "+className}>
                 <label className = 'col-sm-2 control-label'>{label}:</label>
                 <div className = {`has-feedback col-sm-4 ${checked=='success'?'has-success':checked=='fail'?'has-error':''}`}>
-                    <input disabled={!!disabled} type={type} id = {className} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
+                    <input disabled={!!disabled} type={type} id = {id} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
                     <span className={`glyphicon ${checked=='success'?'glyphicon-ok':checked=='fail'?'glyphicon-remove':''} form-control-feedback`} aria-hidden="true"></span>
-                    <span className="reminder" style={style}>{reminder}</span>
+                    <span className="reminder">{reminder}</span>
                 </div>
             </div>
         

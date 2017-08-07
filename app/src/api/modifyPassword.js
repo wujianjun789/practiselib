@@ -2,10 +2,10 @@ import {httpRequest, HOST_IP, getHttpHeader} from '../util/network';
 import {getCookie} from '../util/cache';
 
 const modifyPassword = ({oldPw: oldPassword, newPw: newPassword}, successFun, errFun) => {
-    let {access_token} = getCookie('user');
+    let {id} = getCookie('user');
     let headers = {
         Accept: 'application/json',
-        Authorization: access_token,
+        Authorization: id,
         'Content-Type': 'application/x-www-form-urlencoded'
     };
     let data = `oldPassword=${encodeURIComponent(oldPassword)}&newPassword=${encodeURIComponent(newPassword)}`
@@ -20,8 +20,4 @@ const modifyPassword = ({oldPw: oldPassword, newPw: newPassword}, successFun, er
     },null)
 }
 
-const logout = () => {
-
-}
-
-export {modifyPassword, logout};
+export {modifyPassword};

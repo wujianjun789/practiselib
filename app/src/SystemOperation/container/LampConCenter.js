@@ -37,7 +37,7 @@ export class LampConCenter extends Component {
                 total: 21
             }),
             search: Immutable.fromJS({
-                placeholder: '  输入设备名称',
+                placeholder: '输入设备名称',
                 value: ''
             }),
             selectDevice: {
@@ -273,10 +273,7 @@ export class LampConCenter extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-whitelist':
-                // const popupInfo = this.props.lampConCenter.get('popupInfo').toJS();
-                // const {whitelistData} = popupInfo;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whitelistData}
-                                              overlayerHide={overlayerHide}/>)
+                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whiteListData} overlayerHide={overlayerHide}/>)
                 break;
         }
     }
@@ -323,6 +320,7 @@ export class LampConCenter extends Component {
     collpseHandler() {
         this.setState({collapse: !this.state.collapse})
     }
+
 
     domainSelect(event) {
         // this.props.actions.domainSelectChange(index);

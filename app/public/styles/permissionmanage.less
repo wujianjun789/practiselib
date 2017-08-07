@@ -15,7 +15,7 @@
         .page{
             padding-left: 45%;
         }
-        .grade-icon{
+        .role-icon{
             text-align: center;
             
             >.icon{
@@ -48,9 +48,10 @@
     
 }
 
-.user-add-popup{
+.user-add-popup,.user-edit-popup{
     width:700px;
     .modal-body{
+        margin-top: 5px;
         margin-right:50px;        
     }
     .modal-footer{
@@ -69,7 +70,7 @@
     }
     .basic-info{
         margin-bottom: 10px;
-        >.grade{
+        >.role{
             width: 201px;
             height: 34px;
             margin: 0 0 30px 15px;
@@ -149,8 +150,13 @@
                     overflow-y: scroll;
                     ul{
                         background-color: #fff!important;
-                        >li>div>:last-of-type{
-                            color: #808080!important;
+                        >li>div{
+                            &:hover{
+                                background-color: #e5e5e5;
+                            }
+                            >:last-of-type{
+                                color: #808080!important;
+                            }
                         }
                     }
                 }

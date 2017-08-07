@@ -9,6 +9,7 @@ import {overlayerShow, overlayerHide} from '../actions/overlayer';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import AlterPwPopup from '../../components/AlterPwPopup';
 import {confirmExit} from '../actions/userCenter';
+import {modifyPassword} from '../../api/modifyPassword';
 /**
  * @param {String} className  optional
  */
@@ -26,6 +27,7 @@ export class UserCenter extends Component{
         this.itemClick = this.itemClick.bind(this);
         this.cancel = this.cancel.bind(this);
         this.confirm = this.confirm.bind(this);
+        this.AlterPwPopupConfirm = this.AlterPwPopupConfirm.bind(this);
     }
 
     userListToggle() {
@@ -39,14 +41,25 @@ export class UserCenter extends Component{
     }
 
     confirm() {
-        this.props.actions.overlayerHide();
-        this.props.actions.confirmExit();
+        this.props.actions.confirmExit(() => {
+            this.props.router.push('/login');
+            this.props.actions.overlayerHide();
+        });
+    }
+
+    AlterPwPopupConfirm(data) {
+        modifyPassword(data,() => {
+            this.props.actions.overlayerHide();
+            this.props.router.push('/login');
+        }, () => {
+            console.log('密码错误');
+        });
     }
 
     itemClick(key) {
         let {overlayerHide, overlayerShow} = this.props.actions;
         if(key == 'alter') {
-            overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} />);
+            overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} onConfirm={this.AlterPwPopupConfirm}/>);
         } else {
             overlayerShow(<ConfirmPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
@@ -69,6 +82,10 @@ export class UserCenter extends Component{
     }
 }
 
+UserCenter.propTypes = {
+    className: PropTypes.string
+}
+
 const mapStateToProps = (state, ownProps) => {
     return {
         
@@ -86,7 +103,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserCenter);
-
-UserCenter.propTypes = {
-    className: PropTypes.string
-}

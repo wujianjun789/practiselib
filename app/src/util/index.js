@@ -147,3 +147,7 @@ export function MACValid(mac){
 export function latlngValid(str){
     return str.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')
 }
+
+export function PassWordValid(password) {
+    return /^[_0-9a-zA-Z]+$/.test(password);
+}

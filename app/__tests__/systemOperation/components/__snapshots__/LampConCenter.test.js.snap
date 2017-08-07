@@ -1,0 +1,189 @@
+exports[`<LampConCenter /> component snapshot 1`] = `
+<div
+  className="content offset-right ">
+  <div
+    className="heading">
+    <select
+      className="select "
+      id=""
+      onChange={[Function]}
+      value="">
+      <option
+        value={undefined} />
+      <option
+        value={undefined} />
+      <option
+        value={undefined} />
+      <option
+        value={undefined} />
+      <option
+        value={undefined} />
+      <option
+        value={undefined} />
+      <option
+        value={undefined} />
+    </select>
+    <div
+      className="searchText "
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}>
+      <input
+        onChange={[Function]}
+        placeholder="输入设备名称"
+        type="search"
+        value="" />
+      <ul
+        className="" />
+      <span
+        className="glyphicon glyphicon-search"
+        onClick={[Function]} />
+    </div>
+    <button
+      className="btn btn-default add-domain"
+      id="sys-add"
+      onClick={[Function]}>
+      添加
+    </button>
+  </div>
+  <div
+    className="">
+    <div
+      className="table-container">
+      <ul
+        className="rc-pagination page"
+        style={Object {}}
+        unselectable="unselectable">
+        <li
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-prev"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="上一页">
+          <a>
+            
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={1}>
+          <a>
+            1
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-2"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={2}>
+          <a>
+            2
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-3"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={3}>
+          <a>
+            3
+          </a>
+        </li>
+        <li
+          aria-disabled={false}
+          className=" rc-pagination-next"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="下一页">
+          <a>
+            
+          </a>
+        </li>
+        <div
+          className="rc-pagination-options" />
+      </ul>
+    </div>
+  </div>
+  <div
+    className="container-fluid sidebar-info ">
+    <div
+      className="row collapse-container"
+      onClick={[Function]}>
+      <span
+        className="icon_verital" />
+    </div>
+    <div
+      className="panel panel-default device-statics-info">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_sys_select" />
+        选中设备
+      </div>
+      <div
+        className="panel-body domain-property">
+        <span
+          className="domain-name">
+          灯集中控制器
+        </span>
+        <button
+          className="btn btn-primary pull-right"
+          id="sys-update"
+          onClick={[Function]}>
+          编辑
+        </button>
+        <button
+          className="btn btn-danger pull-right"
+          id="sys-delete"
+          onClick={[Function]}>
+          删除
+        </button>
+      </div>
+    </div>
+    <div
+      className="panel panel-default device-statics-info whitelist">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_sys_whitelist" />
+        白名单
+      </div>
+      <div
+        className="panel-body domain-property">
+        <span
+          className="domain-name">
+          包含：1 个项目
+        </span>
+        <button
+          className="btn btn-primary pull-right"
+          id="sys-whitelist"
+          onClick={[Function]}>
+          编辑
+        </button>
+      </div>
+    </div>
+    <div
+      className="panel panel-default map-position">
+      <div
+        className="panel-heading">
+        <span
+          className="icon_map_position" />
+        地图位置
+      </div>
+      <div
+        className="map-container panel-body">
+        <div
+          className="map-view "
+          id="systemOperation" />
+      </div>
+    </div>
+  </div>
+</div>
+`;

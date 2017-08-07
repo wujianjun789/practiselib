@@ -788,53 +788,46 @@ ul {
     animation: pulse .1s;
 }
 /*********************** modal *******************************/
-.modal {
-    position: static;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    left: auto;
-    display: inline-block;
+.modal-conent {
     width: 100%;
-    border-radius: 6px;
 }
-.modal .modal-title {
+.modal-title {
     text-align: center;
 }
 
-.modal .modal-header {
+.modal-header {
     border-bottom-color: #909090;
 }
 
-.modal .modal-header .close {
+.modal-header .close {
     font-size: 27px;
 }
-.modal .modal-dialog {
+.modal-dialog {
     width: 100%;
     margin: 0 auto;
 }
-.modal .modal-footer button{
+.modal-footer button{
     width: 110px;
     padding-top: 7px;
     padding-bottom: 7px;
     border-radius: 5px;
 }
 
-.modal .modal-footer .btn:last-child {
+.modal-footer .btn:last-child {
     margin-left: 15px;
 }
 
-.modal .modal-footer .btn.btn-primary {
+.modal-footer .btn.btn-primary {
     background-color: #00d6ff;
     border-color: #00d6ff;
     height: 36px;
 }
-.modal .modal-footer .btn.btn.btn-primary:hover {
+.modal-footer .btn.btn.btn-primary:hover {
     background-color: #00c1e6;
     border-color: #00c1e6;
 }
 
-.modal .modal-footer .btn.btn-default{
+.modal-footer .btn.btn-default{
     color: #808080;
 }
 
