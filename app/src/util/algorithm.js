@@ -93,6 +93,15 @@ export function getObjectByKey(list, key, value) {
     return null;
 }
 
+export function getObjectByKeyObj(list, key, value) {
+    for(var i=0;i<list.length;i++){
+        if(list[i][key] == value){
+            return list[i];
+        }
+    }
+    return null;
+}
+
 /**
  * 根据键值(多个参数)搜索数组中匹配项
  *

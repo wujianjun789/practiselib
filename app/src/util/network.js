@@ -120,7 +120,7 @@ export function getToken() {
 
     if(user){
         return {
-            Authorization: `${user['access_token']}`
+            Authorization: `${user['id']}`
         }
     }
     else{

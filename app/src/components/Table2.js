@@ -70,7 +70,7 @@ export default class Table2 extends Component {
                             return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
                                     {
-                                        <input type="checkbox" checked={row.checked} onChange={(e)=>keyField && this.rowCheckChange(row.keyField,e.target.checked)}/>
+                                        <input type="checkbox" checked={row.checked} onChange={(e)=>keyField && this.rowCheckChange(row[keyField],e.target.checked)}/>
                                     }
                                 </td>
                                 {
@@ -81,8 +81,8 @@ export default class Table2 extends Component {
                                 {
                                     isEdit &&
                                         <td className = 'button-icon'>
-                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.keyField)}><span className="icon-table-edit"></span></a>
-                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row.keyField)}><span className="icon-table-delete"></span></a>
+                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon-table-edit"></span></a>
+                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon-table-delete"></span></a>
                                         </td>
                                 }
 
