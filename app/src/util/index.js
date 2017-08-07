@@ -31,6 +31,14 @@ export function intlFormat(data) {
     return data[lan] ? data[lan] : data['en'];
 }
 
+export function getObjectByKey(list, key, value) {
+    for(var i=0;i<list.length;i++){
+        if(list[i][key] == value){
+            return list[i];
+        }
+    }
+    return null;
+}
 /**
  *
  * @param key(model)

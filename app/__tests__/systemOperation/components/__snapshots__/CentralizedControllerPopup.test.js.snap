@@ -216,7 +216,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             className="popup-map">
             <div
               className="map-view "
-              id="domainPopup" />
+              id="CentralizedPopup" />
           </div>
         </div>
       </div>
@@ -443,7 +443,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             className="popup-map">
             <div
               className="map-view "
-              id="domainPopup" />
+              id="CentralizedPopup" />
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
-import {TreeData} from '.././../data/systemModel'
+import {getModelData, TreeData} from '.././../data/systemModel'
 import {treeViewInit} from '../../common/actions/treeView'
 import {sideBarToggled} from '../action/index'
 class SystemOperationIndex extends Component{
@@ -20,11 +20,12 @@ class SystemOperationIndex extends Component{
     }
 
     componentWillMount(){
-        this.initTreeData();
+        this.mounted = true;
+        getModelData(()=>{this.mounted && this.initTreeData()})
     }
 
     componentWillUnmount(){
-
+        this.mounted = false;
     }
 
     initTreeData(){
