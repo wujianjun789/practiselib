@@ -26,7 +26,7 @@ export class LampConCenter extends Component{
             listMode: true,
             collapse: false,
             search: Immutable.fromJS({
-                placeholder: '  输入设备名称',
+                placeholder: '输入设备名称',
                 value: ''
             }),
             selectDomain: {
