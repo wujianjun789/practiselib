@@ -42,7 +42,7 @@ const initialState = Immutable.fromJS({
         {id:11,deviceName: '灯集中控制器', model: '011', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'}
     ],
     popupInfo: {
-        data: [
+        whitelistData: [
             {id:1,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
             {id:2,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
             {id:3,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
@@ -54,7 +54,33 @@ const initialState = Immutable.fromJS({
             {id:9,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
             {id:10,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
             {id:11,name: '灯集中控制器', number: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'}
-        ]
+        ],
+        domainList: {
+            titleField: 'title',
+            valueField: 'value',
+            options: [
+                {id: 1, title: 'domain01', value: 'domain01'},
+                {id: 2, title: 'domain02', value: 'domain02'},
+                {id: 3, title: 'domain03', value: 'domain03'},
+                {id: 4, title: 'domain04', value: 'domain04'},
+                {id: 5, title: 'domain05', value: 'domain05'},
+                {id: 6, title: 'domain06', value: 'domain06'},
+                {id: 7, title: 'domain07', value: 'domain07'}
+            ]
+        },
+        modelList: {
+            titleField: 'title',
+            valueField: 'value',
+            options: [
+                {id: 1, title: 'model01', value: 'model01'},
+                {id: 2, title: 'model02', value: 'model02'},
+                {id: 3, title: 'model03', value: 'model03'},
+                {id: 4, title: 'model04', value: 'model04'},
+                {id: 5, title: 'model05', value: 'model05'},
+                {id: 6, title: 'model06', value: 'model06'},
+                {id: 7, title: 'model07', value: 'model07'}
+            ]
+        }
     }
 })
 
