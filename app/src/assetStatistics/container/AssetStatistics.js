@@ -128,10 +128,10 @@ export class AssetStatistics extends Component {
         getSearchAssets(domainId, modelId, name, offset, size, data=>this.mounted && this.searchResult(data));
     }
 
-    initTreeData(){
+    initTreeData(){  
         let modelList = getModelList();
         let list = modelList.map(model=>{
-            return Object.assign({}, model, {value:model.name});
+            return Object.assign({}, model, {value:model.name});     
         })
 
         // this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:""})})
@@ -139,7 +139,7 @@ export class AssetStatistics extends Component {
         this.requestSearch();
     }
 
-    initDomain(data){
+    initDomain(data){ 
         if(data){
             let list = data.map(domain=>{
                 return Object.assign({}, domain, {value:domain.name});
@@ -147,7 +147,7 @@ export class AssetStatistics extends Component {
 
             this.setState({domain:Immutable.fromJS({list:list, index:0, value:data.length>0?data[0]:""})})
         }
-
+  
         this.requestSearch();
     }
 
@@ -162,7 +162,7 @@ export class AssetStatistics extends Component {
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
         this.setState({data:Immutable.fromJS(list)})
-
+        
         if(this.state.data && this.state.data.size>0){
             let data = this.state.data.get(0);
             this.tableClick(data);
@@ -179,7 +179,10 @@ export class AssetStatistics extends Component {
     }
 
     onToggle(node){
-        // console.log(node);
+        console.log(node);
+        if(node.children != null) {
+            return ;
+        }
         let search = this.state.search.update("value",v=>"");
         this.setState({model:node.id, search:search}, ()=>{
             this.requestSearch();
@@ -216,6 +219,7 @@ export class AssetStatistics extends Component {
 
     tableClick(data){
         this.setState({selectDevice:{
+            id:"assetStatistics",
             position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["latlng", "lng"]), lat:data.getIn(["latlng", "lat"])}],
             data:[{id:data.get('id'), name:data.get('deviceName')}]
         }})
