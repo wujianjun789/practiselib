@@ -25,12 +25,12 @@ describe('<LampConCenter /> component', () => {
 
         cmp.setState({model: 'lcc'});
         const columns = [
+            {id: 0, field:"domainName", title:"域"},
             {id: 1, field: "name", title: "设备名称"},
-            {id: 2, field: "type", title: "型号"},
+            {id: 2, field: "typeName", title: "型号"},
             {id: 3, field: "id", title: "设备编号"},
-            {id: 4, field: "model", title: "端口号"},
             {id: 5, field: "lng", title: "经度"},
-            {id: 6, field: "lat", title: "纬度"},
+            {id: 6, field: "lat", title: "纬度"}
         ];
         const table = cmp.find('Table');
         expect(table.prop('columns')).toEqual(columns);
