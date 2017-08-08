@@ -9,7 +9,7 @@ import {ObjectPerValid, NameValid, latlngValid} from '../../util/index'
 export default class CentralizedControllerPopup extends Component {
     constructor(props) {
         super(props);
-        let {id, name, modelId, model, domainId, domain, lng, lat} = this.props.data;
+        const {id="", name="", modelId="", model="", domainId="", domain="", lng=0, lat=0} = props.data;
         this.state = {
             id:id,
             name:name,
@@ -61,17 +61,17 @@ export default class CentralizedControllerPopup extends Component {
     }
 
     mapDragend(data) {
-        // for(let key in data.latlng){
-        //     let value = data.latlng[key];
-        //     let newValue = Number(ObjectPerValid(""+value, latlngValid), latlngValid);
-        //     this.setState({[key]:newValue});
-        // }
+        for(let key in data.latlng){
+            let value = data.latlng[key];
+            let newValue = Number(ObjectPerValid(""+value, latlngValid), latlngValid);
+            this.setState({[key]:newValue});
+        }
     }
 
     render() {
-        let {className, title, domainList, modelList, popId} = this.props;
-        let {id, name, model, domain, lng, lat} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
+        const {className, title, domainList, modelList, popId} = this.props;
+        const {id, name, model, domain, lng, lat} = this.state;
+        const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
                                   onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (

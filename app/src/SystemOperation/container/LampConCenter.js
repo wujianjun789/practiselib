@@ -229,7 +229,7 @@ export class LampConCenter extends Component {
         const {overlayerShow, overlayerHide} = this.props.actions;
         switch (id) {
             case 'sys-add':
-                let dataInit = {
+                const dataInit = {
                     id: '',
                     name: '',
                     model: getModelNameById(model),
@@ -249,15 +249,16 @@ export class LampConCenter extends Component {
                                                           }}/>);
                 break;
             case 'sys-update':
-                let dataInit2 = {
+                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
+                const dataInit2 = {
                     id: selectDevice.data.id,
                     name: selectDevice.data.name,
                     model: getModelNameById(model),
                     modelId: model,
                     domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
-                    lng: selectDevice.position[0].lng,
-                    lat: selectDevice.position[0].lat
+                    lng: latlng.lng,
+                    lat: latlng.lat
                 }
                 overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器"
                                                           data={dataInit2} domainList={domainList} modelList={modelList}
@@ -273,7 +274,7 @@ export class LampConCenter extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whiteListData} overlayerHide={overlayerHide}/>)
+                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whitelistData} overlayerHide={overlayerHide}/>)
                 break;
         }
     }
