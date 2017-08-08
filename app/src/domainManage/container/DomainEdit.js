@@ -251,7 +251,7 @@ export class DomainEdit extends Component {
                             <span className="icon_domain_property"></span>域属性
                         </div>
                         <div className="panel-body domain-property">
-                            <span className="domain-name">{selectDomain.data.name}</span>
+                            <span className="domain-name">{selectDomain.data[0].name}</span>
                             <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')}>编辑</button>
                             <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')}>删除</button>
 
