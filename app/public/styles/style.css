@@ -410,6 +410,10 @@ ul {
     background: linear-gradient(to right, #00bcff, #00d8ff);
 }
 
+.tree-list .tree-2 .active > a > div:hover{
+    background: linear-gradient(to right, #00bcff, #00d8ff);
+}
+
 .tree-list .tree-2 .active > a > div{
     color: #ffffff;
 }
