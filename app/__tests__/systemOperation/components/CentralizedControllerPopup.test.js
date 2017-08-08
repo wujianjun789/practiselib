@@ -84,7 +84,7 @@ describe("<CentralizedControllerPopup />", () => {
 
         let modelSelect = cmp.find('#model');
         expect(modelSelect.prop('value')).toBe(data.model);
-        modelSelect.simulate('change', {target: {value: 'model02', id: 'model'}});
+        modelSelect.simulate('change', {target: {value: 'model02', id: 'model', selectedIndex: 1}});
         modelSelect = cmp.find('#model');
         expect(modelSelect.props().value).toBe('model02');
     });

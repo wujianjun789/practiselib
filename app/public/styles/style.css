@@ -410,6 +410,10 @@ ul {
     background: linear-gradient(to right, #00bcff, #00d8ff);
 }
 
+.tree-list .tree-2 .active > a > div:hover{
+    background: linear-gradient(to right, #00bcff, #00d8ff);
+}
+
 .tree-list .tree-2 .active > a > div{
     color: #ffffff;
 }
@@ -421,6 +425,9 @@ ul {
 
 .select {
     border: solid 1px #ddd;
+
+    padding-right: 14px;
+    padding-left: 14px;
 }
 
 .searchText {
@@ -437,6 +444,9 @@ ul {
     height: 100%;
 
     border: solid 1px #ddd;
+
+    padding-right: 14px;
+    padding-left: 14px;
 }
 
 .searchText .glyphicon-search {
@@ -788,8 +798,10 @@ ul {
     animation: pulse .1s;
 }
 /*********************** modal *******************************/
-.modal-conent {
+.modal-content {
     width: 100%;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
 }
 .modal-title {
     text-align: center;
@@ -846,10 +858,9 @@ ul {
 .alter-pw-popup {
     width: 460px;
     overflow: hidden;
-
 }
 
-.alter-pw-popup .modal .modal-header {
+.alter-pw-popup .modal-header {
     height: 50px;
     font-size: 16px;
     color: #808080;
@@ -897,6 +908,7 @@ ul {
     background-color: #fff;
     text-align: center;
     padding: 28px 42px 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
 }
 
 .usr-exit > div {

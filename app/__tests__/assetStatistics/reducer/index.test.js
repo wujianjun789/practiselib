@@ -6,7 +6,7 @@ import  * as types from '../../../src/assetStatistics/actionType/index'
 import Immutable from 'immutable';
 
 let initialState = {
-
+    "sidebarNode":null
 }
 
 describe("reducer", ()=>{

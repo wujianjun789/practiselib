@@ -10,7 +10,7 @@ exports[`test DomainEdit renders 1`] = `
       onKeyDown={[Function]}>
       <input
         onChange={[Function]}
-        placeholder="  输入域名称"
+        placeholder="输入域名称"
         type="search"
         value="" />
       <ul

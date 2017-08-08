@@ -35,7 +35,7 @@ export default class MapView extends Component {
 
     initMap() {
         const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
-        const {latlng={lat: null, lng: null}} = mapData
+        let {latlng={lat: null, lng: null}} = mapData
 
         if (mapData) {
             if (!this.state[mapData.id]) {
@@ -45,7 +45,7 @@ export default class MapView extends Component {
             this.state[mapData.id].clearMarker();
             this.state[mapData.id].updateMap({
                 id: mapData.id,
-                latlng: {lng: latlng.lng, lat: latlng.lat}
+                latlng: latlng
             }, option, mapCallFun);
             if (mapData.position && mapData.position.length) {
                 let key = transformDeviceType(mapData.position[0]["device_type"]);

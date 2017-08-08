@@ -57,7 +57,7 @@ export default class Map{
             return;
         }
 
-        if (!data || !data.latlng.lat || !data.latlng.lng) {
+        if (!data || !data.latlng || !data.latlng.lat || !data.latlng.lng) {
             this.latlng = options.center;
         } else {
             this.latlng = [data.latlng.lat, data.latlng.lng];
@@ -474,6 +474,7 @@ export default class Map{
 
     markerDragEnd(event) {
         var marker = event.target;
+        marker.off("dragend", this.markerDragEnd);
         markerDragendHandler({
             mapId:marker.options.mapId,
             id: marker.options.id,
@@ -690,8 +691,9 @@ export default class Map{
 }
 
 function mapMoveEnd(event) {
-
     var map = event.target;
+    map.off("dragend", mapMoveEnd);
+
     mapDragendHandler({
         mapId:map.options.id,
         latlng:map.getCenter()

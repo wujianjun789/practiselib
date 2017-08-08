@@ -62,7 +62,9 @@ export default class WhiteListPopup extends Component {
     render() {
         let {className='', data} = this.props;
         let {search} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
+                                  btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+
         return <div className={className}>
             <Panel title='白名单' footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row search-group">

@@ -96,30 +96,30 @@ export class LampConCenter extends Component {
                     lat: '000.000.000.000'
                 }
             ],
-            data: [{
+            data: Immutable.fromJS([/*{
                 id: 0,
                 name: '设备1',
                 model: 'model01',
                 domain: 'domain01',
                 lng: 121.49971691534425,
                 lat: 31.239658843127756
-            }]
+            }*/])
         }
 
         this.columns = {
             "lc": [
+                {id: 0, field:"domainName", title:"域"},
                 {id: 1, field: "name", title: "设备名称"},
-                {id: 2, field: "type", title: "型号"},
+                {id: 2, field: "typeName", title: "型号"},
                 {id: 3, field: "id", title: "设备编号"},
-                {id: 4, field: "model", title: "端口号"},
                 {id: 5, field: "lng", title: "经度"},
                 {id: 6, field: "lat", title: "纬度"},
             ],
             "lcc": [
+                {id: 0, field:"domainName", title:"域"},
                 {id: 1, field: "name", title: "设备名称"},
-                {id: 2, field: "type", title: "型号"},
+                {id: 2, field: "typeName", title: "型号"},
                 {id: 3, field: "id", title: "设备编号"},
-                {id: 4, field: "model", title: "端口号"},
                 {id: 5, field: "lng", title: "经度"},
                 {id: 6, field: "lat", title: "纬度"},
             ]
@@ -200,7 +200,8 @@ export class LampConCenter extends Component {
 
     initAssetList(data) {
         let list = data.map((asset, index)=> {
-            return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: getObjectByKey(this.state.domainList, 'id', asset.domainId)})
+            return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: getObjectByKey(this.state.domainList.options, 'id', asset.domainId).name},
+                {typeName:getModelNameById(asset.extendType)});
         })
 
         this.setState({data: Immutable.fromJS(list)});
@@ -229,7 +230,7 @@ export class LampConCenter extends Component {
         const {overlayerShow, overlayerHide} = this.props.actions;
         switch (id) {
             case 'sys-add':
-                let dataInit = {
+                const dataInit = {
                     id: '',
                     name: '',
                     model: getModelNameById(model),
@@ -249,15 +250,16 @@ export class LampConCenter extends Component {
                                                           }}/>);
                 break;
             case 'sys-update':
-                let dataInit2 = {
+                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
+                const dataInit2 = {
                     id: selectDevice.data.id,
                     name: selectDevice.data.name,
                     model: getModelNameById(model),
                     modelId: model,
                     domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
-                    lng: selectDevice.position[0].lng,
-                    lat: selectDevice.position[0].lat
+                    lng: latlng.lng,
+                    lat: latlng.lat
                 }
                 overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器"
                                                           data={dataInit2} domainList={domainList} modelList={modelList}
@@ -273,13 +275,12 @@ export class LampConCenter extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whiteListData} overlayerHide={overlayerHide}/>)
+                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whitelistData} overlayerHide={overlayerHide}/>)
                 break;
         }
     }
 
     pageChange(current, pageSize) {
-        // this.props.actions.pageChange(current, pageSize);
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=> {
             this.requestSearch();
@@ -301,9 +302,9 @@ export class LampConCenter extends Component {
     }
 
     searchSubmit() {
-        this.props.actions.searchSubmit(this.state.search.get('value'));
-        this.setState({search: this.state.search.update('value', () => '')});
-        this.requestSearch();
+        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
+            this.requestSearch();
+        // });
     }
 
     searchChange(value) {
@@ -311,8 +312,11 @@ export class LampConCenter extends Component {
     }
 
     onToggle(node) {
+        if(!node || node.hasOwnProperty("level") && node.level==1){
+            return;
+        }
 
-        node != undefined && this.setState({model: node.id}, ()=>{
+        this.setState({model: node.id}, ()=>{
             this.requestSearch();
         });
     }
@@ -334,7 +338,6 @@ export class LampConCenter extends Component {
     renderDeviceTable(model, data, selectDevice) {
         switch (model) {
             case "lc":
-                return "";
             case "lcc":
                 return <Table columns={this.columns[model]} data={data} activeId={selectDevice.data.id}
                               rowClick={this.tableClick}/>
@@ -394,7 +397,6 @@ const mapStateToProps = (state, ownProps) => {
     let {lampConCenter} = state;
     return {
         sidebarNode: state.sysOperation.get('sidebarNode')
-        // lampConCenter
     }
 }
 
