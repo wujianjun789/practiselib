@@ -131,6 +131,15 @@ export function getModelById(id) {
     return null;
 }
 
+export function getModelNameById(id) {
+    let model = getModelById(id)
+    if(model){
+        return intlFormat(model.intl.name);
+    }
+
+    return "";
+}
+
 export function getModelProps(id) {
     let model = getModelById(id)
     let list = []
