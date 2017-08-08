@@ -16,19 +16,6 @@ exports[`test AssetStatistics renders 1`] = `
         域2
       </option>
     </select>
-    <select
-      className="select device"
-      onChange={[Function]}
-      value="灯集中控制器">
-      <option
-        value="灯集中控制器">
-        灯集中控制器
-      </option>
-      <option
-        value="集中控制">
-        集中控制
-      </option>
-    </select>
     <div
       className="searchText search"
       onBlur={[Function]}
@@ -61,30 +48,6 @@ exports[`test AssetStatistics renders 1`] = `
                 onChange={[Function]}
                 type="checkbox" />
             </th>
-            <th>
-              域
-            </th>
-            <th>
-              设备名称
-            </th>
-            <th>
-              软件版本
-            </th>
-            <th>
-              系统版本
-            </th>
-            <th>
-              内核版本
-            </th>
-            <th>
-              硬件版本
-            </th>
-            <th>
-              厂商信息
-            </th>
-            <th>
-              控制器类型
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -98,30 +61,6 @@ exports[`test AssetStatistics renders 1`] = `
                 onChange={[Function]}
                 type="checkbox" />
             </td>
-            <td>
-              闵行区
-            </td>
-            <td>
-              灯集中控制器
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              上海三思
-            </td>
-            <td>
-              485
-            </td>
           </tr>
           <tr
             className=""
@@ -132,30 +71,6 @@ exports[`test AssetStatistics renders 1`] = `
                 checked={undefined}
                 onChange={[Function]}
                 type="checkbox" />
-            </td>
-            <td>
-              闵行区
-            </td>
-            <td>
-              灯集中控制器
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              1.0
-            </td>
-            <td>
-              上海三思
-            </td>
-            <td>
-              485
             </td>
           </tr>
         </tbody>
@@ -172,9 +87,7 @@ exports[`test AssetStatistics renders 1`] = `
         onKeyPress={[Function]}
         tabIndex="0"
         title="上一页">
-        <a>
-          
-        </a>
+        <a />
       </li>
       <li
         className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
@@ -213,9 +126,7 @@ exports[`test AssetStatistics renders 1`] = `
         onKeyPress={[Function]}
         tabIndex="0"
         title="下一页">
-        <a>
-          
-        </a>
+        <a />
       </li>
       <div
         className="rc-pagination-options" />
