@@ -57,7 +57,7 @@ export default class Map{
             return;
         }
 
-        if (!data || !data.latlng.lat || !data.latlng.lng) {
+        if (!data || !data.latlng || !data.latlng.lat || !data.latlng.lng) {
             this.latlng = options.center;
         } else {
             this.latlng = [data.latlng.lat, data.latlng.lng];
