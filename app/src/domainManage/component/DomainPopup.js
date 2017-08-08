@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import Panel from './Panel';
-import PanelFooter from './PanelFooter';
+import Panel from './../../components/Panel';
+import PanelFooter from './../../components/PanelFooter';
 /**
  * Domain component
  * @param {String}      title       'domain title,
@@ -15,9 +15,9 @@ import PanelFooter from './PanelFooter';
  * 
  */
 
-import MapView from './MapView'
+import MapView from './../../components/MapView'
 
-import {ObjectPerValid, NameValid, latlngValid} from '../util/index'
+import {ObjectPerValid, NameValid, latlngValid} from '../../util/index'
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);

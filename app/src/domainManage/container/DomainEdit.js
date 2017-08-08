@@ -12,7 +12,7 @@ import Table from '../../components/Table';
 import SearchText from '../../components/SearchText'
 import Page from '../../components/Page'
 
-import DomainPopup from '../../components/DomainPopup'
+import DomainPopup from '../component/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
