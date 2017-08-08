@@ -17,7 +17,6 @@ import Immutable from 'immutable';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
-import {domainSelectChange, searchSubmit, pageChange} from '../action/lampConCenter';
 
 import {getModelData, firstChild, getModelList, getModelNameById} from '../../data/systemModel'
 
@@ -240,7 +239,7 @@ export class LampConCenter extends Component {
                     lng: "",
                     lat: ""
                 };
-
+                console.log(dataInit);
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备"
                                                           data={dataInit} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={(data)=>{
@@ -402,9 +401,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
-        domainSelectChange,
-        searchSubmit,
-        pageChange,
         overlayerShow,
         overlayerHide
     }, dispatch),
