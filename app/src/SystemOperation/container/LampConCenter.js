@@ -303,9 +303,9 @@ export class LampConCenter extends Component {
     }
 
     searchSubmit() {
-        this.props.actions.searchSubmit(this.state.search.get('value'));
-        this.setState({search: this.state.search.update('value', () => '')});
-        this.requestSearch();
+        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
+            this.requestSearch();
+        // });
     }
 
     searchChange(value) {
@@ -313,8 +313,11 @@ export class LampConCenter extends Component {
     }
 
     onToggle(node) {
+        if(!node || node.hasOwnProperty("level") && node.level==1){
+            return;
+        }
 
-        node != undefined && this.setState({model: node.id}, ()=>{
+        this.setState({model: node.id}, ()=>{
             this.requestSearch();
         });
     }

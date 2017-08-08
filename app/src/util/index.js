@@ -127,7 +127,11 @@ export function numbersValid(number) {
 export function NameValid(name) {
     return /^[a-zA-Z_\u4e00-\u9fa5][\w\u4e00-\u9fa5]*$/.test(name);
 }
-    
+
+export function Name2Valid(name) {
+    //(?!_)(?!.*?_$)
+    return /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(name);
+}
 export function IPValid(ip) {
     return /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/.test(ip)
 }

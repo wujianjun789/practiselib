@@ -5,7 +5,7 @@ import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
 
-import {ObjectPerValid, NameValid, latlngValid, MACValid} from '../../util/index'
+import {ObjectPerValid, Name2Valid, latlngValid, MACValid} from '../../util/index'
 export default class CentralizedControllerPopup extends Component {
     constructor(props) {
         super(props);
@@ -43,7 +43,7 @@ export default class CentralizedControllerPopup extends Component {
         if(id == "lat" || id == "lng"){
             newValue = Number(ObjectPerValid(value, latlngValid));
         }else if(id == "name"){
-            newValue = ObjectPerValid(value, NameValid);
+            newValue = ObjectPerValid(value, Name2Valid);
         }else if(id == "id") {
             newValue = ObjectPerValid(value, MACValid)
         }

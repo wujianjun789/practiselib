@@ -50,7 +50,7 @@ function getSearchParam(domainId, model, name) {
         Object.assign(param, {"extendType":model})
     }
     if(name){
-        Object.assign(param, {"name":name})
+        Object.assign(param, {"name":{"like":name}})
     }
 
     return param;
