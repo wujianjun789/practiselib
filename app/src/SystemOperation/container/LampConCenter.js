@@ -96,30 +96,30 @@ export class LampConCenter extends Component {
                     lat: '000.000.000.000'
                 }
             ],
-            data: [{
+            data: Immutable.fromJS([/*{
                 id: 0,
                 name: '设备1',
                 model: 'model01',
                 domain: 'domain01',
                 lng: 121.49971691534425,
                 lat: 31.239658843127756
-            }]
+            }*/])
         }
 
         this.columns = {
             "lc": [
+                {id: 0, field:"domainName", title:"域"},
                 {id: 1, field: "name", title: "设备名称"},
-                {id: 2, field: "type", title: "型号"},
+                {id: 2, field: "typeName", title: "型号"},
                 {id: 3, field: "id", title: "设备编号"},
-                {id: 4, field: "model", title: "端口号"},
                 {id: 5, field: "lng", title: "经度"},
                 {id: 6, field: "lat", title: "纬度"},
             ],
             "lcc": [
+                {id: 0, field:"domainName", title:"域"},
                 {id: 1, field: "name", title: "设备名称"},
-                {id: 2, field: "type", title: "型号"},
+                {id: 2, field: "typeName", title: "型号"},
                 {id: 3, field: "id", title: "设备编号"},
-                {id: 4, field: "model", title: "端口号"},
                 {id: 5, field: "lng", title: "经度"},
                 {id: 6, field: "lat", title: "纬度"},
             ]
@@ -200,7 +200,8 @@ export class LampConCenter extends Component {
 
     initAssetList(data) {
         let list = data.map((asset, index)=> {
-            return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: getObjectByKey(this.state.domainList, 'id', asset.domainId)})
+            return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: getObjectByKey(this.state.domainList.options, 'id', asset.domainId).name},
+                {typeName:getModelNameById(asset.extendType)});
         })
 
         this.setState({data: Immutable.fromJS(list)});
@@ -335,7 +336,6 @@ export class LampConCenter extends Component {
     renderDeviceTable(model, data, selectDevice) {
         switch (model) {
             case "lc":
-                return "";
             case "lcc":
                 return <Table columns={this.columns[model]} data={data} activeId={selectDevice.data.id}
                               rowClick={this.tableClick}/>

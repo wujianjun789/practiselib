@@ -130,7 +130,7 @@ export function delAssetsByModel(model, id, cb) {
 
 export function updateAssetsById(id, data, cb){
     let headers = getHttpHeader();
-    let dat = {"geoType":0, name:data.name, geoPoint:data.geoPoint, extendType:data.extendType, domainId:data.domainId}
+    let dat = Object.assign({}, {"geoType":0}, data)
     httpRequest(HOST_IP+'/assets/'+id,{
         headers: headers,
         method: 'PATCH',
