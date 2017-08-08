@@ -15,7 +15,7 @@ import {getObjectByKeyObj,getListByKeyObj} from '../../util/algorithm';
 import {requestUserData,deleteUser} from '../../api/permission';
 import {addUser,editUser} from '../../api/permission';
 import {getMomentDate,momentDateFormat} from '../../util/time'
-class PermissionManage extends Component{
+export class PermissionManage extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -33,9 +33,8 @@ class PermissionManage extends Component{
                 modules:[]
             }
         }
-        // this.columns = [{field:"role", title:" "}, {field:"username", title:"用户名称"},
-        //     {field:"lastLoginDate", title:"最后登录时间"}]
-        this.columns = [{field:"username", title:"用户名称"},{field:"lastLoginDate", title:"最后登录时间"}]
+        this.columns = [{field:"roleId", title:" "}, {field:"username", title:"用户名称"},
+            {field:"lastLoginDate", title:"最后登录时间"}];
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -56,7 +55,7 @@ class PermissionManage extends Component{
 
     onClick(){
         // const popupinfo = this.props.permissionManage.popupinfo;
-        this.props.action.overlayerShow(<UserPopup className='user-add-popup' data={this.state.popupinfo} onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' data={this.state.popupinfo} onConfirm={this.confirmClick}/>);
     }
 
     searchChange(value){
@@ -76,7 +75,6 @@ class PermissionManage extends Component{
     }
 
     requestData(username){
-        console.log(this.mounted)
         const {search, page} = this.state;
         let cur = page.get('current');
         let size = page.get('pageSize');
@@ -85,20 +83,16 @@ class PermissionManage extends Component{
     }
 
     dataHandle(datas){
-        // let result = datas.map((item)=>{
-        //     item.role = <div className='role-icon'><span className={`icon ${item.role}`}></span></div>;
-        //     return item;
-        // })
         let result = datas.map(item=>{
+            item.roleId = <div className='role-icon'><span className={`icon role${item.roleId}`}></span></div>;
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
-        console.log(result)
         this.setState({datas:result,page:this.state.page.update('total',v=>datas.length)})
     }
 
     rowEdit(id){
-        this.setState({popupinfo:Object.assign(this.state.popupinfo,getObjectByKeyObj(this.state.datas,'id',id))},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' data={this.state.popupinfo} isEdit onConfirm={this.confirmClick}/>))
+        this.setState({popupinfo:Object.assign(this.state.popupinfo,getObjectByKeyObj(this.state.datas,'id',id))},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupinfo} isEdit onConfirm={this.confirmClick}/>))
         
     }
 
