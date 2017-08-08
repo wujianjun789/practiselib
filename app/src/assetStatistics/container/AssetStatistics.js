@@ -17,7 +17,7 @@ import SideBarInfo from '../../components/SideBarInfo'
 
 import Pie from '../../components/SensorParamsPie'
 
-import {getModelData, getModelList} from '../../data/assetModels'
+import {getModelData, getModelList, first_child} from '../../data/assetModels'
 
 import {getSearchCount, getSearchAssets, getAssetsCount} from '../../api/asset'
 import {getDomainList} from '../../api/domain'
@@ -28,6 +28,7 @@ export class AssetStatistics extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            model:null,
             data: Immutable.fromJS([
                 {id:1,domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
@@ -35,7 +36,7 @@ export class AssetStatistics extends Component {
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}}
             ]),
             domain:Immutable.fromJS({list:[{id:1, value:'域'},{id:2, value:'域2'}], index:0, value:'域'}),
-            device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
+            // device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
             search:Immutable.fromJS({placeholder:'  输入素材名称', value:''}),
             collapse:false,
             page: Immutable.fromJS({
@@ -63,10 +64,16 @@ export class AssetStatistics extends Component {
             },
         }
 
-        this.columns = [{field:"domain", title:"域"}, {field:"deviceName", title:"设备名称"},
-            {field:"soft_v", title:"软件版本"}, {field:"sys_v", title:"系统版本"},
-            {field:"core_v", title:"内核版本"}, {field:"har_v", title:"硬件版本"},
-            {field:"vendor_info", title:"厂商信息"}, {field:"con_type", title:"控制器类型"}]
+        this.columns = {
+            "lc":[{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
+            {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
+            {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
+            {field:"vendor_info", title:"厂商信息"}, {field:"type", title:"控制器类型"}],
+            "lcc":[{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
+            {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
+            {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
+            {field:"vendor_info", title:"厂商信息"}, {field:"type", title:"控制器类型"}]
+        }
 
         this.onToggle = this.onToggle.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
@@ -97,14 +104,26 @@ export class AssetStatistics extends Component {
         this.mounted = false;
     }
 
+    // MX
+    componentWillReceiveProps(nextProps) {
+        const {sidebarNode} = nextProps;
+        //  console.log("node:",sidebarNode);//undefined
+
+        if(sidebarNode){
+            this.onToggle(sidebarNode);
+           
+        }
+    }
+
     requestSearch(){
-        const {domain, device, search, page} = this.state;
+        const {model, domain, search, page} = this.state;
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
         let domainId = domain.getIn(["list", domain.get("index"), "id"]);
-        let modelId = device.getIn(["list", device.get("index"), "id"]);
+        let modelId = model;
         let name = search.get('value')
+        // console.log("1:", domainId,"1:", modelId,"1:", name);
         getSearchCount(domainId, modelId, name, (data)=>this.mounted && this.initPageTotal(data))
         getSearchAssets(domainId, modelId, name, offset, size, data=>this.mounted && this.searchResult(data));
     }
@@ -115,7 +134,8 @@ export class AssetStatistics extends Component {
             return Object.assign({}, model, {value:model.name});
         })
 
-        this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:""})})
+        // this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:""})})
+        this.setState({model:first_child.id});
         this.requestSearch();
     }
 
@@ -137,9 +157,9 @@ export class AssetStatistics extends Component {
     }
 
     searchResult(data){
-        let list = [];
-        data.map(item=>{
-            list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
+        let list = data.map(item=>{
+            return Object.assign({}, item, item.extend, item.geoPoint);
+            // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
         this.setState({data:Immutable.fromJS(list)})
 
@@ -160,6 +180,10 @@ export class AssetStatistics extends Component {
 
     onToggle(node){
         // console.log(node);
+        let search = this.state.search.update("value",v=>"");
+        this.setState({model:node.id, search:search}, ()=>{
+            this.requestSearch();
+        });
     }
 
     domainChange(selectIndex){
@@ -202,7 +226,7 @@ export class AssetStatistics extends Component {
     }
 
     render() {
-        const { data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
+        const { model, data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
         const {total=0, normal=0} = deviceInfo;
         let width=145,height=145;
         return (
@@ -210,13 +234,13 @@ export class AssetStatistics extends Component {
                     <div className="heading">
                         <Select className="domain" data={domain}
                                 onChange={(selectIndex)=>this.domainChange(selectIndex)}/>
-                        <Select className="device" data={device}
-                                onChange={(selectIndex)=>this.deviceChange(selectIndex)}/>
+                        {/*<Select className="device" data={device}
+                                onChange={(selectIndex)=>this.deviceChange(selectIndex)}/>*/}
                         <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={value=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>
                     </div>
                     <div className="table-container">
-                        <Table columns={this.columns} data={data} activeId={selectDevice.data[0].id} rowClick={(row)=>this.tableClick(row)}/>
+                        <Table columns={this.columns[model]} data={data} activeId={selectDevice.data[0].id} rowClick={(row)=>this.tableClick(row)}/>
                         <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
                               current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
@@ -244,7 +268,7 @@ export class AssetStatistics extends Component {
 
 function mapStateToProps(state) {
     return {
-
+        sidebarNode: state.assetStatistics.get('sidebarNode')
     }
 }
 

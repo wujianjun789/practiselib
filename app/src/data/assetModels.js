@@ -66,7 +66,22 @@ export const TreeData=[
         "toggled": false,
         "active": true,
         "link": "/assetManage/statistics",
-        "level": 1
+        "level": 1,
+        "children": [
+            {
+                "id": 11,
+                "name":"灯集中控制器",
+                "class":"icon_light_control",
+                "active":true
+            },
+            {
+                "id": 12,
+                "name":"LED灯",
+                "class":"icon_led_light",
+                "active":false
+            }
+
+        ]
     }
 ]
 
