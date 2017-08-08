@@ -50,7 +50,7 @@ export class DomainEdit extends Component {
                 total: 21
             }),
 
-            search: Immutable.fromJS({placeholder: '  输入域名称', value: ''}),
+            search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
             data: Immutable.fromJS([{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
                 {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}])

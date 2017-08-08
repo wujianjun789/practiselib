@@ -425,6 +425,9 @@ ul {
 
 .select {
     border: solid 1px #ddd;
+
+    padding-right: 14px;
+    padding-left: 14px;
 }
 
 .searchText {
@@ -441,6 +444,9 @@ ul {
     height: 100%;
 
     border: solid 1px #ddd;
+
+    padding-right: 14px;
+    padding-left: 14px;
 }
 
 .searchText .glyphicon-search {

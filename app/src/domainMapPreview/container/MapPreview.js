@@ -18,7 +18,7 @@ export default class MapPreview extends Component{
             mapId:"mapPreview",
             domainList:[{id:1, name:'domain1', "device_type": 'DEVICE', geoPoint:{lat:31.239658843127756, lng:121.49971691534425}},
                 {id:2, name:'domain2', "device_type": 'DEVICE', geoPoint:{lat:31.242658843127756, lng:121.49972691534425}}],
-            search:{placeholder:'  输入域名称搜索', value:'', curIndex:0},
+            search:{placeholder:'输入域名称搜索', value:'', curIndex:0},
 
             curDomain: 0,
             panLatlng:null
