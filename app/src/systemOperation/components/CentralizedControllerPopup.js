@@ -60,7 +60,6 @@ export default class CentralizedControllerPopup extends Component {
 
     onConfirm() {
         this.props.onConfirm && this.props.onConfirm(this.state);
-        // this.props.overlayerHide();
     }
 
     mapDragend(data) {

@@ -281,7 +281,6 @@ export class LampConCenter extends Component {
     }
 
     pageChange(current, pageSize) {
-        // this.props.actions.pageChange(current, pageSize);
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=> {
             this.requestSearch();
@@ -398,7 +397,6 @@ const mapStateToProps = (state, ownProps) => {
     let {lampConCenter} = state;
     return {
         sidebarNode: state.sysOperation.get('sidebarNode')
-        // lampConCenter
     }
 }
 
