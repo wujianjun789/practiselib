@@ -3,7 +3,7 @@
  */
 @card-radius: 9px;
 @header-height: 60px;
-@min-width: 1430px;
+@min-width: 1144px;
 @bg-color: #f2f2f2;
 
 .app {
@@ -169,8 +169,14 @@
     }
 }
 
-@media screen and (max-width: 1716px) {
-    .app > .cont> ul {
+@media screen and (min-width: 1430px) and (max-width: 1716px) {
+    .app > .cont > ul {
+        width: 1430px;
+    }
+}
+
+@media screen and (max-width: 1430px) {
+    .app > .cont > ul {
         width: @min-width;
     }
 }
