@@ -22,6 +22,7 @@ import {getModelData, getModelList, getModelNameById, first_child} from '../../d
 import {getSearchCount, getSearchAssets, getAssetsCount} from '../../api/asset'
 import {getDomainList} from '../../api/domain'
 import {getDeviceTypeByModel} from '../../util/index'
+import {getObjectByKey} from '../../util/algorithm'
 
 import Immutable from 'immutable';
 export class AssetStatistics extends Component {
@@ -156,7 +157,8 @@ export class AssetStatistics extends Component {
 
     searchResult(data){
         let list = data.map(item=>{
-            return Object.assign({}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
+            let curDomain = getObjectByKey(this.state.domain.get("list"), 'id', item.domainId);
+            return Object.assign({}, {domain:curDomain?curDomain.get("name"):""}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
         this.setState({data:Immutable.fromJS(list)})

@@ -239,7 +239,7 @@ export class LampConCenter extends Component {
                     lng: "",
                     lat: ""
                 };
-                console.log(dataInit);
+
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备"
                                                           data={dataInit} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={(data)=>{
