@@ -17,7 +17,7 @@ import SideBarInfo from '../../components/SideBarInfo'
 
 import Pie from '../../components/SensorParamsPie'
 
-import {getModelData, getModelList, first_child} from '../../data/assetModels'
+import {getModelData, getModelList, getModelNameById, first_child} from '../../data/assetModels'
 
 import {getSearchCount, getSearchAssets, getAssetsCount} from '../../api/asset'
 import {getDomainList} from '../../api/domain'
@@ -68,11 +68,11 @@ export class AssetStatistics extends Component {
             "lc":[{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
             {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
             {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
-            {field:"vendor_info", title:"厂商信息"}, {field:"type", title:"控制器类型"}],
+            {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}],
             "lcc":[{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
             {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
             {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
-            {field:"vendor_info", title:"厂商信息"}, {field:"type", title:"控制器类型"}]
+            {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}]
         }
 
         this.onToggle = this.onToggle.bind(this);
@@ -107,7 +107,6 @@ export class AssetStatistics extends Component {
     // MX
     componentWillReceiveProps(nextProps) {
         const {sidebarNode} = nextProps;
-        //  console.log("node:",sidebarNode);//undefined
 
         if(sidebarNode){
             this.onToggle(sidebarNode);
@@ -123,7 +122,6 @@ export class AssetStatistics extends Component {
         let domainId = domain.getIn(["list", domain.get("index"), "id"]);
         let modelId = model;
         let name = search.get('value')
-        // console.log("1:", domainId,"1:", modelId,"1:", name);
         getSearchCount(domainId, modelId, name, (data)=>this.mounted && this.initPageTotal(data))
         getSearchAssets(domainId, modelId, name, offset, size, data=>this.mounted && this.searchResult(data));
     }
@@ -158,7 +156,7 @@ export class AssetStatistics extends Component {
 
     searchResult(data){
         let list = data.map(item=>{
-            return Object.assign({}, item, item.extend, item.geoPoint);
+            return Object.assign({}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
         this.setState({data:Immutable.fromJS(list)})
@@ -179,7 +177,6 @@ export class AssetStatistics extends Component {
     }
 
     onToggle(node){
-        console.log(node);
         if(node.children != null) {
             return ;
         }
@@ -231,6 +228,9 @@ export class AssetStatistics extends Component {
 
     render() {
         const { model, data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
+        // console.log("model:", model);
+        // console.log("columns:", this.columns[model] );
+        // console.log("data:", data);
         const {total=0, normal=0} = deviceInfo;
         let width=145,height=145;
         return (
