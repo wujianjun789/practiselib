@@ -4,7 +4,7 @@ import {
 import {httpRequest, HOST_IP, getHttpHeader} from '../../util/network';
 import {getCookie} from '../../util/cache';
 
-export const confirmExit = (cb) => dispatch => {
+export const confirmExit = (successFun, errFun) => dispatch => {
     console.log(getCookie('user'));
     let {id} = getCookie('user');
     let headers = {
@@ -18,7 +18,7 @@ export const confirmExit = (cb) => dispatch => {
         method: 'POST',
         headers: headers
     }, () => {
-        cb && cb();
+        successFun && successFun();
         dispatch({ type: USERCENTER_POPUP_CONFIRM_EXIT });
-    });
+    },null,()=>{errFun && errFun()});
 }

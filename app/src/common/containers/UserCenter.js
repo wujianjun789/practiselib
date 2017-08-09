@@ -44,6 +44,9 @@ export class UserCenter extends Component{
         this.props.actions.confirmExit(() => {
             this.props.router.push('/login');
             this.props.actions.overlayerHide();
+        }, () => {
+            this.props.router.push('/login');
+            this.props.actions.overlayerHide();
         });
     }
 
@@ -83,7 +86,8 @@ export class UserCenter extends Component{
 }
 
 UserCenter.propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    router: PropTypes.any.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
