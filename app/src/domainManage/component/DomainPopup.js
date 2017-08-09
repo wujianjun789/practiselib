@@ -65,7 +65,7 @@ export default class DomainPopup extends PureComponent {
         let value = e.target.value;
         let newValue='';
         if(id == "lat" || id == "lng"){
-            newValue = Number(ObjectPerValid(value, latlngValid));
+            newValue = ObjectPerValid(value, latlngValid);
         }else if(id == "domainName"){
            newValue = ObjectPerValid(value, NameValid);
         }else{

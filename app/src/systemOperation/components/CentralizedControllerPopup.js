@@ -41,7 +41,7 @@ export default class CentralizedControllerPopup extends Component {
         let value = e.target.value;
         let newValue='';
         if(id == "lat" || id == "lng"){
-            newValue = Number(ObjectPerValid(value, latlngValid));
+            newValue = ObjectPerValid(value, latlngValid);
         }else if(id == "name"){
             newValue = ObjectPerValid(value, Name2Valid);
         }else if(id == "id") {
@@ -91,7 +91,7 @@ export default class CentralizedControllerPopup extends Component {
                             <label htmlFor="name" className="col-sm-4 control-label">名称：</label>
                             <div className="col-sm-8">
                                 <input type="text" className="form-control" id="name" placeholder="name" value={name}
-                                       onChange={this.onChange}/>
+                                       disabled onChange={this.onChange}/>
                             </div>
                         </div>
                         <div className="form-group clearfix">
