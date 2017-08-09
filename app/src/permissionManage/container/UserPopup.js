@@ -11,7 +11,8 @@ import Immutable from 'immutable';
 import {Treebeard} from 'react-treebeard';
 // import treeStyle from '../../components/treeStyle';
 import {PassWordValid} from '../../util/index';
-import {IsExitInArray} from '../../util/algorithm'
+import {IsExitInArray} from '../../util/algorithm';
+import MapView from '../../../src/components/MapView'
 
 export class UserPopup extends Component{
     constructor(props){
@@ -25,7 +26,7 @@ export class UserPopup extends Component{
             firstName:Immutable.fromJS({value:isEdit?data.firstName:'',checked:'',reminder:''}),
             password:Immutable.fromJS({value:'',checked:'',reminder:''}),
             rePassword:Immutable.fromJS({value:'',checked:'',reminder:''}),
-            role:Immutable.fromJS({list:[{id:4, value:'访客'},{id:3, value:'设备操作员'},{id:2, value:'设备管理员'},{id:1, value:'系统管理员'}], index:0, value:'访客'}),
+            role:Immutable.fromJS({list:[{id:4, value:'访客'},{id:3, value:'设备操作员'},{id:2, value:'设备管理员'},{id:1, value:'系统管理员'}], index:isEdit?data.roleId.index:0, value:isEdit?data.roleId.value:'访客'}),
             modules:isEdit?data.modules:[],
             domainList:['中国-杭州','中国-上海','中国-北京','中国-武汉','中国-长沙','中国-上海-闵行','中国-上海-闵行-莘庄'],
             data:{
@@ -260,7 +261,9 @@ export class UserPopup extends Component{
                                 }
                             </ul>
                         </div>
-                        <div className='col-sm-6 domain-add-map'></div>
+                        <div className='col-sm-6 domain-add-map map-container'>
+                            <MapView  option={{mapZoom:false}} mapData={{id:'example'}} />
+                        </div>
                     </div>
                 </div>
             </Panel>
