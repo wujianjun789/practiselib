@@ -61,6 +61,20 @@ export default class Topology extends Component{
     componentWillMount(){
         this.mounted = true;
         this.requestDomain(null);
+        console.log("will mount")
+    }
+
+    componentDidUpdate(){
+        console.log("did update")
+        const {topologyRefresh, callFun} = this.props;
+        if(topologyRefresh.parentId){
+            callFun &&　callFun();
+            this.requestDomain(topologyRefresh.parentId);
+        }
+    }
+
+    componentWillReceiveProps(){
+
     }
 
     componentWillUnmount(){

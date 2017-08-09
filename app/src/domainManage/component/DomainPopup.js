@@ -147,7 +147,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="prevDomain">上级域：</label>
                             <div className="col-sm-9">
-                                <select className="form-control" id="prevDomain" placeholder="选择上级域" value={curDomain.name} onChange={this.onChange}>
+                                <select className="form-control" id="prevDomain" placeholder="选择上级域" value={curDomain?curDomain.name:""} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }

@@ -96,13 +96,13 @@ export function getAssetsCountByModel(model){
 
 export function postAssetsByModel(model, data, cb){
     let headers = getHttpHeader();
-    let dat = {id:data.id, type:data.modelId};
+    let dat = {id:data.id, type:data.modelId, base:{name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:data.modelId, domainId:data.domainId}};
     httpRequest(HOST_IP+'/'+model+'s', {
         headers: headers,
         method: 'POST',
         body:JSON.stringify(dat)
     }, response=>{
-        updateAssetsById(response.id, {name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:data.modelId, domainId:data.domainId}, cb)
+        cb && cb(response);
     })
 }
 

@@ -173,15 +173,16 @@ export class LampConCenter extends Component {
 
     requestSearch() {
         const {model, domainList, search, page} = this.state
-        let domain = domainList.options[domainList.index];
+        let domain = domainList.options.length?domainList.options[domainList.index]:null;
         let name = search.get('value');
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
-        getSearchCount(domain.id, model, name, data=> {
+        getSearchCount(domain?domain.id:null, model, name, data=> {
             this.mounted && this.initPageSize(data)
         })
-        getSearchAssets(domain.id, model, name, offset, size, data=> {
+
+        getSearchAssets(domain?domain.id:null, model, name, offset, size, data=> {
             this.mounted && this.initAssetList(data)
         })
     }
@@ -199,7 +200,12 @@ export class LampConCenter extends Component {
 
     initAssetList(data) {
         let list = data.map((asset, index)=> {
-            return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: getObjectByKey(this.state.domainList.options, 'id', asset.domainId).name},
+            let domainName = "";
+            if(this.state.domainList.options.length && asset.domainId){
+                let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId)
+                domainName = domain?domain.name:"";
+            }
+            return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: domainName},
                 {typeName:getModelNameById(asset.extendType)});
         })
 
@@ -235,7 +241,7 @@ export class LampConCenter extends Component {
                     model: getModelNameById(model),
                     modelId: model,
                     domain: domainList.value,
-                    domainId: domainList.options[domainList.index].id,
+                    domainId: domainList.options.length?domainList.options[domainList.index].id:"",
                     lng: "",
                     lat: ""
                 };

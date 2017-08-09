@@ -53,7 +53,8 @@ export class DomainEdit extends Component {
             search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
             data: Immutable.fromJS([{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
-                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}])
+                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}]),
+            topologyRefresh:{parentId:null}
         }
 
         this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
@@ -70,6 +71,8 @@ export class DomainEdit extends Component {
 
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
+
+        this.destoryTopology = this.destoryTopology.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
         this.initPageSize = this.initPageSize.bind(this);
@@ -125,8 +128,12 @@ export class DomainEdit extends Component {
 
     }
 
+    destoryTopology(){
+        this.setState({topologyRefresh:{parentId:null}});
+    }
+
     domainHandler(id){
-        const {selectDomain} = this.state
+        const {listMode, selectDomain} = this.state
         const {actions} = this.props;
         switch(id){
             case 'add':
@@ -140,7 +147,7 @@ export class DomainEdit extends Component {
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                         domain.parentId = data.prevDomain;
 
-                                                        addDomain(domain, ()=>{this.requestSearch(); actions.overlayerHide()});
+                                                        addDomain(domain, ()=>{actions.overlayerHide();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
                                                    }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
@@ -161,13 +168,13 @@ export class DomainEdit extends Component {
                                                                     domain.geoType = 0;
                                                                     domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                                     domain.parentId = data.prevDomain;
-                                                                    updateDomainById(domain, ()=>{this.requestSearch(); actions.overlayerHide()});
+                                                                    updateDomainById(domain, ()=>{actions.overlayerHide();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
                                                               }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
                 actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
                                                  cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(selectDomain.data[0].id,
-                                                 ()=>{this.requestSearch();actions.overlayerHide()})}}/>);
+                                                 ()=>{actions.overlayerHide();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});})}}/>);
                 break;
         }
     }
@@ -225,7 +232,7 @@ export class DomainEdit extends Component {
     }
 
     render() {
-        const {listMode, collapse, selectDomain, page, search, data} = this.state
+        const {listMode, collapse, selectDomain, page, search, data, topologyRefresh} = this.state
         return (
             <Content className={'offset-right '+(listMode?'list-mode ':'topology ')+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -243,7 +250,7 @@ export class DomainEdit extends Component {
                                       current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                             </div>
                         </div> :
-                        <Topology itemClick={this.topologyItemClick}/>
+                        <Topology topologyRefresh={topologyRefresh} callFun={this.destoryTopology} itemClick={this.topologyItemClick}/>
                 }
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
