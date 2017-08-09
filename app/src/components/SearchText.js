@@ -30,6 +30,8 @@ export default class SearchText extends Component{
     itemClick(value, index){
         this.props.itemClick && this.props.itemClick(index);
         this.props.onChange && this.props.onChange(value);
+        this.timeOut = setTimeout(()=>{this.onClick()}, 33);
+
         this.setState({interactive:false})
     }
 
@@ -54,7 +56,12 @@ export default class SearchText extends Component{
 
     onkeydown(event){
         let tableIndex = this.state.tableIndex;
-        const {datalist} = this.props;
+        const {IsTip, datalist} = this.props;
+        if(!IsTip && event.key == keyboard_key_enter){
+            this.onClick();
+            return;
+        }
+
         switch(event.key){
             case keyboard_key_up:
                 if(tableIndex>0){
@@ -70,6 +77,7 @@ export default class SearchText extends Component{
                 if(tableIndex>-1&&tableIndex<datalist.length){
                     let value = datalist[tableIndex].value;
                     this.props.onChange && this.props.onChange(value);
+                    this.timeOut = setTimeout(()=>{this.onClick()}, 33);
                     this.setState({interactive:false});
                 }
 
@@ -83,7 +91,7 @@ export default class SearchText extends Component{
     render(){
         const {interactive, tableIndex} = this.state;
         const {className='', placeholder='', value='', IsTip=false, datalist=[]} = this.props;
-        return <div className={"searchText "+className} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={(event)=>{IsTip && datalist && this.onkeydown(event)}}>
+        return <div className={"searchText "+className} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={(event)=>{this.onkeydown(event)}}>
             <input type="search"  placeholder={placeholder} value={value} onChange={this.onChange}/>
             <ul className={IsTip && interactive ? 'select-active':''} >
                 {
