@@ -91,7 +91,7 @@ export default class CentralizedControllerPopup extends Component {
                             <label htmlFor="name" className="col-sm-4 control-label">名称：</label>
                             <div className="col-sm-8">
                                 <input type="text" className="form-control" id="name" placeholder="name" value={name}
-                                       disabled onChange={this.onChange}/>
+                                       onChange={this.onChange}/>
                             </div>
                         </div>
                         <div className="form-group clearfix">
