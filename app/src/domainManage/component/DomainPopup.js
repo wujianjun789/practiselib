@@ -123,7 +123,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="domainName">域名称：</label>
                             <div className="col-sm-9">
-                                <input type="text" className="form-control" id="domainName" placeholder="输入域名称" maxLength="10" value={domainName}
+                                <input type="text" className="form-control" id="domainName" placeholder="输入域名称" maxLength="16" value={domainName}
                                        onChange={this.onChange}/>
                                 <span className={prompt.domainName?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
