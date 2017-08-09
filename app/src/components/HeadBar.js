@@ -22,7 +22,7 @@ export default class HeadBar extends Component{
                 <span className="icon"></span>
             </div>
             <span className="title">{moduleName}</span>
-            <UserCenter />
+            <UserCenter router={this.props.router}/>
         </div>
     }
 }
