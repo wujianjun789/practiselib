@@ -17,7 +17,7 @@ import PanelFooter from './../../components/PanelFooter';
 
 import MapView from './../../components/MapView'
 
-import {ObjectPerValid, NameValid, latlngValid} from '../../util/index'
+import {ObjectPerValid, Name2Valid, latlngValid, lngValid, latValid} from '../../util/index'
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
@@ -29,7 +29,12 @@ export default class DomainPopup extends PureComponent {
             domainName: domainName,
             lng: lng,
             lat: lat,
-            prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:"")
+            prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:""),
+            prompt:{
+                domainName:false,
+                lng: false,
+                lat: false
+            }
         }
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -46,7 +51,7 @@ export default class DomainPopup extends PureComponent {
     }
 
     onConfirm() {
-        this.props.onConfirm(this.state);
+        this.props.onConfirm && this.props.onConfirm(this.state);
     }
 
     onCancel() {
@@ -64,14 +69,26 @@ export default class DomainPopup extends PureComponent {
         }
         let value = e.target.value;
         let newValue='';
+        let prompt = false
         if(id == "lat" || id == "lng"){
             newValue = ObjectPerValid(value, latlngValid);
+            if(id=="lat" && !latValid(newValue)){
+                prompt = true;
+            }else if(id=="lng" && !lngValid(newValue)){
+                prompt = true
+            }
         }else if(id == "domainName"){
-           newValue = ObjectPerValid(value, NameValid);
+            newValue = ObjectPerValid(value, Name2Valid);
+            prompt = !Name2Valid(newValue);
         }else{
             newValue = value;
         }
-        this.setState({[id]: newValue});
+
+        if(newValue==""){
+            prompt = false;
+        }
+
+        this.setState({[id]: newValue, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
     }
 
     mapDragend(data){
@@ -83,11 +100,14 @@ export default class DomainPopup extends PureComponent {
     }
 
     render() {
-         let {domainId, domainName, lng, lat, prevDomain} = this.state;
+         let {domainId, domainName, lng, lat, prevDomain, prompt} = this.state;
          let {titleKey, valueKey, options} = this.props.domainList;
+
+        let valid = prompt.domainName || prompt.lng || prompt.lat;
+
          let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']} 
             btnClassName={['btn-default', 'btn-primary']} 
-            btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+            btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         let curDomain = null;
         for(let key in options){
             if(options[key].id == prevDomain){
@@ -103,20 +123,25 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="domainName">域名称：</label>
                             <div className="col-sm-9">
-                                <input type="text" className="form-control" id="domainName" placeholder="输入域名称" value={domainName} onChange={this.onChange} />
+                                <input type="text" className="form-control" id="domainName" placeholder="输入域名称" maxLength="10" value={domainName}
+                                       onChange={this.onChange}/>
+                                <span className={prompt.domainName?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
+
                         </div>
                         <div className="form-group row">
                             <label className="col-sm-3 control-label " htmlFor="lng">经度：</label>
                             <div className="col-sm-9">
                                 <input type="email" className="form-control" id="lng" placeholder="输入GPS坐标" value={lng}
                                         onChange={this.onChange}/>
+                                <span className={prompt.lng?"prompt ":"prompt hidden"}>{"经度数不合法"}</span>
                             </div>
                         </div> 
                         <div className="form-group row">   
                             <label className="col-sm-3 control-label" htmlFor="lat">纬度：</label>
                             <div className="col-sm-9">
                                 <input type="email" className="form-control" id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
+                                <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
                             </div>
                         </div>
                         <div className="form-group row">
