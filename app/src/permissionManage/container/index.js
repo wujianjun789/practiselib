@@ -33,7 +33,7 @@ export class PermissionManage extends Component{
                 modules:[]
             }
         }
-        this.columns = [{field:"roleId", title:" "}, {field:"username", title:"用户名称"},
+        this.columns = [{field:"role", title:" "}, {field:"username", title:"用户名称"},
             {field:"lastLoginDate", title:"最后登录时间"}];
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -84,7 +84,7 @@ export class PermissionManage extends Component{
 
     dataHandle(datas){
         let result = datas.map(item=>{
-            item.roleId = <div className='role-icon'><span className={`icon role${item.roleId}`}></span></div>;
+            item.role = <div className='role-icon'><span className={`icon role${item.roleId}`}></span></div>;
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
@@ -92,7 +92,24 @@ export class PermissionManage extends Component{
     }
 
     rowEdit(id){
-        this.setState({popupinfo:Object.assign(this.state.popupinfo,getObjectByKeyObj(this.state.datas,'id',id))},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupinfo} isEdit onConfirm={this.confirmClick}/>))
+        let popupinfo = getObjectByKeyObj(this.state.datas,'id',id);
+        switch(popupinfo.roleId){
+            case 1:
+                popupinfo.roleId = {index:3, value:'系统管理员'};
+                break;
+            case 2:
+                popupinfo.roleId = {index:2, value:'设备管理员'};
+                break;
+            case 3:
+                popupinfo.roleId = {index:1, value:'设备操作员'};
+                break;
+            case 4:
+                popupinfo.roleId = {index:0, value:'访客'};
+                break;
+            default:
+                popupinfo.roleId = {index:0, value:'访客'};
+        }
+        this.setState({popupinfo:Object.assign(this.state.popupinfo,popupinfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupinfo} isEdit onConfirm={this.confirmClick}/>))
         
     }
 
