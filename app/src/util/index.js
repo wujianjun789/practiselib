@@ -129,8 +129,7 @@ export function NameValid(name) {
 }
 
 export function Name2Valid(name) {
-    //(?!_)(?!.*?_$)
-    return /^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(name);
+    return /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(name);
 }
 export function IPValid(ip) {
     return /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/.test(ip)
@@ -146,6 +145,14 @@ export function PORTValid(port) {
 
 export function MACValid(mac){
     return /^[a-f0-9]*$/i.test(mac)
+}
+
+export function lngValid(value) {
+    return /^[-]?(\d|([1-9]\d)|(1[0-7]\d)|(180))(\.\d*)?$/.test(value);
+}
+
+export function latValid(value) {
+    return /^[-]?(\d|([1-8]\d)|(90))(\.\d*)?$/.test(value);
 }
 
 export function latlngValid(str){
