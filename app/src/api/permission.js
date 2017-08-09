@@ -41,7 +41,6 @@ export function editUser(datas,cb){
 }
 
 export function deleteUser(id, cb){
-    console.log(id)
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/users/'+id,{
         headers: headers,
