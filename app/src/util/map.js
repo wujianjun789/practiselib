@@ -465,7 +465,7 @@ export default class Map{
         this.loadMarkerMouseover(marker);
          this.loadMarkerDrag(marker);
         if (!!labelInfo) {
-            marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
+            this.drawItems && marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
         }
     }
 

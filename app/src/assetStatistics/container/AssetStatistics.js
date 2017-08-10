@@ -98,7 +98,7 @@ export class AssetStatistics extends Component {
         getModelData(()=>{this.mounted && this.initTreeData()});
         getDomainList(data=>{this.mounted && this.initDomain(data)});
 
-        getAssetsCount(data=>{this.mounted && this.deviceTotal(data)})
+        // getAssetsCount(data=>{this.mounted && this.deviceTotal(data)})
     }
 
     componentWillUnmount(){
@@ -152,7 +152,7 @@ export class AssetStatistics extends Component {
 
     initPageTotal(data){
         let page = this.state.page.set('total', data.count);
-        this.setState({page: page});
+        this.setState({page: page, deviceInfo:{total:data.count}});
     }
 
     searchResult(data){
