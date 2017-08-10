@@ -59,6 +59,7 @@ export default class CentralizedControllerPopup extends Component {
     }
 
     onConfirm() {
+        this.props.overlayerHide();
         this.props.onConfirm && this.props.onConfirm(this.state);
     }
 
