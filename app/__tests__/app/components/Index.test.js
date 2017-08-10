@@ -6,8 +6,8 @@ import {App} from '../../../src/App/container';
 import configureStore from '../../../src/store/configureStore';
 
 describe('<App />', () => {
-    let store = configureStore();
-    let data = {
+    const store = configureStore();
+    const data = {
         items: [
             {key: 'asset', title: '资产管理', link: '/assetManage'},
             {key: 'permission', title: '权限管理', link: '/permission'}
@@ -15,9 +15,9 @@ describe('<App />', () => {
         title: 'Star',
         name: '智慧照明'
     }
-
+    const router = {push: Array.prototype.push};
     it('render with props.title=undefined, props.name=undefined', () => {
-        const app = mount(<Provider store={store}><App items={data.items} /></Provider>);
+        const app = mount(<Provider store={store}><App items={data.items} router={router}/></Provider>);
 
         const tit = app.find('.tit');
         expect(tit.length).toBe(1);
@@ -46,7 +46,7 @@ describe('<App />', () => {
     });
 
     it('render with props.title="Star", props.name="智慧照明"', () => {
-        const app = shallow(<App title={data.title} name={data.name} items={data.items} />);
+        const app = shallow(<App title={data.title} name={data.name} items={data.items} router={router} />);
 
         const tit = app.find('.tit');
         expect(tit.text()).toBe(data.title);
@@ -56,13 +56,13 @@ describe('<App />', () => {
     });
 
     it('snapshot', () => {
-        const cmp = renderer.create(<Provider store={store}><App title={data.title} name={data.name} items={data.items} /></Provider>);
+        const cmp = renderer.create(<Provider store={store}><App title={data.title} name={data.name} items={data.items} router={router} /></Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     it('snapshot with props.title=undefined, props.name=undefined', () => {
-        const cmp = renderer.create(<Provider store={store}><App items={data.items} /></Provider>);
+        const cmp = renderer.create(<Provider store={store}><App items={data.items} router={router} /></Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

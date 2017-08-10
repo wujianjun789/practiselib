@@ -8,10 +8,11 @@ import Overlayer from '../../../src/common/containers/Overlayer';
 
 describe('<UserCenter /> HOC', () => {
     const store = configureStore();
+    const router = {push: Array.prototype.push};
     it('render normal, test alter password popup', () => {
         const root = mount(<Provider store={store}>
             <div>
-                <UserCenter />
+                <UserCenter router={router} />
                 <Overlayer />
             </div>
         </Provider>);
@@ -50,7 +51,7 @@ describe('<UserCenter /> HOC', () => {
     it('test exit popup cancel btn click', () => {
         const root = mount(<Provider store={store}>
             <div>
-                <UserCenter />
+                <UserCenter router={router} />
                 <Overlayer />
             </div>
         </Provider>);

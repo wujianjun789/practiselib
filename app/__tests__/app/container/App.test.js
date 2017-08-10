@@ -7,9 +7,10 @@ import {initialState as state} from '../../../src/App/reducer';
 
 describe('<app /> HOC', () => {
     const store = configureStore();
+    const router = {push: Array.prototype.push};
     it('render normal', () => {
         const root = mount(<Provider store={store}>
-            <App />
+            <App router={router}/>
         </Provider>);
 
         const app = root.find('App');

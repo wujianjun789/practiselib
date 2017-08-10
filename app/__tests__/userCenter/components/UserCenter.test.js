@@ -4,8 +4,9 @@ import renderer from 'react-test-renderer';
 import {UserCenter} from '../../../src/common/containers/UserCenter';
 
 describe('<UserCenter />', () => {
+    const router = {push: Array.prototype.push};
     it('render with props.className=undefined', () => {
-        const userCenter = shallow(<UserCenter />);
+        const userCenter = shallow(<UserCenter router={router} />);
         const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
 
@@ -35,14 +36,14 @@ describe('<UserCenter />', () => {
     });
 
     it('render with props.className="user_center"', () => {
-        const userCenter = shallow(<UserCenter className="user_center" />);
+        const userCenter = shallow(<UserCenter className="user_center" router={router} />);
         const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
         expect(container.prop('className')).toBe('user-center user_center');
     });
 
     it('user Info list toggle', () => {
-        let userCenter = shallow(<UserCenter/>);
+        let userCenter = shallow(<UserCenter router={router}/>);
         let head_right = userCenter.find('.user-center');
 
         let ul_hidden = userCenter.find('.user-list');
@@ -55,7 +56,7 @@ describe('<UserCenter />', () => {
     });
 
     it('user Info list toggle snapshot', () => {
-        const userCenter = renderer.create(<UserCenter/>);
+        const userCenter = renderer.create(<UserCenter router={router}/>);
         let tree = userCenter.toJSON();
 
         expect(tree).toMatchSnapshot();
