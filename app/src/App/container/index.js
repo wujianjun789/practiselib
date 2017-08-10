@@ -10,6 +10,7 @@ import Card from './Card';
 import UserCenter from '../../common/containers/UserCenter';
 import Overlayer from '../../common/containers/Overlayer';
 
+import {getModule} from '../action/index'
 /**
  * @param {String} title required
  * @param {String} name  required
@@ -18,6 +19,11 @@ import Overlayer from '../../common/containers/Overlayer';
 export class App extends Component{
     constructor(props){
         super(props);
+    }
+
+    componentWillMount(){
+        const {actions} = this.props;
+        actions && actions.getModule();
     }
 
     render(){
@@ -55,7 +61,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         actions: bindActionCreators({
-
+            getModule: getModule
         }, dispatch)
     }
 }

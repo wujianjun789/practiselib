@@ -7,7 +7,7 @@ import 'es6-promise'
 import { getCookie } from './cache'
 import {getRequestValue} from './string'
 
-export const HOST_IP = "http://"+location.hostname+":3000/api"
+export let HOST_IP = "";
 
 let  HEADERS_CONTENT_TYPE_JSON = { "Accept": "application/json", "Content-Type": "application/json" };
 
@@ -134,6 +134,35 @@ export function getToken() {
     
 }
 
+export function getConfig() {
+    httpRequest('/config',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        HOST_IP = response;
+    })
+}
+
+export function getMapConfig() {
+    httpRequest('/config/map',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        console.log(response);
+    })
+}
+
+export function getModuleConfig(responseFun, errFun) {
+    httpRequest('/config/module',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
 export function login(data, responseCall, errCall) {
     httpRequest(`${HOST_IP}/users/login`, {
         method: 'POST',
@@ -164,6 +193,7 @@ export function logout(responseFun) {
         responseFun && responseFun.apply(null);
     })
 }
+
 let socket = null;
 let socketResponse = null;
 

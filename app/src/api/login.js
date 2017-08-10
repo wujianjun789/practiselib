@@ -11,8 +11,8 @@ export function loginHandler(username, password,cbSuccess,cbFail) {
     }
 
     login({username:username, password:password}, response=>{
-        cbSuccess && cbSuccess();
         setCookie("user", response)
+        cbSuccess && cbSuccess();
     }, err=>{
         cbFail && cbFail();
     })

@@ -5,7 +5,7 @@
 const app = require('./app');
 const debug = require('debug')('server:server');
 const http = require('http');
-const config = require('./config.js');
+const config = require('./config.js').server;
 /**
  * Get port from environment and store in Express.
  */
