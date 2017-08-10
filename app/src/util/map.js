@@ -1,7 +1,15 @@
 /**
- * Created by RJ on 2016/4/16.
+ * Created by a on 2017/6/16.
  */
-var mapObject = {callFun:null, deviceList:{}};
+import {getMapConfig} from '../util/network';
+
+var mapObject = {
+    callFun:null,
+    deviceList:{},
+    options:{
+        mapZoom: true
+    }
+};
 
 export default class Map{
     constructor(){
@@ -34,23 +42,24 @@ export default class Map{
     }
 
     updateMap(data, option, callFun) {
-        var options = {
-            mapOffline: 0,
-            mapType: "google",
-            center: [31.239658843127756, 121.49971691534425],
-            zoom: 16,
-            minZoom: 10,
-            maxZoom: 18,
-            maxClusterRadius: 50,
-            mapZoom: true
+        var options = mapObject.options;
+
+        options = Object.assign({}, options, option);
+
+        if (options.hasOwnProperty("mapOffline") && options.hasOwnProperty("mapType")) {
+
+        }else {
+            getMapConfig(response=>{
+                mapObject.options = Object.assign({}, mapObject.options, response);
+                this.updateMap(data, option, callFun)
+            }, error=>{
+                throw error;
+            })
+            return;
         }
 
-        if (option) {
-            if(option.hasOwnProperty("markerDraggable")){
-                this.markerDraggable = option.markerDraggable;
-            }
-
-            options = Object.assign({}, options, option);
+        if(option.hasOwnProperty("markerDraggable")) {
+            this.markerDraggable = option.markerDraggable;
         }
 
         if (!document.getElementById(data.id)) {

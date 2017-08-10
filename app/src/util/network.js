@@ -143,12 +143,14 @@ export function getConfig() {
     })
 }
 
-export function getMapConfig() {
+export function getMapConfig(responseFun, errorFun) {
     httpRequest('/config/map',{
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {
-        console.log(response);
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errorFun && errorFun.apply(null, [error]);
     })
 }
 

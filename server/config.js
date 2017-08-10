@@ -16,7 +16,13 @@ const config = {
             {key: 'domain', title: '域管理', link: '/domainManage/domainEdit'}
         ],
         'map':{
-            'center': [31.239658843127756, 121.49971691534425]
+            mapOffline: 0,//(0在线1离线2静态图,必须有)
+            mapType: "google",//(地图类型,必须有)
+            center: [31.239658843127756, 121.49971691534425],
+            zoom: 16,//(当前等级)
+            minZoom: 10,
+            maxZoom: 18,
+            maxClusterRadius: 50
         }
     }
 }
