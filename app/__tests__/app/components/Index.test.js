@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import renderer from 'react-test-renderer';
-import {App} from '../../../src/App/container';
+import {App} from '../../../src/app/container';
 import configureStore from '../../../src/store/configureStore';
 
 describe('<App />', () => {
