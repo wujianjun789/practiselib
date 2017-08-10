@@ -51,3 +51,24 @@ export function deleteUser(id, cb){
 
     }, null, "unresolved")
 }
+
+export function getUserDomainList(userId,cb){
+    let headers = getHttpHeader();
+    let param = JSON.stringify({"include":["domains"]});
+    httpRequest(HOST_IP+'/users/'+userId+'?filter='+encodeURIComponent(param),{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response)
+    })
+}
+
+export function userDomainAdd(userId,domainId,cb){
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/users/'+userId+'/domains/rel/'+domainId,{
+        headers: headers,
+        method: 'PUT'
+    }, response=>{
+        cb && cb()
+    })
+}

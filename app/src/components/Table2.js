@@ -38,6 +38,10 @@ export default class Table2 extends Component {
         this.props.rowDelete && this.props.rowDelete(rowId);
     }
 
+    rowDomainEdit(rowId) {
+        this.props.rowDomainEdit && this.props.rowDomainEdit(rowId);
+    }
+
     rowClick(row){
         this.props.rowClick && this.props.rowClick(row);
     }
@@ -81,8 +85,9 @@ export default class Table2 extends Component {
                                 {
                                     isEdit &&
                                         <td className = 'button-icon'>
-                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon-table-edit"></span></a>
-                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon-table-delete"></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="icon-domain-edit"></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon-table-edit"></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon-table-delete"></span></a>
                                         </td>
                                 }
 

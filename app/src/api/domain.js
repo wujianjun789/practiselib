@@ -12,6 +12,17 @@ export function getDomainList(cb) {
     })
 }
 
+export function getDomainById(id,cb){
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/domains/'+id, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        console.log(response)
+        cb && cb(response);
+    })
+}
+
 export function getDomainListByName(domainName, offset, limit, cb) {
     let headers = getHttpHeader();
     let obj = {include:["parent"], "offset":offset,"limit":limit}

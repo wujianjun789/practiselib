@@ -1,0 +1,162 @@
+exports[`<PermissionManage /> snapshot 1`] = `
+<div
+  className="container permission-manage">
+  <div
+    className="head">
+    <div
+      className="home"
+      onClick={[Function]}>
+      <span
+        className="icon" />
+    </div>
+    <span
+      className="title">
+      权限管理
+    </span>
+    <div
+      className="user-center "
+      onClick={[Function]}>
+      <div
+        className="user-icon clearfix">
+        <span
+          className="icon icon-usr" />
+      </div>
+      <ul
+        className="user-list hidden">
+        <li
+          onClick={[Function]}>
+          <span
+            className="icon icon-alter" />
+          修改密码
+        </li>
+        <li
+          onClick={[Function]}>
+          <span
+            className="icon icon-exit" />
+          退出管理系统
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="content ">
+    <div
+      className="heading">
+      <div
+        className="searchText search"
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}>
+        <input
+          onChange={[Function]}
+          placeholder="输入用户名称"
+          type="search"
+          value="" />
+        <ul
+          className="" />
+        <span
+          className="glyphicon glyphicon-search"
+          onClick={[Function]} />
+      </div>
+      <button
+        className="btn btn-primary"
+        onClick={[Function]}>
+        添加
+      </button>
+    </div>
+    <div
+      className="table-container">
+      <div
+        className="table-responsive ">
+        <table
+          className="table table-hover">
+          <thead>
+            <tr>
+              <th
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </th>
+              <th>
+                 
+              </th>
+              <th>
+                用户名称
+              </th>
+              <th>
+                最后登录时间
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody />
+        </table>
+      </div>
+      <ul
+        className="rc-pagination page"
+        style={Object {}}
+        unselectable="unselectable">
+        <li
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-prev"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="上一页">
+          <a />
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={1}>
+          <a>
+            1
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-2"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={2}>
+          <a>
+            2
+          </a>
+        </li>
+        <li
+          className="rc-pagination-item rc-pagination-item-3"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title={3}>
+          <a>
+            3
+          </a>
+        </li>
+        <li
+          aria-disabled={false}
+          className=" rc-pagination-next"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="下一页">
+          <a />
+        </li>
+        <div
+          className="rc-pagination-options" />
+      </ul>
+    </div>
+  </div>
+  <div
+    className="overlayer "
+    onClick={[Function]}>
+    <div
+      className=""
+      id="animate" />
+  </div>
+</div>
+`;
