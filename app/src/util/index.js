@@ -39,6 +39,15 @@ export function getObjectByKey(list, key, value) {
     }
     return null;
 }
+
+export function getIndexByKey(list, key, value) {
+    for(var i=0;i<list.length;i++){
+        if(list[i][key] == value){
+            return i;
+        }
+    }
+    return null;
+}
 /**
  *
  * @param key(model)

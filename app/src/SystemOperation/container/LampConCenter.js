@@ -299,9 +299,10 @@ export class LampConCenter extends Component {
     updateSelectDevice(item) {
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
-        selectDevice.data.id = item.id;
+        selectDevice.data.splice(0);
+        selectDevice.data.push({id:item.id, name:item.name});
         selectDevice.domainId = item.domainId;
-        selectDevice.data.name = item.name;
+        selectDevice.position.splice(0);
         selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'}, item.geoPoint));
         this.setState({selectDevice: selectDevice});
     }
@@ -344,7 +345,7 @@ export class LampConCenter extends Component {
         switch (model) {
             case "lc":
             case "lcc":
-                return <Table columns={this.columns[model]} data={data} activeId={selectDevice.data.id}
+                return <Table columns={this.columns[model]} data={data} activeId={selectDevice.data[0].id}
                               rowClick={this.tableClick}/>
         }
 

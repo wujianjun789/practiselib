@@ -21,6 +21,7 @@ import Topology from './Topology';
 import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
+import {getIndexByKey} from '../../util/index'
 
 export class DomainEdit extends Component {
     constructor(props) {
@@ -74,14 +75,17 @@ export class DomainEdit extends Component {
 
         this.destoryTopology = this.destoryTopology.bind(this);
 
+        this.requestDomain = this.requestDomain.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
         this.initPageSize = this.initPageSize.bind(this);
         this.initDomainList = this.initDomainList.bind(this);
+
+        this.getDomainParentList = this.getDomainParentList.bind(this);
     }
 
     componentWillMount() {
         this.mounted = true;
-        getDomainList(data=>{if(this.mounted)this.domainList=data});
+        this.requestDomain();
         this.initTreeData();
         this.requestSearch();
     }
@@ -95,6 +99,10 @@ export class DomainEdit extends Component {
 
     componentWillUnmount() {
         this.mounted = false;
+    }
+
+    requestDomain(){
+        getDomainList(data=>{if(this.mounted)this.domainList=data});
     }
 
     requestSearch(){
@@ -132,6 +140,20 @@ export class DomainEdit extends Component {
         this.setState({topologyRefresh:{parentId:null}});
     }
 
+    getDomainParentList(){
+        const {selectDomain} = this.state;
+        let domainList = this.domainList.slice(0);
+        let domainId = selectDomain.data[0].id;
+        if(domainId){
+            let index = getIndexByKey(domainList, 'id', domainId);
+            if(index>-1){
+                domainList.splice(index, 1);
+            }
+        }
+
+        return domainList;
+    }
+
     domainHandler(id){
         const {listMode, selectDomain} = this.state
         const {actions} = this.props;
@@ -147,20 +169,26 @@ export class DomainEdit extends Component {
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                         domain.parentId = data.prevDomain;
 
-                                                        addDomain(domain, ()=>{actions.overlayerHide();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
+                                                        addDomain(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
                                                    }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
-                let lat="", lng="";
+                let lat="", lng="",updateId="",name="";
 
                 if(selectDomain.position && selectDomain.position.length){
                     let latlng = selectDomain.position[0];
                     lat = latlng.lat?latlng.lat:"";
                     lng = latlng.lng?latlng.lng:"";
                 }
-                actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:selectDomain.data[0].id, domainName:selectDomain.data[0].name,
+
+                if(selectDomain.data && selectDomain.data.length){
+                    let data = selectDomain.data[0];
+                    updateId = data.id;
+                    name = data.name;
+                }
+                actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:''}}
-                                                              domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
+                                                              domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                                               onConfirm={(data)=>{
                                                                     let domain = {};
                                                                     domain.id = data.domainId;
@@ -168,13 +196,18 @@ export class DomainEdit extends Component {
                                                                     domain.geoType = 0;
                                                                     domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                                     domain.parentId = data.prevDomain;
-                                                                    updateDomainById(domain, ()=>{actions.overlayerHide();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
+                                                                    updateDomainById(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
                                                               }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
+                let curId="";
+                if(selectDomain.data && selectDomain.data.length){
+                    let data = selectDomain.data[0];
+                    curId = data.id;
+                }
                 actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
-                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(selectDomain.data[0].id,
-                                                 ()=>{actions.overlayerHide();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});})}}/>);
+                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
+                                                 ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});})}}/>);
                 break;
         }
     }
@@ -196,12 +229,12 @@ export class DomainEdit extends Component {
     }
 
     updateSelectDomain(domain){
-        const {selectDomain} = this.state;
+        let selectDomain = this.state.selectDomain;
         selectDomain.latlng = domain.geoPoint;
         selectDomain.position.splice(0)
-        selectDomain.position.push(Object.assign({"device_id":1, "device_type":"DEVICE"}, domain.geoPoint))
+        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE"}, domain.geoPoint))
         selectDomain.parentId = domain.parentId;
-        selectDomain.data.splice(0)
+        selectDomain.data.splice(0);
         selectDomain.data.push({id:domain.id, name:domain.name});
         this.setState({selectDomain:selectDomain})
     }
