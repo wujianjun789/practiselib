@@ -222,7 +222,7 @@ export class LampConCenter extends Component {
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
-        delAssetsByModel(model, selectDevice.data.id, ()=>{
+        delAssetsByModel(model, selectDevice.data[0].id, ()=>{
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
