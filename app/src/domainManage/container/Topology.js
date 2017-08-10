@@ -47,7 +47,8 @@ export default class Topology extends Component{
                     {id:12, name:"beijing"}]
                 },
                 {id:2, name:"Japan"}
-            ]
+            ],
+            IsUpdate:false
         }
 
         this.getDatalist = this.getDatalist.bind(this);
@@ -69,7 +70,10 @@ export default class Topology extends Component{
         const {topologyRefresh, callFun} = this.props;
         if(topologyRefresh.parentId){
             callFun &&　callFun();
-            this.requestDomain(topologyRefresh.parentId);
+            this.setState({IsUpdate:true}, ()=>{
+                this.requestDomain(topologyRefresh.parentId);
+            })
+
         }
     }
 
@@ -82,7 +86,7 @@ export default class Topology extends Component{
     }
 
     requestDomain(parentId){
-        getDomainListByParentId(parentId, (parentId,data)=>{this.mounted && this.initDomain(parentId, data)})
+        getDomainListByParentId(parentId, (parentId,data)=>{console.log(data);this.mounted && this.initDomain(parentId, data)})
     }
 
     initDomain(parentId, data){
@@ -130,8 +134,10 @@ export default class Topology extends Component{
     }
 
     itemClick(item){
-        this.requestDomain(item.id);
-        this.props.itemClick && this.props.itemClick(item);
+        this.setState({IsUpdate:false}, ()=>{
+            this.requestDomain(item.id);
+            this.props.itemClick && this.props.itemClick(item);
+        })
     }
 
     getDatalist(list, renderList){

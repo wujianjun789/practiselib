@@ -258,7 +258,11 @@ export class DomainEdit extends Component {
             mode = false;
         }
 
-        mode != undefined && this.setState({listMode:mode});
+        mode != undefined && this.setState({listMode:mode},()=>{
+            if(mode){
+                this.requestSearch();
+            }
+        });
     }
 
     collpseHandler() {
