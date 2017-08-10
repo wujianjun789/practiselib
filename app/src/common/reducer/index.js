@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 
-import app from '../../App/reducer/index';
+import app from '../../app/reducer/index';
 import overlayer from './overlayer';
 
 // import login from '../../login/reducer/index'
