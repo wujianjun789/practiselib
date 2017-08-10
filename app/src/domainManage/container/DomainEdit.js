@@ -102,7 +102,7 @@ export class DomainEdit extends Component {
     }
 
     requestDomain(){
-        getDomainList(data=>{if(this.mounted)this.domainList=data});
+        getDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:"无"});}});
     }
 
     requestSearch(){
@@ -124,6 +124,7 @@ export class DomainEdit extends Component {
         let list = data.map(domain=>{
             return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:"无"})
         })
+
 
         this.setState({data:Immutable.fromJS(list)});
 
