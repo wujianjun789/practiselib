@@ -353,7 +353,6 @@ export class LampConCenter extends Component {
 
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
-        console.log(selectDevice);
         return <Content className={'offset-right '+(collapse?'collapsed':'')}>
             <div className="heading">
                 <Select titleField={domainList.valueField} valueField={domainList.valueField}
