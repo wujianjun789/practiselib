@@ -16,9 +16,8 @@ export default class MapPreview extends Component{
         super(props)
         this.state = {
             mapId:"mapPreview",
-            domainList:[{id:1, name:'domain1', "device_type": 'DEVICE', geoPoint:{lat:31.239658843127756, lng:121.49971691534425}},
-                {id:2, name:'domain2', "device_type": 'DEVICE', geoPoint:{lat:31.242658843127756, lng:121.49972691534425}}],
-            search:{placeholder:'输入域名称搜索', value:'', curIndex:0},
+            domainList:[],
+            search:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
 
             curDomain: 0,
             panLatlng:null

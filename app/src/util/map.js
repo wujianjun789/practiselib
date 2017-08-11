@@ -58,7 +58,7 @@ export default class Map{
             return;
         }
 
-        if(option.hasOwnProperty("markerDraggable")) {
+        if(option && option.hasOwnProperty("markerDraggable")) {
             this.markerDraggable = option.markerDraggable;
         }
 
