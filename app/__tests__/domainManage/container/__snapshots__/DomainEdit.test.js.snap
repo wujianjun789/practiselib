@@ -52,7 +52,7 @@ exports[`test DomainEdit renders 1`] = `
           </thead>
           <tbody>
             <tr
-              className="active"
+              className=""
               onClick={[Function]}>
               <td
                 className="hidden">
@@ -106,7 +106,7 @@ exports[`test DomainEdit renders 1`] = `
         </table>
       </div>
       <ul
-        className="rc-pagination page"
+        className="rc-pagination page "
         style={Object {}}
         unselectable="unselectable">
         <li
@@ -182,7 +182,7 @@ exports[`test DomainEdit renders 1`] = `
         className="panel-body domain-property">
         <span
           className="domain-name">
-          上海市
+          
         </span>
         <button
           className="btn btn-primary pull-right"

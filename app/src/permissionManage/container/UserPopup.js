@@ -19,7 +19,6 @@ export class UserPopup extends Component{
         super(props);
         const {data,isEdit=false} = this.props;
         this.state={
-            toggle:'hidden',
             id:isEdit?data.id:'',
             username:Immutable.fromJS({value:isEdit?data.username:'',checked:'',reminder:''}),
             lastName:Immutable.fromJS({value:isEdit?data.lastName:'',checked:'',reminder:''}),
@@ -150,14 +149,14 @@ export class UserPopup extends Component{
                             })}
                         </div>
                         {modules.length>4?<div className = 'row'>
-                            {modules.slice(5,9).map(item=>{
+                            {modules.slice(4,8).map(item=>{
                                 return <label className="checkbox-inline" key={item.key}>
                                     <input type="checkbox" name='module' value={item.key} defaultChecked={IsExitInArray(this.state.modules,item.key)}/> {item.title}
                                 </label>
                             })}
                         </div>:''}
                         {modules.length>8?<div className = 'row'>
-                            {modules.slice(10).map(item=>{
+                            {modules.slice(9).map(item=>{
                                 return <label className="checkbox-inline" key={item.key}>
                                     <input type="checkbox" name='module'value={item.key} defaultChecked={IsExitInArray(this.state.modules,item.key)}/> {item.title}
                                 </label>

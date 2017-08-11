@@ -15,20 +15,7 @@ exports[`test MapPreview renders 1`] = `
       type="search"
       value="" />
     <ul
-      className="">
-      <li
-        className=""
-        onClick={[Function]}
-        value="domain1">
-        domain1
-      </li>
-      <li
-        className=""
-        onClick={[Function]}
-        value="domain2">
-        domain2
-      </li>
-    </ul>
+      className="" />
     <span
       className="glyphicon glyphicon-search"
       onClick={[Function]} />

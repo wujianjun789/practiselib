@@ -51,7 +51,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
     <div
       className="table-container">
       <ul
-        className="rc-pagination page"
+        className="rc-pagination page "
         style={Object {}}
         unselectable="unselectable">
         <li
@@ -127,7 +127,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
         className="panel-body domain-property">
         <span
           className="domain-name">
-          灯集中控制器
+          
         </span>
         <button
           className="btn btn-primary pull-right"
@@ -157,7 +157,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
         className="panel-body domain-property">
         <span
           className="domain-name">
-          包含：1 个项目
+          包含：0 个项目
         </span>
         <button
           className="btn btn-primary pull-right"

@@ -1,5 +1,7 @@
-import React,{Component} from 'react';
-export default class InputCheck extends Component{
+import React,{PureComponent} from 'react';
+import PropTypes from 'prop-types';
+
+export default class InputCheck extends PureComponent{
     constructor(props){
         super(props)
         this.onFocus = this.onFocus.bind(this);
@@ -13,7 +15,6 @@ export default class InputCheck extends Component{
 
     onBlur(event){
         this.props.onBlur && this.props.onBlur(event.target.id);
-        this.setState({style:{visibility: 'visible'}});
     }
 
     onChange(event){
@@ -21,9 +22,9 @@ export default class InputCheck extends Component{
     }
 
     render(){
-        const {type = 'text',className = '',id='username',label = '用户名',checked = 'fail',reminder = '',placeholder = '请输入用户名',value='',disabled=false} = this.props;
+        const {type = 'text',className = '',id,label,checked = 'fail',reminder = '',placeholder = '',value='',disabled=false} = this.props;
 
-        return <div className={"inputCheck "+className}>
+        return <div className={`inputCheck ${className}`}>
                 <label className = 'col-sm-2 control-label'>{label}:</label>
                 <div className = {`has-feedback col-sm-4 ${checked=='success'?'has-success':checked=='fail'?'has-error':''}`}>
                     <input disabled={!!disabled} type={type} id = {id} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
@@ -33,4 +34,10 @@ export default class InputCheck extends Component{
             </div>
         
     }
+}
+
+InputCheck.PropTypes = {
+    id: PropTypes.arrayOf(PropTypes.string).isRequired,
+    label: PropTypes.arrayOf(PropTypes.string).isRequired,
+    disabled: PropTypes.arrayOf(PropTypes.bool),
 }

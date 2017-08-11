@@ -1,0 +1,30 @@
+exports[`<InputCheck /> snapshot 1`] = `
+<div
+  className="inputCheck ">
+  <label
+    className="col-sm-2 control-label">
+    用户名
+    :
+  </label>
+  <div
+    className="has-feedback col-sm-4 has-error">
+    <input
+      className="form-control"
+      disabled={false}
+      id="username"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder=""
+      type="text"
+      value="admin" />
+    <span
+      aria-hidden="true"
+      className="glyphicon glyphicon-remove form-control-feedback" />
+    <span
+      className="reminder">
+      用户名已存在
+    </span>
+  </div>
+</div>
+`;

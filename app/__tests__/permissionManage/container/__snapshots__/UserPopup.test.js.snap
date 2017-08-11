@@ -1,0 +1,617 @@
+exports[`<UserPopup add snapshot 1`] = `
+<div
+  className="modal-content user-add-popup">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      添加用户
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="form-group row basic-info">
+      <div
+        className="inputCheck username">
+        <label
+          className="col-sm-2 control-label">
+          用户名
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="username"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入用户名"
+            type="text"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <label
+        className="col-sm-2 control-label">
+        用户等级:
+      </label>
+      <select
+        className="select role"
+        onChange={[Function]}
+        value="访客">
+        <option
+          value="访客">
+          访客
+        </option>
+        <option
+          value="设备操作员">
+          设备操作员
+        </option>
+        <option
+          value="设备管理员">
+          设备管理员
+        </option>
+        <option
+          value="系统管理员">
+          系统管理员
+        </option>
+      </select>
+      <div
+        className="inputCheck lastName">
+        <label
+          className="col-sm-2 control-label">
+          姓氏
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="lastName"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入姓氏"
+            type="text"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="inputCheck firstName">
+        <label
+          className="col-sm-2 control-label">
+          名字
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="firstName"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入名字"
+            type="text"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="inputCheck password ">
+        <label
+          className="col-sm-2 control-label">
+          密码
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入密码"
+            type="password"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="inputCheck rePassword ">
+        <label
+          className="col-sm-2 control-label">
+          重复密码
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="rePassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请再次输入密码"
+            type="password"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="form-group row module-per">
+      <label
+        className="col-sm-2 control-label">
+        模块权限:
+      </label>
+      <div
+        className="col-sm-10">
+        <div
+          className="row">
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="asset" />
+             
+            资产管理
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="permission" />
+             
+            权限管理
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="maintenance" />
+             
+            系统运维
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="control" />
+             
+            系统控制
+          </label>
+        </div>
+        <div
+          className="row">
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="report" />
+             
+            报表管理
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="publish" />
+             
+            媒体发布
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="visual" />
+             
+            可视化
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="domain" />
+             
+            域管理
+          </label>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      确认
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<UserPopup edit snapshot 1`] = `
+<div
+  className="modal-content user-edit-popup">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      用户资料
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="form-group row basic-info">
+      <div
+        className="inputCheck username">
+        <label
+          className="col-sm-2 control-label">
+          用户名
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="username"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入用户名"
+            type="text"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <label
+        className="col-sm-2 control-label">
+        用户等级:
+      </label>
+      <select
+        className="select role"
+        onChange={[Function]}
+        value="访客">
+        <option
+          value="访客">
+          访客
+        </option>
+        <option
+          value="设备操作员">
+          设备操作员
+        </option>
+        <option
+          value="设备管理员">
+          设备管理员
+        </option>
+        <option
+          value="系统管理员">
+          系统管理员
+        </option>
+      </select>
+      <div
+        className="inputCheck lastName">
+        <label
+          className="col-sm-2 control-label">
+          姓氏
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="lastName"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入姓氏"
+            type="text"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="inputCheck firstName">
+        <label
+          className="col-sm-2 control-label">
+          名字
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="firstName"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入名字"
+            type="text"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="inputCheck password ">
+        <label
+          className="col-sm-2 control-label">
+          密码
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="password"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请输入密码"
+            type="password"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+      <div
+        className="inputCheck rePassword ">
+        <label
+          className="col-sm-2 control-label">
+          重复密码
+          :
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <input
+            className="form-control"
+            disabled={false}
+            id="rePassword"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder="请再次输入密码"
+            type="password"
+            value="" />
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder">
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="form-group row module-per">
+      <label
+        className="col-sm-2 control-label">
+        模块权限:
+      </label>
+      <div
+        className="col-sm-10">
+        <div
+          className="row">
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="asset" />
+             
+            资产管理
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="permission" />
+             
+            权限管理
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="maintenance" />
+             
+            系统运维
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="control" />
+             
+            系统控制
+          </label>
+        </div>
+        <div
+          className="row">
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="report" />
+             
+            报表管理
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="publish" />
+             
+            媒体发布
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="visual" />
+             
+            可视化
+          </label>
+          <label
+            className="checkbox-inline">
+            <input
+              defaultChecked={false}
+              name="module"
+              type="checkbox"
+              value="domain" />
+             
+            域管理
+          </label>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      确认
+    </button>
+  </div>
+</div>
+`;
