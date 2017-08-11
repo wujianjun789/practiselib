@@ -297,8 +297,8 @@ export class DomainEdit extends Component {
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data[0].name}</span>
-                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')}>编辑</button>
-                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')}>删除</button>
+                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {data.size==0?true:false}>编辑</button>
+                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {data.size==0?true:false}>删除</button>
 
                         </div>
                     </div>

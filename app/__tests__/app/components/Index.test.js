@@ -15,7 +15,7 @@ describe('<app />', () => {
         title: 'Star',
         name: '智慧照明'
     }
-    const router = {push: Array.prototype.push};
+    const router = {push: jest.fn()};
     it('render with props.title=undefined, props.name=undefined', () => {
         const app = mount(<Provider store={store}><App items={data.items} router={router}/></Provider>);
 

@@ -7,7 +7,7 @@ import {initialState as state} from '../../../src/app/reducer';
 
 describe('<app /> HOC', () => {
     const store = configureStore();
-    const router = {push: Array.prototype.push};
+    const router = {push: jest.fn()};
     it('render normal', () => {
         const root = mount(<Provider store={store}>
             <App router={router}/>
@@ -17,6 +17,6 @@ describe('<app /> HOC', () => {
         expect(app.length).toBe(1);
         expect(app.prop('title')).toBe(state.title);
         expect(app.prop('name')).toBe(state.name);
-        expect(app.prop('items')).toBe(state.items);
+        expect(app.prop('items')).toEqual(state.items);
     });
 })

@@ -61,9 +61,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a>
-            
-          </a>
+          <a />
         </li>
         <li
           className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
@@ -102,9 +100,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a>
-            
-          </a>
+          <a />
         </li>
         <div
           className="rc-pagination-options" />
@@ -135,12 +131,14 @@ exports[`<LampConCenter /> component snapshot 1`] = `
         </span>
         <button
           className="btn btn-primary pull-right"
+          disabled={true}
           id="sys-update"
           onClick={[Function]}>
           编辑
         </button>
         <button
           className="btn btn-danger pull-right"
+          disabled={true}
           id="sys-delete"
           onClick={[Function]}>
           删除
@@ -163,6 +161,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
         </span>
         <button
           className="btn btn-primary pull-right"
+          disabled={true}
           id="sys-whitelist"
           onClick={[Function]}>
           编辑

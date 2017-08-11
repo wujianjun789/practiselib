@@ -27,69 +27,14 @@ export class UserPopup extends Component{
             password:Immutable.fromJS({value:'',checked:'',reminder:''}),
             rePassword:Immutable.fromJS({value:'',checked:'',reminder:''}),
             role:Immutable.fromJS({list:[{id:4, value:'访客'},{id:3, value:'设备操作员'},{id:2, value:'设备管理员'},{id:1, value:'系统管理员'}], index:isEdit?data.roleId.index:0, value:isEdit?data.roleId.value:'访客'}),
-            modules:isEdit?data.modules:[],
-            domainList:['中国-杭州','中国-上海','中国-北京','中国-武汉','中国-长沙','中国-上海-闵行','中国-上海-闵行-莘庄'],
-            data:{
-                name: "中国",
-                toggled: true,
-                children: [
-                    {
-                        name: "上海",
-                        children: [
-                            {
-                                name: "闵行",
-                            },
-                            {
-                                name: "徐汇"
-                            }
-                        ],
-                        toggled: true
-                    },
-                    {
-                        name: "江苏",
-                        children: [
-                            {
-                                name: "南京",
-                                children: [
-                                    {
-                                        name: "江浦"
-                                    },
-                                    {
-                                        name: "江宁"
-                                    }
-                                ],
-                                toggled: true
-                            },
-                            {
-                                name: "苏州"
-                            }
-                        ],
-                        toggled: true
-                    },
-                    {
-                        name: "浙江",
-                        children: [
-                            {
-                                name: "杭州"
-                            },
-                            {
-                                name: "金华"
-                            }
-                        ],
-                        toggled: true
-                    }
-                ],
-            }
+            modules:isEdit?data.modules:[]
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.roleChange = this.roleChange.bind(this);
         this.checkOut = this.checkOut.bind(this);
-        this.toggleOpen = this.toggleOpen.bind(this);
-        this.selectDomain = this.selectDomain.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onFocus = this.onFocus.bind(this);
-        this.domainDelete = this.domainDelete.bind(this);
         this.getCheckedModule = this.getCheckedModule.bind(this);
     }
 
@@ -172,20 +117,6 @@ export class UserPopup extends Component{
         this.setState({[id]:this.state[id].update('value',v=>value)});
     }
 
-    toggleOpen(){
-        this.setState({toggle:''});
-    }
-
-    selectDomain(){
-        this.setState({toggle:'hidden'});
-    }
-
-    domainDelete(index){
-        let domainList = this.state.domainList;
-        domainList.splice(index,1);
-        this.setState({domainList:domainList});
-    }
-
     render() {
         let {className = '',title = '',modules,isEdit=false} = this.props;
         let {username,lastName,firstName,password,rePassword,toggle,domainList} = this.state;
@@ -232,38 +163,6 @@ export class UserPopup extends Component{
                                 </label>
                             })}
                         </div>:''}
-                    </div>
-                </div>
-                <div className = 'form-group row domain-per'>
-                    <label className="col-sm-2 control-label">域权限:</label>
-                    <div className="col-sm-10">
-                        <div className='col-sm-6 domain-add'>
-                            <div className='row'>
-                                <button className="btn btn-primary" onClick = {this.toggleOpen}>添加域</button>
-                            </div>
-                            <div className={`dropdown ${toggle}`}>
-                                <button className="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    选择区域
-                                    <span className="glyphicon glyphicon-triangle-bottom"></span>
-                                </button>
-                                    <div className="dropdown-menu" aria-labelledby="dropdownMenu1" >
-                                    <Treebeard data={this.state.data} onToggle={(item)=>{this.selectDomain(item)}}/>
-                                </div> 
-                            </div>
-                            <ul className={`domain-list${toggle=='hidden'?'-l':''}`}>
-                                {
-                                    domainList.map((item,index)=>{
-                                        return <li key = {index}>
-                                            <span className="icon-table-delete" onClick={()=>this.domainDelete(index)}></span>
-                                                {item}
-                                        </li>
-                                    })
-                                }
-                            </ul>
-                        </div>
-                        <div className='col-sm-6 domain-add-map map-container'>
-                            <MapView  option={{mapZoom:false}} mapData={{id:'example'}} />
-                        </div>
                     </div>
                 </div>
             </Panel>

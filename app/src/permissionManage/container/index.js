@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import Overlayer from '../../common/containers/Overlayer'
 import {overlayerShow,overlayerHide} from '../../common/actions/overlayer';
 import UserPopup from './UserPopup'
+import DomainPopup from './DomainPopup'
 import HeadBar from '../../components/HeadBar'
 import Page from '../../components/Page'
 import SearchText from '../../components/SearchText'
@@ -55,7 +56,7 @@ export class PermissionManage extends Component{
 
     onClick(){
         // const popupinfo = this.props.permissionManage.popupinfo;
-        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' data={this.state.popupinfo} onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick}/>);
     }
 
     searchChange(value){
@@ -121,6 +122,10 @@ export class PermissionManage extends Component{
         }}/>);
     }
 
+    rowDomainEdit(id){
+        this.props.action.overlayerShow(<DomainPopup className='user-domain-edit-popup' title='用户域管理' id={id} onConfirm={this.confirmClick}/>)
+    }
+
     confirmClick(datas,isEdit){
         if(isEdit){
             editUser(datas,this.requestData);
@@ -142,7 +147,7 @@ export class PermissionManage extends Component{
                         <button className='btn btn-primary' onClick={this.onClick}>添加</button>
                     </div>
                     <div className="table-container">
-                        <Table2 columns={this.columns} data = {this.state.datas} isEdit keyField='id' rowDelete={(id)=>this.rowDelete(id)} rowEdit={(id)=>this.rowEdit(id)}/>
+                        <Table2 columns={this.columns} data = {this.state.datas} isEdit keyField='id' rowDelete={(id)=>this.rowDelete(id)} rowEdit={(id)=>this.rowEdit(id)} rowDomainEdit={(id)=>this.rowDomainEdit(id)}/>
                         <Page className="page" showSizeChanger pageSize={page.get('pageSize')} current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
                 </div>

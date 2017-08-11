@@ -116,9 +116,7 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a>
-            
-          </a>
+          <a />
         </li>
         <li
           className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
@@ -157,9 +155,7 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a>
-            
-          </a>
+          <a />
         </li>
         <div
           className="rc-pagination-options" />
@@ -190,11 +186,13 @@ exports[`test DomainEdit renders 1`] = `
         </span>
         <button
           className="btn btn-primary pull-right"
+          disabled={false}
           onClick={[Function]}>
           编辑
         </button>
         <button
           className="btn btn-danger pull-right"
+          disabled={false}
           onClick={[Function]}>
           删除
         </button>

@@ -51,11 +51,14 @@
     
 }
 
-.user-add-popup,.user-edit-popup{
+.user-add-popup,.user-edit-popup,.user-domain-edit-popup{
     width:700px;
     .modal-body{
         margin-top: 5px;
-        margin-right:50px;        
+        margin-right:50px;
+        >.form-group{
+            margin-bottom: 0px;
+        }    
     }
     .modal-footer{
         border-top: none;
@@ -71,6 +74,9 @@
         color: #4d4d4d;
         font-size: 14px;
     }
+}
+
+.user-add-popup,.user-edit-popup{
     .basic-info{
         margin-bottom: 10px;
         >.role{
@@ -93,9 +99,14 @@
         }
     }
 
+    
+}
+
+.user-domain-edit-popup{
     .domain-per{
-        .col-sm-10{
-            padding-right: 0;
+        >.col-sm-2{
+            text-align: right;
+            line-height: 20px;
         }
         .domain-add{
             height:230px;

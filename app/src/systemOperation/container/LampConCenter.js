@@ -257,8 +257,8 @@ export class LampConCenter extends Component {
             case 'sys-update':
                 let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
                 const dataInit2 = {
-                    id: selectDevice.data.id,
-                    name: selectDevice.data.name,
+                    id: selectDevice.data[0].id,
+                    name: selectDevice.data[0].name,
                     model: getModelNameById(model),
                     modelId: model,
                     domain: selectDevice.domainName,
@@ -376,10 +376,10 @@ export class LampConCenter extends Component {
                         <span className="icon_sys_select"></span>选中设备
                     </div>
                     <div className="panel-body domain-property">
-                        <span className="domain-name">{selectDevice.data[0].name}</span>
-                        <button id="sys-update" className="btn btn-primary pull-right" onClick={this.domainHandler}>编辑
+                        <span className="domain-name">{selectDevice.data[0]&&selectDevice.data[0].name}</span>
+                        <button id="sys-update" className="btn btn-primary pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>编辑
                         </button>
-                        <button id="sys-delete" className="btn btn-danger pull-right" onClick={this.domainHandler}>删除
+                        <button id="sys-delete" className="btn btn-danger pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>删除
                         </button>
                     </div>
                 </div>
@@ -389,7 +389,7 @@ export class LampConCenter extends Component {
                     </div>
                     <div className="panel-body domain-property">
                         <span className="domain-name">{`包含：${selectDevice.data.length} 个项目`}</span>
-                        <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={this.domainHandler}>
+                        <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>
                             编辑
                         </button>
                     </div>
