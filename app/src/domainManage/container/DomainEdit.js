@@ -174,7 +174,7 @@ export class DomainEdit extends Component {
                                                    }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
-                let lat="", lng="",updateId="",name="";
+                let lat="", lng="",updateId="",name="",parentId="";
 
                 if(selectDomain.position && selectDomain.position.length){
                     let latlng = selectDomain.position[0];
@@ -187,8 +187,9 @@ export class DomainEdit extends Component {
                     updateId = data.id;
                     name = data.name;
                 }
+
                 actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:updateId, domainName:name,
-                lat:lat, lng:lng, prevDomain:''}}
+                lat:lat, lng:lng, prevDomain:selectDomain.parentId}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                                               onConfirm={(data)=>{
                                                                     let domain = {};

@@ -203,6 +203,11 @@ export default class Topology extends Component{
             {
                 list.map(item=>{
 
+                    if(!item.name){
+                        return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
+                                   onClick={()=>this.itemClick(item)}></li>
+                    }
+
                     let len = 0;
                     let curIndex = 0
 
