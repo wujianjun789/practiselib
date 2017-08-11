@@ -48,6 +48,24 @@ export function getIndexByKey(list, key, value) {
     }
     return -1;
 }
+
+/**
+ *  获取字符串填充html元素宽度
+ *  @str
+ */
+export function getElementOffwidth(str, fontSize="14px") {
+    var w = 0;
+    var html = document.createElement('span');
+    html.style.visibility = 'hidden';
+    html.style.fontSize = fontSize;
+    html.innerHTML = str;
+    document.body.appendChild(html);
+    w = html.offsetWidth;
+    document.body.removeChild(html);
+
+    return w;
+}
+
 /**
  *
  * @param key(model)

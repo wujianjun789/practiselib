@@ -1,5 +1,5 @@
 @topology-domain-list-height: 152px;
-@topology-domain-list-height-en: 142px;
+@topology-domain-list-height-en: 152px;
 
 .domain-domainEdit{
   .content {
@@ -433,6 +433,9 @@
   height: @topology-domain-list-height;
   div{
     line-height: 20px;
+    &.en{
+      transform: rotate(90deg);
+    }
   }
 }
 
@@ -440,7 +443,9 @@
   width: 30px;
   height: @topology-domain-list-height-en;
   div{
-    transform: rotate(90deg);
+    &.en{
+      transform: rotate(90deg);
+    }
   }
 }
 

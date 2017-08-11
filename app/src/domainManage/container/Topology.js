@@ -5,8 +5,8 @@ import React,{Component} from 'react'
 
 import {getDomainListByParentId} from '../../api/domain'
 
-import {getStringlistByLanguage} from '../../util/string'
-import {getLanguage, getObjectByKey, getIndexByKey} from '../../util/index'
+import {getStringlistByLanguage, validEnglishStr, validChinaStr} from '../../util/string'
+import {getLanguage, getObjectByKey, getIndexByKey, getElementOffwidth} from '../../util/index'
 export default class Topology extends Component{
     constructor(props){
         super(props)
@@ -202,9 +202,49 @@ export default class Topology extends Component{
         return <ul key={depth} className={"topology-"+depth+" "+(list && list.length?'children':'')}>
             {
                 list.map(item=>{
-                    let value = item.name.slice(0, this.state.language=='zh'?6:10);
+
+                    let len = 0;
+                    let curIndex = 0
+
+                    for(var i=0;i<item.name.length;i++){
+                         let s = item.name.charAt(i);
+                        if(validChinaStr(s)){
+                            len += 2;
+                        }else{
+                            len += 1;
+                        }
+
+                        if(len>=12){
+                            curIndex = i+1;
+                            break;
+                        }else if(i==item.name.length-1){
+                            curIndex = i+1;
+                        }
+                    }
+
+                    let value = item.name.slice(0, curIndex);
+
+                    if(depth==0 || depth==1){
+                        return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
+                                   onClick={()=>this.itemClick(item)}>{value}</li>
+                    }
+
+                    let strs = getStringlistByLanguage(value);
                     return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
-                    onClick={()=>this.itemClick(item)}><div>{value}</div></li>
+                    onClick={()=>this.itemClick(item)}>{
+                        strs.map((str, index)=>{
+                            let className = ""
+                            let width = 0;
+                            if(validEnglishStr(str)){
+                                className = "en";
+                                width = getElementOffwidth(str, "16px")-16;
+                            }else{
+                                className = "zh";
+                                width = 0;
+                            }
+                            return <div key={index} className={className} style={{"marginBottom":width}}>{str}</div>
+                        })
+                    }</li>
                 })
             }
         </ul>
