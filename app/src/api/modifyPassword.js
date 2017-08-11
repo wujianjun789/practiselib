@@ -8,7 +8,7 @@ const modifyPassword = ({oldPw: oldPassword, newPw: newPassword}, successFun, er
         Authorization: id,
         'Content-Type': 'application/x-www-form-urlencoded'
     };
-    let data = `oldPassword=${encodeURIComponent(oldPassword)}&newPassword=${encodeURIComponent(newPassword)}`
+    let data = `oldPassword=${encodeURIComponent(oldPassword)}&newPassword=${encodeURIComponent(newPassword)}`;
     httpRequest(`${HOST_IP}/Users/change-password`, {
         headers: headers,
         method: 'POST',
