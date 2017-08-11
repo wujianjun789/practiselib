@@ -55,7 +55,7 @@ export class DomainEdit extends Component {
             data: Immutable.fromJS([{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
                 {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}]),
-            topologyRefresh:{parentId:null}
+            topologyRefresh:{IsUpdate:false, parentId:null}
         }
 
         this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
@@ -138,7 +138,7 @@ export class DomainEdit extends Component {
     }
 
     destoryTopology(){
-        this.setState({topologyRefresh:{parentId:null}});
+        this.setState({topologyRefresh:{IsUpdate:false, parentId:null}});
     }
 
     getDomainParentList(){
@@ -170,7 +170,7 @@ export class DomainEdit extends Component {
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                         domain.parentId = data.prevDomain;
 
-                                                        addDomain(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
+                                                        addDomain(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{IsUpdate:true, parentId:data.prevDomain}});});
                                                    }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
@@ -197,7 +197,7 @@ export class DomainEdit extends Component {
                                                                     domain.geoType = 0;
                                                                     domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                                     domain.parentId = data.prevDomain;
-                                                                    updateDomainById(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});});
+                                                                    updateDomainById(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{IsUpdate:true, id:data.domainId, parentId:data.prevDomain}});});
                                                               }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
@@ -208,7 +208,7 @@ export class DomainEdit extends Component {
                 }
                 actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
                                                  cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
-                                                 ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{parentId:data.prevDomain}});})}}/>);
+                                                 ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{IsUpdate:true, parentId:selectDomain.parentId}});})}}/>);
                 break;
         }
     }

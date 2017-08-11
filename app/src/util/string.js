@@ -12,6 +12,53 @@ export function validateStr(str) {
     return true;
 }
 
+/**
+ * 混合中英文处理
+ * @param value
+ * @returns {Array}
+ */
+export function getStringlistByLanguage(value) {
+    let strs = [];
+
+    if(!value){
+        return strs;
+    }
+
+    for(var i=0;i<value.length;i++){
+        let s = value.charAt(i);
+
+        if(strs.length == 0){
+            strs[0] = "";
+        }
+
+        let p = strs[strs.length-1];
+        if(validChinaStr(s)){
+            if(!p || validChinaStr(p)){
+                strs[strs.length-1] = strs[strs.length-1]+s;
+            }else{
+                strs[strs.length] = ""+s;
+            }
+
+        }else{
+            if(!p || validEnglishStr(p)){
+                strs[strs.length-1] = strs[strs.length-1]+s;
+            }else{
+                strs[strs.length] = ""+s;
+            }
+        }
+    }
+
+    return strs;
+}
+
+export function validEnglishStr(str) {
+    return /^[a-zA-Z]/.test(str);
+}
+
+export function validChinaStr(str) {
+    return /^[\u4e00-\u9fa5]/.test(str);
+}
+
 export function getRequestParam() {
     var url = location.search; //获取url中"?"符后的字串
     var theRequest = new Object();

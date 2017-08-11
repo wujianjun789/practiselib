@@ -1,4 +1,4 @@
-exports[`<App /> snapshot 1`] = `
+exports[`<app /> snapshot 1`] = `
 <div
   className="app">
   <div
@@ -95,7 +95,7 @@ exports[`<App /> snapshot 1`] = `
 </div>
 `;
 
-exports[`<App /> snapshot with props.title=undefined, props.name=undefined 1`] = `
+exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] = `
 <div
   className="app">
   <div

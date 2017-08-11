@@ -46,7 +46,7 @@ export function getIndexByKey(list, key, value) {
             return i;
         }
     }
-    return null;
+    return -1;
 }
 /**
  *
