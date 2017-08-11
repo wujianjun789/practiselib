@@ -12,6 +12,7 @@ describe('<PermissionManage />',()=>{
         {field:"username", title:"用户名称"},
         {field:"lastLoginDate", title:"最后登录时间"}
     ];
+    const router = {push: jest.fn()};
 
     it('render normal', () =>{
         const cmp = shallow(<PermissionManage />)
@@ -35,7 +36,7 @@ describe('<PermissionManage />',()=>{
     });
 
     it('snapshot',() => {
-        const cmp = renderer.create(<Provider store={store}><PermissionManage /></Provider>);
+        const cmp = renderer.create(<Provider store={store}><PermissionManage router={router}/></Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     })

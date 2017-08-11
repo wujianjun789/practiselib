@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import {UserCenter} from '../../../src/common/containers/UserCenter';
 
 describe('<UserCenter />', () => {
-    const router = {push: Array.prototype.push};
+    const router = {push: jest.fn()};
     it('render with props.className=undefined', () => {
         const userCenter = shallow(<UserCenter router={router} />);
         const container = userCenter.find('div.user-center');
