@@ -44,10 +44,7 @@ export class LampConCenter extends Component {
                 // latlng:{lng: 121.49971691534425,
                 //     lat: 31.239658843127756},
                 position: [],
-                data: [{
-                    id: 1,
-                    name: '灯集中控制器'
-                }]
+                data: []
             },
             domainList: {
                 titleField: 'name',
@@ -213,6 +210,8 @@ export class LampConCenter extends Component {
         if (data.length) {
             let item = data[0]
             this.updateSelectDevice(item);
+        } else {
+            this.setState( { selectDevice: Object.assign( {},this.state.selectDevice, {data: [] } ) } );
         }
     }
 
@@ -222,7 +221,7 @@ export class LampConCenter extends Component {
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
-        delAssetsByModel(model, selectDevice.data[0].id, ()=>{
+        delAssetsByModel(model, selectDevice.data.length&&selectDevice.data[0].id, ()=>{
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
@@ -255,10 +254,11 @@ export class LampConCenter extends Component {
                                                           }}/>);
                 break;
             case 'sys-update':
-                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
+                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}   
+                    let data = selectDevice.data.length?selectDevice.data[0]:null;
                 const dataInit2 = {
-                    id: selectDevice.data[0].id,
-                    name: selectDevice.data[0].name,
+                    id: data?data.id:null,
+                    name: data?data.name:null,
                     model: getModelNameById(model),
                     modelId: model,
                     domain: selectDevice.domainName,
@@ -322,7 +322,7 @@ export class LampConCenter extends Component {
             return;
         }
 
-        this.setState({model: node.id}, ()=>{
+        this.setState({model: node.id, selectDevice:{id:'systemOperation',position:[], data:[]},search: this.state.search.update('value', () => '') }, ()=>{
             this.requestSearch();
         });
     }
@@ -345,7 +345,7 @@ export class LampConCenter extends Component {
         switch (model) {
             case "lc":
             case "lcc":
-                return <Table columns={this.columns[model]} data={data} activeId={selectDevice.data[0].id}
+                return <Table columns={this.columns[model]} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                               rowClick={this.tableClick}/>
         }
 
@@ -353,6 +353,7 @@ export class LampConCenter extends Component {
 
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
+        console.log(selectDevice);
         return <Content className={'offset-right '+(collapse?'collapsed':'')}>
             <div className="heading">
                 <Select titleField={domainList.valueField} valueField={domainList.valueField}
@@ -366,8 +367,8 @@ export class LampConCenter extends Component {
                     {
                         this.renderDeviceTable(model, data, selectDevice)
                     }
-                    <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
-                          current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
+                    <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
+                          current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
                 </div>
             </div>
             <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
@@ -376,7 +377,7 @@ export class LampConCenter extends Component {
                         <span className="icon_sys_select"></span>选中设备
                     </div>
                     <div className="panel-body domain-property">
-                        <span className="domain-name">{selectDevice.data[0]&&selectDevice.data[0].name}</span>
+                        <span className="domain-name">{selectDevice.data.length?selectDevice.data[0].name:''}</span>
                         <button id="sys-update" className="btn btn-primary pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>编辑
                         </button>
                         <button id="sys-delete" className="btn btn-danger pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>删除
