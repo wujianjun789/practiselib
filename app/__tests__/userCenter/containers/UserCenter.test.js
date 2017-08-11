@@ -8,9 +8,6 @@ import UserCenter from '../../../src/common/containers/UserCenter';
 import {initialState as state} from '../../../src/app/reducer';
 import Overlayer from '../../../src/common/containers/Overlayer';
 
-
-global.document.cookie = 'user={"id":"mFAqEoHKT6Hn8dHQAlCd1e51uiCkqO7LoGL9GR7VVXnBIeZHuFPR6rhkMYk3kHhw","ttl":1209600,"created":"2017-08-10T00:31:25.860Z","userId":1}'
-
 describe('<UserCenter /> HOC', () => {
     const store = configureStore();
     function setup() {
@@ -32,6 +29,10 @@ describe('<UserCenter /> HOC', () => {
             root
         }
     }
+
+    beforeAll(()=>{
+        global.document.cookie = 'user={"id":"mFAqEoHKT6Hn8dHQAlCd1e51uiCkqO7LoGL9GR7VVXnBIeZHuFPR6rhkMYk3kHhw","ttl":1209600,"created":"2017-08-10T00:31:25.860Z","userId":1}';
+    })
     
     it('render normal, test alter password popup', () => {
         const {props, root} = setup();
