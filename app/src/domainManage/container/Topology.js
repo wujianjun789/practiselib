@@ -87,7 +87,6 @@ export default class Topology extends Component{
     }
 
     requestDomain(parentId){
-        console.log("request:", parentId);
         getDomainListByParentId(parentId, (parentId,data)=>{this.mounted && this.initDomain(parentId, data)})
     }
 
@@ -105,7 +104,6 @@ export default class Topology extends Component{
     }
 
     delDomain(id, list){
-        console.log("del:", id, list);
         let curIndex = getIndexByKey(list, 'id', id);
        if(curIndex >-1){
            this.state.domainUpdate.domain = list.splice(curIndex, 1);
@@ -231,7 +229,7 @@ export default class Topology extends Component{
 
                     if(depth==0 || depth==1){
                         return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
-                                   onClick={()=>this.itemClick(item)}>{value}</li>
+                                   onClick={()=>this.itemClick(item)}><div>{value}</div></li>
                     }
 
                     let strs = getStringlistByLanguage(value);

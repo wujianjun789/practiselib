@@ -39,10 +39,7 @@ export class DomainEdit extends Component {
                     lat: 31.239658843127756
                 }*/],
                 parentId:null,
-                data: [{
-                    id: 1,
-                    name: '上海市'
-                }]
+                data: []
             },
 
             page: Immutable.fromJS({
@@ -68,6 +65,7 @@ export class DomainEdit extends Component {
         this.tableClick = this.tableClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.topologyItemClick = this.topologyItemClick.bind(this);
+        this.initSelectDomain = this.initSelectDomain.bind(this);
         this.updateSelectDomain = this.updateSelectDomain.bind(this);
 
         this.pageChange = this.pageChange.bind(this);
@@ -130,6 +128,8 @@ export class DomainEdit extends Component {
 
         if(data.length){
             this.updateSelectDomain(data[0])
+        }else{
+            this.initSelectDomain();
         }
     }
 
@@ -144,7 +144,7 @@ export class DomainEdit extends Component {
     getDomainParentList(){
         const {selectDomain} = this.state;
         let domainList = this.domainList.slice(0);
-        let domainId = selectDomain.data[0].id;
+        let domainId = selectDomain.data.length && selectDomain.data[0].id;
         if(domainId){
             let index = getIndexByKey(domainList, 'id', domainId);
             if(index>-1){
@@ -230,6 +230,11 @@ export class DomainEdit extends Component {
         this.updateSelectDomain(data);
     }
 
+    initSelectDomain(){
+        let selectDomain = this.state.selectDomain;
+        this.setState({selectDomain:Object.assign({}, selectDomain, {latlng:{lng:null, lat:null}},{position:[]}, {parentId:null}, {data:[]})})
+    }
+
     updateSelectDomain(domain){
         let selectDomain = this.state.selectDomain;
         selectDomain.latlng = domain.geoPoint;
@@ -262,6 +267,8 @@ export class DomainEdit extends Component {
         mode != undefined && this.setState({listMode:mode},()=>{
             if(mode){
                 this.requestSearch();
+            }else{
+                this.initSelectDomain();
             }
         });
     }
@@ -272,6 +279,13 @@ export class DomainEdit extends Component {
 
     render() {
         const {listMode, collapse, selectDomain, page, search, data, topologyRefresh} = this.state
+        let disabled = false;
+        if(listMode){
+            disabled = data.size==0?true:false
+        }else{
+            disabled = selectDomain.data.length?false:true
+        }
+
         return (
             <Content className={'offset-right '+(listMode?'list-mode ':'topology ')+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -283,9 +297,9 @@ export class DomainEdit extends Component {
                     listMode ?
                         <div className="list-mode">
                             <div className="table-container">
-                                <Table columns={this.columns} data={data} activeId={selectDomain.data[0].id}
+                                <Table columns={this.columns} data={data} activeId={selectDomain.data.length?selectDomain.data[0].id:""}
                                        rowClick={this.tableClick}/>
-                                <Page className="page" showSizeChanger pageSize={page.get('pageSize')}
+                                <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
                                       current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                             </div>
                         </div> :
@@ -297,10 +311,9 @@ export class DomainEdit extends Component {
                             <span className="icon_domain_property"></span>域属性
                         </div>
                         <div className="panel-body domain-property">
-                            <span className="domain-name">{selectDomain.data[0].name}</span>
-                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {data.size==0?true:false}>编辑</button>
-                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {data.size==0?true:false}>删除</button>
-
+                            <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>
+                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>编辑</button>
+                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>删除</button>
                         </div>
                     </div>
                 </SideBarInfo>
