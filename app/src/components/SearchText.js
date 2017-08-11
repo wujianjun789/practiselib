@@ -77,6 +77,7 @@ export default class SearchText extends Component{
                 if(tableIndex>-1&&tableIndex<datalist.length){
                     let value = datalist[tableIndex].value;
                     this.props.onChange && this.props.onChange(value);
+                    this.itemClick(value, tableIndex);
                     this.timeOut = setTimeout(()=>{this.onClick()}, 33);
                     this.setState({interactive:false});
                 }
