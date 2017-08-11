@@ -12,6 +12,7 @@ import {confirmExit} from '../actions/userCenter';
 import {modifyPassword} from '../../api/modifyPassword';
 /**
  * @param {String} className  optional
+ * @param {Object} router     isRequired
  */
 export class UserCenter extends Component{
     constructor(props) {
@@ -54,10 +55,11 @@ export class UserCenter extends Component{
         modifyPassword(data,() => {
             this.props.actions.overlayerHide();
             this.props.router.push('/login');
-        }, () => {
+        }, (err) => {
             console.log('密码错误');
         });
     }
+ 
 
     itemClick(key) {
         let {overlayerHide, overlayerShow} = this.props.actions;
