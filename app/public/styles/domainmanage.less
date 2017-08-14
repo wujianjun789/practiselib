@@ -369,6 +369,28 @@
         }
       }
     }
+
+    > .list-mode,
+    > .topology-mode {
+      margin-right: 300px;
+      -webkit-transition: margin-right .3s;
+      -moz-transition: margin-right .3s;
+      -ms-transition: margin-right .3s;
+      -o-transition: margin-right .3s;
+      transition: margin-right .3s;
+    }
+    > .topology-mode {
+      margin-right: 320px;
+    }
+
+    &.collapsed {
+      > .list-mode {
+        margin-right: 60px;
+      }
+      > .topology-mode {
+        margin-right: 80px;
+      }
+    }
   }
 
   .sidebar-info .map-position{
@@ -376,7 +398,7 @@
   }
 
   .sidebar-info .sidebar-collapse{
-    top: 70px;
+    top: 70px!important;
   }
 }
 

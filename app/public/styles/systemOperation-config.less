@@ -77,10 +77,27 @@
       position: relative;
       top: 0;
     }
+
+    > .lc,
+    > .lcc {
+      margin-right: 300px;
+      -webkit-transition: margin-right .3s;
+      -moz-transition: margin-right .3s;
+      -ms-transition: margin-right .3s;
+      -o-transition: margin-right .3s;
+      transition: margin-right .3s;
+    }
+
+    &.collapsed {
+      > .lc,
+      > .lcc {
+        margin-right: 60px;
+      }
+    }
   }
 
   .sidebar-info.sidebar-collapse{
-    top: 60px;
+    // top: 60px;
     > .panel.panel-default.map-position {
       top: 110px;
     }

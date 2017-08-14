@@ -31,5 +31,42 @@ export default function app(state=initialState, action) {
 }
 
 function moduleInit(state, data) {
-    return Object.assign({}, state, {items:data});
+    data = data.map((item, index) => {
+        switch(item.key) {
+            case 'asset':
+                item.title = '资产管理';
+                item.link = '/assetManage/manage';
+                break;
+            case 'permission':
+                item.title = '权限管理';
+                item.link = '/permissionManage';
+                break;
+            case 'maintenance':
+                item.title = '系统运维';
+                item.link = '/systemOperation/config/lc';
+                break;
+            case 'control':
+                item.title = '系统控制';
+                item.link = '/';
+                break;
+            case 'report':
+                item.title = '报表管理';
+                item.link = '/';
+                break;
+            case 'publish':
+                item.title = '媒体发布';
+                item.link = '/';
+                break;
+            case 'asset':
+                item.title = '可视化';
+                item.link = '/';
+                break;
+            case 'domain':
+                item.title = '域管理';
+                item.link = '/domainManage/domainEdit';
+                break;
+        }
+        return item;
+    });
+    return Object.assign({}, state, {items: data});
 }
