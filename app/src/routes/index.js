@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route} from 'react-router'
+import {Route, IndexRoute} from 'react-router'
 import App from '../app/container/index'
 import {Login} from '../login/components/Login'
 import AssetManage from '../assetManage/container/index'
@@ -40,11 +40,18 @@ export default (
         <Route path="/permissionManage" component={PermissionManage}>
         </Route>
         <Route path="/systemOperation" component={SystemOperation}>
-            <Route path="lampConCenter" getComponent={(nextState, cb)=>{
+            <Route path="config">
+                <Route path="lcc" getComponent={(nextState, cb)=>{
                         require.ensure([], (require)=>{
                             cb(null, require('../systemOperation/container/LampConCenter').default)
                         }, 'starriverpro.systemoperation.lampconcenter')
-            }}/>
+                }}/>
+                <Route path="lc" getComponent={(nextState, cb)=>{
+                        require.ensure([], (require)=>{
+                            cb(null, require('../systemOperation/container/SingleLampCon').default)
+                        }, 'starriverpro.systemoperation.singlelampcontroller')
+                }}/>
+            </Route>
         </Route>
         <Route path="*" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {

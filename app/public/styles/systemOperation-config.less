@@ -1,7 +1,7 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-.lampConCenter {
+.lc, .lcc {
   .content {
     .heading{
       height: 70px;
@@ -79,10 +79,6 @@
     }
   }
 
-  .sidebar-info .map-position{
-    top: 230px;
-  }
-
   .sidebar-info.sidebar-collapse{
     top: 60px;
     > .panel.panel-default.map-position {
@@ -92,6 +88,18 @@
       transition: top .25s linear;
       top: -60px;
     }
+  }
+}
+
+.lcc{
+  .sidebar-info .map-position{
+    top: 230px;
+  }
+}
+
+.lc{
+  .sidebar-info .map-position{
+    top: 130px;
   }
 }
 

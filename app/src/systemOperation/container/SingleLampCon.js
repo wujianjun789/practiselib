@@ -1,5 +1,5 @@
 /**
- * Created by a on 2017/8/1.
+ * Created by a on 2017/8/14.
  */
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
@@ -26,7 +26,7 @@ import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel,
 import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
-export class LampConCenter extends Component {
+export class SingleLampCon extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -95,16 +95,16 @@ export class LampConCenter extends Component {
                 }
             ],
             data: Immutable.fromJS([/*{
-                id: 0,
-                name: '设备1',
-                model: 'model01',
-                domain: 'domain01',
-                lng: 121.49971691534425,
-                lat: 31.239658843127756
-            }*/])
+             id: 0,
+             name: '设备1',
+             model: 'model01',
+             domain: 'domain01',
+             lng: 121.49971691534425,
+             lat: 31.239658843127756
+             }*/])
         }
 
-        this.columns =  [
+        this.columns = [
             {id: 0, field:"domainName", title:"域"},
             {id: 1, field: "name", title: "设备名称"},
             {id: 2, field: "typeName", title: "型号"},
@@ -239,8 +239,8 @@ export class LampConCenter extends Component {
                                                           }}/>);
                 break;
             case 'sys-update':
-                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}   
-                    let data = selectDevice.data.length?selectDevice.data[0]:null;
+                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
+                let data = selectDevice.data.length?selectDevice.data[0]:null;
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
@@ -294,7 +294,7 @@ export class LampConCenter extends Component {
 
     searchSubmit() {
         // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
-            this.requestSearch();
+        this.requestSearch();
         // });
     }
 
@@ -347,17 +347,6 @@ export class LampConCenter extends Component {
                         </button>
                     </div>
                 </div>
-                <div className="panel panel-default device-statics-info whitelist">
-                    <div className="panel-heading">
-                        <span className="icon_sys_whitelist"></span>白名单
-                    </div>
-                    <div className="panel-body domain-property">
-                        <span className="domain-name">{`包含：${selectDevice.data.length} 个项目`}</span>
-                        <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>
-                            编辑
-                        </button>
-                    </div>
-                </div>
             </SideBarInfo>
         </Content>
     }
@@ -376,4 +365,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LampConCenter);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleLampCon);

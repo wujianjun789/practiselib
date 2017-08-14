@@ -14,7 +14,7 @@ export const TreeData=[
         "name":"设备配置",
         "toggled": true,
         "active": true,
-        "link": "/systemOperation/lampConCenter",
+        "link": "/systemOperation/config",
         "level":1,
         "children": [
             {
@@ -41,23 +41,22 @@ export const TreeData=[
     }
 ]
 
-export let firstChild = {}
-export function getModelData(cb) {
-    if(models && models.length>0){
-        cb && cb();
-        return
-    }
-
+export function getModelData(model, cb) {
+    // if(models && models.length>0){
+    //     cb && cb();
+    //     return
+    // }
     getAssetModelList(response=>{
         models = response;
         TreeData.map(item=>{
-            if(item.children){
+            if(item.id == "deviceConfig"){
+                let curModel = getModelById(model);
+                if(curModel){
+                    item.link = "/systemOperation/config/"+curModel.key;
+                }
                 item.children = [];
                 response.map((data, index)=>{
-                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:index==0?true:false};
-                    if(index == 0){
-                        firstChild = child;
-                    }
+                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:data.key==model?true:false, link:getLinkByModel(data.key)};
                     item.children.push(child)
                 })
             }
@@ -77,12 +76,42 @@ export function getModelList() {
     return list;
 }
 
-export function getModelNameById(id) {
+export function getModelById(id) {
     for(let key in models){
         if(models[key].key == id){
-            return intlFormat(models[key].intl.name);
+            return models[key];
         }
     }
 
     return null;
+}
+
+export function getModelNameById(id) {
+    let model = getModelById(id);
+    if(model){
+        return intlFormat(model.intl.name);
+    }
+
+    return null;
+}
+
+function getLinkByModel(key) {
+    switch(key){
+        case 'lcc':
+            return '/systemOperation/config/lcc';
+        case 'lc':
+            return '/systemOperation/config/lc';
+        case 'plc':
+            return 'icon_plc_control';
+        case 'ammeter':
+            return 'icon_ammeter';
+        case 'pole':
+            return 'icon_pole';
+        case 'screen':
+            return 'icon_screen';
+        case 'collect':
+            return 'icon_collect'
+        default:
+            return 'icon_led_light';
+    }
 }

@@ -12,43 +12,7 @@ export default class Topology extends Component{
         super(props)
         this.state = {
             language: getLanguage(),
-            domainList:getLanguage()=="zh"?[
-                {id:1, name:"中国中国中国", active:true, children:[
-                    {id:11, name:"上海", active:true, children:[
-                        {id:112, name:"徐汇"},
-                        {id:113, name:"浦东新区新区浦东"},
-                        {id:111, name:"闵行区", active:true, children:[
-                            {id:1113, name:"颛桥镇"},
-                            {id:1111, name:"莘庄镇", active:true, children:[
-                                {id:11111, name:"疏影路"},
-                                {id:11112, name:"西环路"}
-                            ]},
-                            {id:1112, name:"七宝镇"},
-                            {id:1114, name:"华漕镇"}
-                        ]}]
-                    },
-                    {id:12, name:"北京"}]
-                },
-                {id:2, name:"日本"}
-            ]:[
-                {id:1, name:"ChinaChina", active:true, children:[
-                    {id:11, name:"Shanghai", active:true, children:[
-                        {id:112, name:"xuhui"},
-                        {id:113, name:"pudongxinqu"},
-                        {id:111, name:"minhangqu", active:true, children:[
-                            {id:1113, name:"zhuanqiaozheng"},
-                            {id:1111, name:"xinzhuanzhen", active:true, children:[
-                                {id:11111, name:"shuyinglu"},
-                                {id:11112, name:"xihuanlu"}
-                            ]},
-                            {id:1112, name:"qibaozhen"},
-                            {id:1114, name:"huacaozhen"}
-                        ]}]
-                    },
-                    {id:12, name:"beijing"}]
-                },
-                {id:2, name:"Japan"}
-            ],
+            domainList:[],
             IsUpdate:false,
             domainUpdate:{id:null, domain:null}
         }

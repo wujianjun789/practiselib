@@ -50,8 +50,44 @@ exports[`<LampConCenter /> component snapshot 1`] = `
     className="">
     <div
       className="table-container">
+      <div
+        className="table-responsive ">
+        <table
+          className="table table-hover">
+          <thead>
+            <tr>
+              <th
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </th>
+              <th>
+                域
+              </th>
+              <th>
+                设备名称
+              </th>
+              <th>
+                型号
+              </th>
+              <th>
+                设备编号
+              </th>
+              <th>
+                经度
+              </th>
+              <th>
+                纬度
+              </th>
+            </tr>
+          </thead>
+          <tbody />
+        </table>
+      </div>
       <ul
-        className="rc-pagination page "
+        className="rc-pagination page hidden"
         style={Object {}}
         unselectable="unselectable">
         <li
@@ -61,46 +97,20 @@ exports[`<LampConCenter /> component snapshot 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a />
-        </li>
-        <li
-          className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title={1}>
           <a>
-            1
+            
           </a>
         </li>
         <li
-          className="rc-pagination-item rc-pagination-item-2"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title={2}>
-          <a>
-            2
-          </a>
-        </li>
-        <li
-          className="rc-pagination-item rc-pagination-item-3"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title={3}>
-          <a>
-            3
-          </a>
-        </li>
-        <li
-          aria-disabled={false}
-          className=" rc-pagination-next"
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-next"
           onClick={[Function]}
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <div
           className="rc-pagination-options" />

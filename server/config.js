@@ -8,7 +8,7 @@ const config = {
         'module':[
             {key: 'asset', title: '资产管理', link: '/assetManage/manage'},
             {key: 'permission', title: '权限管理', link: '/permissionManage'},
-            {key: 'maintenance', title: '系统运维', link: '/systemOperation/lampConCenter'},
+            {key: 'maintenance', title: '系统运维', link: '/systemOperation'},
             {key: 'control', title: '系统控制', link: '/'},
             {key: 'report', title: '报表管理', link: '/'},
             {key: 'publish', title: '媒体发布', link: '/'},

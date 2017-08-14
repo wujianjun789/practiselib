@@ -21,7 +21,7 @@ class SystemOperationIndex extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        getModelData(()=>{this.mounted && this.initTreeData()})
+        getModelData(null, ()=>{this.mounted && this.initTreeData()})
     }
 
     componentWillUnmount(){
@@ -33,7 +33,7 @@ class SystemOperationIndex extends Component{
     }
 
     onToggle(node){
-        this.props.actions.sideBarToggled(node);
+        // this.props.actions.sideBarToggled(node);
     }
 
     render(){
