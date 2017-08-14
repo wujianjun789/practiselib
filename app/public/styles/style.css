@@ -597,6 +597,24 @@ ul {
 .tree-list .icon_single_lamp_control_hover {
     background: url("../images/icon_single_lamp_control_hover.png");
 }
+.tree-list .icon_time_strategy {
+    background: url("../images/icon_time_strategy.png");
+}
+.tree-list .icon_time_strategy_hover {
+    background: url("../images/icon_time_strategy_hover.png");
+}
+.tree-list .icon_sensor_strategy {
+    background: url("../images/icon_sensor_strategy.png");
+}
+.tree-list .icon_sensor_strategy_hover {
+    background: url("../images/icon_sensor_strategy_hover.png");
+}
+.tree-list .icon_latlng_strategy {
+    background: url("../images/icon_latlng_strategy.png");
+}
+.tree-list .icon_latlng_strategy_hover {
+    background: url("../images/icon_latlng_strategy_hover.png");
+}
 
 .sidebar-info .icon_verital {
     background: url("../images/icon_verital.png");

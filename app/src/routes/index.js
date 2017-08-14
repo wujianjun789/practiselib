@@ -52,6 +52,23 @@ export default (
                         }, 'starriverpro.systemoperation.singlelampcontroller')
                 }}/>
             </Route>
+            <Route path="strategy">
+                <Route path="timeTable" getComponent={(nextState, cb)=>{
+                    require.ensure([], (require)=>{
+                        cb(null, require('../controlStrategy/container/TimeStrategy').default)
+                    }, 'starriverpro.controlstrategy.timestrategy')
+                }}/>
+                <Route path="sensor" getComponent={(nextState, cb)=>{
+                    require.ensure([], (require)=>{
+                        cb(null, require('../controlStrategy/container/SensorStrategy').default)
+                    }, 'starriverpro.controlstrategy.sensortrategy')
+                }}/>
+                <Route path="latlng" getComponent={(nextState, cb)=>{
+                    require.ensure([], (require)=>{
+                        cb(null, require('../controlStrategy/container/LatlngStrategy').default)
+                    }, 'starriverpro.controlstrategy.latlngtrategy')
+                }}/>
+            </Route>
         </Route>
         <Route path="*" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {

@@ -18,18 +18,50 @@ export const TreeData=[
         "level":1,
         "children": [
             {
-                "id": 'lampConCenter',
+                "id": 'lcc',
                 "name":"灯集中控制器",
                 "class":"icon_light_control",
                 "active":true
             },
             {
-                "id": 'singleLampCon',
+                "id": 'lc',
                 "name":"单灯控制器",
                 "class":"icon_single_lamp_control",
                 "active":false
             }
         ]
+    },
+    {
+        "id":"controlStrategy",
+        "name":"控制策略",
+        "toggled": false,
+        "active": true,
+        "link":"/systemOperation/strategy",
+        "level":1,
+        "children":[
+            {
+                "id":'timeTable',
+                "name":"时间表",
+                "class":"icon_time_strategy",
+                "active":false,
+                "link":"/systemOperation/strategy/timeTable"
+            },
+            {
+                "id":'sensor',
+                "name":"传感器",
+                "class":"icon_sensor_strategy",
+                "active":false,
+                "link":"/systemOperation/strategy/sensor"
+            },
+            {
+                "id":'latlng',
+                "name":"经纬度",
+                "class":"icon_latlng_strategy",
+                "active":false,
+                "link":"/systemOperation/strategy/latlng"
+            }
+        ]
+
     },
     {
         "id": "serviceMonitor",

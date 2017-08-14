@@ -45,13 +45,13 @@ export class DomainEdit extends Component {
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
-                total: 21
+                total: 0
             }),
 
             search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
-            data: Immutable.fromJS([{id:1,name: '上海市', parentId: null, parentName:'无'},
+            data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
-                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}]),
+                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
             topologyRefresh:{IsUpdate:false, parentId:null}
         }
 

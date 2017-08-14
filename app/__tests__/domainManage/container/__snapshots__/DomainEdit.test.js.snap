@@ -50,63 +50,11 @@ exports[`test DomainEdit renders 1`] = `
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr
-              className=""
-              onClick={[Function]}>
-              <td
-                className="hidden">
-                <input
-                  checked={undefined}
-                  onChange={[Function]}
-                  type="checkbox" />
-              </td>
-              <td>
-                上海市
-              </td>
-              <td>
-                无
-              </td>
-            </tr>
-            <tr
-              className=""
-              onClick={[Function]}>
-              <td
-                className="hidden">
-                <input
-                  checked={undefined}
-                  onChange={[Function]}
-                  type="checkbox" />
-              </td>
-              <td>
-                闵行区
-              </td>
-              <td>
-                上海市
-              </td>
-            </tr>
-            <tr
-              className=""
-              onClick={[Function]}>
-              <td
-                className="hidden">
-                <input
-                  checked={undefined}
-                  onChange={[Function]}
-                  type="checkbox" />
-              </td>
-              <td>
-                徐汇区
-              </td>
-              <td>
-                上海市
-              </td>
-            </tr>
-          </tbody>
+          <tbody />
         </table>
       </div>
       <ul
-        className="rc-pagination page "
+        className="rc-pagination page hidden"
         style={Object {}}
         unselectable="unselectable">
         <li
@@ -121,38 +69,8 @@ exports[`test DomainEdit renders 1`] = `
           </a>
         </li>
         <li
-          className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title={1}>
-          <a>
-            1
-          </a>
-        </li>
-        <li
-          className="rc-pagination-item rc-pagination-item-2"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title={2}>
-          <a>
-            2
-          </a>
-        </li>
-        <li
-          className="rc-pagination-item rc-pagination-item-3"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title={3}>
-          <a>
-            3
-          </a>
-        </li>
-        <li
-          aria-disabled={false}
-          className=" rc-pagination-next"
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-next"
           onClick={[Function]}
           onKeyPress={[Function]}
           tabIndex="0"
@@ -190,13 +108,13 @@ exports[`test DomainEdit renders 1`] = `
         </span>
         <button
           className="btn btn-primary pull-right"
-          disabled={false}
+          disabled={true}
           onClick={[Function]}>
           编辑
         </button>
         <button
           className="btn btn-danger pull-right"
-          disabled={false}
+          disabled={true}
           onClick={[Function]}>
           删除
         </button>
