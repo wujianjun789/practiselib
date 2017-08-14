@@ -313,14 +313,16 @@ export class SingleLampCon extends Component {
         let {domainList} = this.state;
         domainList.index = index;
         domainList.value = domainList.options[index].name;
-        this.setState({domainList: domainList})
+        this.setState({domainList: domainList}, ()=>{
+            this.requestSearch();
+        })
     }
 
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
         return <Content className={'offset-right '+(collapse?'collapsed':'')}>
             <div className="heading">
-                <Select titleField={domainList.valueField} valueField={domainList.valueField}
+                <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField}
                         options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
