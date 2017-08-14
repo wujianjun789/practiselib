@@ -328,7 +328,7 @@ export class LampConCenter extends Component {
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button id="sys-add" className="btn btn-default add-domain" onClick={this.domainHandler}>添加</button>
             </div>
-            <div className={model}>
+            <div className='lcc'>
                 <div className="table-container">
                     <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                            rowClick={this.tableClick}/>
