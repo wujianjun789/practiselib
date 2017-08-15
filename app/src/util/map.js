@@ -69,7 +69,11 @@ export default class Map{
         if (!data || !data.latlng || !data.latlng.lat || !data.latlng.lng) {
             this.latlng = options.center;
         } else {
-            this.latlng = [data.latlng.lat, data.latlng.lng];
+            if(data.latlng.lat.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'') && data.latlng.lng.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')){
+                this.latlng = [data.latlng.lat, data.latlng.lng];
+            }else{
+                this.latlng = options.center;
+            }
         }
 
         this.id = data.id;
@@ -166,7 +170,9 @@ export default class Map{
     onLineMap(type, options) {
         var option = {maxZoom: options.maxZoom, minZoom: options.minZoom}
 
-        this.map.setView(this.latlng, options.zoom);
+        if(this.latlng && this.latlng.length && this.latlng[0] && this.latlng[1]){
+            this.map.setView(this.latlng, options.zoom);
+        }
 
         if (type == 'google') {
             L.tileLayer.chinaProvider('Google.Normal.Map', option).addTo(this.map);
@@ -356,7 +362,7 @@ export default class Map{
                 //     // removeMarker(marker)
                 //     // markerList.splice(markerIndex);
             } else {
-                if(data.lat && data.lng){
+                if(data.lat && data.lng && data.lat.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'') && data.lng.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')){
                     _this.markerPosList.push(data);
                     var device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
                     var labelInfo = device ? device.name : '';
