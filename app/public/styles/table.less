@@ -19,13 +19,23 @@
         border-bottom: solid 1px #ddd;
         // padding:10px 8px ;
         vertical-align: middle;
+
+        &.edit{
+          width: 180px;
+        }
       }
     }
 
+    .update, .del{
+      margin-right: 10px;
+    }
+    .del{
+      color: #fa6262;
+    }
     .icon-table-edit{
       background-image: url(/images/icon_edit.png);
       background-size: 100% 100%;
-      display: block;
+      display: inline-block;
       width: 15px;
       height: 15px;
     }
@@ -33,7 +43,7 @@
     .icon-table-delete{
       background-image: url(/images/icon_delete.png);
       background-size: 100% 100%;
-      display: block;
+      display: inline-block;
       width: 15px;
       height: 15px;
     }
@@ -41,7 +51,7 @@
     .icon-domain-edit{
       background-image: url(/images/icon_domain_edit.png);
       background-size: 100% 100%;
-      display: block;
+      display: inline-block;
       width: 15px;
       height: 15px;
     }

@@ -80,9 +80,9 @@ export default class Table extends Component {
                                 }
                                 {
                                     isEdit &&
-                                        <td>
-                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="glyphicon glyphicon-edit"></span></a>
-                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="glyphicon glyphicon-trash"></span></a>
+                                        <td className="edit">
+                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="update">修改</span><span className="glyphicon icon-table-edit"></span></a>
+                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="del">删除</span><span className="glyphicon icon-table-delete"></span></a>
                                         </td>
                                 }
 

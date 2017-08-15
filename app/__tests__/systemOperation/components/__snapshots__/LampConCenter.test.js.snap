@@ -5,7 +5,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
     className="heading">
     <select
       className="select "
-      id=""
+      id="domain"
       onChange={[Function]}
       value="">
       <option
@@ -47,7 +47,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
     </button>
   </div>
   <div
-    className="">
+    className="lcc">
     <div
       className="table-container">
       <div
