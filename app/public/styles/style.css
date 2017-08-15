@@ -673,6 +673,7 @@ ul {
 .user-center {
     float: right;
     position: relative;
+    z-index: 10000;
 }
 
 .user-center > .user-icon {
