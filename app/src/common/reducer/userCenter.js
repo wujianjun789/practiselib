@@ -1,12 +1,13 @@
-import {
-    USERCENTER_POPUP_CONFIRM_EXIT
-} from '../actionTypes/userCenter';
+import * as actionTypes from '../actionTypes/userCenter'
 
 export const initialState = { };
-
+console.log()
 export default function userCenter(state=initialState, action) {
     switch(action.type) {
-        case USERCENTER_POPUP_CONFIRM_EXIT:
+        case actionTypes.USERCENTER_POPUP_CONFIRM_EXIT:
+        	return {islogin:0}
+        case actionTypes.USERCENTER_POPUP_CONFIRM_LOGIN:
+        	return {islogin:1}
         default:
             return state;
     }

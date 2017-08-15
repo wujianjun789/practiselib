@@ -10,11 +10,11 @@ import TreeView from './TreeView'
 export default class SideBar extends Component{
     constructor(props){
         super(props);
-
         this.onToggle = this.onToggle.bind(this);
     }
 
     onToggle(node){
+        console.log(this.props)
         this.props.onToggle && this.props.onToggle(node);
     }
 

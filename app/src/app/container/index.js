@@ -22,8 +22,23 @@ export class App extends Component{
     }
 
     componentWillMount(){
+        if(this.props.userCenter.islogin!=1){
+            this.props.router.push('/login')
+        }
         const {actions} = this.props;
         actions && actions.getModule();
+    }
+
+    componentDidMount() {
+
+        
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+
+
     }
 
     render(){
@@ -54,7 +69,8 @@ const mapStateToProps = (state, ownProps) => {
     return {
         title: app.title,
         name: app.name,
-        items: app.items
+        items: app.items,
+        userCenter:state.userCenter
     }
 }
 

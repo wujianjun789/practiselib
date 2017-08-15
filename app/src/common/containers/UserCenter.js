@@ -60,6 +60,10 @@ export class UserCenter extends Component{
         });
     }
  
+    componentDidMount() {
+        // 
+        console.log(this.props)
+    }
 
     itemClick(key) {
         let {overlayerHide, overlayerShow} = this.props.actions;
@@ -68,7 +72,6 @@ export class UserCenter extends Component{
         } else {
             overlayerShow(<ConfirmPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
-        
     }
 
     render() {
@@ -93,8 +96,9 @@ UserCenter.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log("-----0==========");
     return {
-        
+        sdfweofj:1
     }
 }
 
