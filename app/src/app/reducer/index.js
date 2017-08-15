@@ -9,16 +9,7 @@ import {
 export const initialState = {
     title: "StarRiver",
     name: "智慧路灯管理系统",
-    items: [
-        // {key: 'asset', title: '资产管理', link: '/assetManage/manage'},
-        // {key: 'permission', title: '权限管理', link: '/permissionManage'},
-        // {key: 'maintenance', title: '系统运维', link: '/systemOperation/lampConCenter'},
-        // {key: 'control', title: '系统控制', link: '/'},
-        // {key: 'report', title: '报表管理', link: '/'},
-        // {key: 'publish', title: '媒体发布', link: '/'},
-        // {key: 'visual', title: '可视化', link: '/'},
-        // {key: 'domain', title: '域管理', link: '/domainManage/domainEdit'},
-    ],
+    items: [],
 };
 
 export default function app(state=initialState, action) {
@@ -31,42 +22,51 @@ export default function app(state=initialState, action) {
 }
 
 function moduleInit(state, data) {
-    data = data.map((item, index) => {
-        switch(item.key) {
+    let items = data.map(val => {
+        let item = {};
+        switch(val.key) {
             case 'asset':
+                item.key = 'asset';
                 item.title = '资产管理';
                 item.link = '/assetManage/manage';
                 break;
             case 'permission':
+                item.key = 'permission';
                 item.title = '权限管理';
                 item.link = '/permissionManage';
                 break;
             case 'maintenance':
+                item.key = 'maintenance';
                 item.title = '系统运维';
                 item.link = '/systemOperation/config/lc';
                 break;
             case 'control':
+                item.key = 'control';
                 item.title = '系统控制';
                 item.link = '/';
                 break;
             case 'report':
+                item.key = 'report';
                 item.title = '报表管理';
                 item.link = '/';
                 break;
             case 'publish':
+                item.key = 'publish';
                 item.title = '媒体发布';
                 item.link = '/';
                 break;
-            case 'asset':
+            case 'visual':
+                item.key = 'visual';
                 item.title = '可视化';
                 item.link = '/';
                 break;
             case 'domain':
+                item.key = 'domain';
                 item.title = '域管理';
                 item.link = '/domainManage/domainEdit';
                 break;
         }
         return item;
     });
-    return Object.assign({}, state, {items: data});
+    return Object.assign({}, state, {items: items});
 }
