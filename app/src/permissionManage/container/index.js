@@ -46,8 +46,15 @@ export class PermissionManage extends Component{
     }
 
     componentWillMount(){
+        if(this.props.userCenter.islogin!=1){
+            this.props.router.push('/login')
+        }
         this.mounted = true;
         this.requestData();
+    }
+
+    componentDidMount(){
+        console.log(this.props); 
     }
 
     componentWillUnmount(){
@@ -55,6 +62,8 @@ export class PermissionManage extends Component{
     }
 
     onClick(){
+
+        console.log(this);
         // const popupinfo = this.props.permissionManage.popupinfo;
         this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick}/>);
     }
@@ -160,7 +169,8 @@ export class PermissionManage extends Component{
 
 const mapStateToprops = (state, ownProps) => {
     return{
-        permissionManage:state.permissionManage
+        permissionManage:state.permissionManage,
+        userCenter:state.userCenter
     }
 }
 

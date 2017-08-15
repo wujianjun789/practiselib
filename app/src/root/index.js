@@ -6,6 +6,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from '../store/configureStore'
 import routes from '../routes';
 const store = configureStore()
+console.log(routes)
 const history = syncHistoryWithStore(browserHistory, store);
 
 import {getConfig} from '../util/network'

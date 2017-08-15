@@ -25,6 +25,11 @@ input::-ms-clear {
     height: 100%;
 }
 
+input.form-control::-webkit-input-placeholder { color: #ccc; }
+input.form-control::-moz-placeholder { color: #ccc; }
+input.form-control:-moz-placeholder { color: #ccc; }
+input.form-control:-ms-input-placeholder { color: #ccc; }
+
 /**********************************************************************************/
 .head {
     /* position: fixed;
@@ -1030,4 +1035,26 @@ ul {
     background: url("/images/icon_popup_delete.png");
     background-size: 100% 100%;
 
+}
+
+.icon.icon_calendar{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+
+    background: url("/images/icon_calendar.png");
+    background-size: 100% 100%;
+
+    cursor: pointer;
+}
+
+.icon.icon-delete{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    
+    background: url("/images/icon_delete.png");
+    background-size: 100% 100%;
+
+    cursor: pointer;
 }

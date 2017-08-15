@@ -2,6 +2,8 @@
  * Created by a on 2017/8/14.
  */
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux'
 
 import '../../../public/styles/systemOperation-strategy.less';
 
@@ -9,10 +11,12 @@ import Content from '../../components/Content'
 import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
-// import TimeStrategyPopup from '../component/TimeStrategyPopup'
+
+import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
+import TimeStrategyPopup from '../component/TimeStrategyPopup'
 
 import Immutable from 'immutable';
-export default class TimeStrategy extends Component{
+class TimeStrategy extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -58,7 +62,13 @@ export default class TimeStrategy extends Component{
     }
 
     addHandler(){
-
+        const {actions} = this.props;
+        actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={{name:"夏季路灯使用策略", deviceName:"灯"}}
+                                                 deviceList={{titleKey:"name", valueKey:"name", options:[{id:1, name:"灯"},{id:2, name:"控制器"}]}}
+                                                 strategyList={[{id:1,time:"15:00", light:"开"},{id:2,time:"16:00", light:"关"}]}
+                                                 onConfirm={()=>{}} onCancel={()=>{
+                                                    actions.overlayerHide();
+                                                 }}/>)
     }
 
     tableEdit(){
@@ -105,6 +115,23 @@ export default class TimeStrategy extends Component{
             </div>
         </Content>
     }
-
-// <TimeStrategyPopup/>
 }
+
+function mapStateToProps(state) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            overlayerShow: overlayerShow,
+            overlayerHide: overlayerHide
+        }, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TimeStrategy);

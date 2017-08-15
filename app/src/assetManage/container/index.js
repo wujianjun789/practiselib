@@ -22,12 +22,19 @@ class AssetManageIndex extends Component{
     }
 
     componentWillMount(){
+        if(this.props.userCenter.islogin!=1){
+            this.props.router.push('/login')
+        }
         this.mounted = true;
         getModelData(()=>{this.mounted && this.initTreeData()});
     }
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    componentDidMount(){
+        console.log(this.props); 
     }
 
     initTreeData(){
@@ -56,6 +63,7 @@ class AssetManageIndex extends Component{
 
 function mapStateToProps(state) {
     return {
+        userCenter:state.userCenter
     }
 }
 
