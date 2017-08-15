@@ -14,8 +14,8 @@ export default class CustomDateInput extends Component{
     }
 
     render(){
-        return <div className="custom-input">
-            <input type="text" value={this.props.value} onChange={this.onChange}/><button onClick={this.props.onClick}>日期</button>
+        return <div className="date-custom-input">
+            <input type="text" className="form-control" value={this.props.value} onChange={this.onChange}/><span className="icon icon_calendar" onClick={this.props.onClick}></span>
         </div>
     }
 }
