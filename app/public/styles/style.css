@@ -25,6 +25,11 @@ input::-ms-clear {
     height: 100%;
 }
 
+input.form-control::-webkit-input-placeholder { color: #ccc; }
+input.form-control::-moz-placeholder { color: #ccc; }
+input.form-control:-moz-placeholder { color: #ccc; }
+input.form-control:-ms-input-placeholder { color: #ccc; }
+
 /**********************************************************************************/
 .head {
     /* position: fixed;
