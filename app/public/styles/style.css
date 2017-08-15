@@ -6,7 +6,7 @@ body {
 }
 
 body {
-    min-width: 1144px;
+    min-width: 800px;
 }
 
 button{
@@ -673,6 +673,7 @@ ul {
 .user-center {
     float: right;
     position: relative;
+    z-index: 10000;
 }
 
 .user-center > .user-icon {
