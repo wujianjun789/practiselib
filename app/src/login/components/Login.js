@@ -5,8 +5,10 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {loginHandler} from '../../api/login'
+
 import '../../../public/styles/login.less';
-export class Login extends Component {
+
+export class Login extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +53,12 @@ export class Login extends Component {
     }
 
     submitHandler() {
-        loginHandler(this.state.user.username, this.state.user.password,this.loginSuccess, this.loginFail);
+        this.props.actions.loginHandler(this.state.user.username, this.state.user.password,this.loginSuccess, this.loginFail);
+    }
+
+    componentDidMount() {
+        // 
+        console.log(this)
     }
 
     onKeyDown(event) {
@@ -82,7 +89,7 @@ export class Login extends Component {
                     <div className="sub-title">
                         <p>智慧路灯管理系统</p>
                         <p>Smart Pole Control System</p>
-                    </div>       
+                    </div>
                 </header>
                 <div className="container-mid">
                     <div className="login-right pull-right">
@@ -104,3 +111,25 @@ export class Login extends Component {
         )
     }
 }
+
+Login.propTypes = {
+}
+
+const mapStateToProps = (state, ownProps) => {
+    console.log("ajdfjwofjiewfjoiewjfoewjfwejfwiejfowifjweioj")
+    return {
+        userCenter:state.userCenter
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        actions: bindActionCreators({loginHandler}, dispatch)
+    }
+}
+
+
+Login = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+
+

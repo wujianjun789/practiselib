@@ -17,7 +17,6 @@ import lampConCenter from '../../systemOperation/reducer/lampConCenter';
 const reducer = combineReducers({
     routing,
     overlayer,
-
     userCenter,
     treeView,
     // login,
