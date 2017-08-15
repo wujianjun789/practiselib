@@ -5,6 +5,10 @@ body {
     font-family: "Microsoft YaHei";
 }
 
+body {
+    /*min-width: 1366px;*/
+}
+
 button{
     outline: none!important;
 }
@@ -14,19 +18,28 @@ input::-ms-clear {
 }
 
 .container {
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
+    position: relative;
+    width: 100%;
     height: 100%;
 }
 
+input.form-control::-webkit-input-placeholder { color: #ccc; }
+input.form-control::-moz-placeholder { color: #ccc; }
+input.form-control:-moz-placeholder { color: #ccc; }
+input.form-control:-ms-input-placeholder { color: #ccc; }
+
 /**********************************************************************************/
 .head {
-    position: fixed;
+    /* position: fixed;
     top: 0;
     right: 0;
-    left: 0;
-
+    left: 0; */
+    /* width: 100%; */
     height: 60px;
+    margin-left: -15px;
+    margin-right: -15px;
     background: linear-gradient(to right, #333744, #4a5064);
 }
 
@@ -102,10 +115,11 @@ input::-ms-clear {
     left: 180px;
 
     background: #f2f2f4;
+    overflow: hidden;
 }
 
 .content.offset-right{
-    right: 300px;
+    /* right: 300px; */
 
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
@@ -114,8 +128,17 @@ input::-ms-clear {
     transition: all .3s;
 }
 
-.content.collapsed{
-    right: 60px;
+.content.offset-right > .heading {
+    margin-right: 300px;
+    -webkit-transition: margin-right .3s;
+    -moz-transition: margin-right .3s;
+    -ms-transition: margin-right .3s;
+    -o-transition: margin-right .3s;
+    transition: margin-right .3s;
+}
+
+.content.collapsed > .heading{
+    margin-right: 60px;
 }
 
 /***********************************************************************************************/
@@ -597,6 +620,24 @@ ul {
 .tree-list .icon_single_lamp_control_hover {
     background: url("../images/icon_single_lamp_control_hover.png");
 }
+.tree-list .icon_time_strategy {
+    background: url("../images/icon_time_strategy.png");
+}
+.tree-list .icon_time_strategy_hover {
+    background: url("../images/icon_time_strategy_hover.png");
+}
+.tree-list .icon_sensor_strategy {
+    background: url("../images/icon_sensor_strategy.png");
+}
+.tree-list .icon_sensor_strategy_hover {
+    background: url("../images/icon_sensor_strategy_hover.png");
+}
+.tree-list .icon_latlng_strategy {
+    background: url("../images/icon_latlng_strategy.png");
+}
+.tree-list .icon_latlng_strategy_hover {
+    background: url("../images/icon_latlng_strategy_hover.png");
+}
 
 .sidebar-info .icon_verital {
     background: url("../images/icon_verital.png");
@@ -637,6 +678,7 @@ ul {
 .user-center {
     float: right;
     position: relative;
+    z-index: 10000;
 }
 
 .user-center > .user-icon {

@@ -105,7 +105,9 @@ exports[`<PermissionManage /> snapshot 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <li
           className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
@@ -144,7 +146,9 @@ exports[`<PermissionManage /> snapshot 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <div
           className="rc-pagination-options" />

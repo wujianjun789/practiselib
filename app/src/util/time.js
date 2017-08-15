@@ -40,7 +40,6 @@ export function timeDelay(time, callFun) {
     }, time);
 }
 
-
 export function getMomentDate(date, formatStr) {
     return moment(date, formatStr);
 }
@@ -52,4 +51,8 @@ export function getMomentDate(date, formatStr) {
  */
 export function momentDateFormat(moment, formatStr='YYYY-MM-DDTHH:mm:ss Z') {
     return moment.format(formatStr);
+}
+
+export function getMomentUTC(mom) {
+    return moment.utc(mom).format();
 }

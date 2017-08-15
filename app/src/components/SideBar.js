@@ -13,6 +13,10 @@ export default class SideBar extends Component{
         this.onToggle = this.onToggle.bind(this);
     }
 
+    componentWillReceiveProps(){
+        // console.log("receive receive");
+    }
+
     onToggle(node){
         console.log(this.props)
         this.props.onToggle && this.props.onToggle(node);

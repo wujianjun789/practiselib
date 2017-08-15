@@ -5,8 +5,8 @@
 
       background: #ffffff;
 
-      margin-right: auto;
-      margin-left: auto;
+      // margin-right: auto;
+      // margin-left: auto;
 
       .domain{
         width: 160px;
@@ -39,7 +39,7 @@
 
     .table-container{
       margin-top: 20px;
-      margin-right: 20px;
+      margin-right: 320px;
       margin-bottom: 17px;
       margin-left: 20px;
 
@@ -53,6 +53,16 @@
         margin-bottom: 17px;
         margin-left: 45%;
       }
+
+      -webkit-transition: margin-right .3s;
+      -moz-transition: margin-right .3s;
+      -ms-transition: margin-right .3s;
+      -o-transition: margin-right .3s;
+      transition: margin-right .3s;
+    }
+
+    &.collapsed .table-container {
+      margin-right: 80px;
     }
   }
 }

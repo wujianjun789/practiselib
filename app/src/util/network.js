@@ -4,10 +4,10 @@
 import 'isomorphic-fetch';
 import 'es6-promise'
 
-import { getCookie } from './cache'
+import { setCookie, getCookie } from './cache'
 import {getRequestValue} from './string'
 
-export let HOST_IP = "";
+export let HOST_IP = getCookie("host_ip");
 
 let  HEADERS_CONTENT_TYPE_JSON = { "Accept": "application/json", "Content-Type": "application/json" };
 
@@ -139,7 +139,7 @@ export function getConfig() {
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {
-        HOST_IP = response;
+        setCookie("host_ip",response);
     })
 }
 

@@ -127,26 +127,6 @@ export function transformDeviceType(deviceType) {
     }
 }
 
-/**
- *  对象每项验证
- * @param value(string)
- * @parm validFun(判断函数)
- * @returns {string}
- * @constructor
- */
-export function ObjectPerValid(value, validFun) {
-    let newValue = "";
-    for(let i=0;i<value.length;i++)
-    {
-        let s = value.slice(i, i+1);
-        if(validFun(s)){
-            newValue += s;
-        }
-    }
-
-    return newValue;
-}
-
 export function numbersValid(number) {
     return /^([1-9]\d*|0)$/.test(number)
 }

@@ -17,7 +17,7 @@ import PanelFooter from './../../components/PanelFooter';
 
 import MapView from './../../components/MapView'
 
-import {ObjectPerValid, Name2Valid, latlngValid, lngValid, latValid} from '../../util/index'
+import {Name2Valid, latlngValid, lngValid, latValid} from '../../util/index'
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
@@ -70,15 +70,18 @@ export default class DomainPopup extends PureComponent {
         let value = e.target.value;
         let newValue='';
         let prompt = false
-        if(id == "lat" || id == "lng"){
-            newValue = ObjectPerValid(value, latlngValid);
-            if(id=="lat" && !latValid(newValue)){
+        if(id == "lat" ){
+            newValue = value;
+            if(!latlngValid(newValue) || !latValid(newValue)){
                 prompt = true;
-            }else if(id=="lng" && !lngValid(newValue)){
+            }
+        }else if(id== "lng"){
+            newValue = value;
+            if(!latlngValid(newValue) || !lngValid(newValue)){
                 prompt = true
             }
         }else if(id == "domainName"){
-            newValue = ObjectPerValid(value, Name2Valid);
+            newValue = value;
             prompt = !Name2Valid(newValue);
         }else{
             newValue = value;
@@ -94,8 +97,8 @@ export default class DomainPopup extends PureComponent {
     mapDragend(data){
         for(let key in data.latlng){
             let value = data.latlng[key];
-            let newValue = Number(ObjectPerValid(""+value, latlngValid), latlngValid);
-            this.setState({[key]:newValue});
+            let newValue = value;
+            this.setState({[key]:newValue, prompt:{[key]:true}});
         }
     }
 

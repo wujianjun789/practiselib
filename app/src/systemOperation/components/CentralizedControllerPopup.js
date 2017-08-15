@@ -5,7 +5,7 @@ import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
 
-import {ObjectPerValid, Name2Valid, latlngValid, MACValid} from '../../util/index'
+import { Name2Valid, latlngValid, lngValid, latValid, MACValid} from '../../util/index'
 export default class CentralizedControllerPopup extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +18,14 @@ export default class CentralizedControllerPopup extends Component {
             domain:domain,
             domainId:domainId,
             lng:lng,
-            lat:lat
+            lat:lat,
+            prompt:{
+                // domainName:false,
+                lng: false,
+                lat: false,
+                name: false,
+                id: false
+            }
         };
 
         this.onChange = this.onChange.bind(this);
@@ -40,18 +47,34 @@ export default class CentralizedControllerPopup extends Component {
 
         let value = e.target.value;
         let newValue='';
-        if(id == "lat" || id == "lng"){
-            newValue = ObjectPerValid(value, latlngValid);
+        let prompt = false;
+        if(id == "lat"){
+            newValue = value;
+            if(!latlngValid || !latValid(newValue)){
+                prompt = true;
+            }
+        } else if(id == "lng"){
+            newValue = value;
+            if(!latlngValid || !lngValid(newValue)){
+                prompt = true;
+            }
+
         }else if(id == "name"){
-            newValue = ObjectPerValid(value, Name2Valid);
-        }else if(id == "id") {
-            newValue = ObjectPerValid(value, MACValid)
+            newValue = value//过滤非法数据
+            prompt  = !Name2Valid(newValue);//判定输入数量
+        
+        } else if(id == "id") {
+            newValue = value
+            prompt  = !MACValid(newValue)
         }
-        else{
+        else {
             newValue = value;
         }
 
-        this.setState({[id]: newValue});
+        this.setState({[id]: newValue, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
+        // console.log(prompt.lng);
+        // console.log(prompt);
+
     }
 
     onCancel() {
@@ -66,16 +89,18 @@ export default class CentralizedControllerPopup extends Component {
     mapDragend(data) {
         for(let key in data.latlng){
             let value = data.latlng[key];
-            let newValue = Number(ObjectPerValid(""+value, latlngValid), latlngValid);
-            this.setState({[key]:newValue});
+            let newValue = value;
+            this.setState({[key]:newValue, prompt:{[key]:true}});
         }
     }
 
     render() {
         const {className, title, domainList, modelList, popId} = this.props;
-        const {id, name, model, domain, lng, lat} = this.state;
+        const {id, name, model, domain, lng, lat, prompt} = this.state;
+        let valid = prompt.id || prompt.name || !domainList || !domainList.options.length ||  prompt.lng || prompt.lat;
+
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
-                                  btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
+                                  btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, valid]}
                                   onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <div className={className}>
@@ -84,23 +109,27 @@ export default class CentralizedControllerPopup extends Component {
                         <div className="form-group clearfix">
                             <label htmlFor="id" className="col-sm-4 control-label">设备编号：</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" id="id" placeholder="id" value={id}
+                                <input type="text" className="form-control" id="id" placeholder="id" value={id} maxLength = {16}
                                        onChange={this.onChange} disabled={popId=='edit'?true:false}/>
+                                <span className={prompt.id?"prompt ":"prompt hidden"}>{"不合法"}</span>
                             </div>
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="name" className="col-sm-4 control-label">名称：</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" id="name" placeholder="name" value={name}
+                                <input type="text" className="form-control" id="name" placeholder="name" value={name} maxLength ={16}
                                        onChange={this.onChange}/>
+                                <span className={prompt.name?"prompt ":"prompt hidden"}>{"不合法"}</span>
                             </div>
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
                             <div className="col-sm-8">
-                                <Select id="model" className="form-control" titleField={modelList.titleField}
+                                {/*<Select id="model" className="form-control" titleField={modelList.titleField}
                                         valueField={modelList.valueField} options={modelList.options} value={model}
-                                        onChange={this.onChange}/>
+                                        onChange={this.onChange}/>*/}
+                                <input type="text" className="form-control" id="model" value={model}
+                                       onChange={this.onChange}/>    
                             </div>
                         </div>
                         <div className="form-group clearfix">
@@ -109,6 +138,7 @@ export default class CentralizedControllerPopup extends Component {
                                 <Select id="domain" className="form-control" titleField={domainList.titleField}
                                         valueField={domainList.valueField} options={domainList.options} value={domain}
                                         onChange={this.onChange}/>
+                                <span className={!domainList || !domainList.options || domainList.options.length==0?"prompt":"prompt hidden"}>{"请添加域"}</span>
                             </div>
                         </div>
                         <div className="form-group clearfix">
@@ -116,6 +146,7 @@ export default class CentralizedControllerPopup extends Component {
                             <div className="col-sm-8">
                                 <input type="text" className="form-control" id="lng" placeholder="lng" value={lng}
                                        onChange={this.onChange}/>
+                                <span className={prompt.lng?"prompt ":"prompt hidden"}>{"经度数不合法"}</span>
                             </div>
                         </div>
                         <div className="form-group clearfix">
@@ -123,6 +154,7 @@ export default class CentralizedControllerPopup extends Component {
                             <div className="col-sm-8">
                                 <input type="text" className="form-control" id="lat" placeholder="lat" value={lat}
                                        onChange={this.onChange}/>
+                                <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
                             </div>
                         </div>
                         {footer}

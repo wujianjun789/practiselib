@@ -1,7 +1,7 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-.lampConCenter {
+.lc, .lcc {
   .content {
     .heading{
       height: 70px;
@@ -77,14 +77,27 @@
       position: relative;
       top: 0;
     }
-  }
 
-  .sidebar-info .map-position{
-    top: 230px;
+    > .lc,
+    > .lcc {
+      margin-right: 300px;
+      -webkit-transition: margin-right .3s;
+      -moz-transition: margin-right .3s;
+      -ms-transition: margin-right .3s;
+      -o-transition: margin-right .3s;
+      transition: margin-right .3s;
+    }
+
+    &.collapsed {
+      > .lc,
+      > .lcc {
+        margin-right: 60px;
+      }
+    }
   }
 
   .sidebar-info.sidebar-collapse{
-    top: 60px;
+    // top: 60px;
     > .panel.panel-default.map-position {
       top: 110px;
     }
@@ -92,6 +105,18 @@
       transition: top .25s linear;
       top: -60px;
     }
+  }
+}
+
+.lcc{
+  .sidebar-info .map-position{
+    top: 230px;
+  }
+}
+
+.lc{
+  .sidebar-info .map-position{
+    top: 130px;
   }
 }
 
@@ -212,6 +237,13 @@
         }
         .col-sm-8 {
           padding-right: 25px;
+          .prompt {
+          position: absolute;
+          margin-left: 15px;
+          margin-top:-11px;
+          font-size: 10px;
+          color: #ff5c68;
+          }
         }
       }
     }

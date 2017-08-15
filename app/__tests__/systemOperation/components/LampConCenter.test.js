@@ -26,7 +26,7 @@ describe('<LampConCenter /> component', () => {
         cmp.setState({model: 'lcc'});
         const ins = cmp.instance();
         const table = cmp.find('Table');
-        expect(table.prop('columns')).toEqual(ins.columns.lcc);
+        expect(table.prop('columns')).toEqual(ins.columns);
         expect(table.prop('data')).toEqual(cmp.state('data'));
 
         const page = cmp.find('Page');
