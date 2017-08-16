@@ -23,7 +23,7 @@ export default class HeadBar extends Component{
         const {moduleName} = this.props
         return <div className="head">
             <div className="home" onClick={this.onClick}>
-                <span className="icon"></span>
+                <span className="glyphicon glyphicon-home" aria-hidden="true"></span>
             </div>
             <span className="title">{moduleName}</span>
             <UserCenter router={this.props.router}/>

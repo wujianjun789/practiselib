@@ -76,9 +76,7 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
 }
 
 .head .home span {
-    background: url("../images/icon_home.png");
-    background-size: 100% 100%;
-
+    font-size: 24px;
     cursor: pointer;
 }
 
@@ -682,9 +680,16 @@ ul {
 }
 
 .user-center > .user-icon {
-    padding: 17px 17px 18px 17px;
+    width:60px;
+    text-align: center;
     border-left: 1px solid #353b4e;
     cursor: pointer;
+}
+
+.user-center > .user-icon span {
+    color:#fff;
+    line-height: 60px;
+    font-size:24px;
 }
 
 .user-center > .user-icon > .icon.icon-usr {

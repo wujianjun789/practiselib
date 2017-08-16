@@ -78,7 +78,7 @@ export class UserCenter extends Component{
         const {className=""} = this.props;
         return (
             <div className={`user-center ${className}`} onClick={this.userListToggle}>
-                <div className="user-icon clearfix"><span className="icon icon-usr"></span></div>
+                <div className="user-icon clearfix"><span className="glyphicon glyphicon-user" aria-hidden="true"></span></div>
                 <ul className={`user-list ${active ? '' : 'hidden'}`}>
                 {
                     list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><span className={`icon icon-${item.key}`}></span>{item.name}</li>)
@@ -95,10 +95,7 @@ UserCenter.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log("-----0==========");
-    return {
-        sdfweofj:1
-    }
+    return {}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {

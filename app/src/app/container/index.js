@@ -68,7 +68,7 @@ export class App extends Component{
                     <div className="header-left clearfix">
                         <span className="icon icon-logo"></span>
                         <span className="tit">{title}</span>
-                        <span className="name"><span>{name}</span></span>
+                        <span className="name">{name}</span>
                     </div>
                     <UserCenter router={this.props.router}/>
                 </div>
