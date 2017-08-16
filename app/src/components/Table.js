@@ -43,7 +43,7 @@ export default class Table extends Component {
     }
 
     render() {
-        let {columns=[], data=[], allChecked, keyField, isEdit, className='', activeId} = this.props;
+        let {columns=[], data=[], allChecked, keyField='id', isEdit, className='', activeId} = this.props;
         return (
             <div className={`table-responsive ${className}`}>
                 <table className="table table-hover">
