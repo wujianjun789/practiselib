@@ -89,7 +89,7 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
 
     color: #00d8ff;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: normal;
 line-height: 60px;
 
     vertical-align: top;
