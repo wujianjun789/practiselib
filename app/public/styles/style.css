@@ -549,7 +549,7 @@ ul {
 }
 
 .tree-list .icon_led_light {
-    background: url("../images/icon_led_light.png");
+    background: url("../images/icon_led_light.png")no-repeat center;
 }
 
 .tree-list .icon_plc_control {
@@ -577,7 +577,7 @@ ul {
 }
 
 .tree-list .icon_led_light_hover {
-    background: url("../images/icon_led_light_hover.png");
+    background: url("../images/icon_led_light_hover.png")no-repeat center;
 }
 
 .tree-list .icon_plc_control_hover {
@@ -723,21 +723,21 @@ ul {
 
 .user-center > ul.user-list > li > .icon {
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 17px;
     margin-left: 10px;
     margin-right: 10px;
     vertical-align: middle;
 }
 
 .user-center .icon.icon-alter {
-  background-image: url(/images/icon_alter.png);
-  background-size: 100% 100%;
+  background: url(/images/icon_alter.png)no-repeat center top;
+  background-size: 16px;
 }
 
 .user-center .icon.icon-exit {
-  background-image: url(/images/icon_exit.png);
-  background-size: 100% 100%;
+  background: url(/images/icon_exit.png)no-repeat center top;
+  background-size: 15px;
 }
 
 /********************* overlayer style ****************************/
