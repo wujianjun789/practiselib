@@ -42,7 +42,7 @@ export default class CentralizedControllerPopup extends Component {
         }
 
         if (id == "domain") {
-            this.setState({modelId: this.props.domainList.options[e.target.selectedIndex].id});
+            this.setState({domainId: this.props.domainList.options[e.target.selectedIndex].id});
         }
 
         let value = e.target.value;
@@ -129,7 +129,7 @@ export default class CentralizedControllerPopup extends Component {
                                         valueField={modelList.valueField} options={modelList.options} value={model}
                                         onChange={this.onChange}/>*/}
                                 <input type="text" className="form-control" id="model" value={model}
-                                       onChange={this.onChange}/>    
+                                       onChange={this.onChange}  readOnly= {true }/>  
                             </div>
                         </div>
                         <div className="form-group clearfix">
