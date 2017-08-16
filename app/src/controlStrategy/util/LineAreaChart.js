@@ -91,18 +91,19 @@ export default function LineAreaChart(parentId, chartData) {
             })
 
 
-    svg.append("path")
+    var areaGroup = svg.append('g').attr("class", "area-group");
+    areaGroup.append("path")
         .datum(dataset)
         .attr("class", "area")
-        .attr("d", area)
+        .attr("d", area);
 
-    var group = svg.append('g');
-    var line = group.append("path")
+    var lineGroup = svg.append('g').attr("class", "line-group");
+    lineGroup.append("path")
         .datum(dataset)
-        .attr("class", "line")
-        .attr("d", line)
+        .attr("class", "path-line")
+        .attr("d", line);
 
-    group.selectAll("circle")
+    lineGroup.selectAll("circle")
         .data(dataset).enter()
         .append("circle")
         .attr("cx", function (d, i) {
@@ -112,10 +113,11 @@ export default function LineAreaChart(parentId, chartData) {
             return y(d.y);
         })
         .attr("r", 2)
-        .append("title")
-        .text(function (d) {
-            return d.x +' '+ label +' '+ d.y;
-        })
+        // .append("title")
+        // .text(function (d) {
+        //     return d.x +' '+ label +' '+ d.y;
+        // })
+
     // var title = line.append("title")
     //
     // line.on("mouseover", function () {
