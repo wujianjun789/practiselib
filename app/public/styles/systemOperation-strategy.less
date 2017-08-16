@@ -121,24 +121,32 @@
           text-anchor: end;
         }
       }
-      .area{
-        fill: #ff5c68;
-        opacity: 0.1
-      }
 
-      .line{
-        stroke-width: 3px;
-        stroke: #ff5c68;
-        title{
-          background: linear-gradient(#333744, #4a5064);
-          color: #fff;
-
-          font-size: 12px;
+      .area-group{
+        .area{
+          fill: #ff5c68;
+          fill-opacity: 0.1;
         }
       }
 
-      circle{
-        fill: #ff5c68;
+
+      .line-group{
+        .path-line{
+          fill: none;
+          stroke-width: 3px;
+          stroke: #ff5c68;
+        }
+
+        circle{
+          fill: #ff5c68;
+
+          title{
+            background: linear-gradient(#333744, #4a5064);
+            color: #ffffff;
+
+            font-size: 12px;
+          }
+        }
       }
     }
   }
