@@ -12,9 +12,11 @@ export const loginHandler = (username, password,cbSuccess,cbFail) => dispatch =>
     }
 
     login({username:username, password:password}, response=>{
-        console.log(response)
         setCookie("user", response)
         dispatch({ type: USERCENTER_POPUP_CONFIRM_LOGIN });
+        sessionStorage.sessionID=1;
+        sessionStorage.username=username;
+        sessionStorage.password=password;
         cbSuccess && cbSuccess();
     }, err=>{
         cbFail && cbFail();

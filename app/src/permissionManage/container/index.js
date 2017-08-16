@@ -54,7 +54,7 @@ export class PermissionManage extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props); 
+        console.log(this.props.userCenter); 
     }
 
     componentWillUnmount(){
@@ -62,8 +62,6 @@ export class PermissionManage extends Component{
     }
 
     onClick(){
-
-        console.log(this);
         // const popupinfo = this.props.permissionManage.popupinfo;
         this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick}/>);
     }
