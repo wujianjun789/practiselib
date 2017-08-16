@@ -3,8 +3,8 @@
 @header-height:160px;
 @container-mid-height:460px;
 .icon-orig(@image) {
-    background-image: @image;
-    background-size: 100% 100%;
+    background: @image;
+    background-size: 100% auto;
 }
 .container-login{
     position: relative;
@@ -15,25 +15,24 @@
 
     header{
         height: @header-height;
-        padding-left:38px;
         padding-top:60px;
         position: relative;
 
         .main-title{
             float: left;
             h3{
-                margin:0 20px 0 24px;
+                margin:0 24px 0 24px;
                 font-size: 60px;
                 color:#0453a5;
                 line-height: 80px;
                 float:right;
             }
             .login_logo{
-                .icon-orig(url(/images/login_logo.png));
+                .icon-orig(url(/images/login_logo.png)no-repeat center);
                 width:51px;
-                height: 51px;
+                margin-left:20px;
+                height: 80px;
                 float: left;
-                margin-top:13px;
             }
         }
 

@@ -12,6 +12,7 @@
         padding: 10px 20px;
         border: solid 1px #ddd;
         background: #fff;
+        min-width:561px;
         .page{
             padding-left: 45%;
         }
@@ -111,17 +112,28 @@
         .domain-add{
             height:230px;
             border: 1px solid #ccc;
-            .row{
-                padding:10px 0;
-                >button{
-                    display: block;
-                    margin: 0 auto;
-                }
-            }
-            >.domain-list,>.domain-list-l{
-                height: 178px;
+            .domain-tree{
+                padding-left:10px;
+                padding-right:25px;
+                margin-right: -15px;
+                height: 158px;
+                overflow-x: hidden;
                 overflow-y: scroll;
-                padding: 5px;
+            }
+            .search{
+                width: 214px;
+                height: 30px;
+                margin:20px 5px;
+            }
+        }
+        .domain-list{
+            height:230px;
+            border: 1px solid #ccc;
+            padding:0px;
+            >ul{
+                height: 230px;
+                overflow-y: scroll;
+                padding: 0 15px 0 30px;
                 >li{
                     color: #808080;
                     font-size: 14px;
@@ -142,45 +154,10 @@
                     }
                 }
             }
-            >.domain-list{
-                height: 148px;
-            }
-            .dropdown{
-                >button{
-                    width: 100%;
-                    border: 1px solid #ccc;
-                    background-color: #fff;
-                    color: #808080;
-                    height: 30px;
-                    text-align: left;
-                    >span{
-                        float: right;
-                        padding-top: 2px;
-                    }
-                }
-                .dropdown-menu{
-                    width: 230px;
-                    height: 146px;
-                    overflow-y: scroll;
-                    ul{
-                        background-color: #fff!important;
-                        >li>div{
-                            &:hover{
-                                background-color: #e5e5e5;
-                            }
-                            >:last-of-type{
-                                color: #808080!important;
-                            }
-                        }
-                    }
-                }
-            }
         }
-        .domain-add-map{
-            height:230px;
-            border: 1px solid #ccc;
-            padding:0px;
-        }
+    }
+    .modal-footer{
+        margin: 5px 0;
     }
 }
 

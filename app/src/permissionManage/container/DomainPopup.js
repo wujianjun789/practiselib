@@ -9,65 +9,32 @@ import Immutable from 'immutable';
 import {Treebeard} from 'react-treebeard';
 // import treeStyle from '../../components/treeStyle';
 import MapView from '../../../src/components/MapView';
-import {getDomainList,getDomainById} from '../../api/domain';
+import {getDomainList,getDomainById,getDomainListByParentId} from '../../api/domain';
 import {getUserDomainList} from '../../api/permission';
+import SearchText from '../../components/SearchText';
+import Node from '../../components/Node';
+import {getIndexByKey,getObjectByKey,getListKeyByKeyFuzzy,getObjectByKeyObj,getListKeyByKey} from '../../util/algorithm';
+const _ = require('lodash');
+
 export class DomainPopup extends Component{
     constructor(props){
         super(props);
         this.state={
             toggle:'hidden',
-            domainList:[{id:1,name:'中国-杭州'},{id:2,name:'中国-上海'}],
-            data:{
-                name: "中国",
-                toggled: true,
-                children: [
-                    {
-                        name: "上海",
-                        children: [
-                            {
-                                name: "闵行",
-                            },
-                            {
-                                name: "徐汇"
-                            }
-                        ],
-                        toggled: true
-                    },
-                    {
-                        name: "江苏",
-                        children: [
-                            {
-                                name: "南京",
-                                children: [
-                                    {
-                                        name: "江浦"
-                                    },
-                                    {
-                                        name: "江宁"
-                                    }
-                                ],
-                                toggled: true
-                            },
-                            {
-                                name: "苏州"
-                            }
-                        ],
-                        toggled: true
-                    },
-                    {
-                        name: "浙江",
-                        children: [
-                            {
-                                name: "杭州"
-                            },
-                            {
-                                name: "金华"
-                            }
-                        ],
-                        toggled: true
-                    }
-                ],
-            }
+            search:Immutable.fromJS({placeholder:'输入域名称', value:''}),
+            domainList:Immutable.fromJS([{id:1,name:'中国-杭州'},{id:2,name:'中国-上海'}]),
+            tree:[],
+            nodes:Immutable.fromJS([
+                {id:1,name:'中国',toggle:true,isAdd:false,hidden:false},
+                {id:2,name:'上海',toggle:true,isAdd:false,hidden:false},
+                {id:3,name:'武汉',toggle:true,isAdd:true,hidden:false},
+                {id:4,name:'闵行',toggle:false,isAdd:true,hidden:false},
+                {id:5,name:'莘庄',toggle:true,isAdd:true,hidden:true},
+                {id:6,name:'七宝',toggle:true,isAdd:true,hidden:false},
+                {id:7,name:'浦东',toggle:true,isAdd:false,hidden:false}
+            ]),
+            addDomainIds:[],
+            deleteDomainIds:[]
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -76,13 +43,18 @@ export class DomainPopup extends Component{
         this.domainDelete = this.domainDelete.bind(this);
         this.domainHandle = this.domainHandle.bind(this);
         this.userDomainHandle = this.userDomainHandle.bind(this);
+        this.onToggle = this.onToggle.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.getParentDomain = this.getParentDomain.bind(this);
+        this.getChildsDomain = this.getChildsDomain.bind(this);
+        this.domainAdd = this.domainAdd.bind(this);
     }
 
     componentWillMount(){
         this.mounted = true;
         getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)})
         getDomainList((response)=>{this.mounted && this.domainHandle(response)});
-
     }
 
     componentWillUnmount(){
@@ -90,33 +62,34 @@ export class DomainPopup extends Component{
     }
 
     domainHandle(response){
-        console.log('domain');
-        console.log(response);
-        // response.map((item)=>{
-
-        // })
+        let domainList = this.state.domainList;
+        
+        response.map(item=>{
+            let parent = getObjectByKeyObj(response,'id',item.parentId);
+            item.isAdd = parent && parent.isAdd?true:(getIndexByKey(domainList,'id',item.id)>-1?true:false);
+            item.toggle = true;
+            item.hidden = false;            
+        })
+        this.setState({nodes:Immutable.fromJS(response)});
+        let tree = this.makeTree(response);
+        this.setState({tree:tree});
     }
 
-    userDomainHandle(datas){
-        console.log('userDomain');
-        console.log(datas);
-        // let domainList=[];
-        // datas.domains.forEach(item=>{
-        //     if(item.parentId>0){ 
-        //         getDomainById(item.parentId,(response)=>{
-        //             item.name=response.name+'-'+item.name;
-        //             domainList.push({id:item.id,name:item.name});
-        //             this.setState({domainList:domainList})
-        //         })
-        //     }
-        //     else{
-        //         domainList.push({id:item.id,name:item.name});
-        //         this.setState({domainList:domainList})
-        //     }
-                
-        // });
+    makeTree(pre) {
+        const data = pre.map((v)=>{
+          if(!v.parentId) v.parentId='';
+          return v;
+        })
+        let groupedByParents = _.groupBy(data, 'parentId');
+        let keysById = _.keyBy(data, 'id');
+        _.each(_.omit(groupedByParents, ''), function(children, parentId) {
+            keysById[parentId].children = children; 
+        });
+        return groupedByParents[''];
+      }
 
-        
+    userDomainHandle(datas){
+        this.setState({domainList:Immutable.fromJS(datas.domains)})
     }
 
     onCancel(){
@@ -131,19 +104,78 @@ export class DomainPopup extends Component{
         this.setState({toggle:'hidden'});
     }
 
-    domainDelete(index){
-        let domainList = this.state.domainList;
-        domainList.splice(index,1);
-        this.setState({domainList:domainList});
+    domainDelete(id){
+        let {domainList,deleteDomainIds} = this.state;
+        let index = getIndexByKey(domainList,'id',id)
+        deleteDomainIds.push(id);
+        this.setState({domainList:domainList.delete(index),deleteDomainIds:deleteDomainIds},()=>this.domainHandle(this.state.nodes.toJS()));
     }
 
-    onConfirm(){
-        this.props.action.overlayerHide();
+    domainAdd(id){
+        let {domainList,addDomainIds} = this.state;
+        let node = getObjectByKey(this.state.nodes,'id',id);
+        addDomainIds.push(id);
+        this.setState({domainList:domainList.push(node),addDomainIds:addDomainIds},()=>this.domainHandle(this.state.nodes.toJS()));
     }
     
+    onConfirm(){
+        let {deleteDomainIds,addDomainIds} = this.state;
+        console.log(deleteDomainIds);
+        console.log('.....')
+        console.log(addDomainIds);
+        this.props.action.overlayerHide();
+    }
+
+    onToggle(id){
+        let nodes = this.state.nodes;
+        let index = getIndexByKey(nodes,'id',id);
+        let node = getObjectByKey(nodes,'id',id)
+        node = node.update('toggle',v=>!v);
+        nodes= nodes.set(index,node);
+        this.setState({nodes:nodes});
+    }
+
+    searchChange(value){
+        this.setState({search:this.state.search.update('value', v=>value)});
+    }
+
+    searchSubmit(){
+        let search = this.state.search.get('value');
+        let {nodes} = this.state;
+        let searchNodes = getListKeyByKeyFuzzy(this.state.nodes,'name',search,'id');
+        let searchResult=[];
+        searchNodes.map(id=>{
+            searchResult.push(id);
+            this.getParentDomain(id,searchResult);
+            this.getChildsDomain(id,searchResult);
+        })
+        let newNodes = nodes.map(item=>{
+            return item.update('hidden',v=>searchResult.indexOf(item.get('id'))<0?true:false).update('toggle',v=>true);
+        })
+        this.setState({nodes:newNodes})
+    }
+
+    getParentDomain(id,searchResult){
+        let {nodes} = this.state;    
+        let parent = getListKeyByKey(nodes,'id',id,'parentId');
+        parent[0] && searchResult.push(parent[0]) && this.getParentDomain(parent[0],searchResult);
+    }
+
+    getChildsDomain(id,searchResult){
+        let {nodes} = this.state;  
+        let childs = getListKeyByKey(nodes,'parentId',id,'id');
+        childs.length!==0 && childs.forEach(id=>{
+            searchResult.push(id);
+            this.getChildsDomain(id,searchResult);
+        });
+    }
+
     render() {
         let {className = '',title = ''} = this.props;
-        let {toggle,domainList,data} = this.state;
+        let {toggle,domainList,data,tree,nodes,search} = this.state;
+        console.log(tree);
+        console.log('.........')
+        console.log(nodes.toJS());
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
@@ -151,31 +183,25 @@ export class DomainPopup extends Component{
                     <label className="col-sm-2 control-label">域权限:</label>
                     <div className="col-sm-10">
                         <div className='col-sm-6 domain-add'>
-                            <div className='row'>
-                                <button className="btn btn-primary" onClick = {this.toggleOpen}>添加域</button>
+                            <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)} submit={()=>this.searchSubmit()}/> 
+                            <div className='domain-tree'>
+                                {
+                                    tree && tree.map((node)=>{
+                                        return <Node key={node.id} tree={node} nodes={nodes} onToggle={this.onToggle} onClick={this.domainAdd}/>
+                                    })}
                             </div>
-                            <div className={`dropdown ${toggle}`}>
-                                <button className="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    选择区域
-                                    <span className="glyphicon glyphicon-triangle-bottom"></span>
-                                </button>
-                                    <div className="dropdown-menu" aria-labelledby="dropdownMenu1" >
-                                    <Treebeard data={data} onToggle={(item)=>{this.selectDomain(item)}}/>
-                                </div> 
-                            </div>
-                            <ul className={`domain-list${toggle=='hidden'?'-l':''}`}>
+                        </div>
+                        <div className='col-sm-6 domain-list'>
+                            <ul>
                                 {
                                     domainList.map((item,index)=>{
                                         return <li key = {index}>
-                                            <span className="icon-table-delete" onClick={()=>this.domainDelete(item.id)}></span>
-                                                {item.name}
+                                            <span className="icon-table-delete" onClick={()=>this.domainDelete(item.get('id'))}></span>
+                                                {item.get('name')}
                                         </li>
                                     })
                                 }
                             </ul>
-                        </div>
-                        <div className='col-sm-6 domain-add-map map-container'>
-                            <MapView  option={{mapZoom:false}} mapData={{id:'example'}} />
                         </div>
                     </div>
                 </div>

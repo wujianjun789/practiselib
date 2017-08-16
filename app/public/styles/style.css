@@ -1,8 +1,10 @@
 html,
 body {
+    min-width:1205px;
     height: 100%;
     margin: 0;
-    font-family: "Microsoft YaHei";
+    font-family: 'Helvetica Neue','Hiragino Sans GB','WenQuanYi Micro Hei','Microsoft Yahei',sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -74,9 +76,7 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
 }
 
 .head .home span {
-    background: url("../images/icon_home.png");
-    background-size: 100% 100%;
-
+    font-size: 24px;
     cursor: pointer;
 }
 
@@ -90,9 +90,7 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
     color: #00d8ff;
     font-size: 18px;
     font-weight: bold;
-
-    padding-top: 3px;
-    padding-left: 25px;
+line-height: 60px;
 
     vertical-align: top;
 }
@@ -113,7 +111,7 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
     right: 0;
     bottom: 0;
     left: 180px;
-
+    min-width: 1025px;
     background: #f2f2f4;
     overflow: hidden;
 }
@@ -551,7 +549,7 @@ ul {
 }
 
 .tree-list .icon_led_light {
-    background: url("../images/icon_led_light.png");
+    background: url("../images/icon_led_light.png")no-repeat center;
 }
 
 .tree-list .icon_plc_control {
@@ -579,7 +577,7 @@ ul {
 }
 
 .tree-list .icon_led_light_hover {
-    background: url("../images/icon_led_light_hover.png");
+    background: url("../images/icon_led_light_hover.png")no-repeat center;
 }
 
 .tree-list .icon_plc_control_hover {
@@ -682,9 +680,16 @@ ul {
 }
 
 .user-center > .user-icon {
-    padding: 17px 17px 18px 17px;
+    width:60px;
+    text-align: center;
     border-left: 1px solid #353b4e;
     cursor: pointer;
+}
+
+.user-center > .user-icon span {
+    color:#fff;
+    line-height: 60px;
+    font-size:24px;
 }
 
 .user-center > .user-icon > .icon.icon-usr {
@@ -718,21 +723,21 @@ ul {
 
 .user-center > ul.user-list > li > .icon {
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 17px;
     margin-left: 10px;
     margin-right: 10px;
     vertical-align: middle;
 }
 
 .user-center .icon.icon-alter {
-  background-image: url(/images/icon_alter.png);
-  background-size: 100% 100%;
+  background: url(/images/icon_alter.png)no-repeat center top;
+  background-size: 16px;
 }
 
 .user-center .icon.icon-exit {
-  background-image: url(/images/icon_exit.png);
-  background-size: 100% 100%;
+  background: url(/images/icon_exit.png)no-repeat center top;
+  background-size: 15px;
 }
 
 /********************* overlayer style ****************************/

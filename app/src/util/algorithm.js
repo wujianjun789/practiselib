@@ -145,6 +145,23 @@ export function getListByKey(list, key, value) {
 }
 
 /**
+ * 根据指定键值模糊搜索数组中所有相同项，并返回由相同项中指定的键值组成的数组
+ * @param list 
+ * @param key1 
+ * @param value 
+ * @param key2 
+ */
+export function getListKeyByKeyFuzzy(list, key1, value, key2) {
+    let newList = [];
+    list.map(item=>{
+        if(item.get(key1).indexOf(value)>-1){
+            newList.push(item.get(key2))
+        }
+    })
+    return newList;
+}
+
+/**
  *  根据指定键值获取数组中所有相同项，并返回由相同项中指定的键值组成的数组
  * @param list
  * @param key

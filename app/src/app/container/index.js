@@ -9,7 +9,7 @@ import '../../../public/styles/app.less';
 import Card from './Card';
 import UserCenter from '../../common/containers/UserCenter';
 import Overlayer from '../../common/containers/Overlayer';
-
+import {loginHandler} from '../../api/login'
 import {getModule} from '../action/index'
 /**
  * @param {String} title required
@@ -19,19 +19,30 @@ import {getModule} from '../action/index'
 export class App extends Component{
     constructor(props){
         super(props);
+        this.loginFail = this.loginFail.bind(this);
+        this.loginSuccess = this.loginSuccess.bind(this);
     }
 
     componentWillMount(){
-        if(this.props.userCenter.islogin!=1){
+        console.log(localStorage)
+        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
+            
             this.props.router.push('/login')
+            
+        }else{
+
+            this.props.actions.loginHandler(sessionStorage.username, sessionStorage.password, this.loginSuccess, this.loginFail);
+
         }
+        // if(this.props.userCenter.islogin!=1){
+        //     this.props.router.push('/login')
+        // }
         const {actions} = this.props;
         actions && actions.getModule();
     }
 
     componentDidMount() {
 
-        
 
     }
 
@@ -39,6 +50,14 @@ export class App extends Component{
 
 
 
+    }
+
+    loginFail(){
+        this.setState({style:{visibility: 'visible'}})
+    }
+
+    loginSuccess(){
+        this.props.router.push('/')
     }
 
     render(){
@@ -49,7 +68,7 @@ export class App extends Component{
                     <div className="header-left clearfix">
                         <span className="icon icon-logo"></span>
                         <span className="tit">{title}</span>
-                        <span className="name"><span>{name}</span></span>
+                        <span className="name">{name}</span>
                     </div>
                     <UserCenter router={this.props.router}/>
                 </div>
@@ -77,7 +96,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         actions: bindActionCreators({
-            getModule: getModule
+            getModule: getModule,
+            loginHandler
         }, dispatch)
     }
 }

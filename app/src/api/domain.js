@@ -18,7 +18,6 @@ export function getDomainById(id,cb){
         headers: headers,
         method: 'GET'
     }, response=>{
-        console.log(response)
         cb && cb(response);
     })
 }
@@ -104,5 +103,16 @@ export function getDomainListByParentId(parentId, cb){
         method: 'GET'
     }, response=>{
         cb && cb(parentId, response)
+    })
+}
+
+export function getRelatedDomainById(id,cb){
+    let headers = getHttpHeader();
+    let param = JSON.stringify({include:['children']});
+    httpRequest(`${HOST_IP}/domains/${id}?filter=${encodeURIComponent(param)}`, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
     })
 }
