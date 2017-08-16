@@ -38,10 +38,15 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               className="form-control"
               disabled={false}
               id="id"
+              maxLength={16}
               onChange={[Function]}
               placeholder="id"
               type="text"
               value="sdf" />
+            <span
+              className="prompt hidden">
+              不合法
+            </span>
           </div>
         </div>
         <div
@@ -56,10 +61,15 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             <input
               className="form-control"
               id="name"
+              maxLength={16}
               onChange={[Function]}
               placeholder="name"
               type="text"
               value="name01" />
+            <span
+              className="prompt hidden">
+              不合法
+            </span>
           </div>
         </div>
         <div
@@ -71,40 +81,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           </label>
           <div
             className="col-sm-8">
-            <select
-              className="select form-control"
+            <input
+              className="form-control"
               id="model"
               onChange={[Function]}
-              value="model01">
-              <option
-                value="model01">
-                model01
-              </option>
-              <option
-                value="model02">
-                model02
-              </option>
-              <option
-                value="model03">
-                model03
-              </option>
-              <option
-                value="model04">
-                model04
-              </option>
-              <option
-                value="model05">
-                model05
-              </option>
-              <option
-                value="model06">
-                model06
-              </option>
-              <option
-                value="model07">
-                model07
-              </option>
-            </select>
+              type="text"
+              value="model01" />
           </div>
         </div>
         <div
@@ -150,6 +132,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
                 domain07
               </option>
             </select>
+            <span
+              className="prompt hidden">
+              请添加域
+            </span>
           </div>
         </div>
         <div
@@ -168,6 +154,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               placeholder="lng"
               type="text"
               value={121.49971691534425} />
+            <span
+              className="prompt hidden">
+              经度数不合法
+            </span>
           </div>
         </div>
         <div
@@ -186,6 +176,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               placeholder="lat"
               type="text"
               value={31.239658843127756} />
+            <span
+              className="prompt hidden">
+              纬度数不合法
+            </span>
           </div>
         </div>
         <div
@@ -257,10 +251,15 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               className="form-control"
               disabled={true}
               id="id"
+              maxLength={16}
               onChange={[Function]}
               placeholder="id"
               type="text"
               value="sdf" />
+            <span
+              className="prompt hidden">
+              不合法
+            </span>
           </div>
         </div>
         <div
@@ -275,10 +274,15 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             <input
               className="form-control"
               id="name"
+              maxLength={16}
               onChange={[Function]}
               placeholder="name"
               type="text"
               value="name01" />
+            <span
+              className="prompt hidden">
+              不合法
+            </span>
           </div>
         </div>
         <div
@@ -290,40 +294,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           </label>
           <div
             className="col-sm-8">
-            <select
-              className="select form-control"
+            <input
+              className="form-control"
               id="model"
               onChange={[Function]}
-              value="model01">
-              <option
-                value="model01">
-                model01
-              </option>
-              <option
-                value="model02">
-                model02
-              </option>
-              <option
-                value="model03">
-                model03
-              </option>
-              <option
-                value="model04">
-                model04
-              </option>
-              <option
-                value="model05">
-                model05
-              </option>
-              <option
-                value="model06">
-                model06
-              </option>
-              <option
-                value="model07">
-                model07
-              </option>
-            </select>
+              type="text"
+              value="model01" />
           </div>
         </div>
         <div
@@ -369,6 +345,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
                 domain07
               </option>
             </select>
+            <span
+              className="prompt hidden">
+              请添加域
+            </span>
           </div>
         </div>
         <div
@@ -387,6 +367,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               placeholder="lng"
               type="text"
               value={121.49971691534425} />
+            <span
+              className="prompt hidden">
+              经度数不合法
+            </span>
           </div>
         </div>
         <div
@@ -405,6 +389,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               placeholder="lat"
               type="text"
               value={31.239658843127756} />
+            <span
+              className="prompt hidden">
+              纬度数不合法
+            </span>
           </div>
         </div>
         <div

@@ -6,6 +6,7 @@ exports[`test AssetStatistics renders 1`] = `
     <select
       className="select domain"
       onChange={[Function]}
+      placeholder={undefined}
       value="域">
       <option
         value="域">

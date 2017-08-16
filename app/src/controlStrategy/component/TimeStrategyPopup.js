@@ -11,6 +11,7 @@ import PanelFooter from '../../components/PanelFooter'
 import Select from '../../components/Select'
 import CustomDateInput from './CustomDateInput';
 
+import {timeStrategy} from '../util/chart';
 import {getMomentDate, momentDateFormat,getMomentUTC} from '../../util/time'
 import Immutable from 'immutable'
 export default class TimeStrategyPopup extends Component{
@@ -51,6 +52,8 @@ export default class TimeStrategyPopup extends Component{
             }
         }
 
+        this.renderChart = this.renderChart.bind(this);
+
         this.onChange = this.onChange.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -66,6 +69,14 @@ export default class TimeStrategyPopup extends Component{
 
     onCancel() {
         this.props.onCancel() && this.props.onCancel();
+    }
+
+    renderChart(ref){
+        if(ref){
+            timeStrategy({id:ref.id, data:[{x: '1:00', y: 0}, {x: '3:00', y: 10}, {x: '5:00', y: 0}, {x: '7:00', y: 30},
+                {x: '9:00', y: 0}, {x: '11:00', y: 0}, {x: '13:00', y: 0}, {x: '15:00', y: 0}, {x: '17:00', y: 0},
+                {x: '19:00', y: 0}, {x: '21:00', y: 100}, {x: '24:00', y: 0}]});
+        }
     }
 
     render(){
@@ -145,7 +156,7 @@ export default class TimeStrategyPopup extends Component{
                     <div className="form-group row">
                         <label className="col-sm-3 control-label" htmlFor="startTime">图表：</label>
                         <div className="col-sm-9">
-                            <div className="time-strategy-chart" id="timeStrategy">
+                            <div className="time-strategy-chart" id="timeStrategy" ref={this.renderChart}>
 
                             </div>
                         </div>

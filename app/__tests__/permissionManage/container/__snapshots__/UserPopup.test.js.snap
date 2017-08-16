@@ -58,6 +58,7 @@ exports[`<UserPopup add snapshot 1`] = `
       <select
         className="select role"
         onChange={[Function]}
+        placeholder={undefined}
         value="访客">
         <option
           value="访客">
@@ -367,6 +368,7 @@ exports[`<UserPopup edit snapshot 1`] = `
       <select
         className="select role"
         onChange={[Function]}
+        placeholder={undefined}
         value="访客">
         <option
           value="访客">
