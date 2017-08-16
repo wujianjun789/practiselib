@@ -53,12 +53,11 @@ export class Login extends Component{
     }
 
     submitHandler() {
-        this.props.actions.loginHandler(this.state.user.username, this.state.user.password,this.loginSuccess, this.loginFail);
+        this.props.actions.loginHandler(this.state.user.username, this.state.user.password, this.loginSuccess, this.loginFail);
     }
 
     componentDidMount() {
-        // 
-        console.log(this)
+        console.log(this.props.userCenter)
     }
 
     onKeyDown(event) {
@@ -116,7 +115,6 @@ Login.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log("ajdfjwofjiewfjoiewjfoewjfwejfwiejfowifjweioj")
     return {
         userCenter:state.userCenter
     }

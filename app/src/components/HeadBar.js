@@ -15,6 +15,10 @@ export default class HeadBar extends Component{
         router && router.push('/');
     }
 
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     render(){
         const {moduleName} = this.props
         return <div className="head">

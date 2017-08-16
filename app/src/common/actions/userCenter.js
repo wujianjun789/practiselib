@@ -1,7 +1,6 @@
 import {
     USERCENTER_POPUP_CONFIRM_EXIT
 } from '../actionTypes/userCenter';
-console.log(USERCENTER_POPUP_CONFIRM_EXIT);
 import {httpRequest, HOST_IP, getHttpHeader} from '../../util/network';
 import {getCookie} from '../../util/cache';
 
