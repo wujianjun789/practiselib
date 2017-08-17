@@ -61,7 +61,6 @@ export class UserCenter extends Component{
     }
  
     componentDidMount() {
-        console.log(this.props)
     }
 
     itemClick(key) {

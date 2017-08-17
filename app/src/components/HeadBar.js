@@ -16,7 +16,6 @@ export default class HeadBar extends Component{
     }
 
     componentDidMount() {
-        console.log(this.props)
     }
 
     render(){

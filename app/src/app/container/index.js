@@ -24,7 +24,6 @@ export class App extends Component{
     }
 
     componentWillMount(){
-        console.log(localStorage)
         if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
             
             this.props.router.push('/login')
@@ -43,7 +42,7 @@ export class App extends Component{
 
     componentDidMount() {
 
-
+        console.log(this)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -68,9 +67,11 @@ export class App extends Component{
                     <div className="header-left clearfix">
                         <span className="icon icon-logo"></span>
                         <span className="tit">{title}</span>
-                        <span className="name">{name}</span>
                     </div>
                     <UserCenter router={this.props.router}/>
+                    <div className="header-right clearfix">
+                        <span className="name">{name}</span>
+                    </div>
                 </div>
                 <div className="cont">
                     <ul className="clearfix">

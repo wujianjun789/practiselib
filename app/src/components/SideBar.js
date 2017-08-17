@@ -18,7 +18,6 @@ export default class SideBar extends Component{
     }
 
     onToggle(node){
-        console.log(this.props)
         this.props.onToggle && this.props.onToggle(node);
     }
 

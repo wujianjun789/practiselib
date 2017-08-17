@@ -21,7 +21,7 @@ export class TreeView extends Component{
     }
 
     componentWillMount(){
-
+        console.log(this.props);
     }
 
     onToggle(node){
