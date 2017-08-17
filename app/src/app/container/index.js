@@ -25,7 +25,7 @@ export class App extends Component{
 
     componentWillMount(){
         console.log(localStorage)
-        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
+        /*if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
             
             this.props.router.push('/login')
             
@@ -33,7 +33,7 @@ export class App extends Component{
 
             this.props.actions.loginHandler(sessionStorage.username, sessionStorage.password, this.loginSuccess, this.loginFail);
 
-        }
+        }*/
         // if(this.props.userCenter.islogin!=1){
         //     this.props.router.push('/login')
         // }
@@ -42,8 +42,6 @@ export class App extends Component{
     }
 
     componentDidMount() {
-
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -68,9 +66,11 @@ export class App extends Component{
                     <div className="header-left clearfix">
                         <span className="icon icon-logo"></span>
                         <span className="tit">{title}</span>
-                        <span className="name">{name}</span>
                     </div>
                     <UserCenter router={this.props.router}/>
+                    <div className="header-right clearfix">
+                        <span className="name">{name}</span>
+                    </div>
                 </div>
                 <div className="cont">
                     <ul className="clearfix">

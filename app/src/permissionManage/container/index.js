@@ -58,7 +58,6 @@ export class PermissionManage extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props.userCenter); 
     }
 
     componentWillUnmount(){

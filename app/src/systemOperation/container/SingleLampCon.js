@@ -153,6 +153,9 @@ export class SingleLampCon extends Component {
         this.mounted = false;
     }
 
+    componentDidMount(){
+    }
+
     requestSearch() {
         const {model, domainList, search, page} = this.state
         let domain = domainList.options.length?domainList.options[domainList.index]:null;

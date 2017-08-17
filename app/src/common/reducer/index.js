@@ -14,8 +14,10 @@ import userCenter from './userCenter';
 import permissionManage from '../../permissionManage/reducer/index'
 import sysOperation from '../../systemOperation/reducer/index';
 import lampConCenter from '../../systemOperation/reducer/lampConCenter';
+import auth from '../../authentication/reducer';
 const reducer = combineReducers({
     routing,
+    auth,
     overlayer,
     userCenter,
     treeView,
