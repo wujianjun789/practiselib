@@ -24,7 +24,6 @@ export class App extends Component{
     }
 
     componentWillMount(){
-        console.log(localStorage)
         const {actions} = this.props;
         actions && actions.getModule();
     }
