@@ -16,6 +16,8 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import TimeStrategyPopup from '../component/TimeStrategyPopup'
 
 import Immutable from 'immutable';
+import {getObjectByKey} from '../../util/index';
+
 class TimeStrategy extends Component{
     constructor(props){
         super(props);
@@ -24,7 +26,7 @@ class TimeStrategy extends Component{
                 placeholder: '输入策略名称',
                 value: ''
             }),
-            selectDevice:{
+            selectStrategy:{
 
             },
             page: Immutable.fromJS({
@@ -32,12 +34,14 @@ class TimeStrategy extends Component{
                 current: 1,
                 total: 14
             }),
+            deviceList:{titleKey:"name", valueKey:"name", options:[{id:1, name:"test灯"},{id:2, name:"test显示屏"}]},
+            strategyList:[{id:1,time:"15:00", light:"50"},{id:2,time:"16:00", light:"关"}],
             data:Immutable.fromJS([
-                {id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日"},
-                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日"},{id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日"},
-                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日"},{id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日"},
-                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日"},{id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日"},
-                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日"},{id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日"},
+                {id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
+                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:3, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
+                {id:4, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:5, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
+                {id:6, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:7, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
+                {id:8, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:9, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
             ])
         }
 
@@ -55,27 +59,77 @@ class TimeStrategy extends Component{
         this.tableDelete = this.tableDelete.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
+        this.initResult = this.initResult.bind(this);
+        this.initStrategyList = this.initStrategyList.bind(this);
+        this.initDeviceList = this.initDeviceList.bind(this);
+    }
+
+    componentWillMount(){
+        this.mounted = true;
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
     }
 
     requestSearch() {
 
     }
 
+    initPageSize(data){
+        let page = this.state.page.set('total', data.count);
+        this.setState({page:page});
+    }
+
+    initResult(data){
+        this.setState({data:Immutable.fromJS(data)});
+        if(data && data.length){
+            this.setState({selectStrategy:data[0]});
+        }
+    }
+
+    initStrategyList(data){
+        this.setState({strategyList:data})
+    }
+
+    initDeviceList(data){
+        this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:data})})
+    }
+
     addHandler(){
         const {actions} = this.props;
-        actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={{name:"夏季路灯使用策略", deviceName:"灯"}}
-                                                 deviceList={{titleKey:"name", valueKey:"name", options:[{id:1, name:"灯"},{id:2, name:"控制器"}]}}
-                                                 strategyList={[{id:1,time:"15:00", light:"开"},{id:2,time:"16:00", light:"关"}]}
-                                                 onConfirm={()=>{}} onCancel={()=>{
+        const {deviceList, strategyList} = this.state;
+        let initData = {
+            name:"",
+            deviceName:deviceList.options.length?deviceList.options[0][deviceList.valueKey]:""
+        }
+        actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData}
+                                                 deviceList={deviceList}
+                                                 strategyList={strategyList}
+                                                 onConfirm={(data)=>{}} onCancel={()=>{
                                                     actions.overlayerHide();
                                                  }}/>)
     }
 
-    tableEdit(){
-
+    tableEdit(rowId){
+        const {actions} = this.props;
+        const {deviceList, strategyList} = this.state;
+        let row = Immutable.fromJS(getObjectByKey(this.state.data.toJS(), 'id', rowId));
+        let device = getObjectByKey(deviceList.options, 'id', row.get("deviceId"));
+        let initData = {
+            name: row.get("name"),
+            deviceName: device?device.name:""
+        }
+        actions.overlayerShow(<TimeStrategyPopup title="修改策略" data={initData}
+                    deviceList={deviceList}
+                    strategyList={strategyList}
+                    onConfirm={(data)=>{}} onCancel={()=>{
+                        actions.overlayerHide();
+                    }}/>)
     }
 
-    tableDelete(){
+    tableDelete(rowId){
 
     }
 
@@ -91,11 +145,11 @@ class TimeStrategy extends Component{
     }
 
     searchSubmit(){
-
+        this.requestSearch();
     }
 
-    searchChange(){
-
+    searchChange(value){
+        this.setState({search:this.state.search.update('value', v=>value)});
     }
 
     render(){
