@@ -37,7 +37,7 @@ class SystemOperationIndex extends Component{
     }
 
     onToggle(node){
-        console.log(node);
+        // console.log(node);
         // this.props.actions.sideBarToggled(node);
     }
 
@@ -57,7 +57,6 @@ class SystemOperationIndex extends Component{
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         userCenter:state.userCenter
     }
