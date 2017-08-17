@@ -171,7 +171,6 @@ export class UserPopup extends Component{
 
 const mapStateToprops = (state, ownProps) => {
     return{
-        permissionManage:state.permissionManage,
         modules:state.app.items
     }
 }
