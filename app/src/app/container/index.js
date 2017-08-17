@@ -41,8 +41,6 @@ export class App extends Component{
     }
 
     componentDidMount() {
-
-        console.log(this)
     }
 
     componentWillReceiveProps(nextProps) {

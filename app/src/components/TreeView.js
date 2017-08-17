@@ -21,7 +21,6 @@ export class TreeView extends Component{
     }
 
     componentWillMount(){
-        console.log(this.props);
     }
 
     onToggle(node){
@@ -48,7 +47,7 @@ export class TreeView extends Component{
                         <div onClick={()=>this.onToggle(node)} title={node.name}><span className={'glyphicon '+(curIndex > 1 ? (node.class+(node.active ? '_hover':''))
                         : (node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right'))}></span>
                             {value}</div></Link>
-                        { node.children && this.renderTree(node.children, nextIndex, node.toggled)}
+                        {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                     </li>
                 })
             }
