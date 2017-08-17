@@ -40,16 +40,12 @@ export default function LineAreaChart(parentId, chartData) {
         .x(function(d, i) { return x(i+1); })
         .y0(height)
         .y1(function(d) { return y(d.y); })
-        .curve(d3.curveMonotoneX)
-    // .tension(0.5);
+        .curve(d3.curveStepAfter)
 
     var line = d3.line()
-        .x(function (d, i) {
-            return x(i+1);
-        })
-        .y(function (d) {
-            return y(d.y);
-        })
+        .x(function (d, i) {return x(i+1);})
+        .y(function (d) {return y(d.y);})
+        .curve(d3.curveStepAfter);
 
     var svg = parent.append("svg").attr("width", w)
         .attr("height", h)
@@ -65,12 +61,12 @@ export default function LineAreaChart(parentId, chartData) {
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("kwh");
+        // .append("text")
+        // .attr("transform", "rotate(-90)")
+        // .attr("y", 6)
+        // .attr("dy", ".71em")
+        // .style("text-anchor", "end")
+        // .text("kwh");
 
     var node = svg.append("g")
         .attr("class", "node");
@@ -113,10 +109,10 @@ export default function LineAreaChart(parentId, chartData) {
             return y(d.y);
         })
         .attr("r", 2)
-        // .append("title")
-        // .text(function (d) {
-        //     return d.x +' '+ label +' '+ d.y;
-        // })
+        .append("title")
+        .text(function (d) {
+            return d.x +' '+ label +' '+ d.y;
+        })
 
     // var title = line.append("title")
     //
