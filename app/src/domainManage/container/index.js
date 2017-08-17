@@ -20,9 +20,9 @@ class DomainManageIndex extends Component{
     }
 
     componentWillMount(){
-        if(this.props.userCenter.islogin!=1){
-            this.props.router.push('/login')
-        }
+        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
+            this.props.router.push('/login') 
+        }else{}
         this.initTreeData();
     }
 

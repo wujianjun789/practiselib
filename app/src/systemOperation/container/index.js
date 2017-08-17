@@ -19,10 +19,10 @@ class SystemOperationIndex extends Component{
         this.onToggle = this.onToggle.bind(this);
     }
 
-    componentWillMount(){
-        if(this.props.userCenter.islogin!=1){
-            this.props.router.push('/login')
-        }
+    componentWillMount(){        
+        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
+            this.props.router.push('/login') 
+        }else{}
         this.mounted = true;
         getModelData(null, ()=>{this.mounted && this.initTreeData()})
     }
