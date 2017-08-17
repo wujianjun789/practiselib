@@ -34,7 +34,6 @@ class AssetManageIndex extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props.userCenter); 
     }
 
     initTreeData(){
