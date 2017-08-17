@@ -44,7 +44,7 @@ export class SingleLampCon extends Component {
             selectDevice: {
                 id: "systemOperation",
                 // latlng:{lng: 121.49971691534425,
-                //     lat: 31.239658843127756},
+                //     lat: 31.239658843127756}
                 position: [],
                 data: []
             },

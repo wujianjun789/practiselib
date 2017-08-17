@@ -94,7 +94,24 @@ export class PermissionManage extends Component{
 
     dataHandle(datas){
         let result = datas.map(item=>{
-            item.role = <div className='role-icon'><span className={`icon role${item.roleId}`}></span></div>;
+            let roleName = ''
+            switch(item.roleId){
+                case 1:
+                    roleName = '系统管理员';
+                    break;
+                case 2:
+                    roleName = '设备管理员';
+                    break;
+                case 3:
+                    roleName = '设备操作员';
+                    break;
+                case 4:
+                    roleName = '访客';
+                    break;
+                default:
+                    roleName = '访客';
+            }
+            item.role = <div className='role-icon'><span className={`icon role${item.roleId}`}>{roleName}</span></div>;
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
