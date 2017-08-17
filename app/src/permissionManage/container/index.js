@@ -50,9 +50,7 @@ export class PermissionManage extends Component{
     }
 
     componentWillMount(){        
-        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
-            this.props.router.push('/login') 
-        }else{}
+       
         this.mounted = true;
         this.requestData();
     }

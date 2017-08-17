@@ -22,9 +22,7 @@ class AssetManageIndex extends Component{
     }
 
     componentWillMount(){
-        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
-            this.props.router.push('/login') 
-        }else{}
+       
         this.mounted = true;
         getModelData(()=>{this.mounted && this.initTreeData()});
     }
