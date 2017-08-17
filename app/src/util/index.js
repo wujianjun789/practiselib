@@ -127,6 +127,12 @@ export function transformDeviceType(deviceType) {
     }
 }
 
+export const DOMAIN_NAME_LENGTH = 16;
+export const DEVICE_ID_LENGTH = 16;
+export const DEVICE_NAME_LENGTH = 16;
+
+export const STRATEGY_NAME_LENGTH = 16;
+
 export function numbersValid(number) {
     return /^([1-9]\d*|0)$/.test(number)
 }
