@@ -12,7 +12,7 @@ import Select from '../../components/Select'
 import CustomDateInput from './CustomDateInput';
 
 import {timeStrategy} from '../util/chart';
-import {getMomentDate, momentDateFormat,getMomentUTC} from '../../util/time'
+import {getMomentDate, momentDateFormat,getMomentUTC,getCurHM} from '../../util/time'
 
 import {STRATEGY_NAME_LENGTH, Name2Valid} from '../../util/index'
 
@@ -20,41 +20,35 @@ import Immutable from 'immutable'
 export default class TimeStrategyPopup extends Component{
     constructor(props){
         super(props);
+        const {data, strategyList} = this.props;
         this.state = {
-            name:"夏季路灯",
-            deviceName:"灯",
+            chartId:"",
+            name:data.name,
+            deviceName:data.deviceName,
             startTime:getMomentDate(),
             endTime:getMomentDate(),
             workTime:Immutable.fromJS([{id:1, name:"周一", active:true},{id:2, name:"周二", active:true}, {id:3, name:"周三", active:true},
                     {id:4, name:"周四",active:true},{id:5, name:"周五",active:true},{id:6, name:"周六", active:true},
                     {id:7, name:"周日", active:true}]),
-
-            chartList:[],
-
-            time:Immutable.fromJS({
-                list:[
-                    {id:1, value:"15:00"},{id:2, value:"16:00"},{id:3, value:"17:00"}
-                ],
-                placeholder:"选择时间节点",
-                value:"15:00",
-                index:0
-            }),
+            time:getCurHM(),
             light:Immutable.fromJS({
                 list:[
-                    {id:1, value:"开"},{id:2, value:"关"},{id:3, value:"60"},{id:4, value:80}
+                    {id:1, value:"关"},{id:2, value:20},{id:3, value:40},{id:4, value:60},{id:5, value:80}
                 ],
                 placeholder:"选择灯亮度",
                 value:"开",
                 index:0
             }),
-
+            strategyList:strategyList,
             prompt:{
                 name:false,
-                workTime: false
+                workTime: false,
+                time: false
             }
         }
-
+        this.timeStrategy = null;
         this.renderChart = this.renderChart.bind(this);
+        this.updateChart = this.updateChart.bind(this);
 
         this.onChange = this.onChange.bind(this);
         this.dateOnChange = this.dateOnChange.bind(this);
@@ -63,11 +57,16 @@ export default class TimeStrategyPopup extends Component{
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
 
+        this.onClick = this.onClick.bind(this);
+        this.delStrategy = this.delStrategy.bind(this);
+
         this.workTimeValid = this.workTimeValid.bind(this);
     }
 
     componentWillMount(){
         this.workTimeValid();
+
+        this.setState({strategyList:this.props.strategyList});
     }
 
     workTimeValid(){
@@ -92,6 +91,9 @@ export default class TimeStrategyPopup extends Component{
             value = options[event.target.selectedIndex][valueKey];
         }else if(id == "name"){
             prompt = !Name2Valid(value);
+        }else if(id == "time"){
+            // prompt = Number(value);
+            prompt = false;
         }
 
         this.setState({[id]:value, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
@@ -121,23 +123,66 @@ export default class TimeStrategyPopup extends Component{
         this.props.onCancel() && this.props.onCancel();
     }
 
+    onClick(){
+        const {time, light, strategyList} = this.state;
+        let curTime = time;
+        let curlight = light.getIn(["list", light.get("index"), "value"]);
+        for(let key in strategyList){
+            let strategy = strategyList[key];
+            if(strategy.time == curTime && strategy.light==curlight){
+                return;
+            }
+        }
+
+        let strategy2 = {time:curTime, light:curlight};
+        let newList = this.state.strategyList;
+        newList.push(strategy2)
+        this.setState({strategyList:newList}, ()=>{
+            this.updateChart();
+        });
+    }
+
+    delStrategy(selectIndex){
+        this.state.strategyList.splice(selectIndex, 1);
+        let newList = this.state.strategyList;
+        this.setState({strategyList:newList}, ()=>{
+            this.updateChart();
+        });
+    }
+
+    updateChart(){
+        const {chartId} = this.state;
+        if(!chartId) {
+            return;
+        }
+
+        const {strategyList} = this.state;
+        let chartList = strategyList.map(strategy=>{
+            return {x:strategy.time, y:strategy.light=="关"||strategy.light=="开"?0:strategy.light}
+        })
+        if(chartList){
+            this.timeStrategy && this.timeStrategy.destory();
+            this.timeStrategy = timeStrategy({id:chartId, data:chartList});
+        }
+    }
+
     renderChart(ref){
         if(ref){
-            timeStrategy({id:ref.id, data:[{x: '1:00', y: 0}, {x: '3:00', y: 10}, {x: '5:00', y: 0}, {x: '7:00', y: 30},
-                {x: '9:00', y: 0}, {x: '11:00', y: 0}, {x: '13:00', y: 0}, {x: '15:00', y: 0}, {x: '17:00', y: 0},
-                {x: '19:00', y: 0}, {x: '21:00', y: 100}, {x: '24:00', y: 0}]});
+            this.setState({chartId:ref.id}, ()=>{
+                this.updateChart();
+            });
         }
     }
 
     render(){
-        const {name, deviceName, startTime, endTime, workTime, chartList, time, light, prompt} = this.state;
-        const {deviceList, strategyList} = this.props;
+        const {name, deviceName, startTime, endTime, workTime, time, light, strategyList, prompt} = this.state;
+        const {deviceList} = this.props;
         let {titleKey, valueKey, options} = deviceList;
-
         let valid = prompt.name || !options.length || prompt.workTime;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>
+
         return <div className="time-strategy-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} footer={footer}>
                 <div className="row">
@@ -145,8 +190,8 @@ export default class TimeStrategyPopup extends Component{
                         <div className="form-group row">
                             <label className="col-sm-4 control-label" htmlFor="name">策略名称：</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" id="name" placeholder="输入策略名称" maxLength={STRATEGY_NAME_LENGTH} value={name}
-                                       onChange={this.onChange}/>
+                                <input type="text" className="form-control" id="name" placeholder="输入策略名称"
+                                       maxLength={STRATEGY_NAME_LENGTH} value={name} onChange={this.onChange}/>
                                 <span className={prompt.name?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
 
@@ -219,9 +264,9 @@ export default class TimeStrategyPopup extends Component{
                         <label className="col-sm-3 control-label" htmlFor="startTime">设置亮度：</label>
                         <div className="col-sm-9 right">
                             <div className="form-group row">
-                                <button className="btn btn-default">添加节点</button>
+                                <button className="btn btn-default" onClick={this.onClick}>添加节点</button>
                                 <div className="col-sm-4 select-container">
-                                    <Select className="form-control" data={time} onChange={selectIndex=>{this.setLightOnChange("time", selectIndex)}}></Select>
+                                    <input className="form-control" id="time" type="time" value={time} onChange={this.onChange}/>
                                 </div>
                                 <div className="col-sm-4 select-container">
                                     <Select className="form-control" data={light} onChange={selectedIndex=>{this.setLightOnChange("light", selectedIndex)}}></Select>
@@ -229,11 +274,11 @@ export default class TimeStrategyPopup extends Component{
                             </div>
                             <div className="row list-group">
                                 {
-                                    strategyList.map(strategy=>{
-                                        return <div key={strategy.id} className="row">
+                                    strategyList.map((strategy,index)=>{
+                                        return <div key={index} className="row">
                                             <span className="col-sm-5 time-point">{strategy.time}</span>
                                             <span className="col-sm-5 light">{strategy.light}</span>
-                                            <span className="glyphicon icon icon-delete"></span>
+                                            <span className="glyphicon icon icon-delete" onClick={()=>this.delStrategy(index)}></span>
                                         </div>
                                     })
                                 }
