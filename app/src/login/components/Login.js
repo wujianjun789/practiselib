@@ -7,7 +7,7 @@ import {bindActionCreators} from 'redux';
 import {loginHandler} from '../../api/login'
 
 import '../../../public/styles/login.less';
-
+import {getCookie} from '../../util/cache';
 export class Login extends Component{
     constructor(props) {
         super(props);
@@ -25,6 +25,7 @@ export class Login extends Component{
         this.onKeyDown = this.onKeyDown.bind(this);
         this.loginFail = this.loginFail.bind(this);
         this.loginSuccess = this.loginSuccess.bind(this);
+        this.handleTest = this.handleTest.bind(this);
     }
 
     //兼容ie下的清除事件
@@ -52,11 +53,17 @@ export class Login extends Component{
         event.stopPropagation();
     }
 
+    handleTest(){
+        console.log(getCookie("user"));
+    }
+
     submitHandler() {
         this.props.actions.loginHandler(this.state.user.username, this.state.user.password, this.loginSuccess, this.loginFail);
     }
 
     componentDidMount() {
+let logData = getCookie('user');
+console.log(logData);
     }
 
     onKeyDown(event) {
@@ -91,7 +98,7 @@ export class Login extends Component{
                 </header>
                 <div className="container-mid">
                     <div className="login-right pull-right">
-                        <p>用户登录</p>
+                        <p onClick={this.handleTest}>用户登录</p>
                         <div className="form-group has-feedback">
                             <input id = 'username' type="text" className="form-control" value={this.state.user.username} onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
                             <span className = "login_user form-control-feedback"></span>

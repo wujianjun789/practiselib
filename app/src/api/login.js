@@ -2,7 +2,7 @@
  * Created by a on 2017/7/26.
  */
 import {USERCENTER_POPUP_CONFIRM_LOGIN} from '../common/actionTypes/userCenter';
-import {login} from '../util/network';
+import {login} from '../util/network'
 import {setCookie} from '../util/cache'
 
 export const loginHandler = (username, password,cbSuccess,cbFail) => dispatch => {

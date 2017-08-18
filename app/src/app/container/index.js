@@ -24,16 +24,11 @@ export class App extends Component{
     }
 
     componentWillMount(){
-        console.log(localStorage)
-        /*if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
-            
+        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
             this.props.router.push('/login')
-            
         }else{
-
             this.props.actions.loginHandler(sessionStorage.username, sessionStorage.password, this.loginSuccess, this.loginFail);
-
-        }*/
+        }
         // if(this.props.userCenter.islogin!=1){
         //     this.props.router.push('/login')
         // }
@@ -41,12 +36,9 @@ export class App extends Component{
         actions && actions.getModule();
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() {console.log(this.props.userCenter)}
 
     componentWillReceiveProps(nextProps) {
-
-
 
     }
 

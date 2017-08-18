@@ -6,18 +6,15 @@ import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
-
-import { isAuthenticated, isAdmined } from '../authentication/authWrapper';
+import { isAuthenticated, isAdmined } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
+
 export default (
     <Route>
-
-        <Route path="/login" component={Login}>
-        </Route>
         <Route component={Authenticated}>
-            <Route path="/" component={App}>
-            </Route>
+            <Route path="/" component={App}></Route>
+            <Route path="/login" component={Login}></Route>
             <Route path="/assetManage" component={AssetManage}>
                 <Route path="manage" getComponent={(nextState, cb) => {
                     require.ensure([], (require) => {
@@ -87,6 +84,10 @@ export default (
         }} />
     </Route>
 )
+
+
+
+
 
 /*<Route path="/home" getComponent={(nextState, cb) => {
  require.ensure([], (require) => {
