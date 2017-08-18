@@ -72,3 +72,13 @@ export function userDomainAdd(userId,domainId,cb){
         cb && cb()
     })
 }
+
+export function userDomainDelete(userId,domainId,cb){
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/users/'+userId+'/domains/rel/'+domainId,{
+        headers: headers,
+        method: 'DELETE'
+    }, response=>{
+        cb && cb()
+    })
+}

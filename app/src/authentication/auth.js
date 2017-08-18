@@ -1,16 +1,19 @@
+import {getCookie} from '../util/cache'
+
 
 export function isAuthed(auth) {
-  
-  return true;
-}
-export function isAdmin(auth) {
-  return true;
+  return auth && auth.id?true:false;
 }
 
+export function isAdmin(auth) {
+  return auth && auth.roleId && auth.roleId==1?true:false;
+  
+}
 
 export function getAuth() {
   // from storage or cookie
-  return {}
+  let user = getCookie('user');
+  return user;
 }
 export function setAuth(auth) {
   // user storage or cookie
