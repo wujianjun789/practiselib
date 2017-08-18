@@ -1,7 +1,7 @@
 /**
  * Created by a on 2017/7/26.
  */
-import {USERCENTER_POPUP_CONFIRM_LOGIN} from '../common/actionTypes/userCenter';
+
 import {LOGED_IN} from '../authentication/actionTypes'
 import {login} from '../util/network';
 import {setCookie} from '../util/cache'
