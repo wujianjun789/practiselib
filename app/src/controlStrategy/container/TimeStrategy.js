@@ -107,7 +107,7 @@ class TimeStrategy extends Component{
         actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData}
                                                  deviceList={deviceList}
                                                  strategyList={strategyList}
-                                                 onConfirm={(data)=>{}} onCancel={()=>{
+                                                 onConfirm={(data)=>{console.log(data)}} onCancel={()=>{
                                                     actions.overlayerHide();
                                                  }}/>)
     }

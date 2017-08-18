@@ -12,7 +12,7 @@ import Select from '../../components/Select'
 import CustomDateInput from './CustomDateInput';
 
 import {timeStrategy} from '../util/chart';
-import {getMomentDate, momentDateFormat,getMomentUTC,getCurHM} from '../../util/time'
+import {getMomentDate, momentDateFormat,getMomentUTC,getCurHM, getDaysByYearMonth} from '../../util/time'
 
 import {STRATEGY_NAME_LENGTH, Name2Valid} from '../../util/index'
 
@@ -25,8 +25,16 @@ export default class TimeStrategyPopup extends Component{
             chartId:"",
             name:data.name,
             deviceName:data.deviceName,
-            startTime:getMomentDate(),
-            endTime:getMomentDate(),
+            startTime:{
+                year:Immutable.fromJS({value:"0",list:[]}),
+                month:Immutable.fromJS({value:"1", list:[]}),
+                date:Immutable.fromJS({value:"1", list:[]})
+            },
+            endTime:{
+                year:Immutable.fromJS({value:"0",list:[]}),
+                month:Immutable.fromJS({value:"1", list:[]}),
+                date:Immutable.fromJS({value:"1", list:[]})
+            },
             workTime:Immutable.fromJS([{id:1, name:"周一", active:true},{id:2, name:"周二", active:true}, {id:3, name:"周三", active:true},
                     {id:4, name:"周四",active:true},{id:5, name:"周五",active:true},{id:6, name:"周六", active:true},
                     {id:7, name:"周日", active:true}]),
@@ -61,12 +69,55 @@ export default class TimeStrategyPopup extends Component{
         this.delStrategy = this.delStrategy.bind(this);
 
         this.workTimeValid = this.workTimeValid.bind(this);
+        this.getDatesList = this.getDatesList.bind(this);
+        this.timeValid = this.timeValid.bind(this);
+
     }
 
     componentWillMount(){
         this.workTimeValid();
 
-        this.setState({strategyList:this.props.strategyList});
+        const {startTime, endTime} = this.state
+        let year = [];
+        let month = [];
+        let date = [];
+        year.push({id:0, value:0, name:"不限"})
+        for(let i=2015;i<=2035;i++){
+            year.push({id:i, value:i, name:i+"年"});
+        }
+
+        for(let j=1;j<=12;j++){
+            month.push({id:j, value:j, name:j+"月"});
+        }
+
+        date = this.getDatesList(getDaysByYearMonth(0, 1));
+
+        let curDate = new Date();
+
+        let nextDate = new Date(curDate);
+
+        this.setState({
+            strategyList:this.props.strategyList,
+            startTime:{
+                year:Immutable.fromJS({value:curDate.getFullYear(), list:year}),
+                month:Immutable.fromJS({value:curDate.getMonth()+1, list:month}),
+                date:Immutable.fromJS({value:curDate.getDate(),list:date})
+            },
+            endTime:{
+                year:Immutable.fromJS({value:nextDate.getFullYear(),list:year}),
+                month:Immutable.fromJS({value:nextDate.getMonth()+2, list:month}),
+                date:Immutable.fromJS({value:nextDate.getDate(), list:date})
+            }
+        });
+    }
+
+    getDatesList(dates){
+        let date = [];
+        for(let i=1;i<=dates;i++){
+            date.push({id:i, value:i, name:i+"日"});
+        }
+
+        return date;
     }
 
     workTimeValid(){
@@ -99,8 +150,44 @@ export default class TimeStrategyPopup extends Component{
         this.setState({[id]:value, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
     }
 
-    dateOnChange(id, date){
-      this.setState({[id]:date});
+    timeValid(){
+        const {startTime, endTime} = this.state;
+        let startYear = parseInt(startTime.year.get("value"));
+        let startMonth = parseInt(startTime.month.get("value"));
+        let startDate = parseInt(startTime.date.get("value"));
+        let endYear = parseInt(endTime.year.get("value"));
+        let endMonth = parseInt(endTime.month.get("value"));
+        let endDate = parseInt(endTime.date.get("value"));
+
+        let prompt = false;
+        if(startYear>endYear){
+            prompt = true;
+        }else if(startYear==endYear){
+            if(startMonth>endMonth){
+                prompt = true;
+            }else if(startMonth==endMonth){
+                if(startDate>=endDate){
+                    prompt = true;
+                }
+            }
+        }
+
+        this.setState({prompt:Object.assign({}, this.state.prompt, {time:prompt})});
+    }
+
+    dateOnChange(id, childId, selectIndex){
+        let curNode = this.state[id][childId];
+        let curValue = curNode.getIn(["list", selectIndex, "value"]);
+        if(childId=="month"){
+            let year = this.state[id].year.get("value");
+            let days = getDaysByYearMonth(year, curValue);
+            console.log(days);
+            let date = this.getDatesList(days);
+            this.setState({[id]:Object.assign({}, this.state[id], {[childId]:curNode.update("value", v=>curValue)}, {date:Immutable.fromJS({value:1, list:date})})}, this.timeValid)
+            return;
+        }
+
+        this.setState({[id]:Object.assign({}, this.state[id], {[childId]:curNode.update("value", v=>curValue)})}, this.timeValid);
     }
 
     checkOnChange(event){
@@ -178,18 +265,19 @@ export default class TimeStrategyPopup extends Component{
         const {name, deviceName, startTime, endTime, workTime, time, light, strategyList, prompt} = this.state;
         const {deviceList} = this.props;
         let {titleKey, valueKey, options} = deviceList;
-        let valid = prompt.name || !options.length || prompt.workTime;
+        let valid = prompt.name || !options.length || prompt.workTime || prompt.time;
+
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>
 
         return <div className="time-strategy-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} footer={footer}>
-                <div className="row">
+                <div className="row name-container">
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-4 control-label" htmlFor="name">策略名称：</label>
-                            <div className="col-sm-8">
+                            <label className="col-sm-3 control-label" htmlFor="name">策略名称：</label>
+                            <div className="col-sm-9">
                                 <input type="text" className="form-control" id="name" placeholder="输入策略名称"
                                        maxLength={STRATEGY_NAME_LENGTH} value={name} onChange={this.onChange}/>
                                 <span className={prompt.name?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
@@ -199,8 +287,8 @@ export default class TimeStrategyPopup extends Component{
                     </div>
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-4 control-label" htmlFor="deviceName">控制设备：</label>
-                            <div className="col-sm-8">
+                            <label className="col-sm-3 control-label" htmlFor="deviceName">控制设备：</label>
+                            <div className="col-sm-9">
                                 <select className="form-control" id="deviceName" placeholder="选择设备" value={deviceName} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
@@ -212,22 +300,38 @@ export default class TimeStrategyPopup extends Component{
                         </div>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row date-range">
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-4 control-label" htmlFor="startTime">日期范围：</label>
-                            <div className="col-sm-8">
-                                <DatePicker customInput={<CustomDateInput />} dateFormat="MM/DD" selected={startTime} onChange={date=>{this.dateOnChange("startTime", date)}}/>
-                                <span className={false?"prompt ":"prompt hidden"}>{"请选择日期"}</span>
+                            <label className="col-sm-3 control-label" htmlFor="startTime">日期范围：</label>
+                            <div className="col-sm-9">
+                                <div className="col-sm-5 select-container">
+                                    <Select className="form-control" id="startYear" valueKey="value" titleKey="name" data={startTime.year} onChange={selectIndex=>this.dateOnChange("startTime","year", selectIndex)}/>
+                                    <span className={prompt.time?"prompt ":"prompt hidden"}>{"日期错误"}</span>
+                                </div>
+                                <div className="col-sm-3 select-container">
+                                    <Select className="form-control" id="startMonth" valueKey="value" titleKey="name" data={startTime.month} onChange={selectIndex=>this.dateOnChange("startTime", "month", selectIndex)}/>
+                                </div>
+                                <div className="col-sm-3 select-container last">
+                                    <Select className="form-control" id="startDate" valueKey="value" titleKey="name" data={startTime.date} onChange={selectIndex=>this.dateOnChange("startTime", "date", selectIndex)}/>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-6 date-range">
                         <div className="form-group row">
-                            <label className="col-sm-4 control-label" htmlFor="startTime">至：</label>
-                            <div className="col-sm-8">
-                                <DatePicker customInput={<CustomDateInput />} dateFormat="MM/DD" selected={endTime} onChange={date=>{this.dateOnChange("endTime", date)}}/>
-                                <span className={false?"prompt ":"prompt hidden"}>{"请选择日期"}</span>
+                            <label className="col-sm-3 control-label" htmlFor="startTime">至：</label>
+                            <div className="col-sm-9">
+                                <div className="col-sm-5 select-container">
+                                    <Select className="form-control" id="endYear" valueKey="value" titleKey="name" data={endTime.year} onChange={selectIndex=>this.dateOnChange("endTime", "year", selectIndex)}/>
+                                </div>
+                                <div className="col-sm-3 select-container">
+                                    <Select className="form-control" id="endMonth" valueKey="value" titleKey="name" data={endTime.month} onChange={selectIndex=>this.dateOnChange("endTime", "month", selectIndex)}/>
+                                </div>
+                                <div className="col-sm-3 select-container last">
+                                    <Select className="form-control" id="endDate" valueKey="value" titleKey="name" data={endTime.date} onChange={selectIndex=>this.dateOnChange("endTime", "date", selectIndex)}/>
+                                </div>
+                                <span className={false?"prompt ":"prompt hidden"}>{"日期错误"}</span>
                             </div>
                         </div>
                     </div>
@@ -291,6 +395,7 @@ export default class TimeStrategyPopup extends Component{
     }
 }
 
+// <DatePicker customInput={<CustomDateInput />} dateFormat="MM/DD" selected={startTime} onChange={date=>{this.dateOnChange("startTime", date)}}/>
 TimeStrategyPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({

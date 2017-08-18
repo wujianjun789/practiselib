@@ -58,72 +58,6 @@ export function getMomentUTC(mom) {
 }
 
 /**
- * 按照规定时间字符串格式化
- * @param value(格式YYYY-MM-DD HH:mm:ss)
- * return moment
- */
-export function timeStringConvertComent(value) {
-    if(!value)return;
-
-    let d = new Date();
-    let yh;
-    if(value.indexOf(" ")){
-        yh = value.split(" ")
-    }else{
-        yh = value;
-    }
-
-    let yy, hh;
-    if(yh.length && yh[0].indexOf("-")){
-        yy = yh.split("-");
-    }
-
-    if(yh.length==1 && yh[0].indexOf(":")){
-        hh = yh[0].split(":");
-    }
-
-    if((yh.length==2 && yh[1].indexOf(":"))){
-        hh = yh[1].split(":");
-    }
-
-    let year;
-    let month;
-    let date;
-    if(yy.length==3){
-        year = yy[0]
-        month = yy[1]
-        date = yy[2]
-    }else if(yy.length==2){
-        month = yy[0]
-        date = yy[1]
-    }else if(yy.length){
-        date = yy[0]
-    }
-
-    let hours;
-    let minute;
-    let second;
-    if(hh.length==3){
-        hours = hh[0];
-        minute = hh[1];
-        second = hh[2];
-    }else if(hh.length==2){
-        minute = hh[0];
-        second = hh[1];
-    }else if(hh.length){
-        second = hh[0]
-    }
-
-    year && d.setYear(year)
-    month && d.setMonth(month);
-    date && d.setDate(date);
-    hours && d.setHours(hours)
-    minute && d.setMinutes(minute);
-    second && d.setSeconds(second);
-    return getMomentDate(d);
-}
-
-/**
  * 获取当前时间时分
  * @returns {*}
  */
@@ -132,4 +66,38 @@ export function getCurHM() {
     let hours = d.getHours();
     let minute = d.getMinutes();
     return (hours<10?'0'+hours:hours)+':'+(minute<10?'0'+minute:minute);
+}
+
+/**
+ *
+ * @param yearStr(格式YYYY-MM-DD HH:mm:ss)
+ * @returns {Date}
+ */
+export function getDateByYear(yearStr) {
+    return new Date(yearStr);
+}
+
+/**
+ *
+ * @param year
+ * @param month(注意month+1)
+ */
+export function getDaysByYearMonth(year, month) {
+    if(year==0){
+        if(month==1 || month==3 || month==5 || month ==7 || month==8 || month==10 || month==12){
+            return 31;
+        }
+
+        if(month==4 || month==6 || month==9 || month ==11){
+            return 30;
+        }
+
+        if(month==2){
+            return 29;
+        }
+    }
+
+    let d = getDateByYear(year+"-"+(parseInt(month)+1));
+    d.setDate(0);
+    return d.getDate();
 }
