@@ -77,6 +77,12 @@ export class UserPopup extends Component{
     }
 
     checkOut(id){
+        /*  case 'username':
+            case 'lastName':
+            case 'firstName':
+            break;
+         * 
+         */
         switch(id){
             case 'username':
                 break;
