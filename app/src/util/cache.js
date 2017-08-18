@@ -43,6 +43,14 @@ export function getCookie(key) {
     // }
 }
 
+export function deleteCookie(key){
+    try{
+        document.cookie = key+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }catch (err){
+        console.log('删cookie错误:'+key);
+    }
+}
+
 /**
  *  设置缓存
  * @param key

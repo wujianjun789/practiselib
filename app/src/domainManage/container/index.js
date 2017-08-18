@@ -20,9 +20,7 @@ class DomainManageIndex extends Component{
     }
 
     componentWillMount(){
-        if(this.props.userCenter.islogin!=1){
-            this.props.router.push('/login')
-        }
+        
         this.initTreeData();
     }
 
@@ -31,7 +29,6 @@ class DomainManageIndex extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props.userCenter); 
     }
 
     initTreeData(){

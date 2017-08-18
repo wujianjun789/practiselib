@@ -9,10 +9,6 @@ export function timeStrategy(data) {
         svg_width = energy.parentNode.offsetWidth;
     }
 
-    if(lineAreaChart){
-        lineAreaChart.destory();
-    }
-
     let lineAreaChart = new LineAreaChart(data.id, {
         id:'timeStrategy',
         w: svg_width,

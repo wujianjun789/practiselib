@@ -19,10 +19,8 @@ class SystemOperationIndex extends Component{
         this.onToggle = this.onToggle.bind(this);
     }
 
-    componentWillMount(){
-        if(this.props.userCenter.islogin!=1){
-            this.props.router.push('/login')
-        }
+    componentWillMount(){        
+      
         this.mounted = true;
         getModelData(null, ()=>{this.mounted && this.initTreeData()})
     }
@@ -32,7 +30,6 @@ class SystemOperationIndex extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props.userCenter); 
     }
 
     initTreeData(){
@@ -40,6 +37,7 @@ class SystemOperationIndex extends Component{
     }
 
     onToggle(node){
+        // console.log(node);
         // this.props.actions.sideBarToggled(node);
     }
 
@@ -50,10 +48,10 @@ class SystemOperationIndex extends Component{
             path = children.props.route.path;
         }
         return <div className={"container "+path}>
-            <HeadBar moduleName={"系统运维"} router={this.props.router}/>
-            <SideBar onToggle={this.onToggle}/>
-            {this.props.children}
-            <Overlayer />
+                    <HeadBar moduleName={"系统运维"} router={this.props.router}/>
+                    <SideBar onToggle={this.onToggle}/>
+                    {this.props.children}
+                    <Overlayer />
         </div>
     }
 }

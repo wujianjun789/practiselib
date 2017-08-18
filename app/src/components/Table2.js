@@ -26,6 +26,10 @@ export default class Table2 extends Component {
         this.props.allCheckChange && this.props.allCheckChange();
     }
 
+    componentDidMount(){
+        console.log(this.props);
+    }
+
     rowCheckChange(rowId, value) {
         this.props.rowCheckChange && this.props.rowCheckChange(rowId, value);
     }
@@ -47,7 +51,7 @@ export default class Table2 extends Component {
     }
 
     render() {
-        let {columns=[], data=[], allChecked, keyField, isEdit, className='', activeId} = this.props;
+        let {columns=[], data=[], allChecked, keyField='id', isEdit, className='', activeId} = this.props;
         return (
             <div className={`table-responsive ${className}`}>
                 <table className="table table-hover">
@@ -71,6 +75,7 @@ export default class Table2 extends Component {
                     {
                         data.map((row, index)=> {
                             let curId = row.id;
+                            console.log(row)
                             return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
                                     {
@@ -85,9 +90,9 @@ export default class Table2 extends Component {
                                 {
                                     isEdit &&
                                         <td className = 'button-icon'>
-                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="icon-domain-edit"></span></a>
-                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon-table-edit"></span></a>
-                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon-table-delete"></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="domain">域管理</span><span className="icon-domain-edit"></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="update">修改</span><span className="icon-table-edit"></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="del">删除</span><span className="icon-table-delete"></span></a>
                                         </td>
                                 }
 

@@ -57,7 +57,6 @@ export class Login extends Component{
     }
 
     componentDidMount() {
-        console.log(this.props.userCenter)
     }
 
     onKeyDown(event) {

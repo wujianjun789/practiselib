@@ -3,7 +3,7 @@ body {
     min-width:1205px;
     height: 100%;
     margin: 0;
-    font-family: 'Helvetica Neue','Hiragino Sans GB','WenQuanYi Micro Hei','Microsoft Yahei',sans-serif;
+    font-family: 'Microsoft Yahei','Helvetica Neue','Hiragino Sans GB','WenQuanYi Micro Hei',sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 

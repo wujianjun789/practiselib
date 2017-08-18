@@ -27,7 +27,7 @@ export class PermissionManage extends Component{
                 current: 1,
                 total: 21
             }),
-            popupinfo:{
+            popupInfo:{
                 username:'',
                 lastName:'',
                 firstName:'',
@@ -43,18 +43,19 @@ export class PermissionManage extends Component{
         this.requestData = this.requestData.bind(this);
         this.dataHandle = this.dataHandle.bind(this);
         this.confirmClick = this.confirmClick.bind(this);
+        this.rowEdit = this.rowEdit.bind(this);
+        this.rowDelete = this.rowDelete.bind(this);
+        this.rowDomainEdit = this.rowDomainEdit.bind(this);
+        
     }
 
-    componentWillMount(){
-        if(this.props.userCenter.islogin!=1){
-            this.props.router.push('/login')
-        }
+    componentWillMount(){        
+       
         this.mounted = true;
         this.requestData();
     }
 
     componentDidMount(){
-        console.log(this.props.userCenter); 
     }
 
     componentWillUnmount(){
@@ -62,7 +63,6 @@ export class PermissionManage extends Component{
     }
 
     onClick(){
-        // const popupinfo = this.props.permissionManage.popupinfo;
         this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick}/>);
     }
 
@@ -92,7 +92,24 @@ export class PermissionManage extends Component{
 
     dataHandle(datas){
         let result = datas.map(item=>{
-            item.role = <div className='role-icon'><span className={`icon role${item.roleId}`}></span></div>;
+            let roleName = ''
+            switch(item.roleId){
+                case 1:
+                    roleName = '系统管理员';
+                    break;
+                case 2:
+                    roleName = '设备管理员';
+                    break;
+                case 3:
+                    roleName = '设备操作员';
+                    break;
+                case 4:
+                    roleName = '访客';
+                    break;
+                default:
+                    roleName = '访客';
+            }
+            item.role = <div className='role-icon'><span className={`icon role${item.roleId}`}>{roleName}</span></div>;
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
@@ -100,24 +117,24 @@ export class PermissionManage extends Component{
     }
 
     rowEdit(id){
-        let popupinfo = getObjectByKeyObj(this.state.datas,'id',id);
-        switch(popupinfo.roleId){
+        let popupInfo = getObjectByKeyObj(this.state.datas,'id',id);
+        switch(popupInfo.roleId){
             case 1:
-                popupinfo.roleId = {index:3, value:'系统管理员'};
+                popupInfo.roleId = {index:3, value:'系统管理员'};
                 break;
             case 2:
-                popupinfo.roleId = {index:2, value:'设备管理员'};
+                popupInfo.roleId = {index:2, value:'设备管理员'};
                 break;
             case 3:
-                popupinfo.roleId = {index:1, value:'设备操作员'};
+                popupInfo.roleId = {index:1, value:'设备操作员'};
                 break;
             case 4:
-                popupinfo.roleId = {index:0, value:'访客'};
+                popupInfo.roleId = {index:0, value:'访客'};
                 break;
             default:
-                popupinfo.roleId = {index:0, value:'访客'};
+                popupInfo.roleId = {index:0, value:'访客'};
         }
-        this.setState({popupinfo:Object.assign(this.state.popupinfo,popupinfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupinfo} isEdit onConfirm={this.confirmClick}/>))
+        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupInfo} isEdit onConfirm={this.confirmClick}/>))
         
     }
 
@@ -154,8 +171,8 @@ export class PermissionManage extends Component{
                         <button className='btn btn-primary' onClick={this.onClick}>添加</button>
                     </div>
                     <div className="table-container">
-                        <Table2 columns={this.columns} data = {this.state.datas} isEdit keyField='id' rowDelete={(id)=>this.rowDelete(id)} rowEdit={(id)=>this.rowEdit(id)} rowDomainEdit={(id)=>this.rowDomainEdit(id)}/>
-                        <Page className="page" showSizeChanger pageSize={page.get('pageSize')} current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
+                        <Table2 columns={this.columns} data = {this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit}/>
+                        <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')} current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
                 </div>
                 
@@ -167,7 +184,6 @@ export class PermissionManage extends Component{
 
 const mapStateToprops = (state, ownProps) => {
     return{
-        permissionManage:state.permissionManage,
         userCenter:state.userCenter
     }
 }

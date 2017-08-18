@@ -118,7 +118,7 @@
             font-size: 32px;
             height: @header-height;
             line-height: @header-height;
-            padding-left: 10px;
+            padding-left: 14px;
             padding-right: 10px;
             > span {
                 float: left;
@@ -133,13 +133,35 @@
             
             > .tit {
                 color: #00d8ff;
-                padding-left: 10px;
+                padding-left: 14px;
                 padding-right: 10px;
                 font-size:25px;
             }
             > .name {
                 color: #fff;
                 font-size: 25px;
+                text-indent:10px;
+                padding-right: 10px;
+                > span {
+                    padding-left: 10px;
+                    border-left: 1px solid #616774;
+                }
+            }
+        }
+        > .header-right {
+            display: inline-block;
+            font-size: 32px;
+            height: @header-height;
+            line-height: @header-height;
+            padding-left: 10px;
+            padding-right: 10px;
+            
+            > span {
+                float: right;
+            }
+            > .name {
+                color: #fff;
+                font-size: 22px;
                 text-indent:10px;
                 padding-right: 10px;
                 > span {
