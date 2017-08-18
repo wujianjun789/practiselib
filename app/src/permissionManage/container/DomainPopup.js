@@ -45,14 +45,20 @@ export class DomainPopup extends Component{
         this.userDomainHandle = this.userDomainHandle.bind(this);
         this.onToggle = this.onToggle.bind(this);
         this.searchChange = this.searchChange.bind(this);
-        this.searchSubmit = this.searchSubmit.bind(this);
         this.getParentDomain = this.getParentDomain.bind(this);
         this.getChildsDomain = this.getChildsDomain.bind(this);
         this.domainAdd = this.domainAdd.bind(this);
+        this.dataInit =this.dataInit.bind(this);
     }
 
     componentWillMount(){
         this.mounted = true;
+        // getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)})
+        // getDomainList((response)=>{this.mounted && this.domainHandle(response)});
+        this.dataInit();
+    }
+
+    dataInit(){
         getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)})
         getDomainList((response)=>{this.mounted && this.domainHandle(response)});
     }
@@ -108,14 +114,32 @@ export class DomainPopup extends Component{
         let {domainList,deleteDomainIds} = this.state;
         let index = getIndexByKey(domainList,'id',id)
         deleteDomainIds.push(id);
-        this.setState({domainList:domainList.delete(index),deleteDomainIds:deleteDomainIds},()=>this.domainHandle(this.state.nodes.toJS()));
+        this.setState({domainList:domainList.delete(index),deleteDomainIds:deleteDomainIds},()=>{this.isAddDataHandle(id)});
     }
 
     domainAdd(id){
         let {domainList,addDomainIds} = this.state;
         let node = getObjectByKey(this.state.nodes,'id',id);
         addDomainIds.push(id);
-        this.setState({domainList:domainList.push(node),addDomainIds:addDomainIds},()=>this.domainHandle(this.state.nodes.toJS()));
+        this.setState({domainList:domainList.push(node),addDomainIds:addDomainIds},()=>{this.isAddDataHandle(id)});
+    }
+    
+    isAddDataHandle(id){
+        let {domainList,nodes} = this.state;
+        // let index = getIndexByKey(nodes,'id',id);
+        // let node = getObjectByKey(nodes,'id',id)
+        // node = node.update('isAdd',v=>!v);
+        // nodes= nodes.set(index,node);
+        // let newNodes = nodes.map(item=>{
+        //     let parent = getObjectByKey(nodes,'id',item.get('parentId'));
+        //     return item.update('isAdd',v=>(parent && parent.get('isAdd'))?true:(getIndexByKey(domainList,'id',item.get('id'))>-1?true:false));
+        // })
+        let newNodes = nodes.toJS();
+        newNodes.map(item=>{
+            let parent = getObjectByKeyObj(newNodes,'id',item.parentId);
+            item.isAdd = parent && parent.isAdd?true:(getIndexByKey(domainList,'id',item.id)>-1?true:false);
+        })
+        this.setState({nodes:Immutable.fromJS(newNodes)});
     }
     
     onConfirm(){
@@ -123,6 +147,8 @@ export class DomainPopup extends Component{
         console.log(deleteDomainIds);
         console.log('.....')
         console.log(addDomainIds);
+
+        // dataInit();
         this.props.action.overlayerHide();
     }
 
@@ -136,13 +162,8 @@ export class DomainPopup extends Component{
     }
 
     searchChange(value){
-        this.setState({search:this.state.search.update('value', v=>value)});
-    }
-
-    searchSubmit(){
-        let search = this.state.search.get('value');
         let {nodes} = this.state;
-        let searchNodes = getListKeyByKeyFuzzy(this.state.nodes,'name',search,'id');
+        let searchNodes = getListKeyByKeyFuzzy(this.state.nodes,'name',value,'id');
         let searchResult=[];
         searchNodes.map(id=>{
             searchResult.push(id);
@@ -152,7 +173,7 @@ export class DomainPopup extends Component{
         let newNodes = nodes.map(item=>{
             return item.update('hidden',v=>searchResult.indexOf(item.get('id'))<0?true:false).update('toggle',v=>true);
         })
-        this.setState({nodes:newNodes})
+        this.setState({search:this.state.search.update('value', v=>value),nodes:newNodes})
     }
 
     getParentDomain(id,searchResult){
@@ -173,9 +194,6 @@ export class DomainPopup extends Component{
     render() {
         let {className = '',title = ''} = this.props;
         let {toggle,domainList,data,tree,nodes,search} = this.state;
-        console.log(tree);
-        console.log('.........')
-        console.log(nodes.toJS());
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
@@ -183,7 +201,7 @@ export class DomainPopup extends Component{
                     <label className="col-sm-2 control-label">域权限:</label>
                     <div className="col-sm-10">
                         <div className='col-sm-6 domain-add'>
-                            <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)} submit={()=>this.searchSubmit()}/> 
+                            <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
                             <div className='domain-tree'>
                                 {
                                     tree && tree.map((node)=>{
