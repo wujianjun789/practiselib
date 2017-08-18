@@ -20,9 +20,7 @@ class SystemOperationIndex extends Component{
     }
 
     componentWillMount(){        
-        if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
-            this.props.router.push('/login') 
-        }else{}
+      
         this.mounted = true;
         getModelData(null, ()=>{this.mounted && this.initTreeData()})
     }
@@ -39,7 +37,7 @@ class SystemOperationIndex extends Component{
     }
 
     onToggle(node){
-        console.log(node);
+        // console.log(node);
         // this.props.actions.sideBarToggled(node);
     }
 
@@ -59,7 +57,6 @@ class SystemOperationIndex extends Component{
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         userCenter:state.userCenter
     }

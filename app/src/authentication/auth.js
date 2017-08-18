@@ -1,25 +1,18 @@
-import {getCookie} from '../util/cache';
+import {getCookie} from '../util/cache'
+
 
 export function isAuthed(auth) {
-	let logData = getCookie('user');
-	if(logData.userId!=''||logData.userId!=null||logData.userId!=undefined){
-		return true
-	}else{return false}
+  return auth && auth.id?true:false;
 }
 
 export function isAdmin(auth) {
-let logData = getCookie('user');
-	if(logData.userId==1){
-  		return true;
-  	}else{
-  		return false;
-  	}
-
+  return auth && auth.roleId && auth.roleId==1?true:false;
 }
 
 export function getAuth() {
   // from storage or cookie
-  return {}
+  let user = getCookie('user');
+  return user;
 }
 export function setAuth(auth) {
   // user storage or cookie

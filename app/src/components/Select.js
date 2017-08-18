@@ -11,16 +11,17 @@ export default class Select extends Component{
     }
 
     onChange(event){
-        this.props.onChange && this.props.onChange(event && event.target.selectedIndex);
+        this.props.onChange && this.props.onChange(event.target.selectedIndex);
     }
 
     render(){
-        const {className='', data=Immutable.fromJS({list:[],placeholder:'',value:''})} = this.props;
-        return <select className={"select "+className} placeholder={data.get('placeholder')} value={data.get('value')} onChange={this.onChange}>
+        const {className='', id='', valueKey="value", titleKey="value", data=Immutable.fromJS({list:[], value:'',placeholder:""})} = this.props;
+        return <select className={"select "+className} id={id} placeholder={data.get('placeholder')} value={data.get("value")} onChange={this.onChange}>
             {
                  data.get('list').map((option, index)=>{
-                     let value = option.get('value');
-                    return <option key={index} value={value}>{value}</option>
+                     let value = option.get(valueKey);
+                     let title = option.get(titleKey);
+                    return <option key={index} value={value}>{title}</option>
                 })
             }
 

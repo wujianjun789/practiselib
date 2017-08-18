@@ -60,7 +60,7 @@ export class SensorStrategy extends Component{
         const initData = {
             id: '',
             strategyName: '',
-            sensorType: '',
+            sensorType: 'windy',
             controlDevice: '',
             screenSwitch: 'on',
             sensorParam: '',
@@ -86,7 +86,7 @@ export class SensorStrategy extends Component{
         const initData = {
             id: '',
             strategyName: '',
-            sensorType: '',
+            // sensorType: '',
             controlDevice: '',
             screenSwitch: 'on',
             sensorParam: '',

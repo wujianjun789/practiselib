@@ -56,6 +56,11 @@
 .time-strategy-popup{
   width: 700px;
   .modal-body{
+    >.row{
+      margin-right: 0;
+      margin-left: 0;
+    }
+
     height: 400px;
 
     overflow-x: hidden;
@@ -78,6 +83,7 @@
 
     padding-top: 6px;
     padding-right: 0;
+    padding-left: 0;
     height: 40px;
     color: #4d4d4d;
   }
@@ -92,23 +98,76 @@
     }
   }
 
-  .work-day, .chart, .set-light{
+  .name-container{
+    .col-sm-9{
+      padding-right: 0;
+    }
+  }
+
+  .date-range{
+    .col-sm-9{
+      padding-right: 0;
+
+      .select-container{
+        padding-right: 5px;
+        padding-left: 0px;
+
+        &.last{
+          padding-right: 0;
+        }
+        select{
+          padding: 6px 3px;
+        }
+      }
+
+      .col-sm-3{
+        width: 29%;
+      }
+    }
+
+
+  }
+  .chart, .set-light{
     .control-label{
-      width: 18%;
+      width: 13%;
+
+      //margin-left: -4px;
     }
   }
 
   .work-day{
     .form-group{
+      .control-label{
+        width: 14%;
+
+        //margin-left: -9px;
+      }
+
       .col-sm-9{
+        width: 86%;
+
         margin-top: 6px;
+        .checkbox-inline{
+          padding-right: 20px;
+          input{
+            width: 18px;
+            height: 18px;
+
+            margin-top: 2px;
+          }
+        }
       }
     }
   }
 
   .chart{
     .col-sm-9{
-      margin-left: 15px;
+      width: 87%;
+      //margin-right: -15px;
+      //margin-left: -15px;
+
+      //padding-right: 0;
+      //padding-left: 0;
     }
 
     .time-strategy-chart{
@@ -162,6 +221,8 @@
 
   .set-light{
     .right{
+      width: 82%;
+
       margin-left: 15px;
 
       padding-top: 20px;
@@ -245,10 +306,12 @@
     margin: 20px;
     padding: 20px;
     background-color: #fff;
+    border: 1px solid #e6e6e6;
     > .pagination {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin: 0;
     }
   }
 }
@@ -268,7 +331,7 @@
     }
     > .form-group-right {
       float: left;
-      width: 533px;
+      width: 525px;
       padding-left: 0;
       > .form-control {
         height: 40px;
@@ -330,7 +393,7 @@
       > .form-group-right {
         height: 160px;
         // border: 1px solid #ccc;
-        padding-right: 20px;
+        // padding-right: 20px;
         margin-bottom: 30px;
       }
     }
@@ -364,4 +427,8 @@
     border-top: none;
     padding-bottom: 20px;
   }
+}
+
+.latlng-strategy-popup{
+  width: 700px;
 }

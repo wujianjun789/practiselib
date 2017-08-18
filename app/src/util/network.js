@@ -124,10 +124,10 @@ export function getToken() {
         }
     }
     else{
-        if(location && location.hostname)
-            {
-                location.href="http://"+location.hostname+":8080/login"
-            }
+        // if(location && location.hostname)
+        //     {
+        //         location.href="http://"+location.hostname+":8080/login"
+        //     }
 
             return null            
     }
