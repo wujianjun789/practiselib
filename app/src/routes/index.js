@@ -12,9 +12,9 @@ const Admined = isAdmined(props => props.children);
 
 export default (
     <Route>
+        <Route path="/login" component={Login}></Route>
         <Route component={Authenticated}>
             <Route path="/" component={App}></Route>
-            <Route path="/login" component={Login}></Route>
             <Route path="/assetManage" component={AssetManage}>
                 <Route path="manage" getComponent={(nextState, cb) => {
                     require.ensure([], (require) => {
