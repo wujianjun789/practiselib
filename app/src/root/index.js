@@ -9,7 +9,9 @@ const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store);
 
 import {getConfig} from '../util/network'
-const root = <Provider store={store}>
-    <Router key="router" history={history} routes={routes} />
-</Provider>
-ReactDOM.render(root, document.getElementById('root'), getConfig)
+getConfig(()=>{
+    const root = <Provider store={store}>
+        <Router key="router" history={history} routes={routes} />
+    </Provider>
+    ReactDOM.render(root, document.getElementById('root'));
+})

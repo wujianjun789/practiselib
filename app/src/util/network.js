@@ -96,6 +96,13 @@ function parseJSON(response) {
     }
 }
 
+export function getHostIP() {
+    if(!HOST_IP){
+        HOST_IP = getCookie("host_ip");
+    }
+    return HOST_IP;
+}
+
 export function getHttpHeader(data) {
     let object = {};
     let token = getToken();
@@ -134,12 +141,13 @@ export function getToken() {
     
 }
 
-export function getConfig() {
+export function getConfig(cb) {
     httpRequest('/config',{
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {
         setCookie("host_ip",response);
+        cb && cb();
     })
 }
 
@@ -166,7 +174,8 @@ export function getModuleConfig(responseFun, errFun) {
 }
 
 export function login(data, responseCall, errCall) {
-    httpRequest(`${HOST_IP}/users/login`, {
+    let host = getHostIP();
+    httpRequest(`${host}/users/login`, {
         method: 'POST',
         headers: HEADERS_CONTENT_TYPE_JSON,
         credentials: 'same-origin',

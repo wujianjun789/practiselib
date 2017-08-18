@@ -9,6 +9,10 @@
 export function setCookie(key, value) {
     try {
         let cookie = document.cookie
+        if(getCookie(key)){
+            return;
+        }
+
         document.cookie = key+"="+JSON.stringify(value);
         // $.cookie(key, JSON.stringify(value), {expires:1});
     }catch (err){
