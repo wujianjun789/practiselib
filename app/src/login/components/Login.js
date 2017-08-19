@@ -62,8 +62,35 @@ export class Login extends Component{
     }
 
     componentDidMount() {
-let logData = getCookie('user');
-console.log(logData);
+        var canvas = document.getElementById("canvas"),
+            ctx = canvas.getContext("2d"),
+            cw = window.innerWidth,
+            ch = 460;
+        canvas.width = cw;
+        canvas.height = ch;
+        var fontsize = 29;
+        var columns = Math.ceil(cw/fontsize);
+        var drops = [];
+        var texts = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        for(var i=0,len=columns;i<len;i++){
+            drops[i] = 1;
+        }
+        function run(){
+            ctx.fillStyle = "rgba(24,133,255,0.4)";
+            ctx.fillRect(0,0,cw,ch);
+            ctx.fillStyle = "rgba(134,202,255,1)";
+            ctx.font = fontsize + "px Optima";
+            for(var i=0,len=drops.length;i<len;i++){
+                var text = texts[Math.floor(Math.random()*texts.length)];
+                ctx.fillText(text,i*fontsize,drops[i]*fontsize);
+
+                if(drops[i]*fontsize>ch || Math.random()>0.95){
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(run,80);
     }
 
     onKeyDown(event) {
@@ -97,6 +124,10 @@ console.log(logData);
                     </div>
                 </header>
                 <div className="container-mid">
+                    <div className="bg-anm">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    <div className="bg-cover"></div>
                     <div className="login-right pull-right">
                         <p onClick={this.handleTest}>用户登录</p>
                         <div className="form-group has-feedback">
