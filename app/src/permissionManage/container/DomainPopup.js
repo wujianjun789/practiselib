@@ -15,7 +15,7 @@ import SearchText from '../../components/SearchText';
 import Node from '../../components/Node';
 import {getIndexByKey,getObjectByKey,getListKeyByKeyFuzzy,getObjectByKeyObj,getListKeyByKey} from '../../util/algorithm';
 const _ = require('lodash');
-
+import {updateUserDomain} from '../../api/permission'
 export class DomainPopup extends Component{
     constructor(props){
         super(props);
@@ -32,9 +32,7 @@ export class DomainPopup extends Component{
                 {id:5,name:'莘庄',toggle:true,isAdd:true,hidden:true},
                 {id:6,name:'七宝',toggle:true,isAdd:true,hidden:false},
                 {id:7,name:'浦东',toggle:true,isAdd:false,hidden:false}
-            ]),
-            addDomainIds:[],
-            deleteDomainIds:[]
+            ])
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -111,17 +109,15 @@ export class DomainPopup extends Component{
     }
 
     domainDelete(id){
-        let {domainList,deleteDomainIds} = this.state;
+        let {domainList} = this.state;
         let index = getIndexByKey(domainList,'id',id)
-        deleteDomainIds.push(id);
-        this.setState({domainList:domainList.delete(index),deleteDomainIds:deleteDomainIds},()=>{this.isAddDataHandle(id)});
+        this.setState({domainList:domainList.delete(index)},()=>{this.isAddDataHandle(id)});
     }
 
     domainAdd(id){
-        let {domainList,addDomainIds} = this.state;
+        let {domainList} = this.state;
         let node = getObjectByKey(this.state.nodes,'id',id);
-        addDomainIds.push(id);
-        this.setState({domainList:domainList.push(node),addDomainIds:addDomainIds},()=>{this.isAddDataHandle(id)});
+        this.setState({domainList:domainList.push(node)},()=>{this.isAddDataHandle(id)});
     }
     
     isAddDataHandle(id){
@@ -143,12 +139,12 @@ export class DomainPopup extends Component{
     }
     
     onConfirm(){
-        let {deleteDomainIds,addDomainIds} = this.state;
-        console.log(deleteDomainIds);
-        console.log('.....')
-        console.log(addDomainIds);
-
-        // dataInit();
+        let {domainList} = this.state;
+        let domainIds = [];
+        domainList.map(item=>{
+            domainIds.push(item.get('id'));
+        })
+        updateUserDomain(this.props.id,domainIds,this.dataInit)
         this.props.action.overlayerHide();
     }
 
