@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
+import LineChart from '../util/LineChart';
 import PropTypes from 'prop-types';
 
 let options = (function generateLampLightnessList() {
@@ -20,6 +21,7 @@ export default class SensorStrategyPopup extends Component {
         super(props);
         const {id, strategyName, sensorType='windy', controlDevice, screenSwitch, sensorParam, lightness} = this.props.data;
         this.state = {
+            chart: null,
             data: {
                 id, strategyName, sensorType, controlDevice, screenSwitch, sensorParam, lightness
             },
@@ -54,11 +56,11 @@ export default class SensorStrategyPopup extends Component {
                 ]
             },
             sensorParamsList: [
-                {id: 0, sensorParam: '5', operator: '关'},
-                {id: 1, sensorParam: '10', operator: '亮度10'},
-                {id: 2, sensorParam: '15', operator: '亮度20'},
-                {id: 3, sensorParam: '20', operator: '亮度30'},
-                {id: 4, sensorParam: '25', operator: '亮度40'}
+                {id: 0, sensorParam: 5, operator: {value: 'off', title: '关'} },
+                {id: 1, sensorParam: 10, operator: {value: 10, title: '亮度10'} },
+                {id: 2, sensorParam: 15, operator: {value: 20, title: '亮度20'} },
+                {id: 3, sensorParam: 20, operator: {value: 10, title: '亮度10'} },
+                {id: 4, sensorParam: 25, operator: {value: 20, title: '亮度20'} }
             ],
             sensorsUnit: {
                 windy: 'm/s',
@@ -70,7 +72,7 @@ export default class SensorStrategyPopup extends Component {
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.sensorParamDelete = this.sensorParamDelete.bind(this);
-
+        this.drawLineChart = this.drawLineChart.bind(this);
     }
 
     onChange(e) {
@@ -99,6 +101,42 @@ export default class SensorStrategyPopup extends Component {
 
     sensorParamDelete(id) {
 
+    }
+
+    drawLineChart(ref) {
+        let chart = new LineChart({
+            wrapper: ref,
+            data: {values: this.state.sensorParamsList},
+            xAccessor: d=>d.sensorParam,
+            yAccessor: d => {
+                if (d.operator.value=='off') {
+                    return 0;
+                } else {
+                    return d.operator.value;
+                }
+            },
+            curveFactory: d3.curveStepAfter,
+            tickFormat: d => `${d}${this.state.sensorsUnit[this.state.data.sensorType]}`,
+            padding: {left: 0, top: 20, right: 0, bottom: 20}
+        });
+        this.setState({chart: chart});
+    }
+
+    componentDidMount() {
+        // this.interval = setInterval(()=>{
+        //     let sensorParamsList = Object.assign([], this.state.sensorParamsList);
+        //     let item = sensorParamsList.shift();
+        //     sensorParamsList.push(item);
+        //     this.setState({sensorParamsList}, ()=>{
+        //         this.state.chart.updateChart({values: this.state.sensorParamsList});
+        //     });
+        // }, 1000)
+    }
+
+    componentWillUnmount() {
+        this.state.chart.destroy();
+        this.setState({chart: null});
+        // clearInterval(this.interval);
     }
 
     render() {
@@ -139,8 +177,7 @@ export default class SensorStrategyPopup extends Component {
                 </div>
                 <div className="form-group chart">
                     <label className="control-label">图表：</label>
-                    <div className="form-group-right">
-                    </div>
+                    <div className="form-group-right" ref={this.drawLineChart}></div>
                 </div>
                 <div className="form-group">
                     <label className="control-label">设置参数：</label>
@@ -162,7 +199,7 @@ export default class SensorStrategyPopup extends Component {
                             </div>
                             <ul>
                             {
-                                sensorParamsList.map((item, index) => <li key={item.id}><span className="sensor-param">{`${item.sensorParam} ${sensorsUnit[data.sensorType]?sensorsUnit[data.sensorType]:''}`}</span><span className="sensor-other">{item.operator}</span><span className="glyphicon glyphicon-trash" onClick={this.sensorParamDelete}></span></li>)
+                                sensorParamsList.map((item, index) => <li key={item.id}><span className="sensor-param">{`${item.sensorParam} ${sensorsUnit[data.sensorType]?sensorsUnit[data.sensorType]:''}`}</span><span className="sensor-other">{item.operator.title}</span><span className="glyphicon glyphicon-trash" onClick={this.sensorParamDelete}></span></li>)
                             }
                             </ul>
                         </div>
