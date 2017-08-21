@@ -15,7 +15,7 @@ export class Login extends Component{
             style: { visibility: 'hidden' },
             user: { 
                 username: '',
-                password: '',
+                password: ''
             }
         }
         this.submitHandler = this.submitHandler.bind(this);
@@ -68,7 +68,7 @@ export class Login extends Component{
             ch = 460;
         canvas.width = cw;
         canvas.height = ch;
-        var fontsize = 22;
+        var fontsize = 32;
         var columns = Math.ceil(cw/fontsize);
         var drops = [];
         var texts = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
