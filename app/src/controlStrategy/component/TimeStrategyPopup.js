@@ -17,6 +17,8 @@ import {getMomentDate, momentDateFormat,getMomentUTC,getCurHM, getDaysByYearMont
 import {STRATEGY_NAME_LENGTH, Name2Valid} from '../../util/index'
 
 import Immutable from 'immutable'
+
+const date_year = "不限";
 export default class TimeStrategyPopup extends Component{
     constructor(props){
         super(props);
@@ -81,7 +83,7 @@ export default class TimeStrategyPopup extends Component{
         let year = [];
         let month = [];
         let date = [];
-        year.push({id:0, value:0, name:"不限"})
+        year.push({id:0, value:0, name:date_year})
         for(let i=2015;i<=2035;i++){
             year.push({id:i, value:i, name:i+"年"});
         }
@@ -170,6 +172,10 @@ export default class TimeStrategyPopup extends Component{
                     prompt = true;
                 }
             }
+        }else if(startYear == 0 &&　endYear != 0){
+            prompt = true
+        }else if(startYear != 0 && endYear == 0){
+            prompt = true
         }
 
         this.setState({prompt:Object.assign({}, this.state.prompt, {time:prompt})});
@@ -181,7 +187,6 @@ export default class TimeStrategyPopup extends Component{
         if(childId=="month"){
             let year = this.state[id].year.get("value");
             let days = getDaysByYearMonth(year, curValue);
-            console.log(days);
             let date = this.getDatesList(days);
             this.setState({[id]:Object.assign({}, this.state[id], {[childId]:curNode.update("value", v=>curValue)}, {date:Immutable.fromJS({value:1, list:date})})}, this.timeValid)
             return;
