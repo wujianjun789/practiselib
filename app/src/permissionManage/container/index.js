@@ -101,13 +101,13 @@ export class PermissionManage extends Component{
                     roleName = {title:'设备管理员',cls:"eqpManage"};
                     break;
                 case 3:
-                    roleName = {title:'设备操作员',cls:"eqpOperate"};
+                    roleName = {title:'设备操作员',cls:"info"};
                     break;
                 case 4:
-                    roleName = {title:'访客',cls:"guest"};
+                    roleName = {title:'访客',cls:"success"};
                     break;
                 default:
-                    roleName = {title:'访客',cls:"guest"};
+                    roleName = {title:'访客',cls:"success"};
             }
             item.role = <div className='role-icon'><span className={`icon btn btn-${roleName.cls}` }>{roleName.title}</span></div>;
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
