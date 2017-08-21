@@ -427,6 +427,7 @@ ul {
 
 .tree-list .tree-2 > li > a > div:hover {
     background: #cce7ed;
+    
 }
 
 .tree-list .tree-2 .active > a > div {
@@ -435,6 +436,7 @@ ul {
 
 .tree-list .tree-2 .active > a > div:hover{
     background: linear-gradient(to right, #00bcff, #00d8ff);
+    
 }
 
 .tree-list .tree-2 .active > a > div{
