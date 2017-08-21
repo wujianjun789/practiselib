@@ -158,6 +158,25 @@ export function getModelTypes(id) {
         let type = model.types[i];
         list.push({type:type, detail:intlFormat(model.intl.types[type])})
     }
+    return list;
+}
 
+export function getModelDefaults(id) {
+    let model = getModelById(id)
+    let list = [];
+    list.push({field:"type", title:"型号"})
+    for(var i in model.defaults.props) {
+        let props = model.defaults.props[i]; 
+        list.push({field:props, title:intlFormat(model.intl.props[props])})
+    }
+    return list;
+}
+
+export function getModelDefaultsValues(id) {
+    let model = getModelById(id);
+    let list = [];
+    for(var key in model.defaults.values) {
+        list.push(Object.assign({},{type:key}, model.defaults.values[key])); 
+    }
     return list;
 }

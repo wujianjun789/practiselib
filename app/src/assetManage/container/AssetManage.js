@@ -10,7 +10,7 @@ import '../../../public/styles/assetmanage.less';
 
 import Content from '../../components/Content'
 
-import {getModelData, getModelProps, getModelTypes, first_child} from '../../data/assetModels'
+import {getModelData, getModelProps, getModelTypes, first_child, getModelDefaultsValues, getModelDefaults} from '../../data/assetModels'
 import Immutable from 'immutable';
 
 export class AssetManage extends Component {
@@ -27,7 +27,8 @@ export class AssetManage extends Component {
                 {type:"LC600", detail:"LC600灯控"},
                 {type:"LCMINI", detail:"智慧路灯用"}
             ]),
-            
+            dataDefaults: [],
+            dataDefaultsValues: Immutable.fromJS([]),
         }
 
         this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
@@ -55,7 +56,9 @@ export class AssetManage extends Component {
     initTreeData(){
         this.setState({
             devicePro:Immutable.fromJS(getModelProps(first_child.id)),
-            data: Immutable.fromJS(getModelTypes(first_child.id))
+            data: Immutable.fromJS(getModelTypes(first_child.id)),
+            dataDefaults: getModelDefaults(first_child.id),
+            dataDefaultsValues: Immutable.fromJS(getModelDefaultsValues(first_child.id)),
         })
     }
 
@@ -66,12 +69,14 @@ export class AssetManage extends Component {
 
         this.setState({
             devicePro:Immutable.fromJS(getModelProps(node.id)),
-            data: Immutable.fromJS(getModelTypes(node.id))
+            data: Immutable.fromJS(getModelTypes(node.id)),
+            dataDefaults: getModelDefaults(node.id),
+            dataDefaultsValues: Immutable.fromJS(getModelDefaultsValues(node.id)),
         })
     }
 
     render() {
-        const { data, devicePro } = this.state
+        const { data, devicePro, dataDefaults, dataDefaultsValues } = this.state 
         return (
                 <Content>
                     <div className="row heading">
@@ -102,6 +107,33 @@ export class AssetManage extends Component {
                                     return <tr key={index}>
                                         {
                                             this.columns.map((column,index)=>{
+                                                return <td key={index}>{row.get(column.field)}</td>
+                                            })
+                                        }
+                                    </tr>
+                                })
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                     <div className="row heading">
+                        <div className="type"><span></span>默认参数</div>
+                        <table className="equipment">
+                            <thead>
+                                <tr>
+                                {
+                                    dataDefaults.map((column,index)=>{
+                                        return <th key={index}>{column.title}</th>
+                                    })
+                                }
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                dataDefaultsValues.map((row, index)=>{
+                                    return <tr key={index}>
+                                        {
+                                            dataDefaults.map((column,index)=>{
                                                 return <td key={index}>{row.get(column.field)}</td>
                                             })
                                         }
