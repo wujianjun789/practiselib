@@ -14,6 +14,7 @@ import Page from '../../components/Page'
 
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import TimeStrategyPopup from '../component/TimeStrategyPopup'
+import ConfirmPopup from '../../components/ConfirmPopup'
 
 import Immutable from 'immutable';
 import {getObjectByKey} from '../../util/index';
@@ -130,7 +131,12 @@ class TimeStrategy extends Component{
     }
 
     tableDelete(rowId){
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{
+            actions.overlayerHide();
+        }} confirm={()=>{
 
+        }}/>)
     }
 
     tableClick(){
