@@ -1,4 +1,4 @@
-import {getCookie} from '../util/cache'
+import {getCookie,setCookie,deleteCookie} from '../util/cache'
 
 
 export function isAuthed(auth) {
@@ -16,7 +16,9 @@ export function getAuth() {
 }
 export function setAuth(auth) {
   // user storage or cookie
-  return {}
+  setCookie('user',auth);
 }
 
-
+export function clearAuth(){
+  deleteCookie('user');
+}
