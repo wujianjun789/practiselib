@@ -7,7 +7,7 @@ export const isAuthenticated = connectedRouterRedirect({
   authenticatedSelector: state => isAuthed(state.auth.auth),
   redirectAction: routerActions.replace, // the redux action to dispatch for redirect
   wrapperDisplayName: 'isAuthenticated', // a nice name for this auth check
-  redirectPath: '/',
+  redirectPath: '/login',
   allowRedirectBack: false
 })
 export const isAdmined= connectedRouterRedirect({

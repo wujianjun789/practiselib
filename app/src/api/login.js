@@ -4,7 +4,7 @@
 
 import {LOGED_IN} from '../authentication/actionTypes'
 import {login} from '../util/network';
-import {setCookie} from '../util/cache'
+import {setAuth} from '../authentication/auth'
 import {HOST_IP, getHttpHeader, httpRequest} from '../util/network'
 
 export const loginHandler = (username, password,cbSuccess,cbFail) => dispatch => {
@@ -20,7 +20,7 @@ export const loginHandler = (username, password,cbSuccess,cbFail) => dispatch =>
             headers: headers,
           }, res=>{
             response.roleId = res.roleId;
-            setCookie("user", response);
+            setAuth(response);
             dispatch({ type: LOGED_IN });
             cbSuccess && cbSuccess();
           })
