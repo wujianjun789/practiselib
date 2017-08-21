@@ -117,7 +117,8 @@ export default class SensorStrategyPopup extends Component {
             },
             curveFactory: d3.curveStepAfter,
             tickFormat: d => `${d}${this.state.sensorsUnit[this.state.data.sensorType]}`,
-            padding: {left: 0, top: 20, right: 0, bottom: 20}
+            padding: {left: 0, top: 35, right: 0, bottom: 20},
+            tooltipAccessor: d => d.operator.title
         });
         this.setState({chart: chart});
     }

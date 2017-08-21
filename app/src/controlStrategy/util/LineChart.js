@@ -6,6 +6,7 @@ export default class LineChart {
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
         tickFormat=d=>d,
+        tooltipAccessor=d=>d,
         curveFactory=d3.curveStepAfter
     }) {
         this.wrapper = wrapper;
@@ -15,6 +16,7 @@ export default class LineChart {
         this.yAccessor = yAccessor;
         this.tickFormat = tickFormat;
         this.curveFactory = curveFactory;
+        this.tooltipAccessor = tooltipAccessor;
 
         this.initChart = this.initChart.bind(this);
         this.getAxis = this.getAxis.bind(this);
@@ -60,12 +62,27 @@ export default class LineChart {
             .style('top', '30px')
             .style('left', '20px')
             .style('z-index', 1000)
-            .style('opacity', 1);
+            .style('opacity', 1)
+            .style('display', 'none');
         this.tooltips.append('div')
             .attr('class', 'tooltip-arrow');
-        this.tooltips.append('div')
+        this.tooltipInner = this.tooltips.append('div')
             .attr('class', 'tooltip-inner')
             .text('this is a tooltips.');
+
+        this.svg.on('mouseenter', ()=>{
+            this.tooltips.style('display', 'block');
+        }, false);
+        this.svg.on('mousemove', (data, index) => {
+            let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
+            let _index = Math.floor(d3.event.offsetX / this.xScale.step());
+            let val = this.data.values[_index];
+            this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
+            this.tooltipInner.text(`${this.tooltipAccessor(val)}`);
+        }, false);
+        this.svg.on('mouseleave', ()=>{
+            this.tooltips.style('display', 'none');
+        }, false);
 
         this.draw();
     }
@@ -135,6 +152,9 @@ export default class LineChart {
     }
 
     destroy() {
+        this.svg.on('mouseenter', null)
+        this.svg.on('mousemove', null);
+        this.svg.on('mouseleave', null);
         this.svg.remove();
     }
 }
