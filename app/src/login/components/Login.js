@@ -68,7 +68,7 @@ export class Login extends Component{
             ch = 460;
         canvas.width = cw;
         canvas.height = ch;
-        var fontsize = 29;
+        var fontsize = 32;
         var columns = Math.ceil(cw/fontsize);
         var drops = [];
         var texts = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -78,7 +78,7 @@ export class Login extends Component{
         function run(){
             ctx.fillStyle = "rgba(24,133,255,0.4)";
             ctx.fillRect(0,0,cw,ch);
-            ctx.fillStyle = "rgba(134,202,255,1)";
+            ctx.fillStyle = "rgba(53,166,255,1)";
             ctx.font = fontsize + "px Optima";
             for(var i=0,len=drops.length;i<len;i++){
                 var text = texts[Math.floor(Math.random()*texts.length)];
@@ -127,7 +127,7 @@ export class Login extends Component{
                     <div className="bg-anm">
                         <canvas id="canvas"></canvas>
                     </div>
-                    <div className="bg-cover"></div>
+                    <div></div>
                     <div className="login-right pull-right">
                         <p onClick={this.handleTest}>用户登录</p>
                         <div className="form-group has-feedback">
