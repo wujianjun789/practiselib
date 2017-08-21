@@ -93,7 +93,7 @@ export default class SearchText extends Component{
         const {interactive, tableIndex} = this.state;
         const {className='', placeholder='', value='', IsTip=false, datalist=[]} = this.props;
         return <div className={"searchText "+className} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={(event)=>{this.onkeydown(event)}}>
-            <input type="search"  placeholder={placeholder} value={value} onChange={this.onChange}/>
+            <input type="search" className="form-control" placeholder={placeholder} value={value} onChange={this.onChange}/>
             <ul className={IsTip && interactive ? 'select-active':''} >
                 {
                     datalist.map((item, index)=>{
