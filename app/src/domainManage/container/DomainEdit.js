@@ -291,7 +291,7 @@ export class DomainEdit extends Component {
                 <div className="heading">
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
-                    <button className="btn btn-default add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
+                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
                 </div>
                 {
                     listMode ?

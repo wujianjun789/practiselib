@@ -6,13 +6,16 @@ import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
-import { isAuthenticated, isAdmined } from '../authentication/authWrapper'
+import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
+const Logged = isLogged(props => props.children);
 
 export default (
     <Route>
-        <Route path="/login" component={Login}></Route>
+        <Route component={Logged}>
+            <Route path="/login" component={Login}></Route>
+        </Route>
         <Route component={Authenticated}>
             <Route path="/" component={App}></Route>
             <Route path="/assetManage" component={AssetManage}>

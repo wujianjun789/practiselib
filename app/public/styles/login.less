@@ -2,6 +2,13 @@
 @min-height: 630px;
 @header-height:160px;
 @container-mid-height:460px;
+
+html,
+body {
+    min-width:100%!important;
+    overflow-x:hidden;
+}
+
 .icon-orig(@image) {
     background: @image;
     background-size: 100% auto;
@@ -29,9 +36,9 @@
             }
             .login_logo{
                 .icon-orig(url(/images/login_logo.png)no-repeat center);
-                width:51px;
-                margin-left:20px;
-                height: 80px;
+                width:81px;
+                margin-left:24px;
+                height: 81px;
                 float: left;
             }
         }
@@ -55,8 +62,8 @@
         height: @container-mid-height;
         position: relative;
         .bg-cover{
-            opacity:0.8;    
-            .icon-orig(url(/images/login_background.png));
+            opacity:1;    
+            .icon-orig(url(/images/login_background.jpg));
             height: @container-mid-height;
             width:100%;
             position: absolute;

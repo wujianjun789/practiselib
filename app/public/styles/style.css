@@ -5,6 +5,7 @@ body {
     margin: 0;
     font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft Yahei','WenQuanYi Micro Hei',sans-serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x:hidden;
     
 }
 
@@ -59,6 +60,10 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
     border-right: solid 1px #272a37;
 
     vertical-align: top;
+}
+
+.head .home:hover{
+    background:#4a5064;
 }
 
 .head .avatar {
@@ -447,8 +452,9 @@ ul {
 }
 
 .select {
+    display: inline-block;
     border: solid 1px #ddd;
-
+    padding-top: 0px; padding-bottom: 0px;
     padding-right: 14px;
     padding-left: 14px;
 }
@@ -688,6 +694,8 @@ ul {
     cursor: pointer;
 }
 
+.user-center > .user-icon:hover {background:#52586e;}
+
 .user-center > .user-icon span {
     color:#fff;
     line-height: 60px;
@@ -717,6 +725,10 @@ ul {
     color: #000;
     background-color: #fff;
     cursor: pointer;
+}
+
+.user-center > ul.user-list > li:hover{
+    background-color: #e4e6ea;
 }
 
 .user-center > ul.user-list > li:last-child {
@@ -1067,6 +1079,8 @@ ul {
 }
 
 .btn-eqpOperate{color:#fff;background-color:#2fb2ff;border-color:#16a9ff}.btn-eqpOperate:focus,.btn-eqpOperate.focus{color:#fff;background-color:#009efb;border-color:#005e95}.btn-eqpOperate:hover{color:#fff;background-color:#009efb;border-color:#0088d7}.btn-eqpOperate:active,.btn-eqpOperate.active,.open>.dropdown-toggle.btn-eqpOperate{color:#fff;background-color:#009efb;border-color:#0088d7}.btn-eqpOperate:active:hover,.btn-eqpOperate.active:hover,.open>.dropdown-toggle.btn-eqpOperate:hover,.btn-eqpOperate:active:focus,.btn-eqpOperate.active:focus,.open>.dropdown-toggle.btn-eqpOperate:focus,.btn-eqpOperate:active.focus,.btn-eqpOperate.active.focus,.open>.dropdown-toggle.btn-eqpOperate.focus{color:#fff;background-color:#0088d7;border-color:#005e95}.btn-eqpOperate:active,.btn-eqpOperate.active,.open>.dropdown-toggle.btn-eqpOperate{background-image:none}.btn-eqpOperate.disabled:hover,.btn-eqpOperate[disabled]:hover,fieldset[disabled] .btn-eqpOperate:hover,.btn-eqpOperate.disabled:focus,.btn-eqpOperate[disabled]:focus,fieldset[disabled] .btn-eqpOperate:focus,.btn-eqpOperate.disabled.focus,.btn-eqpOperate[disabled].focus,fieldset[disabled] .btn-eqpOperate.focus{background-color:#2fb2ff;border-color:#16a9ff}.btn-eqpOperate .badge{color:#2fb2ff;background-color:#fff}
-.btn-sysManage{color:#fff;background-color:#272c3c;border-color:#1d212d}.btn-sysManage:focus,.btn-sysManage.focus{color:#fff;background-color:#13151d;border-color:#000}.btn-sysManage:hover{color:#fff;background-color:#13151d;border-color:#050507}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{color:#fff;background-color:#13151d;border-color:#050507}.btn-sysManage:active:hover,.btn-sysManage.active:hover,.open>.dropdown-toggle.btn-sysManage:hover,.btn-sysManage:active:focus,.btn-sysManage.active:focus,.open>.dropdown-toggle.btn-sysManage:focus,.btn-sysManage:active.focus,.btn-sysManage.active.focus,.open>.dropdown-toggle.btn-sysManage.focus{color:#fff;background-color:#050507;border-color:#000}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{background-image:none}.btn-sysManage.disabled:hover,.btn-sysManage[disabled]:hover,fieldset[disabled] .btn-sysManage:hover,.btn-sysManage.disabled:focus,.btn-sysManage[disabled]:focus,fieldset[disabled] .btn-sysManage:focus,.btn-sysManage.disabled.focus,.btn-sysManage[disabled].focus,fieldset[disabled] .btn-sysManage.focus{background-color:#272c3c;border-color:#1d212d}.btn-sysManage .badge{color:#272c3c;background-color:#fff}
-.btn-eqpManage{color:#fff;background-color:#5078ff;border-color:#3664ff}.btn-eqpManage:focus,.btn-eqpManage.focus{color:#fff;background-color:#1d51ff;border-color:#002ab6}.btn-eqpManage:hover{color:#fff;background-color:#1d51ff;border-color:#0039f8}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{color:#fff;background-color:#1d51ff;border-color:#0039f8}.btn-eqpManage:active:hover,.btn-eqpManage.active:hover,.open>.dropdown-toggle.btn-eqpManage:hover,.btn-eqpManage:active:focus,.btn-eqpManage.active:focus,.open>.dropdown-toggle.btn-eqpManage:focus,.btn-eqpManage:active.focus,.btn-eqpManage.active.focus,.open>.dropdown-toggle.btn-eqpManage.focus{color:#fff;background-color:#0039f8;border-color:#002ab6}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{background-image:none}.btn-eqpManage.disabled:hover,.btn-eqpManage[disabled]:hover,fieldset[disabled] .btn-eqpManage:hover,.btn-eqpManage.disabled:focus,.btn-eqpManage[disabled]:focus,fieldset[disabled] .btn-eqpManage:focus,.btn-eqpManage.disabled.focus,.btn-eqpManage[disabled].focus,fieldset[disabled] .btn-eqpManage.focus{background-color:#5078ff;border-color:#3664ff}.btn-eqpManage .badge{color:#5078ff;background-color:#fff}
+/*.btn-sysManage{color:#fff;background-color:#272c3c;border-color:#1d212d}.btn-sysManage:focus,.btn-sysManage.focus{color:#fff;background-color:#13151d;border-color:#000}.btn-sysManage:hover{color:#fff;background-color:#13151d;border-color:#050507}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{color:#fff;background-color:#13151d;border-color:#050507}.btn-sysManage:active:hover,.btn-sysManage.active:hover,.open>.dropdown-toggle.btn-sysManage:hover,.btn-sysManage:active:focus,.btn-sysManage.active:focus,.open>.dropdown-toggle.btn-sysManage:focus,.btn-sysManage:active.focus,.btn-sysManage.active.focus,.open>.dropdown-toggle.btn-sysManage.focus{color:#fff;background-color:#050507;border-color:#000}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{background-image:none}.btn-sysManage.disabled:hover,.btn-sysManage[disabled]:hover,fieldset[disabled] .btn-sysManage:hover,.btn-sysManage.disabled:focus,.btn-sysManage[disabled]:focus,fieldset[disabled] .btn-sysManage:focus,.btn-sysManage.disabled.focus,.btn-sysManage[disabled].focus,fieldset[disabled] .btn-sysManage.focus{background-color:#272c3c;border-color:#1d212d}.btn-sysManage .badge{color:#272c3c;background-color:#fff}
+.btn-eqpManage{color:#fff;background-color:#5078ff;border-color:#3664ff}.btn-eqpManage:focus,.btn-eqpManage.focus{color:#fff;background-color:#1d51ff;border-color:#002ab6}.btn-eqpManage:hover{color:#fff;background-color:#1d51ff;border-color:#0039f8}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{color:#fff;background-color:#1d51ff;border-color:#0039f8}.btn-eqpManage:active:hover,.btn-eqpManage.active:hover,.open>.dropdown-toggle.btn-eqpManage:hover,.btn-eqpManage:active:focus,.btn-eqpManage.active:focus,.open>.dropdown-toggle.btn-eqpManage:focus,.btn-eqpManage:active.focus,.btn-eqpManage.active.focus,.open>.dropdown-toggle.btn-eqpManage.focus{color:#fff;background-color:#0039f8;border-color:#002ab6}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{background-image:none}.btn-eqpManage.disabled:hover,.btn-eqpManage[disabled]:hover,fieldset[disabled] .btn-eqpManage:hover,.btn-eqpManage.disabled:focus,.btn-eqpManage[disabled]:focus,fieldset[disabled] .btn-eqpManage:focus,.btn-eqpManage.disabled.focus,.btn-eqpManage[disabled].focus,fieldset[disabled] .btn-eqpManage.focus{background-color:#5078ff;border-color:#3664ff}.btn-eqpManage .badge{color:#5078ff;background-color:#fff}*/
 .btn-guest{color:#fff;background-color:#13ce66;border-color:#11b75a}.btn-guest:focus,.btn-guest.focus{color:#fff;background-color:#0f9f4f;border-color:#064221}.btn-guest:hover{color:#fff;background-color:#0f9f4f;border-color:#0c7f3f}.btn-guest:active,.btn-guest.active,.open>.dropdown-toggle.btn-guest{color:#fff;background-color:#0f9f4f;border-color:#0c7f3f}.btn-guest:active:hover,.btn-guest.active:hover,.open>.dropdown-toggle.btn-guest:hover,.btn-guest:active:focus,.btn-guest.active:focus,.open>.dropdown-toggle.btn-guest:focus,.btn-guest:active.focus,.btn-guest.active.focus,.open>.dropdown-toggle.btn-guest.focus{color:#fff;background-color:#0c7f3f;border-color:#064221}.btn-guest:active,.btn-guest.active,.open>.dropdown-toggle.btn-guest{background-image:none}.btn-guest.disabled:hover,.btn-guest[disabled]:hover,fieldset[disabled] .btn-guest:hover,.btn-guest.disabled:focus,.btn-guest[disabled]:focus,fieldset[disabled] .btn-guest:focus,.btn-guest.disabled.focus,.btn-guest[disabled].focus,fieldset[disabled] .btn-guest.focus{background-color:#13ce66;border-color:#11b75a}.btn-guest .badge{color:#13ce66;background-color:#fff}
+.btn-eqpManage{color:#fff;background-color:#337ab7;border-color:#2d6da3}.btn-eqpManage:focus,.btn-eqpManage.focus{color:#fff;background-color:#285f8f;border-color:#122a3f}.btn-eqpManage:hover{color:#fff;background-color:#285f8f;border-color:#204d73}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{color:#fff;background-color:#285f8f;border-color:#204d73}.btn-eqpManage:active:hover,.btn-eqpManage.active:hover,.open>.dropdown-toggle.btn-eqpManage:hover,.btn-eqpManage:active:focus,.btn-eqpManage.active:focus,.open>.dropdown-toggle.btn-eqpManage:focus,.btn-eqpManage:active.focus,.btn-eqpManage.active.focus,.open>.dropdown-toggle.btn-eqpManage.focus{color:#fff;background-color:#204d73;border-color:#122a3f}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{background-image:none}.btn-eqpManage.disabled:hover,.btn-eqpManage[disabled]:hover,fieldset[disabled] .btn-eqpManage:hover,.btn-eqpManage.disabled:focus,.btn-eqpManage[disabled]:focus,fieldset[disabled] .btn-eqpManage:focus,.btn-eqpManage.disabled.focus,.btn-eqpManage[disabled].focus,fieldset[disabled] .btn-eqpManage.focus{background-color:#337ab7;border-color:#2d6da3}.btn-eqpManage .badge{color:#337ab7;background-color:#fff}
+.btn-sysManage{color:#fff;background-color:#4a5064;border-color:#3f4455}.btn-sysManage:focus,.btn-sysManage.focus{color:#fff;background-color:#343947;border-color:#090a0c}.btn-sysManage:hover{color:#fff;background-color:#343947;border-color:#252832}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{color:#fff;background-color:#343947;border-color:#252832}.btn-sysManage:active:hover,.btn-sysManage.active:hover,.open>.dropdown-toggle.btn-sysManage:hover,.btn-sysManage:active:focus,.btn-sysManage.active:focus,.open>.dropdown-toggle.btn-sysManage:focus,.btn-sysManage:active.focus,.btn-sysManage.active.focus,.open>.dropdown-toggle.btn-sysManage.focus{color:#fff;background-color:#252832;border-color:#090a0c}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{background-image:none}.btn-sysManage.disabled:hover,.btn-sysManage[disabled]:hover,fieldset[disabled] .btn-sysManage:hover,.btn-sysManage.disabled:focus,.btn-sysManage[disabled]:focus,fieldset[disabled] .btn-sysManage:focus,.btn-sysManage.disabled.focus,.btn-sysManage[disabled].focus,fieldset[disabled] .btn-sysManage.focus{background-color:#4a5064;border-color:#3f4455}.btn-sysManage .badge{color:#4a5064;background-color:#fff}

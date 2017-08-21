@@ -35,6 +35,13 @@ export class UserCenter extends Component{
         this.setState((prevState)=> {
             return {active: !prevState.active};
         });
+        if(this.state.active==false){
+            setTimeout(() => {
+                this.setState((prevState)=> {
+                    return {active: !prevState.active};
+                });
+            }, 4000);
+        }
     }
 
     cancel() {

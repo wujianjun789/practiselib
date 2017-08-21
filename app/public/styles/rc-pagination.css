@@ -38,10 +38,10 @@
   color: #666;
 }
 .rc-pagination-item:hover {
-  border-color: /*#2db7f5*/#00d8ff;
+  border-color: /*#2db7f5#00d8ff*/;
 }
 .rc-pagination-item:hover a {
-  color: /*#2db7f5*/#245580;
+  color: /*#2db7f5#245580*/#00d8ff;
 }
 .rc-pagination-item-active {
   /*background: linear-gradient(to right, #00bcff,  #00d8ff);*/
@@ -89,7 +89,7 @@
   list-style: none;
   min-width: 28px;
   height: 28px;
-  line-height: 28px;
+  line-height: 26px;
   float: left;
   text-align: center;
 }
@@ -109,6 +109,9 @@
 .rc-pagination-prev a,
 .rc-pagination-next a {
   color: #666;
+}
+.rc-pagination-next:hover a {
+  color: #00d8ff;
 }
 .rc-pagination-prev a:after,
 .rc-pagination-next a:after {

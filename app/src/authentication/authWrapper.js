@@ -1,8 +1,14 @@
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 import { routerActions } from 'react-router-redux'
-import {isAdmin,isAuthed} from './auth';
+import {isAdmin,isAuthed,isLogin} from './auth';
 
-
+export const isLogged = connectedRouterRedirect({
+  authenticatedSelector: state => isLogin(state.auth.auth),
+  redirectAction: routerActions.replace, // the redux action to dispatch for redirect
+  wrapperDisplayName: 'isLogged', // a nice name for this auth check
+  redirectPath: '/',
+  allowRedirectBack: false
+})
 export const isAuthenticated = connectedRouterRedirect({
   authenticatedSelector: state => isAuthed(state.auth.auth),
   redirectAction: routerActions.replace, // the redux action to dispatch for redirect
