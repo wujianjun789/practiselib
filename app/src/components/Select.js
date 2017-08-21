@@ -16,7 +16,7 @@ export default class Select extends Component{
 
     render(){
         const {className='', id='', valueKey="value", titleKey="value", data=Immutable.fromJS({list:[], value:'',placeholder:""})} = this.props;
-        return <select className={"select "+className} id={id} placeholder={data.get('placeholder')} value={data.get("value")} onChange={this.onChange}>
+        return <select className={"select "+className+" form-control"} id={id} placeholder={data.get('placeholder')} value={data.get("value")} onChange={this.onChange}>
             {
                  data.get('list').map((option, index)=>{
                      let value = option.get(valueKey);

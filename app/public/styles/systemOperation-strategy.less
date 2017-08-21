@@ -28,7 +28,6 @@
 
         border: 0;
         color: #fff;
-        background: #00bcff;
       }
     }
 
@@ -80,7 +79,6 @@
 
   .form-group .control-label{
     text-align: right;
-
     padding-top: 6px;
     padding-right: 0;
     padding-left: 0;
@@ -366,7 +364,10 @@
             > select {
               float: left;
               width: 170px;
+              height: 30px;
               padding-left: 10px;
+              padding-top: 3px;
+              padding-bottom: 3px;
             }
             > input {
               margin-right: 20px;
@@ -398,6 +399,67 @@
         // border: 1px solid #ccc;
         // padding-right: 20px;
         margin-bottom: 30px;
+        > svg {
+          .x-axis {
+            > path {
+              display: none;
+            }
+            > .tick {
+              > line {
+                display: none;
+              }
+              > text {
+                font-size: 12px;
+                color: #808080;
+              }
+              &:first-of-type {
+                > text {
+                  text-anchor: start;
+                }
+              }
+              &:last-of-type {
+                > text {
+                  text-anchor: end;
+                }
+              }
+            }
+          }
+          .y-axis {
+            > path {
+              display: none;
+            }
+            > .tick {
+              > text {
+                display: none;
+              }
+              > line {
+                stroke: #e6e6e6;
+                stroke-width: 1px;
+              }
+            }
+          }
+
+          .main-area {
+            fill: rgba(255, 92, 104, .1);
+          }
+          .main-line {
+            stroke: rgb(255, 92, 104);
+            stroke-width: 3px;
+            fill: none;
+          }
+        }
+        .tooltip {
+          .tooltip-arrow {
+            border-top-color: #3b4050;
+            border-top-color: #3b4050;
+          }
+          .tooltip-inner {
+            font-size: 12px;
+            color: #fff;
+            background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));   /*  for safari */
+            background-image: linear-gradient(to right, #333744, #4a5064); 
+          }
+        }
       }
     }
   }
@@ -434,4 +496,36 @@
 
 .latlng-strategy-popup{
   width: 700px;
+  .modal-body{
+    padding-right: 35px;
+    padding-bottom: 0px;
+  }
+  .form-group{
+    padding-left: 0px;
+    margin-bottom: 30px;
+    height: 40px;
+    line-height: 40px;
+    >label{
+      padding:0px;
+      text-align: right;
+    }
+    >.col-sm-8{
+      padding-right: 0px;
+      >.form-control{
+        height: 40px;
+        padding: 10px;
+      }
+      >.prompt{
+        display: block;
+        line-height: 30px;
+        padding-left: 10px;
+        color: #ff5c68;
+        font-size: 10px;
+      }
+    }
+  }
+  .modal-footer {
+    padding: 0 35px 20px 0px;
+    border-top: none;
+  }
 }

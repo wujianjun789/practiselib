@@ -329,7 +329,7 @@ export class SingleLampCon extends Component {
                         options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button id="sys-add" className="btn btn-default add-domain" onClick={this.domainHandler}>添加</button>
+                <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>添加</button>
             </div>
             <div className='lc'>
                 <div className="table-container">

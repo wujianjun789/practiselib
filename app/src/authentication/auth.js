@@ -1,6 +1,10 @@
 import {getCookie,setCookie,deleteCookie} from '../util/cache'
 
 
+export function isLogin(auth) {
+  return auth && auth.id?false:true;
+}
+
 export function isAuthed(auth) {
   return auth && auth.id?true:false;
 }
