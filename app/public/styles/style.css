@@ -62,6 +62,10 @@ input.form-control:-ms-input-placeholder { color: #ccc; }
     vertical-align: top;
 }
 
+.head .home:hover{
+    background:#4a5064;
+}
+
 .head .avatar {
     float: right;
     padding: 18px;
@@ -689,6 +693,8 @@ ul {
     cursor: pointer;
 }
 
+.user-center > .user-icon:hover {background:#52586e;}
+
 .user-center > .user-icon span {
     color:#fff;
     line-height: 60px;
@@ -718,6 +724,10 @@ ul {
     color: #000;
     background-color: #fff;
     cursor: pointer;
+}
+
+.user-center > ul.user-list > li:hover{
+    background-color: #e4e6ea;
 }
 
 .user-center > ul.user-list > li:last-child {
