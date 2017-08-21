@@ -1,6 +1,7 @@
 /**
  * Created by a on 2017/7/26.
  */
+
 import {LOGED_IN} from '../authentication/actionTypes'
 import {login} from '../util/network';
 import {setAuth} from '../authentication/auth'

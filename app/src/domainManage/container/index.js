@@ -20,7 +20,6 @@ class DomainManageIndex extends Component{
     }
 
     componentWillMount(){
-        
         this.initTreeData();
     }
 
@@ -29,6 +28,7 @@ class DomainManageIndex extends Component{
     }
 
     componentDidMount(){
+        console.log(this.props.userCenter.islogin)
     }
 
     initTreeData(){

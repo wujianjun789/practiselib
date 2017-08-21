@@ -1,6 +1,6 @@
 import {LOGED_OUT} from '../../authentication/actionTypes'
 import {httpRequest, HOST_IP, getHttpHeader} from '../../util/network';
-import {getCookie} from '../../util/cache';
+import {getCookie, setCookie} from '../../util/cache';
 
 export const confirmExit = (successFun, errFun) => dispatch => {
     let {id} = getCookie('user');
@@ -14,6 +14,8 @@ export const confirmExit = (successFun, errFun) => dispatch => {
         method: 'POST',
         headers: headers
     }, () => {
+        setCookie("user","")
+        sessionStorage.sessionID=0
         successFun && successFun();
         dispatch({ type: LOGED_OUT });
     },null,()=>{errFun && errFun()});
