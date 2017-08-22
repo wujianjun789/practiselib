@@ -38,7 +38,7 @@ export class UserCenter extends Component{
         if(this.state.active==false){
             setTimeout(() => {
                 this.setState((prevState)=> {
-                    return {active: !prevState.active};
+                    if(prevState.active==false){return{active: prevState.active}}else{return{active: !prevState.active}}
                 });
             }, 4000);
         }
