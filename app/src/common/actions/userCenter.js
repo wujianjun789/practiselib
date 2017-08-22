@@ -14,9 +14,10 @@ export const confirmExit = (successFun, errFun) => dispatch => {
         method: 'POST',
         headers: headers
     }, () => {
-        setCookie("user","")
-        sessionStorage.sessionID=0
         successFun && successFun();
         dispatch({ type: LOGED_OUT });
-    },null,()=>{errFun && errFun()});
+    },null,()=>{
+        errFun && errFun();
+        dispatch({ type: LOGED_OUT });
+    });
 }

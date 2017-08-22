@@ -10,7 +10,7 @@ export function isAuthed(auth) {
 }
 
 export function isAdmin(auth) {
-  return auth && auth.roleId && auth.roleId==1?true:false;
+  return auth && auth.role && auth.role=='admin'?true:false;
 }
 
 export function getAuth() {

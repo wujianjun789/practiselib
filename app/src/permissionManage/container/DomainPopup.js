@@ -51,8 +51,6 @@ export class DomainPopup extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        // getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)})
-        // getDomainList((response)=>{this.mounted && this.domainHandle(response)});
         this.dataInit();
     }
 
