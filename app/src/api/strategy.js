@@ -13,7 +13,7 @@ import {HOST_IP, getHttpHeader, httpRequest} from '../util/network';
 export function getStrategyListByName(model,name,offset, limit, cb) {
     let headers = getHttpHeader();
     let param = {"offset":offset,"limit":limit};
-    param = Object.assign({}, param, getStrategyParam(model, name));
+    param = Object.assign({}, param, {"where":getStrategyParam(model, name)});
     let paramStr = JSON.stringify(param);
     let url = HOST_IP+'/strategies?filter='+encodeURIComponent(paramStr);
 
@@ -91,11 +91,11 @@ export function updateStrategy(data, cb) {
  * 删除策略
  * @param id
  */
-export function delStrategy(id) {
+export function delStrategy(id, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/strategies/'+id,{
         headers: headers,
-        method: 'PUT',
+        method: 'DELETE'
     }, response=>{
         cb && cb(response);
     })

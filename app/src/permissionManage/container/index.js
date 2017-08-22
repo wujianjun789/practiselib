@@ -175,7 +175,6 @@ export class PermissionManage extends Component{
                         <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')} current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
                     </div>
                 </div>
-                
                 <Overlayer />
             </div>
         )

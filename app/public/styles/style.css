@@ -18,6 +18,10 @@ button{
 }
 
 
+.haha{
+    background:url(/svg/icon_delete.svg);width:100px; height:100px;fill:#000;
+}
+
 input::-ms-clear {
     display: none;
 }
