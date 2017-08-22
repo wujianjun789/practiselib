@@ -18,7 +18,7 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import {TreeData, getModelData, getModelList, getModelNameById} from '../../data/systemModel'
+import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel'
 
 import {getDomainList} from '../../api/domain'
 import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'
@@ -140,7 +140,9 @@ export class LampConCenter extends Component {
                 this.props.actions.treeViewInit(TreeData);
                 this.setState({
                     model: model,
-                    modelList: Object.assign({}, this.state.modelList, {options: getModelList()})
+                    modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type)=>{
+                        return  {id: type.id, title: type.title, value: type.title}
+                    })})
                 });
                 getDomainList(data=> {
                     this.mounted && this.initDomainList(data)
@@ -188,7 +190,7 @@ export class LampConCenter extends Component {
                 domainName = domain?domain.name:"";
             }
             return Object.assign({}, asset, asset.extend, asset.geoPoint, {domainName: domainName},
-                {typeName:getModelNameById(asset.extendType)});
+                {typeName:getModelTypesNameById(this.state.model, asset.extend.type)});
         })
 
         this.setState({data: Immutable.fromJS(list)});
@@ -217,13 +219,14 @@ export class LampConCenter extends Component {
         let id = e.target.id;
         const {model, selectDevice, domainList, modelList, whitelistData} = this.state
         const {overlayerShow, overlayerHide} = this.props.actions;
+        let curType = modelList.options.length?modelList.options[0]:null;
         switch (id) {
             case 'sys-add':
                 const dataInit = {
                     id: '',
                     name: '',
-                    model: getModelNameById(model),
-                    modelId: model,
+                    model: curType?curType.title:"",
+                    modelId: curType?curType.id:"",
                     domain: domainList.value,
                     domainId: domainList.options.length?domainList.options[domainList.index].id:"",
                     lng: "",
@@ -233,7 +236,7 @@ export class LampConCenter extends Component {
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备"
                                                           data={dataInit} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={(data)=>{
-                                                                postAssetsByModel(data.modelId, data, ()=>{
+                                                                postAssetsByModel(model, data, ()=>{
                                                                     this.requestSearch();
                                                                 });
                                                           }}/>);
@@ -244,8 +247,8 @@ export class LampConCenter extends Component {
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
-                    model: getModelNameById(model),
-                    modelId: model,
+                    model: data?getModelTypesNameById(model,data.type):"",
+                    modelId: data?data.type:null,
                     domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
                     lng: latlng.lng,
@@ -254,7 +257,7 @@ export class LampConCenter extends Component {
                 overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器"
                                                           data={dataInit2} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={data=>{
-                                                                updateAssetsByModel(data.modelId, data, (data)=>{
+                                                                updateAssetsByModel(model, data, (data)=>{
                                                                     this.requestSearch();
                                                                     overlayerHide();
                                                                 })
@@ -285,7 +288,7 @@ export class LampConCenter extends Component {
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
         selectDevice.data.splice(0);
-        selectDevice.data.push({id:item.id, name:item.name});
+        selectDevice.data.push({id:item.id, type:item.extend.type, name:item.name});
         selectDevice.domainId = item.domainId;
         selectDevice.position.splice(0);
         selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'}, item.geoPoint));

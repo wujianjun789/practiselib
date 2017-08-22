@@ -127,6 +127,23 @@ export function getModelNameById(id) {
     return null;
 }
 
+export function getModelTypesById(id){
+    let model = getModelById(id);
+    let list = [];
+    if(model){
+        list = model.types.map(type=>{
+            return {id:type, title:intlFormat(model.intl.types[type])}
+        });    
+    }
+
+    return list;
+}
+
+export function getModelTypesNameById(modelId, typeId){
+    let model = getModelById(modelId);
+    return intlFormat(model.intl.types[typeId]);
+}
+
 function getLinkByModel(key) {
     switch(key){
         case 'lcc':
