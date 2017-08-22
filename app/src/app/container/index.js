@@ -36,7 +36,7 @@ export class App extends Component{
         actions && actions.getModule();
     }
 
-    componentDidMount() {console.log(this.props.userCenter)}
+    componentDidMount() {/*console.log(this.props.userCenter)*/}
 
     componentWillReceiveProps(nextProps) {
 

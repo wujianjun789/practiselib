@@ -12,6 +12,8 @@ import Page from '../../components/Page'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import Immutable from 'immutable';
 import ConfirmPopup from '../../components/ConfirmPopup'
+import LatlngStrategyPopup from '../component/LatlngStrategyPopup';
+import {getObjectByKey} from '../../util/algorithm'
 
 export class Latlngtrategy extends Component{
     constructor(props){
@@ -26,7 +28,7 @@ export class Latlngtrategy extends Component{
                 current: 1,
                 total: 14
             }),
-            data:Immutable.fromJS([
+            datas:Immutable.fromJS([
                 {id:1, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
                 {id:2, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
             ]),
@@ -73,18 +75,19 @@ export class Latlngtrategy extends Component{
     }
 
     onClick(){
-        // this.props.action.overlayerShow();
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup'/>);
     }
 
     rowEdit(id){
-
+        let popupInfo = getObjectByKey(this.state.datas,'id',id);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' isEdit data={popupInfo.toJS()}/>);
     }
 
     rowDelete(id){
         this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中用户？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
             let page = this.state.page.set('current', 1);
-            this.setState({page:page},deleteUser(id,this.requestData))
+            this.setState({page:page})
         }}/>);
     }
 
@@ -96,7 +99,7 @@ export class Latlngtrategy extends Component{
     }
 
     render(){
-        const {search, page, data} = this.state;
+        const {search, page, datas} = this.state;
         
         return <Content className="latlng-strategy">
             <div className="heading">
@@ -104,7 +107,7 @@ export class Latlngtrategy extends Component{
                 <button className="btn btn-primary" onClick={this.onClick}>添加</button>
             </div>
             <div className="table-container">
-                <Table isEdit={true} columns={this.columns} data={data} rowDelete={this.rowDelete} rowEdit={this.rowEdit}/>
+                <Table isEdit={true} columns={this.columns} data={datas} rowDelete={this.rowDelete} rowEdit={this.rowEdit}/>
                 <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
                         current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
             </div>

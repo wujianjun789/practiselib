@@ -18,11 +18,16 @@ import ConfirmPopup from '../../components/ConfirmPopup'
 
 import Immutable from 'immutable';
 import {getObjectByKey} from '../../util/index';
+import {getMomentDate, momentDateFormat} from '../../util/time'
+
+import {getAssetModelList} from '../../api/asset'
+import {getStrategyListByName, getStrategyCountByName, addStrategy, updateStrategy, delStrategy} from '../../api/strategy'
 
 class TimeStrategy extends Component{
     constructor(props){
         super(props);
         this.state = {
+            model:'time',
             search: Immutable.fromJS({
                 placeholder: '输入策略名称',
                 value: ''
@@ -33,16 +38,16 @@ class TimeStrategy extends Component{
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
-                total: 14
+                total: 0
             }),
             deviceList:{titleKey:"name", valueKey:"name", options:[{id:1, name:"test灯"},{id:2, name:"test显示屏"}]},
             strategyList:[{id:1,time:"15:00", light:"50"},{id:2,time:"16:00", light:"关"}],
             data:Immutable.fromJS([
-                {id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
-                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:3, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
-                {id:4, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:5, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
-                {id:6, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:7, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
-                {id:8, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceId:1},{id:9, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceId:2},
+                {id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
+                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:3, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
+                {id:4, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:5, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
+                {id:6, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:7, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
+                {id:8, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:9, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
             ])
         }
 
@@ -68,6 +73,8 @@ class TimeStrategy extends Component{
 
     componentWillMount(){
         this.mounted = true;
+        getAssetModelList(data=>this.mounted && this.initDeviceList(data));
+        this.requestSearch();
     }
 
     componentWillUnmount(){
@@ -75,7 +82,12 @@ class TimeStrategy extends Component{
     }
 
     requestSearch() {
-
+        const {model, page, search} = this.state;
+        let limit = page.get("pageSize");
+        let offset = (page.get("current")-1)*limit;
+        let name = page.get("value");
+        getStrategyListByName(model, name, offset, limit, data=>{this.mounted && this.initResult(data)});
+        getStrategyCountByName(model, name, data=>{this.mounted && this.initPageSize(data)})
     }
 
     initPageSize(data){
@@ -84,7 +96,20 @@ class TimeStrategy extends Component{
     }
 
     initResult(data){
-        this.setState({data:Immutable.fromJS(data)});
+        let list = data.map(strategy=>{
+            let exeR = strategy.executionRange;
+            let timeRange = "";
+            if(exeR && exeR.length){
+                timeRange += exeR[0];
+            }
+
+            if(exeR && exeR.length==2){
+                timeRange += "-"+exeR[1]
+            }
+            return {id:strategy.id, name:strategy.name, timeRange:timeRange, deviceType:strategy.asset};
+        })
+
+        this.setState({data:Immutable.fromJS(list)});
         if(data && data.length){
             this.setState({selectStrategy:data[0]});
         }
@@ -95,47 +120,105 @@ class TimeStrategy extends Component{
     }
 
     initDeviceList(data){
-        this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:data})})
+        let list = data.map(model=>{
+            return {id:model.key, name:model.name};
+        })
+
+        this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:list})})
     }
 
     addHandler(){
         const {actions} = this.props;
-        const {deviceList, strategyList} = this.state;
+        const {model, deviceList, strategyList} = this.state;
         let initData = {
             name:"",
-            deviceName:deviceList.options.length?deviceList.options[0][deviceList.valueKey]:""
+            device:deviceList.options.length?deviceList.options[0]:null
         }
         actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData}
                                                  deviceList={deviceList}
                                                  strategyList={strategyList}
-                                                 onConfirm={(data)=>{console.log(data)}} onCancel={()=>{
+                                                 onConfirm={(data)=>{
+                                                    console.log(data)
+                                                    let weekList = data.workTime.map(day=>{
+                                                            return day.get("active")?1:0
+                                                        });
+
+                                                    let object = {};
+                                                    object.name = data.name;
+                                                    object.type = model,
+                                                    object.asset = data.device.id;
+                                                    object.expire ={
+                                                        expireRange:[],
+                                                        executionRange:[
+                                                        data.startTime.year.get("value")+"-"+data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
+                                                        data.endTime.year.get("value")+"-"+data.endTime.month.get("value")+"-"+data.endTime.date.get("value")],
+                                                        week:parseInt(weekList.join(""), 2)
+                                                    }
+
+                                                    object.strategy = data.strategyList.map(strategy=>{
+                                                        return {"condition":{"time":strategy.time}, "rpc":{"brightness":strategy.light}}
+                                                    });
+                                                    addStrategy(object, ()=>{
+                                                        this.requestSearch();
+                                                        actions.overlayerHide();
+                                                    })
+                                                 }} onCancel={()=>{
                                                     actions.overlayerHide();
                                                  }}/>)
     }
 
     tableEdit(rowId){
         const {actions} = this.props;
-        const {deviceList, strategyList} = this.state;
+        const {model, deviceList, strategyList} = this.state;
         let row = Immutable.fromJS(getObjectByKey(this.state.data.toJS(), 'id', rowId));
-        let device = getObjectByKey(deviceList.options, 'id', row.get("deviceId"));
+        let device = getObjectByKey(deviceList.options, 'id', row.get("deviceType"));
         let initData = {
             name: row.get("name"),
-            deviceName: device?device.name:""
+            device: device
         }
         actions.overlayerShow(<TimeStrategyPopup title="修改策略" data={initData}
                     deviceList={deviceList}
                     strategyList={strategyList}
-                    onConfirm={(data)=>{}} onCancel={()=>{
+                    onConfirm={(data)=>{
+                        let weekList = data.workTime.map(day=>{
+                                return day.get("active")?1:0
+                            });
+
+                        let object = {};
+                        object.id = rowId;
+                        object.name = data.name;
+                        object.type = model;
+                        object.asset = data.device.id;
+                        object.expire ={
+                            expireRange:[],
+                            executionRange:[
+                            data.startTime.year.get("value")+"-"+data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
+                            data.endTime.year.get("value")+"-"+data.endTime.month.get("value")+"-"+data.endTime.date.get("value")],
+                            week:parseInt(weekList.join(""), 2)
+                        }
+
+                        object.strategy = data.strategyList.map(strategy=>{
+                            return {"condition":{"time":strategy.time}, "rpc":{"brightness":strategy.light}}
+                        });
+                        updateStrategy(object, ()=>{
+                            this.requestSearch();
+                            actions.overlayerHide();
+                        })
+                    }} onCancel={()=>{
                         actions.overlayerHide();
                     }}/>)
     }
 
     tableDelete(rowId){
         const {actions} = this.props;
+        const {model} = this.state;
         actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{
             actions.overlayerHide();
         }} confirm={()=>{
-
+            delStrategy(model, rowId, ()=>{
+                this.requestSearch();
+                actions.overlayerHide();
+            })
         }}/>)
     }
 

@@ -26,7 +26,7 @@ export default class TimeStrategyPopup extends Component{
         this.state = {
             chartId:"",
             name:data.name,
-            deviceName:data.deviceName,
+            device:data.device,
             startTime:{
                 year:Immutable.fromJS({value:"0",list:[]}),
                 month:Immutable.fromJS({value:"1", list:[]}),
@@ -139,9 +139,10 @@ export default class TimeStrategyPopup extends Component{
         let value = event.target.value;
         let newValue;
         let prompt=false;
-        if(id == "deviceName"){
-            const {options, valueKey} = this.props.deviceList;
-            value = options[event.target.selectedIndex][valueKey];
+        if(id == "device"){
+            const {options} = this.props.deviceList;
+            let curIndex = event.target.selectedIndex;
+            value = options[curIndex];
         }else if(id == "name"){
             prompt = !Name2Valid(value);
         }else if(id == "time"){
@@ -267,7 +268,7 @@ export default class TimeStrategyPopup extends Component{
     }
 
     render(){
-        const {name, deviceName, startTime, endTime, workTime, time, light, strategyList, prompt} = this.state;
+        const {name, device, startTime, endTime, workTime, time, light, strategyList, prompt} = this.state;
         const {deviceList} = this.props;
         let {titleKey, valueKey, options} = deviceList;
         let valid = prompt.name || !options.length || prompt.workTime || prompt.time;
@@ -292,9 +293,9 @@ export default class TimeStrategyPopup extends Component{
                     </div>
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="deviceName">控制设备：</label>
+                            <label className="col-sm-3 control-label" htmlFor="device">控制设备：</label>
                             <div className="col-sm-9">
-                                <select className="form-control" id="deviceName" placeholder="选择设备" value={deviceName} onChange={this.onChange}>
+                                <select className="form-control" id="device" placeholder="选择设备" value={device?device["valueKey"]:""} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }
@@ -405,7 +406,7 @@ TimeStrategyPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        deviceName: PropTypes.string.isRequired
+        device: PropTypes.object.isRequired
     }).isRequired,
     deviceList: PropTypes.shape({
         titleKey: PropTypes.string.isRequired,
