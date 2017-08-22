@@ -15,7 +15,7 @@ import {timeStrategy} from '../util/chart';
 import {getMomentDate, momentDateFormat,getMomentUTC,getCurHM, getDaysByYearMonth} from '../../util/time'
 
 import {STRATEGY_NAME_LENGTH, Name2Valid} from '../../util/index'
-
+import {dateAddZero} from '../../util/string'
 import Immutable from 'immutable'
 
 const date_year = "不限";
@@ -37,9 +37,9 @@ export default class TimeStrategyPopup extends Component{
                 month:Immutable.fromJS({value:"1", list:[]}),
                 date:Immutable.fromJS({value:"1", list:[]})
             },
-            workTime:Immutable.fromJS([{id:1, name:"周一", active:true},{id:2, name:"周二", active:true}, {id:3, name:"周三", active:true},
-                    {id:4, name:"周四",active:true},{id:5, name:"周五",active:true},{id:6, name:"周六", active:true},
-                    {id:7, name:"周日", active:true}]),
+            workTime:Immutable.fromJS([{id:1, name:"周一", active:1},{id:2, name:"周二", active:1}, {id:3, name:"周三", active:1},
+                    {id:4, name:"周四",active:1},{id:5, name:"周五",active:1},{id:6, name:"周六", active:1},
+                    {id:7, name:"周日", active:1}]),
             time:getCurHM(),
             light:Immutable.fromJS({
                 list:[
@@ -49,7 +49,7 @@ export default class TimeStrategyPopup extends Component{
                 value:"开",
                 index:0
             }),
-            strategyList:strategyList,
+            strategyList:[],
             prompt:{
                 name:false,
                 workTime: false,
@@ -77,9 +77,8 @@ export default class TimeStrategyPopup extends Component{
     }
 
     componentWillMount(){
-        this.workTimeValid();
 
-        const {startTime, endTime} = this.state
+        const {startTime, endTime, workTime} = this.state
         let year = [];
         let month = [];
         let date = [];
@@ -89,34 +88,76 @@ export default class TimeStrategyPopup extends Component{
         }
 
         for(let j=1;j<=12;j++){
-            month.push({id:j, value:j, name:j+"月"});
+            month.push({id:j, value:(dateAddZero(j)), name:j+"月"});
         }
 
         date = this.getDatesList(getDaysByYearMonth(0, 1));
 
         let curDate = new Date();
-
         let nextDate = new Date(curDate);
 
+        let yearValue = "";
+        let monthValue = "";
+        let dateValue = "";
+        let nextYearValue = "";
+        let nextMonthValue = "";
+        let nextDateValue = "";
+        if(this.props.startTime){
+            yearValue = this.props.startTime.year
+            monthValue = this.props.startTime.month
+            dateValue = this.props.startTime.date
+        }else{
+            yearValue = curDate.getFullYear()
+            monthValue = dateAddZero(curDate.getMonth()+1)
+            dateValue = dateAddZero(curDate.getDate())
+        }
+
+        if(this.props.endTime){
+            nextYearValue = this.props.endTime.year
+            nextMonthValue = this.props.endTime.month
+            nextDateValue = this.props.endTime.date
+        }else{
+            nextYearValue = nextDate.getFullYear()
+            nextMonthValue = dateAddZero(nextDate.getMonth()+2)
+            nextDateValue = dateAddZero(nextDate.getDate())
+        }
+
+        let list = this.props.strategyList.map(st=>{
+            return st;
+        })
+        console.log(list);
         this.setState({
-            strategyList:this.props.strategyList,
+            strategyList:list,
             startTime:{
-                year:Immutable.fromJS({value:curDate.getFullYear(), list:year}),
-                month:Immutable.fromJS({value:curDate.getMonth()+1, list:month}),
-                date:Immutable.fromJS({value:curDate.getDate(),list:date})
+                year:Immutable.fromJS({value:yearValue, list:year}),
+                month:Immutable.fromJS({value:monthValue, list:month}),
+                date:Immutable.fromJS({value:dateValue,list:date})
             },
             endTime:{
-                year:Immutable.fromJS({value:nextDate.getFullYear(),list:year}),
-                month:Immutable.fromJS({value:nextDate.getMonth()+2, list:month}),
-                date:Immutable.fromJS({value:nextDate.getDate(), list:date})
+                year:Immutable.fromJS({value:nextYearValue,list:year}),
+                month:Immutable.fromJS({value:nextMonthValue, list:month}),
+                date:Immutable.fromJS({value:nextDateValue, list:date})
             }
         });
+
+        if(this.props.workTime){
+            let time = this.props.workTime.toString(2);
+            let padstr = '0000000'
+            if(time.length<7){
+                time = (padstr + time).slice(-padstr.length);
+            }
+
+            let workTimeList = workTime.map((day,index)=>{
+                return Immutable.fromJS({id:day.get("id"), name:day.get("name"), active:parseInt(time.slice(index, index+1))})
+            })
+            this.setState({workTime:Immutable.fromJS(workTimeList)}, ()=>this.workTimeValid());
+        }
     }
 
     getDatesList(dates){
         let date = [];
         for(let i=1;i<=dates;i++){
-            date.push({id:i, value:i, name:i+"日"});
+            date.push({id:i, value:(i<10?"0"+i:i), name:i+"日"});
         }
 
         return date;
@@ -295,7 +336,7 @@ export default class TimeStrategyPopup extends Component{
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="device">控制设备：</label>
                             <div className="col-sm-9">
-                                <select className="form-control" id="device" placeholder="选择设备" value={device?device["valueKey"]:""} onChange={this.onChange}>
+                                <select className="form-control" id="device" placeholder="选择设备" value={device?device[valueKey]:""} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }
