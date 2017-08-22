@@ -94,9 +94,13 @@ export function getAssetsCountByModel(model){
     })
 }
 
+/**
+ * param data({modelId:设备型号})
+ * 
+ */
 export function postAssetsByModel(model, data, cb){
     let headers = getHttpHeader();
-    let dat = {id:data.id, type:data.modelId, base:{name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:data.modelId, domainId:data.domainId}};
+    let dat = {id:data.id, type:data.modelId, base:{name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:model, domainId:data.domainId}};
     httpRequest(HOST_IP+'/'+model+'s', {
         headers: headers,
         method: 'POST',
@@ -106,15 +110,19 @@ export function postAssetsByModel(model, data, cb){
     })
 }
 
+/**
+ * param data({modelId:设备型号})
+ * 
+ */
 export function updateAssetsByModel(model, data, cb) {
     let headers = getHttpHeader();
-    let dat = {id:data.id, type:data.modelId};
-    httpRequest(HOST_IP+'/'+model+'s?'+data.id, {
+    let dat = {type:data.modelId};
+    httpRequest(HOST_IP+'/'+model+'s/'+data.id, {
         headers: headers,
         method: 'PATCH',
         body:JSON.stringify(dat)
     }, response=>{
-        updateAssetsById(response.id, {name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:data.modelId, domainId:data.domainId}, cb)
+        updateAssetsById(response.id, {name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:model, domainId:data.domainId}, cb)
     })
 }
 
