@@ -107,7 +107,7 @@ class TimeStrategy extends Component{
                 timeRange += "-"+dateStringFormat(expR[1]);
             }
             else if(exeR && exeR.length==2){
-                timeRange += "-"+dateStringFormat(exeR[1])
+                timeRange += "-"+dateStringFormat(exeR[1], false)
             }
             return {id:strategy.id, name:strategy.name, timeRange:timeRange, deviceType:strategy.asset,
                                 week:strategy.expire.week, asset:strategy.asset,strategy:strategy.strategy,
@@ -141,7 +141,6 @@ class TimeStrategy extends Component{
         }
         actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData} deviceList={deviceList} strategyList={strategyList}
                                                  onConfirm={(data)=>{
-                                                    console.log(data)
                                                     let weekList = data.workTime.map(day=>{
                                                             return day.get("active")?1:0
                                                         });
@@ -183,9 +182,7 @@ class TimeStrategy extends Component{
         const {actions} = this.props;
         const {model, deviceList} = this.state;
         let row = Immutable.fromJS(getObjectByKey(this.state.data.toJS(), 'id', rowId));
-        console.log(deviceList, row.get("deviceType"));
         let device = getObjectByKey(deviceList.options, 'id', row.get("deviceType"));
-        console.log(device);
         let initData = {
             name: row.get("name"),
             device: device
@@ -207,8 +204,8 @@ class TimeStrategy extends Component{
             expRList = expR.get(0).split("-");
             startTime = {year:expRList[0], month:expRList[1], date:expRList[2]};
         }else if(exeR && exeR.size){
-            exeRList = exeR(0).split("-");
-            startTime = {year:0, month:exeRList[1], date:exeRList[2]};
+            exeRList = exeR.get(0).split("-");
+            startTime = {year:0, month:exeRList[0], date:exeRList[1]};
         }
 
         if(expR && expR.size==2){
@@ -216,7 +213,7 @@ class TimeStrategy extends Component{
             endTime = {year:expRList[0], month:expRList[1], date:expRList[2]};
         }else if(exeR && exeR.size==2){
             exeRList = exeR.get(1).split("-");
-            endTime = {year:0, month:exeRList[1], date:exeRList[2]};
+            endTime = {year:0, month:exeRList[0], date:exeRList[1]};
         }
         actions.overlayerShow(<TimeStrategyPopup title="修改策略" data={initData} deviceList={deviceList} strategyList={strategyList}
                                                  workTime={row.get("week")} startTime={startTime} endTime={endTime}

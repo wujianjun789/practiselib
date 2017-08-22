@@ -125,7 +125,6 @@ export default class TimeStrategyPopup extends Component{
         let list = this.props.strategyList.map(st=>{
             return st;
         })
-        console.log(list);
         this.setState({
             strategyList:list,
             startTime:{
