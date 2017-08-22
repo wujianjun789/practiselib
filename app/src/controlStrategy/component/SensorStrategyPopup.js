@@ -4,6 +4,7 @@ import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
 import LineChart from '../util/LineChart';
 import PropTypes from 'prop-types';
+import {NameValid, numbersValid} from '../../util/index';
 
 let options = (function generateLampLightnessList() {
     let options = [];
@@ -65,6 +66,14 @@ export default class SensorStrategyPopup extends Component {
             sensorsUnit: {
                 windy: 'm/s',
                 pm2: '',
+            },
+            checkStatus: {
+                strategyName: false,
+                sensorType: false,
+                controlDevice: false,
+                sensorParam: false,
+                lampLightness: false,
+                screenSwitch: false
             }
         }
 
@@ -77,13 +86,31 @@ export default class SensorStrategyPopup extends Component {
 
     onChange(e) {
         const {id, value} = e.target;
-        if((id == 'screenSwitch' || id == 'sensorType' || id == 'lampLightness') && value === '' )
+        if((id == 'screenSwitch' || id == 'sensorType' || id == 'lampLightness') && value === '' ) {
+            this.setState({checkStatus: Object.assign({}, this.state.checkStatus, {[id]: true})});
             return ;
+        }
         switch(id) {
             case 'strategyName':
+                let status = !NameValid(value);
+                this.setState({
+                    data: Object.assign({}, this.state.data, {strategyName: value}),
+                    checkStatus: Object.assign({}, this.state.checkStatus, {strategyName: status})
+                });
+                break;
             case 'sensorType':
             case 'controlDevice':
+                this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
+                break;
             case 'sensorParam':
+                console.log(numbersValid(value));
+                if(!numbersValid(value)) {
+                    return ;
+                }
+                this.setState({
+                    data: Object.assign({}, this.state.data, {sensorParam: value})
+                });
+                break;
             case 'screenSwitch':
             case 'lampLightness':
                 this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
@@ -141,7 +168,7 @@ export default class SensorStrategyPopup extends Component {
     }
 
     render() {
-        const {sensorTypeList, controlDeviceList, screenSwitchList, lampLightnessList, sensorParamsList, sensorsUnit, data} = this.state;
+        const {sensorTypeList, controlDeviceList, screenSwitchList, lampLightnessList, sensorParamsList, sensorsUnit, data, checkStatus} = this.state;
         const {className, title} = this.props;
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
@@ -153,7 +180,7 @@ export default class SensorStrategyPopup extends Component {
                     <div className="form-group-right">
                         <input type="text" className="form-control" id="strategyName" placeholder="传感器使用策略" value={data.strategyName}
                             onChange={this.onChange}/>
-                        <span>策略名已使用/仅能使用数字、字母、下划线</span>
+                        <span style={{visibility: checkStatus.strategyName ? 'visible' : 'hidden'}}>策略名已使用/仅能使用数字、字母、下划线</span>
                     </div>
                 </div>
                 <div className="inline-group">
@@ -163,7 +190,7 @@ export default class SensorStrategyPopup extends Component {
                             <Select id="sensorType" className="form-control" titleField={sensorTypeList.titleField}
                                     valueField={sensorTypeList.valueField} options={sensorTypeList.options} value={data.sensorType}
                                     onChange={this.onChange}/>
-                            <span>请选择传感器</span>
+                            <span style={{visibility: checkStatus.sensorType ? 'visible' : 'hidden'}}>请选择传感器</span>
                         </div>
                     </div>
                     <div className="form-group">
@@ -172,7 +199,7 @@ export default class SensorStrategyPopup extends Component {
                             <Select id="controlDevice" className="form-control" titleField={controlDeviceList.titleField}
                                     valueField={controlDeviceList.valueField} options={controlDeviceList.options} value={data.controlDevice}
                                     onChange={this.onChange}/>
-                            <span>请选择设备</span>
+                            <span style={{visibility: checkStatus.controlDevice ? 'visible' : 'hidden'}}>请选择设备</span>
                         </div>
                     </div>
                 </div>
