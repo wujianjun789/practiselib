@@ -311,7 +311,7 @@ export default class TimeStrategyPopup extends Component{
         const {name, device, startTime, endTime, workTime, time, light, strategyList, prompt} = this.state;
         const {deviceList} = this.props;
         let {titleKey, valueKey, options} = deviceList;
-        let valid = prompt.name || !options.length || prompt.workTime || prompt.time;
+        let valid = prompt.name || !options.length || prompt.workTime || prompt.time || !strategyList.length;
 
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -353,7 +353,6 @@ export default class TimeStrategyPopup extends Component{
                             <div className="col-sm-9">
                                 <div className="col-sm-5 select-container">
                                     <Select className="form-control" id="startYear" valueKey="value" titleKey="name" data={startTime.year} onChange={selectIndex=>this.dateOnChange("startTime","year", selectIndex)}/>
-                                    <span className={prompt.time?"prompt ":"prompt hidden"}>{"日期错误"}</span>
                                 </div>
                                 <div className="col-sm-3 select-container">
                                     <Select className="form-control" id="startMonth" valueKey="value" titleKey="name" data={startTime.month} onChange={selectIndex=>this.dateOnChange("startTime", "month", selectIndex)}/>
@@ -362,6 +361,7 @@ export default class TimeStrategyPopup extends Component{
                                     <Select className="form-control" id="startDate" valueKey="value" titleKey="name" data={startTime.date} onChange={selectIndex=>this.dateOnChange("startTime", "date", selectIndex)}/>
                                 </div>
                             </div>
+                            <span className={prompt.time?"prompt date ":"prompt date hidden"}>{"日期错误"}</span>
                         </div>
                     </div>
                     <div className="col-sm-6 date-range">
@@ -377,7 +377,6 @@ export default class TimeStrategyPopup extends Component{
                                 <div className="col-sm-3 select-container last">
                                     <Select className="form-control" id="endDate" valueKey="value" titleKey="name" data={endTime.date} onChange={selectIndex=>this.dateOnChange("endTime", "date", selectIndex)}/>
                                 </div>
-                                <span className={false?"prompt ":"prompt hidden"}>{"日期错误"}</span>
                             </div>
                         </div>
                     </div>
@@ -432,6 +431,7 @@ export default class TimeStrategyPopup extends Component{
                                         </div>
                                     })
                                 }
+                                <span className={!strategyList.length ?"prompt ":"prompt hidden"}>{"请添加时间亮度表"}</span>
                             </div>
                         </div>
                     </div>
