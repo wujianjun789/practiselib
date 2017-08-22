@@ -18,6 +18,7 @@ import ConfirmPopup from '../../components/ConfirmPopup'
 
 import Immutable from 'immutable';
 import {getObjectByKey} from '../../util/index';
+import {dateStringFormat} from '../../util/string'
 import {getMomentDate, momentDateFormat} from '../../util/time'
 
 import {getAssetModelList} from '../../api/asset'
@@ -40,14 +41,9 @@ class TimeStrategy extends Component{
                 current: 1,
                 total: 0
             }),
-            deviceList:{titleKey:"name", valueKey:"name", options:[{id:1, name:"test灯"},{id:2, name:"test显示屏"}]},
-            strategyList:[{id:1,time:"15:00", light:"50"},{id:2,time:"16:00", light:"关"}],
+            deviceList:{titleKey:"name", valueKey:"name", options:[/*{id:1, name:"test灯"},{id:2, name:"test显示屏"}*/]},
+            strategyList:[/*{id:1,time:"15:00", light:"50"},{id:2,time:"16:00", light:"关"}*/],
             data:Immutable.fromJS([
-                {id:1, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
-                {id:2, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:3, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
-                {id:4, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:5, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
-                {id:6, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:7, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
-                {id:8, name:"冬季路灯使用策略", timeRange:"10月1日-4月30日", deviceType:1},{id:9, name:"夏季路灯使用策略", timeRange:"5月1日-9月30日", deviceType:2},
             ])
         }
 
@@ -85,7 +81,7 @@ class TimeStrategy extends Component{
         const {model, page, search} = this.state;
         let limit = page.get("pageSize");
         let offset = (page.get("current")-1)*limit;
-        let name = page.get("value");
+        let name = search.get("value");
         getStrategyListByName(model, name, offset, limit, data=>{this.mounted && this.initResult(data)});
         getStrategyCountByName(model, name, data=>{this.mounted && this.initPageSize(data)})
     }
@@ -97,16 +93,25 @@ class TimeStrategy extends Component{
 
     initResult(data){
         let list = data.map(strategy=>{
-            let exeR = strategy.executionRange;
+            let expR = strategy.expire.expireRange;
+            let exeR = strategy.expire.executionRange;
             let timeRange = "";
-            if(exeR && exeR.length){
-                timeRange += exeR[0];
+            if(expR && expR.length){
+                timeRange += dateStringFormat(expR[0]);
+            }
+            else if(exeR && exeR.length){
+                timeRange += dateStringFormat(exeR[0], false);
             }
 
-            if(exeR && exeR.length==2){
-                timeRange += "-"+exeR[1]
+            if(expR && expR.length==2){
+                timeRange += "-"+dateStringFormat(expR[1]);
             }
-            return {id:strategy.id, name:strategy.name, timeRange:timeRange, deviceType:strategy.asset};
+            else if(exeR && exeR.length==2){
+                timeRange += "-"+dateStringFormat(exeR[1], false)
+            }
+            return {id:strategy.id, name:strategy.name, timeRange:timeRange, deviceType:strategy.asset,
+                                week:strategy.expire.week, asset:strategy.asset,strategy:strategy.strategy,
+                expire:strategy.expire};
         })
 
         this.setState({data:Immutable.fromJS(list)});
@@ -134,24 +139,30 @@ class TimeStrategy extends Component{
             name:"",
             device:deviceList.options.length?deviceList.options[0]:null
         }
-        actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData}
-                                                 deviceList={deviceList}
-                                                 strategyList={strategyList}
+        actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData} deviceList={deviceList} strategyList={strategyList}
                                                  onConfirm={(data)=>{
-                                                    console.log(data)
                                                     let weekList = data.workTime.map(day=>{
                                                             return day.get("active")?1:0
                                                         });
+
+                                                    let year = data.startTime.year.get("value");
+                                                    let expireRangeList = [];
+                                                    let executionRangeList = [];
+                                                    if(year==0){
+                                                        executionRangeList.push(data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
+                                                        data.endTime.month.get("value")+"-"+data.endTime.date.get("value"));
+                                                    }else{
+                                                        expireRangeList.push(data.startTime.year.get("value")+"-"+data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
+                                                        data.endTime.year.get("value")+"-"+data.endTime.month.get("value")+"-"+data.endTime.date.get("value"));
+                                                    }
 
                                                     let object = {};
                                                     object.name = data.name;
                                                     object.type = model,
                                                     object.asset = data.device.id;
                                                     object.expire ={
-                                                        expireRange:[],
-                                                        executionRange:[
-                                                        data.startTime.year.get("value")+"-"+data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
-                                                        data.endTime.year.get("value")+"-"+data.endTime.month.get("value")+"-"+data.endTime.date.get("value")],
+                                                        expireRange:expireRangeList,
+                                                        executionRange:executionRangeList,
                                                         week:parseInt(weekList.join(""), 2)
                                                     }
 
@@ -169,31 +180,66 @@ class TimeStrategy extends Component{
 
     tableEdit(rowId){
         const {actions} = this.props;
-        const {model, deviceList, strategyList} = this.state;
+        const {model, deviceList} = this.state;
         let row = Immutable.fromJS(getObjectByKey(this.state.data.toJS(), 'id', rowId));
         let device = getObjectByKey(deviceList.options, 'id', row.get("deviceType"));
         let initData = {
             name: row.get("name"),
             device: device
         }
-        actions.overlayerShow(<TimeStrategyPopup title="修改策略" data={initData}
-                    deviceList={deviceList}
-                    strategyList={strategyList}
+
+        let strategyList=[];
+        row.get("strategy").map(strategy=>{
+            strategyList.push({id:row.get("id"), time:strategy.getIn(["condition", "time"]), light:strategy.getIn(["rpc", "brightness"])})
+        })
+
+        let expR = row.getIn(["expire", "expireRange"])
+        let exeR = row.getIn(["expire", "executionRange"])
+        let expRList = [];
+        let exeRList = [];
+
+        let startTime = {};
+        let endTime = {};
+        if(expR && expR.size){
+            expRList = expR.get(0).split("-");
+            startTime = {year:expRList[0], month:expRList[1], date:expRList[2]};
+        }else if(exeR && exeR.size){
+            exeRList = exeR.get(0).split("-");
+            startTime = {year:0, month:exeRList[0], date:exeRList[1]};
+        }
+
+        if(expR && expR.size==2){
+            expRList = expR.get(1).split("-");
+            endTime = {year:expRList[0], month:expRList[1], date:expRList[2]};
+        }else if(exeR && exeR.size==2){
+            exeRList = exeR.get(1).split("-");
+            endTime = {year:0, month:exeRList[0], date:exeRList[1]};
+        }
+        actions.overlayerShow(<TimeStrategyPopup title="修改策略" data={initData} deviceList={deviceList} strategyList={strategyList}
+                                                 workTime={row.get("week")} startTime={startTime} endTime={endTime}
                     onConfirm={(data)=>{
                         let weekList = data.workTime.map(day=>{
                                 return day.get("active")?1:0
                             });
 
+                        let year = data.startTime.year.get("value");
+                        let expireRangeList = [];
+                        let executionRangeList = [];
+                        if(year==0){
+                            executionRangeList.push(data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
+                            data.endTime.month.get("value")+"-"+data.endTime.date.get("value"));
+                        }else{
+                            expireRangeList.push(data.startTime.year.get("value")+"-"+data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
+                            data.endTime.year.get("value")+"-"+data.endTime.month.get("value")+"-"+data.endTime.date.get("value"));
+                        }
                         let object = {};
                         object.id = rowId;
                         object.name = data.name;
                         object.type = model;
                         object.asset = data.device.id;
                         object.expire ={
-                            expireRange:[],
-                            executionRange:[
-                            data.startTime.year.get("value")+"-"+data.startTime.month.get("value")+"-"+data.startTime.date.get("value"),
-                            data.endTime.year.get("value")+"-"+data.endTime.month.get("value")+"-"+data.endTime.date.get("value")],
+                            expireRange:expireRangeList,
+                            executionRange:executionRangeList,
                             week:parseInt(weekList.join(""), 2)
                         }
 
@@ -211,11 +257,11 @@ class TimeStrategy extends Component{
 
     tableDelete(rowId){
         const {actions} = this.props;
-        const {model} = this.state;
+
         actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{
             actions.overlayerHide();
         }} confirm={()=>{
-            delStrategy(model, rowId, ()=>{
+            delStrategy(rowId, ()=>{
                 this.requestSearch();
                 actions.overlayerHide();
             })
@@ -248,7 +294,7 @@ class TimeStrategy extends Component{
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button id="sys-add" className="btn btn-default add-domain" onClick={this.addHandler}>添加</button>
+                <button id="sys-add" className="btn btn-primary add-domain" onClick={this.addHandler}>添加</button>
             </div>
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={data} activeId={selectDevice && selectDevice.id}

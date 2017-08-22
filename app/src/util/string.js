@@ -76,3 +76,34 @@ export function getRequestValue(key) {
     let request = getRequestParam();
     return request[key];
 }
+
+/**
+ *
+ * @param str(YYYY-MM-DD)
+ * @param IsHave
+ * @returns {*}(-年-月-日)
+ */
+export function dateStringFormat(str, IsHaveYear=true) {
+    if(!str)return "";
+    let strList = str.split("-");
+    if(!strList || strList.length<2)return "";
+
+    if(!IsHaveYear && strList.length==2){
+        return strList[0]+"月"+strList[1]+"日"
+    }
+
+    if(IsHaveYear && strList.length==3){
+        return strList[0]+"年"+strList[1]+"月"+strList[2]+"日"
+    }
+    return "";
+}
+
+/**
+ *
+ * @param value(月或日)
+ * @returns {*}
+ */
+export function dateAddZero(value) {
+    let newValue = parseInt(value);
+    return newValue<10?"0"+newValue:newValue;
+}
