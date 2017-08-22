@@ -96,7 +96,6 @@ export class Login extends Component{
                     </div>
                 </header>
                 <div className="container-mid">
-                    
                     <div className="bg-cover"></div>
                     <div className="login-right pull-right">
                         <p onClick={this.handleTest}>用户登录</p>

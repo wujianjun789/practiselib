@@ -29,13 +29,19 @@
     .update, .del, .domain{
       margin-right: 10px;
       color: #808080;
+      float:left;
     }
     .del{
       color: #fa6262;
+      
+    }
+    svg{
+      float:left;
+      display:inline-block
     }
     .icon-table-edit{
-      background-image: url(/images/icon_edit.png);
-      background-size: 100% 100%;
+      background: url(/svg/icon_edit.svg)no-repeat top left;
+      background-size: 15px;
       display: inline-block;
       width: 15px;
       height: 15px;
@@ -43,8 +49,8 @@
     }
 
     .icon-table-delete{
-      background-image: url(/images/icon_delete.png);
-      background-size: 100% 100%;
+      background: url(/svg/icon_delete.svg)no-repeat top -1px left -1px;
+      background-size: 17px;
       display: inline-block;
       width: 15px;
       height: 15px;
@@ -52,8 +58,8 @@
     }
 
     .icon-domain-edit{
-      background-image: url(/images/icon_domain_edit.png);
-      background-size: 100% 100%;
+      background: url(/svg/icon_domain_edit.svg)no-repeat top -2px left -2px;
+      background-size: 26px;
       display: inline-block;
       width: 15px;
       height: 15px;
@@ -63,6 +69,13 @@
     .button-icon{
       padding:5px;
       text-align: right;
+      .btn{
+        cursor:pointer;
+      }
+      .btn:hover .domain,.btn:hover .update{color:#4a5064;}
+      .btn:hover .logo_domain,.btn:hover .logo_update{fill:#4a5064;}
+      .btn:hover .del{color:red;}
+      .btn:hover .logo_del{fill:red;}
     }
     tr:last-child{
       //td{
