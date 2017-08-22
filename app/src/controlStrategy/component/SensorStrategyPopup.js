@@ -103,7 +103,6 @@ export default class SensorStrategyPopup extends Component {
                 this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
                 break;
             case 'sensorParam':
-                console.log(numbersValid(value));
                 if(!numbersValid(value)) {
                     return ;
                 }
