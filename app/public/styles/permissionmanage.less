@@ -43,12 +43,25 @@
     }
 
     .heading{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         height: 70px;
-        background: #fff;
-        .search{
-            width: 200px;
-            height: 30px;
-            margin: 20px;
+        background-color: #fff;
+        > .searchText {
+          height: 30px;
+          margin-left: 20px;
+          > input[type='search'] {
+            padding-left: 15px;
+            padding-right: 16px;
+          }
+        }
+        > .btn.btn-primary {
+          height: 30px;
+          padding: 4px 12px; 
+          margin-left: 25px;
+          border: 0;
+          color: #fff;
         }
     }
     
