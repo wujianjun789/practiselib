@@ -5,6 +5,9 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import '../../../public/styles/systemOperation-config.less';
+import '../../../public/styles/systemOperation-strategy.less';
+
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
