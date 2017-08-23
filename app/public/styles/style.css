@@ -688,6 +688,8 @@ ul {
     z-index: 10000;
 }
 
+.svgOnload{height:0px;width:0px;position:absolute;}
+
 .user-center > .user-icon {
     width:60px;
     height:60px;
@@ -727,6 +729,22 @@ ul {
     color: #000;
     background-color: #fff;
     cursor: pointer;
+}
+
+.user-center > ul.user-list > li > svg{
+    width:40px;
+    height:40px;
+    display: inline-block;
+    float:left;
+    padding:12px 12px;
+}
+
+
+
+.user-center > ul.user-list > li > span{
+    height:40px;
+    display: inline-block;
+    float:left;
 }
 
 .user-center > ul.user-list > li:hover{
