@@ -54,7 +54,7 @@ export class Login extends Component{
     }
 
     handleTest(){
-        console.log(getCookie("user"));
+        console.log(this.state);
     }
 
     submitHandler() {
