@@ -248,7 +248,7 @@ export default class SensorStrategyPopup extends Component {
 
     render() {
         const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data, checkStatus} = this.state;
-        const {sensorTypeList, sensorsProps} = this.props;
+        const {sensorTypeList, sensorsProps, popupId} = this.props;
         const {className, title} = this.props;
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
@@ -269,7 +269,7 @@ export default class SensorStrategyPopup extends Component {
                         <div className="form-group-right">
                             <Select id="sensorType" className="form-control" titleField={sensorTypeList.titleField}
                                     valueField={sensorTypeList.valueField} options={sensorTypeList.options} value={data.sensorType}
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange} disabled={popupId=='add' ? false : true}/>
                             <span style={{visibility: checkStatus.sensorType ? 'visible' : 'hidden'}}>请选择传感器</span>
                         </div>
                     </div>
@@ -278,7 +278,7 @@ export default class SensorStrategyPopup extends Component {
                         <div className="form-group-right">
                             <Select id="controlDevice" className="form-control" titleField={controlDeviceList.titleField}
                                     valueField={controlDeviceList.valueField} options={controlDeviceList.options} value={data.controlDevice}
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange} disabled={popupId=='add' ? false : true}/>
                             <span style={{visibility: checkStatus.controlDevice ? 'visible' : 'hidden'}}>请选择设备</span>
                         </div>
                     </div>
