@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import '../../../public/styles/systemOperation-config.less';
+
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
