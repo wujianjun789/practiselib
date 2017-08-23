@@ -10,7 +10,7 @@ let models=[
 
 export const TreeData=[
     {
-        "id": "deviceConfig",
+        "id": "config",
         "name":"设备配置",
         "toggled": true,
         "active": true,
@@ -32,7 +32,7 @@ export const TreeData=[
         ]
     },
     {
-        "id":"controlStrategy",
+        "id":"strategy",
         "name":"控制策略",
         "toggled": false,
         "active": true,
@@ -81,7 +81,7 @@ export function getModelData(model, cb) {
     getAssetModelList(response=>{
         models = response;
         TreeData.map(item=>{
-            if(item.id == "deviceConfig"){
+            if(item.id == "config"){
                 let curModel = getModelById(model);
                 if(curModel){
                     item.link = "/systemOperation/config/"+curModel.key;

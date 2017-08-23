@@ -12,16 +12,18 @@ export const TreeData=[
         "level":1,
         "children": [
             {
-                "id": 'list-mode',
+                "id": 'list',
                 "name":"列表模式",
                 "class":"icon_domain_list",
-                "active":true
+                "active":true,
+                "link":"/domainManage/domainEdit/list"
             },
             {
-                "id": 'topology-mode',
+                "id": 'topology',
                 "name":"拓扑图",
                 "class":"icon_domain_topology",
-                "active":false
+                "active":false,
+                "link":"/domainManage/domainEdit/topology"
             }
         ]
     },

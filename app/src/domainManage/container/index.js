@@ -5,6 +5,8 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import '../../../public/styles/domainmanage.less';
+
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
@@ -28,7 +30,6 @@ class DomainManageIndex extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props.userCenter.islogin)
     }
 
     initTreeData(){

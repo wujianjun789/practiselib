@@ -5,7 +5,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import '../../../public/styles/domainmanage.less';
 import Content from '../../components/Content'
 import SideBarInfo from '../../components/SideBarInfo'
 import Table from '../../components/Table';
@@ -16,18 +15,15 @@ import DomainPopup from '../component/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
-import Topology from './Topology';
-
 import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 
-export class DomainEdit extends Component {
+export class DomainEditList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listMode: true,
             collapse: false,
             selectDomain: {
                 id:"domain",
@@ -51,27 +47,22 @@ export class DomainEdit extends Component {
             search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
             data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
-                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
-            topologyRefresh:{IsUpdate:false, parentId:null}
+                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/])
         }
 
         this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
         this.domainList = [];
 
-        this.onToggle = this.onToggle.bind(this);
         this.initTreeData = this.initTreeData.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.tableClick = this.tableClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-        this.topologyItemClick = this.topologyItemClick.bind(this);
         this.initSelectDomain = this.initSelectDomain.bind(this);
         this.updateSelectDomain = this.updateSelectDomain.bind(this);
 
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
-
-        this.destoryTopology = this.destoryTopology.bind(this);
 
         this.requestDomain = this.requestDomain.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
@@ -89,10 +80,6 @@ export class DomainEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {sidebarNode} = nextProps;
-        if (sidebarNode) {
-            this.onToggle(sidebarNode);
-        }
     }
 
     componentWillUnmount() {
@@ -137,9 +124,6 @@ export class DomainEdit extends Component {
 
     }
 
-    destoryTopology(){
-        this.setState({topologyRefresh:{IsUpdate:false, parentId:null}});
-    }
 
     getDomainParentList(){
         const {selectDomain} = this.state;
@@ -170,7 +154,11 @@ export class DomainEdit extends Component {
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                         domain.parentId = data.prevDomain;
 
-                                                        addDomain(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{IsUpdate:true, parentId:data.prevDomain}});});
+                                                        addDomain(domain, ()=>{
+                                                            actions.overlayerHide();
+                                                            this.requestDomain();
+                                                            this.requestSearch();
+                                                        });
                                                    }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'update':
@@ -198,7 +186,11 @@ export class DomainEdit extends Component {
                                                                     domain.geoType = 0;
                                                                     domain.geoPoint = {lat:data.lat, lng:data.lng};
                                                                     domain.parentId = data.prevDomain;
-                                                                    updateDomainById(domain, ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{IsUpdate:true, id:data.domainId, parentId:data.prevDomain}});});
+                                                                    updateDomainById(domain, ()=>{
+                                                                        actions.overlayerHide();
+                                                                        this.requestDomain();
+                                                                        this.requestSearch();
+                                                                    });
                                                               }} onCancel={()=>{actions.overlayerHide()}}/>);
                 break;
             case 'delete':
@@ -209,7 +201,11 @@ export class DomainEdit extends Component {
                 }
                 actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
                                                  cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
-                                                 ()=>{actions.overlayerHide();this.requestDomain();listMode?this.requestSearch():this.setState({topologyRefresh:{IsUpdate:true, parentId:selectDomain.parentId}});})}}/>);
+                                                 ()=>{
+                                                    actions.overlayerHide();
+                                                    this.requestDomain();
+                                                    this.requestSearch();
+                                                })}}/>);
                 break;
         }
     }
@@ -224,10 +220,6 @@ export class DomainEdit extends Component {
     tableClick(row){
         this.updateSelectDomain(row.toJS());
 
-    }
-
-    topologyItemClick(data){
-        this.updateSelectDomain(data);
     }
 
     initSelectDomain(){
@@ -247,7 +239,6 @@ export class DomainEdit extends Component {
     }
 
     searchSubmit(){
-
         this.requestSearch();
     }
 
@@ -255,56 +246,28 @@ export class DomainEdit extends Component {
         this.setState({search:this.state.search.update('value', v=>value)});
     }
 
-    onToggle(node) {
-        let mode = undefined;
-
-        if(node.id == "list-mode"){
-            mode = true;
-        }else if(node.id == 'topology-mode'){
-            mode = false;
-        }
-
-        mode != undefined && this.setState({listMode:mode},()=>{
-            if(mode){
-                this.requestSearch();
-            }else{
-                this.initSelectDomain();
-            }
-        });
-    }
-
     collpseHandler() {
         this.setState({collapse: !this.state.collapse})
     }
 
     render() {
-        const {listMode, collapse, selectDomain, page, search, data, topologyRefresh} = this.state
-        let disabled = false;
-        if(listMode){
-            disabled = data.size==0?true:false
-        }else{
-            disabled = selectDomain.data.length?false:true
-        }
-
+        const {collapse, selectDomain, page, search, data, topologyRefresh} = this.state
+        let disabled = (data.size==0?true:false);
         return (
-            <Content className={'offset-right '+(listMode?'list-mode ':'topology ')+(collapse?'collapsed':'')}>
+            <Content className={'offset-right list-mode '+(collapse?'collapsed':'')}>
                 <div className="heading">
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
                     <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
                 </div>
-                {
-                    listMode ?
-                        <div className="list-mode">
-                            <div className="table-container">
-                                <Table columns={this.columns} data={data} activeId={selectDomain.data.length?selectDomain.data[0].id:""}
-                                       rowClick={this.tableClick}/>
-                                <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
-                                      current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
-                            </div>
-                        </div> :
-                        <Topology topologyRefresh={topologyRefresh} callFun={this.destoryTopology} itemClick={this.topologyItemClick}/>
-                }
+                <div className="list-mode">
+                    <div className="table-container">
+                        <Table columns={this.columns} data={data} activeId={selectDomain.data.length?selectDomain.data[0].id:""}
+                               rowClick={this.tableClick}/>
+                        <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
+                              current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
+                    </div>
+                </div>
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
@@ -340,4 +303,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DomainEdit);
+)(DomainEditList);

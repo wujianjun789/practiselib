@@ -22,12 +22,47 @@ export default function treeView(state=initialState, action) {
 }
 
 function treeViewInit(state, data) {
-    return Object.assign({}, state, {datalist:data});
+    let path = location.pathname;
+    let paths = path.split("/")
+    let url = paths.pop();
+    let urlParent = paths.pop();
+    let curParentNode = searchNode(data, urlParent);
+    let curNode = searchNode(data, url);
+
+    let list = data;
+   if(curNode){
+        list = update(data, 1, null, curNode);
+    }
+
+    if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
+        list = update(list, 1, null, curParentNode);
+    }
+    return curNode ? Object.assign({}, state, {datalist:list}):Object.assign({}, state, {datalist:data});
 }
 
 function onToggle(state, data) {
     let list = update(state.datalist, 1, null, data)
     return Object.assign({}, state, {datalist:list});
+}
+
+function searchNode(list, id) {
+    for(var key in list){
+        let curNode = list[key];
+        if(curNode.id == id){
+            return curNode;
+        }
+
+        if(curNode.children){
+            let childCurNode = searchNode(curNode.children, id);
+            if(childCurNode){
+                return childCurNode;
+            }else{
+                continue;
+            }
+        }
+    }
+
+    return null;
 }
 
 function update(list, index, parentId, data) {
@@ -54,7 +89,7 @@ function update(list, index, parentId, data) {
         }
 
         if(node.children){
-          update(node.children, nextIndex, node.id, data);
+            update(node.children, nextIndex, node.id, data);
         }
 
         return node;
