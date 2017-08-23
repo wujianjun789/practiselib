@@ -6,20 +6,31 @@ import PanelFooter from '../../components/PanelFooter';
 import {overlayerHide} from '../../common/actions/overlayer';
 import Select from '../../components/Select.1';
 import Immutable from 'immutable';
-import {NameValid,numbersValid} from '../../util/index'
+import {NameValid,numbersValid} from '../../util/index';
+
 export class LatlngStrategyPopup extends Component{
     constructor(props){
         super(props);
         const {data={},isEdit=false} = this.props;
-        const {id="", name="", device='', riseOrder='', setOrder='', sunriseTime="", sunsetTime=""} = data;
+        const defaultDev = this.props.deviceList.options.length>0?this.props.deviceList.options[0].value:''
+        const {name="", device=defaultDev,strategy=[]} = data;
+        let sunriseTime;
+        let sunsetTime;        
+        strategy.forEach((item)=>{
+            if('sunrise' in item.condition){
+                sunriseTime=item.condition.sunrise;
+            }
+            else{
+                sunsetTime=item.condition.sunset;
+            }
+        });
         this.state={
-            id:isEdit?data.id:'',
             name:name,
             device:device,
-            sunrise:riseOrder,
-            sunset:setOrder,
+            sunrise:'',
+            sunset:'',
             sunriseTime:sunriseTime,
-            sunsetTime:sunriseTime,
+            sunsetTime:sunsetTime,
             prompt:{
                 name:{hidden:true,text:'策略名已使用'},
                 device:{hidden:true,text:'请选择设备'},
@@ -29,21 +40,13 @@ export class LatlngStrategyPopup extends Component{
                 sunsetTime:{hidden:true,text:'仅能输入数字'},
             },
             orderList:{
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {value: 0, title: '关闭'},
-                    {value: 100, title: '亮度100'}
-                ]
-            },
-            deviceList:{
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {value: 'screen', title: '屏幕'},
-                    {value: 'lamp', title: '灯'}
-                ]
-            },
+                // titleField: 'title',
+                // valueField: 'value',
+                // options: [
+                //     {value: 0, title: '关闭'},
+                //     {value: 100, title: '亮度100'}
+                // ]
+            }
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -55,30 +58,40 @@ export class LatlngStrategyPopup extends Component{
     }
 
     onConfirm(){
-        const {id, name, device, sunrise, sunset, sunriseTime, sunsetTime} = this.state;
-        const datas = this.props.isEdit?{
-            id:id,
-            name:name,
-            device:device,
-            sunrise:sunrise,
-            sunset:sunset,
-            sunriseTime:sunriseTime,
-            sunsetTime:sunriseTime,
-        }:{
-            name:name,
-            device:device,
-            sunrise:sunrise,
-            sunset:sunset,
-            sunriseTime:sunriseTime,
-            sunsetTime:sunriseTime,
+        const {name, device, sunrise, sunset, sunriseTime, sunsetTime} = this.state;
+        const datas = {
+            name: name,
+            type: "latlng",
+            asset: device,
+            expire: {
+                expireRange: [],
+                executionRange: [],
+                week: 0
+            },
+            strategy:
+            [
+                {
+                    condition: {
+                        sunrise: sunriseTime
+                    },
+                    rpc: {}
+                },
+                {
+                    condition: {
+                        sunset: sunsetTime
+                    },
+                    rpc: {}
+                }
+            ]
         }
+        this.props.onConfirm(Object.assign(datas,this.props.isEdit?{id:this.props.data.id}:{}),this.props.isEdit);
         this.props.action.overlayerHide();
     }
 
     onChange(event){
         const id = event.target.id;
         if(id == "device") {
-            this.setState({device: this.state.deviceList.options[event.target.selectedIndex].value  });
+            this.setState({device: this.props.deviceList.options[event.target.selectedIndex].value});
         }
         else if(id == 'sunrise'||id == 'sunset') {
             this.setState({[id]: this.state.orderList.options[event.target.selectedIndex].value});
@@ -102,8 +115,8 @@ export class LatlngStrategyPopup extends Component{
     }
 
     render() {
-        let {className = '',title = '',isEdit=false} = this.props;
-        let {id, name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt,orderList,deviceList} = this.state;
+        let {className = '',title = '',isEdit=false,deviceList} = this.props;
+        let {name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt,orderList} = this.state;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
