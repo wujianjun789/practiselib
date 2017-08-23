@@ -5,6 +5,9 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import '../../../public/styles/assetManage-model.less';
+import '../../../public/styles/assetManage-statistics.less'
+
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
@@ -22,7 +25,6 @@ class AssetManageIndex extends Component{
     }
 
     componentWillMount(){
-       
         this.mounted = true;
         getModelData(()=>{this.mounted && this.initTreeData()});
     }
@@ -45,10 +47,11 @@ class AssetManageIndex extends Component{
 
     render(){
         let path = "";
-        const {children} = this.props;
-        if(children){
-            path = children.props.route.path;
+        const {routes} = this.props;
+        if(routes.length>3){
+            path = routes[3].path;
         }
+
         return <div className={"container "+"asset-"+path}>
             <HeadBar moduleName={path=="manage"?"资产管理":"资产统计"} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>

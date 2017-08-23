@@ -9,12 +9,12 @@ import '../../../public/js/jquery-3.1.1.min'
 import '../../../public/leaflet/leaflet';
 window.d3 = require('../../../public/js/d3.min')
 
-import {AssetStatistics} from '../../../src/assetStatistics/container/AssetStatistics';
+import {SingleLamp} from '../../../src/assetStatistics/container/SingleLamp';
 
 
 test('AssetStatistics renders', ()=>{
     const component = renderer.create(
-        <AssetStatistics />
+        <SingleLamp />
     )
 
     let assetStatistics = component.toJSON();
@@ -22,7 +22,7 @@ test('AssetStatistics renders', ()=>{
 })
 
 test('AssetStatistics div click', ()=>{
-    const component = shallow(<AssetStatistics />)
+    const component = shallow(<SingleLamp />)
     expect(component.find('.heading').length).toEqual(1);
     expect(component.find('.table-container').length).toEqual(1);
 })

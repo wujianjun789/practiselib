@@ -11,12 +11,6 @@ exports[`<app /> snapshot 1`] = `
         className="tit">
         Star
       </span>
-      <span
-        className="name">
-        <span>
-          智慧照明
-        </span>
-      </span>
     </div>
     <div
       className="user-center "
@@ -24,7 +18,8 @@ exports[`<app /> snapshot 1`] = `
       <div
         className="user-icon clearfix">
         <span
-          className="icon icon-usr" />
+          aria-hidden="true"
+          className="glyphicon glyphicon-user" />
       </div>
       <ul
         className="user-list hidden">
@@ -41,6 +36,13 @@ exports[`<app /> snapshot 1`] = `
           退出管理系统
         </li>
       </ul>
+    </div>
+    <div
+      className="header-right clearfix">
+      <span
+        className="name">
+        智慧照明
+      </span>
     </div>
   </div>
   <div
@@ -108,12 +110,6 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
         className="tit">
         StarRiver
       </span>
-      <span
-        className="name">
-        <span>
-          智慧路灯管理系统
-        </span>
-      </span>
     </div>
     <div
       className="user-center "
@@ -121,7 +117,8 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
       <div
         className="user-icon clearfix">
         <span
-          className="icon icon-usr" />
+          aria-hidden="true"
+          className="glyphicon glyphicon-user" />
       </div>
       <ul
         className="user-list hidden">
@@ -138,6 +135,13 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
           退出管理系统
         </li>
       </ul>
+    </div>
+    <div
+      className="header-right clearfix">
+      <span
+        className="name">
+        智慧路灯管理系统
+      </span>
     </div>
   </div>
   <div

@@ -68,5 +68,20 @@ exports[`test AssetManage renders 1`] = `
       </tbody>
     </table>
   </div>
+  <div
+    className="row heading">
+    <div
+      className="param">
+      <span />
+      默认参数
+    </div>
+    <table
+      className="equipment">
+      <thead>
+        <tr />
+      </thead>
+      <tbody />
+    </table>
+  </div>
 </div>
 `;

@@ -10,6 +10,7 @@ exports[`test MapPreview renders 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}>
     <input
+      className="form-control"
       onChange={[Function]}
       placeholder="输入域名称搜索"
       type="search"

@@ -4,7 +4,8 @@ exports[`test AssetStatistics renders 1`] = `
   <div
     className="heading">
     <select
-      className="select domain"
+      className="select domain form-control"
+      id=""
       onChange={[Function]}
       placeholder={undefined}
       value="域">
@@ -23,6 +24,7 @@ exports[`test AssetStatistics renders 1`] = `
       onFocus={[Function]}
       onKeyDown={[Function]}>
       <input
+        className="form-control"
         onChange={[Function]}
         placeholder="输入素材名称"
         type="search"
@@ -49,6 +51,30 @@ exports[`test AssetStatistics renders 1`] = `
                 onChange={[Function]}
                 type="checkbox" />
             </th>
+            <th>
+              域
+            </th>
+            <th>
+              设备名称
+            </th>
+            <th>
+              软件版本
+            </th>
+            <th>
+              系统版本
+            </th>
+            <th>
+              内核版本
+            </th>
+            <th>
+              硬件版本
+            </th>
+            <th>
+              厂商信息
+            </th>
+            <th>
+              控制器类型
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +88,20 @@ exports[`test AssetStatistics renders 1`] = `
                 onChange={[Function]}
                 type="checkbox" />
             </td>
+            <td>
+              闵行区
+            </td>
+            <td />
+            <td />
+            <td />
+            <td>
+              1.0
+            </td>
+            <td />
+            <td>
+              上海三思
+            </td>
+            <td />
           </tr>
           <tr
             className=""
@@ -73,6 +113,20 @@ exports[`test AssetStatistics renders 1`] = `
                 onChange={[Function]}
                 type="checkbox" />
             </td>
+            <td>
+              闵行区
+            </td>
+            <td />
+            <td />
+            <td />
+            <td>
+              1.0
+            </td>
+            <td />
+            <td>
+              上海三思
+            </td>
+            <td />
           </tr>
         </tbody>
       </table>

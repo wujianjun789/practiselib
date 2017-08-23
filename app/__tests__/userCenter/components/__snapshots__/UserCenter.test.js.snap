@@ -5,7 +5,8 @@ exports[`<UserCenter /> user Info list toggle snapshot 1`] = `
   <div
     className="user-icon clearfix">
     <span
-      className="icon icon-usr" />
+      aria-hidden="true"
+      className="glyphicon glyphicon-user" />
   </div>
   <ul
     className="user-list hidden">
@@ -32,7 +33,8 @@ exports[`<UserCenter /> user Info list toggle snapshot 2`] = `
   <div
     className="user-icon clearfix">
     <span
-      className="icon icon-usr" />
+      aria-hidden="true"
+      className="glyphicon glyphicon-user" />
   </div>
   <ul
     className="user-list ">
@@ -59,7 +61,8 @@ exports[`<UserCenter /> user Info list toggle snapshot 3`] = `
   <div
     className="user-icon clearfix">
     <span
-      className="icon icon-usr" />
+      aria-hidden="true"
+      className="glyphicon glyphicon-user" />
   </div>
   <ul
     className="user-list hidden">

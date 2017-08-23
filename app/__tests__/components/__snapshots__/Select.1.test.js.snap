@@ -1,6 +1,6 @@
 exports[`<Select.1 />> snapshot 1`] = `
 <select
-  className="select select-primary"
+  className="select form-control select-primary"
   id=""
   onChange={undefined}
   value="value02">

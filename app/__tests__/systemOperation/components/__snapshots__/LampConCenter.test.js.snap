@@ -4,7 +4,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
   <div
     className="heading">
     <select
-      className="select "
+      className="select form-control "
       id="domain"
       onChange={[Function]}
       value="">
@@ -29,6 +29,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
       onFocus={[Function]}
       onKeyDown={[Function]}>
       <input
+        className="form-control"
         onChange={[Function]}
         placeholder="输入设备名称"
         type="search"
@@ -40,7 +41,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
         onClick={[Function]} />
     </div>
     <button
-      className="btn btn-default add-domain"
+      className="btn btn-primary add-domain"
       id="sys-add"
       onClick={[Function]}>
       添加

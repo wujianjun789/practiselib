@@ -5,12 +5,12 @@ import React from 'react';
 import {shallow} from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import {AssetManage} from '../../../src/assetManage/container/AssetManage';
+import {SingleLamp} from '../../../src/assetManage/container/SingleLamp';
 
 
 test('AssetManage renders', ()=>{
     const component = renderer.create(
-        <AssetManage />
+        <SingleLamp />
     )
 
     let assetManage = component.toJSON();
@@ -18,7 +18,7 @@ test('AssetManage renders', ()=>{
 })
 
 test('AssetManage div click', ()=>{
-    const component = shallow(<AssetManage />)
+    const component = shallow(<SingleLamp />)
     expect(component.find('.property').length).toEqual(1);
     expect(component.find('.type').length).toEqual(1);
 })

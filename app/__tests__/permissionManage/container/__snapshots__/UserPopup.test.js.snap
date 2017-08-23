@@ -56,7 +56,8 @@ exports[`<UserPopup add snapshot 1`] = `
         用户等级:
       </label>
       <select
-        className="select role"
+        className="select role form-control"
+        id=""
         onChange={[Function]}
         placeholder={undefined}
         value="访客">
@@ -366,7 +367,8 @@ exports[`<UserPopup edit snapshot 1`] = `
         用户等级:
       </label>
       <select
-        className="select role"
+        className="select role form-control"
+        id=""
         onChange={[Function]}
         placeholder={undefined}
         value="访客">

@@ -28,7 +28,7 @@ function moduleInit(state, data) {
             case 'asset':
                 item.key = 'asset';
                 item.title = '资产管理';
-                item.link = '/assetManage/manage';
+                item.link = '/assetManage/model';
                 break;
             case 'permission':
                 item.key = 'permission';
