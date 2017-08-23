@@ -32,11 +32,18 @@ export default (
             </Route>
 
             <Route path="/domainManage" component={DomainManage}>
-                <Route path="domainEdit" getComponent={(nextState, cb) => {
-                    require.ensure([], (require) => {
-                        cb(null, require('../domainManage/container/DomainEdit').default)
-                    }, 'starriverpro.domainmanage.domainEdit')
-                }} />
+                <Route path="domainEdit">
+                    <Route path="list" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../domainManage/container/DomainEditList').default)
+                        }, 'starriverpro.domainmanage.domainEditList')
+                    }} />
+                    <Route path="topology" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../domainManage/container/DomainEditTopology').default)
+                        }, 'starriverpro.domainmanage.domainEditTopology')
+                    }} />
+                </Route>
                 <Route path="mapPreview" getComponent={(nextState, cb) => {
                     require.ensure([], (require) => {
                         cb(null, require('../domainMapPreview/container/MapPreview').default)

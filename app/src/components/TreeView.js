@@ -20,14 +20,10 @@ export class TreeView extends Component{
         this.onToggle = this.onToggle.bind(this);
     }
 
-    componentWillMount(){
-    }
-
     onToggle(node){
         const {actions} = this.props
         actions && actions.onToggle(node)
         this.props.onToggle && this.props.onToggle(node);
-
     }
 
     renderTree(datalist, index, toggled){
@@ -56,6 +52,7 @@ export class TreeView extends Component{
 
     render(){
         const {datalist} = this.props;
+
         return <div className="tree-list">
             {
                 this.renderTree(datalist, 1)
