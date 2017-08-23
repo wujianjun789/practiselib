@@ -37,10 +37,12 @@ export class UserCenter extends Component{
         });
         if(this.state.active==false){
             setTimeout(() => {
-                this.setState((prevState)=> {
-                    if(prevState.active==false){return{active: prevState.active}}else{return{active: !prevState.active}}
-                });
-            }, 4000);
+                if(this.state.active==false){}else{
+                    this.setState((prevState)=> {
+                    return{active: !prevState.active}
+                    });
+                }
+            }, 3000);
         }
     }
 

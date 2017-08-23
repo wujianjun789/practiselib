@@ -39,6 +39,7 @@ export default class CentralizedControllerPopup extends Component {
         let id = e.target.id;
         if (id == "model") {
             this.setState({modelId: this.props.modelList.options[e.target.selectedIndex].id});
+            console.log("modelId:", this.state.modelId)
         }
 
         if (id == "domain") {
@@ -125,11 +126,11 @@ export default class CentralizedControllerPopup extends Component {
                         <div className="form-group clearfix">
                             <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
                             <div className="col-sm-8">
-                                {/*<Select id="model" className="form-control" titleField={modelList.titleField}
+                                <Select id="model" className="form-control" titleField={modelList.titleField}
                                         valueField={modelList.valueField} options={modelList.options} value={model}
-                                        onChange={this.onChange}/>*/}
-                                <input type="text" className="form-control" id="model" value={model}
-                                       onChange={this.onChange}  readOnly= {true }/>  
+                                        onChange={this.onChange}/>
+                                {/*<input type="text" className="form-control" id="model" value={model}
+                                       onChange={this.onChange}  readOnly= {true }/>  */}
                             </div>
                         </div>
                         <div className="form-group clearfix">

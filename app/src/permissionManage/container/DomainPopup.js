@@ -51,8 +51,6 @@ export class DomainPopup extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        // getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)})
-        // getDomainList((response)=>{this.mounted && this.domainHandle(response)});
         this.dataInit();
     }
 
@@ -202,7 +200,8 @@ export class DomainPopup extends Component{
                                 {
                                     tree && tree.map((node)=>{
                                         return <Node key={node.id} tree={node} nodes={nodes} onToggle={this.onToggle} onClick={this.domainAdd}/>
-                                    })}
+                                    })
+                                }
                             </div>
                         </div>
                         <div className='col-sm-6 domain-list'>

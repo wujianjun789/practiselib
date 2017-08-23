@@ -17,6 +17,16 @@ export function requestUserData(offset=-1,limit,cb,username){
     )
 }
 
+export function getUserById(userId,cb){
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/users/${userId}?filter=${encodeURIComponent(JSON.stringify({include:["role"]}))}`, {
+        method: 'GET',
+        headers: headers,
+      }, response=>{
+        cb && cb(response)
+      })
+}
+
 export function addUser(datas,cb){ 
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/users',{
@@ -63,21 +73,12 @@ export function getUserDomainList(userId,cb){
     })
 }
 
-export function userDomainAdd(userId,domainId,cb){
+export function updateUserDomain(userId,domainIds,cb){
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/users/'+userId+'/domains/rel/'+domainId,{
+    httpRequest(HOST_IP+'/users/'+userId+'/domains',{
         headers: headers,
-        method: 'PUT'
-    }, response=>{
-        cb && cb()
-    })
-}
-
-export function userDomainDelete(userId,domainId,cb){
-    let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/users/'+userId+'/domains/rel/'+domainId,{
-        headers: headers,
-        method: 'DELETE'
+        method: 'PUT',
+        body:JSON.stringify(domainIds)
     }, response=>{
         cb && cb()
     })
