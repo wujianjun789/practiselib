@@ -1,7 +1,7 @@
-import {LOGED_OUT} from '../../authentication/actionTypes'
+import {AUTH} from '../../authentication/actionTypes'
 import {httpRequest, HOST_IP, getHttpHeader} from '../../util/network';
 import {getCookie, setCookie} from '../../util/cache';
-
+import { getAuth, clearAuth} from '../../authentication/auth';
 export const confirmExit = (successFun, errFun) => dispatch => {
     let {id} = getCookie('user');
     let headers = {
@@ -15,9 +15,14 @@ export const confirmExit = (successFun, errFun) => dispatch => {
         headers: headers
     }, () => {
         successFun && successFun();
-        dispatch({ type: LOGED_OUT });
+        logout(dispatch);
     },null,()=>{
         errFun && errFun();
-        dispatch({ type: LOGED_OUT });
+        logout(dispatch);
     });
+}
+
+export const logout = (dispatch)=>{
+    clearAuth();
+    dispatch({ type: AUTH, auth: getAuth()});
 }
