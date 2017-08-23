@@ -71,17 +71,19 @@ export default class LineChart {
             .text('this is a tooltips.');
 
         this.svg.on('mouseenter', ()=>{
-            this.tooltips.style('display', 'block');
+            this.data.values.length!=0&&this.tooltips.style('display', 'block');
         }, false);
         this.svg.on('mousemove', (data, index) => {
-            let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
-            let _index = Math.floor(d3.event.offsetX / this.xScale.step());
-            let val = this.data.values[_index];
-            this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
-            this.tooltipInner.text(`${this.tooltipAccessor(val)}`);
+            if(this.data.values.length!=0) {
+                let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
+                let _index = Math.floor(d3.event.offsetX / this.xScale.step());
+                let val = this.data.values[_index];
+                this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
+                this.tooltipInner.text(`${this.tooltipAccessor(val)}`);
+            }
         }, false);
         this.svg.on('mouseleave', ()=>{
-            this.tooltips.style('display', 'none');
+            this.data.values.length!=0&&this.tooltips.style('display', 'none');
         }, false);
 
         this.draw();
@@ -142,8 +144,10 @@ export default class LineChart {
     }
     
     draw() {
-        this.getAxis();
-        this.getMainChart();
+        if(this.data.values.length!=0) {
+            this.getAxis();
+            this.getMainChart();
+        }
     }
 
     updateChart(data) {

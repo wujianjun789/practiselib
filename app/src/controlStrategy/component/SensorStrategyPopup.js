@@ -5,36 +5,43 @@ import Select from '../../components/Select.1';
 import LineChart from '../util/LineChart';
 import PropTypes from 'prop-types';
 import {NameValid, numbersValid} from '../../util/index';
+import {getModelSummariesByModelID, addStrategy, updateStrategy} from '../../api/strategy';
 
 let options = (function generateLampLightnessList() {
-    let options = [];
+    let opt = [];
     for(let i=0; i<11; i++){
         let val = i*10;
-        options.push({value: val, title: `亮度${val}`});
+        opt.push({value: val, title: `亮度${val}`});
     }
-    options.unshift({value: 'off', title: '关'});
-    options.unshift({value: '', title: '选择灯亮度'});
-    return options;
+    opt.unshift({value: 'off', title: '关'});
+    // opt.unshift({value: '', title: '选择灯亮度'});
+    return opt;
 })();
 
 export default class SensorStrategyPopup extends Component {
     constructor(props) {
         super(props);
-        const {id, strategyName, sensorType='windy', controlDevice, screenSwitch, sensorParam, lightness} = this.props.data;
+        const {id, strategyName, sensorType='', controlDevice='lc', screenSwitch='off', sensorParam='', brightness='off', sensorParamsList=[]} = this.props.data;
         this.state = {
             chart: null,
             data: {
-                id, strategyName, sensorType, controlDevice, screenSwitch, sensorParam, lightness
+                id,
+                strategyName,
+                sensorType,
+                controlDevice,
+                screenSwitch,
+                sensorParam,
+                brightness
             },
             controlDeviceList: {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
                     {value: 'screen', title: '屏幕'},
-                    {value: 'lamp', title: '灯'}
+                    {value: 'lc', title: '灯'}
                 ]
             },
-            lampLightnessList: {
+            brightnessList: {
                 titleField: 'title',
                 valueField: 'value',
                 options: options
@@ -43,38 +50,35 @@ export default class SensorStrategyPopup extends Component {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    {value: '', title: '选择屏幕开关'},
+                    // {value: '', title: '选择屏幕开关'},
                     {value: 'on', title: '屏幕开'},
                     {value: 'off', title: '屏幕关'}
                 ]
             },
-            sensorTypeList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {value: 'windy', title: '风速传感器'},
-                    {value: 'pm2', title: 'PM 2.5'}
-                ]
-            },
-            sensorParamsList: [
-                {id: 0, sensorParam: 5, operator: {value: 'off', title: '关'} },
-                {id: 1, sensorParam: 10, operator: {value: 10, title: '亮度10'} },
-                {id: 2, sensorParam: 15, operator: {value: 20, title: '亮度20'} },
-                {id: 3, sensorParam: 20, operator: {value: 10, title: '亮度10'} },
-                {id: 4, sensorParam: 25, operator: {value: 20, title: '亮度20'} }
-            ],
-            sensorsUnit: {
-                windy: 'm/s',
-                pm2: '',
-            },
+
+            sensorParamsList: sensorParamsList,
             checkStatus: {
                 strategyName: false,
                 sensorType: false,
                 controlDevice: false,
                 sensorParam: false,
-                lampLightness: false,
+                brightness: false,
                 screenSwitch: false
             }
+        };
+
+        this.sensorTransform = {
+            SENSOR_NOISE: 'noise',
+            SENSOR_PM25: 'PM25',
+            SENSOR_PA: 'pa',
+            SENSOR_HUMIS: 'humis',
+            SENSOR_TEMPS: 'temps',
+            SENSOR_WINDS: 'windSpeed',
+            SENSOR_WINDDIR: 'windDir',
+            SENSOR_CO: 'co',
+            SENSOR_O2: 'o2',
+            SENSOR_CH4: 'ch4',
+            SENSOR_CH2O: 'ch2o'
         }
 
         this.onChange = this.onChange.bind(this);
@@ -82,11 +86,17 @@ export default class SensorStrategyPopup extends Component {
         this.onConfirm = this.onConfirm.bind(this);
         this.sensorParamDelete = this.sensorParamDelete.bind(this);
         this.drawLineChart = this.drawLineChart.bind(this);
+        this.addSensorParam = this.addSensorParam.bind(this);
+        this.updateLineChart = this.updateLineChart.bind(this);
+        this.destroyLineChart = this.destroyLineChart.bind(this);
+
+        this.addStrategy = this.addStrategy.bind(this);
+        this.updateStrategy = this.updateStrategy.bind(this);
     }
 
     onChange(e) {
         const {id, value} = e.target;
-        if((id == 'screenSwitch' || id == 'sensorType' || id == 'lampLightness') && value === '' ) {
+        if((id == 'screenSwitch' || id == 'sensorType' || id == 'brightness') && value === '' ) {
             this.setState({checkStatus: Object.assign({}, this.state.checkStatus, {[id]: true})});
             return ;
         }
@@ -103,18 +113,82 @@ export default class SensorStrategyPopup extends Component {
                 this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
                 break;
             case 'sensorParam':
+                let val = value;
                 if(!numbersValid(value)) {
-                    return ;
+                    val = 0;
                 }
                 this.setState({
-                    data: Object.assign({}, this.state.data, {sensorParam: value})
+                    data: Object.assign({}, this.state.data, {sensorParam: val})
                 });
                 break;
             case 'screenSwitch':
-            case 'lampLightness':
+            case 'brightness':
                 this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
                 break;
         }
+    }
+
+    sensorParamDelete(e) {
+        const index = e.target.id;
+        let sensorParamsList = Object.assign([], this.state.sensorParamsList);
+        sensorParamsList.splice(index,1);
+        this.setState({sensorParamsList}, ()=>{
+            this.updateLineChart();
+        });
+    }
+
+    drawLineChart(ref) {
+        let chart = new LineChart({
+            wrapper: ref,
+            data: {values: this.state.sensorParamsList},
+            xAccessor: d=>d.condition[ this.sensorTransform[this.state.data.sensorType] ],
+            yAccessor: d => {
+                if (d.rpc.value=='off') {
+                    return 0;
+                } else if (d.rpc.value=='on') {
+                    return 1;
+                } else {
+                    return d.rpc.value;
+                }
+            },
+            curveFactory: d3.curveStepAfter,
+            tickFormat: d => `${d}${this.props.sensorsProps[this.state.data.sensorType]?this.props.sensorsProps[this.state.data.sensorType].unit:''}`,
+            padding: {left: 0, top: 35, right: 0, bottom: 20},
+            tooltipAccessor: d => d.rpc.title
+        });
+        this.setState({chart: chart});
+    }
+
+    updateLineChart() {
+        this.state.chart.updateChart({values: this.state.sensorParamsList});
+    }
+
+    destroyLineChart() {
+        this.state.chart.destroy();
+        this.setState({chart: null});
+    }
+
+    addSensorParam() {
+        const {sensorParam, brightness, screenSwitch, controlDevice, sensorType} = this.state.data;
+        let value = '';
+        let title = '';
+        if(controlDevice=='lc') {
+            value = brightness;
+            if(value == 'off') {
+                title = '关';
+            } else {
+                title = `亮度${value}`;
+            }
+        } else {
+            value = screenSwitch;
+            title = value == 'off'?'屏幕关':'屏幕开';
+        }
+        const data = {value: value, title: title};
+        let sensorParamsList = Object.assign([], this.state.sensorParamsList);
+        sensorParamsList.push({condition: {[ this.sensorTransform[sensorType] ]: sensorParam}, rpc: data});
+        this.setState({sensorParamsList, data: Object.assign({}, this.state.data, {sensorParam: ''})}, () => {
+            this.updateLineChart();
+        });
     }
 
     onCancel() {
@@ -122,52 +196,59 @@ export default class SensorStrategyPopup extends Component {
     }
 
     onConfirm() {
-        this.props.overlayerHide && this.props.overlayerHide();
+        if(this.props.popupId == 'add') {
+            this.addStrategy();
+        } else {
+            this.updateStrategy();
+        }
     }
 
-    sensorParamDelete(id) {
-
-    }
-
-    drawLineChart(ref) {
-        let chart = new LineChart({
-            wrapper: ref,
-            data: {values: this.state.sensorParamsList},
-            xAccessor: d=>d.sensorParam,
-            yAccessor: d => {
-                if (d.operator.value=='off') {
-                    return 0;
-                } else {
-                    return d.operator.value;
-                }
+    updateStrategy() {
+        const {data,sensorParamsList} = this.state;
+        let _data = {
+            id: data.id,
+            name: data.strategyName,
+            type: 'sensor',
+            asset: data.controlDevice,
+            expire : {
+              expireRange: [],
+              executionRange: [],
+              week: 0,
             },
-            curveFactory: d3.curveStepAfter,
-            tickFormat: d => `${d}${this.state.sensorsUnit[this.state.data.sensorType]}`,
-            padding: {left: 0, top: 35, right: 0, bottom: 20},
-            tooltipAccessor: d => d.operator.title
+            strategy: sensorParamsList
+        };
+        updateStrategy(_data, ()=>{
+            this.props.overlayerHide && this.props.overlayerHide();
+            this.props.updateSensorStrategyList();
         });
-        this.setState({chart: chart});
     }
 
-    componentDidMount() {
-        // this.interval = setInterval(()=>{
-        //     let sensorParamsList = Object.assign([], this.state.sensorParamsList);
-        //     let item = sensorParamsList.shift();
-        //     sensorParamsList.push(item);
-        //     this.setState({sensorParamsList}, ()=>{
-        //         this.state.chart.updateChart({values: this.state.sensorParamsList});
-        //     });
-        // }, 1000)
+    addStrategy() {
+        const {data,sensorParamsList} = this.state;
+        let _data = {
+            name: data.strategyName,
+            type: 'sensor',
+            asset: data.controlDevice,
+            expire : {
+              expireRange: [],
+              executionRange: [],
+              week: 0,
+            },
+            strategy: sensorParamsList
+        };
+        addStrategy(_data, ()=>{
+            this.props.overlayerHide && this.props.overlayerHide();
+            this.props.updateSensorStrategyList();
+        });
     }
 
     componentWillUnmount() {
-        this.state.chart.destroy();
-        this.setState({chart: null});
-        // clearInterval(this.interval);
+        this.destroyLineChart();
     }
 
     render() {
-        const {sensorTypeList, controlDeviceList, screenSwitchList, lampLightnessList, sensorParamsList, sensorsUnit, data, checkStatus} = this.state;
+        const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data, checkStatus} = this.state;
+        const {sensorTypeList, sensorsProps} = this.props;
         const {className, title} = this.props;
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
@@ -209,24 +290,24 @@ export default class SensorStrategyPopup extends Component {
                 <div className="form-group">
                     <label className="control-label">设置参数：</label>
                     <div className="form-group-right lightness">
-                        <button className="btn btn-primary">添加节点</button>
+                        <button className="btn btn-primary" onClick={this.addSensorParam}>添加节点</button>
                         <div className="lightness-right">
                             <div>
                                 <input id="sensorParam" type='text' className="form-control" placeholder="输入传感器参数" value={data.sensorParam} onChange={this.onChange}/>
                                 {
-                                    data.controlDevice != 'lamp' ?
+                                    data.controlDevice != 'lc' ?
                                     <Select id="screenSwitch" className="form-control" titleField={screenSwitchList.titleField}
                                         valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={data.screenSwitch}
                                         onChange={this.onChange}/>
                                     :
-                                    <Select id="lampLightness" className="form-control" titleField={lampLightnessList.titleField}
-                                        valueField={lampLightnessList.valueField} options={lampLightnessList.options} value={data.lampLightness}
+                                    <Select id="brightness" className="form-control" titleField={brightnessList.titleField}
+                                        valueField={brightnessList.valueField} options={brightnessList.options} value={data.brightness}
                                         onChange={this.onChange}/>
                                 }
                             </div>
                             <ul>
                             {
-                                sensorParamsList.map((item, index) => <li key={item.id}><span className="sensor-param">{`${item.sensorParam} ${sensorsUnit[data.sensorType]?sensorsUnit[data.sensorType]:''}`}</span><span className="sensor-other">{item.operator.title}</span><span className="glyphicon glyphicon-trash" onClick={this.sensorParamDelete}></span></li>)
+                                sensorParamsList.map((item, index) => <li key={index}><span className="sensor-param">{`${item.condition[ this.sensorTransform[data.sensorType] ]} ${sensorsProps[data.sensorType]?sensorsProps[data.sensorType].unit:''}`}</span><span className="sensor-other">{item.rpc.title}</span><span id={index} className="glyphicon glyphicon-trash" onClick={this.sensorParamDelete}></span></li>)
                             }
                             </ul>
                         </div>
