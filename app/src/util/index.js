@@ -76,7 +76,7 @@ export function getClassByModel(key) {
             return 'icon_light_control';
         case 'lc':
             return 'icon_led_light';
-        case 'plc':
+        case 'sensor':
             return 'icon_plc_control';
         case 'ammeter':
             return 'icon_ammeter';
