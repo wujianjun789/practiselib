@@ -23,6 +23,6 @@ test('Select onChange', ()=>{
     const onChange = jest.fn();
     const component = shallow(<Select data={data} onChange={onChange}/>)
 
-    component.simulate('change');
+    component.simulate('change',{target: {selectedIndex: 0}});
     expect(onChange).toHaveBeenCalledTimes(1);
 })

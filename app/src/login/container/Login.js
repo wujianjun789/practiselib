@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {loginHandler} from '../../api/login'
+import {loginHandler} from '../action/index'
 
 import '../../../public/styles/login.less';
 import {getCookie} from '../../util/cache';
@@ -122,7 +122,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        userCenter:state.userCenter
+
     }
 }
 
@@ -133,7 +133,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 
-Login = connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
 

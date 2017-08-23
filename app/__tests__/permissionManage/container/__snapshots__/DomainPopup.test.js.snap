@@ -1,0 +1,92 @@
+exports[`<DomainPopup snapshot 1`] = `
+<div
+  className="modal-content ">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="form-group row domain-per">
+      <label
+        className="col-sm-2 control-label">
+        域权限:
+      </label>
+      <div
+        className="col-sm-10">
+        <div
+          className="col-sm-6 domain-add">
+          <div
+            className="searchText search"
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}>
+            <input
+              className="form-control"
+              onChange={[Function]}
+              placeholder="输入域名称"
+              type="search"
+              value="" />
+            <ul
+              className="" />
+            <span
+              className="glyphicon glyphicon-search"
+              onClick={[Function]} />
+          </div>
+          <div
+            className="domain-tree" />
+        </div>
+        <div
+          className="col-sm-6 domain-list">
+          <ul>
+            <li>
+              <span
+                className="icon-table-delete"
+                onClick={[Function]} />
+              中国-杭州
+            </li>
+            <li>
+              <span
+                className="icon-table-delete"
+                onClick={[Function]} />
+              中国-上海
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      确认
+    </button>
+  </div>
+</div>
+`;

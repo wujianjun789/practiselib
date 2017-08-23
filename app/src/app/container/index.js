@@ -9,7 +9,6 @@ import '../../../public/styles/app.less';
 import Card from './Card';
 import UserCenter from '../../common/containers/UserCenter';
 import Overlayer from '../../common/containers/Overlayer';
-import {loginHandler} from '../../api/login'
 import {getModule} from '../action/index'
 /**
  * @param {String} title required
@@ -88,8 +87,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         actions: bindActionCreators({
-            getModule: getModule,
-            loginHandler
+            getModule: getModule
         }, dispatch)
     }
 }
