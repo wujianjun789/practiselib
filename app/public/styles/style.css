@@ -751,8 +751,8 @@ ul {
 }
 
 .user-center .icon.icon-exit {
-  background: url(/images/icon_exit.png)no-repeat center top;
-  background-size: 15px;
+  background: url(/svg/icon_exit.svg)no-repeat center top;
+  background-size: 16px;
 }
 
 /********************* overlayer style ****************************/
