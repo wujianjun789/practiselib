@@ -27,8 +27,7 @@ exports[`<Login /> snapshot 1`] = `
       className="bg-cover" />
     <div
       className="login-right pull-right">
-      <p
-        onClick={[Function]}>
+      <p>
         用户登录
       </p>
       <div

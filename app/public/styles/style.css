@@ -733,6 +733,7 @@ ul {
 }
 
 .user-center > ul.user-list {
+    display: none;
     position: absolute;
     top: 60px;
     right: 0;
@@ -756,8 +757,6 @@ ul {
     float:left;
     padding:12px 12px;
 }
-
-
 
 .user-center > ul.user-list > li > span{
     height:40px;
@@ -783,15 +782,18 @@ ul {
 }
 
 .user-center .icon.icon-alter {
-  background: url(/svg/icon_alter.svg)no-repeat center top;
+  background: url(/svg/icon_alter.svg) no-repeat center top;
   background-size: 16px;
 }
 
 .user-center .icon.icon-exit {
-  background: url(/svg/icon_exit.svg)no-repeat center top;
+  background: url(/svg/icon_exit.svg) no-repeat center top;
   background-size: 16px;
 }
 
+.user-center:hover > ul.user-list {
+    display: block;
+}
 /********************* overlayer style ****************************/
 .overlayer {
     position: fixed;
