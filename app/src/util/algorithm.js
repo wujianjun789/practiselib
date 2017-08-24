@@ -293,3 +293,28 @@ export function StringIsHaveBlank(str) {
 
     return false;
 }
+
+/**
+ * 
+ * @param {Array} arr 
+ * @param {Function} accessor 
+ * @param {*} value
+ * @return {Boolean}
+ */
+export function IsExistInArray1(arr, accessor, value) {
+    if (arr.length == 0) {
+        return false;
+    }
+
+    if( !(accessor instanceof Function) ) {
+        throw(new Error('accessor must be a function'));
+    }
+
+    for(let i=0, len=arr.length; i < len; i++) {
+        console.log(accessor(arr[i]) == value);
+        if(accessor(arr[i]) == value) {
+            return true;
+        }
+    }
+    return false;
+}
