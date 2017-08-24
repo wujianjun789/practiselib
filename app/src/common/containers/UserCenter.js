@@ -35,15 +35,15 @@ export class UserCenter extends Component{
         this.setState((prevState)=> {
             return {active: !prevState.active};
         });
-        // if(this.state.active==false){
-        //     setTimeout(() => {
-        //         if(this.state.active==false){}else{
-        //             this.setState((prevState)=> {
-        //             return{active: !prevState.active}
-        //             });
-        //         }
-        //     }, 3000);
-        // }
+        if(this.state.active==false){
+            setTimeout(() => {
+                if(this.state.active==false){}else{
+                    this.setState((prevState)=> {
+                    return{active: !prevState.active}
+                    });
+                }
+            }, 3000);
+        }
     }
 
     cancel() {
