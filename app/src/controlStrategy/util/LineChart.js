@@ -82,14 +82,17 @@ export default class LineChart {
             .text('this is a tooltips.');
 
         this.svg.on('mouseenter', ()=>{
-            this.data.values.length>1&&this.tooltips.style('display', 'block');
+            this.data.values.length!=0 && this.tooltips.style('display', 'block');
         }, false);
         this.svg.on('mousemove', (data, index) => {
-            if(this.data.values.length>1) {
+            let len = this.data.values.length;
+            if (len != 0) {
                 let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
                 let _index = Math.floor(d3.event.offsetX / this.xScale.step());
-                if(_index <= -1) {
+                if (_index <= -1) {
                     _index = 0;
+                } else if (_index >= len ) {
+                    _index = len - 1;
                 }
                 let val = this.data.values[_index];
                 this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
@@ -97,7 +100,7 @@ export default class LineChart {
             }
         }, false);
         this.svg.on('mouseleave', ()=>{
-            this.data.values.length>1&&this.tooltips.style('display', 'none');
+            this.data.values.length!=0 && this.tooltips.style('display', 'none');
         }, false);
 
         this.draw();
@@ -125,6 +128,11 @@ export default class LineChart {
         }
         
         this.x_axis.call(xAxis);
+        if(this.data.values.length == 1) {
+            let tick = this.x_axis.select('.tick');
+            tick.attr('transform', 'translate(0,0)')
+            tick.select('text').style('text-anchor', 'start');
+        }
 
         let yAxis = d3.axisLeft()
             .scale(this.yScale)
@@ -134,6 +142,7 @@ export default class LineChart {
     }
 
     getMainChart() {
+        let len = this.data.values.length;
         let area = d3.area()
             .x((d) => {
                 return this.xScale(this.xAccessor(d));
@@ -145,8 +154,14 @@ export default class LineChart {
             .curve(this.curveFactory);
         this.main_area
             .datum(this.data.values)
-            .attr('d', function(d){
-                return area(d);
+            .attr('d', (d) => {
+                if (len == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0])),
+                        _y0 = this.yScale(0);
+                    return `M${0},${_y0}L${0},${_y1}L${this.w},${_y1}L${this.w},${_y0}Z`;
+                } else {
+                    return area(d);
+                }
             });
         let line = d3.line()
             .x((d) => {
@@ -158,13 +173,18 @@ export default class LineChart {
             .curve(this.curveFactory);
         this.main_line
             .datum(this.data.values)
-            .attr('d', function(d) {
-                return line(d);
+            .attr('d', (d) => {
+                if (len == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    return `M${0},${_y1}L${this.w},${_y1}`;
+                } else {
+                    return line(d);
+                }
             });
     }
     
     draw() {
-        if(this.data.values.length!=0) {
+        if (this.data.values.length!=0) {
             this.getAxis();
             this.getMainChart();
         }
