@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {Login} from '../../../src/login/components/Login';
-import {loginHandler} from '../../../src/api/login';
+import {Login} from '../../../src/login/container/Login';
+import {loginHandler} from '../../../src/login/action/index';
 import {login} from '../../../src/util/network'
 describe('<Login />',() => {
     const login = shallow(<Login/>);
@@ -34,9 +34,8 @@ describe('<Login />',() => {
     
     it('loginHandler ',()=>{
         const fn = jest.fn();
-        const fn1 = jest.fn();
-        loginHandler('','',fn,fn1);
-        expect(fn1).toHaveBeenCalled();
+        loginHandler('','',fn)();
+        expect(fn).toHaveBeenCalledTimes(1);
     })
 
 })

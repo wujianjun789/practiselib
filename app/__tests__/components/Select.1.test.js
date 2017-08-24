@@ -24,7 +24,7 @@ describe('<Select.1 />>', () => {
     it('render with className="select-primary"', () => {
         const cmp = shallow(<Select className={className} options={options} value={value}/>);
         let select = cmp.find('select');
-        expect(select.hasClass('select select-primary')).toBeTruthy();
+        expect(select.hasClass('form-control select select-primary')).toBeTruthy();
         expect(select.props().value).toBe(value);
 
         let opts = cmp.find('option');

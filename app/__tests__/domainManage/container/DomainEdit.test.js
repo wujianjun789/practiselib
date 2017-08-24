@@ -9,12 +9,12 @@ import '../../../public/js/jquery-3.1.1.min'
 import '../../../public/leaflet/leaflet';
 window.d3 = require('../../../public/js/d3.min')
 
-import {DomainEdit} from '../../../src/domainManage/container/DomainEdit';
+import {DomainEditList} from '../../../src/domainManage/container/DomainEditList';
 
 
 test('DomainEdit renders', ()=>{
     const component = renderer.create(
-        <DomainEdit />
+        <DomainEditList />
     )
 
     let domainEdit = component.toJSON();
@@ -22,7 +22,7 @@ test('DomainEdit renders', ()=>{
 })
 
 test('DomainEdit div click', ()=>{
-    const component = shallow(<DomainEdit />)
+    const component = shallow(<DomainEditList />)
     expect(component.find('.heading').length).toEqual(1);
     expect(component.find('.table-container').length).toEqual(1);
 })

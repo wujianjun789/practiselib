@@ -10,11 +10,11 @@ let models=[
 
 export const TreeData=[
     {
-        "id": "assetManage",
+        "id": "model",
         "name":"资产模型",
         "toggled": true,
         "active": true,
-        "link": "/assetManage/manage",
+        "link": "/assetManage/model",
         "level":1,
         "children": [
             {
@@ -61,7 +61,7 @@ export const TreeData=[
         ]
     },
     {
-        "id": "assetStatistics",
+        "id": "statistics",
         "name":"资产统计",
         "toggled": false,
         "active": true,
@@ -98,10 +98,7 @@ export function getModelData(cb) {
             if(item.children){
                 item.children = [];
                 response.map((data, index)=>{
-                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:index==0?true:false};
-                    if(index == 0){
-                        first_child = child;
-                    }
+                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false,link:getLinkByModel(item.id, data.key)};
                     item.children.push(child)
                 })
             }
@@ -109,6 +106,27 @@ export function getModelData(cb) {
 
         cb && cb();
     });
+}
+
+function getLinkByModel(parentId, key) {
+    switch(key){
+        case 'lcc':
+            return '/assetManage/'+parentId+'/lcc';
+        case 'lc':
+            return '/assetManage/'+parentId+'/lc';
+        case 'sensor':
+            return '/assetManage/'+parentId+'/sensor';
+        case 'ammeter':
+            return 'icon_ammeter';
+        case 'pole':
+            return 'icon_pole';
+        case 'screen':
+            return 'icon_screen';
+        case 'collect':
+            return 'icon_collect'
+        default:
+            return 'icon_led_light';
+    }
 }
 
 export function getModelList() {

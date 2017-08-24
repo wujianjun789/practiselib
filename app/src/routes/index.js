@@ -1,11 +1,12 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from '../app/container/index'
-import { Login } from '../login/components/Login'
+import Login from '../login/container/Login'
 import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
+import SmartLightManage from '../smartLightManage/container/index'
 import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
@@ -19,16 +20,40 @@ export default (
         <Route component={Authenticated}>
             <Route path="/" component={App}></Route>
             <Route path="/assetManage" component={AssetManage}>
-                <Route path="manage" getComponent={(nextState, cb) => {
-                    require.ensure([], (require) => {
-                        cb(null, require('../assetManage/container/AssetManage').default)
-                    }, 'starriverpro.assetmanage.manage')
-                }} />
-                <Route path="statistics" getComponent={(nextState, cb) => {
-                    require.ensure([], (require) => {
-                        cb(null, require('../assetStatistics/container/AssetStatistics').default)
-                    }, 'starriverpro.assetmanage.statistics')
-                }} />
+                <Route path="model">
+                    <Route path="lc" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                        cb(null, require('../assetManage/container/SingleLamp').default)
+                        }, 'starriverpro.assetmanage.singleLamp')
+                    }} />
+                    <Route path="lcc" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                        cb(null, require('../assetManage/container/LampCenter').default)
+                        }, 'starriverpro.assetmanage.lampCenter')
+                    }} />
+                    <Route path="sensor" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                        cb(null, require('../assetManage/container/Sensor').default)
+                        }, 'starriverpro.assetmanage.sensor')
+                    }} />
+                </Route>
+                <Route path="statistics">
+                    <Route path="lc" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../assetStatistics/container/SingleLamp').default)
+                        }, 'starriverpro.assetmanage.singleLamp')
+                    }} />
+                    <Route path="lcc" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../assetStatistics/container/LampCenter').default)
+                        }, 'starriverpro.assetmanage.lampCenter')
+                    }} />
+                    <Route path="sensor" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../assetStatistics/container/Sensor').default)
+                        }, 'starriverpro.assetmanage.sensor')
+                    }} />
+                </Route>
             </Route>
 
             <Route path="/domainManage" component={DomainManage}>
@@ -67,6 +92,11 @@ export default (
                             cb(null, require('../systemOperation/container/SingleLampCon').default)
                         }, 'starriverpro.systemoperation.singlelampcontroller')
                     }} />
+                    <Route path="sensor" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../systemOperation/container/Sensor').default)
+                        }, 'starriverpro.systemoperation.sensor')
+                    }} />
                 </Route>
                 <Route path="strategy">
                     <Route path="timeTable" getComponent={(nextState, cb) => {
@@ -85,6 +115,23 @@ export default (
                         }, 'starriverpro.controlstrategy.latlngtrategy')
                     }} />
                 </Route>
+            </Route>
+            <Route path="/smartLight" component={SmartLightManage}>
+                <Route path="map" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../smartLightManage/container/SmartLightMap').default)
+                        }, 'starriverpro.smartLightManage.smartLightMap')
+                }}/>
+                <Route path="list" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../smartLightManage/container/SmartLightList').default)
+                        }, 'starriverpro.smartLightManage.smartLightList')
+                }}/>
+                <Route path="set" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../smartLightManage/container/SmartLightSet').default)
+                        }, 'starriverpro.smartLightManage.smartLightSet')
+                }}/>
             </Route>
         </Route>
         <Route path="*" getComponent={(nextState, cb) => {

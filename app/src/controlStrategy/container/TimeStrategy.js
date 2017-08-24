@@ -5,8 +5,6 @@ import React,{Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
 
-import '../../../public/styles/systemOperation-strategy.less';
-
 import Content from '../../components/Content'
 import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'

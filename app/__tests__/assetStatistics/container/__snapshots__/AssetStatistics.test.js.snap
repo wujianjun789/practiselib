@@ -4,25 +4,18 @@ exports[`test AssetStatistics renders 1`] = `
   <div
     className="heading">
     <select
-      className="select domain"
+      className="select domain form-control"
+      id=""
       onChange={[Function]}
       placeholder={undefined}
-      value="域">
-      <option
-        value="域">
-        域
-      </option>
-      <option
-        value="域2">
-        域2
-      </option>
-    </select>
+      value="域" />
     <div
       className="searchText search"
       onBlur={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}>
       <input
+        className="form-control"
         onChange={[Function]}
         placeholder="输入素材名称"
         type="search"
@@ -49,36 +42,37 @@ exports[`test AssetStatistics renders 1`] = `
                 onChange={[Function]}
                 type="checkbox" />
             </th>
+            <th>
+              域
+            </th>
+            <th>
+              设备名称
+            </th>
+            <th>
+              软件版本
+            </th>
+            <th>
+              系统版本
+            </th>
+            <th>
+              内核版本
+            </th>
+            <th>
+              硬件版本
+            </th>
+            <th>
+              厂商信息
+            </th>
+            <th>
+              控制器类型
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr
-            className="active"
-            onClick={[Function]}>
-            <td
-              className="hidden">
-              <input
-                checked={undefined}
-                onChange={[Function]}
-                type="checkbox" />
-            </td>
-          </tr>
-          <tr
-            className=""
-            onClick={[Function]}>
-            <td
-              className="hidden">
-              <input
-                checked={undefined}
-                onChange={[Function]}
-                type="checkbox" />
-            </td>
-          </tr>
-        </tbody>
+        <tbody />
       </table>
     </div>
     <ul
-      className="rc-pagination page"
+      className="rc-pagination page hidden"
       style={Object {}}
       unselectable="unselectable">
       <li
@@ -88,50 +82,16 @@ exports[`test AssetStatistics renders 1`] = `
         onKeyPress={[Function]}
         tabIndex="0"
         title="上一页">
-        <a>
-          
-        </a>
+        <a />
       </li>
       <li
-        className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        tabIndex="0"
-        title={1}>
-        <a>
-          1
-        </a>
-      </li>
-      <li
-        className="rc-pagination-item rc-pagination-item-2"
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        tabIndex="0"
-        title={2}>
-        <a>
-          2
-        </a>
-      </li>
-      <li
-        className="rc-pagination-item rc-pagination-item-3"
-        onClick={[Function]}
-        onKeyPress={[Function]}
-        tabIndex="0"
-        title={3}>
-        <a>
-          3
-        </a>
-      </li>
-      <li
-        aria-disabled={false}
-        className=" rc-pagination-next"
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-next"
         onClick={[Function]}
         onKeyPress={[Function]}
         tabIndex="0"
         title="下一页">
-        <a>
-          
-        </a>
+        <a />
       </li>
       <div
         className="rc-pagination-options" />

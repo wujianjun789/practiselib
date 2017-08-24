@@ -5,6 +5,7 @@ exports[`test SearchText renders 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}>
   <input
+    className="form-control"
     onChange={[Function]}
     placeholder=""
     type="search"

@@ -1,6 +1,7 @@
 exports[`test Select renders 1`] = `
 <select
-  className="select "
+  className="select  form-control"
+  id=""
   onChange={[Function]}
   placeholder={undefined}
   value="域">

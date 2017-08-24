@@ -4,7 +4,7 @@
 import React,{Component} from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import '../../../public/styles/systemOperation-strategy.less';
+
 import Content from '../../components/Content'
 import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
@@ -14,6 +14,8 @@ import Immutable from 'immutable';
 import ConfirmPopup from '../../components/ConfirmPopup'
 import LatlngStrategyPopup from '../component/LatlngStrategyPopup';
 import {getObjectByKey} from '../../util/algorithm'
+import {getAssetModelList} from '../../api/asset'
+import {getStrategyListByName,updateStrategy,addStrategy,delStrategy} from '../../api/strategy'
 
 export class Latlngtrategy extends Component{
     constructor(props){
@@ -32,6 +34,7 @@ export class Latlngtrategy extends Component{
                 {id:1, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
                 {id:2, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
             ]),
+            deviceList:{titleField:"title", valueField:"value", options:[]},            
             popupInfo:{
                 
             }
@@ -50,7 +53,25 @@ export class Latlngtrategy extends Component{
         this.rowEdit = this.rowEdit.bind(this);
         this.rowDelete = this.rowDelete.bind(this);
         this.pageChange = this.pageChange.bind(this);
+        this.confirmClick = this.confirmClick.bind(this);
+    }
 
+    componentWillMount(){
+        this.mounted = true;
+        this.requestData();        
+        getAssetModelList(res=>this.mounted && this.initDeviceList(res));
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    initDeviceList(data){
+        let list = data.map(model=>{
+            return {value:model.key, title:model.name};
+        })
+
+        this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:list})})
     }
 
     searchChange(value){
@@ -67,27 +88,27 @@ export class Latlngtrategy extends Component{
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
-        // requestData(offset,size,(response)=>{this.mounted && this.dataHandle(response)},username);
+        getStrategyListByName('latlng',username,offset,size,(response)=>{this.mounted && this.dataHandle(response)})
     }
 
     dataHandle(datas){
-        
+        this.setState({datas:Immutable.fromJS(datas),page:this.state.page.update('total',v=>datas.length)})
     }
 
     onClick(){
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup'/>);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
     }
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' isEdit data={popupInfo.toJS()}/>);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
     }
 
     rowDelete(id){
         this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中用户？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
             let page = this.state.page.set('current', 1);
-            this.setState({page:page})
+            this.setState({page:page},delStrategy(id,()=>this.requestData()))
         }}/>);
     }
 
@@ -96,6 +117,16 @@ export class Latlngtrategy extends Component{
         this.setState({page: page}, ()=>{
             this.requestData();
         });
+    }
+
+    confirmClick(datas,isEdit){
+        if(isEdit){
+            updateStrategy(datas,()=>this.requestData());
+        }
+        else{
+            let page = this.state.page.set('current', 1);
+            this.setState({page:page},addStrategy(datas,()=>this.requestData()))
+        }
     }
 
     render(){

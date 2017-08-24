@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
+import '../../../public/styles/systemOperation-config.less';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
@@ -26,7 +26,7 @@ import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel,
 import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
-export class SingleLampCon extends Component {
+export class Sensor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -247,7 +247,6 @@ export class SingleLampCon extends Component {
             case 'sys-update':
                 let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
                 let data = selectDevice.data.length?selectDevice.data[0]:null;
-                console.log(data.type);
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
@@ -335,7 +334,7 @@ export class SingleLampCon extends Component {
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>添加</button>
             </div>
-            <div className='lc'>
+            <div className='sensor'>
                 <div className="table-container">
                     <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                            rowClick={this.tableClick}/>
@@ -374,4 +373,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleLampCon);
+export default connect(mapStateToProps, mapDispatchToProps)(Sensor);
