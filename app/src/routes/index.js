@@ -6,6 +6,7 @@ import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
+import SmartLightManage from '../smartLightManage/container/index'
 import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
@@ -109,6 +110,23 @@ export default (
                         }, 'starriverpro.controlstrategy.latlngtrategy')
                     }} />
                 </Route>
+            </Route>
+            <Route path="/smartLight" component={SmartLightManage}>
+                <Route path="map" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../smartLightManage/container/SmartLightMap').default)
+                        }, 'starriverpro.smartLightManage.smartLightMap')
+                }}/>
+                <Route path="list" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../smartLightManage/container/SmartLightList').default)
+                        }, 'starriverpro.smartLightManage.smartLightList')
+                }}/>
+                <Route path="set" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../smartLightManage/container/SmartLightSet').default)
+                        }, 'starriverpro.smartLightManage.smartLightSet')
+                }}/>
             </Route>
         </Route>
         <Route path="*" getComponent={(nextState, cb) => {
