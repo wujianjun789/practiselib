@@ -95,6 +95,7 @@ export default class SensorStrategyPopup extends Component {
     }
 
     onChange(e) {
+        const {popupId} = this.props;
         const {id, value} = e.target;
         if((id == 'screenSwitch' || id == 'sensorType' || id == 'brightness') && value === '' ) {
             this.setState({checkStatus: Object.assign({}, this.state.checkStatus, {[id]: true})});
@@ -111,6 +112,7 @@ export default class SensorStrategyPopup extends Component {
             case 'sensorType':
             case 'controlDevice':
                 this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
+                popupId == 'add' && this.setState({sensorParamsList: []}, this.updateLineChart );
                 break;
             case 'sensorParam':
                 let val = value;
