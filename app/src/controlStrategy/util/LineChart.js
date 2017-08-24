@@ -10,7 +10,6 @@ export default class LineChart {
         curveFactory=d3.curveStepAfter
     }) {
         this.wrapper = wrapper;
-        this.data = data;
         this.padding = padding;
         this.xAccessor = xAccessor;
         this.yAccessor = yAccessor;
@@ -22,8 +21,20 @@ export default class LineChart {
         this.getAxis = this.getAxis.bind(this);
         this.getMainChart = this.getMainChart.bind(this);
         this.draw = this.draw.bind(this);
+        this.sortByXAxisValue = this.sortByXAxisValue.bind(this);
+
+        this.data = this.sortByXAxisValue(data);
 
         this.initChart();
+    }
+
+    sortByXAxisValue(data) {
+        let _data = Object.assign({}, data);
+        let arr = Object.assign([], _data.values);
+        arr.sort((prev, next) => {
+            return this.xAccessor(prev) - this.xAccessor(next);
+        });
+        return Object.assign(_data, {values: arr});
     }
 
     initChart() {
@@ -71,19 +82,25 @@ export default class LineChart {
             .text('this is a tooltips.');
 
         this.svg.on('mouseenter', ()=>{
-            this.data.values.length!=0&&this.tooltips.style('display', 'block');
+            this.data.values.length!=0 && this.tooltips.style('display', 'block');
         }, false);
         this.svg.on('mousemove', (data, index) => {
-            if(this.data.values.length!=0) {
+            let len = this.data.values.length;
+            if (len != 0) {
                 let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
                 let _index = Math.floor(d3.event.offsetX / this.xScale.step());
+                if (_index <= -1) {
+                    _index = 0;
+                } else if (_index >= len ) {
+                    _index = len - 1;
+                }
                 let val = this.data.values[_index];
                 this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
                 this.tooltipInner.text(`${this.tooltipAccessor(val)}`);
             }
         }, false);
         this.svg.on('mouseleave', ()=>{
-            this.data.values.length!=0&&this.tooltips.style('display', 'none');
+            this.data.values.length!=0 && this.tooltips.style('display', 'none');
         }, false);
 
         this.draw();
@@ -91,20 +108,31 @@ export default class LineChart {
 
     getAxis() {
         this.xScale = d3.scalePoint()
-            .domain(this.data.values.map(item=>this.xAccessor(item)))
             .range([0, this.w]);
         this.yScale = d3.scaleLinear()
             // .domain(d3.extent(this.data.values, this.yAccessor))
-            .domain([0, d3.max(this.data.values, this.yAccessor)])
             .range([this.h, 0]);
+        
+        this.xScale.domain(this.data.values.map(item=>this.xAccessor(item)));
+        this.yScale.domain([0, d3.max(this.data.values, this.yAccessor)]);
 
         let xAxis = d3.axisBottom()
             .scale(this.xScale)
-            .tickValues([ this.xAccessor(this.data.values[0]),this.xAccessor(this.data.values[this.data.values.length-1]) ])
             .tickSizeOuter(0)
             .tickFormat(this.tickFormat);
-
+        
+        if(this.data.values.length==1) {
+            xAxis.tickValues([ this.xAccessor(this.data.values[0]) ]);
+        } else {
+            xAxis.tickValues([ this.xAccessor(this.data.values[0]),this.xAccessor(this.data.values[this.data.values.length-1]) ]);
+        }
+        
         this.x_axis.call(xAxis);
+        if(this.data.values.length == 1) {
+            let tick = this.x_axis.select('.tick');
+            tick.attr('transform', 'translate(0,0)')
+            tick.select('text').style('text-anchor', 'start');
+        }
 
         let yAxis = d3.axisLeft()
             .scale(this.yScale)
@@ -114,6 +142,7 @@ export default class LineChart {
     }
 
     getMainChart() {
+        let len = this.data.values.length;
         let area = d3.area()
             .x((d) => {
                 return this.xScale(this.xAccessor(d));
@@ -125,8 +154,14 @@ export default class LineChart {
             .curve(this.curveFactory);
         this.main_area
             .datum(this.data.values)
-            .attr('d', function(d){
-                return area(d);
+            .attr('d', (d) => {
+                if (len == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0])),
+                        _y0 = this.yScale(0);
+                    return `M${0},${_y0}L${0},${_y1}L${this.w},${_y1}L${this.w},${_y0}Z`;
+                } else {
+                    return area(d);
+                }
             });
         let line = d3.line()
             .x((d) => {
@@ -138,21 +173,31 @@ export default class LineChart {
             .curve(this.curveFactory);
         this.main_line
             .datum(this.data.values)
-            .attr('d', function(d) {
-                return line(d);
+            .attr('d', (d) => {
+                if (len == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    return `M${0},${_y1}L${this.w},${_y1}`;
+                } else {
+                    return line(d);
+                }
             });
     }
     
     draw() {
-        if(this.data.values.length!=0) {
+        if (this.data.values.length!=0) {
             this.getAxis();
             this.getMainChart();
         }
     }
 
     updateChart(data) {
-        this.data = Object.assign({}, this.data, data);
-        this.draw();
+        this.data = this.sortByXAxisValue(Object.assign({}, this.data, data));
+        if (this.data.values.length==0) {
+            this.destroy();
+            this.initChart();
+        } else {
+            this.draw();
+        }
     }
 
     destroy() {

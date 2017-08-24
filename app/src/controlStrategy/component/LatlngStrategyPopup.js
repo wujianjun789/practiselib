@@ -14,8 +14,8 @@ export class LatlngStrategyPopup extends Component{
         const {data={},isEdit=false} = this.props;
         const defaultDev = this.props.deviceList.options.length>0?this.props.deviceList.options[0].value:''
         const {name="", device=defaultDev,strategy=[]} = data;
-        let sunriseTime;
-        let sunsetTime;        
+        let sunriseTime='';
+        let sunsetTime='';        
         strategy.forEach((item)=>{
             if('sunrise' in item.condition){
                 sunriseTime=item.condition.sunrise;
