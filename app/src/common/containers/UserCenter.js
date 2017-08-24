@@ -35,15 +35,15 @@ export class UserCenter extends Component{
         this.setState((prevState)=> {
             return {active: !prevState.active};
         });
-        // if(this.state.active==false){
-        //     setTimeout(() => {
-        //         if(this.state.active==false){}else{
-        //             this.setState((prevState)=> {
-        //             return{active: !prevState.active}
-        //             });
-        //         }
-        //     }, 3000);
-        // }
+        if(this.state.active==false){
+            setTimeout(() => {
+                if(this.state.active==false){}else{
+                    this.setState((prevState)=> {
+                    return{active: !prevState.active}
+                    });
+                }
+            }, 3000);
+        }
     }
 
     cancel() {
@@ -103,7 +103,7 @@ export class UserCenter extends Component{
                 <div className="user-icon clearfix"><span className="glyphicon glyphicon-user" aria-hidden="true"></span></div>
                 <ul className={`user-list ${active ? '' : 'hidden'}`}>
                 {
-                    list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><svg version="1.0" xmlns="http://www.w3.org/2000/svg"><use xlinkHref={item.path} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg><span>{item.name}</span></li>)
+                    list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><svg><use xlinkHref={item.path} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg><span>{item.name}</span></li>)
                 }
                 </ul>
             </div>

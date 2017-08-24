@@ -5,6 +5,7 @@ import Select from '../../components/Select.1';
 import LineChart from '../util/LineChart';
 import PropTypes from 'prop-types';
 import {NameValid, numbersValid} from '../../util/index';
+import {IsExistInArray1} from '../../util/algorithm';
 import {getModelSummariesByModelID, addStrategy, updateStrategy} from '../../api/strategy';
 
 let options = (function generateLampLightnessList() {
@@ -95,6 +96,7 @@ export default class SensorStrategyPopup extends Component {
     }
 
     onChange(e) {
+        const {popupId} = this.props;
         const {id, value} = e.target;
         if((id == 'screenSwitch' || id == 'sensorType' || id == 'brightness') && value === '' ) {
             this.setState({checkStatus: Object.assign({}, this.state.checkStatus, {[id]: true})});
@@ -102,23 +104,26 @@ export default class SensorStrategyPopup extends Component {
         }
         switch(id) {
             case 'strategyName':
-                let status = !NameValid(value);
+                let strategyNameStatus = !NameValid(value);
                 this.setState({
                     data: Object.assign({}, this.state.data, {strategyName: value}),
-                    checkStatus: Object.assign({}, this.state.checkStatus, {strategyName: status})
+                    checkStatus: Object.assign({}, this.state.checkStatus, {strategyName: strategyNameStatus})
                 });
                 break;
             case 'sensorType':
             case 'controlDevice':
-                this.setState({data: Object.assign({}, this.state.data, {[id]: value})});
+                this.setState({data: Object.assign({}, this.state.data, {[id]: value, sensorParam: '' })});
+                popupId == 'add' && this.setState({sensorParamsList: []}, this.updateLineChart );
                 break;
             case 'sensorParam':
                 let val = value;
-                if(!numbersValid(value)) {
-                    val = 0;
+                let sensorParamStatus = false;
+                if ( !numbersValid(value) || IsExistInArray1( this.state.sensorParamsList, d => d.condition[ this.sensorTransform[this.state.data.sensorType] ], val ) ) {
+                    sensorParamStatus = true;
                 }
                 this.setState({
-                    data: Object.assign({}, this.state.data, {sensorParam: val})
+                    data: Object.assign({}, this.state.data, {sensorParam: val}),
+                    checkStatus: Object.assign({}, this.state.checkStatus, {sensorParam: sensorParamStatus})
                 });
                 break;
             case 'screenSwitch':
@@ -290,10 +295,10 @@ export default class SensorStrategyPopup extends Component {
                 <div className="form-group">
                     <label className="control-label">设置参数：</label>
                     <div className="form-group-right lightness">
-                        <button className="btn btn-primary" onClick={this.addSensorParam}>添加节点</button>
+                        <button className="btn btn-primary" onClick={this.addSensorParam} disabled={checkStatus.sensorParam}>添加节点</button>
                         <div className="lightness-right">
                             <div>
-                                <input id="sensorParam" type='text' className="form-control" placeholder="输入传感器参数" value={data.sensorParam} onChange={this.onChange}/>
+                                <input id="sensorParam" type='text' className='form-control' placeholder="输入传感器参数" value={data.sensorParam} onChange={this.onChange}/>
                                 {
                                     data.controlDevice != 'lc' ?
                                     <Select id="screenSwitch" className="form-control" titleField={screenSwitchList.titleField}

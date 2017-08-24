@@ -24,7 +24,6 @@ export class Login extends Component{
         this.handleClick = this.handleClick.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.loginFail = this.loginFail.bind(this);
-        this.handleTest = this.handleTest.bind(this);
     }
 
     //兼容ie下的清除事件
@@ -50,10 +49,6 @@ export class Login extends Component{
     handleClick(event) {
         this.submitHandler();
         event.stopPropagation();
-    }
-
-    handleTest(){
-        console.log(this.state);
     }
 
     submitHandler() {
@@ -93,7 +88,7 @@ export class Login extends Component{
                 <div className="container-mid">
                     <div className="bg-cover"></div>
                     <div className="login-right pull-right">
-                        <p onClick={this.handleTest}>用户登录</p>
+                        <p>用户登录</p>
                         <div className="form-group has-feedback">
                             <input id = 'username' type="text" className="form-control" value={this.state.user.username} onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
                             <span className = "login_user form-control-feedback"></span>

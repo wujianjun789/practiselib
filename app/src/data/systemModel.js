@@ -150,6 +150,8 @@ function getLinkByModel(key) {
             return '/systemOperation/config/lcc';
         case 'lc':
             return '/systemOperation/config/lc';
+        case 'sensor':
+            return '/systemOperation/config/sensor';
         case 'plc':
             return 'icon_plc_control';
         case 'ammeter':

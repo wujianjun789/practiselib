@@ -70,7 +70,7 @@ export class SensorStrategy extends Component{
         this.updateSensorTypeList = this.updateSensorTypeList.bind(this);
         this.generateSensorTypesData = this.generateSensorTypesData.bind(this);
 
-        this.getSensorTypeFromObject = this.getSensorTypeFromObject.bind(this);
+        this.getSensorTypeFromStrategy = this.getSensorTypeFromStrategy.bind(this);
         
     }
 
@@ -130,7 +130,7 @@ export class SensorStrategy extends Component{
         const initData = {
             id: id,
             strategyName: data.name,
-            sensorType: this.getSensorTypeFromObject(data),
+            sensorType: this.getSensorTypeFromStrategy(data),
             controlDevice: data.asset,
             sensorParamsList: data.strategy
         };
@@ -149,8 +149,8 @@ export class SensorStrategy extends Component{
         } }/>);
     }
 
-    getSensorTypeFromObject(data) {
-        return this.sensorTransform[Object.keys(data.strategy[0].condition)[0]];
+    getSensorTypeFromStrategy(data) {
+        return this.sensorTransform[Object.keys(data.strategy[0]&&data.strategy[0].condition)[0]];
     }
 
     pageChange(page) {
@@ -161,7 +161,8 @@ export class SensorStrategy extends Component{
         const {id} = e.target;
         const initData = {
             id: '',
-            strategyName: ''
+            strategyName: '',
+            sensorType: this.state.sensorTypeList.options[0]&&this.state.sensorTypeList.options[0][this.state.sensorTypeList.valueField],
         };
         id=='add-sensor' && this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='add' title="新建策略" data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
@@ -178,7 +179,7 @@ export class SensorStrategy extends Component{
     updateSensorStrategyList(data) {
         if(data.length!=0) {
             data = data.map(item => {
-                item.sensorType = this.getSensorTypeFromObject(data[0]);
+                item.sensorType = this.getSensorTypeFromStrategy(data[0]);
                 return item;
             });
         }

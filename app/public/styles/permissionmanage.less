@@ -14,7 +14,10 @@
         background: #fff;
         min-width:561px;
         .page{
-            padding-left: 45%;
+            text-align:center;
+        }
+        .page li{
+            display:inline-block;
         }
         .role-icon{
             text-align: center;
@@ -70,8 +73,10 @@
 .user-add-popup,.user-edit-popup,.user-domain-edit-popup{
     width:700px;
     .modal-body{
-        margin-top: 5px;
-        margin-right:50px;
+        padding-right:70px;
+        padding-top:35px;
+        padding-left:10px;
+        padding-bottom:25px;
         >.form-group{
             margin-bottom: 0px;
         }    
@@ -80,7 +85,8 @@
         border-top: none;
         background-color: transparent;
         padding-top: 0;
-        padding-right: 50px;
+        padding-bottom: 35px;
+        text-align:center
     }
     .control-label{
         text-align: right;
@@ -120,7 +126,7 @@
 
 .user-domain-edit-popup{
     .modal-body{
-        margin-right:35px;
+        margin-right:0px;
     }
     .domain-per{
         >.col-sm-2{
@@ -130,18 +136,22 @@
         .domain-add{
             height:230px;
             border: 1px solid #ccc;
+            padding-right:17px;
             .domain-tree{
-                padding-left:10px;
-                padding-right:25px;
-                margin-right: -15px;
-                height: 158px;
+                padding-left:0px;
+                padding-right:17px;
+                margin-right: -17px;
+                height: 228px;
                 overflow-x: hidden;
                 overflow-y: scroll;
+                .searchText{
+                    width:100%;
+                    margin-bottom:5px;
+                }
             }
             .search{
-                width: 214px;
                 height: 30px;
-                margin:20px 5px;
+                margin-top:15px;
             }
         }
         .domain-list{
@@ -151,7 +161,7 @@
             >ul{
                 height: 228px;
                 overflow-y: scroll;
-                padding: 0 15px 0 30px;
+                padding: 15px 17px 0 15px;
                 >li{
                     color: #808080;
                     font-size: 14px;
@@ -176,6 +186,7 @@
     }
     .modal-footer{
         margin: 5px 0;
+        text-align:center
     }
 }
 

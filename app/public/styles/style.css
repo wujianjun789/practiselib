@@ -433,16 +433,29 @@ ul {
 }
 
 .tree-list .tree-2 > li > a > div {
-    padding: 9.5px 0px 9.5px 22px;
-    line-height: 20px;
+    height:40px;
+    padding-left:12px;
     /*background: #d3d8dd;*/
 }
 
+.tree-list .tree-2 > li > a > div svg{
+    width:40px;
+    height:40px;
+    display: inline-block;
+    float:left;
+    padding:12px 12px;
+    fill:#666;
+}
+
+.tree-list .tree-2 > li > a > div span{
+    height:40px;
+    display: inline-block;
+    float:left;
+    font-size:14px;
+    line-height: 40px;
+}
+
 .tree-list .tree-2 > li span {
-   top: 3px;
-    margin-right: 16px;
-    width: 16px;
-    height: 16px;
 }
 
 .tree-list .tree-2 > li > a > div:hover {
@@ -450,6 +463,7 @@ ul {
 }
 
 .tree-list .tree-2 .active > a > div {
+    color: #ffffff;
     background: linear-gradient(to right, #00bcff, #00d8ff);
 }
 
@@ -457,8 +471,12 @@ ul {
     background: linear-gradient(to right, #00bcff, #00d8ff);
 }
 
-.tree-list .tree-2 .active > a > div{
-    color: #ffffff;
+.tree-list .tree-2 .active > a > div svg use{
+    fill:#fff;
+}
+
+.tree-list .tree-2 .active > a > div span{
+
 }
 
 .map-view{

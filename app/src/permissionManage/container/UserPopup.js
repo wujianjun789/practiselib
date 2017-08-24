@@ -131,9 +131,14 @@ export class UserPopup extends Component{
                 <div className = 'form-group row basic-info'>
                     <InputCheck label='用户名' className='username' id='username' placeholder='请输入用户名' value= {username.get('value')} disabled={isEdit?true:false}
                         checked={username.get('checked')} reminder={username.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
-                    <label className="col-sm-2 control-label">用户等级:</label>
-                    <Select className="role" data={this.state.role}
-                            onChange={(selectIndex)=>this.roleChange(selectIndex)}/>
+                    <div className="inputCheck">
+                        <label className="col-sm-2 control-label">用户等级:</label>
+                        <div className="has-feedback col-sm-4 ">
+                            <Select className="role" data={this.state.role}
+                                onChange={(selectIndex)=>this.roleChange(selectIndex)}/>
+                            <span className="glyphicon  form-control-feedback" aria-hidden="true"></span><span className="reminder"></span>
+                        </div>
+                    </div>
                     <InputCheck label='姓氏' className='lastName' id='lastName' placeholder='请输入姓氏' value= {lastName.get('value')}
                         checked={lastName.get('checked')} reminder={lastName.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
                     <InputCheck label='名字' className='firstName' id='firstName' placeholder='请输入名字' value= {firstName.get('value')}

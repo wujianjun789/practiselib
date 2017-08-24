@@ -195,8 +195,9 @@ export class DomainPopup extends Component{
                     <label className="col-sm-2 control-label">域权限:</label>
                     <div className="col-sm-10">
                         <div className='col-sm-6 domain-add'>
-                            <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
+                            
                             <div className='domain-tree'>
+                                <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
                                 {
                                     tree && tree.map((node)=>{
                                         return <Node key={node.id} tree={node} nodes={nodes} onToggle={this.onToggle} onClick={this.domainAdd}/>

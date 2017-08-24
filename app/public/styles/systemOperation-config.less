@@ -1,7 +1,7 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-.lc, .lcc {
+.lc, .lcc ,.sensor {
   .content {
     .heading{
       height: 70px;
@@ -83,7 +83,8 @@
     }
 
     > .lc,
-    > .lcc {
+    > .lcc,
+    > .sensor {
       margin-right: 300px;
       -webkit-transition: margin-right .3s;
       -moz-transition: margin-right .3s;
@@ -94,7 +95,8 @@
 
     &.collapsed {
       > .lc,
-      > .lcc {
+      > .lcc,
+      > .sensor {
         margin-right: 60px;
       }
     }
@@ -152,7 +154,8 @@
   }
 }
 
-.lc{
+.lc,
+.sensor{
   .sidebar-info .map-position{
     top: 130px;
   }
@@ -274,6 +277,7 @@
           padding-right: 0;
         }
         .form-control {
+          display: block;
           height: 40px;
           // line-height: 40px;
           padding-top: 10px;
@@ -303,5 +307,6 @@
     padding-top: 0;
     padding-bottom: 20px;
     padding-right: 25px;
+    text-align:center
   }
 }

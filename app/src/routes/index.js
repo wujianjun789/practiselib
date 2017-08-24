@@ -92,6 +92,11 @@ export default (
                             cb(null, require('../systemOperation/container/SingleLampCon').default)
                         }, 'starriverpro.systemoperation.singlelampcontroller')
                     }} />
+                    <Route path="sensor" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../systemOperation/container/Sensor').default)
+                        }, 'starriverpro.systemoperation.sensor')
+                    }} />
                 </Route>
                 <Route path="strategy">
                     <Route path="timeTable" getComponent={(nextState, cb) => {
