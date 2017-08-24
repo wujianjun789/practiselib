@@ -34,9 +34,8 @@ describe('<Login />',() => {
     
     it('loginHandler ',()=>{
         const fn = jest.fn();
-        const fn1 = jest.fn();
-        loginHandler('','',fn,fn1)();
-        expect(fn1).toHaveBeenCalledTimes(1);
+        loginHandler('','',fn)();
+        expect(fn).toHaveBeenCalledTimes(1);
     })
 
 })
