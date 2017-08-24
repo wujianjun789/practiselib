@@ -39,7 +39,6 @@ export default class CentralizedControllerPopup extends Component {
         let id = e.target.id;
         if (id == "model") {
             this.setState({modelId: this.props.modelList.options[e.target.selectedIndex].id});
-            console.log("modelId:", this.state.modelId)
         }
 
         if (id == "domain") {
@@ -73,8 +72,6 @@ export default class CentralizedControllerPopup extends Component {
         }
 
         this.setState({[id]: newValue, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
-        // console.log(prompt.lng);
-        // console.log(prompt);
 
     }
 

@@ -38,14 +38,14 @@ export class TreeView extends Component{
                 datalist.map((node, index)=> {
                     let count = this.state.language=='zh'?6:10;
                     let value = node.name.slice(0, count)+(node.name.length>count?'...':'');
-                    if(curIndex > 1){console.log("tree2");
+                    if(curIndex > 1){
                         return <li key={index} className={'node '+(node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                     <div onClick={()=>this.onToggle(node)} title={node.name}><svg><use xlinkHref={"#"+(node.class)} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>
                                         <span>{value}</span></div></Link>
                                     {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
-                    }else{console.log("tree1");
+                    }else{
                         return <li key={index} className={'node '+(node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                     <div onClick={()=>this.onToggle(node)} title={node.name}><span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')}></span>
