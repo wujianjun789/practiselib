@@ -109,7 +109,7 @@ export default class CentralizedControllerPopup extends Component {
                     <div className="popup-left">
                         <div className="form-group clearfix">
                             <label htmlFor="id" className="col-sm-4 control-label">设备编号：</label>
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <input type="text" className="form-control" id="id" placeholder="id" value={id} maxLength = {16}
                                        onChange={this.onChange} disabled={popId=='edit'?true:false}/>
                                 <span className={prompt.id?"prompt ":"prompt hidden"}>{"不合法"}</span>
@@ -117,7 +117,7 @@ export default class CentralizedControllerPopup extends Component {
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="name" className="col-sm-4 control-label">名称：</label>
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <input type="text" className="form-control" id="name" placeholder="name" value={name} maxLength ={16}
                                        onChange={this.onChange}/>
                                 <span className={prompt.name?"prompt ":"prompt hidden"}>{"不合法"}</span>
@@ -125,7 +125,7 @@ export default class CentralizedControllerPopup extends Component {
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <Select id="model" className="form-control" titleField={modelList.titleField}
                                         valueField={modelList.valueField} options={modelList.options} value={model}
                                         onChange={this.onChange}/>
@@ -135,7 +135,7 @@ export default class CentralizedControllerPopup extends Component {
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="domain" className="col-sm-4 control-label">域：</label>
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <Select id="domain" className="form-control" titleField={domainList.titleField}
                                         valueField={domainList.valueField} options={domainList.options} value={domain}
                                         onChange={this.onChange}/>
@@ -144,7 +144,7 @@ export default class CentralizedControllerPopup extends Component {
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="lng" className="col-sm-4 control-label">经度：</label>
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <input type="text" className="form-control" id="lng" placeholder="lng" value={lng}
                                        onChange={this.onChange}/>
                                 <span className={prompt.lng?"prompt ":"prompt hidden"}>{"经度数不合法"}</span>
@@ -152,7 +152,7 @@ export default class CentralizedControllerPopup extends Component {
                         </div>
                         <div className="form-group clearfix">
                             <label htmlFor="lat" className="col-sm-4 control-label">纬度：</label>
-                            <div className="col-sm-8">
+                            <div className="col-sm-7">
                                 <input type="text" className="form-control" id="lat" placeholder="lat" value={lat}
                                        onChange={this.onChange}/>
                                 <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
