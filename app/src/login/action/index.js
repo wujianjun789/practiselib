@@ -3,8 +3,7 @@ import {login} from '../../util/network';
 import {setAuth} from '../../authentication/auth'
 import {getUserById} from "../../api/permission"
 import {getAuth} from '../../authentication/auth'
-export const loginHandler = (username, password,cbSuccess,cbFail) => dispatch => {
-    console.log(username.length <= 2 || password.length <= 4);
+export const loginHandler = (username, password,cbFail) => dispatch => {
     if(username.length <= 2 || password.length <= 4){
         cbFail && cbFail();
         return;
@@ -15,7 +14,6 @@ export const loginHandler = (username, password,cbSuccess,cbFail) => dispatch =>
                 response.role = res.role.name;
                 setAuth(response);
                 dispatch({ type: AUTH, auth: getAuth()});
-                cbSuccess && cbSuccess();
               })
     }, err=>{
         cbFail && cbFail();

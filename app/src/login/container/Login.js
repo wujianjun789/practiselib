@@ -24,7 +24,6 @@ export class Login extends Component{
         this.handleClick = this.handleClick.bind(this);
         this.onKeyDown = this.onKeyDown.bind(this);
         this.loginFail = this.loginFail.bind(this);
-        this.loginSuccess = this.loginSuccess.bind(this);
         this.handleTest = this.handleTest.bind(this);
     }
 
@@ -58,7 +57,7 @@ export class Login extends Component{
     }
 
     submitHandler() {
-        this.props.actions.loginHandler(this.state.user.username, this.state.user.password, this.loginSuccess, this.loginFail);
+        this.props.actions.loginHandler(this.state.user.username, this.state.user.password, this.loginFail);
     }
 
     componentDidMount() {
@@ -74,10 +73,6 @@ export class Login extends Component{
 
     loginFail(){
         this.setState({style:{visibility: 'visible'}})
-    }
-
-    loginSuccess(){
-        this.props.router.push('/')
     }
     
     render() {

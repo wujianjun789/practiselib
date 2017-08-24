@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from '../app/container/index'
-import { Login } from '../login/container/Login'
+import Login from '../login/container/Login'
 import AssetManage from '../assetManage/container/index'
 import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
