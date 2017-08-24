@@ -112,7 +112,7 @@ export default class SensorStrategyPopup extends Component {
                 break;
             case 'sensorType':
             case 'controlDevice':
-                this.setState({data: Object.assign({}, this.state.data, {[id]: value, sensorParam: 0 })});
+                this.setState({data: Object.assign({}, this.state.data, {[id]: value, sensorParam: '' })});
                 popupId == 'add' && this.setState({sensorParamsList: []}, this.updateLineChart );
                 break;
             case 'sensorParam':
