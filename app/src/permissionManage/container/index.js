@@ -13,8 +13,7 @@ import Immutable from 'immutable';
 import Table2 from '../../components/Table2';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import {getObjectByKeyObj,getListByKeyObj} from '../../util/algorithm';
-import {requestUserData,deleteUser} from '../../api/permission';
-import {addUser,editUser} from '../../api/permission';
+import {requestUserData,requestUserMount,deleteUser,addUser,editUser} from '../../api/permission';
 import {getMomentDate,momentDateFormat} from '../../util/time'
 export class PermissionManage extends Component{
     constructor(props){
@@ -88,6 +87,12 @@ export class PermissionManage extends Component{
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
         requestUserData(offset,size,(response)=>{this.mounted && this.dataHandle(response)},username);
+        requestUserMount(data=>{this.mounted && this.initPageSize(data)})
+    }
+
+    initPageSize(data){
+        let page = this.state.page.set('total', data);
+        this.setState({page:page});
     }
 
     dataHandle(datas){
