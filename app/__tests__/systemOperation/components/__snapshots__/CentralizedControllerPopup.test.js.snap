@@ -33,7 +33,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             设备编号：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               disabled={false}
@@ -57,7 +57,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             名称：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               id="name"
@@ -80,7 +80,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             型号：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -126,7 +126,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             域：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -176,7 +176,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             经度：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               id="lng"
@@ -198,7 +198,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             纬度：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               id="lat"
@@ -276,7 +276,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             设备编号：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               disabled={true}
@@ -300,7 +300,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             名称：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               id="name"
@@ -323,7 +323,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             型号：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -369,7 +369,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             域：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -419,7 +419,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             经度：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               id="lng"
@@ -441,7 +441,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             纬度：
           </label>
           <div
-            className="col-sm-8">
+            className="col-sm-7">
             <input
               className="form-control"
               id="lat"

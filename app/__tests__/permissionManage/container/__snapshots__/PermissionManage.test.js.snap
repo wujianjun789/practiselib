@@ -15,8 +15,7 @@ exports[`<PermissionManage /> snapshot 1`] = `
       权限管理
     </span>
     <div
-      className="user-center "
-      onClick={[Function]}>
+      className="user-center ">
       <svg
         className="svgOnload">
         <symbol
@@ -39,12 +38,10 @@ exports[`<PermissionManage /> snapshot 1`] = `
           className="glyphicon glyphicon-user" />
       </div>
       <ul
-        className="user-list hidden">
+        className="user-list">
         <li
           onClick={[Function]}>
-          <svg
-            version="1.0"
-            xmlns="http://www.w3.org/2000/svg">
+          <svg>
             <use
               height="200"
               transform="scale(0.08,0.08)"
@@ -60,9 +57,7 @@ exports[`<PermissionManage /> snapshot 1`] = `
         </li>
         <li
           onClick={[Function]}>
-          <svg
-            version="1.0"
-            xmlns="http://www.w3.org/2000/svg">
+          <svg>
             <use
               height="200"
               transform="scale(0.08,0.08)"

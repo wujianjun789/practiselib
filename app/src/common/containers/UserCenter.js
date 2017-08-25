@@ -18,32 +18,15 @@ export class UserCenter extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            active: false,
             list: [
-                {name: '修改密码', key: 'alter',path:'#alter'},
-                {name: '退出管理系统', key: 'exit',path:'#exit'}
+                {name: '修改密码', key: 'alter', path:'#alter'},
+                {name: '退出管理系统', key: 'exit', path:'#exit'}
             ]
         }
-        this.userListToggle = this.userListToggle.bind(this);
         this.itemClick = this.itemClick.bind(this);
         this.cancel = this.cancel.bind(this);
         this.confirm = this.confirm.bind(this);
         this.AlterPwPopupConfirm = this.AlterPwPopupConfirm.bind(this);
-    }
-
-    userListToggle() {
-        this.setState((prevState)=> {
-            return {active: !prevState.active};
-        });
-        if(this.state.active==false){
-            setTimeout(() => {
-                if(this.state.active==false){}else{
-                    this.setState((prevState)=> {
-                    return{active: !prevState.active}
-                    });
-                }
-            }, 3000);
-        }
     }
 
     cancel() {
@@ -66,9 +49,6 @@ export class UserCenter extends Component{
             console.log('密码错误');
         });
     }
- 
-    componentDidMount() {
-    }
 
     itemClick(key) {
         let {overlayerHide, overlayerShow} = this.props.actions;
@@ -80,10 +60,10 @@ export class UserCenter extends Component{
     }
 
     render() {
-        const {active, list} = this.state;
+        const {list} = this.state;
         const {className=""} = this.props;
         return (
-            <div className={`user-center ${className}`} onClick={this.userListToggle}>
+            <div className={`user-center ${className}`}>
                 <svg className="svgOnload"> 
                 <symbol id="alter"><path fill="#8a8a8a" d="M100.5,3.5c-50.665,0-92.159,39.249-95.745,89h20.304C28.827,54.048,61.245,24,100.688,24
     c41.974,0,76,34.026,76,76s-34.026,76-76,76c-16.36,0-31.498-5.186-43.894-13.982c2.125-3.098,6.972-11.393,7.296-11.393
@@ -101,7 +81,7 @@ export class UserCenter extends Component{
     l19.902,19.902H73.195v23.22h84.171L137.463,131.431L137.463,131.431z"/></symbol>
             </svg>
                 <div className="user-icon clearfix"><span className="glyphicon glyphicon-user" aria-hidden="true"></span></div>
-                <ul className={`user-list ${active ? '' : 'hidden'}`}>
+                <ul className='user-list'>
                 {
                     list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><svg><use xlinkHref={item.path} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg><span>{item.name}</span></li>)
                 }

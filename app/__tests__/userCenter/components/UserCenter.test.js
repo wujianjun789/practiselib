@@ -19,20 +19,11 @@ describe('<UserCenter />', () => {
         const _ul = container.find('ul.user-list');
         expect(_ul.length).toBe(1);
 
-        const ul_hidden = container.find('.user-list.hidden');
-        expect(ul_hidden.length).toBe(1);
-
         const _li = _ul.find('li');
         expect(_li.length).toBe(2);
 
         expect(_li.at(0).text()).toBe('修改密码');
-        expect(_li.at(1).text()).toBe('退出管理系统')
-
-        // const span0 = _li.at(0).find('.glyphicon.glyphicon-user');
-        // expect(span0.length).toBe(1);
-
-        // const span1 = _li.at(1).find('.icon.icon-exit');
-        // expect(span1.length).toBe(1);
+        expect(_li.at(1).text()).toBe('退出管理系统');
     });
 
     it('render with props.className="user_center"', () => {
@@ -42,31 +33,10 @@ describe('<UserCenter />', () => {
         expect(container.prop('className')).toBe('user-center user_center');
     });
 
-    it('user Info list toggle', () => {
-        let userCenter = shallow(<UserCenter router={router}/>);
-        let head_right = userCenter.find('.user-center');
-
-        let ul_hidden = userCenter.find('.user-list');
-        expect(ul_hidden.hasClass('hidden')).toBe(true);
-
-        head_right.simulate('click');
-
-        ul_hidden = userCenter.find('.user-list');
-        expect(ul_hidden.hasClass('hidden')).not.toBe(true);
-    });
-
-    it('user Info list toggle snapshot', () => {
+    it('snapshot', () => {
         const userCenter = renderer.create(<UserCenter router={router}/>);
         let tree = userCenter.toJSON();
 
-        expect(tree).toMatchSnapshot();
-        
-        tree.props.onClick();
-        tree = userCenter.toJSON();
-        expect(tree).toMatchSnapshot();
-
-        tree.props.onClick();
-        tree = userCenter.toJSON();
         expect(tree).toMatchSnapshot();
     });
 });

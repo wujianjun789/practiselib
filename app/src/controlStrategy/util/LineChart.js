@@ -87,7 +87,6 @@ export default class LineChart {
         this.svg.on('mousemove', (data, index) => {
             let len = this.data.values.length;
             if (len != 0) {
-                let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
                 let _index = Math.floor(d3.event.offsetX / this.xScale.step());
                 if (_index <= -1) {
                     _index = 0;
@@ -95,8 +94,9 @@ export default class LineChart {
                     _index = len - 1;
                 }
                 let val = this.data.values[_index];
-                this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
                 this.tooltipInner.text(`${this.tooltipAccessor(val)}`);
+                let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
+                this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
             }
         }, false);
         this.svg.on('mouseleave', ()=>{
@@ -110,10 +110,10 @@ export default class LineChart {
         this.xScale = d3.scalePoint()
             .range([0, this.w]);
         this.yScale = d3.scaleLinear()
-            // .domain(d3.extent(this.data.values, this.yAccessor))
             .range([this.h, 0]);
         
         this.xScale.domain(this.data.values.map(item=>this.xAccessor(item)));
+        // this.yScale.domain(d3.extent(this.data.values, this.yAccessor));
         this.yScale.domain([0, d3.max(this.data.values, this.yAccessor)]);
 
         let xAxis = d3.axisBottom()

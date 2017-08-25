@@ -51,33 +51,44 @@ exports[`<UserPopup add snapshot 1`] = `
           </span>
         </div>
       </div>
-      <label
-        className="col-sm-2 control-label">
-        用户等级:
-      </label>
-      <select
-        className="select role form-control"
-        id=""
-        onChange={[Function]}
-        placeholder={undefined}
-        value="访客">
-        <option
-          value="访客">
-          访客
-        </option>
-        <option
-          value="设备操作员">
-          设备操作员
-        </option>
-        <option
-          value="设备管理员">
-          设备管理员
-        </option>
-        <option
-          value="系统管理员">
-          系统管理员
-        </option>
-      </select>
+      <div
+        className="inputCheck">
+        <label
+          className="col-sm-2 control-label">
+          用户等级:
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <select
+            className="select role form-control"
+            id=""
+            onChange={[Function]}
+            placeholder={undefined}
+            value="访客">
+            <option
+              value="访客">
+              访客
+            </option>
+            <option
+              value="设备操作员">
+              设备操作员
+            </option>
+            <option
+              value="设备管理员">
+              设备管理员
+            </option>
+            <option
+              value="系统管理员">
+              系统管理员
+            </option>
+          </select>
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder" />
+        </div>
+      </div>
       <div
         className="inputCheck lastName">
         <label
@@ -362,33 +373,44 @@ exports[`<UserPopup edit snapshot 1`] = `
           </span>
         </div>
       </div>
-      <label
-        className="col-sm-2 control-label">
-        用户等级:
-      </label>
-      <select
-        className="select role form-control"
-        id=""
-        onChange={[Function]}
-        placeholder={undefined}
-        value="访客">
-        <option
-          value="访客">
-          访客
-        </option>
-        <option
-          value="设备操作员">
-          设备操作员
-        </option>
-        <option
-          value="设备管理员">
-          设备管理员
-        </option>
-        <option
-          value="系统管理员">
-          系统管理员
-        </option>
-      </select>
+      <div
+        className="inputCheck">
+        <label
+          className="col-sm-2 control-label">
+          用户等级:
+        </label>
+        <div
+          className="has-feedback col-sm-4 ">
+          <select
+            className="select role form-control"
+            id=""
+            onChange={[Function]}
+            placeholder={undefined}
+            value="访客">
+            <option
+              value="访客">
+              访客
+            </option>
+            <option
+              value="设备操作员">
+              设备操作员
+            </option>
+            <option
+              value="设备管理员">
+              设备管理员
+            </option>
+            <option
+              value="系统管理员">
+              系统管理员
+            </option>
+          </select>
+          <span
+            aria-hidden="true"
+            className="glyphicon  form-control-feedback" />
+          <span
+            className="reminder" />
+        </div>
+      </div>
       <div
         className="inputCheck lastName">
         <label

@@ -34,6 +34,20 @@ input.form-control::-moz-placeholder { color: #ccc; }
 input.form-control:-moz-placeholder { color: #ccc; }
 input.form-control:-ms-input-placeholder { color: #ccc; }
 
+.padding-left{
+    padding-left: 15px
+}
+.padding-right{
+    padding-right: 15px;
+}
+
+.margin-top{
+    margin-top: 15px;
+}
+
+.margin-bottom{
+    margin-bottom: 15px;
+}
 /**********************************************************************************/
 .head {
     /* position: fixed;
@@ -699,6 +713,42 @@ ul {
     background-size: 100% 100%;
 }
 
+.icon.icon_pole{
+    background: url("../images/smartLight/icon_pole.png");
+}
+.icon.icon_pole_hover{
+    background: url("../images/smartLight/icon_pole_hover.png");
+}
+.icon.icon_screen{
+    background: url("../images/smartLight/icon_screen.png");
+}
+.icon.icon_screen_hover{
+    background: url("../images/smartLight/icon_screen_hover.png");
+}
+.icon.icon_camera{
+    background: url("../images/smartLight/icon_camera.png");
+}
+.icon.icon_camera_hover{
+    background: url("../images/smartLight/icon_camera_hover.png");
+}
+.icon.icon_lamp{
+    background: url("../images/smartLight/icon_lamp.png");
+}
+.icon.icon_lamp_hover{
+    background: url("../images/smartLight/icon_lamp_hover.png");
+}
+.icon.icon_charge{
+    background: url("../images/smartLight/icon_charge.png");
+}
+.icon.icon_charge_hover{
+    background: url("../images/smartLight/icon_charge_hover.png");
+}
+.icon.icon_collect{
+    background: url("../images/smartLight/icon_collect.png");
+}
+.icon.icon_collect_hover{
+    background: url("../images/smartLight/icon_collect_hover.png");
+}
 /******************* user center styles ***********************/
 .user-center {
     float: right;
@@ -733,6 +783,7 @@ ul {
 }
 
 .user-center > ul.user-list {
+    display: none;
     position: absolute;
     top: 60px;
     right: 0;
@@ -756,8 +807,6 @@ ul {
     float:left;
     padding:12px 12px;
 }
-
-
 
 .user-center > ul.user-list > li > span{
     height:40px;
@@ -783,15 +832,18 @@ ul {
 }
 
 .user-center .icon.icon-alter {
-  background: url(/svg/icon_alter.svg)no-repeat center top;
+  background: url(/svg/icon_alter.svg) no-repeat center top;
   background-size: 16px;
 }
 
 .user-center .icon.icon-exit {
-  background: url(/svg/icon_exit.svg)no-repeat center top;
+  background: url(/svg/icon_exit.svg) no-repeat center top;
   background-size: 16px;
 }
 
+.user-center:hover > ul.user-list {
+    display: block;
+}
 /********************* overlayer style ****************************/
 .overlayer {
     position: fixed;
