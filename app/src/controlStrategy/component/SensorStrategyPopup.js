@@ -62,7 +62,7 @@ export default class SensorStrategyPopup extends Component {
                 strategyName: false,
                 sensorType: false,
                 controlDevice: false,
-                sensorParam: false,
+                sensorParam: true,
                 brightness: false,
                 screenSwitch: false
             }
@@ -191,7 +191,7 @@ export default class SensorStrategyPopup extends Component {
         const data = {value: value, title: title};
         let sensorParamsList = Object.assign([], this.state.sensorParamsList);
         sensorParamsList.push({condition: {[ this.sensorTransform[sensorType] ]: sensorParam}, rpc: data});
-        this.setState({sensorParamsList, data: Object.assign({}, this.state.data, {sensorParam: ''})}, () => {
+        this.setState({sensorParamsList, data: Object.assign({}, this.state.data, {sensorParam: ''}), checkStatus: Object.assign({}, this.state.checkStatus, {sensorParam: true})}, () => {
             this.updateLineChart();
         });
     }
