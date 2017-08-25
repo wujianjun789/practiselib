@@ -96,12 +96,12 @@ export class Latlngtrategy extends Component{
     }
 
     onClick(){
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
     }
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
     }
 
     rowDelete(id){
