@@ -24,14 +24,14 @@ exports[`<UserPopup add snapshot 1`] = `
     <div
       className="form-group row basic-info">
       <div
-        className="inputCheck username">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           用户名
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -52,13 +52,13 @@ exports[`<UserPopup add snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           用户等级:
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <select
             className="select role form-control"
             id=""
@@ -90,14 +90,14 @@ exports[`<UserPopup add snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck lastName">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           姓氏
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -118,14 +118,14 @@ exports[`<UserPopup add snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck firstName">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           名字
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -146,14 +146,14 @@ exports[`<UserPopup add snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck password ">
+        className="inputCheck col-sm-6 ">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           密码
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -174,14 +174,14 @@ exports[`<UserPopup add snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck rePassword ">
+        className="inputCheck col-sm-6 ">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           重复密码
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -346,14 +346,14 @@ exports[`<UserPopup edit snapshot 1`] = `
     <div
       className="form-group row basic-info">
       <div
-        className="inputCheck username">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           用户名
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -374,13 +374,13 @@ exports[`<UserPopup edit snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           用户等级:
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <select
             className="select role form-control"
             id=""
@@ -412,14 +412,14 @@ exports[`<UserPopup edit snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck lastName">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           姓氏
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -440,14 +440,14 @@ exports[`<UserPopup edit snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck firstName">
+        className="inputCheck col-sm-6">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           名字
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -468,14 +468,14 @@ exports[`<UserPopup edit snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck password ">
+        className="inputCheck col-sm-6 ">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           密码
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}
@@ -496,14 +496,14 @@ exports[`<UserPopup edit snapshot 1`] = `
         </div>
       </div>
       <div
-        className="inputCheck rePassword ">
+        className="inputCheck col-sm-6 ">
         <label
-          className="col-sm-2 control-label">
+          className="col-sm-4 control-label">
           重复密码
           :
         </label>
         <div
-          className="has-feedback col-sm-4 ">
+          className="has-feedback col-sm-8 ">
           <input
             className="form-control"
             disabled={false}

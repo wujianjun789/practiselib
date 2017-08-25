@@ -24,7 +24,6 @@ export class UserCenter extends Component{
         this.itemClick = this.itemClick.bind(this);
         this.cancel = this.cancel.bind(this);
         this.confirm = this.confirm.bind(this);
-        this.AlterPwPopupConfirm = this.AlterPwPopupConfirm.bind(this);
     }
 
     cancel() {
@@ -39,18 +38,10 @@ export class UserCenter extends Component{
         });
     }
 
-    AlterPwPopupConfirm(data) {
-        this.props.actions.modifyPassword(data,() => {
-            this.props.actions.overlayerHide();
-        }, (err) => {
-            console.log('密码错误');
-        });
-    }
-
     itemClick(key) {
         let {overlayerHide, overlayerShow} = this.props.actions;
         if(key == 'alter') {
-            overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} onConfirm={this.AlterPwPopupConfirm}/>);
+            overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} modifyPassword={ this.props.actions.modifyPassword}/>);
         } else {
             overlayerShow(<ConfirmPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
