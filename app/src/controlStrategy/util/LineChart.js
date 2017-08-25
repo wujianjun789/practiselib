@@ -22,19 +22,34 @@ export default class LineChart {
         this.getMainChart = this.getMainChart.bind(this);
         this.draw = this.draw.bind(this);
         this.sortByXAxisValue = this.sortByXAxisValue.bind(this);
+        this.bubbleSort = this.bubbleSort.bind(this);
 
-        this.data = this.sortByXAxisValue(data);
+        this.data = this.sortByXAxisValue(data, this.xAccessor);
 
         this.initChart();
     }
 
-    sortByXAxisValue(data) {
+    sortByXAxisValue(data, accessor) {
         let _data = Object.assign({}, data);
         let arr = Object.assign([], _data.values);
         arr.sort((prev, next) => {
-            return this.xAccessor(prev) - this.xAccessor(next);
+            return accessor(prev) - accessor(next);
         });
         return Object.assign(_data, {values: arr});
+    }
+
+    bubbleSort(arr, accessor){
+        let _arr = Object.assign([], arr);
+        for(let i=0, len=_arr.length; i<len-1; i++){
+            for(let j=i+1; j<len; j++){
+                if( accessor(_arr[j]) - accessor(_arr[i]) < 0 ){
+                    let tmp = _arr[j];
+                    _arr[j] = _arr[i];
+                    _arr[i] = tmp;
+                }
+            }
+        }
+        return _arr;
     }
 
     initChart() {
@@ -114,7 +129,8 @@ export default class LineChart {
         
         this.xScale.domain(this.data.values.map(item=>this.xAccessor(item)));
         // this.yScale.domain(d3.extent(this.data.values, this.yAccessor));
-        this.yScale.domain([0, d3.max(this.data.values, this.yAccessor)]);
+        let max = this.yAccessor(this.bubbleSort(this.data.values, this.yAccessor)[this.data.values.length-1]);
+        this.yScale.domain([0, max]);
 
         let xAxis = d3.axisBottom()
             .scale(this.xScale)
@@ -191,7 +207,7 @@ export default class LineChart {
     }
 
     updateChart(data) {
-        this.data = this.sortByXAxisValue(Object.assign({}, this.data, data));
+        this.data = this.sortByXAxisValue(Object.assign({}, this.data, data), this.xAccessor);
         if (this.data.values.length==0) {
             this.destroy();
             this.initChart();
