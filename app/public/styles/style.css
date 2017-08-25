@@ -133,6 +133,7 @@ line-height: 60px;
     bottom: 0;
     left: 180px;
     min-width: 1025px;
+    min-height: 150px;
     background: #f2f2f4;
     overflow-x: hidden;
     overflow-y: auto;
