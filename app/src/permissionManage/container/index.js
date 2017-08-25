@@ -21,11 +21,11 @@ export class PermissionManage extends Component{
         this.state = {
             datas:[],
             search:Immutable.fromJS({placeholder:'输入用户名称', value:''}),
-            page: Immutable.fromJS({
+            page: {
                 pageSize:10,
                 current: 1,
                 total: 21
-            }),
+            },
             popupInfo:{
                 username:'',
                 lastName:'',
@@ -75,24 +75,20 @@ export class PermissionManage extends Component{
     }
 
     onChange(current, pageSize) {
-        let page = this.state.page.set('current', current);
-        this.setState({page: page}, ()=>{
-            this.requestData();
-        });
+        this.setState({page: Object.assign({}, this.state.page, {current: current})}, this.requestData);        
     }
 
     requestData(username){
         const {search, page} = this.state;
-        let cur = page.get('current');
-        let size = page.get('pageSize');
+        let cur = page.current;
+        let size = page.pageSize;
         let offset = (cur-1)*size;
         requestUserData(offset,size,(response)=>{this.mounted && this.dataHandle(response)},username);
         requestUserMount(data=>{this.mounted && this.initPageSize(data)})
     }
 
     initPageSize(data){
-        let page = this.state.page.set('total', data);
-        this.setState({page:page});
+        this.setState({page:Object.assign({},this.state.page,{total:data})});        
     }
 
     dataHandle(datas){
@@ -118,7 +114,7 @@ export class PermissionManage extends Component{
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
-        this.setState({datas:result,page:this.state.page.update('total',v=>datas.length)})
+        this.setState({datas:result})
     }
 
     rowEdit(id){
@@ -146,7 +142,7 @@ export class PermissionManage extends Component{
     rowDelete(id){
         this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中用户？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
-            let page = this.state.page.set('current', 1);
+            let page = Object.assign(this.state.page,{current:1});
             this.setState({page:page},deleteUser(id,this.requestData))
         }}/>);
     }
@@ -160,13 +156,12 @@ export class PermissionManage extends Component{
             editUser(datas,this.requestData);
         }
         else{
-            let page = this.state.page.set('current', 1);
-            this.setState({page:page},addUser(datas,this.requestData))
+            this.setState({page:Object.assign({}, this.state.page, {current: 1})},addStrategy(datas,()=>this.requestData()))            
         }
     }
 
     render() {
-        const {datas,search, page} = this.state;
+        const {datas,search, page} = this.state;        
         return(
             <div className='container permission-manage'>
                 <HeadBar moduleName='权限管理' router={this.props.router}/>
@@ -177,7 +172,8 @@ export class PermissionManage extends Component{
                     </div>
                     <div className="table-container">
                         <Table2 columns={this.columns} data = {this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit}/>
-                        <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')} current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
+                        <Page className={"page "+(page.total==0?"hidden":'')} showSizeChanger pageSize={page.pageSize}
+                            current={page.current} total={page.total} onChange={this.onChange} />
                     </div>
                 </div>
                 <Overlayer />
