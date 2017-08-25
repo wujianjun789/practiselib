@@ -17,6 +17,18 @@ export function requestUserData(offset=-1,limit,cb,username){
     )
 }
 
+export function requestUserMount(cb,username){
+    let headers = getHttpHeader();
+    let url = `${HOST_IP}/users?filter=${encodeURIComponent(JSON.stringify(username?{"where":{username:{like:username}}}:{}))}`;
+    httpRequest(url,{
+        headers: headers,
+        method: "GET"
+    },response=>{
+        cb && cb(response.length)
+    }
+    )
+}
+
 export function getUserById(userId,cb){
     let headers = getHttpHeader();
     httpRequest(`${HOST_IP}/users/${userId}?filter=${encodeURIComponent(JSON.stringify({include:["role"]}))}`, {

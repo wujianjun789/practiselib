@@ -15,7 +15,7 @@ import ConfirmPopup from '../../components/ConfirmPopup'
 import LatlngStrategyPopup from '../component/LatlngStrategyPopup';
 import {getObjectByKey} from '../../util/algorithm'
 import {getAssetModelList} from '../../api/asset'
-import {getStrategyListByName,updateStrategy,addStrategy,delStrategy} from '../../api/strategy'
+import {getStrategyListByName,getStrategyCountByName,updateStrategy,addStrategy,delStrategy} from '../../api/strategy'
 
 export class Latlngtrategy extends Component{
     constructor(props){
@@ -54,6 +54,7 @@ export class Latlngtrategy extends Component{
         this.rowDelete = this.rowDelete.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.confirmClick = this.confirmClick.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
     }
 
     componentWillMount(){
@@ -88,7 +89,13 @@ export class Latlngtrategy extends Component{
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
-        getStrategyListByName('latlng',username,offset,size,(response)=>{this.mounted && this.dataHandle(response)})
+        getStrategyListByName('latlng',username,offset,size,(response)=>{this.mounted && this.dataHandle(response)});
+        getStrategyCountByName('latlng', username, data=>{this.mounted && this.initPageSize(data)})
+    }
+
+    initPageSize(data){
+        let page = this.state.page.set('total', data.count);
+        this.setState({page:page});
     }
 
     dataHandle(datas){
@@ -101,18 +108,18 @@ export class Latlngtrategy extends Component{
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
     }
 
     rowDelete(id){
-        this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中用户？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
+        this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
             let page = this.state.page.set('current', 1);
             this.setState({page:page},delStrategy(id,()=>this.requestData()))
         }}/>);
     }
 
-    pageChange(){
+    pageChange(current){
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=>{
             this.requestData();

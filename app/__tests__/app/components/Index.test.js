@@ -15,9 +15,9 @@ describe('<app />', () => {
         title: 'Star',
         name: '智慧照明'
     }
-    const router = {push: jest.fn()};
+
     it('render with props.title=undefined, props.name=undefined', () => {
-        const app = mount(<Provider store={store}><App items={data.items} router={router}/></Provider>);
+        const app = mount(<Provider store={store}><App items={data.items} /></Provider>);
 
         const tit = app.find('.tit');
         expect(tit.length).toBe(1);
@@ -46,7 +46,7 @@ describe('<app />', () => {
     });
 
     it('render with props.title="Star", props.name="智慧照明"', () => {
-        const app = shallow(<App title={data.title} name={data.name} items={data.items} router={router} />);
+        const app = shallow(<App title={data.title} name={data.name} items={data.items} />);
 
         const tit = app.find('.tit');
         expect(tit.text()).toBe(data.title);
@@ -56,13 +56,13 @@ describe('<app />', () => {
     });
 
     it('snapshot', () => {
-        const cmp = renderer.create(<Provider store={store}><App title={data.title} name={data.name} items={data.items} router={router} /></Provider>);
+        const cmp = renderer.create(<Provider store={store}><App title={data.title} name={data.name} items={data.items} /></Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     it('snapshot with props.title=undefined, props.name=undefined', () => {
-        const cmp = renderer.create(<Provider store={store}><App items={data.items} router={router} /></Provider>);
+        const cmp = renderer.create(<Provider store={store}><App items={data.items} /></Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

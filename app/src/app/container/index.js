@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux'
+import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
 import Card from './Card';
@@ -18,35 +18,11 @@ import {getModule} from '../action/index'
 export class App extends Component{
     constructor(props){
         super(props);
-        this.loginFail = this.loginFail.bind(this);
-        this.loginSuccess = this.loginSuccess.bind(this);
     }
 
     componentWillMount(){
-        // if(sessionStorage.sessionID==0||sessionStorage.sessionID==null||sessionStorage.sessionID==""){
-        //     this.props.router.push('/login')
-        // }else{
-        //     this.props.actions.loginHandler(sessionStorage.username, sessionStorage.password, this.loginSuccess, this.loginFail);
-        // }
-        // if(this.props.userCenter.islogin!=1){
-        //     this.props.router.push('/login')
-        // }
         const {actions} = this.props;
         actions && actions.getModule();
-    }
-
-    componentDidMount() {/*console.log(this.props.userCenter)*/}
-
-    componentWillReceiveProps(nextProps) {
-
-    }
-
-    loginFail(){
-        this.setState({style:{visibility: 'visible'}})
-    }
-
-    loginSuccess(){
-        this.props.router.push('/')
     }
 
     render(){
@@ -58,7 +34,7 @@ export class App extends Component{
                         <span className="icon icon-logo"></span>
                         <span className="tit">{title}</span>
                     </div>
-                    <UserCenter router={this.props.router}/>
+                    <UserCenter />
                     <div className="header-right clearfix">
                         <span className="name">{name}</span>
                     </div>
@@ -74,13 +50,24 @@ export class App extends Component{
     }
 }
 
+App.propTypes = {
+    title: PropTypes.string,
+    name: PropTypes.string,
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            key: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            link: PropTypes.string.isRequired
+        })
+    ).isRequired
+}
+
 const mapStateToProps = (state, ownProps) => {
     let app = state.app;
     return {
         title: app.title,
         name: app.name,
-        items: app.items,
-        userCenter:state.userCenter
+        items: app.items
     }
 }
 
@@ -93,15 +80,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-App.propTypes = {
-    title: PropTypes.string,
-    name: PropTypes.string,
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            key: PropTypes.string.isRequired,
-            title: PropTypes.string.isRequired,
-            link: PropTypes.string.isRequired
-        })
-    ).isRequired
-}

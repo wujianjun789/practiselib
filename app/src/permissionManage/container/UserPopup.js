@@ -77,17 +77,9 @@ export class UserPopup extends Component{
     }
 
     checkOut(id){
-        /*  case 'username':
-            case 'lastName':
-            case 'firstName':
-            break;
-         * 
-         */
         switch(id){
             case 'username':
-                break;
             case 'lastName':
-                break;
             case 'firstName':
                 break;
             case 'password':
@@ -118,8 +110,8 @@ export class UserPopup extends Component{
                                 .set('reminder','')})});
     }
 
-    onChange(id,value){
-        this.setState({[id]:this.state[id].update('value',v=>value)});
+    onChange(e){
+        this.setState({[e.target.id]:this.state[e.target.id].update('value',v=>e.target.value)});
     }
 
     render() {
@@ -129,24 +121,24 @@ export class UserPopup extends Component{
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className = 'form-group row basic-info'>
-                    <InputCheck label='用户名' className='username' id='username' placeholder='请输入用户名' value= {username.get('value')} disabled={isEdit?true:false}
-                        checked={username.get('checked')} reminder={username.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
-                    <div className="inputCheck">
-                        <label className="col-sm-2 control-label">用户等级:</label>
-                        <div className="has-feedback col-sm-4 ">
+                    <InputCheck label='用户名' className='col-sm-6' id='username' placeholder='请输入用户名' value= {username.get('value')} disabled={isEdit?true:false}
+                        checked={username.get('checked')} reminder={username.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
+                    <div className="inputCheck col-sm-6">
+                        <label className="col-sm-4 control-label">用户等级:</label>
+                        <div className="has-feedback col-sm-8 ">
                             <Select className="role" data={this.state.role}
                                 onChange={(selectIndex)=>this.roleChange(selectIndex)}/>
                             <span className="glyphicon  form-control-feedback" aria-hidden="true"></span><span className="reminder"></span>
                         </div>
                     </div>
-                    <InputCheck label='姓氏' className='lastName' id='lastName' placeholder='请输入姓氏' value= {lastName.get('value')}
-                        checked={lastName.get('checked')} reminder={lastName.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
-                    <InputCheck label='名字' className='firstName' id='firstName' placeholder='请输入名字' value= {firstName.get('value')}
-                        checked={firstName.get('checked')} reminder={firstName.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
-                    <InputCheck label='密码' className={`password ${isEdit?'hidden':''}`} id='password' type='password' placeholder='请输入密码' value= {password.get('value')} 
-                        checked={password.get('checked')} reminder={password.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
-                    <InputCheck label='重复密码' className={`rePassword ${isEdit?'hidden':''}`} id='rePassword' type='password' placeholder='请再次输入密码' value= {rePassword.get('value')} 
-                        checked={rePassword.get('checked')} reminder={rePassword.get('reminder')} onBlur = {(id)=>this.checkOut(id)} onFocus={(id)=>this.onFocus(id)} onChange = {(id,value)=>{this.onChange(id,value)}}/>
+                    <InputCheck label='姓氏' className='col-sm-6' id='lastName' placeholder='请输入姓氏' value= {lastName.get('value')}
+                        checked={lastName.get('checked')} reminder={lastName.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
+                    <InputCheck label='名字' className='col-sm-6' id='firstName' placeholder='请输入名字' value= {firstName.get('value')}
+                        checked={firstName.get('checked')} reminder={firstName.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
+                    <InputCheck label='密码' className={`col-sm-6 ${isEdit?'hidden':''}`} id='password' type='password' placeholder='请输入密码' value= {password.get('value')} 
+                        checked={password.get('checked')} reminder={password.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
+                    <InputCheck label='重复密码' className={`col-sm-6 ${isEdit?'hidden':''}`} id='rePassword' type='password' placeholder='请再次输入密码' value= {rePassword.get('value')} 
+                        checked={rePassword.get('checked')} reminder={rePassword.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
                 </div>
                 <div className = 'form-group row module-per'>
                     <label className="col-sm-2 control-label">模块权限:</label>
