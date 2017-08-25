@@ -501,19 +501,33 @@
           color: #ff5c68;
         }
       }
+      .popup-left{
+        padding-top:20px;
+        .form-group {
 
+          .form-control{
+            height:40px;
+          }
+        }
+        
+      }
       .popup-map {
-        height: 316px;
+        height: 361px;
         margin-top: -15px;
         padding: 0;
         margin-bottom: -15px;
+        .leaflet-container{
+          border-bottom-right-radius:10px;
+          -webkit-transform:rotate(0deg);
+          transform: rotate(0deg);
+        }
       }
     }
 
     .modal-footer {
       border-top: none;
-      padding-top: 5px;
-      padding-right: 0;
-      padding-bottom: 5px;
+      padding-top: 15px;
+      padding-right: 30px;
+      padding-bottom: 20px;
     }
 }
