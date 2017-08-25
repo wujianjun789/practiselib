@@ -7,10 +7,9 @@ import {initialState as state} from '../../../src/app/reducer';
 
 describe('<app /> HOC', () => {
     const store = configureStore();
-    const router = {push: jest.fn()};
     it('render normal', () => {
         const root = mount(<Provider store={store}>
-            <App router={router}/>
+            <App />
         </Provider>);
 
         const app = root.find('App');

@@ -8,11 +8,9 @@ import {bindActionCreators} from 'redux';
 import {overlayerShow, overlayerHide} from '../actions/overlayer';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import AlterPwPopup from '../../components/AlterPwPopup';
-import {confirmExit} from '../actions/userCenter';
-import {modifyPassword} from '../../api/modifyPassword';
+import {modifyPassword, confirmExit} from '../actions/userCenter';
 /**
  * @param {String} className  optional
- * @param {Object} router     isRequired
  */
 export class UserCenter extends Component{
     constructor(props) {
@@ -42,9 +40,8 @@ export class UserCenter extends Component{
     }
 
     AlterPwPopupConfirm(data) {
-        modifyPassword(data,() => {
+        this.props.actions.modifyPassword(data,() => {
             this.props.actions.overlayerHide();
-            this.props.router.push('/login');
         }, (err) => {
             console.log('密码错误');
         });
@@ -93,11 +90,6 @@ export class UserCenter extends Component{
 
 UserCenter.propTypes = {
     className: PropTypes.string,
-    router: PropTypes.any.isRequired
-}
-
-const mapStateToProps = (state, ownProps) => {
-    return {}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -105,9 +97,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         actions: bindActionCreators({
             overlayerShow,
             overlayerHide,
-            confirmExit
+            confirmExit,
+            modifyPassword
         }, dispatch)
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserCenter);
+export default connect(null, mapDispatchToProps)(UserCenter);

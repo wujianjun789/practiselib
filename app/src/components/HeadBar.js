@@ -25,7 +25,7 @@ export default class HeadBar extends Component{
                 <span className="glyphicon glyphicon-home" aria-hidden="true"></span>
             </div>
             <span className="title">{moduleName}</span>
-            <UserCenter router={this.props.router}/>
+            <UserCenter />
         </div>
     }
 }

@@ -101,11 +101,11 @@ export class Latlngtrategy extends Component{
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
     }
 
     rowDelete(id){
-        this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中用户？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
+        this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
             let page = this.state.page.set('current', 1);
             this.setState({page:page},delStrategy(id,()=>this.requestData()))
