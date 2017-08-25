@@ -155,7 +155,7 @@ export default class CentralizedControllerPopup extends Component {
                                 <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
                             </div>
                         </div>
-                        {footer}
+                        
                     </div>
                     <div className="popup-map">
                         <MapView option={{mapZoom: false }} mapData={{id: "CentralizedPopup", latlng:{lng:lng, lat:lat},
@@ -163,6 +163,7 @@ export default class CentralizedControllerPopup extends Component {
                                  mapCallFun={{mapDragendHandler:this.mapDragend}} />
                     </div>
                 </Panel>
+                {footer}
             </div>
         )
     }

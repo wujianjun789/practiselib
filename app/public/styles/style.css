@@ -915,7 +915,7 @@ ul {
 .modal-content {
     width: 100%;
     border: none;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
 }
 .modal-title {
     text-align: center;
@@ -926,7 +926,11 @@ ul {
 }
 
 .modal-header .close {
-    font-size: 27px;
+    font-size: 43px;
+    font-weight: lighter;
+    position:absolute;
+    right:15px;
+    top:6px;
 }
 .modal-dialog {
     width: 100%;
@@ -975,19 +979,19 @@ ul {
 }
 
 .alter-pw-popup .modal-header {
-    height: 50px;
+    height: 55px;
+    position:relative;
     font-size: 16px;
     color: #808080;
     border-bottom-color:#919191;    
 }
 
 .alter-pw-popup .modal-header .close{
-    font-size: 30px;
-    margin-top: -7px;
+
 }
 
  .alter-pw-popup .modal-body {
-    padding: 20px 30px 10px;
+    padding: 35px 20px 15px;
     font-size: 14px;
 } 
 
@@ -1001,6 +1005,7 @@ ul {
 
 .alter-pw-popup .modal-body .form-group .form-control{
     height: 40px;
+    width:92%;
     color: #b3b3b3;
 }
 
@@ -1008,7 +1013,8 @@ ul {
     border-top: none;
     background-color: transparent;
     padding-top: 0;
-    padding-right:30px;
+    padding-right:20px;
+    padding-bottom:35px;
 }
 .alter-pw-popup .modal-footer .btn-toolbar{
     margin-right: 45px;
