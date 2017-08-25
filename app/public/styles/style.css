@@ -29,10 +29,10 @@ input::-ms-clear {
     height: 100%;
 }
 
-input.form-control::-webkit-input-placeholder { color: #ccc; }
-input.form-control::-moz-placeholder { color: #ccc; }
-input.form-control:-moz-placeholder { color: #ccc; }
-input.form-control:-ms-input-placeholder { color: #ccc; }
+input.form-control::-webkit-input-placeholder { color: #b3b3b3; }
+input.form-control::-moz-placeholder { color: #b3b3b3; }
+input.form-control:-moz-placeholder { color: #b3b3b3; }
+input.form-control:-ms-input-placeholder { color: #b3b3b3; }
 
 .padding-left{
     padding-left: 15px
@@ -509,19 +509,6 @@ ul {
     color: #4d4d4d;
     padding-right: 14px;
     padding-left: 14px;
-}
-
-.searchText input::-webkit-input-placeholder{
-    color: #b3b3b3;
-}
-.searchText input:-moz-placeholder{
-    color: #b3b3b3;
-}
-.searchText input::-moz-placeholder{
-    color: #b3b3b3;
-}
-.searchText input:-ms-input-placeholder{
-    color: #b3b3b3;
 }
 
 .searchText .glyphicon-search {
@@ -1039,10 +1026,10 @@ ul {
 }
 
 .alter-pw-popup .modal-header .close{
-
+    
 }
 
- .alter-pw-popup .modal-body {
+.alter-pw-popup .modal-body {
     padding: 35px 20px 15px;
     font-size: 14px;
 } 
@@ -1058,7 +1045,6 @@ ul {
 .alter-pw-popup .modal-body .form-group .form-control{
     height: 40px;
     width:92%;
-    color: #b3b3b3;
 }
 
 .alter-pw-popup .modal-footer {

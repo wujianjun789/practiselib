@@ -4,9 +4,8 @@ import renderer from 'react-test-renderer';
 import {UserCenter} from '../../../src/common/containers/UserCenter';
 
 describe('<UserCenter />', () => {
-    const router = {push: jest.fn()};
     it('render with props.className=undefined', () => {
-        const userCenter = shallow(<UserCenter router={router} />);
+        const userCenter = shallow(<UserCenter />);
         const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
 
@@ -27,14 +26,14 @@ describe('<UserCenter />', () => {
     });
 
     it('render with props.className="user_center"', () => {
-        const userCenter = shallow(<UserCenter className="user_center" router={router} />);
+        const userCenter = shallow(<UserCenter className="user_center" />);
         const container = userCenter.find('div.user-center');
         expect(container.length).toBe(1);
         expect(container.prop('className')).toBe('user-center user_center');
     });
 
     it('snapshot', () => {
-        const userCenter = renderer.create(<UserCenter router={router}/>);
+        const userCenter = renderer.create(<UserCenter />);
         let tree = userCenter.toJSON();
 
         expect(tree).toMatchSnapshot();
