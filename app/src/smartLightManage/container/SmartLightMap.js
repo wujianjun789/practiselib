@@ -2,6 +2,7 @@
  * Created by a on 2017/8/24.
  */
 import React,{Component} from 'react';
+import {findDOMNode} from 'react-dom'
 import Content from '../../components/Content'
 
 import MapView from '../../components/MapView'
@@ -12,12 +13,13 @@ export default class SmartLightMap extends Component{
         super(props);
         this.state = {
             deviceId:"pole",
-            IsSearch: false,
-            IsSearchResult: true,
+            IsSearch: true,
+            IsSearchResult: false,
             curDevice:Immutable.fromJS({
               id:1, name:"疏影路灯杆1号", screen:23, charge:45, camera:56, lamp:89, collect:99
             }),
-            curId:"lamp",
+            curId:"screen",
+            search:Immutable.fromJS({id:"search", value:''}),
             searchList:Immutable.fromJS([
                 {id:1, name:"疏影路灯杆1号", screen:23, charge:45, camera:56, lamp:89, collect:99},
                 {id:2, name:"疏影路灯杆21号", screen:23,  camera:56, lamp:89, collect:99},
@@ -25,15 +27,21 @@ export default class SmartLightMap extends Component{
                 {id:4, name:"疏影路灯杆4号", lamp:89, collect:99}
             ]),
 
+            screen:Immutable.fromJS({width:192, height:576, online:1, brightness:100, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:[]}),
+            camera:Immutable.fromJS({"online_people":"50", focus:60, "preset":1, faultList:[]}),
+            lamp:Immutable.fromJS({online:1, "switch_power":1, brightness:100, strategy:"strategy1", IsGroup:false, faultList:[]}),
+            charge:Immutable.fromJS({"charge_state":1, faultList:["通信故障"]}),
+            collect:Immutable.fromJS({"air-pressure":1000, "temperature":30, "humidity":50, "wind-speed":10, "wind-direction":"东南",
+            "pm25":80, "o2":19, "co":5}),
+
             timeTableList:Immutable.fromJS({id:"timeTable", value:"time1", options:[{id:1, name:"time1"}, {id:2, name:"time2"}]}),
             strategyList:Immutable.fromJS({id:"strategy", value:"strategy1", options:[{id:1, name:"strategy1"}, {id:2, name:"strategy2"}]}),
-            faultList: [],
             faultStyle: {"top": "280px"},
             IsOpenFault: false,
 
             listStyle:{"maxHeight":"200px"},
-            infoStyle:{"maxHeight":"314"},
-            controlStyle:{"maxHeight":"120"}
+            infoStyle:{"maxHeight":"352"},
+            controlStyle:{"maxHeight":"180"}
         }
 
         this.screen = Immutable.fromJS({})
@@ -60,12 +68,16 @@ export default class SmartLightMap extends Component{
         this.renderInfo = this.renderInfo.bind(this);
         this.renderState = this.renderState.bind(this);
         this.renderControl = this.renderControl.bind(this);
-        this.searchSubmit = this.searchSubmit.bind(this);
 
         this.setSize = this.setSize.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.submit = this.submit.bind(this);
+        this.backHandler = this.backHandler.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.itemClick = this.itemClick.bind(this);
         this.searchDeviceSelect = this.searchDeviceSelect.bind(this);
         this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
+
 
         this.updateCameraVideo = this.updateCameraVideo.bind(this);
     }
@@ -89,20 +101,20 @@ export default class SmartLightMap extends Component{
     }
 
     setSize(){
-        const {IsSearch} = this.state;
+        const {IsSearch, curId} = this.state;
         let height = window.innerHeight;
 
         if(IsSearch){
             let listStyle = {"maxHeight":(height<145?0:height-145)+"px"};
             this.setState({listStyle:listStyle});
         }else{
-            let defaultHeight = 0;
+            let defaultHeight = 230;
             if(this.refs.poleInfo){
-                defaultHeight = this.refs.poleInfo;
+                defaultHeight += findDOMNode(this.refs.poleInfo).offsetHeight;
             }
-            // console.log("domNode:",defaultHeight.style.height);
+
             let infoStyle = {"maxHeight":(height<230?0:height-230)};
-            let controlStyle = {"maxHeight":(height<602?0:height-602)};
+            let controlStyle = {"maxHeight":(height<defaultHeight?0:height-defaultHeight)};
             this.setState({infoStyle:infoStyle, controlStyle:controlStyle});
         }
     }
@@ -127,11 +139,51 @@ export default class SmartLightMap extends Component{
 
     onChange(key, event){
         switch (key){
+            case "search":
+                this.setState({search:this.state.search.update("value",v=>event.target.value)});
+                break;
+            case "screenSwitch":
+                this.screenSwitch.value = this.screenSwitch.options[event.target.selectedIndex].value;
+                this.setState(this.screenSwitch);
+                break;
+            case "timeTable":
+                this.setState({timeTableList: this.state.timeTableList.update("value", v=>this.state.timeTableList.getIn(["options", event.target.selectedIndex, "name"]))})
+                break;
+            case "lightSwitch":
+                this.lightSwitch.value = this.lightSwitch.options[event.target.selectedIndex].value;
+                this.setState(this.lightSwitch);
+                break;
+            case "strategy":
+                this.setState({strategyList:this.state.strategyList.update("value", v=>this.state.strategyList.getIn(["options", event.target.selectedIndex, "name"]))})
+                break;
             case "handler":
-                this.lightList.value = this.lightList.options[event.target.selectIndex].value;
-                this.SetState(this.lightList);
+                this.lightList.value = this.lightList.options[event.target.selectedIndex].value;
+                this.setState(this.lightList);
+                break;
+            case "focus":
+                this.setState({camera:this.state.camera.update("focus", v=>event.target.value)});
+                break;
+            case "preset":
+                this.presetList.value = this.presetList.options[event.target.selectedIndex].value;
+                this.setState(this.presetList);
                 break;
         }
+    }
+
+    submit(key){
+        console.log(key);
+    }
+
+    itemClick(){
+        this.setState({IsSearch:false},()=>{
+            this.setSize();
+        });
+    }
+
+    backHandler(){
+        this.setState({IsSearch:true}, ()=>{
+            this.setSize();
+        });
     }
 
     searchDeviceSelect(id){
@@ -139,11 +191,15 @@ export default class SmartLightMap extends Component{
     }
 
     infoDeviceSelect(id){
-        this.setState({curId:id});
+        this.setState({curId:id}, ()=>{
+            this.setSize();
+        });
     }
 
     searchSubmit(e){
-
+        this.setState({IsSearchResult:true},()=>{
+            this.setSize();
+        });
     }
 
     transformState(key, sf){
@@ -153,10 +209,17 @@ export default class SmartLightMap extends Component{
         }
 
         if(key == 'brightness_mode'){
-            return this.formatIntl(sf ? 'app.manual' : 'app.environment-brightness-control');
+            return this.formatIntl(sf ? 'manual' : 'environment-brightness-control');
         }
 
-        return this.formatIntl(sf ? 'app.abnormal':'app.normal');
+        if(key == 'online'){
+            return this.formatIntl(sf ? '在线' : '离线');
+        }
+
+        if(key == 'charge_state'){
+            return this.formatIntl(sf ? '充电中' : '充电故障');
+        }
+        return this.formatIntl(sf ? 'abnormal':'normal');
     }
 
     IsHaveFault(parentPro, faultKeys){
@@ -171,31 +234,39 @@ export default class SmartLightMap extends Component{
     }
 
     renderState(parentPro, key, name, IsTransform, unit){
+        if(key == "resolution"){
+            if(parentPro && parentPro.has("width") && parentPro.has("height")){
+                return <div key={key} className="pro"><span>{name?this.formatIntl(name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
+            }
+        }
         if(parentPro && parentPro.has(key)){
             if(key == 'wind-direction'){
-                return <div key={key} className="pro"><span>{name ? this.formatIntl('app.'+name):key}:</span>{this.transformState(key, parentPro.get(key))}</div>
+                return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{this.transformState(key, parentPro.get(key))}</div>
             }
 
             if(key == 'o2'){
-                return <div key={key} className="pro"><span>{name ? this.formatIntl('app.'+name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
+                return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
             }
-            return <div key={key} className="pro"><span>{name ? this.formatIntl('app.'+name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
+            return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
         }
     }
 
     renderInfo(id, props){
+        let faultList = [];
         switch(id){
             case "screen":
-                const {faultList, faultStyle,IsOpenFault} = this.state;
+                const {screen, faultStyle,IsOpenFault} = this.state;
+                faultList = screen.get("faultList");
+
                 return <div className="row state-info screen">
-                    <div className="col-sm-6 prop">
-                        {this.renderState(props, "width", "width")}
-                        {this.renderState(props, "height", "height")}
+                    <div className="col-sm-8 prop">
+                        {this.renderState(props, "resolution", "width")}
+                        {this.renderState(props, "online", "online", true)}
                         {this.renderState(props, "version", "version")}
                         {this.renderState(props, "brightness_mode", "brightness_mode", true)}
                         {this.renderState(props, "brightness", "brightness")}
                         {
-                            <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                            <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
                         }
                         {
                             faultList.length>0 &&
@@ -209,8 +280,91 @@ export default class SmartLightMap extends Component{
                             </Panel>
                         }
                     </div>
-                    <div className="col-sm-6 img-container"><img src="http://localhost:8080/images/smartLight/screen_test.png"/></div>
+                    <div className="col-sm-4 img-container"><img src="http://localhost:8080/images/smartLight/screen_test.png"/></div>
                 </div>
+            case "camera":
+                const {camera} = this.state;
+                faultList = camera.get("faultList");
+                return <div className="row state-info camera">
+                    <div className="col-sm-12 prop">
+                        {this.renderState(props, "online_people", "online_people")}
+                        {
+                            <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                        }
+                        {
+                            faultList.length>0 &&
+                            <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                   closeClick={this.closeClick}>
+                                {
+                                    faultList.map(key=>{
+                                        return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                    })
+                                }
+                            </Panel>
+                        }
+                    </div>
+                </div>
+            case "lamp":
+                const {lamp} = this.state;
+                faultList = lamp.get("faultList");
+                return <div className="row state-info lamp">
+                        <div className="col-sm-12 prop">
+                            {this.renderState(props, "online", "online", true)}
+                            {this.renderState(props, "brightness", "brightness")}
+                            {
+                                <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                            }
+                            {
+                                faultList.length>0 &&
+                                <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                       closeClick={this.closeClick}>
+                                    {
+                                        faultList.map(key=>{
+                                            return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                        })
+                                    }
+                                </Panel>
+                            }
+                        </div>
+                    </div>
+            case "charge":
+                const {charge} = this.state;
+                faultList = charge.get("faultList");
+                return <div className="row state-info charge">
+                            <div className="col-sm-12 prop">
+                                {this.renderState(props, "charge_state", "charge_state", true)}
+                                {
+                                    <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                                }
+                                {
+                                    faultList.length>0 &&
+                                    <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                           closeClick={this.closeClick}>
+                                        {
+                                            faultList.map(key=>{
+                                                return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                            })
+                                        }
+                                    </Panel>
+                                }
+                            </div>
+                    </div>
+            case "collect":
+                return <div className="row state-info collect">
+                        <div className="col-sm-6 prop">
+                            {this.renderState(props, "temperature", "temperature", false, '℃')}
+                            {this.renderState(props, "humidity", "humidity", false, 'rh%')}
+                            {this.renderState(props, "air-pressure", "air-pressure", false, 'hPa')}
+                            {this.renderState(props, "wind-speed", "wind-speed", false, 'm/s')}
+                            {this.renderState(props, "noise", "noise", false, 'dB')}
+                        </div>
+                        <div className="col-sm-6 prop">
+                            {this.renderState(props, "pm25", "pm25", false, 'ug/m^3')}
+                            {this.renderState(props, "o2", "o2", false, 'VOL')}
+                            {this.renderState(props, "co", "co", false, 'ppm')}
+                            {this.renderState(props, "wind-direction", "wind-direction", true)}
+                        </div>
+                    </div>
         }
     }
     renderControl(id){
@@ -227,7 +381,7 @@ export default class SmartLightMap extends Component{
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary padding-left">应用</button>
+                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>应用</button>
                         </div>
                         <div className="col-sm-12 form-group time-table">
                             <label className="col-sm-4">时间表1</label>
@@ -238,10 +392,11 @@ export default class SmartLightMap extends Component{
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary">应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>应用</button>
                         </div>
                     </div>
             case "camera":
+                const {camera} = this.state;
                 return <div className="row state-control camera">
                     <div className="col-sm-12 video">
                         <canvas ref="camera">
@@ -250,7 +405,7 @@ export default class SmartLightMap extends Component{
                     <div className="col-sm-12 form-group focus">
                         <label className="col-sm-3">变焦:</label>
                         <div className="col-sm-9">
-                            <input  type="range" min="0" max="100" step="1" value="60" onChange={()=>{}}/>
+                            <input  type="range" min="0" max="100" step="1" value={camera.get("focus")} onChange={event=>this.onChange("focus", event)}/>
                         </div>
                     </div>
                     <div className="col-sm-12 form-group preset">
@@ -262,7 +417,7 @@ export default class SmartLightMap extends Component{
                                 })
                             }
                         </select>
-                        <button className="col-sm-3 btn btn-primary">切换</button>
+                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("preset")}>切换</button>
                     </div>
                 </div>
             case "lamp":
@@ -284,7 +439,7 @@ export default class SmartLightMap extends Component{
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary">应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("lightSwitch")}>应用</button>
                         </div>
                         <div className="col-sm-12 form-group strategy">
                             <label className="col-sm-4">策略调光:</label>
@@ -295,37 +450,43 @@ export default class SmartLightMap extends Component{
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary">应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>应用</button>
                         </div>
                         <div className="col-sm-12 form-group handler">
                             <label className="col-sm-4">手动调光:</label>
-                            <select className="col-sm-4" value={this.lightList.value} onChange={(event)=>{this.dimming("handler", event)}}>
+                            <select className="col-sm-4" value={this.lightList.value} onChange={(event)=>{this.onChange("handler", event)}}>
                                 {
                                     this.lightList.options.map(light=>{
                                         return <option key={light.id}>{light.value}</option>
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary">应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>应用</button>
                         </div>
                     </div>
         }
     }
 
     render(){
-        const {deviceId, IsSearch, IsSearchResult, curDevice, curId, searchList, listStyle, infoStyle, controlStyle} = this.state;
+        const {deviceId, search, IsSearch, IsSearchResult, curDevice, curId, searchList, listStyle, infoStyle, controlStyle} = this.state;
+
+        let IsControl = false;
+        if(curId=="screen" || curId=="lamp" || curId=="camera"){
+            IsControl = true
+        }
+
         return (
             <Content>
                 <MapView mapData={{id:"smartLightMap"}}/>
                 <div className="search-container">
                     <div className="searchText">
-                        <input type="search" className="form-control" placeholder="搜索名称或域" onChange={()=>{}}/>
+                        <input type="search" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onChange={(event)=>{this.onChange("search", event)}}/>
                         <span className="glyphicon glyphicon-search" onClick={this.searchSubmit}></span>
                     </div>
                     <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
                         {
                             searchList.map(pole=>{
-                                return <li key={pole.get("id")} className="list-group-item">
+                                return <li key={pole.get("id")} className="list-group-item" onClick={this.itemClick}>
                                     {pole.get("name")}
 
                                     {pole.get("collect") && <span className="icon icon_collect"></span>}
@@ -338,33 +499,39 @@ export default class SmartLightMap extends Component{
                         }
                     </ul>
 
-                    <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}>
+                    <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}
+                        onClick={this.backHandler}>
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
                         <span className="name">{"返回搜索结果"}</span>
                     </div>
-                    <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || infoStyle.maxHeight==0?"hidden":"")} style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
+                    <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || infoStyle.maxHeight==0?"hidden":"")}
+                         style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
                         <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?38:infoStyle.maxHeight)+"px"}}>
-                            <h3 className="panel-title">{curDevice.get("name")}</h3>
+                            <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{curDevice.get("name")}</h3>
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
-                                {curDevice.get("screen") && <li className={" "+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
-                                {curDevice.get("lamp") && <li className={" "+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lamp"+(curId=="lamp"?"_hover":"")}></span></li>}
-                                {curDevice.get("camera") && <li className={" "+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
-                                {curDevice.get("charge") && <li className={" "+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge"+(curId=="charge"?"_hover":"")}></span></li>}
-                                {curDevice.get("collect") && <li className={" "+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
+                                {curDevice.get("screen") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
+                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lamp"+(curId=="lamp"?"_hover":"")}></span></li>}
+                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
+                                {curDevice.get("charge") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge"+(curId=="charge"?"_hover":"")}></span></li>}
+                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
                             </ul>
                             {
-                                this.renderInfo(curId,Immutable.fromJS({}))
+                                this.renderInfo(curId,this.state[curId])
                             }
                         </div>
                     </div>
-                    <div className={"panel panel-info pole-control "+(IsSearch || controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":controlStyle.maxHeight+"px"}}>
-                        <div className={"panel-heading "+(controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(controlStyle.maxHeight>40?38:controlStyle.maxHeight)+"px"}}>
-                            <h3 className="panel-title">{"设备控制"}</h3>
-                            <span className="glyphicon glyphicon-triangle-bottom"></span>
+                    <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":controlStyle.maxHeight+"px"}}>
+                        <div className={"panel-heading "+(controlStyle.maxHeight==0?"hidden":"")}
+                             style={{"maxHeight":(controlStyle.maxHeight>40?38:controlStyle.maxHeight)+"px","borderBottom":(controlStyle.maxHeight<=40?0:1)+"px",
+                        "paddingBottom":(controlStyle.maxHeight<40?0:10)+"px","paddingTop":(controlStyle.maxHeight<30?0:10)+"px"}}>
+                            <h3 className={"panel-title "+(controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
+                            <span className={"glyphicon glyphicon-triangle-bottom "+(controlStyle.maxHeight<27?"hidden":"")}></span>
                         </div>
-                        <div className={"panel-body "+(controlStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(controlStyle.maxHeight>40?controlStyle.maxHeight-40:0)+"px"}}>
+                        <div className={"panel-body "+(controlStyle.maxHeight<=40?"hidden":"")}
+                             style={{"maxHeight":(controlStyle.maxHeight>40?controlStyle.maxHeight-40:0)+"px",
+                             "paddingBottom":(controlStyle.maxHeight<70?0:15)+"px","paddingTop":(controlStyle.maxHeight<55?0:15)+"px"}}>
                             {
                                 this.renderControl(curId)
                             }

@@ -85,12 +85,20 @@
         }
 
         .state-info{
-          &.screen{
+          &.screen, &.lamp, &.camera, &.charge, &.collect{
             .prop{
+              .pro{
+                padding-top: 4px;
+                padding-bottom: 4px;
+                span{
+                  margin-right: 10px;
+                }
+              }
               .fault-container{
-                position: relative;
+                padding-top: 4px;
+                padding-bottom: 4px;
 
-                margin-top: 3px;
+                position: relative;
                 .name{
                   //height: auto;
                   //line-height: auto;
@@ -143,6 +151,13 @@
                 height: 235.2px;
               }
             }
+          }
+
+          &.collect{
+            //.pro{
+            //
+            //}
+            //margin-top: 3px;
           }
         }
 
