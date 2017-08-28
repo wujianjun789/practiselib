@@ -25,11 +25,11 @@ export class Latlngtrategy extends Component{
                 placeholder: '输入策略名称',
                 value: ''
             }),
-            page: Immutable.fromJS({
+            page: {
                 pageSize: 10,
                 current: 1,
-                total: 14
-            }),
+                total: 1
+            },
             datas:Immutable.fromJS([
                 {id:1, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
                 {id:2, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
@@ -86,20 +86,23 @@ export class Latlngtrategy extends Component{
 
     requestData(username){
         const {search, page} = this.state;
-        let cur = page.get('current');
-        let size = page.get('pageSize');
+        if(username){
+            page.current = 1;
+            this.setState({page:page})
+        }
+        let cur = page.current;
+        let size = page.pageSize;
         let offset = (cur-1)*size;
-        getStrategyListByName('latlng',username,offset,size,(response)=>{this.mounted && this.dataHandle(response)});
-        getStrategyCountByName('latlng', username, data=>{this.mounted && this.initPageSize(data)})
+        getStrategyListByName('latlng',search.get('value'),offset,size,(response)=>{this.mounted && this.dataHandle(response)});
+        getStrategyCountByName('latlng', search.get('value'), data=>{this.mounted && this.initPageSize(data)})
     }
 
     initPageSize(data){
-        let page = this.state.page.set('total', data.count);
-        this.setState({page:page});
+        this.setState({page:Object.assign({},this.state.page,{total:data.count})});
     }
 
     dataHandle(datas){
-        this.setState({datas:Immutable.fromJS(datas),page:this.state.page.update('total',v=>datas.length)})
+        this.setState({datas:Immutable.fromJS(datas)})
     }
 
     onClick(){
@@ -114,16 +117,14 @@ export class Latlngtrategy extends Component{
     rowDelete(id){
         this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
-            let page = this.state.page.set('current', 1);
-            this.setState({page:page},delStrategy(id,()=>this.requestData()))
+            let page = Object.assign(this.state.page,{current:1});
+            this.setState({page:page},delStrategy(id,this.requestData))
         }}/>);
     }
 
     pageChange(current){
-        let page = this.state.page.set('current', current);
-        this.setState({page: page}, ()=>{
-            this.requestData();
-        });
+        this.setState({page: Object.assign({}, this.state.page, {current: current})}, this.requestData);
+        
     }
 
     confirmClick(datas,isEdit){
@@ -131,8 +132,7 @@ export class Latlngtrategy extends Component{
             updateStrategy(datas,()=>this.requestData());
         }
         else{
-            let page = this.state.page.set('current', 1);
-            this.setState({page:page},addStrategy(datas,()=>this.requestData()))
+            this.setState({page:Object.assign({}, this.state.page, {current: 1})},addStrategy(datas,()=>this.requestData()))
         }
     }
 
@@ -146,8 +146,8 @@ export class Latlngtrategy extends Component{
             </div>
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={datas} rowDelete={this.rowDelete} rowEdit={this.rowEdit}/>
-                <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
-                        current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
+                <Page className={"page "+(page.total==0?"hidden":'')} showSizeChanger pageSize={page.pageSize}
+                        current={page.current} total={page.total}  onChange={this.pageChange}/>
             </div>
         </Content>
     }

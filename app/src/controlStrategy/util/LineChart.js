@@ -32,9 +32,7 @@ export default class LineChart {
     sortByXAxisValue(data, accessor) {
         let _data = Object.assign({}, data);
         let arr = Object.assign([], _data.values);
-        arr.sort((prev, next) => {
-            return accessor(prev) - accessor(next);
-        });
+        arr = this.bubbleSort(arr, accessor);
         return Object.assign(_data, {values: arr});
     }
 
