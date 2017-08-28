@@ -22,7 +22,7 @@ describe('<InputCheck />',()=>{
         expect(label.length).toBe(1);
         expect(label.text()).toBe(`${data.label}:`);
         
-        const content = inputCheck.find('.has-feedback.col-sm-4.has-error');
+        const content = inputCheck.find('.has-feedback.col-sm-8.has-error');
         expect(content.length).toBe(1);
 
         const input = inputCheck.find('input');
