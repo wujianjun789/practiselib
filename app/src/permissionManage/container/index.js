@@ -87,8 +87,8 @@ export class PermissionManage extends Component{
         let cur = page.current;
         let size = page.pageSize;
         let offset = (cur-1)*size;
-        requestUserData(offset,size,(response)=>{this.mounted && this.dataHandle(response)},username);
-        requestUserMount(data=>{this.mounted && this.initPageSize(data)},username)
+        requestUserData(offset,size,(response)=>{this.mounted && this.dataHandle(response)},search.get('value'));
+        requestUserMount(data=>{this.mounted && this.initPageSize(data)},search.get('value'))
     }
 
     initPageSize(data){
