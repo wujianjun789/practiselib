@@ -6,7 +6,7 @@ import {findDOMNode} from 'react-dom'
 import Content from '../../components/Content'
 
 import MapView from '../../components/MapView'
-
+import Panel from '../component/FaultPanel'
 import Immutable from 'immutable';
 export default class SmartLightMap extends Component{
     constructor(props){
@@ -20,17 +20,18 @@ export default class SmartLightMap extends Component{
             }),
             curId:"screen",
             search:Immutable.fromJS({id:"search", value:''}),
+            positonList:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}],
             searchList:Immutable.fromJS([
                 {id:1, name:"疏影路灯杆1号", screen:23, charge:45, camera:56, lamp:89, collect:99},
-                {id:2, name:"疏影路灯杆21号", screen:23,  camera:56, lamp:89, collect:99},
+                {id:2, name:"疏影路灯杆2号", screen:23,  camera:56, lamp:89, collect:99},
                 {id:3, name:"疏影路灯杆3号", screen:23,  lamp:89, collect:99},
                 {id:4, name:"疏影路灯杆4号", lamp:89, collect:99}
             ]),
 
-            screen:Immutable.fromJS({width:192, height:576, online:1, brightness:100, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:[]}),
-            camera:Immutable.fromJS({"online_people":"50", focus:60, "preset":1, faultList:[]}),
-            lamp:Immutable.fromJS({online:1, "switch_power":1, brightness:100, strategy:"strategy1", IsGroup:false, faultList:[]}),
-            charge:Immutable.fromJS({"charge_state":1, faultList:["通信故障"]}),
+            screen:Immutable.fromJS({width:192, height:576, online:1, brightness:100, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:["sys_fault"]}),
+            camera:Immutable.fromJS({"online_people":"50", focus:60, "preset":1, faultList:["vram_fault"]}),
+            lamp:Immutable.fromJS({online:1, "switch_power":1, brightness:100, strategy:"strategy1", IsGroup:false, faultList:["vram_fault"]}),
+            charge:Immutable.fromJS({"charge_state":1, faultList:["vram_fault"]}),
             collect:Immutable.fromJS({"air-pressure":1000, "temperature":30, "humidity":50, "wind-speed":10, "wind-direction":"东南",
             "pm25":80, "o2":19, "co":5}),
 
@@ -41,7 +42,9 @@ export default class SmartLightMap extends Component{
 
             listStyle:{"maxHeight":"200px"},
             infoStyle:{"maxHeight":"352"},
-            controlStyle:{"maxHeight":"180"}
+            controlStyle:{"maxHeight":"180"},
+            IsOpenPoleInfo:true,
+            IsOpenPoleControl:true
         }
 
         this.screen = Immutable.fromJS({})
@@ -75,9 +78,11 @@ export default class SmartLightMap extends Component{
         this.backHandler = this.backHandler.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.itemClick = this.itemClick.bind(this);
+        this.poleInfoCloseClick = this.poleInfoCloseClick.bind(this);
+        this.onToggle = this.onToggle.bind(this);
         this.searchDeviceSelect = this.searchDeviceSelect.bind(this);
         this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
-
+        this.closeClick = this.closeClick.bind(this);
 
         this.updateCameraVideo = this.updateCameraVideo.bind(this);
     }
@@ -170,12 +175,16 @@ export default class SmartLightMap extends Component{
         }
     }
 
+    faultClick(event){
+        this.setState({IsOpenFault: true, faultStyle:{"top":(event.pageY+20)+"px"}});
+    }
+
     submit(key){
         console.log(key);
     }
 
     itemClick(){
-        this.setState({IsSearch:false},()=>{
+        this.setState({IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
             this.setSize();
         });
     }
@@ -191,7 +200,7 @@ export default class SmartLightMap extends Component{
     }
 
     infoDeviceSelect(id){
-        this.setState({curId:id}, ()=>{
+        this.setState({curId:id, IsOpenFault:false}, ()=>{
             this.setSize();
         });
     }
@@ -202,6 +211,19 @@ export default class SmartLightMap extends Component{
         });
     }
 
+    poleInfoCloseClick(){
+        this.setState({IsOpenPoleInfo: false}, ()=>{
+            this.setSize();
+        })
+    }
+
+    onToggle(){
+        this.setState({IsOpenPoleControl:!this.state.IsOpenPoleControl});
+    }
+
+    closeClick(){
+        this.setState({IsOpenFault:false});
+    }
     transformState(key, sf){
         if(key == 'wind-direction'){
             // return this.formatIntl('app.'+sf);
@@ -253,10 +275,11 @@ export default class SmartLightMap extends Component{
 
     renderInfo(id, props){
         let faultList = [];
+        const {faultStyle, IsOpenFault} = this.state;
         switch(id){
             case "screen":
-                const {screen, faultStyle,IsOpenFault} = this.state;
-                faultList = screen.get("faultList");
+                const {screen} = this.state;
+                faultList = screen.get("faultList").toJS();
 
                 return <div className="row state-info screen">
                     <div className="col-sm-8 prop">
@@ -270,11 +293,11 @@ export default class SmartLightMap extends Component{
                         }
                         {
                             faultList.length>0 &&
-                            <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
                                    closeClick={this.closeClick}>
                                 {
                                     faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                        return <div key={key}>{this.formatIntl(""+key)}</div>
                                     })
                                 }
                             </Panel>
@@ -284,7 +307,7 @@ export default class SmartLightMap extends Component{
                 </div>
             case "camera":
                 const {camera} = this.state;
-                faultList = camera.get("faultList");
+                faultList = camera.get("faultList").toJS();
                 return <div className="row state-info camera">
                     <div className="col-sm-12 prop">
                         {this.renderState(props, "online_people", "online_people")}
@@ -293,11 +316,11 @@ export default class SmartLightMap extends Component{
                         }
                         {
                             faultList.length>0 &&
-                            <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
                                    closeClick={this.closeClick}>
                                 {
                                     faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                        return <div key={key}>{this.formatIntl(""+key)}</div>
                                     })
                                 }
                             </Panel>
@@ -306,7 +329,7 @@ export default class SmartLightMap extends Component{
                 </div>
             case "lamp":
                 const {lamp} = this.state;
-                faultList = lamp.get("faultList");
+                faultList = lamp.get("faultList").toJS();
                 return <div className="row state-info lamp">
                         <div className="col-sm-12 prop">
                             {this.renderState(props, "online", "online", true)}
@@ -316,11 +339,11 @@ export default class SmartLightMap extends Component{
                             }
                             {
                                 faultList.length>0 &&
-                                <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
                                        closeClick={this.closeClick}>
                                     {
                                         faultList.map(key=>{
-                                            return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                            return <div key={key}>{this.formatIntl(""+key)}</div>
                                         })
                                     }
                                 </Panel>
@@ -329,7 +352,7 @@ export default class SmartLightMap extends Component{
                     </div>
             case "charge":
                 const {charge} = this.state;
-                faultList = charge.get("faultList");
+                faultList = charge.get("faultList").toJS();
                 return <div className="row state-info charge">
                             <div className="col-sm-12 prop">
                                 {this.renderState(props, "charge_state", "charge_state", true)}
@@ -338,11 +361,11 @@ export default class SmartLightMap extends Component{
                                 }
                                 {
                                     faultList.length>0 &&
-                                    <Panel refs="faultPanel" style={faultStyle} className={IsOpenFault?'':'hidden'} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                    <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
                                            closeClick={this.closeClick}>
                                         {
                                             faultList.map(key=>{
-                                                return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                                return <div key={key}>{this.formatIntl(""+key)}</div>
                                             })
                                         }
                                     </Panel>
@@ -351,18 +374,16 @@ export default class SmartLightMap extends Component{
                     </div>
             case "collect":
                 return <div className="row state-info collect">
-                        <div className="col-sm-6 prop">
+                        <div className="col-sm-12 prop">
                             {this.renderState(props, "temperature", "temperature", false, '℃')}
                             {this.renderState(props, "humidity", "humidity", false, 'rh%')}
                             {this.renderState(props, "air-pressure", "air-pressure", false, 'hPa')}
-                            {this.renderState(props, "wind-speed", "wind-speed", false, 'm/s')}
                             {this.renderState(props, "noise", "noise", false, 'dB')}
-                        </div>
-                        <div className="col-sm-6 prop">
+                            {this.renderState(props, "wind-speed", "wind-speed", false, 'm/s')}
+                            {this.renderState(props, "wind-direction", "wind-direction", true)}
                             {this.renderState(props, "pm25", "pm25", false, 'ug/m^3')}
                             {this.renderState(props, "o2", "o2", false, 'VOL')}
                             {this.renderState(props, "co", "co", false, 'ppm')}
-                            {this.renderState(props, "wind-direction", "wind-direction", true)}
                         </div>
                     </div>
         }
@@ -468,7 +489,8 @@ export default class SmartLightMap extends Component{
     }
 
     render(){
-        const {deviceId, search, IsSearch, IsSearchResult, curDevice, curId, searchList, listStyle, infoStyle, controlStyle} = this.state;
+        const {deviceId, search, IsSearch, IsSearchResult, curDevice, curId, positonList,searchList,
+            listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl} = this.state;
 
         let IsControl = false;
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
@@ -477,7 +499,7 @@ export default class SmartLightMap extends Component{
 
         return (
             <Content>
-                <MapView mapData={{id:"smartLightMap"}}/>
+                <MapView mapData={{id:"smartLightMap", position:positonList, data:searchList.toJS()}}/>
                 <div className="search-container">
                     <div className="searchText">
                         <input type="search" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onChange={(event)=>{this.onChange("search", event)}}/>
@@ -504,10 +526,11 @@ export default class SmartLightMap extends Component{
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
                         <span className="name">{"返回搜索结果"}</span>
                     </div>
-                    <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || infoStyle.maxHeight==0?"hidden":"")}
+                    <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || !IsOpenPoleInfo || infoStyle.maxHeight==0?"hidden":"")}
                          style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
                         <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?38:infoStyle.maxHeight)+"px"}}>
                             <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{curDevice.get("name")}</h3>
+                            <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
@@ -527,9 +550,9 @@ export default class SmartLightMap extends Component{
                              style={{"maxHeight":(controlStyle.maxHeight>40?38:controlStyle.maxHeight)+"px","borderBottom":(controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(controlStyle.maxHeight<40?0:10)+"px","paddingTop":(controlStyle.maxHeight<30?0:10)+"px"}}>
                             <h3 className={"panel-title "+(controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
-                            <span className={"glyphicon glyphicon-triangle-bottom "+(controlStyle.maxHeight<27?"hidden":"")}></span>
+                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle}></span>
                         </div>
-                        <div className={"panel-body "+(controlStyle.maxHeight<=40?"hidden":"")}
+                        <div className={"panel-body "+(!IsOpenPoleControl || controlStyle.maxHeight<=40?"hidden":"")}
                              style={{"maxHeight":(controlStyle.maxHeight>40?controlStyle.maxHeight-40:0)+"px",
                              "paddingBottom":(controlStyle.maxHeight<70?0:15)+"px","paddingTop":(controlStyle.maxHeight<55?0:15)+"px"}}>
                             {
