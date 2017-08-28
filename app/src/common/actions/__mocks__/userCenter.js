@@ -16,7 +16,7 @@ export const confirmExit = (successFun, errFun) => dispatch => {
     });
 }
 
-export const modifyPassword = ({oldPw: oldPassword, newPw: newPassword}, successFun, errFun) => {
+export const modifyPassword = ({oldPw: oldPassword, newPw: newPassword}, successFun, errFun) => dispatch => {
     if(oldPassword!==newPassword) successFun();
     else errFun();
 }

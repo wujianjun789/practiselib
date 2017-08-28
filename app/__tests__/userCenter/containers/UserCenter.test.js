@@ -1,3 +1,5 @@
+jest.mock('../../../src/common/actions/userCenter.js');
+
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
@@ -6,8 +8,8 @@ import UserCenter from '../../../src/common/containers/UserCenter';
 import {initialState as state} from '../../../src/app/reducer';
 import Overlayer from '../../../src/common/containers/Overlayer';
 
+const store = configureStore();
 describe('<UserCenter /> HOC', () => {
-    const store = configureStore();
     function setup() {
         const root = mount(<Provider store={store}>
             <div>
@@ -41,22 +43,26 @@ describe('<UserCenter /> HOC', () => {
 
         const {root} = setup();
 
-        // const li = root.find('.user-list li').at(0);
-        // li.simulate('click');
-        // let alterPopup = root.find('AlterPwPopup');
-        // alterPopup.find('#oldPw').simulate('change',{target: {value: 'admin', id: 'oldPw'}});
-        // alterPopup.find('#newPw').simulate('change',{target: {value: 'admin01', id: 'newPw'}});
-        // alterPopup.find('#repPw').simulate('change',{target: {value: 'admin01', id: 'repPw'}});
-        // let btnConfirm = alterPopup.find('.btn.btn-primary');
-        // btnConfirm.simulate('click');
+        const li = root.find('.user-list li').at(0);
+        li.simulate('click');
+        let alterPopup = root.find('AlterPwPopup');
+        alterPopup.find('#oldPw').simulate('change',{target: {value: 'admin', id: 'oldPw'}});
+        alterPopup.find('#newPw').simulate('change',{target: {value: 'admin01', id: 'newPw'}});
+        alterPopup.find('#repPw').simulate('change',{target: {value: 'admin01', id: 'repPw'}});
+        let btnConfirm = alterPopup.find('.btn.btn-primary');
+        btnConfirm.simulate('click');
+        alterPopup = root.find('AlterPwPopup');
+        expect(alterPopup.length).toBe(0);
         
-        // li.simulate('click');
-        // alterPopup = root.find('AlterPwPopup');
-        // alterPopup.find('#oldPw').simulate('change',{target: {value: 'admin01', id: 'oldPw'}});
-        // alterPopup.find('#newPw').simulate('change',{target: {value: 'admin01', id: 'newPw'}});
-        // alterPopup.find('#repPw').simulate('change',{target: {value: 'admin01', id: 'repPw'}});
-        // btnConfirm = alterPopup.find('.btn.btn-primary');
-        // btnConfirm.simulate('click');
+        li.simulate('click');
+        alterPopup = root.find('AlterPwPopup');
+        alterPopup.find('#oldPw').simulate('change',{target: {value: 'admin01', id: 'oldPw'}});
+        alterPopup.find('#newPw').simulate('change',{target: {value: 'admin01', id: 'newPw'}});
+        alterPopup.find('#repPw').simulate('change',{target: {value: 'admin01', id: 'repPw'}});
+        btnConfirm = alterPopup.find('.btn.btn-primary');
+        btnConfirm.simulate('click');
+        alterPopup = root.find('AlterPwPopup');
+        expect(alterPopup.length).toBe(1);
     })
 
     it('test exit popup cancel btn click', () => {
