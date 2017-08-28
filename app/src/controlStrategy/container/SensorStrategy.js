@@ -75,8 +75,13 @@ export class SensorStrategy extends Component{
     }
 
     componentWillMount() {
+        this.mounted = true;
         this.initData();
         getModelSummariesByModelID('sensor', this.updateSensorTypeList);
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     updateSensorTypeList(data) {
@@ -122,7 +127,7 @@ export class SensorStrategy extends Component{
     }
 
     searchSubmit() {
-        this.initData(this.state.search.value);
+        this.initData(true);
     }
 
     tableRowEdit(id) {
@@ -169,11 +174,17 @@ export class SensorStrategy extends Component{
             overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}/>);
     }
 
-    initData(name='') {
+    initData(isSearch) {
+        const {search: {value}, page} = this.state;
+        if(isSearch){
+            page.current = 1;
+            this.setState({page:page});
+        }
+
         const {pageSize, current} = this.state.page;
         const offset = pageSize * ( current - 1 );
-        getStrategyListByName('sensor', name, offset, pageSize, this.updateSensorStrategyList );
-        getStrategyCountByName('sensor', name, this.updatePageData );
+        getStrategyListByName('sensor', value, offset, pageSize, this.mounted&&this.updateSensorStrategyList );
+        getStrategyCountByName('sensor', value, this.mounted&&this.updatePageData );
     }
 
     updateSensorStrategyList(data) {
