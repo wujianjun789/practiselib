@@ -86,6 +86,10 @@ export class Latlngtrategy extends Component{
 
     requestData(username){
         const {search, page} = this.state;
+        if(username){
+            page.current = 1;
+            this.setState({page:page})
+        }
         let cur = page.current;
         let size = page.pageSize;
         let offset = (cur-1)*size;

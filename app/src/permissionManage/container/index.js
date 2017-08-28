@@ -80,11 +80,15 @@ export class PermissionManage extends Component{
 
     requestData(username){
         const {search, page} = this.state;
+        if(username){
+            page.current = 1;
+            this.setState({page:page});
+        }
         let cur = page.current;
         let size = page.pageSize;
         let offset = (cur-1)*size;
         requestUserData(offset,size,(response)=>{this.mounted && this.dataHandle(response)},username);
-        requestUserMount(data=>{this.mounted && this.initPageSize(data)})
+        requestUserMount(data=>{this.mounted && this.initPageSize(data)},username)
     }
 
     initPageSize(data){
@@ -156,7 +160,7 @@ export class PermissionManage extends Component{
             editUser(datas,this.requestData);
         }
         else{
-            this.setState({page:Object.assign({}, this.state.page, {current: 1})},addStrategy(datas,()=>this.requestData()))            
+            this.setState({page:Object.assign({}, this.state.page, {current: 1})},addUser(datas,()=>this.requestData()))            
         }
     }
 
