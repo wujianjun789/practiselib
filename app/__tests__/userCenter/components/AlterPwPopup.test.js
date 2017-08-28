@@ -28,7 +28,7 @@ describe('<AlterPwPopup />', () => {
         expect(newInput.props().value).toBe('newPw');
 
         let repInput = cmp.find('#repPw');
-        expect(repInput.prop('placeholder')).toBe('再次输入新密码');
+        expect(repInput.prop('placeholder')).toBe('请再次输入密码');
         expect(repInput.props().value).toBe('');
         repInput.simulate('change', {target: {value: 'repPw', id: 'repPw'}});
         repInput = cmp.find('#repPw');

@@ -17,13 +17,16 @@ export default class SmartLightMap extends Component{
             curDevice:Immutable.fromJS({
               id:1, name:"疏影路灯杆1号", screen:23, charge:45, camera:56, lamp:89, collect:99
             }),
-            curId:"screen",
+            curId:"lamp",
             searchList:Immutable.fromJS([
                 {id:1, name:"疏影路灯杆1号", screen:23, charge:45, camera:56, lamp:89, collect:99},
                 {id:2, name:"疏影路灯杆21号", screen:23,  camera:56, lamp:89, collect:99},
                 {id:3, name:"疏影路灯杆3号", screen:23,  lamp:89, collect:99},
                 {id:4, name:"疏影路灯杆4号", lamp:89, collect:99}
             ]),
+
+            timeTableList:Immutable.fromJS({id:"timeTable", value:"time1", options:[{id:1, name:"time1"}, {id:2, name:"time2"}]}),
+            strategyList:Immutable.fromJS({id:"strategy", value:"strategy1", options:[{id:1, name:"strategy1"}, {id:2, name:"strategy2"}]}),
             faultList: [],
             faultStyle: {"top": "280px"},
             IsOpenFault: false,
@@ -46,12 +49,23 @@ export default class SmartLightMap extends Component{
             {id:"charge", className:"icon_charge"}
         ];
 
+        this.lightList = {id:"lightValue",value:"10",options:[
+            {id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
+            {id:"6", value:50}, {id:"7", value:60}, {id:"9", value:70}, {id:"10", value:80}, {id:"11", value:90}, {id:"12", value:100}
+        ]}
+        this.screenSwitch = {id:"screenSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
+        this.lightSwitch = {id:"lightSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
+        this.presetList = {id:"preset", value:"1",options:[{id:1, value:"1"},{id:2, value:"2"}]};
+
         this.renderInfo = this.renderInfo.bind(this);
         this.renderState = this.renderState.bind(this);
         this.renderControl = this.renderControl.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
 
         this.setSize = this.setSize.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.searchDeviceSelect = this.searchDeviceSelect.bind(this);
+        this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
 
         this.updateCameraVideo = this.updateCameraVideo.bind(this);
     }
@@ -109,6 +123,23 @@ export default class SmartLightMap extends Component{
     formatIntl(formatId){
         // return this.props.intl.formatMessage({id:formatId});
         return formatId;
+    }
+
+    onChange(key, event){
+        switch (key){
+            case "handler":
+                this.lightList.value = this.lightList.options[event.target.selectIndex].value;
+                this.SetState(this.lightList);
+                break;
+        }
+    }
+
+    searchDeviceSelect(id){
+        this.setState({deviceId:id});
+    }
+
+    infoDeviceSelect(id){
+        this.setState({curId:id});
     }
 
     searchSubmit(e){
@@ -185,16 +216,27 @@ export default class SmartLightMap extends Component{
     renderControl(id){
         switch(id){
             case "screen":
+                const {timeTableList} = this.state
                 return <div className="row state-control screen">
                         <div className="col-sm-12 form-group switch">
                             <label className="col-sm-4">显示屏开关:</label>
-                            <select className="col-sm-4">
+                            <select className="col-sm-4" value={this.screenSwitch.value} onChange={event=>this.onChange("screenSwitch", event)}>
+                                {
+                                    this.screenSwitch.options.map(sw=>{
+                                        return <option key={sw.id}>{sw.value}</option>
+                                    })
+                                }
                             </select>
                             <button className="col-sm-3 btn btn-primary padding-left">应用</button>
                         </div>
                         <div className="col-sm-12 form-group time-table">
                             <label className="col-sm-4">时间表1</label>
-                            <select className="col-sm-4">
+                            <select className="col-sm-4" value={timeTableList.get("value")} onChange={event=>this.onChange("timeTable", event)}>
+                                {
+                                    timeTableList.get("options").map(time=>{
+                                        return <option key={time.get("id")}>{time.get("name")}</option>
+                                    })
+                                }
                             </select>
                             <button className="col-sm-3 btn btn-primary">应用</button>
                         </div>
@@ -213,25 +255,19 @@ export default class SmartLightMap extends Component{
                     </div>
                     <div className="col-sm-12 form-group preset">
                         <label className="col-sm-3">预置:</label>
-                        <select className="col-sm-6">
+                        <select className="col-sm-6" value={this.presetList.value} onChange={event=>this.onChange("preset", event)}>
+                            {
+                                this.presetList.options.map(sw=>{
+                                    return <option key={sw.id}>{sw.value}</option>
+                                })
+                            }
                         </select>
                         <button className="col-sm-3 btn btn-primary">切换</button>
                     </div>
                 </div>
             case "lamp":
+                const {strategyList} = this.state;
                 return <div className="row state-control lamp">
-                        <div className="col-sm-12 form-group switch">
-                            <label className="col-sm-4">灯开关:</label>
-                            <select className="col-sm-4">
-                            </select>
-                            <button className="col-sm-3 btn btn-primary">应用</button>
-                        </div>
-                        <div className="col-sm-12 form-group strategy">
-                            <label className="col-sm-4">策略调光:</label>
-                            <select className="col-sm-4">
-                            </select>
-                            <button className="col-sm-3 btn btn-primary">应用</button>
-                        </div>
                         <div className="col-sm-12 form-group group">
                             <label className="col-sm-4">整组调光:</label>
                             <label className="col-sm-8 checkbox-inline">
@@ -239,11 +275,38 @@ export default class SmartLightMap extends Component{
                                 {"疏影路组"}
                             </label>
                         </div>
+                        <div className="col-sm-12 form-group switch">
+                            <label className="col-sm-4">灯开关:</label>
+                            <select className="col-sm-4" value={this.lightSwitch.value} onChange={event=>this.onChange("lightSwitch", event)}>
+                                {
+                                    this.lightSwitch.options.map(sw=>{
+                                        return <option key={sw.id}>{sw.value}</option>
+                                    })
+                                }
+                            </select>
+                            <button className="col-sm-3 btn btn-primary">应用</button>
+                        </div>
+                        <div className="col-sm-12 form-group strategy">
+                            <label className="col-sm-4">策略调光:</label>
+                            <select className="col-sm-4" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
+                                {
+                                    strategyList.get("options").map(strategy=>{
+                                        return <option key={strategy.get("id")}>{strategy.get("name")}</option>
+                                    })
+                                }
+                            </select>
+                            <button className="col-sm-3 btn btn-primary">应用</button>
+                        </div>
                         <div className="col-sm-12 form-group handler">
                             <label className="col-sm-4">手动调光:</label>
-                            <div className="col-sm-8">
-                                <input  type="range" min="0" max="100" step="1" value="60" onChange={()=>{}}/>
-                            </div>
+                            <select className="col-sm-4" value={this.lightList.value} onChange={(event)=>{this.dimming("handler", event)}}>
+                                {
+                                    this.lightList.options.map(light=>{
+                                        return <option key={light.id}>{light.value}</option>
+                                    })
+                                }
+                            </select>
+                            <button className="col-sm-3 btn btn-primary">应用</button>
                         </div>
                     </div>
         }
@@ -285,11 +348,11 @@ export default class SmartLightMap extends Component{
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
-                                {curDevice.get("screen") && <li className={" "+"active"}><span className="icon icon_screen_hover"></span></li>}
-                                {curDevice.get("lamp") && <li className={" "+""}><span className="icon icon_lamp"></span></li>}
-                                {curDevice.get("camera") && <li className={" "+""}><span className="icon icon_camera"></span></li>}
-                                {curDevice.get("charge") && <li className={" "+""}><span className="icon icon_charge"></span></li>}
-                                {curDevice.get("collect") && <li className={" "+""}><span className="icon icon_collect"></span></li>}
+                                {curDevice.get("screen") && <li className={" "+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
+                                {curDevice.get("lamp") && <li className={" "+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lamp"+(curId=="lamp"?"_hover":"")}></span></li>}
+                                {curDevice.get("camera") && <li className={" "+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
+                                {curDevice.get("charge") && <li className={" "+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge"+(curId=="charge"?"_hover":"")}></span></li>}
+                                {curDevice.get("collect") && <li className={" "+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
                             </ul>
                             {
                                 this.renderInfo(curId,Immutable.fromJS({}))
@@ -312,7 +375,7 @@ export default class SmartLightMap extends Component{
                     <ul className="btn-group">
                         {
                             this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(deviceId==device.id?"active":"")}><span className={"icon "+device.className+(deviceId==device.id?"_hover":"")}></span></li>
+                                return <li key={device.id} className={"btn "+(deviceId==device.id?"active":"")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={"icon "+device.className+(deviceId==device.id?"_hover":"")}></span></li>
                             })
                         }
                     </ul>
