@@ -14,8 +14,8 @@ export function sideBarToggled(data) {
         dispatch({type:SIDEBAR_TOGGLE, data:data})
 
         let node = data;
-        if(node.children && node.children.length){
-            dispatch({type:TREEVIEW_TOGGLE, data:node.children[0]});
-        }
+        // if(node.children && node.children.length){
+        //     dispatch({type:TREEVIEW_TOGGLE, data:node.children[0]});
+        // }
 }
 }

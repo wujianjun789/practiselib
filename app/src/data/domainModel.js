@@ -15,7 +15,7 @@ export const TreeData=[
                 "id": 'list',
                 "name":"列表模式",
                 "class":"icon_domain_list",
-                "active":true,
+                "active":false,
                 "link":"/domainManage/domainEdit/list"
             },
             {
