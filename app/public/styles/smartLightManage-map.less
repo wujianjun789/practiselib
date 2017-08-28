@@ -184,6 +184,33 @@
           }
         }
 
+        .faultPanel{
+          position: fixed;
+          left: 380px;
+
+          width: 220px;
+          border: solid 1px #eaedf1;
+          .panel-heading{
+            position: relative;
+
+            background: #eaedf1;
+            h3{
+              color: #31708f;
+            }
+            button{
+              position: absolute;
+              top: 0px;
+              right: 5px;
+            }
+          }
+
+          .panel-body{
+            max-height: 300px;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+          }
+        }
       }
     }
     .pole-control{
@@ -352,34 +379,6 @@
           box-shadow: none;
         }
       }
-    }
-  }
-
-  .faultPanel{
-    position: fixed;
-    left: 380px;
-
-    width: 220px;
-    .panel-heading{
-      position: relative;
-
-      background: #4090ea;
-      button{
-        position: absolute;
-        top: 5px;
-        right: 5px;
-      }
-
-      h3{
-        color: #fff;
-      }
-    }
-
-    .panel-body{
-      max-height: 300px;
-
-      overflow-x: auto;
-      overflow-y: hidden;
     }
   }
 }
