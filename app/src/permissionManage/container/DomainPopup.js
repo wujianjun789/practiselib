@@ -22,17 +22,9 @@ export class DomainPopup extends Component{
         this.state={
             toggle:'hidden',
             search:Immutable.fromJS({placeholder:'输入域名称', value:''}),
-            domainList:Immutable.fromJS([{id:1,name:'中国-杭州'},{id:2,name:'中国-上海'}]),
+            domainList:Immutable.fromJS([]),
             tree:[],
-            nodes:Immutable.fromJS([
-                {id:1,name:'中国',toggle:true,isAdd:false,hidden:false},
-                {id:2,name:'上海',toggle:true,isAdd:false,hidden:false},
-                {id:3,name:'武汉',toggle:true,isAdd:true,hidden:false},
-                {id:4,name:'闵行',toggle:false,isAdd:true,hidden:false},
-                {id:5,name:'莘庄',toggle:true,isAdd:true,hidden:true},
-                {id:6,name:'七宝',toggle:true,isAdd:true,hidden:false},
-                {id:7,name:'浦东',toggle:true,isAdd:false,hidden:false}
-            ])
+            nodes:Immutable.fromJS([])
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -46,17 +38,11 @@ export class DomainPopup extends Component{
         this.getParentDomain = this.getParentDomain.bind(this);
         this.getChildsDomain = this.getChildsDomain.bind(this);
         this.domainAdd = this.domainAdd.bind(this);
-        this.dataInit =this.dataInit.bind(this);
     }
 
     componentWillMount(){
         this.mounted = true;
-        this.dataInit();
-    }
-
-    dataInit(){
-        getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)})
-        getDomainList((response)=>{this.mounted && this.domainHandle(response)});
+        getUserDomainList(this.props.id,(response)=>{this.mounted && this.userDomainHandle(response)});
     }
 
     componentWillUnmount(){
@@ -91,7 +77,11 @@ export class DomainPopup extends Component{
       }
 
     userDomainHandle(datas){
-        this.setState({domainList:Immutable.fromJS(datas.domains)})
+        this.setState({domainList:Immutable.fromJS(datas.domains)},
+            getDomainList((response)=>{
+                this.mounted && this.domainHandle(response);
+            })
+        ) 
     }
 
     onCancel(){
@@ -142,7 +132,7 @@ export class DomainPopup extends Component{
         domainList.map(item=>{
             domainIds.push(item.get('id'));
         })
-        updateUserDomain(this.props.id,domainIds,this.dataInit)
+        updateUserDomain(this.props.id,domainIds)
         this.props.action.overlayerHide();
     }
 
