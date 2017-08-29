@@ -45,8 +45,8 @@ export class LampCenter extends Component {
                 total: 0
             }),
             deviceInfo:{
-                total: 150,
-                normal: 98
+                total: 0,
+                normal: 0
             },
             selectDevice:{
                 id:"assetStatistics",
