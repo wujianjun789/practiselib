@@ -106,6 +106,10 @@ export default class SmartLightMap extends Component{
     }
 
     setSize(){
+        if(!this.mounted){
+            return;
+        }
+        
         const {IsSearch, curId} = this.state;
         let height = window.innerHeight;
 

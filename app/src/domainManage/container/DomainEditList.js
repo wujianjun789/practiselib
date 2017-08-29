@@ -175,9 +175,9 @@ export class DomainEditList extends Component {
                     updateId = data.id;
                     name = data.name;
                 }
-
+console.log(selectDomain, selectDomain.parentId);
                 actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:updateId, domainName:name,
-                lat:lat, lng:lng, prevDomain:selectDomain.parentId}}
+                lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                                               onConfirm={(data)=>{
                                                                     let domain = {};
