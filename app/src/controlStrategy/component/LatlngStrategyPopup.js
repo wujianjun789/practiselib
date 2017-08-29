@@ -12,23 +12,26 @@ export class LatlngStrategyPopup extends Component{
     constructor(props){
         super(props);
         const {data={},isEdit=false} = this.props;
-        const defaultDev = this.props.deviceList.options.length>0?this.props.deviceList.options[0].value:''
-        const {name="", device=defaultDev,strategy=[]} = data;
+        const defaultDev = this.props.deviceList.options.length>0?this.props.deviceList.options[0].value:'';
+        const defaultOrd = this.props.orderList.options.length>0?this.props.orderList.options[0].value:'';        
+        let {name="", device=defaultDev,strategy=[],sunrise=defaultOrd,sunset=defaultOrd} = data;
         let sunriseTime='';
         let sunsetTime='';        
         strategy.forEach((item)=>{
             if('sunrise' in item.condition){
                 sunriseTime=item.condition.sunrise;
+                sunrise = item.rpc.value;
             }
             else{
                 sunsetTime=item.condition.sunset;
+                sunset = item.rpc.value;
             }
         });
         this.state={
             name:name,
             device:device,
-            sunrise:'',
-            sunset:'',
+            sunrise:sunrise,
+            sunset:sunset,
             sunriseTime:sunriseTime,
             sunsetTime:sunsetTime,
             prompt:{
@@ -39,14 +42,6 @@ export class LatlngStrategyPopup extends Component{
                 sunriseTime:{hidden:true,text:'仅能输入数字'},
                 sunsetTime:{hidden:true,text:'仅能输入数字'},
             },
-            orderList:{
-                // titleField: 'title',
-                // valueField: 'value',
-                // options: [
-                //     {value: 0, title: '关闭'},
-                //     {value: 100, title: '亮度100'}
-                // ]
-            }
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -74,13 +69,13 @@ export class LatlngStrategyPopup extends Component{
                     condition: {
                         sunrise: sunriseTime
                     },
-                    rpc: {}
+                    rpc: {'value':sunrise}
                 },
                 {
                     condition: {
                         sunset: sunsetTime
                     },
-                    rpc: {}
+                    rpc: {'value':sunset}
                 }
             ]
         }
@@ -94,7 +89,7 @@ export class LatlngStrategyPopup extends Component{
             this.setState({device: this.props.deviceList.options[event.target.selectedIndex].value});
         }
         else if(id == 'sunrise'||id == 'sunset') {
-            this.setState({[id]: this.state.orderList.options[event.target.selectedIndex].value});
+            this.setState({[id]: this.props.orderList.options[event.target.selectedIndex].value});
         }
         else{
             let prompt ={hidden:true,text:''};
@@ -115,8 +110,8 @@ export class LatlngStrategyPopup extends Component{
     }
 
     render() {
-        let {className = '',title = '',isEdit=false,deviceList} = this.props;
-        let {name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt,orderList} = this.state;
+        let {className = '',title = '',isEdit=false,deviceList,orderList} = this.props;
+        let {name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt} = this.state;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>

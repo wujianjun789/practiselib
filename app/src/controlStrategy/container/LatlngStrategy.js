@@ -31,7 +31,16 @@ export class Latlngtrategy extends Component{
                 total: 0
             },
             datas:Immutable.fromJS([]),
-            deviceList:{titleField:"title", valueField:"value", options:[]},            
+            deviceList:{titleField:"title", valueField:"value", options:[]},
+            orderList:{
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {value: 0, title: '关闭'},
+                    {value: 50, title: '亮度50'},
+                    {value: 100, title: '亮度100'}
+                ]
+            },          
             popupInfo:{
                 
             }
@@ -103,17 +112,17 @@ export class Latlngtrategy extends Component{
     }
 
     onClick(){
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
+        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" deviceList={this.state.deviceList} orderList={this.state.orderList} onConfirm={this.confirmClick}/>);
     }
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.action.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} onConfirm={this.confirmClick}/>);
+        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} orderList={this.state.orderList} onConfirm={this.confirmClick}/>);
     }
 
     rowDelete(id){
-        this.props.action.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
-            this.props.action.overlayerHide()
+        this.props.actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{this.props.actions.overlayerHide()}} confirm={()=>{
+            this.props.actions.overlayerHide()
             let page = Object.assign(this.state.page,{current:1});
             this.setState({page:page},delStrategy(id,this.requestData))
         }}/>);
@@ -157,7 +166,7 @@ const mapStateToprops = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) =>{
     return {
-        action: bindActionCreators({
+        actions: bindActionCreators({
             overlayerShow:overlayerShow,
             overlayerHide:overlayerHide,
         }, dispatch)
