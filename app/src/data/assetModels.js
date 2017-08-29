@@ -121,7 +121,7 @@ function getLinkByModel(parentId, key) {
         case 'pole':
             return 'icon_pole';
         case 'screen':
-            return 'icon_screen';
+            return '/assetManage/'+parentId+'/screen';
         case 'collect':
             return 'icon_collect'
         default:

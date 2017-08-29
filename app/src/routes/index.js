@@ -36,6 +36,11 @@ export default (
                         cb(null, require('../assetManage/container/Sensor').default)
                         }, 'starriverpro.assetmanage.sensor')
                     }} />
+                    <Route path="screen" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                        cb(null, require('../assetManage/container/Screen').default)
+                        }, 'starriverpro.assetmanage.screen')
+                    }} />
                 </Route>
                 <Route path="statistics">
                     <Route path="lc" getComponent={(nextState, cb) => {
@@ -52,6 +57,11 @@ export default (
                         require.ensure([], (require) => {
                             cb(null, require('../assetStatistics/container/Sensor').default)
                         }, 'starriverpro.assetmanage.sensor')
+                    }} />
+                    <Route path="screen" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../assetStatistics/container/Screen').default)
+                        }, 'starriverpro.assetmanage.screen')
                     }} />
                 </Route>
             </Route>

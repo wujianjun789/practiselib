@@ -444,99 +444,56 @@ export const modelData=[
       "fault",
       "manufacturer",
       "manufactureDate",
-      "min",
-      "max",
-      "gradient",
-      "dimmingMode",
-      "comm"
+      "min"
     ],
     "types": [
-      "LAMP_SANSI",
-      "LAMP_HWNB"
     ],
     "intl": {
       "name": {
-        "en": "single light controller",
+        "en": "display screen",
         "zh": "显示屏"
       },
       "props": {
         "power": {
           "en": "power",
-          "zh": "电源类型"
+          "zh": "型号"
         },
         "software": {
           "en": "software",
-          "zh": "软件版本"
+          "zh": "分辨率宽度"
         },
         "system": {
           "en": "software",
-          "zh": "软件版本"
+          "zh": "分辨率高度"
         },
         "hardware": {
           "en": "hardware",
-          "zh": "硬件版本"
+          "zh": "基色数"
         },
         "manufacturer": {
           "en": "manufacturer",
-          "zh": "厂商信息"
+          "zh": "点间距"
         },
         "manufactureDate": {
           "en": "date of manufacture",
-          "zh": "出厂日期"
+          "zh": "存储器大小"
         },
         "fault": {
           "en": "default fault level",
-          "zh": "默认故障亮度"
+          "zh": "软件版本"
         },
         "min": {
           "en": "min level",
-          "zh": "最小亮度"
-        },
-        "max": {
-          "en": "max level",
-          "zh": "最大亮度"
-        },
-        "gradient": {
-          "en": "gradient time",
-          "zh": "调光渐变时间"
-        },
-        "dimmingMode": {
-          "en": "调光模式",
-          "zh": "调光模式"
-        },
-        "comm": {
-          "en": "通信模式",
-          "zh": "通信模式"
+          "zh": "硬件版本"
         }
       },
       "types": {
-        "LAMP_SANSI": {
-          "en": "三思LC",
-          "zh": "三思LC"
-        },
-        "LAMP_HWNB": {
-          "en": "华为NB_IoT",
-          "zh": "华为NB_IoT"
-        }
       }
     },
     "defaults": {
       "props": [
-        "power",
-        "dimmingMode",
-        "comm"
       ],
       "values": {
-        "LAMP_SANSI": {
-          "power": "ONE_WAY",
-          "dimmingMode": "SCT",
-          "comm": "ZigBee"
-        },
-        "LAMP_HWNB": {
-          "power": "ONE_WAY",
-          "dimmingMode": "SCT",
-          "comm": "NB_IoT"
-        }
       }
     }
   }
