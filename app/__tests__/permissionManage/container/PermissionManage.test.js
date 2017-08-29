@@ -29,7 +29,7 @@ describe('<PermissionManage />',()=>{
         expect(table.prop('data')).toEqual(cmp.state('datas'));
 
         const page = cmp.find('Page');
-        const pageData = cmp.state('page').toJS();
+        const pageData = cmp.state('page');
         expect(page.prop('pageSize')).toBe(pageData.pageSize);
         expect(page.prop('current')).toBe(pageData.current);
         expect(page.prop('total')).toBe(pageData.total);

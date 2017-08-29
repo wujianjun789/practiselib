@@ -93,8 +93,8 @@ export class Latlngtrategy extends Component{
         let cur = page.current;
         let size = page.pageSize;
         let offset = (cur-1)*size;
-        getStrategyListByName('latlng',username,offset,size,(response)=>{this.mounted && this.dataHandle(response)});
-        getStrategyCountByName('latlng', username, data=>{this.mounted && this.initPageSize(data)})
+        getStrategyListByName('latlng',search.get('value'),offset,size,(response)=>{this.mounted && this.dataHandle(response)});
+        getStrategyCountByName('latlng', search.get('value'), data=>{this.mounted && this.initPageSize(data)})
     }
 
     initPageSize(data){

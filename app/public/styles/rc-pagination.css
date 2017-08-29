@@ -189,4 +189,5 @@
 
 .rc-pagination li{
   outline:none;
+  display: inline-block;
 }

@@ -86,6 +86,11 @@ export default class Map{
     }
 
     updateMapDevice(data, deviceData, callFun) {
+        if(!this.drawItems){
+            setTimeout(()=>this.updateMapDevice(data, deviceData, callFun), 33);
+            return;
+        }
+
         initCallFun(this.id, callFun);
 
         if (deviceData) {
@@ -369,9 +374,8 @@ export default class Map{
                     var newMarker = _this.drawMarker(data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
                     if (newMarker) {
                         _this.loadMarkerLabel(newMarker, labelInfo);
+                        _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
 
-                        _this.drawItems && _this.drawItems.addLayer(newMarker);
-                        _this.markerList.push(newMarker)
                     }
                 }
             }
