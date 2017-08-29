@@ -33,7 +33,6 @@ export default class CentralizedControllerPopup extends Component {
         this.onConfirm = this.onConfirm.bind(this);
         this.mapDragend = this.mapDragend.bind(this);
         this.renderHtmlForModel = this.renderHtmlForModel.bind(this);
-        this.test = this.test.bind(this);
     }
 
     onChange(e) {
