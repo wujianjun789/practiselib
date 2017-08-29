@@ -13,7 +13,7 @@ import {Treebeard} from 'react-treebeard';
 import {PassWordValid} from '../../util/index';
 import {IsExitInArray} from '../../util/algorithm';
 import MapView from '../../../src/components/MapView'
-
+import {getModule} from '../../app/action'
 export class UserPopup extends Component{
     constructor(props){
         super(props);
@@ -37,8 +37,13 @@ export class UserPopup extends Component{
         this.getCheckedModule = this.getCheckedModule.bind(this);
     }
 
+    componentWillMount(){
+        const {actions} = this.props;
+        actions && actions.getModule();
+    }
+
     onCancel(){
-        this.props.action.overlayerHide();
+        this.props.actions.overlayerHide();
     }
 
     onConfirm(){
@@ -58,7 +63,7 @@ export class UserPopup extends Component{
             roleId:role.getIn(['list',role.get('index'),'id'])
         }
         this.props.onConfirm(datas,this.props.isEdit);
-        this.props.action.overlayerHide();
+        this.props.actions.overlayerHide();
     }
 
     getCheckedModule(){
@@ -180,8 +185,9 @@ const mapStateToprops = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) =>{
     return {
-        action: bindActionCreators({
-            overlayerHide:overlayerHide,
+        actions: bindActionCreators({
+            overlayerHide,
+            getModule
         }, dispatch)
     }
 }
