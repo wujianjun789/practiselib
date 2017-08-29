@@ -197,8 +197,8 @@ export class SingleLampCon extends Component {
         })
 
         this.setState({data: Immutable.fromJS(list)});
-        if (data.length) {
-            let item = data[0]
+        if (list.length) {
+            let item = list[0];
             this.updateSelectDevice(item);
         } else {
             this.setState( { selectDevice: Object.assign( {},this.state.selectDevice, {data: [] } ) } );
@@ -247,7 +247,6 @@ export class SingleLampCon extends Component {
             case 'sys-update':
                 let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
                 let data = selectDevice.data.length?selectDevice.data[0]:null;
-                console.log(data.type);
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
@@ -294,6 +293,7 @@ export class SingleLampCon extends Component {
         selectDevice.data.splice(0);
         selectDevice.data.push({id:item.id, type:item.extend.type, name:item.name});
         selectDevice.domainId = item.domainId;
+        selectDevice.domainName = item.domainName;
         selectDevice.position.splice(0);
         selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'}, item.geoPoint));
         this.setState({selectDevice: selectDevice});
