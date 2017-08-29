@@ -2,6 +2,7 @@
  * Created by a on 2017/4/19.
  */
 import React, {Component} from 'react';
+import {findDOMNode} from 'react-dom'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
@@ -47,7 +48,8 @@ export class DomainEditList extends Component {
             search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
             data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
-                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/])
+                {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
+            sidebarInfoStyle:{height:500+"px"}
         }
 
         this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
@@ -64,6 +66,7 @@ export class DomainEditList extends Component {
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
 
+        this.setSize = this.setSize.bind(this);
         this.requestDomain = this.requestDomain.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
         this.initPageSize = this.initPageSize.bind(this);
@@ -77,13 +80,36 @@ export class DomainEditList extends Component {
         this.requestDomain();
         this.initTreeData();
         this.requestSearch();
+
+        window.onresize = event=>{
+            this.mounted && this.setSize();
+        }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(){
+        // this.setSize();
     }
 
     componentWillUnmount() {
         this.mounted = false;
+        window.onresize = event=>{
+            this.setSize();
+        }
+    }
+
+    setSize(){
+        if(!this.mounted){
+            return;
+        }
+
+        if(this.refs.domainEditList){
+            let height = window.innerHeight-60;
+            let faultHeight = findDOMNode(this.refs.domainEditList).offsetHeight+90;
+
+            this.setState({sidebarInfoStyle:{height:(height>faultHeight?height:faultHeight)+"px"}});
+
+        }
+
     }
 
     requestDomain(){
@@ -175,7 +201,7 @@ export class DomainEditList extends Component {
                     updateId = data.id;
                     name = data.name;
                 }
-console.log(selectDomain, selectDomain.parentId);
+
                 actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
@@ -251,7 +277,7 @@ console.log(selectDomain, selectDomain.parentId);
     }
 
     render() {
-        const {collapse, selectDomain, page, search, data, topologyRefresh} = this.state
+        const {collapse, selectDomain, page, search, data, sidebarInfoStyle} = this.state
         let disabled = (data.size==0?true:false);
         return (
             <Content className={'offset-right list-mode '+(collapse?'collapsed':'')}>
@@ -260,7 +286,7 @@ console.log(selectDomain, selectDomain.parentId);
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
                     <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
                 </div>
-                <div className="list-mode">
+                <div ref="domainEditList" className="list-mode">
                     <div className="table-container">
                         <Table columns={this.columns} data={data} activeId={selectDomain.data.length?selectDomain.data[0].id:""}
                                rowClick={this.tableClick}/>
@@ -268,7 +294,7 @@ console.log(selectDomain, selectDomain.parentId);
                               current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
+                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
                             <span className="icon_domain_property"></span>域属性

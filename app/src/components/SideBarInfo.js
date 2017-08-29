@@ -30,9 +30,8 @@ export default class SideBarInfo extends Component{
 
     render(){
         const {collapse} = this.state;
-        const {mapDevice={id:'example'}} = this.props;
-
-        return <div className={"container-fluid sidebar-info "+(collapse ? "sidebar-collapse":"")}>
+        const {mapDevice={id:'example'}, style} = this.props;
+        return <div className={"container-fluid sidebar-info "+(collapse ? "sidebar-collapse":"")} style={style}>
                 <div className="row collapse-container" onClick={()=>this.collpseHandler()}>
                     <span className={collapse ? "icon_horizontal":"icon_verital"}></span>
                 </div>
