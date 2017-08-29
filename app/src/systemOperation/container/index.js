@@ -12,9 +12,11 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
-import {getModelData, TreeData} from '.././../data/systemModel'
+import {getModelData, TreeData, modelData} from '.././../data/systemModel'
 import {treeViewInit} from '../../common/actions/treeView'
 import {sideBarToggled} from '../action/index'
+import {intlFormat, getClassByModel} from '../../util/index'
+
 class SystemOperationIndex extends Component{
     constructor(props){
         super(props);
@@ -22,10 +24,11 @@ class SystemOperationIndex extends Component{
         this.onToggle = this.onToggle.bind(this);
     }
 
-    componentWillMount(){        
-      
+    componentWillMount(){    
         this.mounted = true;
-        getModelData(null, ()=>{this.mounted && this.initTreeData()})
+        getModelData(null, ()=>{
+            this.mounted && this.initTreeData()
+        })
     }
 
     componentWillUnmount(){
@@ -34,6 +37,8 @@ class SystemOperationIndex extends Component{
 
     componentDidMount(){
     }
+
+   
 
     initTreeData(){
         this.props.actions.treeViewInit(TreeData);

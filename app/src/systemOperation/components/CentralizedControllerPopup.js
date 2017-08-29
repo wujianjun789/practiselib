@@ -31,8 +31,8 @@ export default class CentralizedControllerPopup extends Component {
         this.onChange = this.onChange.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
-
         this.mapDragend = this.mapDragend.bind(this);
+        this.renderHtmlForModel = this.renderHtmlForModel.bind(this);
     }
 
     onChange(e) {
@@ -58,14 +58,12 @@ export default class CentralizedControllerPopup extends Component {
             if(!latlngValid || !lngValid(newValue)){
                 prompt = true;
             }
-
         }else if(id == "name"){
-            newValue = value//过滤非法数据
+            newValue = value;//过滤非法数据
             prompt  = !Name2Valid(newValue);//判定输入数量
-        
         } else if(id == "id") {
-            newValue = value
-            prompt  = !MACValid(newValue)
+            newValue = value;
+            prompt  = !MACValid(newValue);
         }
         else {
             newValue = value;
@@ -73,6 +71,19 @@ export default class CentralizedControllerPopup extends Component {
 
         this.setState({[id]: newValue, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
 
+    }
+
+    renderHtmlForModel(){
+            if(this.props.model === "screen"){return null}
+                return <div className="form-group clearfix">
+                    <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
+                    <div className="col-sm-7">
+                        <Select id="model" className="form-control" titleField={this.props.modelList.titleField}
+                                valueField={this.props.modelList.valueField} options={this.props.modelList.options} value={this.state.model}
+                                onChange={this.onChange}/>
+                    </div>
+                </div>
+            
     }
 
     onCancel() {
@@ -120,16 +131,9 @@ export default class CentralizedControllerPopup extends Component {
                                 <span className={prompt.name?"prompt ":"prompt hidden"}>{"不合法"}</span>
                             </div>
                         </div>
-                        <div className="form-group clearfix">
-                            <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
-                            <div className="col-sm-7">
-                                <Select id="model" className="form-control" titleField={modelList.titleField}
-                                        valueField={modelList.valueField} options={modelList.options} value={model}
-                                        onChange={this.onChange}/>
-                                {/*<input type="text" className="form-control" id="model" value={model}
-                                       onChange={this.onChange}  readOnly= {true }/>  */}
-                            </div>
-                        </div>
+                        {
+                            this.renderHtmlForModel()
+                        }
                         <div className="form-group clearfix">
                             <label htmlFor="domain" className="col-sm-4 control-label">域：</label>
                             <div className="col-sm-7">
