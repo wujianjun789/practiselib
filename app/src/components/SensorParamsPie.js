@@ -68,7 +68,7 @@ export default class Pie extends PureComponent {
             .attr('stroke-dashoffset', normalRound)
             .attr('transform','rotate(-97 200 200)')
 
-        if(isFirst&&data.val){
+        if(isFirst&&(data.val != null || data.val != undefined)){
             svg.select('.progress-circle')
             .attr('cx', 200)
             .attr('cy', 200)
