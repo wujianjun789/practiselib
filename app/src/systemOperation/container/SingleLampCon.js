@@ -258,7 +258,7 @@ export class SingleLampCon extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器"
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="单灯控制器"
                                                           data={dataInit2} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={data=>{
                                                                 updateAssetsByModel(model, data, (data)=>{
