@@ -22,7 +22,7 @@ let options = (function generateLampLightnessList() {
 export default class SensorStrategyPopup extends Component {
     constructor(props) {
         super(props);
-        const {id, strategyName, sensorType='', controlDevice='lc', screenSwitch='off', sensorParam='', brightness='off', sensorParamsList=[]} = this.props.data;
+        const {id, strategyName="", sensorType='', controlDevice='lc', screenSwitch='off', sensorParam='', brightness='off', sensorParamsList=[]} = this.props.data;
         this.state = {
             chart: null,
             data: {
@@ -252,20 +252,21 @@ export default class SensorStrategyPopup extends Component {
     }
 
     render() {
-        const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data, checkStatus} = this.state;
+        const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data: {strategyName, sensorType, controlDevice, screenSwitch, sensorParam, brightness}, checkStatus} = this.state;
         const {sensorTypeList, sensorsProps, popupId} = this.props;
         const {className, title} = this.props;
+        const disabled = (strategyName === '' || sensorParamsList.length == 0) ? true : false;
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
-                                  btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
+                                  btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, disabled]}
                                   onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title={title} footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="form-group">
                     <label htmlFor="strategyName" className="control-label">策略名称：</label>
                     <div className="form-group-right">
-                        <input type="text" className="form-control" id="strategyName" placeholder="传感器使用策略" value={data.strategyName}
+                        <input type="text" className="form-control" id="strategyName" placeholder="传感器使用策略" value={strategyName}
                             onChange={this.onChange}/>
-                        <span style={{visibility: checkStatus.strategyName ? 'visible' : 'hidden'}}>策略名已使用/仅能使用数字、字母、下划线</span>
+                        <span style={{visibility: checkStatus.strategyName ? 'visible' : 'hidden'}}>仅能使用数字、字母、下划线，必须以字母或下划线开头</span>
                     </div>
                 </div>
                 <div className="inline-group">
@@ -273,7 +274,7 @@ export default class SensorStrategyPopup extends Component {
                         <label htmlFor="sensorType" className="control-label">传感器类型：</label>
                         <div className="form-group-right">
                             <Select id="sensorType" className="form-control" titleField={sensorTypeList.titleField}
-                                    valueField={sensorTypeList.valueField} options={sensorTypeList.options} value={data.sensorType}
+                                    valueField={sensorTypeList.valueField} options={sensorTypeList.options} value={sensorType}
                                     onChange={this.onChange} disabled={popupId=='add' ? false : true}/>
                             <span style={{visibility: checkStatus.sensorType ? 'visible' : 'hidden'}}>请选择传感器</span>
                         </div>
@@ -282,7 +283,7 @@ export default class SensorStrategyPopup extends Component {
                         <label htmlFor="controlDevice" className="control-label">控制设备：</label>
                         <div className="form-group-right">
                             <Select id="controlDevice" className="form-control" titleField={controlDeviceList.titleField}
-                                    valueField={controlDeviceList.valueField} options={controlDeviceList.options} value={data.controlDevice}
+                                    valueField={controlDeviceList.valueField} options={controlDeviceList.options} value={controlDevice}
                                     onChange={this.onChange} disabled={popupId=='add' ? false : true}/>
                             <span style={{visibility: checkStatus.controlDevice ? 'visible' : 'hidden'}}>请选择设备</span>
                         </div>
@@ -298,21 +299,21 @@ export default class SensorStrategyPopup extends Component {
                         <button className="btn btn-primary" onClick={this.addSensorParam} disabled={checkStatus.sensorParam}>添加节点</button>
                         <div className="lightness-right">
                             <div>
-                                <input id="sensorParam" type='text' className='form-control' placeholder="输入传感器参数" value={data.sensorParam} onChange={this.onChange}/>
+                                <input id="sensorParam" type='text' className='form-control' placeholder="输入传感器参数" value={sensorParam} onChange={this.onChange}/>
                                 {
-                                    data.controlDevice != 'lc' ?
+                                    controlDevice != 'lc' ?
                                     <Select id="screenSwitch" className="form-control" titleField={screenSwitchList.titleField}
-                                        valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={data.screenSwitch}
+                                        valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={screenSwitch}
                                         onChange={this.onChange}/>
                                     :
                                     <Select id="brightness" className="form-control" titleField={brightnessList.titleField}
-                                        valueField={brightnessList.valueField} options={brightnessList.options} value={data.brightness}
+                                        valueField={brightnessList.valueField} options={brightnessList.options} value={brightness}
                                         onChange={this.onChange}/>
                                 }
                             </div>
                             <ul>
                             {
-                                sensorParamsList.map((item, index) => <li key={index}><span className="sensor-param">{`${item.condition[ this.sensorTransform[data.sensorType] ]} ${sensorsProps[data.sensorType]?sensorsProps[data.sensorType].unit:''}`}</span><span className="sensor-other">{item.rpc.title}</span><span id={index} className="glyphicon glyphicon-trash" onClick={this.sensorParamDelete}></span></li>)
+                                sensorParamsList.map((item, index) => <li key={index}><span className="sensor-param">{`${item.condition[ this.sensorTransform[sensorType] ]} ${sensorsProps[sensorType]?sensorsProps[sensorType].unit:''}`}</span><span className="sensor-other">{item.rpc.title}</span><span id={index} className="glyphicon glyphicon-trash" onClick={this.sensorParamDelete}></span></li>)
                             }
                             </ul>
                         </div>

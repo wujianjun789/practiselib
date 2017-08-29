@@ -166,7 +166,6 @@ export class SensorStrategy extends Component{
         const {id} = e.target;
         const initData = {
             id: '',
-            strategyName: '',
             sensorType: this.state.sensorTypeList.options[0]&&this.state.sensorTypeList.options[0][this.state.sensorTypeList.valueField],
         };
         id=='add-sensor' && this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='add' title="新建策略" data={initData}
