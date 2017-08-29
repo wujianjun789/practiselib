@@ -332,7 +332,7 @@ class DomainEditTopology extends Component{
 
                     let value = item.name.slice(0, curIndex);
 
-                    if(depth==0 || depth==1){
+                    if(depth==0 || depth==1 || depth==2 || depth==3|| depth==4 || depth==5|| depth==6 || depth==7){
                         return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                                    onClick={()=>this.itemClick(item)}><div>{value}</div></li>
                     }
