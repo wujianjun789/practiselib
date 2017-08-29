@@ -219,5 +219,6 @@ export default class LineChart {
         this.svg.on('mousemove', null);
         this.svg.on('mouseleave', null);
         this.svg.remove();
+        this.tooltips.remove();
     }
 }
