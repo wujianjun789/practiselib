@@ -28,12 +28,9 @@ export class Latlngtrategy extends Component{
             page: {
                 pageSize: 10,
                 current: 1,
-                total: 1
+                total: 0
             },
-            datas:Immutable.fromJS([
-                {id:1, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
-                {id:2, name:"经纬度使用策略", lng:"000.000.000.000",lat:"000.000.000.000"},
-            ]),
+            datas:Immutable.fromJS([]),
             deviceList:{titleField:"title", valueField:"value", options:[]},            
             popupInfo:{
                 

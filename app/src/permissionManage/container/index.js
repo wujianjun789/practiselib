@@ -24,7 +24,7 @@ export class PermissionManage extends Component{
             page: {
                 pageSize:10,
                 current: 1,
-                total: 21
+                total: 0
             },
             popupInfo:{
                 username:'',
