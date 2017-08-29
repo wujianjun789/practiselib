@@ -49,7 +49,7 @@ export class DomainEditList extends Component {
             data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
                 {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
-            sidebarInfoStyle:{height:500+"px"}
+            sidebarInfoStyle:{height:"100%"}
         }
 
         this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
@@ -86,10 +86,6 @@ export class DomainEditList extends Component {
         }
     }
 
-    componentDidUpdate(){
-        // this.setSize();
-    }
-
     componentWillUnmount() {
         this.mounted = false;
         window.onresize = event=>{
@@ -106,7 +102,7 @@ export class DomainEditList extends Component {
             let height = window.innerHeight-60;
             let faultHeight = findDOMNode(this.refs.domainEditList).offsetHeight+90;
 
-            this.setState({sidebarInfoStyle:{height:(height>faultHeight?height:faultHeight)+"px"}});
+            this.setState({sidebarInfoStyle:{height:height>faultHeight?"100%":faultHeight+"px"}});
 
         }
 
@@ -137,7 +133,7 @@ export class DomainEditList extends Component {
         })
 
 
-        this.setState({data:Immutable.fromJS(list)});
+        this.setState({data:Immutable.fromJS(list)},()=>{this.setSize();});
 
         if(data.length){
             this.updateSelectDomain(data[0])
