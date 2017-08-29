@@ -1,10 +1,10 @@
 /**
- * Created by a on 2017/8/1.
+ * Created by a on 2017/8/14.
  */
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
+import '../../../public/styles/systemOperation-config.less';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
@@ -18,7 +18,7 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel'
+import {TreeData, getModelData, modelData, getModelNameById, getModelTypesById, getModelTypesNameById} from '../../data/systemModel'
 
 import {getDomainList} from '../../api/domain'
 import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'
@@ -26,7 +26,8 @@ import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel,
 import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
-export class LampConCenter extends Component {
+
+export class Screen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,7 +45,7 @@ export class LampConCenter extends Component {
             selectDevice: {
                 id: "systemOperation",
                 // latlng:{lng: 121.49971691534425,
-                //     lat: 31.239658843127756},
+                // lat: 31.239658843127756}
                 position: [],
                 data: []
             },
@@ -95,22 +96,22 @@ export class LampConCenter extends Component {
                 }
             ],
             data: Immutable.fromJS([/*{
-                id: 0,
-                name: '设备1',
-                model: 'model01',
-                domain: 'domain01',
-                lng: 121.49971691534425,
-                lat: 31.239658843127756
-            }*/])
+             id: 0,
+             name: '设备1',
+             model: 'model01',
+             domain: 'domain01',
+             lng: 121.49971691534425,
+             lat: 31.239658843127756
+             }*/])
         }
 
-        this.columns =  [
+        this.columns = [
             {id: 0, field:"domainName", title:"域"},
             {id: 1, field: "name", title: "设备名称"},
             {id: 2, field: "typeName", title: "型号"},
             {id: 3, field: "id", title: "设备编号"},
             {id: 5, field: "lng", title: "经度"},
-            {id: 6, field: "lat", title: "纬度"},
+            {id: 6, field: "lat", title: "纬度"}
         ];
 
         this.collpseHandler = this.collpseHandler.bind(this);
@@ -153,6 +154,9 @@ export class LampConCenter extends Component {
 
     componentWillUnmount() {
         this.mounted = false;
+    }
+
+    componentDidMount(){
     }
 
     requestSearch() {
@@ -234,7 +238,7 @@ export class LampConCenter extends Component {
                 };
 
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={this.state.model}
-                                                          data={dataInit} domainList={domainList} modelList={modelList}
+                                                        data={dataInit} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={(data)=>{
                                                                 postAssetsByModel(model, data, ()=>{
                                                                     this.requestSearch();
@@ -242,8 +246,8 @@ export class LampConCenter extends Component {
                                                           }}/>);
                 break;
             case 'sys-update':
-                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}   
-                    let data = selectDevice.data.length?selectDevice.data[0]:null;
+                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}
+                let data = selectDevice.data.length?selectDevice.data[0]:null;
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
@@ -297,7 +301,7 @@ export class LampConCenter extends Component {
 
     searchSubmit() {
         // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
-            this.requestSearch();
+        this.requestSearch();
         // });
     }
 
@@ -316,9 +320,9 @@ export class LampConCenter extends Component {
         let {domainList} = this.state;
         domainList.index = index;
         domainList.value = domainList.options[index].name;
-        this.setState({domainList: domainList}, ()=> {
-            this.requestSearch();
-        })
+        this.setState({domainList: domainList}, ()=>{
+            this.requestSearch();
+        })
     }
 
     render() {
@@ -331,7 +335,7 @@ export class LampConCenter extends Component {
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>添加</button>
             </div>
-            <div className='lcc'>
+            <div className='sensor'>
                 <div className="table-container">
                     <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                            rowClick={this.tableClick}/>
@@ -349,17 +353,6 @@ export class LampConCenter extends Component {
                         <button id="sys-update" className="btn btn-primary pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>编辑
                         </button>
                         <button id="sys-delete" className="btn btn-danger pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>删除
-                        </button>
-                    </div>
-                </div>
-                <div className="panel panel-default device-statics-info whitelist">
-                    <div className="panel-heading">
-                        <span className="icon_sys_whitelist"></span>白名单
-                    </div>
-                    <div className="panel-body domain-property">
-                        <span className="domain-name">{`包含：${selectDevice.data.length} 个项目`}</span>
-                        <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={this.domainHandler} disabled={data.size==0 ? true : false}>
-                            编辑
                         </button>
                     </div>
                 </div>
@@ -381,4 +374,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LampConCenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Screen);

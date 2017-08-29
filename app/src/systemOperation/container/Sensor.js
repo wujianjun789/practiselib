@@ -149,6 +149,7 @@ export class Sensor extends Component {
                 })
             }
         })
+
     }
 
     componentWillUnmount() {
@@ -236,7 +237,7 @@ export class Sensor extends Component {
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备"
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={this.state.model}
                                                           data={dataInit} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={(data)=>{
                                                                 postAssetsByModel(model, data, ()=>{
