@@ -83,16 +83,17 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
 .head .avatar {
     float: right;
     padding: 18px;
-
     border-left: solid 1px #343a45;
+}
+
+.tree-ul .tree-ul{
+    padding-left:17px;
 }
 
 .head .home span, .head .avatar span {
     display: block;
-
     width: 25px;
     height: 25px;
-
     background-size: 25px 25px;
 }
 
