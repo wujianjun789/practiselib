@@ -130,7 +130,7 @@ line-height: 60px;
     position: absolute;
     top: 60px;
     right: 0;
-    /*bottom: 0;*/
+    bottom: 0;
     left: 180px;
     min-width: 1025px;
     min-height: 150px;
