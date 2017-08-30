@@ -8,13 +8,23 @@ import Select from '../../components/Select.1';
 import Immutable from 'immutable';
 import {NameValid,numbersValid} from '../../util/index';
 
+
+let options = (function generateLampLightnessList() {
+    let opt = [];
+    for(let i=0; i<11; i++){
+        let val = i*10;
+        opt.push({value: val, title: `亮度${val}`});
+    }
+    opt.unshift({value: 'off', title: '关'});
+    // opt.unshift({value: '', title: '选择灯亮度'});
+    return opt;
+})();
+
 export class LatlngStrategyPopup extends Component{
     constructor(props){
         super(props);
-        const {data={},isEdit=false} = this.props;
-        const defaultDev = this.props.deviceList.options.length>0?this.props.deviceList.options[0].value:'';
-        const defaultOrd = this.props.orderList.options.length>0?this.props.orderList.options[0].value:'';        
-        let {name="", device=defaultDev,strategy=[],sunrise=defaultOrd,sunset=defaultOrd} = data;
+        const {data={},isEdit=false} = this.props;      
+        let {name="", device='lc',strategy=[],sunrise='off',sunset='off'} = data;
         let sunriseTime='';
         let sunsetTime='';        
         strategy.forEach((item)=>{
@@ -41,6 +51,28 @@ export class LatlngStrategyPopup extends Component{
                 sunset:{hidden:true,text:'请选择指令'},
                 sunriseTime:{hidden:true,text:'仅能输入数字'},
                 sunsetTime:{hidden:true,text:'仅能输入数字'},
+            },
+            deviceList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {value: 'lc', title: '灯'},                    
+                    {value: 'screen', title: '屏幕'}
+                ]
+            },
+            brightnessList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: options
+            },
+            screenSwitchList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    // {value: '', title: '选择屏幕开关'},
+                    {value: 'off', title: '屏幕关'},
+                    {value: 'on', title: '屏幕开'}
+                ]
             },
         }
         this.onCancel = this.onCancel.bind(this);
@@ -86,10 +118,11 @@ export class LatlngStrategyPopup extends Component{
     onChange(event){
         const id = event.target.id;
         if(id == "device") {
-            this.setState({device: this.props.deviceList.options[event.target.selectedIndex].value});
+            this.setState({device: this.state.deviceList.options[event.target.selectedIndex].value});
         }
         else if(id == 'sunrise'||id == 'sunset') {
-            this.setState({[id]: this.props.orderList.options[event.target.selectedIndex].value});
+            const list = this.state.device=='lc'?this.state.brightnessList:this.state.screenSwitchList;
+            this.setState({[id]: list.options[event.target.selectedIndex].value});
         }
         else{
             let prompt ={hidden:true,text:''};
@@ -97,7 +130,7 @@ export class LatlngStrategyPopup extends Component{
             switch(id){
                 case'name':
                     if(value&&!NameValid(value))
-                        prompt={hidden:false,text:'仅能使用字母、数字或下划线'};
+                        prompt={hidden:false,text:'仅能使用字母、数字或下划线且首个不能为数字'};
                     break;
                 case'sunriseTime':
                 case'sunsetTime': 
@@ -110,9 +143,11 @@ export class LatlngStrategyPopup extends Component{
     }
 
     render() {
-        let {className = '',title = '',isEdit=false,deviceList,orderList} = this.props;
-        let {name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let {className = '',title = '',isEdit=false} = this.props;
+        let {name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt,deviceList,brightnessList,screenSwitchList} = this.state;
+        const disabled = (sunriseTime === '' || sunsetTime === ''|| deviceList.length == 0) ? true : false;
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} 
+        btnDisabled={[false, disabled]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className='row'>
@@ -137,8 +172,14 @@ export class LatlngStrategyPopup extends Component{
                     <div className="form-group col-sm-6">
                         <label htmlFor="sunrise" className="col-sm-4 control-label">日出：</label>
                         <div className="col-sm-8">
-                            <Select id="sunrise" className="form-control" onChange={this.onChange} titleField={orderList.titleField}
-                                    valueField={orderList.valueField} options={orderList.options} value={sunrise}/>
+                            {
+                                device == 'lc' ?
+                                <Select id="sunrise" className="form-control" onChange={this.onChange} titleField={brightnessList.titleField}
+                                        valueField={brightnessList.valueField} options={brightnessList.options} value={sunrise}/>
+                                :
+                                <Select id="sunrise" className="form-control" onChange={this.onChange} titleField={screenSwitchList.titleField}
+                                        valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunrise}/>
+                            }
                             <span className={prompt.sunrise.hidden?"prompt hidden":"prompt"}>{prompt.sunrise.text}</span>
                         </div>
                     </div>
@@ -155,8 +196,14 @@ export class LatlngStrategyPopup extends Component{
                     <div className="form-group col-sm-6">
                         <label htmlFor="sunset" className="col-sm-4 control-label">日落：</label>
                         <div className="col-sm-8">
-                            <Select id="sunset" className="form-control" onChange={this.onChange} titleField={orderList.titleField}
-                                    valueField={orderList.valueField} options={orderList.options} value={sunset}/>                    
+                            {
+                                device == 'lc' ?
+                                <Select id="sunset" className="form-control" onChange={this.onChange} titleField={brightnessList.titleField}
+                                        valueField={brightnessList.valueField} options={brightnessList.options} value={sunset}/>
+                                :
+                                <Select id="sunset" className="form-control" onChange={this.onChange} titleField={screenSwitchList.titleField}
+                                        valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunset}/>
+                            }                
                             <span className={prompt.sunset.hidden?"prompt hidden":"prompt"}>{prompt.sunset.text}</span>
                         </div>
                     </div>
