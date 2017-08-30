@@ -195,7 +195,7 @@ class TimeStrategy extends Component{
         let strategyList=[];
         // let Isrepeat = false;
         // strategyList.push({id:row.get("id"), time:"00:00", light:0})
-        row.get("strategy").map(strategy=>{console.log(row.get("id"),strategy.getIn(["condition", "time"]));
+        row.get("strategy").map(strategy=>{
             let strategyTime = strategy.getIn(["condition", "time"]);
             // if(strategyTime.indexOf("00:00")>-1){
             //     strategyList.splice(0, 1, {id:row.get("id"), time:strategyTime, light:strategy.getIn(["rpc", "brightness"])});

@@ -1,7 +1,7 @@
 export default class LineChart {
     constructor({
-        wrapper, 
-        data, 
+        wrapper,
+        data,
         padding={left: 20, top: 20, right: 20, bottom: 20},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
@@ -55,7 +55,7 @@ export default class LineChart {
             height = this.wrapper && this.wrapper.offsetHeight;
         this.w = width - this.padding.left - this.padding.right;
         this.h = height - this.padding.top - this.padding.bottom;
-        
+
         this.svg = d3.select(this.wrapper)
             .append('svg')
             .attr('width', width)
@@ -69,7 +69,7 @@ export default class LineChart {
         this.y_axis = this.group
             .append('g')
             .attr('class', 'y-axis');
-        
+
         this.main_area = this.group
             .append('path')
             .attr('class', 'main-area');
@@ -79,7 +79,7 @@ export default class LineChart {
 
         let wrapper = d3.select(this.wrapper);
         wrapper.style('position', 'relative');
-        
+
         this.tooltips = wrapper.append('div')
             .attr('class', 'tooltip top')
             .style('position', 'absolute')
@@ -124,7 +124,7 @@ export default class LineChart {
             .range([0, this.w]);
         this.yScale = d3.scaleLinear()
             .range([this.h, 0]);
-        
+
         this.xScale.domain(this.data.values.map(item=>this.xAccessor(item)));
         // this.yScale.domain(d3.extent(this.data.values, this.yAccessor));
         let max = this.yAccessor(this.bubbleSort(this.data.values, this.yAccessor)[this.data.values.length-1]);
@@ -134,13 +134,13 @@ export default class LineChart {
             .scale(this.xScale)
             .tickSizeOuter(0)
             .tickFormat(this.tickFormat);
-        
+
         if(this.data.values.length==1) {
             xAxis.tickValues([ this.xAccessor(this.data.values[0]) ]);
         } else {
             xAxis.tickValues([ this.xAccessor(this.data.values[0]),this.xAccessor(this.data.values[this.data.values.length-1]) ]);
         }
-        
+
         this.x_axis.call(xAxis);
         if(this.data.values.length == 1) {
             let tick = this.x_axis.select('.tick');
@@ -151,7 +151,7 @@ export default class LineChart {
         let yAxis = d3.axisLeft()
             .scale(this.yScale)
             .tickSizeInner(-this.w);
-        
+
         this.y_axis.call(yAxis);
     }
 
@@ -196,7 +196,7 @@ export default class LineChart {
                 }
             });
     }
-    
+
     draw() {
         if (this.data.values.length!=0) {
             this.getAxis();
