@@ -31,7 +31,14 @@ export class Latlngtrategy extends Component{
                 total: 0
             },
             datas:Immutable.fromJS([]),
-            deviceList:{titleField:"title", valueField:"value", options:[]},
+            deviceList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {value: 'screen', title: '屏幕'},
+                    {value: 'lc', title: '灯'}
+                ]
+            },
             orderList:{
                 titleField: 'title',
                 valueField: 'value',
@@ -66,20 +73,20 @@ export class Latlngtrategy extends Component{
     componentWillMount(){
         this.mounted = true;
         this.requestData();        
-        getAssetModelList(res=>this.mounted && this.initDeviceList(res));
+        // getAssetModelList(res=>this.mounted && this.initDeviceList(res));
     }
 
     componentWillUnmount(){
         this.mounted = false;
     }
 
-    initDeviceList(data){
-        let list = data.map(model=>{
-            return {value:model.key, title:model.name};
-        })
+    // initDeviceList(data){
+    //     let list = data.map(model=>{
+    //         return {value:model.key, title:model.name};
+    //     })
 
-        this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:list})})
-    }
+    //     this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:list})})
+    // }
 
     searchChange(value){
         this.setState({search:this.state.search.update('value', v=>value)});
