@@ -42,7 +42,7 @@ function moduleInit(state, data) {
                 break;
             case 'control':
                 item.key = 'control';
-                item.title = '智慧路灯控制系统';
+                item.title = '智慧路灯';
                 item.link = '/smartLight';
                 break;
             case 'report':
