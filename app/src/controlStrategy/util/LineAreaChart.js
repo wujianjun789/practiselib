@@ -11,6 +11,8 @@ export default function LineAreaChart(parentId, chartData) {
     var label = chartData.label == undefined ? "" : chartData.label;
     var style = chartData.style != undefined ? chartData.style : {fill:'none', width:1, color:'#000000', opacity:1}
 
+    var yMin = chartData.yMin;
+    var yMax = chartData.yMax;
     var dataset = chartData.data;
 
     var width = w - margin.left - margin.right,
@@ -18,21 +20,26 @@ export default function LineAreaChart(parentId, chartData) {
 
     var x = d3.scaleLinear().domain([1, dataset.length]).range([0, width]);
 
-    var y = d3.scaleLinear().domain([d3.min(dataset, function (d) {
-            return d.y;
-        }), d3.max(dataset, function (d) {
-            return d.y;
-        })])
-        .range([height, 0]);
+    var y = d3.scaleLinear()
+    if(yMin != undefined && yMax != undefined){
+        y.domain([yMin, yMax])
+            .range([height, 0]);
+    }else{
+        y.domain([d3.min(dataset, function (d) {
+                return d.y;
+            }), d3.max(dataset, function (d) {
+                return d.y;
+            })])
+            .range([height, 0]);
+    }
 
     var xAxis = d3.axisBottom(x)/*.ticks(2).tickFormat(function (d) {
         return dataset[d-1].x;
     })*/
 
     var yAxis = d3.axisLeft(y)
-        .ticks(10)
+        .ticks([10])
         .tickSize(-width)
-        .tickFormat("");
 
     // y.ticks(10);
 

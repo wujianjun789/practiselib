@@ -43,7 +43,9 @@ export default class TimeStrategyPopup extends Component{
             time:getCurHM(),
             light:Immutable.fromJS({
                 list:[
-                    {id:1, value:"关"},{id:2, value:20},{id:3, value:40},{id:4, value:60},{id:5, value:80}
+                    {id:1, value:"关"},{id:2, value:0},{id:3, value:10},{id:4, value:20},{id:5, value:30},
+                    {id:6, value:40},{id:7, value:50},{id:8, value:60},{id:9, value:70},{id:10, value:80},
+                    {id:11, value:90},{id:12, value:100}
                 ],
                 placeholder:"选择灯亮度",
                 value:"开",
@@ -270,7 +272,16 @@ export default class TimeStrategyPopup extends Component{
         let strategy2 = {time:curTime, light:curlight};
         let newList = this.state.strategyList;
         newList.push(strategy2)
-        this.setState({strategyList:newList}, ()=>{
+
+        this.setState({strategyList:newList.sort((a,b)=>{
+            let aList = a.time.split(":");
+            let bList = b.time.split(":");
+            if(parseInt(aList[0]) == parseInt(bList[0])){
+                return parseInt(aList[1] > parseInt(bList[1]));
+            }
+
+            return (parseInt(aList[0]) > parseInt(bList[0]));
+        })}, ()=>{
             this.updateChart();
         });
     }
@@ -289,10 +300,26 @@ export default class TimeStrategyPopup extends Component{
             return;
         }
 
+        let IsStart = false;
+        let IsEnd = false;
         const {strategyList} = this.state;
         let chartList = strategyList.map(strategy=>{
+            if(strategy.time.indexOf("00:00")>-1){
+                IsStart = true;
+            }
+
+            if(strategy.time.indexOf("24:00")>-1){
+                IsEnd = true;
+            }
             return {x:strategy.time, y:strategy.light=="关"||strategy.light=="开"?0:strategy.light}
         })
+
+        if(!IsStart){
+            chartList.unshift({x:"00:00", y:0});
+        }
+        if(!IsEnd){
+            chartList.push({x:"24:00", y:0});
+        }
         if(chartList){
             this.timeStrategy && this.timeStrategy.destory();
             this.timeStrategy = timeStrategy({id:chartId, data:chartList});
