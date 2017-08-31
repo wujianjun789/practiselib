@@ -22,6 +22,7 @@ import {getMomentDate, momentDateFormat} from '../../util/time'
 import {getModelData, getModelList} from '../../data/assetModels'
 
 import {getStrategyListByName, getStrategyCountByName, addStrategy, updateStrategy, delStrategy} from '../../api/strategy'
+import {getStrategyDeviceConfig} from '../../util/network'
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -45,7 +46,7 @@ class TimeStrategy extends Component{
             data:Immutable.fromJS([
             ])
         }
-        this.deviceDefault = ["lc", "screen"]
+        this.deviceDefault = [/*"lc", "screen"*/]
         this.columns =  [
             {id: 0, field:"name", title:"策略名称"},
             {id: 1, field: "timeRange", title: "时间范围"}
@@ -68,7 +69,12 @@ class TimeStrategy extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        getModelData(()=>this.mounted && this.initDeviceList(getModelList()));
+        getStrategyDeviceConfig(data=>{
+            this.mounted && this.setState(this.deviceDefault=data, ()=>{
+                getModelData(()=>this.mounted && this.initDeviceList(getModelList()));
+            })
+        })
+
         this.requestSearch();
     }
 

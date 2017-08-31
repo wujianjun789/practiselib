@@ -1,7 +1,6 @@
 /**
  * Created by a on 2017/7/25.
  */
-
 export const TreeData=[
     {
         "id": "domainEdit",
