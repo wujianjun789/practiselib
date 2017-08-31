@@ -23,7 +23,9 @@ const config = {
             minZoom: 10,
             maxZoom: 18,
             maxClusterRadius: 50
-        }
+        },
+        strategyDevice:["lc", "screen"],
+        lightLevel:["关",0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     }
 }
 module.exports = config;

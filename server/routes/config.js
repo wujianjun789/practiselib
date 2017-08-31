@@ -18,4 +18,12 @@ router.get('/module', function (req, res, next) {
     res.json(client.module);
 });
 
+router.get('/strategyDevice', function (req, res, next) {
+    res.json(client.strategyDevice);
+})
+
+router.get('/lightLevel', function (req, res, next) {
+    res.json(client.lightLevel);
+})
+
 module.exports = router;
