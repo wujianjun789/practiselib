@@ -188,12 +188,8 @@ export default(
                         cb(null, require('../smartLightManage/container/SmartLightMap').default)
                     }, 'starriverpro.smartLightManage.smartLightMap')
                 }}/>
-                <Route path="list" getComponent={(nextState, cb) =>{
-                    require.ensure([], (require) => {
-                        cb(null, require('../smartLightManage/container/SmartLightList').default);
-                    }, 'starriverpro.smartLightManage.SmartLightList');
-                }}>
-                    <Route path="lc" getComponent={(nextState, cb) => {
+                <Route path="list" >
+                    <IndexRoute getComponent={(nextState, cb) => {
                         require.ensure([], (require) => {
                             cb(null, require('../smartLightList/containers/SingleLampCon').default);
                         }, 'starriverpro.smartLightList.SingleLampCon');
