@@ -222,9 +222,7 @@ export class SmartLight extends Component {
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
-        getSearchCount(domain
-            ? domain.id
-            : null, model, name, data => {
+        getSearchCount(domain ? domain.id : null, model, name, data => {
             this.mounted && this.initPageSize(data)
         })
 
@@ -241,15 +239,18 @@ export class SmartLight extends Component {
     }
 
     initDomainList(data) {
-        let domainList = Object.assign({}, this.state.domainList, {
-            index: 0
-        }, {
-            value: data.length
-                ? data[0].name
-                : ""
-        }, {
-            options: data
-        });
+        let domainList = {
+            ...this.state.domainList,
+            ...{
+                index: 0
+            },
+            ...{
+                value: data.length ? data[0].name : ""
+            },
+            ...{
+                options: data
+            }
+        };
         this.setState({
             domainList: domainList
         });
