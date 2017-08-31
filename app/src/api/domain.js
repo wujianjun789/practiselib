@@ -116,3 +116,15 @@ export function getRelatedDomainById(id,cb){
         cb && cb(response);
     })
 }
+
+
+
+export function getWhiteListById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/lccs/${id}/whiteList`, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}

@@ -374,7 +374,9 @@ export class LampConCenter extends Component {
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
             case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />)
+                let data2 = selectDevice.data.length?selectDevice.data[0]:null;
+                overlayerShow(<WhiteListPopup className="whitelist-popup" id = {data2.id} data={whitelistData} overlayerHide={overlayerHide}/>)
+                // overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />)
                 break;
         }
     }
