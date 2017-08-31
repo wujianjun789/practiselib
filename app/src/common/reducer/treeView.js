@@ -30,7 +30,7 @@ function treeViewInit(state, data) {
     let curNode = searchNode(data, url);
 
     let list = data;
-   if(curNode){
+    if(curNode && !curNode.toggled){
         list = update(data, 1, null, curNode);
     }
 
@@ -75,6 +75,9 @@ function update(list, index, parentId, data) {
 
         if(curIndex == 1 && node.id == data.id){
             node.toggled = !node.toggled;
+            if(node.toggled && node.children && node.children.length){
+                node.children[0].active = true;
+            }
             return node;
         }else if(curIndex == 1 && node.id != data.id && !IsChildren(node.children, data.id)){
             node.toggled = false;

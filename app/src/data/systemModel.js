@@ -32,7 +32,7 @@ export const TreeData = [
     "name": "控制策略",
     "toggled": false,
     "active": true,
-    "link": "/systemOperation/strategy",
+    "link": "/systemOperation/strategy/timeTable",
     "level": 1,
     "children": [
       {
@@ -514,7 +514,7 @@ export function getModelData(model, cb) {
       if (item.id == "config") {
         let curModel = getModelById(model);
         if (curModel) {
-          item.link = "/systemOperation/config/" + curModel.key;
+          // item.link = "/systemOperation/config/" + curModel.key;
         }
         item.children = [];
         response.map((data, index) => {
@@ -522,14 +522,13 @@ export function getModelData(model, cb) {
             id: data.key,
             name: intlFormat(data.intl.name),
             class: getClassByModel(data.key),
-            active: data.key == model
-              ? true
-              : false,
+            active: data.key == model ? true : false,
             link: getLinkByModel(data.key)
           };
-          item
-            .children
-            .push(child)
+          if(index==0){
+            item.link = "/systemOperation/"+item.id+"/"+data.key;
+          }
+          item.children.push(child)
         })
       }
     })

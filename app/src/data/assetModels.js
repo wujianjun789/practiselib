@@ -99,6 +99,9 @@ export function getModelData(cb) {
                 item.children = [];
                 response.map((data, index)=>{
                     let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false,link:getLinkByModel(item.id, data.key)};
+                    if(index==0 ){
+                        item.link = "/assetManage/"+item.id+"/"+data.key;
+                    }
                     item.children.push(child)
                 })
             }
