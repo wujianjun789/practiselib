@@ -188,13 +188,37 @@ export default(
                         cb(null, require('../smartLightManage/container/SmartLightMap').default)
                     }, 'starriverpro.smartLightManage.smartLightMap')
                 }}/>
-                <Route
-                    path="list"
-                    getComponent={(nextState, cb) => {
+                <Route path="list" getComponent={(nextState, cb) =>{
                     require.ensure([], (require) => {
-                        cb(null, require('../smartLightManage/container/SmartLightList').default)
-                    }, 'starriverpro.smartLightManage.smartLightList')
-                }}/>
+                        cb(null, require('../smartLightManage/container/SmartLightList').default);
+                    }, 'starriverpro.smartLightManage.SmartLightList');
+                }}>
+                    <Route path="lc" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../smartLightList/containers/SingleLampCon').default);
+                        }, 'starriverpro.smartLightList.SingleLampCon');
+                    }}/>
+                    <Route path="lcc" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../smartLightList/containers/LampConCenter').default);
+                        }, 'starriverpro.smartLightList.LampConCenter');
+                    }}/>
+                    <Route path="sensor" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../smartLightList/containers/Sensor').default);
+                        }, 'starriverpro.smartLightList.Sensor');
+                    }}/>
+                    <Route path="screen" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../smartLightList/containers/Screen').default);
+                        }, 'starriverpro.smartLightList.Screen');
+                    }}/>
+                    <Route path="collect" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../smartLightList/containers/CollectionInstrument').default);
+                        }, 'starriverpro.smartLightList.CollectionInstrument');
+                    }}/>
+                </Route>
                 <Route
                     path="set"
                     getComponent={(nextState, cb) => {
