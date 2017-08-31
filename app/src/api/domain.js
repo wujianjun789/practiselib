@@ -128,3 +128,35 @@ export function getWhiteListById(id, cb) {
         cb && cb(response);
     })
 }
+
+/**
+ * 
+ * @param {Number} lccId 
+ * @param {Number} lcId 
+ * @param {Function} cb 
+ */
+export function addLcToWhiteListById(lccId, lcId, cb) {   
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/lccs/${lccId}/whiteList/rel/${lcId}`,{
+        headers: headers,
+        method: 'PUT',
+    }, response=>{
+        cb && cb(response)
+    })
+}
+
+/**
+ * 
+ * @param {Number} lccId 
+ * @param {Number} lcId 
+ * @param {Function} cb 
+ */
+export function delLcFromWhiteListById(lccId, lcId, cb) {
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/lccs/${lccId}/whiteList/rel/${lcId}`,{
+        headers: headers,
+        method: 'DELETE',
+    }, response=>{
+        cb && cb(response)
+    })
+}

@@ -5,7 +5,7 @@ import SearchText from '../../components/SearchText';
 import Table from '../../components/Table2';
 import Immutable from 'immutable';
 
-import {getWhiteListById} from '../../api/domain';
+import {getWhiteListById, addLcToWhiteListById, delLcFromWhiteListById} from '../../api/domain';
 
 import {getAssetsBaseByModel} from '../../api/asset'
 
@@ -14,13 +14,9 @@ export default class WhiteListPopup extends Component {
         super(props);
         this.state = {
             whiteList: [],     /*白名单列表*/
-            // search: Immutable.fromJS({
-            //     placeholder: '输入素材名称',
-            //     value: '',
-            //     curIndex: -1
-            // }), 
-            search: {placeholder: '输入素材名称', value: '', curIndex: -1},
+            search: {placeholder: '输入素材名称', value: ''},
             lcsList: [{id: 1, name: "lamp1"}, {id: 2, name: "lamp2"}, {id: 3, name: "lamp3"}],        /*可添加的设备列表*/
+            activeIndex:-1,
         }
 
         this.columns = [
@@ -35,6 +31,7 @@ export default class WhiteListPopup extends Component {
         this.searchChange = this.searchChange.bind(this);
         this.itemDelete = this.itemDelete.bind(this);
         this.initWhiteList = this.initWhiteList.bind(this);
+        this.updateWhiteList = this.updateWhiteList.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.itemClick = this.itemClick.bind(this);
         this.initLcsList = this.initLcsList.bind(this);
@@ -42,10 +39,7 @@ export default class WhiteListPopup extends Component {
 
     componentWillMount(){  //需要更新data
         this.mounted = true;
-        const {id}  = this.props;
-        getWhiteListById(id, data=>{ 
-            this.mounted && this.initWhiteList(data)
-        });
+        this.initWhiteList();
         let model = "lc";
         getAssetsBaseByModel(model, data =>{
             this.mounted && this.initLcsList(data)
@@ -56,8 +50,30 @@ export default class WhiteListPopup extends Component {
         this.mounted = false;
     }
 
-    initWhiteList(data){
+    initWhiteList() {
+        const {id} = this.props;
+        getWhiteListById(id, data=>{ 
+            this.mounted && this.updateWhiteList(data)
+        });
+    }
+
+    updateWhiteList(data){
         this.setState({whiteList:data});
+    }
+
+    onAdd() {                  //向whitelist中添加需要的数据,然后更新列表视图
+        let lccId = this.props.id;  //灯集中控制器的id
+        let index = this.state.activeIndex;  //当前被激活的选项
+        let lcId = this.state.lcsList[index].id;   
+        addLcToWhiteListById(lccId, lcId, this.initWhiteList)
+        this.setState({search: {placeholder: '输入素材名称', value: ''}});
+    }
+
+
+    itemDelete(e) {   //从whiteList中删除单灯
+        let lcId = e.target.id;
+        let lccId = this.props.id;
+        delLcFromWhiteListById(lccId, lcId, this.initWhiteList)
     }
 
     /*获取可添加到白名单的单灯列表*/
@@ -79,42 +95,31 @@ export default class WhiteListPopup extends Component {
         this.setState({[id]: e.target.value});
     }
 
-    onAdd() {
-        this.props.onAdd && this.props.onAdd();
-    }
-
     searchChange(value){
-
         const { search } = this.state;
         let newValue = Object.assign({}, search, {value:value});
         this.setState({search:newValue});
-
     }
 
 
     itemClick(itemIndex){
-        const {search} = this.state;
-        let newValue = Object.assign({}, search, {curIndex:itemIndex});
-        this.setState({search:newValue});
+        this.setState({ activeIndex:itemIndex});
     }
 
     searchSubmit(){
         const {search} = this.state;
         let value = search.value;
         this.props.searchSubmit && this.props.searchSubmit(value);
-        let newValue = Object.assign({}, search, {value: value})
+        let newValue = Object.assign({}, search, {value: value});
+        console.log(newValue);
         this.setState({search: newValue});
     }
 
-    itemDelete(e) {
-        this.props.itemDelete && this.props.itemDelete(e.target);
-    }
 
     render() {
         let {className='', data, id} = this.props;
         let {search, whiteList} = this.state;
         let {lcsList} = this.state;   //可添加的单灯数据
-        // console.log("lcsList:", lcsList);  //数据已成功获取
         let datalist = [];
         for(var key in lcsList){
             let item = lcsList[key];
@@ -123,7 +128,6 @@ export default class WhiteListPopup extends Component {
                 datalist.push({id:item.id, value:item.name})
             }
         }
-
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
