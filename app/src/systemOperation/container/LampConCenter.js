@@ -22,6 +22,7 @@ import { TreeData, getModelData, getModelList, getModelTypesById, getModelTypesN
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
+import { requestWhiteListCountById} from '../../api/domain'
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
@@ -45,7 +46,8 @@ export class LampConCenter extends Component {
                 // latlng:{lng: 121.49971691534425,
                 //     lat: 31.239658843127756},
                 position: [],
-                data: []
+                data: [],
+                whiteCount:0
             },
             domainList: {
                 titleField: 'name',
@@ -208,6 +210,7 @@ export class LampConCenter extends Component {
         this.initPageSize = this.initPageSize.bind(this);
         this.initDomainList = this.initDomainList.bind(this);
         this.initAssetList = this.initAssetList.bind(this);
+        this.requestWhiteListCount = this.requestWhiteListCount.bind(this);
     }
 
     componentWillMount() {
@@ -233,7 +236,7 @@ export class LampConCenter extends Component {
                     this.mounted && this.initDomainList(data)
                 })
             }
-        })
+        });
     }
 
     componentWillUnmount() {
@@ -252,7 +255,8 @@ export class LampConCenter extends Component {
         })
 
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-            this.mounted && this.initAssetList(data)
+            this.mounted && this.initAssetList(data);
+            this.requestWhiteListCount();
         })
     }
 
@@ -305,6 +309,14 @@ export class LampConCenter extends Component {
                 })
             });
         }
+    }
+    
+    requestWhiteListCount(){
+        const {selectDevice} = this.state;
+        let lccId = selectDevice.data[0].id;
+        requestWhiteListCountById(lccId, (lcCount)=>{
+            this.setState({selectDevice: Object.assign({}, selectDevice, {whiteCount: lcCount.count})});
+        }) 
     }
 
     popupCancel() {
@@ -373,9 +385,8 @@ export class LampConCenter extends Component {
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
             case 'sys-whitelist':
-                let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } data={ whitelistData } overlayerHide={ overlayerHide } />)
-                // overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />)
+                let data2 = selectDevice.data.length?selectDevice.data[0]:null;
+                overlayerShow(<WhiteListPopup className="whitelist-popup" id = {data2.id} data={whitelistData} overlayerHide={overlayerHide} callFun={()=>{this.requestWhiteListCount()}}/>)
                 break;
         }
     }
@@ -412,6 +423,7 @@ export class LampConCenter extends Component {
         this.setState({
             selectDevice: selectDevice
         });
+        this.requestWhiteListCount();   //点击列表行后更新项目数量
     }
 
     searchSubmit() {
@@ -480,7 +492,7 @@ export class LampConCenter extends Component {
                        <span className="icon_sys_whitelist"></span>白名单
                      </div>
                      <div className="panel-body domain-property">
-                       <span className="domain-name">{ `包含：${selectDevice.data.length} 个项目` }</span>
+                       <span className="domain-name">{ `包含：${selectDevice.whiteCount} 个设备` }</span>
                        <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>
                          编辑
                        </button>
