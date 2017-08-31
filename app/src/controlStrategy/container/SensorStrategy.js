@@ -14,6 +14,7 @@ import ConfirmPopup from '../../components/ConfirmPopup';
 import Page from '../../components/Page';
 import Immutable from 'immutable';
 import {getStrategyListByName, getStrategyCountByName, delStrategy, getModelSummariesByModelID} from '../../api/strategy';
+import {getLightLevelConfig, getStrategyDeviceConfig} from '../../util/network';
 import {getObjectByKeyObj} from '../../util/algorithm';
 
 export class SensorStrategy extends Component{
@@ -35,7 +36,20 @@ export class SensorStrategy extends Component{
                 valueField: 'value',
                 options: []
             },
-            sensorsProps: {}
+            sensorsProps: {},
+            controlDeviceList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {value: 'screen', title: '屏幕'},
+                    {value: 'lc', title: '灯'}
+                ]
+            },
+            brightnessList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: []
+            }
         };
 
         this.sensorTransform = {
@@ -66,6 +80,8 @@ export class SensorStrategy extends Component{
 
         this.initData = this.initData.bind(this);
         this.updateSensorStrategyList = this.updateSensorStrategyList.bind(this);
+        this.updateControlDeviceList = this.updateControlDeviceList.bind(this);
+        this.updateBrightnessList = this.updateBrightnessList.bind(this);
         this.updatePageData = this.updatePageData.bind(this);
         this.updateSensorTypeList = this.updateSensorTypeList.bind(this);
         this.generateSensorTypesData = this.generateSensorTypesData.bind(this);
@@ -78,6 +94,8 @@ export class SensorStrategy extends Component{
         this.mounted = true;
         this.initData();
         getModelSummariesByModelID('sensor', this.updateSensorTypeList);
+        getStrategyDeviceConfig(this.updateControlDeviceList);
+        getLightLevelConfig(this.updateBrightnessList);
     }
 
     componentWillUnmount() {
@@ -99,6 +117,36 @@ export class SensorStrategy extends Component{
             this.setState({sensorsProps});
         }
         
+    }
+
+    updateControlDeviceList(data) {
+        // ["lc", "screen"]
+        let opt = [];
+        dat.forEach(value => {
+            let title = '';
+            if(value == 'lc') {
+                title = '灯';
+            } else if (value == 'screen') {
+                title = '屏幕';
+            }
+            opt.push({title, value});
+        })
+        this.setState({controlDeviceList: Object.assign({}, this.state.controlDeviceList, {options: opt} )});
+    }
+
+    updateBrightnessList(data) {
+        // ["关", 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+        let opt = [];
+        data.forEach(value => {
+            let val = value;
+            let title = `亮度${val}`;
+            if(value == '关') {
+                val = 'off';
+                title = '关';
+            }
+            opt.push({value: val, title});
+        });
+        this.setState({brightnessList: Object.assign({}, this.state.brightnessList, {options: opt})});
     }
 
     generateSensorTypesData(types) {
@@ -141,6 +189,7 @@ export class SensorStrategy extends Component{
         };
         this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='edit' title="修改策略" data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
+            controlDeviceList={this.state.controlDeviceList} brightnessList={this.state.brightnessList}
             overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}/>);
     }
 
@@ -170,6 +219,7 @@ export class SensorStrategy extends Component{
         };
         id=='add-sensor' && this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='add' title="新建策略" data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
+            controlDeviceList={this.state.controlDeviceList} brightnessList={this.state.brightnessList}
             overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}/>);
     }
 
