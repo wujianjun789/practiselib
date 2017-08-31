@@ -27,8 +27,69 @@ export const sysInitData = {
             lng: latlng.lng,
             lat: latlng.lat
         }
-    }
-
+    },
+    smartLightColums: [
+        {
+            id: 0,
+            field: "domainName",
+            title: "域"
+        }, {
+            id: 1,
+            field: "name",
+            title: "设备名称"
+        }, {
+            id: 2,
+            field: "typeName",
+            title: "型号"
+        }, {
+            id: 3,
+            field: "id",
+            title: "设备编号"
+        }, {
+            id: 5,
+            field: "lng",
+            title: "经度"
+        }, {
+            id: 6,
+            field: "lat",
+            title: "纬度"
+        }, {
+            id: 7,
+            field: 'smartLightLogo',
+            title: "智慧路灯标识"
+        }
+    ],
+    smartLightPole: [
+        {
+            id: 0,
+            field: "domainName",
+            title: "域"
+        }, {
+            id: 1,
+            field: "name",
+            title: "设备名称"
+        }, {
+            id: 2,
+            field: "typeName",
+            title: "型号"
+        }, {
+            id: 3,
+            field: "id",
+            title: "设备编号"
+        }, {
+            id: 5,
+            field: "lng",
+            title: "经度"
+        }, {
+            id: 6,
+            field: "lat",
+            title: "纬度"
+        }, {
+            id: 7,
+            field: 'smartLightLogo',
+            title: "灯杆标识"
+        }
+    ]
 }
 
 

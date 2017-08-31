@@ -1,7 +1,7 @@
 /** Created By ChrisWen
  *  17/8/30
- *  系统运维-智慧路灯配置模块
- *  约定: 以 smartLightPole 来命名灯杆模块（router, class-name
+ *  系统运维-灯杆配置模块
+ *  约定: 以 smartLightPole 来命名灯杆模块（router, class-name)
  */
 
 import React, { Component } from 'react';
@@ -29,6 +29,7 @@ import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
+import { sysInitData } from '../initData/index.js';
 
 export class SmartLightPole extends Component {
     constructor(props) {
@@ -67,82 +68,24 @@ export class SmartLightPole extends Component {
         }
 
         //表格
-        this.columns = [
-            {
-                id: 0,
-                field: "domainName",
-                title: "域"
-            }, {
-                id: 1,
-                field: "name",
-                title: "设备名称"
-            }, {
-                id: 2,
-                field: "typeName",
-                title: "型号"
-            }, {
-                id: 3,
-                field: "id",
-                title: "设备编号"
-            }, {
-                id: 5,
-                field: "lng",
-                title: "经度"
-            }, {
-                id: 6,
-                field: "lat",
-                title: "纬度"
-            }, {
-                id: 7,
-                field: 'smartLightLogo',
-                title: "灯杆标识"
-            }
-        ];
+        this.columns = sysInitData.smartLightPole;
 
-        this.collpseHandler = this
-            .collpseHandler
-            .bind(this);
-        this.searchChange = this
-            .searchChange
-            .bind(this);
-        this.tableClick = this
-            .tableClick
-            .bind(this);
-        this.updateSelectDevice = this
-            .updateSelectDevice
-            .bind(this);
-        this.searchSubmit = this
-            .searchSubmit
-            .bind(this);
-        this.pageChange = this
-            .pageChange
-            .bind(this);
-        this.domainHandler = this
-            .domainHandler
-            .bind(this);
-        this.domainSelect = this
-            .domainSelect
-            .bind(this);
+        this.collpseHandler = this.collpseHandler.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.tableClick = this.tableClick.bind(this);
+        this.updateSelectDevice = this.updateSelectDevice.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.pageChange = this.pageChange.bind(this);
+        this.domainHandler = this.domainHandler.bind(this);
+        this.domainSelect = this.domainSelect.bind(this);
 
-        this.popupCancel = this
-            .popupCancel
-            .bind(this);
-        this.popupConfirm = this
-            .popupConfirm
-            .bind(this);
+        this.popupCancel = this.popupCancel.bind(this);
+        this.popupConfirm = this.popupConfirm.bind(this);
 
-        this.requestSearch = this
-            .requestSearch
-            .bind(this);
-        this.initPageSize = this
-            .initPageSize
-            .bind(this);
-        this.initDomainList = this
-            .initDomainList
-            .bind(this);
-        this.initAssetList = this
-            .initAssetList
-            .bind(this);
+        this.requestSearch = this.requestSearch.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
+        this.initDomainList = this.initDomainList.bind(this);
+        this.initAssetList = this.initAssetList.bind(this);
     }
 
     componentWillMount() {
@@ -201,13 +144,19 @@ export class SmartLightPole extends Component {
     }
 
     initDomainList(data) {
-        let domainList = Object.assign({}, this.state.domainList, {
-            index: 0
-        }, {
-            value: data.length ? data[0].name : ""
-        }, {
-            options: data
-        });
+        let domainList = {
+            ...this.state.domainList,
+            ...{
+                index: 0
+            },
+            ...{
+                value: data.length ? data[0].name : ""
+            },
+            ...{
+                options: data
+            }
+        };
+        console.log(domainList);
         this.setState({
             domainList: domainList
         });

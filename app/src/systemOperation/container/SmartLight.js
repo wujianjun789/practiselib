@@ -1,7 +1,7 @@
 /** Created By ChrisWen
  *  17/8/30
  *  系统运维-智慧路灯配置模块
- *  约定: 以 smartLight 来命名智慧路灯模块（router, class-name
+ *  约定: 以 smartLight 来命名智慧路灯模块（router, class-name)
  */
 
 import React, { Component } from 'react';
@@ -56,109 +56,19 @@ export class SmartLight extends Component {
                 valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {
-                        id: 1,
-                        title: 'domain01',
-                        value: 'domain01'
-                    }, {
-                        id: 2,
-                        title: 'domain02',
-                        value: 'domain02'
-                    }, {
-                        id: 3,
-                        title: 'domain03',
-                        value: 'domain03'
-                    }, {
-                        id: 4,
-                        title: 'domain04',
-                        value: 'domain04'
-                    }, {
-                        id: 5,
-                        title: 'domain05',
-                        value: 'domain05'
-                    }, {
-                        id: 6,
-                        title: 'domain06',
-                        value: 'domain06'
-                    }, {
-                        id: 7,
-                        title: 'domain07',
-                        value: 'domain07'
-                    }
-                ]
+                options: []
             },
             modelList: {
                 titleField: 'title',
                 valueField: 'value',
-                options: [
-                    {
-                        id: 1,
-                        title: 'model01',
-                        value: 'model01'
-                    }, {
-                        id: 2,
-                        title: 'model02',
-                        value: 'model02'
-                    }, {
-                        id: 3,
-                        title: 'model03',
-                        value: 'model03'
-                    }, {
-                        id: 4,
-                        title: 'model04',
-                        value: 'model04'
-                    }, {
-                        id: 5,
-                        title: 'model05',
-                        value: 'model05'
-                    }, {
-                        id: 6,
-                        title: 'model06',
-                        value: 'model06'
-                    }, {
-                        id: 7,
-                        title: 'model07',
-                        value: 'model07'
-                    }
-                ]
+                options: []
             },
             whitelistData: [],
             data: Immutable.fromJS([])
         }
 
         //表格
-        this.columns = [
-            {
-                id: 0,
-                field: "domainName",
-                title: "域"
-            }, {
-                id: 1,
-                field: "name",
-                title: "设备名称"
-            }, {
-                id: 2,
-                field: "typeName",
-                title: "型号"
-            }, {
-                id: 3,
-                field: "id",
-                title: "设备编号"
-            }, {
-                id: 5,
-                field: "lng",
-                title: "经度"
-            }, {
-                id: 6,
-                field: "lat",
-                title: "纬度"
-            }, {
-                id: 7,
-                field: 'smartLightLogo',
-                title: "智慧路灯标识"
-            }
-        ];
+        this.columns = sysInitData.smartLightColums;
 
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -190,15 +100,18 @@ export class SmartLight extends Component {
                     .treeViewInit(TreeData);
                 this.setState({
                     model: model,
-                    modelList: Object.assign({}, this.state.modelList, {
-                        options: getModelTypesById(model).map((type) => {
-                            return {
-                                id: type.id,
-                                title: type.title,
-                                value: type.title
-                            }
-                        })
-                    })
+                    modelList: {
+                        ...this.state.modelList,
+                        ...{
+                            options: getModelTypesById(model).map((type) => {
+                                return {
+                                    id: type.id,
+                                    title: type.title,
+                                    value: type.title
+                                }
+                            })
+                        }
+                    }
                 });
                 getDomainList(data => {
                     this.mounted && this.initDomainList(data)
