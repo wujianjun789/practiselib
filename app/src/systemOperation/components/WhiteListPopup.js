@@ -111,7 +111,6 @@ export default class WhiteListPopup extends Component {
         let value = search.value;
         this.props.searchSubmit && this.props.searchSubmit(value);
         let newValue = Object.assign({}, search, {value: value});
-        console.log(newValue);
         this.setState({search: newValue});
     }
 
