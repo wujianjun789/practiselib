@@ -86,7 +86,9 @@ export function getClassByModel(key) {
             return 'icon_plc_control';
             //智慧路灯 icon
         case 'smartLight':
-            return 'icon_plc_control';
+            return 'icon_led_light';
+        case 'smartLightPole':
+            return 'icon_light_control';
         case 'ammeter':
             return 'icon_ammeter';
         case 'pole':

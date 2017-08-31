@@ -1,7 +1,7 @@
 /** Created By ChrisWen
  *  17/8/30
  *  系统运维-智慧路灯配置模块
- *  约定: 以 smartLight 来命名智慧路灯模块（router, class-name
+ *  约定: 以 smartLightPole 来命名灯杆模块（router, class-name
  */
 
 import React, {Component} from 'react';
@@ -37,7 +37,7 @@ import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
 
-export class SmartLight extends Component {
+export class SmartLightPole extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -155,7 +155,7 @@ export class SmartLight extends Component {
             }, {
                 id: 7,
                 field: 'smartLightLogo',
-                title: "智慧路灯标识"
+                title: "灯杆标识"
             }
         ];
 
@@ -530,7 +530,7 @@ export class SmartLight extends Component {
                     className="btn btn-primary add-domain"
                     onClick={this.domainHandler}>添加</button>
             </div>
-            <div className='smartLightPole'>
+            <div className='smartLight'>
                 <div className="table-container">
                     <Table
                         columns={this.columns}
@@ -551,7 +551,7 @@ export class SmartLight extends Component {
             <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                 <div className="panel panel-default device-statics-info">
                     <div className="panel-heading">
-                        <span className="icon_sys_select"></span>选中设备 --- 智慧路灯页面
+                        <span className="icon_sys_select"></span>选中设备 --- 灯杆页面
                     </div>
                     <div className="panel-body domain-property">
                         <span className="domain-name">{selectDevice.data.length
@@ -592,4 +592,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SmartLight)
+export default connect(mapStateToProps, mapDispatchToProps)(SmartLightPole)

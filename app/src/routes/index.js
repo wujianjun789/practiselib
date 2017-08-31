@@ -148,6 +148,13 @@ export default(
                             cb(null, require('../systemOperation/container/smartLight').default)
                         }, 'starriverpro.systemoperation.smartLight')
                     }}/>
+                    <Route
+                        path="smartLightPole"
+                        getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../systemOperation/container/smartLightPole').default)
+                        }, 'starriverpro.systemoperation.smartLightPole')
+                    }}/>
                 </Route>
                 <Route path="strategy">
                     <Route

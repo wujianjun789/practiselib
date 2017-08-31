@@ -486,6 +486,23 @@ export const modelData = [
       "props": [],
       "values": {}
     }
+  }, {
+    "key": "smartlightPole",
+    "name": "smartlightPole",
+    "props": [],
+    "types": [],
+    "intl": {
+      "name": {
+        "en": "smartlightPole",
+        "zh": "灯杆"
+      },
+      "props": {},
+      "types": {}
+    },
+    "defaults": {
+      "props": [],
+      "values": {}
+    }
   }
 ]
 
@@ -586,6 +603,8 @@ function getLinkByModel(key) {
       return '/systemOperation/config/sensor';
     case 'smartlight':
       return '/systemOperation/config/smartlight';
+    case 'smartlightPole':
+      return '/systemOperation/config/smartlightPole';
     case 'plc':
       return 'icon_plc_control';
     case 'ammeter':
