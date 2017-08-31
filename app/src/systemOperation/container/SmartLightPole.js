@@ -4,9 +4,9 @@
  *  约定: 以 smartLightPole 来命名灯杆模块（router, class-name
  */
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import '../../../public/styles/systemOperation-config.less';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
@@ -17,25 +17,18 @@ import WhiteListPopup from '../components/WhiteListPopup';
 import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Immutable from 'immutable';
-import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
+import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import {
-    TreeData,
-    getModelData,
-    modelData,
-    getModelNameById,
-    getModelTypesById,
-    getModelTypesNameById
-} from '../../data/systemModel'
+import { TreeData, getModelData, modelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
 
-import {getDomainList} from '../../api/domain'
-import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'
+import { getDomainList } from '../../api/domain'
+import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
-import {getObjectByKey} from '../../util/index'
+import { getObjectByKey } from '../../util/index'
 
-import {treeViewInit} from '../../common/actions/treeView'
+import { treeViewInit } from '../../common/actions/treeView'
 
 export class SmartLightPole extends Component {
     constructor(props) {
@@ -43,8 +36,15 @@ export class SmartLightPole extends Component {
         this.state = {
             model: "",
             collapse: false,
-            page: Immutable.fromJS({pageSize: 10, current: 1, total: 0}),
-            search: Immutable.fromJS({placeholder: '输入设备名称', value: ''}),
+            page: Immutable.fromJS({
+                pageSize: 10,
+                current: 1,
+                total: 0
+            }),
+            search: Immutable.fromJS({
+                placeholder: '输入设备名称',
+                value: ''
+            }),
             selectDevice: {
                 id: "systemOperation",
                 position: [],
@@ -55,72 +55,12 @@ export class SmartLightPole extends Component {
                 valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {
-                        id: 1,
-                        title: 'domain01',
-                        value: 'domain01'
-                    }, {
-                        id: 2,
-                        title: 'domain02',
-                        value: 'domain02'
-                    }, {
-                        id: 3,
-                        title: 'domain03',
-                        value: 'domain03'
-                    }, {
-                        id: 4,
-                        title: 'domain04',
-                        value: 'domain04'
-                    }, {
-                        id: 5,
-                        title: 'domain05',
-                        value: 'domain05'
-                    }, {
-                        id: 6,
-                        title: 'domain06',
-                        value: 'domain06'
-                    }, {
-                        id: 7,
-                        title: 'domain07',
-                        value: 'domain07'
-                    }
-                ]
+                options: []
             },
             modelList: {
                 titleField: 'title',
                 valueField: 'value',
-                options: [
-                    {
-                        id: 1,
-                        title: 'model01',
-                        value: 'model01'
-                    }, {
-                        id: 2,
-                        title: 'model02',
-                        value: 'model02'
-                    }, {
-                        id: 3,
-                        title: 'model03',
-                        value: 'model03'
-                    }, {
-                        id: 4,
-                        title: 'model04',
-                        value: 'model04'
-                    }, {
-                        id: 5,
-                        title: 'model05',
-                        value: 'model05'
-                    }, {
-                        id: 6,
-                        title: 'model06',
-                        value: 'model06'
-                    }, {
-                        id: 7,
-                        title: 'model07',
-                        value: 'model07'
-                    }
-                ]
+                options: []
             },
             whitelistData: [],
             data: Immutable.fromJS([])
@@ -211,15 +151,16 @@ export class SmartLightPole extends Component {
         let model = route && route.path;
         getModelData(model, () => {
             if (this.mounted) {
-                this
-                    .props
-                    .actions
-                    .treeViewInit(TreeData);
+                this.props.actions.treeViewInit(TreeData);
                 this.setState({
                     model: model,
                     modelList: Object.assign({}, this.state.modelList, {
                         options: getModelTypesById(model).map((type) => {
-                            return {id: type.id, title: type.title, value: type.title}
+                            return {
+                                id: type.id,
+                                title: type.title,
+                                value: type.title
+                            }
                         })
                     })
                 });
@@ -238,43 +179,38 @@ export class SmartLightPole extends Component {
 
     requestSearch() {
         const {model, domainList, search, page} = this.state
-        let domain = domainList.options.length
-            ? domainList.options[domainList.index]
-            : null;
+        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
         let name = search.get('value');
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
-        getSearchCount(domain
-            ? domain.id
-            : null, model, name, data => {
+        getSearchCount(domain ? domain.id : null, model, name, data => {
             this.mounted && this.initPageSize(data)
         })
 
-        getSearchAssets(domain
-            ? domain.id
-            : null, model, name, offset, size, data => {
+        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
             this.mounted && this.initAssetList(data)
         })
     }
 
     initPageSize(data) {
-        let page = this
-            .state
-            .page
-            .set('total', data.count);
-        this.setState({page: page});
+        let page = this.state.page.set('total', data.count);
+        this.setState({
+            page: page
+        });
     }
 
     initDomainList(data) {
         let domainList = Object.assign({}, this.state.domainList, {
             index: 0
         }, {
-            value: data.length
-                ? data[0].name
-                : ""
-        }, {options: data});
-        this.setState({domainList: domainList});
+            value: data.length ? data[0].name : ""
+        }, {
+            options: data
+        });
+        this.setState({
+            domainList: domainList
+        });
         this.requestSearch();
     }
 
@@ -283,9 +219,7 @@ export class SmartLightPole extends Component {
             let domainName = "";
             if (this.state.domainList.options.length && asset.domainId) {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId)
-                domainName = domain
-                    ? domain.name
-                    : "";
+                domainName = domain ? domain.name : "";
             }
             return Object.assign({}, asset, asset.extend, asset.geoPoint, {
                 domainName: domainName
@@ -302,135 +236,86 @@ export class SmartLightPole extends Component {
             this.updateSelectDevice(item);
         } else {
             this.setState({
-                selectDevice: Object.assign({}, this.state.selectDevice, {data: []})
+                selectDevice: Object.assign({}, this.state.selectDevice, {
+                    data: []
+                })
             });
         }
     }
 
     popupCancel() {
-        this
-            .props
-            .actions
-            .overlayerHide();
+        this.props.actions.overlayerHide();
     }
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
         delAssetsByModel(model, selectDevice.data.length && selectDevice.data[0].id, () => {
             this.requestSearch();
-            this
-                .props
-                .actions
-                .overlayerHide();
+            this.props.actions.overlayerHide();
         })
 
     }
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, modelList, whitelistData} = this.state
+        const {model, selectDevice, domainList, modelList} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
-        let curType = modelList.options.length
-            ? modelList.options[0]
-            : null;
+        let curType = modelList.options.length ? modelList.options[0] : null;
         switch (id) {
             case 'sys-add':
                 const dataInit = {
                     id: '',
                     name: '',
-                    model: curType
-                        ? curType.title
-                        : "",
-                    modelId: curType
-                        ? curType.id
-                        : "",
+                    model: curType ? curType.title : "",
+                    modelId: curType ? curType.id : "",
                     domain: domainList.value,
-                    domainId: domainList.options.length
-                        ? domainList.options[domainList.index].id
-                        : "",
+                    domainId: domainList.options.length ? domainList.options[domainList.index].id : "",
                     lng: "",
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup
-                    popId="add"
-                    className="centralized-popup"
-                    title="添加设备"
-                    model={this.state.model}
-                    data={dataInit}
-                    domainList={domainList}
-                    modelList={modelList}
-                    overlayerHide={overlayerHide}
-                    onConfirm={(data) => {
-                    postAssetsByModel(model, data, () => {
-                        this.requestSearch();
-                    });
-                }}/>);
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" {...this.state} {...this.props.actions} data={ dataInit } onConfirm={ (data) => {
+                                                                                                                                                             postAssetsByModel(model, data, () => {
+                                                                                                                                                                 this.requestSearch();
+                                                                                                                                                             });
+                                                                                                                                                         } }
+                              />);
                 break;
             case 'sys-update':
-                let latlng = selectDevice.position.length
-                    ? selectDevice.position[0]
-                    : {
-                        lat : "",
-                        lng : ""
-                    }
-                    let data = selectDevice.data.length
-                        ? selectDevice.data[0]
-                        : null;
+                let latlng = selectDevice.position.length ? selectDevice.position[0] : {
+                    lat: "",
+                    lng: ""
+                }
+                let data = selectDevice.data.length ? selectDevice.data[0] : null;
                 const dataInit2 = {
-                    id: data
-                        ? data.id
-                        : null,
-                    name: data
-                        ? data.name
-                        : null,
-                    model: data
-                        ? getModelTypesNameById(model, data.type)
-                        : "",
-                    modelId: data
-                        ? data.type
-                        : null,
+                    id: data ? data.id : null,
+                    name: data ? data.name : null,
+                    model: data ? getModelTypesNameById(model, data.type) : "",
+                    modelId: data ? data.type : null,
                     domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup
-                    popId="edit"
-                    className="centralized-popup"
-                    title="灯集中控制器"
-                    data={dataInit2}
-                    domainList={domainList}
-                    modelList={modelList}
-                    overlayerHide={overlayerHide}
-                    onConfirm={data => {
-                    updateAssetsByModel(model, data, (data) => {
-                        this.requestSearch();
-                        overlayerHide();
-                    })
-                }}/>);
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器" data={ dataInit2 } domainList={ domainList } modelList={ modelList }
+                                overlayerHide={ overlayerHide } onConfirm={ data => {
+                                                                                updateAssetsByModel(model, data, (data) => {
+                                                                                    this.requestSearch();
+                                                                                    overlayerHide();
+                                                                                })
+                                                                            } } />);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup
-                    tips="是否删除选中设备？"
-                    iconClass="icon_popup_delete"
-                    cancel={this.popupCancel}
-                    confirm={this.popupConfirm}/>);
+                overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />);
                 break;
             case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup
-                    className="whitelist-popup"
-                    data={whitelistData}
-                    overlayerHide={overlayerHide}/>);
+                overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />);
                 break;
         }
     }
 
     pageChange(current, pageSize) {
-        let page = this
-            .state
-            .page
-            .set('current', current);
+        let page = this.state.page.set('current', current);
         this.setState({
             page: page
         }, () => {
@@ -445,37 +330,32 @@ export class SmartLightPole extends Component {
     updateSelectDevice(item) {
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
-        selectDevice
-            .data
-            .splice(0);
-        selectDevice
-            .data
-            .push({id: item.id, type: item.extend.type, name: item.name});
+        selectDevice.data.splice(0);
+        selectDevice.data.push({
+            id: item.id,
+            type: item.extend.type,
+            name: item.name
+        });
         selectDevice.domainId = item.domainId;
-        selectDevice
-            .position
-            .splice(0);
-        selectDevice
-            .position
-            .push(Object.assign({}, {
-                "device_id": item.id,
-                "device_type": 'DEVICE'
-            }, item.geoPoint));
-        this.setState({selectDevice: selectDevice});
+        selectDevice.position.splice(0);
+        selectDevice.position.push(Object.assign({}, {
+            "device_id": item.id,
+            "device_type": 'DEVICE'
+        }, item.geoPoint));
+        this.setState({
+            selectDevice: selectDevice
+        });
     }
 
     searchSubmit() {
         // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
         this.requestSearch();
-        // });
+    // });
     }
 
     searchChange(value) {
         this.setState({
-            search: this
-                .state
-                .search
-                .update('value', () => value)
+            search: this.state.search.update('value', () => value)
         });
     }
 
@@ -499,84 +379,36 @@ export class SmartLightPole extends Component {
     }
 
     render() {
-        const {
-            model,
-            collapse,
-            page,
-            search,
-            selectDevice,
-            domainList,
-            data
-        } = this.state;
-        return <Content
-            className={'offset-right ' + (collapse
-            ? 'collapsed'
-            : '')}>
-            <div className="heading">
-                <Select
-                    id="domain"
-                    titleField={domainList.valueField}
-                    valueField={domainList.valueField}
-                    options={domainList.options}
-                    value={domainList.value}
-                    onChange={this.domainSelect}/>
-                <SearchText
-                    placeholder={search.get('placeholder')}
-                    value={search.get('value')}
-                    onChange={this.searchChange}
-                    submit={this.searchSubmit}/>
-                <button
-                    id="sys-add"
-                    className="btn btn-primary add-domain"
-                    onClick={this.domainHandler}>添加</button>
-            </div>
-            <div className='smartLight'>
-                <div className="table-container">
-                    <Table
-                        columns={this.columns}
-                        data={data}
-                        activeId={selectDevice.data.length && selectDevice.data[0].id}
-                        rowClick={this.tableClick}/>
-                    <Page
-                        className={"page " + (page.get('total') == 0
-                        ? "hidden"
-                        : '')}
-                        showSizeChanger
-                        pageSize={page.get('pageSize')}
-                        current={page.get('current')}
-                        total={page.get('total')}
-                        onChange={this.pageChange}/>
-                </div>
-            </div>
-            <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
-                <div className="panel panel-default device-statics-info">
-                    <div className="panel-heading">
-                        <span className="icon_sys_select"></span>选中设备 --- 灯杆页面
-                    </div>
-                    <div className="panel-body domain-property">
-                        <span className="domain-name">{selectDevice.data.length
-                                ? selectDevice.data[0].name
-                                : ''}</span>
-                        <button
-                            id="sys-update"
-                            className="btn btn-primary pull-right"
-                            onClick={this.domainHandler}
-                            disabled={data.size == 0
-                            ? true
-                            : false}>编辑
-                        </button>
-                        <button
-                            id="sys-delete"
-                            className="btn btn-danger pull-right"
-                            onClick={this.domainHandler}
-                            disabled={data.size == 0
-                            ? true
-                            : false}>删除
-                        </button>
-                    </div>
-                </div>
-            </SideBarInfo>
-        </Content>
+        const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
+        return <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                 <div className="heading">
+                   <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
+                   />
+                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
+                   <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
+                 </div>
+                 <div className='smartLight'>
+                   <div className="table-container">
+                     <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
+                     <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                     />
+                   </div>
+                 </div>
+                 <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
+                   <div className="panel panel-default device-statics-info">
+                     <div className="panel-heading">
+                       <span className="icon_sys_select"></span>选中设备 --- 灯杆页面
+                     </div>
+                     <div className="panel-body domain-property">
+                       <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>编辑
+                       </button>
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>删除
+                       </button>
+                     </div>
+                   </div>
+                 </SideBarInfo>
+               </Content>
     }
 }
 
