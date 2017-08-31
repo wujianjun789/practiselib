@@ -4,9 +4,9 @@
  *  约定: 以 smartLight 来命名智慧路灯模块（router, class-name
  */
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import '../../../public/styles/systemOperation-config.less';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
@@ -17,25 +17,19 @@ import WhiteListPopup from '../components/WhiteListPopup';
 import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Immutable from 'immutable';
-import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
+import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import {
-    TreeData,
-    getModelData,
-    modelData,
-    getModelNameById,
-    getModelTypesById,
-    getModelTypesNameById
-} from '../../data/systemModel'
+import { TreeData, getModelData, modelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
 
-import {getDomainList} from '../../api/domain'
-import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'
+import { getDomainList } from '../../api/domain'
+import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
-import {getObjectByKey} from '../../util/index'
+import { getObjectByKey } from '../../util/index'
 
-import {treeViewInit} from '../../common/actions/treeView'
+import { treeViewInit } from '../../common/actions/treeView';
+import { sysInitData } from '../initData/index.js';
 
 export class SmartLight extends Component {
     constructor(props) {
@@ -43,8 +37,15 @@ export class SmartLight extends Component {
         this.state = {
             model: "",
             collapse: false,
-            page: Immutable.fromJS({pageSize: 10, current: 1, total: 0}),
-            search: Immutable.fromJS({placeholder: '输入设备名称', value: ''}),
+            page: Immutable.fromJS({
+                pageSize: 10,
+                current: 1,
+                total: 0
+            }),
+            search: Immutable.fromJS({
+                placeholder: '输入设备名称',
+                value: ''
+            }),
             selectDevice: {
                 id: "systemOperation",
                 position: [],
@@ -159,50 +160,22 @@ export class SmartLight extends Component {
             }
         ];
 
-        this.collpseHandler = this
-            .collpseHandler
-            .bind(this);
-        this.searchChange = this
-            .searchChange
-            .bind(this);
-        this.tableClick = this
-            .tableClick
-            .bind(this);
-        this.updateSelectDevice = this
-            .updateSelectDevice
-            .bind(this);
-        this.searchSubmit = this
-            .searchSubmit
-            .bind(this);
-        this.pageChange = this
-            .pageChange
-            .bind(this);
-        this.domainHandler = this
-            .domainHandler
-            .bind(this);
-        this.domainSelect = this
-            .domainSelect
-            .bind(this);
+        this.collpseHandler = this.collpseHandler.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.tableClick = this.tableClick.bind(this);
+        this.updateSelectDevice = this.updateSelectDevice.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.pageChange = this.pageChange.bind(this);
+        this.domainHandler = this.domainHandler.bind(this);
+        this.domainSelect = this.domainSelect.bind(this);
 
-        this.popupCancel = this
-            .popupCancel
-            .bind(this);
-        this.popupConfirm = this
-            .popupConfirm
-            .bind(this);
+        this.popupCancel = this.popupCancel.bind(this);
+        this.popupConfirm = this.popupConfirm.bind(this);
 
-        this.requestSearch = this
-            .requestSearch
-            .bind(this);
-        this.initPageSize = this
-            .initPageSize
-            .bind(this);
-        this.initDomainList = this
-            .initDomainList
-            .bind(this);
-        this.initAssetList = this
-            .initAssetList
-            .bind(this);
+        this.requestSearch = this.requestSearch.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
+        this.initDomainList = this.initDomainList.bind(this);
+        this.initAssetList = this.initAssetList.bind(this);
     }
 
     componentWillMount() {
@@ -219,7 +192,11 @@ export class SmartLight extends Component {
                     model: model,
                     modelList: Object.assign({}, this.state.modelList, {
                         options: getModelTypesById(model).map((type) => {
-                            return {id: type.id, title: type.title, value: type.title}
+                            return {
+                                id: type.id,
+                                title: type.title,
+                                value: type.title
+                            }
                         })
                     })
                 });
@@ -251,19 +228,16 @@ export class SmartLight extends Component {
             this.mounted && this.initPageSize(data)
         })
 
-        getSearchAssets(domain
-            ? domain.id
-            : null, model, name, offset, size, data => {
+        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
             this.mounted && this.initAssetList(data)
         })
     }
 
     initPageSize(data) {
-        let page = this
-            .state
-            .page
-            .set('total', data.count);
-        this.setState({page: page});
+        let page = this.state.page.set('total', data.count);
+        this.setState({
+            page: page
+        });
     }
 
     initDomainList(data) {
@@ -273,8 +247,12 @@ export class SmartLight extends Component {
             value: data.length
                 ? data[0].name
                 : ""
-        }, {options: data});
-        this.setState({domainList: domainList});
+        }, {
+            options: data
+        });
+        this.setState({
+            domainList: domainList
+        });
         this.requestSearch();
     }
 
@@ -302,26 +280,22 @@ export class SmartLight extends Component {
             this.updateSelectDevice(item);
         } else {
             this.setState({
-                selectDevice: Object.assign({}, this.state.selectDevice, {data: []})
+                selectDevice: Object.assign({}, this.state.selectDevice, {
+                    data: []
+                })
             });
         }
     }
 
     popupCancel() {
-        this
-            .props
-            .actions
-            .overlayerHide();
+        this.props.actions.overlayerHide();
     }
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
         delAssetsByModel(model, selectDevice.data.length && selectDevice.data[0].id, () => {
             this.requestSearch();
-            this
-                .props
-                .actions
-                .overlayerHide();
+            this.props.actions.overlayerHide();
         })
 
     }
@@ -335,48 +309,24 @@ export class SmartLight extends Component {
             : null;
         switch (id) {
             case 'sys-add':
-                const dataInit = {
-                    id: '',
-                    name: '',
-                    model: curType
-                        ? curType.title
-                        : "",
-                    modelId: curType
-                        ? curType.id
-                        : "",
-                    domain: domainList.value,
-                    domainId: domainList.options.length
-                        ? domainList.options[domainList.index].id
-                        : "",
-                    lng: "",
-                    lat: ""
-                };
-
-                overlayerShow(<CentralizedControllerPopup
-                    popId="add"
-                    className="centralized-popup"
-                    title="添加设备"
-                    model={this.state.model}
-                    data={dataInit}
-                    domainList={domainList}
-                    modelList={modelList}
-                    overlayerHide={overlayerHide}
-                    onConfirm={(data) => {
-                    postAssetsByModel(model, data, () => {
-                        this.requestSearch();
-                    });
-                }}/>);
+                const addInitData = sysInitData.add(curType, domainList);
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={ this.state.model } data={ addInitData } domainList={ domainList }
+                                modelList={ modelList } overlayerHide={ overlayerHide } onConfirm={ (data) => {
+                                                                                                        postAssetsByModel(model, data, () => {
+                                                                                                            this.requestSearch();
+                                                                                                        });
+                                                                                                    } } />);
                 break;
             case 'sys-update':
                 let latlng = selectDevice.position.length
                     ? selectDevice.position[0]
                     : {
-                        lat : "",
-                        lng : ""
+                        lat: "",
+                        lng: ""
                     }
-                    let data = selectDevice.data.length
-                        ? selectDevice.data[0]
-                        : null;
+                let data = selectDevice.data.length
+                    ? selectDevice.data[0]
+                    : null;
                 const dataInit2 = {
                     id: data
                         ? data.id
@@ -395,33 +345,19 @@ export class SmartLight extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup
-                    popId="edit"
-                    className="centralized-popup"
-                    title="灯集中控制器"
-                    data={dataInit2}
-                    domainList={domainList}
-                    modelList={modelList}
-                    overlayerHide={overlayerHide}
-                    onConfirm={data => {
-                    updateAssetsByModel(model, data, (data) => {
-                        this.requestSearch();
-                        overlayerHide();
-                    })
-                }}/>);
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器" data={ dataInit2 } domainList={ domainList } modelList={ modelList }
+                                overlayerHide={ overlayerHide } onConfirm={ data => {
+                                                                                updateAssetsByModel(model, data, (data) => {
+                                                                                    this.requestSearch();
+                                                                                    overlayerHide();
+                                                                                })
+                                                                            } } />);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup
-                    tips="是否删除选中设备？"
-                    iconClass="icon_popup_delete"
-                    cancel={this.popupCancel}
-                    confirm={this.popupConfirm}/>);
+                overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />);
                 break;
             case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup
-                    className="whitelist-popup"
-                    data={whitelistData}
-                    overlayerHide={overlayerHide}/>);
+                overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />);
                 break;
         }
     }
@@ -450,7 +386,11 @@ export class SmartLight extends Component {
             .splice(0);
         selectDevice
             .data
-            .push({id: item.id, type: item.extend.type, name: item.name});
+            .push({
+                id: item.id,
+                type: item.extend.type,
+                name: item.name
+            });
         selectDevice.domainId = item.domainId;
         selectDevice
             .position
@@ -461,13 +401,15 @@ export class SmartLight extends Component {
                 "device_id": item.id,
                 "device_type": 'DEVICE'
             }, item.geoPoint));
-        this.setState({selectDevice: selectDevice});
+        this.setState({
+            selectDevice: selectDevice
+        });
     }
 
     searchSubmit() {
         // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
         this.requestSearch();
-        // });
+    // });
     }
 
     searchChange(value) {
@@ -486,7 +428,6 @@ export class SmartLight extends Component {
     }
 
     domainSelect(event) {
-        // this.props.actions.domainSelectChange(index);
         let index = event.target.selectedIndex;
         let {domainList} = this.state;
         domainList.index = index;
@@ -499,84 +440,46 @@ export class SmartLight extends Component {
     }
 
     render() {
-        const {
-            model,
-            collapse,
-            page,
-            search,
-            selectDevice,
-            domainList,
-            data
-        } = this.state;
-        return <Content
-            className={'offset-right ' + (collapse
-            ? 'collapsed'
-            : '')}>
-            <div className="heading">
-                <Select
-                    id="domain"
-                    titleField={domainList.valueField}
-                    valueField={domainList.valueField}
-                    options={domainList.options}
-                    value={domainList.value}
-                    onChange={this.domainSelect}/>
-                <SearchText
-                    placeholder={search.get('placeholder')}
-                    value={search.get('value')}
-                    onChange={this.searchChange}
-                    submit={this.searchSubmit}/>
-                <button
-                    id="sys-add"
-                    className="btn btn-primary add-domain"
-                    onClick={this.domainHandler}>添加</button>
-            </div>
-            <div className='smartLightPole'>
-                <div className="table-container">
-                    <Table
-                        columns={this.columns}
-                        data={data}
-                        activeId={selectDevice.data.length && selectDevice.data[0].id}
-                        rowClick={this.tableClick}/>
-                    <Page
-                        className={"page " + (page.get('total') == 0
-                        ? "hidden"
-                        : '')}
-                        showSizeChanger
-                        pageSize={page.get('pageSize')}
-                        current={page.get('current')}
-                        total={page.get('total')}
-                        onChange={this.pageChange}/>
-                </div>
-            </div>
-            <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
-                <div className="panel panel-default device-statics-info">
-                    <div className="panel-heading">
-                        <span className="icon_sys_select"></span>选中设备 --- 智慧路灯页面
-                    </div>
-                    <div className="panel-body domain-property">
-                        <span className="domain-name">{selectDevice.data.length
-                                ? selectDevice.data[0].name
-                                : ''}</span>
-                        <button
-                            id="sys-update"
-                            className="btn btn-primary pull-right"
-                            onClick={this.domainHandler}
-                            disabled={data.size == 0
-                            ? true
-                            : false}>编辑
-                        </button>
-                        <button
-                            id="sys-delete"
-                            className="btn btn-danger pull-right"
-                            onClick={this.domainHandler}
-                            disabled={data.size == 0
-                            ? true
-                            : false}>删除
-                        </button>
-                    </div>
-                </div>
-            </SideBarInfo>
-        </Content>
+        const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
+        return <Content className={ 'offset-right ' + (collapse
+                         ? 'collapsed'
+                         : '') }>
+                 <div className="heading">
+                   <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
+                   />
+                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
+                   <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
+                 </div>
+                 <div className='smartLightPole'>
+                   <div className="table-container">
+                     <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
+                     <Page className={ "page " + (page.get('total') == 0
+                                           ? "hidden"
+                                           : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                     />
+                   </div>
+                 </div>
+                 <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
+                   <div className="panel panel-default device-statics-info">
+                     <div className="panel-heading">
+                       <span className="icon_sys_select"></span>选中设备 --- 智慧路灯页面
+                     </div>
+                     <div className="panel-body domain-property">
+                       <span className="domain-name">{ selectDevice.data.length
+                                                       ? selectDevice.data[0].name
+                                                       : '' }</span>
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0
+                                                                                                                                ? true
+                                                                                                                                : false }>编辑
+                       </button>
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0
+                                                                                                                               ? true
+                                                                                                                               : false }>删除
+                       </button>
+                     </div>
+                   </div>
+                 </SideBarInfo>
+               </Content>
     }
 }
 
