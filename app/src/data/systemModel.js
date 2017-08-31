@@ -1,8 +1,8 @@
 /**
  * Created by a on 2017/8/1.
  */
-import {getAssetModelList} from '../api/asset'
-import {intlFormat, getClassByModel} from '../util/index'
+import { getAssetModelList } from '../api/asset'
+import { intlFormat, getClassByModel } from '../util/index'
 
 let models = []
 
@@ -62,6 +62,13 @@ export const TreeData = [
     "toggled": false,
     "active": true,
     "link": "/systemOperation",
+    "level": 1
+  }, {
+    "id": "systemConfig",
+    "name": "系统配置",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/systemConfig",
     "level": 1
   }
 ]
@@ -525,8 +532,8 @@ export function getModelData(model, cb) {
             active: data.key == model ? true : false,
             link: getLinkByModel(data.key)
           };
-          if(index==0){
-            item.link = "/systemOperation/"+item.id+"/"+data.key;
+          if (index == 0) {
+            item.link = "/systemOperation/" + item.id + "/" + data.key;
           }
           item.children.push(child)
         })

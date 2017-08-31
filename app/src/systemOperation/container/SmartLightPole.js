@@ -97,15 +97,20 @@ export class SmartLightPole extends Component {
                 this.props.actions.treeViewInit(TreeData);
                 this.setState({
                     model: model,
-                    modelList: Object.assign({}, this.state.modelList, {
-                        options: getModelTypesById(model).map((type) => {
-                            return {
-                                id: type.id,
-                                title: type.title,
-                                value: type.title
-                            }
-                        })
-                    })
+                    modelList: {
+                        ...this.state.modelList,
+                        ...{
+                            options: getModelTypesById(model).map(type => {
+                                console.log(type)
+                                return {
+                                    // id: type.id,
+                                    // title: type.title,
+                                    // value: type.title
+                                    ...type
+                                }
+                            })
+                        }
+                    }
                 });
                 getDomainList(data => {
                     this.mounted && this.initDomainList(data)
