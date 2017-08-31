@@ -2,14 +2,15 @@
  * Created by a on 2017/8/14.
  */
 import React, {Component} from 'react';
-
+import Content from '../../components/Content';
 export default class SingleLampCon extends Component {
     constructor(props) {
         super(props);
-      
     }
   
     render() {
-        return <div>SingleLampCon</div>
+        return <Content className="">
+                    <div>LampConCenter</div>
+                </Content>
     }
 }

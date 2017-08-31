@@ -2,15 +2,15 @@
  * Created by a on 2017/8/24.
  */
 import React,{Component} from 'react';
-import Content from '../../components/Content'
+import Content from '../../components/Content';
 export default class CollectionInstrument extends Component{
     constructor(props){
         super(props);
     }
 
     render(){
-        return (
-            <div>Collection Instrument</div>
-        )
+        return <Content className="">
+                    <div>Collection Instrument</div>
+                </Content>
     }
 }
