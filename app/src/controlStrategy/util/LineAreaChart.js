@@ -13,11 +13,14 @@ export default function LineAreaChart(parentId, chartData) {
 
     var yMin = chartData.yMin;
     var yMax = chartData.yMax;
+
+    var xAccessor = chartData.xAccessor != undefined ? chartData.xAccessor : d=>d.x;
+    var yAccessor = chartData.yAccessor != undefined ? chartData.yAccessor : d=>d.y;
     var dataset = chartData.data;
 
     var width = w - margin.left - margin.right,
         height = h - margin.top - margin.bottom;
-console.log(dataset);
+
     var x = d3.scalePoint().domain(dataset.map(item=>{
         return item.x;
     })).range([0, width]);
@@ -27,11 +30,7 @@ console.log(dataset);
         y.domain([yMin, yMax])
             .range([height, 0]);
     }else{
-        y.domain([d3.min(dataset, function (d) {
-                return d.y;
-            }), d3.max(dataset, function (d) {
-                return d.y;
-            })])
+        y.domain([d3.min(dataset, yAccessor(d)), d3.max(dataset, yAccessor(d))])
             .range([height, 0]);
     }
 
@@ -44,14 +43,14 @@ console.log(dataset);
         .tickSize(-width)
 
     var area = d3.area()
-        .x(function(d, i) { return x(d.x); })
+        .x(function(d) { return x(xAccessor(d)); })
         .y0(height)
-        .y1(function(d) { return y(d.y); })
+        .y1(function(d) { return y(yAccessor(d)); })
         .curve(d3.curveStepAfter)
 
     var line = d3.line()
-        .x(function (d, i) {return x(d.x);})
-        .y(function (d) {return y(d.y);})
+        .x(function (d) {return x(xAccessor(d));})
+        .y(function (d) {return y(yAccessor(d));})
         .curve(d3.curveStepAfter);
 
     var svg = parent.append("svg").attr("width", w)
@@ -96,7 +95,7 @@ console.log(dataset);
             tooltipInner.text(`${val.y}`);
 
             let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
-            tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${y(val.y)-margin.bottom}px`);
+            tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${y(yAccessor(val))-margin.bottom}px`);
         }
     }, false);
     svg.on('mouseleave', ()=>{
@@ -146,20 +145,20 @@ console.log(dataset);
         .attr("class", "path-line")
         .attr("d", line);
 
-    lineGroup.selectAll("circle")
-        .data(dataset).enter()
-        .append("circle")
-        .attr("cx", function (d, i) {
-            return x(d.x);
-        })
-        .attr("cy", function (d) {
-            return y(d.y);
-        })
-        .attr("r", 2)
-        .append("title")
-        .text(function (d) {
-            return d.x +' '+ label +' '+ d.y;
-        })
+    // lineGroup.selectAll("circle")
+    //     .data(dataset).enter()
+    //     .append("circle")
+    //     .attr("cx", function (d, i) {
+    //         return x(d.x);
+    //     })
+    //     .attr("cy", function (d) {
+    //         return y(d.y);
+    //     })
+    //     .attr("r", 2)
+    //     .append("title")
+    //     .text(function (d) {
+    //         return d.x +' '+ label +' '+ d.y;
+    //     })
 
     // var title = line.append("title")
     //

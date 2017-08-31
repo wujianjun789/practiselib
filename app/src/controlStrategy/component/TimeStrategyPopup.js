@@ -311,7 +311,7 @@ export default class TimeStrategyPopup extends Component{
             if(strategy.time.indexOf("24:00")>-1){
                 IsEnd = true;
             }
-            return {x:strategy.time, y:strategy.light=="关"||strategy.light=="开"?0:strategy.light}
+            return {x:strategy.time, y:/*strategy.light=="关"||strategy.light=="开"?0:*/strategy.light}
         })
 
         if(!IsStart){
