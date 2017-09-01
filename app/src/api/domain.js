@@ -160,3 +160,13 @@ export function delLcFromWhiteListById(lccId, lcId, cb) {
         cb && cb(response)
     })
 }
+
+export function requestWhiteListCountById(lccId, cb) {
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/lccs/${lccId}/whiteList/count`, {
+        headers: headers,
+        method: 'GET',
+    }, response=>{
+        cb && cb(response)
+    })
+}

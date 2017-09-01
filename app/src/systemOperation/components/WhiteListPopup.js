@@ -54,6 +54,7 @@ export default class WhiteListPopup extends Component {
         const {id} = this.props;
         getWhiteListById(id, data=>{ 
             this.mounted && this.updateWhiteList(data)
+            this.props.callFun && this.props.callFun();
         });
     }
 
