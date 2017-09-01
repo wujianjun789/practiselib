@@ -508,38 +508,226 @@ export const modelData = [
       "values": {}
     }
   }, {
-    "key": "smartlight",
-    "name": "smartlight",
-    "props": [],
-    "types": [],
+    "key": "pole",
+    "name": "pole",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
     "intl": {
       "name": {
-        "en": "smartlight",
-        "zh": "智慧路灯"
-      },
-      "props": {},
-      "types": {}
-    },
-    "defaults": {
-      "props": [],
-      "values": {}
-    }
-  }, {
-    "key": "smartlightPole",
-    "name": "smartlightPole",
-    "props": [],
-    "types": [],
-    "intl": {
-      "name": {
-        "en": "smartlightPole",
+        "en": "light controller container",
         "zh": "灯杆"
       },
-      "props": {},
-      "types": {}
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
     },
     "defaults": {
-      "props": [],
-      "values": {}
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
+    }
+  }, {
+    "key": "smartlight",
+    "name": "smartlight",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "智慧路灯"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
+    },
+    "defaults": {
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
+    }
+  }, {
+    "key": "collect",
+    "name": "collect",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "数据采集仪"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
+    },
+    "defaults": {
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
     }
   }
 ]
@@ -649,11 +837,11 @@ function getLinkByModel(key) {
     case 'ammeter':
       return 'icon_ammeter';
     case 'pole':
-      return 'icon_pole';
+      return '/systemOperation/config/pole';
     case 'screen':
       return '/systemOperation/config/screen';
     case 'collect':
-      return 'icon_collect';
+      return '/systemOperation/config/collect'
     default:
       return 'icon_led_light';
   }

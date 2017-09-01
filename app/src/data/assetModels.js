@@ -122,11 +122,13 @@ function getLinkByModel(parentId, key) {
         case 'ammeter':
             return 'icon_ammeter';
         case 'pole':
-            return 'icon_pole';
+            return '/assetManage/'+parentId+'/pole'
         case 'screen':
             return '/assetManage/'+parentId+'/screen';
         case 'collect':
-            return 'icon_collect'
+            return '/assetManage/'+parentId+'/collect';
+        case 'smartlight':
+            return '/assetManage/'+parentId+'/smartlight'
         default:
             return 'icon_led_light';
     }

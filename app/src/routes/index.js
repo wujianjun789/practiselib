@@ -40,9 +40,25 @@ export default (
                                                 require.ensure([], (require) => {
                                                     cb(null, require('../assetManage/container/Screen').default)
                                                 }, 'starriverpro.assetmanage.screen')
-                                            } }/>
+
+                                            } } />
+                    <Route path="pole" getComponent={ (nextState, cb) => {
+                                                            require.ensure([], (require) => {
+                                                                cb(null, require('../assetManage/container/Pole').default)
+                                                            }, 'starriverpro.assetmanage.pole')
+                                                        } } />
+                    <Route path="collect" getComponent={ (nextState, cb) => {
+                                                            require.ensure([], (require) => {
+                                                                cb(null, require('../assetManage/container/Collect').default)
+                                                            }, 'starriverpro.assetmanage.collect')
+                                                        } } /> 
+                    <Route path="smartlight" getComponent={ (nextState, cb) => {
+                                                            require.ensure([], (require) => {
+                                                                cb(null, require('../assetManage/container/SmartLight').default)
+                                                            }, 'starriverpro.assetmanage.smartlight')
+                                                        } } />    
                 </Route>
-                <Route path="statistics">
+            <Route path="statistics">
                     <Route path="lc" getComponent={ (nextState, cb) => {
                                             require.ensure([], (require) => {
                                                 cb(null, require('../assetStatistics/container/SingleLamp').default)
@@ -137,7 +153,6 @@ export default (
                                                 }, 'starriverpro.controlstrategy.latlngtrategy')
                                             } }/>
                 </Route>
-                { /* 系统配置*/ }
                 <Route path="systemConfig">
                     <Route path="sysConfigSmartLight" getComponent={ (nextState, cb) => {
                                                              require.ensure([], require => {
