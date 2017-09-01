@@ -63,11 +63,23 @@ export default class WhiteListPopup extends Component {
     }
 
     onAdd() {                  //向whitelist中添加需要的数据,然后更新列表视图
+        const {search, lcsList} = this.state
+        let curItem = null
+        for(var key in lcsList){
+            if(lcsList[key].name == search.value){
+                curItem = lcsList[key];                
+            }
+        }
+        if(curItem == null){
+            return;
+        }
         let lccId = this.props.id;  //灯集中控制器的id
-        let index = this.state.activeIndex;  //当前被激活的选项
-        let lcId = this.state.lcsList[index].id;   
-        addLcToWhiteListById(lccId, lcId, this.initWhiteList)
-        this.setState({search: {placeholder: '输入素材名称', value: ''}});
+        let lcId = curItem.id;   
+        addLcToWhiteListById(lccId, lcId, ()=>{
+            this.initWhiteList()
+            this.searchChange('');
+        })
+        
     }
 
 
@@ -104,7 +116,7 @@ export default class WhiteListPopup extends Component {
 
 
     itemClick(itemIndex){
-        this.setState({ activeIndex:itemIndex});
+        // this.setState({ activeIndex:itemIndex});
     }
 
     searchSubmit(){
