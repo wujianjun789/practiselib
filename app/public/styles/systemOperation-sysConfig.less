@@ -6,14 +6,73 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-/******** SideBarInfor 样式定制 ********/
+/********  区域/组件 样式初始化 ****************/
 
-//取消{this.props.children}多余的空间
-.sidebar-info .map-position{
+//初始化button
+.button-init(@color:white){
+        height: 30px;
+        padding: 4px 12px;
+        color: @color;
+}
+
+//初始化区域
+.block-init{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 70px;
+  background-color: #fff;
+}
+ 
+
+#sysConfigSmartLight {
+  .offset-right{
+  /******** content 整体定制 **************/
+  
+  /******** header 样式定制 **************/
+  header{
+    .block-init;
+    min-height: 70px;
+    //下拉选择菜单 样式
+    .select {
+            width: 160px;
+            height: 30px;
+            margin-left: 20px;
+        }
+    //搜索框 样式
+    .searchText{
+        height: 30px;
+        margin-left: 20px;
+        > input[type='search'] {
+          padding-right: 16px;
+          padding-left: 15px;
+        }
+      }
+      //添加按钮 样式
+    > .btn.btn-primary {
+      .button-init();
+          margin-left: 25px;
+      }
+  }
+
+  /******** SideBarInfor 样式定制 ********/
+  .sidebar-info .map-position{
     top: 130px;
   }
-// .sidebar-info.sidebar-collapse{
-//     > .panel.panel-default.map-position {
-//       top: 70px;
-//     }
-//   }
+
+  Button{
+    .button-init;
+    margin-left: 15px;
+  }
+
+  .sidebar-info.sidebar-collapse{
+    > .panel.panel-default.map-position {
+      top: 70px;
+    }
+  }
+
+  .domain-property{
+    background-color: #eaeef2;
+    }
+  }
+}

@@ -1,12 +1,15 @@
 /** Created By ChrisWen
- *  /系统配置/智慧路灯模块
+ *  系统配置/智慧路灯模块
  *  约定： 以 smartLight 命名 智慧路灯,sysConfig 代表系统配置模块（systemConfig）
  *  拼接命名根据驼峰原则进行对应的大小写转化
+ *  约定： sysConfigSmartLightChildren 对象提供该模块所有区域组件的子组件
  */
 
 import React, { Component } from 'react';
 
-//import 各个组件和样式表
+//import 各区域组件和样式表
+import '../../../../public/styles/systemOperation-sysConfig.less';
+
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
@@ -17,34 +20,44 @@ import CentralizedControllerPopup from '../../components/CentralizedControllerPo
 import ConfirmPopup from '../../../components/ConfirmPopup';
 import Content from '../../../components/Content.js';
 
-import '../../../../public/styles/systemOperation-sysConfig.less';
-
 //import 功能函数
+
+
+//import 各区域组件子组件
+import { sysConfigSmartLightChildren } from './smartLightComponent/index.js';
 
 
 export default class sysConfigSmartLight extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            collapse: false
+        }
     }
 
     render() {
+        const {collapse} = this.state;
+        const SideBarInfoChildren = sysConfigSmartLightChildren.sideBar();
+
         return (
-            <Content>
-              <SideBarInfo>
-                <div className="panel panel-default device-statics-info">
-                  <div className="panel-heading">
-                    <span className="icon_sys_select"></span>选中设备
-                  </div>
-                  <div className="panel-body domain-property">
-                    <span className="domain-name"></span>
-                    <button id="sys-update" className="btn btn-primary pull-right">编辑
-                    </button>
-                    <button id="sys-delete" className="btn btn-danger pull-right">删除
-                    </button>
+            <div id='sysConfigSmartLight'>
+              <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                <header>
+                  <Select id="domain" />
+                  <SearchText />
+                  <button id="sys-add" className="btn btn-primary add-domain">添加</button>
+                </header>
+                <div class='smartLight'>
+                  <div className="table-container">
+                    <Table/>
+                    <Page/>
                   </div>
                 </div>
-              </SideBarInfo>
-            </Content>
+                <SideBarInfo>
+                  { SideBarInfoChildren }
+                </SideBarInfo>
+              </Content>
+            </div>
         )
 
     }
