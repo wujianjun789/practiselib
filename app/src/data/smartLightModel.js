@@ -57,7 +57,7 @@ export const TreeData = [
     },
     {
         "id": "set",
-        "name": "设置",
+        "name": "控制",
         "toggled": false,
         "active": true,
         "link": "/smartLight/set",
