@@ -5,7 +5,9 @@
  *  约定： sysConfigSmartLightChildren 对象提供该模块所有区域组件的子组件
  */
 
+//import 基础库
 import React, { Component } from 'react';
+import Immutable from 'immutable';
 
 //import 各区域组件和样式表
 import '../../../../public/styles/systemOperation-sysConfig.less';
@@ -21,6 +23,8 @@ import ConfirmPopup from '../../../components/ConfirmPopup';
 import Content from '../../../components/Content.js';
 
 //import 功能函数
+// 初始化数据
+import { sysInitData } from '../../initData/index.js';
 
 
 //import 各区域组件子组件
@@ -31,12 +35,20 @@ export default class sysConfigSmartLight extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collapse: false
+            collapse: false,
+            page: Immutable.fromJS({}),
+            search: Immutable.fromJS({
+                placeholder: '输入设备名称',
+                value: ''
+            }),
+            data: Immutable.fromJS([])
         }
+        //Table 数据相关
+        this.columns = sysInitData.smartLight;
     }
 
     render() {
-        const {collapse} = this.state;
+        const {collapse, search, data} = this.state;
         const SideBarInfoChildren = sysConfigSmartLightChildren.sideBar();
 
         return (
@@ -44,14 +56,12 @@ export default class sysConfigSmartLight extends Component {
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
                 <header>
                   <Select id="domain" />
-                  <SearchText />
+                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
                   <button id="sys-add" className="btn btn-primary add-domain">添加</button>
                 </header>
-                <div class='smartLight'>
-                  <div className="table-container">
-                    <Table/>
-                    <Page/>
-                  </div>
+                <div className="table-container">
+                  <Table className="dataTable" columns={ this.columns } data={ data } />
+                  <Page/>
                 </div>
                 <SideBarInfo>
                   { SideBarInfoChildren }
