@@ -1,0 +1,66 @@
+@import url(./sideBarInfo.less);
+.list-lc,
+.list-lcc,
+.list-sensor,
+.list-screen,
+.list-collect {
+    > .content-left {
+        margin-right: 300px;
+        > .heading {
+            height: 70px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #fff;
+            > .select {
+                width: 160px;
+                height: 30px;
+                margin-left: 20px;
+            }
+            > .searchText {
+                margin-left: 20px;
+            }
+        }
+        > .body {
+            > .table-responsive {
+                margin: 20px;
+                padding: 20px;
+                background: #fff;
+                border: 1px solid#e6e6e6;
+            }
+        }
+    }
+    > .sidebar-info {
+        width: 300px;
+        background-color: #e4e6ea;
+        overflow-x: hidden;
+        > .panel.panel-default {
+            width: 300px;
+            border: none;
+            border-radius: unset;
+            box-shadow: unset;
+            > .panel-heading {
+                background: #d2d9dc;
+            }
+            > .panel-body {
+                background: #eaeef2;
+            }
+        }
+    }
+
+    > .content-left,
+    > .sidebar-info {
+        transition: all .3s ease;
+    }
+
+    &.collapse {
+        display: block;
+        > .content-left {
+            margin-right: 60px;
+        }
+        > .sidebar-info {
+            width: 60px;
+            right: 0;
+        }
+    }
+}
