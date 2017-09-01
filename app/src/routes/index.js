@@ -138,11 +138,13 @@ export default (
                                             } } />
       </Route>
       { /* 系统配置*/ }
-      <Route path="systemConfig" getComponent={ (nextState, cb) => {
-                                                    require.ensure([], require => {
-                                                        cb(null, require('../systemOperation/container/systemConfig/SmartLight').default)
-                                                    }, 'starriverpro.systemconfig.smartlight')
-                                                } }></Route>
+      <Route path="systemConfig">
+        <Route path="sysConfigSmartLight" getComponent={ (nextState, cb) => {
+                                                             require.ensure([], require => {
+                                                                 cb(null, require('../systemOperation/container/systemConfig/sysConfigSmartLight').default)
+                                                             }, 'starriverpro.systemconfig.sysConfigSmartLight')
+                                                         } }></Route>
+      </Route>
     </Route>
     <Route path="/smartLight" component={ SmartLightManage }>
       <Route path="map" getComponent={ (nextState, cb) => {

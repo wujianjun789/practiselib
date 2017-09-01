@@ -68,8 +68,17 @@ export const TreeData = [
     "name": "系统配置",
     "toggled": false,
     "active": true,
-    "link": "/systemOperation/systemConfig",
-    "level": 1
+    "link": "/systemOperation/systemConfig/sysConfigSmartLight",
+    "level": 1,
+    "children": [
+      {
+        "id": 'sysConfigSmartLight',
+        "name": '智慧路灯',
+        "class": '',
+        "active": true,
+        "link": "/systemOperation/systemConfig/sysConfigSmartLight"
+      }
+    ]
   }
 ]
 
@@ -611,6 +620,8 @@ function getLinkByModel(key) {
       return '/systemOperation/config/smartlight';
     case 'smartlightPole':
       return '/systemOperation/config/smartlightPole';
+    case 'sysConfigSmartLight':
+      return '/systemOperation/systemConfig/sysConfigSmartLight';
     case 'plc':
       return 'icon_plc_control';
     case 'ammeter':
