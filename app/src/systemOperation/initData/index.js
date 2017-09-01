@@ -1,8 +1,8 @@
 /** Created By ChrisWen
  *  17/08/31
  *  These Two functions is provide initData to smartLight-smartLightPole.
- *  当点击对应的按钮进行id判断后激活对应的函数;
  */
+
 export const sysInitData = {
     add(curType, domainList) {
         return {
@@ -28,68 +28,34 @@ export const sysInitData = {
             lat: latlng.lat
         }
     },
-    smartLightColums: [
+    smartLight: [
         {
             id: 0,
+            field: "name",
+            title: "路灯名称"
+        }, {
+            id: 1,
             field: "domainName",
             title: "域"
         }, {
-            id: 1,
-            field: "name",
-            title: "设备名称"
-        }, {
             id: 2,
-            field: "typeName",
-            title: "型号"
+            field: "lightCount",
+            title: "灯"
         }, {
             id: 3,
-            field: "id",
-            title: "设备编号"
+            field: "camera",
+            title: "摄像头"
         }, {
             id: 5,
-            field: "lng",
-            title: "经度"
+            field: "screen",
+            title: "显示屏"
         }, {
             id: 6,
-            field: "lat",
-            title: "纬度"
-        }, {
-            id: 7,
-            field: 'smartLightLogo',
-            title: "智慧路灯标识"
+            field: "electricStation",
+            title: "充电桩"
         }
     ],
-    smartLightPole: [
-        {
-            id: 0,
-            field: "domainName",
-            title: "域"
-        }, {
-            id: 1,
-            field: "name",
-            title: "设备名称"
-        }, {
-            id: 2,
-            field: "typeName",
-            title: "型号"
-        }, {
-            id: 3,
-            field: "id",
-            title: "设备编号"
-        }, {
-            id: 5,
-            field: "lng",
-            title: "经度"
-        }, {
-            id: 6,
-            field: "lat",
-            title: "纬度"
-        }, {
-            id: 7,
-            field: 'smartLightLogo',
-            title: "灯杆标识"
-        }
-    ]
+    smartLightPole: []
 }
 
 
