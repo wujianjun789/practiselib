@@ -191,11 +191,18 @@ export default (
                                                  }, 'starriverpro.smartLightList.CollectionInstrument');
                                              } }/>
                 </Route>
-                <Route path="set" getComponent={ (nextState, cb) => {
+                <Route path="control">
+                    <Route path="scene" getComponent={ (nextState, cb) => {
                                            require.ensure([], (require) => {
-                                               cb(null, require('../smartLightManage/container/SmartLightSet').default)
-                                           }, 'starriverpro.smartLightManage.smartLightSet')
+                                               cb(null, require('../smartLightControl/container/Scene').default)
+                                           }, 'starriverpro.smartLightControl.scene')
                                        } }/>
+                    <Route path="strategy" getComponent={ (nextState, cb) => {
+                                           require.ensure([], (require) => {
+                                               cb(null, require('../smartLightControl/container/Strategy').default)
+                                           }, 'starriverpro.smartLightControl.strategy')
+                                       } }/>
+                </Route>
             </Route>
         </Route>
         <Route path="*" getComponent={ (nextState, cb) => {

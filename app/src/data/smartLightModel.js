@@ -56,11 +56,24 @@ export const TreeData = [
         ]
     },
     {
-        "id": "set",
+        "id": "control",
         "name": "控制",
         "toggled": false,
         "active": true,
-        "link": "/smartLight/set",
-        "level": 1
+        "link": "/smartLight/control/scene",
+        "level": 1,
+        "children": [
+            {
+                "id": "scene",
+                "name": "场景",
+                "active": false,
+                "link": "/smartLight/control/scene"
+            },{
+                "id": "strategy",
+                "name": "策略",
+                "active": false,
+                "link": "/smartLight/control/strategy"
+            }
+        ]
     }
 ]
