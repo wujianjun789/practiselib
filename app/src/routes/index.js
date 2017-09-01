@@ -58,7 +58,7 @@ export default (
                                                             }, 'starriverpro.assetmanage.smartlight')
                                                         } } />    
                 </Route>
-            <Route path="statistics">
+                <Route path="statistics">
                     <Route path="lc" getComponent={ (nextState, cb) => {
                                             require.ensure([], (require) => {
                                                 cb(null, require('../assetStatistics/container/SingleLamp').default)
@@ -79,6 +79,21 @@ export default (
                                                     cb(null, require('../assetStatistics/container/Screen').default)
                                                 }, 'starriverpro.assetmanage.screen')
                                             } }/>
+                    <Route path="pole" getComponent={ (nextState, cb) => {
+                                                            require.ensure([], (require) => {
+                                                                cb(null, require('../assetStatistics/container/Pole').default)
+                                                            }, 'starriverpro.assetmanage.pole')
+                                                        } } />
+                    <Route path="collect" getComponent={ (nextState, cb) => {
+                                                            require.ensure([], (require) => {
+                                                                cb(null, require('../assetStatistics/container/Collect').default)
+                                                            }, 'starriverpro.assetmanage.collect')
+                                                        } } /> 
+                    <Route path="smartlight" getComponent={ (nextState, cb) => {
+                                                            require.ensure([], (require) => {
+                                                                cb(null, require('../assetStatistics/container/SmartLight').default)
+                                                            }, 'starriverpro.assetmanage.smartlight')
+                                                        } } />                                              
                 </Route>
             </Route>
             <Route path="/domainManage" component={ DomainManage }>
