@@ -79,6 +79,28 @@ export const TreeData = [
         "link": "/systemOperation/systemConfig/sysConfigSmartLight"
       }
     ]
+  },{
+    "id": "deviceMonitor",
+    "name": "设备监控",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/deviceMonitor/deviceState",
+    "level": 1,
+    "children":[
+      {
+        "id":'deviceTopology',
+        "name":"设备拓扑图",
+        "class":'',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceTopology"
+      },{
+        "id":'deviceState',
+        "name":"设备状态图",
+        "class":'',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceState"
+      }
+    ]
   }
 ]
 
