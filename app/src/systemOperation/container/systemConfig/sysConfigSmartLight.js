@@ -30,28 +30,34 @@ import { sysConfigSmartLightChildren } from './smartLightComponent/index.js';
 export default class sysConfigSmartLight extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            collapse: false
+        }
     }
 
     render() {
+        const {collapse} = this.state;
         const SideBarInfoChildren = sysConfigSmartLightChildren.sideBar();
 
         return (
-            <Content>
-              <div className="heading">
-                <Select id="domain" />
-                <SearchText />
-                <button id="sys-add" className="btn btn-primary add-domain">添加</button>
-              </div>
-              <div className='smartLight'>
-                <div className="table-container">
-                  <Table/>
-                  <Page/>
+            <div id='sysConfigSmartLight'>
+              <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                <header>
+                  <Select id="domain" />
+                  <SearchText />
+                  <button id="sys-add" className="btn btn-primary add-domain">添加</button>
+                </header>
+                <div class='smartLight'>
+                  <div className="table-container">
+                    <Table/>
+                    <Page/>
+                  </div>
                 </div>
-              </div>
-              <SideBarInfo>
-                { SideBarInfoChildren }
-              </SideBarInfo>
-            </Content>
+                <SideBarInfo>
+                  { SideBarInfoChildren }
+                </SideBarInfo>
+              </Content>
+            </div>
         )
 
     }
