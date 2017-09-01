@@ -6,14 +6,17 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-/******** SideBarInfor 样式定制 ********/
-
-//取消{this.props.children}多余的空间
-.sidebar-info .map-position{
+.sysConfigSmartLight {
+  /******** SideBarInfor 样式定制 ********/
+  .sidebar-info .map-position{
     top: 130px;
   }
-// .sidebar-info.sidebar-collapse{
-//     > .panel.panel-default.map-position {
-//       top: 70px;
-//     }
-//   }
+
+.sidebar-info.sidebar-collapse{
+    > .panel.panel-default.map-position {
+      top: 70px;
+    }
+  }
+
+  .domain-property{background-color: #eaeef2}
+}
