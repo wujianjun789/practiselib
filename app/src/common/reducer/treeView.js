@@ -75,7 +75,10 @@ function update(list, index, parentId, data) {
 
         if(curIndex == 1 && node.id == data.id){
             node.toggled = !node.toggled;
-            if(node.toggled && node.children && node.children.length){
+            if(node.toggled && node.children && node.children.length){//默认选中第一个子节点
+                for(var i=0;i<node.children.length;i++){
+                    node.children[i].active = false;
+                }
                 node.children[0].active = true;
             }
             return node;
