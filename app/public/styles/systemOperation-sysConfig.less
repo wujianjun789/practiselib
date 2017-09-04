@@ -3,99 +3,99 @@
 *   systemOperation/systemConfig/sysConfigSmartLight - less
 *   系统运维/系统配置/智慧路灯模块 - 样式
 */
+
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
 /********  区域/组件 样式初始化 ****************/
 
 //初始化button
-.button-init(@color:white){
-        height: 30px;
-        padding: 4px 12px;
-        color: @color;
+.button-init(@color: white) {
+    height: 30px;
+    padding: 4px 12px;
+    color: @color;
 }
 
 //初始化区域
-.block-init{
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 70px;
-  background-color: #fff;
+.block-init {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 70px;
+    background-color: #fff;
 }
 
-
-#sysConfigSmartLight{ 
-  .offset-right{
-  /******** content 整体定制 **************/
-  
-  /******** header 样式定制 **************/
-  header{
-    .block-init;
-    //color: red;
-    min-height: 70px;
-    //下拉选择菜单 样式
-    .select {
-            width: 160px;
-            height: 30px;
-            margin-left: 20px;
+#sysConfigSmartLight {
+    .offset-right {
+        /******** content 整体定制 **************/
+        /******** header 样式定制 **************/
+        header {
+            .block-init; //color: red;
+            min-height: 70px; //下拉选择菜单 样式
+            .select {
+                width: 160px;
+                height: 30px;
+                margin-left: 20px;
+            } //搜索框 样式
+            .searchText {
+                height: 30px;
+                margin-left: 20px;
+                >input[type='search'] {
+                    padding-right: 16px;
+                    padding-left: 15px;
+                }
+            } //添加按钮 样式
+            >.btn.btn-primary {
+                .button-init;
+                margin-left: 25px;
+            }
         }
-    //搜索框 样式
-    .searchText{
-        height: 30px;
-        margin-left: 20px;
-        > input[type='search'] {
-          padding-right: 16px;
-          padding-left: 15px;
+        /******** Table 样式定制 ****************/
+        .table-container {
+            transition: margin-right .3s;
+            margin: 20px 320px 20px 20px;
+            background: #fff;
+            border: solid 1px #e6e6e6;
+            .dataTable {
+                padding: 20px;
+            }
         }
-      }
-      //添加按钮 样式
-    > .btn.btn-primary {
-      .button-init;
-          margin-left: 25px;
-      }
-  }
-  
-  /******** Table 样式定制 ****************/
-
-  .table-container{
-        transition: margin-right .3s;
-        margin: 20px 320px 20px 20px;
-        background: #fff;
-        border: solid 1px #e6e6e6;
-        .dataTable{
-          padding: 20px;
+        /******** SideBarInfor 样式定制 ********/
+        .sidebar-info .map-position {
+            top: 130px;
         }
- 
-  }
-  /******** SideBarInfor 样式定制 ********/
-  .sidebar-info .map-position{
-    top: 130px;
-  }
-
-  Button{
-    .button-init;
-    margin-left: 15px;
-  }
-
-  .sidebar-info.sidebar-collapse{
-    > .panel.panel-default.map-position {
-      top: 70px;
+        Button {
+            .button-init;
+            margin-left: 15px;
+        }
+        .sidebar-info.sidebar-collapse {
+            >.panel.panel-default.map-position {
+                top: 70px;
+            }
+        }
+        .domain-property {
+            background-color: #eaeef2;
+        }
+        &.collapsed {
+            .table-container {
+                margin-right: 80px;
+            }
+        }
     }
-  }
-
-  .domain-property{
-    background-color: #eaeef2;
-  }
-   &.collapsed{
-     .table-container{
-    margin-right: 80px;}
-  }
-  }
 }
-  
 
 
-  
+/******** AddOrEditPopup 样式定制 ********/
 
-
+#sysConfigSmartLight-popup {
+    width: 620px;
+    ul li {
+        float: left;
+    }
+    ul>li {
+        width: 230px;
+    }
+    ul:first-child {
+        margin-left: 20px;
+    }
+}

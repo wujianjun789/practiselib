@@ -9,7 +9,7 @@ export default class SecondStepComponet extends Component {
     render() {
         const props = this.props;
         const footer = <PanelFooter funcNames={ ['onFlip', 'onConfirm'] } btnTitles={ ['上一步', '完成'] } {...props}/>;
-        return (<div>
+        return (<div className='test'>
                   <h1>456</h1>
                   { footer }
                 </div>)

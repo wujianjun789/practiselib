@@ -14,9 +14,11 @@ export default class AddOrEditPopup extends Component {
         const footer = <PanelFooter funcNames={ ['onCancel', 'onNext'] } btnTitles={ ['取消', '下一步'] } />;
         const props = this.props;
         return (
-            <Panel {...props}>
-              <StepComponet/>
-            </Panel>
+            <div id='sysConfigSmartLight-popup'>
+              <Panel {...props}>
+                <StepComponet/>
+              </Panel>
+            </div>
         )
     }
 }
