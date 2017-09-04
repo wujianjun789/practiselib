@@ -23,10 +23,10 @@
   height: 70px;
   background-color: #fff;
 }
- 
+
 
 #sysConfigSmartLight,
-  .offset-right,.collapse{
+  .offset-right{
   /******** content 整体定制 **************/
   
   /******** header 样式定制 **************/
@@ -51,7 +51,7 @@
       }
       //添加按钮 样式
     > .btn.btn-primary {
-      .button-init();
+      .button-init;
           margin-left: 25px;
       }
   }
@@ -59,13 +59,20 @@
   /******** Table 样式定制 ****************/
 
   .table-container{
-        margin: 20px 20px 20px 20px;
+    transition: margin-right .3s;
+        margin: 20px 320px 20px 20px;
         background: #fff;
         border: solid 1px #e6e6e6;
         .dataTable{
           padding: 20px;
         }
-  }}
+  }
+  &.collapsed{
+    .table-container{
+      margin-right: 80px;
+      }
+    }
+  
    
 
   /******** SideBarInfor 样式定制 ********/
@@ -87,6 +94,9 @@
   .domain-property{
     background-color: #eaeef2;
     }
+  }
+
+
   
 
 

@@ -85,6 +85,7 @@ export class sysConfigSmartLight extends Component {
         this.initDomainList = this.initDomainList.bind(this);
         this.domainSelect = this.domainSelect.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
+        this.collpseHandler = this.collpseHandler.bind(this);
     }
 
     //Hook functions
@@ -145,6 +146,12 @@ export class sysConfigSmartLight extends Component {
         }
     }
 
+    collpseHandler() {
+        this.setState({
+            collapse: !this.state.collapse
+        })
+    }
+
     render() {
         const {collapse, search, data, page, domainList} = this.state;
         const SideBarInfoChildren = sysConfigSmartLightChildren.sideBar();
@@ -161,7 +168,7 @@ export class sysConfigSmartLight extends Component {
                 <Table className="dataTable" columns={ this.columns } data={ data } />
                 <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
               </div>
-              <SideBarInfo>
+              <SideBarInfo collpseHandler={ this.collpseHandler }>
                 { SideBarInfoChildren }
               </SideBarInfo>
             </Content>
