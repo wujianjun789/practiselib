@@ -24,20 +24,20 @@ export function addNotify(notifyType, text) {
             data: {id:id, notifyType:notifyType, text:text}
         });
 
-        dispatch((dispatch,id)=>{
+        dispatch((dispatch)=>{
             setTimeout(()=>{
                 dispatch({type:NOTIFY_ANIMATION, id:id});
             }, 50);
         });
 
         if(notifyType>0){
-            dispatch((dispatch,id)=>{
+            dispatch((dispatch)=>{
                 setTimeout(()=>{
                     dispatch({type:NOTIFY_REMOVE, id:id});
                 },notifyType==1?10*1000:5*60*1000)
             })
 
-            dispatch((dispatch,id)=>{
+            dispatch((dispatch)=>{
                     setTimeout(()=>{
                         dispatch({type:NOTIFY_DELETE, id:id});
                     },(notifyType==1?10*1000:5*60*1000)+50)
@@ -53,13 +53,13 @@ export function removeNotify(id) {
         dispatch(dispatch=>{
             setTimeout(()=>{
                 dispatch({type:NOTIFY_DELETE, id:id})
-            }, 50)
+            }, 35)
         })
     }
 }
 
 function getNotifyId() {
-    let id = getRandom(1000000000);
+    let id = getRandom(10000000);
 
     return id;
 }

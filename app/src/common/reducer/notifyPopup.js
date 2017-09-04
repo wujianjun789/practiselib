@@ -24,11 +24,23 @@ export default function treeView(state=Immutable.fromJS(initialState), action) {
         case NOTIFY_ADD:
             return state.update('notifyList', v=>v.push(Immutable.fromJS(Object.assign({animation:0}, action.data))));
         case NOTIFY_ANIMATION:
-            return state.updateIn(['notifyList', getIndexByKey(state.get('notifyList'), 'id', action.id), 'animation'], v=>1);
+            let curIndex = getIndexByKey(state.get('notifyList'), 'id', action.id);
+            if(curIndex<0){
+                return state;
+            }
+            return state.updateIn(['notifyList', curIndex, 'animation'], v=>1);
         case NOTIFY_REMOVE:
-            return state.updateIn(['notifyList', getIndexByKey(state.get('notifyList'), 'id', action.id), 'animation'], v=>0);
+            let removeIndex = getIndexByKey(state.get('notifyList'), 'id', action.id);
+            if(removeIndex<0){
+                return state;
+            }
+            return state.updateIn(['notifyList', removeIndex, 'animation'], v=>0);
         case NOTIFY_DELETE:
-            return state.update('notifyList', v=>v.splice(getIndexByKey(state.get('notifyList'), 'id', action.id), 1));
+            let delIndex = getIndexByKey(state.get('notifyList'), 'id', action.id);
+            if(delIndex<0){
+                return state;
+            }
+            return state.update('notifyList', v=>v.splice(delIndex, 1));
         default:
             return state;
     }
