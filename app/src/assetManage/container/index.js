@@ -53,7 +53,7 @@ class AssetManageIndex extends Component{
         }
 
         return <div className={"container "+"asset-"+path}>
-            <HeadBar moduleName={path=="manage"?"资产管理":"资产统计"} router={this.props.router}/>
+            <HeadBar moduleName={"资产管理"} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />
