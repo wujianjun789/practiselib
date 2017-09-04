@@ -138,6 +138,17 @@ export function transformDeviceType(deviceType) {
     }
 }
 
+export function getNotifyStateClass(state) {
+    switch (state) {
+        case 0:
+            return 'fail';
+        case 1:
+            return 'success'
+        case 2:
+            return 'warning'
+    }
+}
+
 export const DOMAIN_NAME_LENGTH = 16;
 export const DEVICE_ID_LENGTH = 16;
 export const DEVICE_NAME_LENGTH = 16;
