@@ -132,7 +132,7 @@ export class UserPopup extends Component{
                         <label className="col-sm-4 control-label">用户等级:</label>
                         <div className="has-feedback col-sm-8 ">
                             <Select className="role" data={this.state.role}
-                                onChange={(selectIndex)=>this.roleChange(selectIndex)}/>
+                                onChange={this.roleChange}/>
                             <span className="glyphicon  form-control-feedback" aria-hidden="true"></span><span className="reminder"></span>
                         </div>
                     </div>
@@ -148,28 +148,13 @@ export class UserPopup extends Component{
                 <div className = 'form-group row module-per'>
                     <label className="col-sm-2 control-label">模块权限:</label>
                     <div className="col-sm-10">
-                        <div className = 'row'>
-                            
-                            {modules.slice(0,4).map(item=>{
+                        {
+                            modules.map(item=>{
                                 return <label className="checkbox-inline" key={item.key}>
                                     <input type="checkbox" name='module' value={item.key} defaultChecked={IsExitInArray(this.state.modules,item.key)}/> {item.title}
                                 </label>
-                            })}
-                        </div>
-                        {modules.length>4?<div className = 'row'>
-                            {modules.slice(4,8).map(item=>{
-                                return <label className="checkbox-inline" key={item.key}>
-                                    <input type="checkbox" name='module' value={item.key} defaultChecked={IsExitInArray(this.state.modules,item.key)}/> {item.title}
-                                </label>
-                            })}
-                        </div>:''}
-                        {modules.length>8?<div className = 'row'>
-                            {modules.slice(9).map(item=>{
-                                return <label className="checkbox-inline" key={item.key}>
-                                    <input type="checkbox" name='module'value={item.key} defaultChecked={IsExitInArray(this.state.modules,item.key)}/> {item.title}
-                                </label>
-                            })}
-                        </div>:''}
+                            })
+                        }
                     </div>
                 </div>
             </Panel>

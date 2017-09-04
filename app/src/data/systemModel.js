@@ -657,7 +657,7 @@ export const modelData = [
     }
   }, {
     "key": "collect",
-    "name": "collect",
+    "name": "dataCollect",
     "props": [
       "software",
       "system",
@@ -837,7 +837,7 @@ function getLinkByModel(key) {
     case 'screen':
       return '/systemOperation/config/screen';
     case 'collect':
-      return '/systemOperation/config/collect'
+      return '/systemOperation/config/collect';
     default:
       return 'icon_led_light';
   }

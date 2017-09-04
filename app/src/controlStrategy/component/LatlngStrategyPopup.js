@@ -162,7 +162,7 @@ export class LatlngStrategyPopup extends Component{
                     <div className="form-group col-sm-6">
                         <label htmlFor="device" className="col-sm-4 control-label">控制设备：</label>
                         <div className="col-sm-8">
-                            <Select id="device" className="form-control" onChange={this.onChange} titleField={deviceList.titleField}
+                            <Select id="device" onChange={this.onChange} titleField={deviceList.titleField}
                                     valueField={deviceList.valueField} options={deviceList.options} value={device}/>
                             <span className={prompt.device.hidden?"prompt hidden":"prompt"}>{prompt.device.text}</span>
                         </div>
@@ -174,10 +174,10 @@ export class LatlngStrategyPopup extends Component{
                         <div className="col-sm-8">
                             {
                                 device == 'lc' ?
-                                <Select id="sunrise" className="form-control" onChange={this.onChange} titleField={brightnessList.titleField}
+                                <Select id="sunrise" onChange={this.onChange} titleField={brightnessList.titleField}
                                         valueField={brightnessList.valueField} options={brightnessList.options} value={sunrise}/>
                                 :
-                                <Select id="sunrise" className="form-control" onChange={this.onChange} titleField={screenSwitchList.titleField}
+                                <Select id="sunrise" onChange={this.onChange} titleField={screenSwitchList.titleField}
                                         valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunrise}/>
                             }
                             <span className={prompt.sunrise.hidden?"prompt hidden":"prompt"}>{prompt.sunrise.text}</span>
@@ -198,10 +198,10 @@ export class LatlngStrategyPopup extends Component{
                         <div className="col-sm-8">
                             {
                                 device == 'lc' ?
-                                <Select id="sunset" className="form-control" onChange={this.onChange} titleField={brightnessList.titleField}
+                                <Select id="sunset" onChange={this.onChange} titleField={brightnessList.titleField}
                                         valueField={brightnessList.valueField} options={brightnessList.options} value={sunset}/>
                                 :
-                                <Select id="sunset" className="form-control" onChange={this.onChange} titleField={screenSwitchList.titleField}
+                                <Select id="sunset" onChange={this.onChange} titleField={screenSwitchList.titleField}
                                         valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunset}/>
                             }                
                             <span className={prompt.sunset.hidden?"prompt hidden":"prompt"}>{prompt.sunset.text}</span>
