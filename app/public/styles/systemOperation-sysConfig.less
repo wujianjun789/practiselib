@@ -25,13 +25,14 @@
 }
  
 
-#sysConfigSmartLight {
-  .offset-right{
+#sysConfigSmartLight,
+  .offset-right,.collapse{
   /******** content 整体定制 **************/
   
   /******** header 样式定制 **************/
   header{
     .block-init;
+    //color: red;
     min-height: 70px;
     //下拉选择菜单 样式
     .select {
@@ -56,17 +57,16 @@
   }
   
   /******** Table 样式定制 ****************/
+
   .table-container{
-        margin: 20px 320px 20px 20px;
+        margin: 20px 20px 20px 20px;
         background: #fff;
         border: solid 1px #e6e6e6;
         .dataTable{
-          //background-color: red;
-          border: 1px solid red;
-          //margin: 20px;
           padding: 20px;
         }
-  }
+  }}
+   
 
   /******** SideBarInfor 样式定制 ********/
   .sidebar-info .map-position{
@@ -87,5 +87,6 @@
   .domain-property{
     background-color: #eaeef2;
     }
-  }
-}
+  
+
+

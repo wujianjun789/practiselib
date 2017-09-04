@@ -79,24 +79,24 @@ export const TreeData = [
         "link": "/systemOperation/systemConfig/sysConfigSmartLight"
       }
     ]
-  },{
+  }, {
     "id": "deviceMonitor",
     "name": "设备监控",
     "toggled": false,
     "active": true,
     "link": "/systemOperation/deviceMonitor/deviceState",
     "level": 1,
-    "children":[
+    "children": [
       {
-        "id":'deviceTopology',
-        "name":"设备拓扑图",
-        "class":'',
+        "id": 'deviceTopology',
+        "name": "设备拓扑图",
+        "class": '',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceTopology"
-      },{
-        "id":'deviceState',
-        "name":"设备状态图",
-        "class":'',
+      }, {
+        "id": 'deviceState',
+        "name": "设备状态图",
+        "class": '',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceState"
       }
@@ -826,10 +826,6 @@ function getLinkByModel(key) {
       return '/systemOperation/config/lc';
     case 'sensor':
       return '/systemOperation/config/sensor';
-    case 'smartlight':
-      return '/systemOperation/config/smartlight';
-    case 'smartlightPole':
-      return '/systemOperation/config/smartlightPole';
     case 'sysConfigSmartLight':
       return '/systemOperation/systemConfig/sysConfigSmartLight';
     case 'plc':
