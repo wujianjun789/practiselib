@@ -22,7 +22,7 @@ import { TreeData, getModelData, getModelList, getModelTypesById, getModelTypesN
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
-import { requestWhiteListCountById} from '../../api/domain'
+import { requestWhiteListCountById } from '../../api/domain'
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
@@ -47,7 +47,7 @@ export class LampConCenter extends Component {
                 //     lat: 31.239658843127756},
                 position: [],
                 data: [],
-                whiteCount:0
+                whiteCount: 0
             },
             domainList: {
                 titleField: 'name',
@@ -310,13 +310,17 @@ export class LampConCenter extends Component {
             });
         }
     }
-    
-    requestWhiteListCount(){
+
+    requestWhiteListCount() {
         const {selectDevice} = this.state;
         let lccId = selectDevice.data[0].id;
-        requestWhiteListCountById(lccId, (lcCount)=>{
-            this.setState({selectDevice: Object.assign({}, selectDevice, {whiteCount: lcCount.count})});
-        }) 
+        requestWhiteListCountById(lccId, (lcCount) => {
+            this.setState({
+                selectDevice: Object.assign({}, selectDevice, {
+                    whiteCount: lcCount.count
+                })
+            });
+        })
     }
 
     popupCancel() {
@@ -385,8 +389,10 @@ export class LampConCenter extends Component {
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
             case 'sys-whitelist':
-                let data2 = selectDevice.data.length?selectDevice.data[0]:null;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" id = {data2.id} data={whitelistData} overlayerHide={overlayerHide} callFun={()=>{this.requestWhiteListCount()}}/>)
+                let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
+                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
+                                                                                                                                 this.requestWhiteListCount()
+                                                                                                                             } } />)
                 break;
         }
     }
@@ -423,7 +429,7 @@ export class LampConCenter extends Component {
         this.setState({
             selectDevice: selectDevice
         });
-        this.requestWhiteListCount();   //点击列表行后更新项目数量
+        this.requestWhiteListCount(); //点击列表行后更新项目数量
     }
 
     searchSubmit() {

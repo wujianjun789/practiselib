@@ -33,7 +33,7 @@ import { treeViewInit } from '../../common/actions/treeView';
 
 //import childrenComponentsModel
 import { childrenComponents } from '../components/childrenComponents.js';
-
+import AddOrEditPopup from '../components/addOrEditPopup.js';
 
 export class sysConfigSmartLight extends Component {
     constructor(props) {
@@ -135,13 +135,12 @@ export class sysConfigSmartLight extends Component {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
         let id = e.target.id;
-        let curType = modelList.options.length ? modelList.options[0] : null;
-
         switch (id) {
             case 'sys-add':
+                overlayerShow(<AddOrEditPopup />);
+                break;
             case 'sys-update':
             case 'sys-delete':
-            case 'whitelist':
             default:
                 return false;
         }
