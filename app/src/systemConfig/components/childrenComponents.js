@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const sysConfigSmartLightChildren = {
+export const childrenComponents = {
   sideBar: () => (
     <div className="panel panel-default device-statics-info">
       <div className="panel-heading">

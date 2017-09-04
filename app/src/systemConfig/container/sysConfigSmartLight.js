@@ -1,17 +1,18 @@
 /** Created By ChrisWen
- *  系统配置/智慧路灯模块
- *  约定： 以 smartLight 命名 智慧路灯,sysConfig 代表系统配置模块（systemConfig）
- *  拼接命名根据驼峰原则进行对应的大小写转化
- *  约定： sysConfigSmartLightChildren 对象提供该模块所有区域组件的子组件
+ *  17/09/04
+ *  systemOperation/systemConfig/smartLightComponent;
+ *  Declaring：We use smartLight as 智慧路灯,sysConfig as 系统配置模块,which is shortted from systemConfig;
+ *  All componets were named follow the HumpRules,even if they were combinend;
+ *  Declaring： childrenComponets is a childrenComponent model.Provide all the childrenComponets in this section;
  */
 
-//import 基础库
+//import BaseFunction/Component
 import React, { Component } from 'react';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-//import 各区域组件和样式表
+//import styleSheet and other common-componets
 import '../../../public/styles/systemOperation-sysConfig.less';
 
 import SearchText from '../../components/SearchText';
@@ -22,7 +23,7 @@ import Select from '../../components/Select.1';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Content from '../../components/Content.js';
 
-//import 功能函数/模型
+//import functions
 import { sysInitData } from '../initData/index.js';
 import { getDomainList } from '../../api/domain.js';
 import { DomainList } from '../model/domainList.js';
@@ -30,8 +31,8 @@ import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
 
-//import 各区域组件子组件
-import { sysConfigSmartLightChildren } from '../components/smartLightComponents.js';
+//import childrenComponentsModel
+import { childrenComponents } from '../components/childrenComponents.js';
 
 
 export class sysConfigSmartLight extends Component {
@@ -154,7 +155,7 @@ export class sysConfigSmartLight extends Component {
 
     render() {
         const {collapse, search, data, page, domainList} = this.state;
-        const SideBarInfoChildren = sysConfigSmartLightChildren.sideBar();
+        const SideBarInfoChildren = childrenComponents.sideBar();
 
         return (
             <Content id='sysConfigSmartLight' className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
