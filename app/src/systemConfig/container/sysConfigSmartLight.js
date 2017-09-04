@@ -157,21 +157,23 @@ export class sysConfigSmartLight extends Component {
         const SideBarInfoChildren = childrenComponents.sideBar();
 
         return (
-            <Content id='sysConfigSmartLight' className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
-              <header>
-                <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
-                />
-                <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
-                <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
-              </header>
-              <div className="table-container">
-                <Table className="dataTable" columns={ this.columns } data={ data } />
-                <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
-              </div>
-              <SideBarInfo collpseHandler={ this.collpseHandler }>
-                { SideBarInfoChildren }
-              </SideBarInfo>
-            </Content>
+            <div id='sysConfigSmartLight'>
+              <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                <header>
+                  <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
+                  />
+                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
+                  <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
+                </header>
+                <div className="table-container">
+                  <Table className="dataTable" columns={ this.columns } data={ data } />
+                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
+                </div>
+                <SideBarInfo collpseHandler={ this.collpseHandler }>
+                  { SideBarInfoChildren }
+                </SideBarInfo>
+              </Content>
+            </div>
         )
     }
 }

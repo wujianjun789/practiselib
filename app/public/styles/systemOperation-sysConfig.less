@@ -25,7 +25,8 @@
 }
 
 
-#sysConfigSmartLight .offset-right{
+#sysConfigSmartLight{ 
+  .offset-right{
   /******** content 整体定制 **************/
   
   /******** header 样式定制 **************/
@@ -58,22 +59,15 @@
   /******** Table 样式定制 ****************/
 
   .table-container{
-    transition: margin-right .3s;
+        transition: margin-right .3s;
         margin: 20px 320px 20px 20px;
         background: #fff;
         border: solid 1px #e6e6e6;
         .dataTable{
           padding: 20px;
         }
+ 
   }
-  &.collapsed{
-    .table-container{
-      margin-right: 80px;
-      }
-    }
-  
-   
-
   /******** SideBarInfor 样式定制 ********/
   .sidebar-info .map-position{
     top: 130px;
@@ -92,8 +86,14 @@
 
   .domain-property{
     background-color: #eaeef2;
-    }
   }
+   &.collapsed{
+     .table-container{
+    margin-right: 80px;}
+  }
+  }
+}
+  
 
 
   
