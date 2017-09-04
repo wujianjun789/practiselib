@@ -10,6 +10,7 @@ export function getAssetModelList(cb) {
         headers: headers,
         method: 'GET'
     }, response=>{
+        // console.log("responseServer:", response)
         cb && cb(modelData);
     })
 }

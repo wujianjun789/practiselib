@@ -8,6 +8,8 @@ import Content from '../../components/Content'
 import MapView from '../../components/MapView'
 import Panel from '../component/FaultPanel'
 import Immutable from 'immutable';
+
+import {getLightLevelConfig} from '../../util/network'
 export default class SmartLightMap extends Component{
     constructor(props){
         super(props);
@@ -61,8 +63,8 @@ export default class SmartLightMap extends Component{
         ];
 
         this.lightList = {id:"lightValue",value:"10",options:[
-            {id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
-            {id:"6", value:50}, {id:"7", value:60}, {id:"9", value:70}, {id:"10", value:80}, {id:"11", value:90}, {id:"12", value:100}
+            /*{id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
+            {id:"6", value:50}, {id:"7", value:60}, {id:"9", value:70}, {id:"10", value:80}, {id:"11", value:90}, {id:"12", value:100}*/
         ]}
         this.screenSwitch = {id:"screenSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
         this.lightSwitch = {id:"lightSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
@@ -89,6 +91,13 @@ export default class SmartLightMap extends Component{
 
     componentWillMount(){
         this.mounted = true;
+        getLightLevelConfig(data=>{
+            if(this.mounted){
+                this.lightList.options = data.map((key, index)=>{
+                    return {id:index, value:key}
+                });
+                this.setState(this.lightList)}
+        })
         window.onresize = event=>{
             this.mounted && this.setSize();
         }
@@ -455,17 +464,7 @@ export default class SmartLightMap extends Component{
                                 {"疏影路组"}
                             </label>
                         </div>
-                        <div className="col-sm-12 form-group switch">
-                            <label className="col-sm-4">灯开关:</label>
-                            <select className="col-sm-4" value={this.lightSwitch.value} onChange={event=>this.onChange("lightSwitch", event)}>
-                                {
-                                    this.lightSwitch.options.map(sw=>{
-                                        return <option key={sw.id}>{sw.value}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("lightSwitch")}>应用</button>
-                        </div>
+
                         <div className="col-sm-12 form-group strategy">
                             <label className="col-sm-4">策略调光:</label>
                             <select className="col-sm-4" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
@@ -492,6 +491,18 @@ export default class SmartLightMap extends Component{
         }
     }
 
+    /* <div className="col-sm-12 form-group switch">
+     <label className="col-sm-4">灯开关:</label>
+     <select className="col-sm-4" value={this.lightSwitch.value} onChange={event=>this.onChange("lightSwitch", event)}>
+     {
+     this.lightSwitch.options.map(sw=>{
+     return <option key={sw.id}>{sw.value}</option>
+     })
+     }
+     </select>
+     <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("lightSwitch")}>应用</button>
+     </div>*/
+    
     render(){
         const {deviceId, search, IsSearch, IsSearchResult, curDevice, curId, positonList,searchList,
             listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl} = this.state;
@@ -531,7 +542,7 @@ export default class SmartLightMap extends Component{
                         <span className="name">{"返回搜索结果"}</span>
                     </div>
                     <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || !IsOpenPoleInfo || infoStyle.maxHeight==0?"hidden":"")}
-                         style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
+                         style={{"maxHeight":infoStyle.maxHeight+"px"}}>
                         <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?38:infoStyle.maxHeight)+"px"}}>
                             <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{curDevice.get("name")}</h3>
                             <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>

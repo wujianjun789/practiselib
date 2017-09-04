@@ -14,6 +14,8 @@ import userCenter from './userCenter';
 import permissionManage from '../../permissionManage/reducer/index'
 import sysOperation from '../../systemOperation/reducer/index';
 import lampConCenter from '../../systemOperation/reducer/lampConCenter';
+
+import notifyPopup from './notifyPopup';
 import auth from '../../authentication/reducer';
 const reducer = combineReducers({
     routing,
@@ -21,6 +23,7 @@ const reducer = combineReducers({
     overlayer,
     userCenter,
     treeView,
+    notifyPopup,
     // login,
     app,
     assetManage,

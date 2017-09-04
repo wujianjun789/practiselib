@@ -1,6 +1,7 @@
 /**
- * Created by a on 2017/8/24.
+ * Created by Azrael on 2017/9/1.
  */
+import '../../../public/styles/smartLightManage-list.less';
 import React,{Component} from 'react';
 import Content from '../../components/Content';
 export default class LampConCenter extends Component{
@@ -9,7 +10,7 @@ export default class LampConCenter extends Component{
     }
 
     render(){
-        return <Content className="">
+        return <Content className="list-lcc">
                     <div>LampConCenter</div>
                 </Content>
     }

@@ -3,7 +3,7 @@
  */
 import React,{Component} from 'react';
 import Content from '../../components/Content'
-export default class SmartLightSet extends Component{
+export default class Scene extends Component{
     constructor(props){
         super(props);
     }
@@ -11,7 +11,7 @@ export default class SmartLightSet extends Component{
     render(){
         return (
             <Content>
-                <div>设置界面</div>
+                <div>场景</div>
             </Content>
         )
     }

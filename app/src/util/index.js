@@ -85,8 +85,8 @@ export function getClassByModel(key) {
         case 'sensor':
             return 'icon_plc_control';
             //智慧路灯 icon
-        case 'smartLight':
-            return 'icon_led_light';
+        case 'smartlight':
+            return 'icon_smart_light';
         case 'smartLightPole':
             return 'icon_light_control';
         case 'ammeter':
@@ -96,7 +96,7 @@ export function getClassByModel(key) {
         case 'screen':
             return 'icon_screen';
         case 'collect':
-            return 'icon_collect'
+            return 'icon_collect';
         default:
             return 'icon_led_light';
     }
@@ -135,6 +135,17 @@ export function transformDeviceType(deviceType) {
             return 'charger';
         default:
             return null;
+    }
+}
+
+export function getNotifyStateClass(state) {
+    switch (state) {
+        case 0:
+            return 'fail';
+        case 1:
+            return 'success'
+        case 2:
+            return 'warning'
     }
 }
 

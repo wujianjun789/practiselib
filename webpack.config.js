@@ -40,7 +40,8 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/, loader: "babel-loader?presets[]=es2015&presets[]=react&presets[]=react-hmre",
+                test: /\.jsx?$/,
+                loader: "babel-loader?presets[]=es2015&presets[]=react&presets[]=react-hmre&presets[]=stage-0",
                 exclude: /node_modules/,
                 include: __dirname
             },
@@ -49,7 +50,8 @@ module.exports = {
                 loader: "style-loader!css-loader"
             },
             {
-                test: /\.less$/, loader: "style-loader!css-loader!less-loader"
+                test: /\.less$/,
+                loader: "style-loader!css-loader!less-loader"
             },
 
         ]

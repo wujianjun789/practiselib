@@ -1,8 +1,8 @@
 /** Created By ChrisWen
  *  17/08/31
  *  These Two functions is provide initData to smartLight-smartLightPole.
- *  当点击对应的按钮进行id判断后激活对应的函数;
  */
+
 export const sysInitData = {
     add(curType, domainList) {
         return {
@@ -27,8 +27,35 @@ export const sysInitData = {
             lng: latlng.lng,
             lat: latlng.lat
         }
-    }
-
+    },
+    smartLight: [
+        {
+            id: 0,
+            field: "name",
+            title: "路灯名称"
+        }, {
+            id: 1,
+            field: "domainName",
+            title: "域"
+        }, {
+            id: 2,
+            field: "lightCount",
+            title: "灯"
+        }, {
+            id: 3,
+            field: "camera",
+            title: "摄像头"
+        }, {
+            id: 5,
+            field: "screen",
+            title: "显示屏"
+        }, {
+            id: 6,
+            field: "electricStation",
+            title: "充电桩"
+        }
+    ],
+    smartLightPole: []
 }
 
 

@@ -1,8 +1,8 @@
 /**
  * Created by a on 2017/8/1.
  */
-import {getAssetModelList} from '../api/asset'
-import {intlFormat, getClassByModel} from '../util/index'
+import { getAssetModelList } from '../api/asset'
+import { intlFormat, getClassByModel } from '../util/index'
 
 let models = []
 
@@ -63,6 +63,44 @@ export const TreeData = [
     "active": true,
     "link": "/systemOperation",
     "level": 1
+  }, {
+    "id": "systemConfig",
+    "name": "系统配置",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/systemConfig/sysConfigSmartLight",
+    "level": 1,
+    "children": [
+      {
+        "id": 'sysConfigSmartLight',
+        "name": '智慧路灯',
+        "class": '',
+        "active": true,
+        "link": "/systemOperation/systemConfig/sysConfigSmartLight"
+      }
+    ]
+  }, {
+    "id": "deviceMonitor",
+    "name": "设备监控",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/deviceMonitor/deviceState",
+    "level": 1,
+    "children": [
+      {
+        "id": 'deviceTopology',
+        "name": "设备拓扑图",
+        "class": '',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceTopology"
+      }, {
+        "id": 'deviceState',
+        "name": "设备状态图",
+        "class": '',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceState"
+      }
+    ]
   }
 ]
 
@@ -470,38 +508,226 @@ export const modelData = [
       "values": {}
     }
   }, {
-    "key": "smartlight",
-    "name": "smartlight",
-    "props": [],
-    "types": [],
+    "key": "pole",
+    "name": "pole",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
     "intl": {
       "name": {
-        "en": "smartlight",
-        "zh": "智慧路灯"
-      },
-      "props": {},
-      "types": {}
-    },
-    "defaults": {
-      "props": [],
-      "values": {}
-    }
-  }, {
-    "key": "smartlightPole",
-    "name": "smartlightPole",
-    "props": [],
-    "types": [],
-    "intl": {
-      "name": {
-        "en": "smartlightPole",
+        "en": "light controller container",
         "zh": "灯杆"
       },
-      "props": {},
-      "types": {}
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
     },
     "defaults": {
-      "props": [],
-      "values": {}
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
+    }
+  }, {
+    "key": "smartlight",
+    "name": "smartlight",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "智慧路灯"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
+    },
+    "defaults": {
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
+    }
+  }, {
+    "key": "collect",
+    "name": "collect",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "数据采集仪"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
+    },
+    "defaults": {
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
     }
   }, {
     "key": "collect",
@@ -542,8 +768,8 @@ export function getModelData(model, cb) {
             active: data.key == model ? true : false,
             link: getLinkByModel(data.key)
           };
-          if(index==0){
-            item.link = "/systemOperation/"+item.id+"/"+data.key;
+          if (index == 0) {
+            item.link = "/systemOperation/" + item.id + "/" + data.key;
           }
           item.children.push(child)
         })
@@ -617,16 +843,14 @@ function getLinkByModel(key) {
       return '/systemOperation/config/lc';
     case 'sensor':
       return '/systemOperation/config/sensor';
-    case 'smartlight':
-      return '/systemOperation/config/smartlight';
-    case 'smartlightPole':
-      return '/systemOperation/config/smartlightPole';
+    case 'sysConfigSmartLight':
+      return '/systemOperation/systemConfig/sysConfigSmartLight';
     case 'plc':
       return 'icon_plc_control';
     case 'ammeter':
       return 'icon_ammeter';
     case 'pole':
-      return 'icon_pole';
+      return '/systemOperation/config/pole';
     case 'screen':
       return '/systemOperation/config/screen';
     case 'collect':

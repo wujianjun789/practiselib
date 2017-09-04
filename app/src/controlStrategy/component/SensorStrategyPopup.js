@@ -8,21 +8,10 @@ import {NameValid, numbersValid} from '../../util/index';
 import {IsExistInArray1} from '../../util/algorithm';
 import {getModelSummariesByModelID, addStrategy, updateStrategy} from '../../api/strategy';
 
-let options = (function generateLampLightnessList() {
-    let opt = [];
-    for(let i=0; i<11; i++){
-        let val = i*10;
-        opt.push({value: val, title: `亮度${val}`});
-    }
-    opt.unshift({value: 'off', title: '关'});
-    // opt.unshift({value: '', title: '选择灯亮度'});
-    return opt;
-})();
-
 export default class SensorStrategyPopup extends Component {
     constructor(props) {
         super(props);
-        const {id, strategyName="", sensorType='', controlDevice='lc', screenSwitch='off', sensorParam='', brightness='off', sensorParamsList=[]} = this.props.data;
+        const {data: {id, strategyName="", sensorType='', controlDevice='lc', screenSwitch='off', sensorParam='', brightness='off', sensorParamsList=[]}, controlDeviceList, brightnessList} = this.props;
         this.state = {
             chart: null,
             data: {
@@ -34,29 +23,16 @@ export default class SensorStrategyPopup extends Component {
                 sensorParam,
                 brightness
             },
-            controlDeviceList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {value: 'screen', title: '屏幕'},
-                    {value: 'lc', title: '灯'}
-                ]
-            },
-            brightnessList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: options
-            },
+            controlDeviceList,
+            brightnessList,
             screenSwitchList: {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    // {value: '', title: '选择屏幕开关'},
                     {value: 'on', title: '屏幕开'},
                     {value: 'off', title: '屏幕关'}
                 ]
             },
-
             sensorParamsList: sensorParamsList,
             checkStatus: {
                 strategyName: false,
@@ -156,6 +132,7 @@ export default class SensorStrategyPopup extends Component {
                     return d.rpc.value;
                 }
             },
+            yDomain: this.state.data.controlDevice == 'lc' ? [0, 100] : [0, 1],
             curveFactory: d3.curveStepAfter,
             tickFormat: d => `${d}${this.props.sensorsProps[this.state.data.sensorType]?this.props.sensorsProps[this.state.data.sensorType].unit:''}`,
             padding: {left: 0, top: 35, right: 0, bottom: 20},
@@ -165,7 +142,9 @@ export default class SensorStrategyPopup extends Component {
     }
 
     updateLineChart() {
-        this.state.chart.updateChart({values: this.state.sensorParamsList});
+        const yDomain = this.state.data.controlDevice == 'lc' ? [0, 100] : [0, 1];
+        const {sensorParamsList} = this.state;
+        this.state.chart.updateChart({values: sensorParamsList}, undefined, yDomain);
     }
 
     destroyLineChart() {
