@@ -657,7 +657,7 @@ export const modelData = [
     }
   }, {
     "key": "collect",
-    "name": "collect",
+    "name": "dataCollect",
     "props": [
       "software",
       "system",
@@ -728,23 +728,6 @@ export const modelData = [
           "comm": "Wireless"
         }
       }
-    }
-  }, {
-    "key": "collect",
-    "name": "dataCollect",
-    "props": [],
-    "types": [],
-    "intl": {
-      "name": {
-        "en": "Data Collect",
-        "zh": "数据采集仪"
-      },
-      "props": {},
-      "types": {}
-    },
-    "defaults": {
-      "props": [],
-      "values": {}
     }
   }
 ]
