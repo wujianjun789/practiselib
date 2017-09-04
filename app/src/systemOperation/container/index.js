@@ -21,12 +21,8 @@ import { intlFormat, getClassByModel } from '../../util/index'
 class SystemOperationIndex extends Component {
     constructor(props) {
         super(props);
-        this.initTreeData = this
-            .initTreeData
-            .bind(this);
-        this.onToggle = this
-            .onToggle
-            .bind(this);
+        this.initTreeData = this.initTreeData.bind(this);
+        this.onToggle = this.onToggle.bind(this);
     }
 
     componentWillMount() {
@@ -43,10 +39,7 @@ class SystemOperationIndex extends Component {
     componentDidMount() {}
 
     initTreeData() {
-        this
-            .props
-            .actions
-            .treeViewInit(TreeData);
+        this.props.actions.treeViewInit(TreeData);
     }
 
     onToggle(node) {

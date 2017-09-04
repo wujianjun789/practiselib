@@ -82,7 +82,7 @@ export default class CentralizedControllerPopup extends Component {
     }
 
     renderHtmlForModel() {
-        if (this.props.model === "screen") {
+        if (this.props.model === "screen"||this.props.model === "collect") {
             return null
         }
         return <div className="form-group clearfix">
