@@ -155,6 +155,13 @@ export default(
                             cb(null, require('../systemOperation/container/smartLightPole').default)
                         }, 'starriverpro.systemoperation.smartLightPole')
                     }}/>
+                    <Route
+                        path="collect"
+                        getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../systemOperation/container/DataCollect').default)
+                        }, 'starriverpro.systemoperation.dataCollect')
+                    }}/>
                 </Route>
                 <Route path="strategy">
                     <Route

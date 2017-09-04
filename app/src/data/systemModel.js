@@ -503,6 +503,23 @@ export const modelData = [
       "props": [],
       "values": {}
     }
+  }, {
+    "key": "collect",
+    "name": "dataCollect",
+    "props": [],
+    "types": [],
+    "intl": {
+      "name": {
+        "en": "Data Collect",
+        "zh": "数据采集仪"
+      },
+      "props": {},
+      "types": {}
+    },
+    "defaults": {
+      "props": [],
+      "values": {}
+    }
   }
 ]
 
@@ -613,7 +630,7 @@ function getLinkByModel(key) {
     case 'screen':
       return '/systemOperation/config/screen';
     case 'collect':
-      return 'icon_collect';
+      return '/systemOperation/config/collect';
     default:
       return 'icon_led_light';
   }

@@ -74,7 +74,7 @@ export default class CentralizedControllerPopup extends Component {
     }
 
     renderHtmlForModel(){
-            if(this.props.model === "screen"){return null}
+            if(this.props.model === "screen"||this.props.model === "collect"){return null}
                 return <div className="form-group clearfix">
                     <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
                     <div className="col-sm-7">

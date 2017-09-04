@@ -114,7 +114,8 @@ export class SensorStrategy extends Component{
             SENSOR_CO: '一氧化碳传感器',
             SENSOR_O2: '氧气传感器',
             SENSOR_CH4: '甲烷传感器',
-            SENSOR_CH2O: '甲醛传感器'
+            SENSOR_CH2O: '甲醛传感器',
+            SENSOR_LX: '照度传感器'
         }
         types.forEach(val => {
             list.push({value: val, title: sensorTitles[val]});
