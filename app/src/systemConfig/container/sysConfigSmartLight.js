@@ -137,7 +137,7 @@ export class sysConfigSmartLight extends Component {
         let id = e.target.id;
         switch (id) {
             case 'sys-add':
-                overlayerShow(<AddOrEditPopup />);
+                overlayerShow(<AddOrEditPopup title='新建/修改智慧路灯' />);
                 break;
             case 'sys-update':
             case 'sys-delete':
