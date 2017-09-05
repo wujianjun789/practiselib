@@ -37,7 +37,6 @@ export class SingleLamp extends Component {
     componentWillMount(){
         this.mounted = true;
         getModelData(()=>{this.mounted && this.initTreeData()});
-        console.log(this.state)
     }
 
     componentWillUnmount(){
@@ -46,7 +45,6 @@ export class SingleLamp extends Component {
 
     initTreeData(){
         const {model} = this.state;
-        console.log(model)
         this.setState({
             devicePro:Immutable.fromJS(getModelProps(model)),
             data: Immutable.fromJS(getModelTypes(model)),

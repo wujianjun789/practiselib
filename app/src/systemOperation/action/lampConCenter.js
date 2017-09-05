@@ -11,7 +11,6 @@ export function domainSelectChange(value) {
 }
 
 export function searchSubmit(value) {
-    console.log(value);
 }
 
 export function pageChange(current, pageSize) {
