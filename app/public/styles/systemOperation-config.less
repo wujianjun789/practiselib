@@ -342,8 +342,10 @@
   .modal-body{
     padding: 5px;
     overflow: hidden;
-    .col-sm-9{
+    .select-origin{
       width:446px;
+      float: left;
+      padding: 0 15px;
     }
     >.form-group{
       margin-top: 20px;
@@ -371,6 +373,9 @@
       }
       
       .select-Sensor{
+        float: left;
+        width:446px;
+        padding-left: 15px;
         .checkbox-inline{
           min-width: 130px;
           color: #808080;
@@ -386,6 +391,7 @@
           margin: 0 15px; 
           padding: 0;
           overflow-y: scroll;
+          float: left;
           >.form-group{
             padding: 20px;
             border-bottom: 1px solid #ddd;
@@ -401,6 +407,27 @@
           }
           >.label-list{
             padding:0 15px;
+            >li{
+              height: 40px;
+              line-height: 40px;
+              border-bottom: 1px solid #ddd;
+              color: #808080;
+              padding: 0 5px;
+              &:first-child{
+                color: #000;
+                font-weight:bold;
+              }
+              >span{
+                float: right;
+                background-image: url(/images/icon_delete.png);
+                background-size: 100% 100%;
+                display: block;
+                width: 15px;
+                height: 15px;
+                margin-top: 12px;
+                cursor: pointer;
+              }
+            }
           }    
       }
     }
