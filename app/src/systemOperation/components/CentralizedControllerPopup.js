@@ -86,8 +86,8 @@ export default class CentralizedControllerPopup extends Component {
             return null
         }
         return <div className="form-group clearfix">
-                 <label htmlFor="model" className="col-sm-4 control-label">型号：</label>
-                 <div className="col-sm-7">
+                 <label htmlFor="model" className="fixed-width-left control-label">型号：</label>
+                 <div className="fixed-width-right">
                    <Select id="model" className="form-control" titleField={ this.props.modelList.titleField } valueField={ this.props.modelList.valueField } options={ this.props.modelList.options } value={ this.state.model }
                      onChange={ this.onChange } />
                  </div>
@@ -129,16 +129,16 @@ export default class CentralizedControllerPopup extends Component {
               <Panel title={ title } closeBtn={ true } closeClick={ this.onCancel }>
                 <div className="popup-left">
                   <div className="form-group clearfix">
-                    <label htmlFor="id" className="col-sm-4 control-label">设备编号：</label>
-                    <div className="col-sm-7">
+                    <label htmlFor="id" className="fixed-width-left control-label">设备编号：</label>
+                    <div className="fixed-width-right">
                       <input type="text" className="form-control" id="id" placeholder="id" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
                       />
                       <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="name" className="col-sm-4 control-label">名称：</label>
-                    <div className="col-sm-7">
+                    <label htmlFor="name" className="fixed-width-left control-label">名称：</label>
+                    <div className="fixed-width-right">
                       <input type="text" className="form-control" id="name" placeholder="name" value={ name } maxLength={ 16 } onChange={ this.onChange }
                       />
                       <span className={ prompt.name ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
@@ -146,23 +146,23 @@ export default class CentralizedControllerPopup extends Component {
                   </div>
                   { this.renderHtmlForModel() }
                   <div className="form-group clearfix">
-                    <label htmlFor="domain" className="col-sm-4 control-label">域：</label>
-                    <div className="col-sm-7">
+                    <label htmlFor="domain" className="fixed-width-left control-label">域：</label>
+                    <div className="fixed-width-right">
                       <Select id="domain" className="form-control" titleField={ domainList.titleField } valueField={ domainList.valueField } options={ domainList.options } value={ domain }
                         onChange={ this.onChange } />
                       <span className={ !domainList || !domainList.options || domainList.options.length == 0 ? "prompt" : "prompt hidden" }>{ "请添加域" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="lng" className="col-sm-4 control-label">经度：</label>
-                    <div className="col-sm-7">
+                    <label htmlFor="lng" className="fixed-width-left control-label">经度：</label>
+                    <div className="fixed-width-right">
                       <input type="text" className="form-control" id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
                       <span className={ prompt.lng ? "prompt " : "prompt hidden" }>{ "经度数不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="lat" className="col-sm-4 control-label">纬度：</label>
-                    <div className="col-sm-7">
+                    <label htmlFor="lat" className="fixed-width-left control-label">纬度：</label>
+                    <div className="fixed-width-right">
                       <input type="text" className="form-control" id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
                       <span className={ prompt.lat ? "prompt " : "prompt hidden" }>{ "纬度数不合法" }</span>
                     </div>
