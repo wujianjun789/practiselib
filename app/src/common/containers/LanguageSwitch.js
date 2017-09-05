@@ -2,14 +2,15 @@
  * Created by a on 2017/9/5.
  */
 import React,{Component} from 'react';
-
-export default class LanauageSwitch extends Component{
+import {getDefaultIntl} from '../../intl/index'
+import {getObjectByKey} from '../../util/index'
+export default class LanguageSwitch extends Component{
     constructor(props){
         super(props);
         this.state = {
-            curLan:{id:"cn",name:"简体中文", path:"#cn"},
+            curLan:{id:"zh",name:"简体中文", path:"#zh"},
             list:[
-                {id:"cn", name:"简体中文", path:"#cn"},
+                {id:"zh", name:"简体中文", path:"#zh"},
                 {id:"en", name:"ENGLISH", path:"#en"}
             ]
         }
@@ -17,16 +18,24 @@ export default class LanauageSwitch extends Component{
         this.onClick = this.onClick.bind(this);
     }
 
+    componentWillMount(){
+        getDefaultIntl((intl)=>{
+            this.setState({curLan:getObjectByKey(this.state.list, 'id', intl.locale)});
+        })
+    }
+
     onClick(data){
-        this.setState({curLan:data});
+        this.setState({curLan:data},()=>{
+            window.setLanguage(data.id);
+        });
     }
 
     render(){
         const {className=''} = this.props;
         const {curLan, list} = this.state;
-        return <div className={"lanauage-switch "+className}>
+        return <div className={"language-switch "+className}>
                 <svg className="svgOnload">
-                    <symbol id="cn"><path fill="#8a8a8a" d="M184.667,95v41.833l-2.333,7L175.5,148L24,148.167l-6.333-2.667l-3.479-5.833v-38.62c0,0,41.31,0.511,41.31,0.579
+                    <symbol id="zh"><path fill="#8a8a8a" d="M184.667,95v41.833l-2.333,7L175.5,148L24,148.167l-6.333-2.667l-3.479-5.833v-38.62c0,0,41.31,0.511,41.31,0.579
                     c-0.021,3.668,1.003,7.437,2.061,10.964C62.875,125.25,74,127.45,77.935,127.45c9.44,0,14.958-5.118,15.117-5.362
                     c0.113-0.209,0.199-0.433,0.255-0.664c0.024-0.272-0.017-4.189-0.051-4.494c-0.046-0.184-1.94-0.1-2.4,0.306
                     c-0.856,0.607-5.606,4.137-12.001,4.137c-9.23,0-15.781-9.04-15.781-19.07c0-18.302,11.176-21.734,15.372-21.734

@@ -1,6 +1,7 @@
 
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
+import { intlReducer as intl } from 'react-intl-redux';
 
 import app from '../../app/reducer/index';
 import overlayer from './overlayer';
@@ -19,6 +20,7 @@ import notifyPopup from './notifyPopup';
 import auth from '../../authentication/reducer';
 const reducer = combineReducers({
     routing,
+    intl,
     auth,
     overlayer,
     userCenter,

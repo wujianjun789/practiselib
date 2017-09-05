@@ -5,6 +5,8 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import {injectIntl} from 'react-intl';
+
 import '../../../public/styles/assetManage-model.less';
 import '../../../public/styles/assetManage-statistics.less'
 
@@ -53,7 +55,7 @@ class AssetManageIndex extends Component{
         }
 
         return <div className={"container "+"asset-"+path}>
-            <HeadBar moduleName={"资产管理"} router={this.props.router}/>
+            <HeadBar moduleName={this.props.intl.formatMessage({id:"app.asset.manage"})} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />
@@ -78,4 +80,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AssetManageIndex);
+)(injectIntl(AssetManageIndex));

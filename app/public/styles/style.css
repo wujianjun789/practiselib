@@ -780,7 +780,7 @@ ul {
     background: url("../images/smartLight/icon_collect_hover.png");
 }
 /********************lanauage switch styles*********************/
-.lanauage-switch{
+.language-switch{
     float: right;
     position: relative;
     z-index: 10000;
@@ -788,23 +788,23 @@ ul {
     cursor: pointer;
 }
 
-.lanauage-switch .lanauage-icon{
+.language-switch .lanauage-icon{
     padding: 19px 20px 15px 20px;
 }
 
-.lanauage-switch svg{
+.language-switch svg{
     display: inline-block;
 
     width: 36px;
     height: 21px;
 }
 
-.lanauage-switch .svgOnload{
+.language-switch .svgOnload{
     position: absolute;
     width: 0;
     height: 0;
 }
-.lanauage-switch ul{
+.language-switch ul{
     display: none;
     position: absolute;
     top: 60px;
@@ -813,7 +813,7 @@ ul {
     margin-bottom: 0;
 }
 
-.lanauage-switch ul li{
+.language-switch ul li{
     width: 120px;
     height: 40px;
 
@@ -830,7 +830,7 @@ ul {
     cursor: pointer;
 }
 
-.lanauage-switch ul li svg{
+.language-switch ul li svg{
     margin-top: 8.5px;
     margin-right: 10px;
     margin-left: 10px;
@@ -838,7 +838,7 @@ ul {
     float: left;
 }
 
-.lanauage-switch ul li span{
+.language-switch ul li span{
     display: inline-block;
     height: 40px;
     line-height: 40px;
@@ -846,27 +846,27 @@ ul {
     float: left;
 }
 
-.lanauage-switch ul li:first-child{
+.language-switch ul li:first-child{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
 
-.lanauage-switch ul li:hover{
+.language-switch ul li:hover{
     background-color: #e4e6ea;
 }
 
-.lanauage-switch ul li:last-child {
+.language-switch ul li:last-child {
     border-bottom: none;
 
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
-.lanauage-switch .lanauage-switch:hover{
+.language-switch .lanauage-switch:hover{
     background: #52586e;
 }
 
-.lanauage-switch:hover > ul{
+.language-switch:hover > ul{
     display: block;
 }
 /******************* user center styles ***********************/
