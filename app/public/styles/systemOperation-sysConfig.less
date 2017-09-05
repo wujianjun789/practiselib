@@ -183,13 +183,21 @@
      /*******对话框第二步样式******************/
      #secstep {
          .step-init;
+         .delete {
+             position: absolute;
+             top: 0px;
+             right: 0px;
+             width: 15px;
+             height: 16px;
+             padding: 0;
+             background-image: url('/images/icon_delete.png');
+         }
          span {
              .front-init;
              font-weight: 700;
          }
          .secstep_selectdevice-content {
-             float: right;
-             width: 540px;
+             float: right; //width: 540px;
              height: 250px;
              margin-left: 15px;
              margin-bottom: 20px;
@@ -238,6 +246,19 @@
                          margin-top: 0px;
                      }
                  }
+             }
+         }
+         .secstep_whole-content {
+             ul {
+                 height: 250px;
+                 overflow-y: scroll;
+             }
+             ul>li {
+                 position: relative;
+                 margin: 20px 10px 20px 30px;
+             }
+             li:first-child {
+                 margin-top: 10px;
              }
          }
      }

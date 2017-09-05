@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PanelFooter from '../../../components/PanelFooter.js';
 import Select from '../../../components/Select.1.js';
 import SearchText from '../../../components/SearchText.js';
-import ICON_DELETE from '../../../../public/images/icon_delete.png';
+
 
 export default class SecondStepComponet extends Component {
     constructor(props) {
@@ -31,17 +31,48 @@ export default class SecondStepComponet extends Component {
                           <div>摄像头1</div>
                           <div>已添加</div>
                         </li>
+                      </ul>
+                    </div>
+                    <div className='secstep_whole-content clearfix'>
+                      <ul className='secstep_whole-ul'>
                         <li className='clearfix'>
                           <div>摄像头1</div>
-                          <div>已添加</div>
+                          <div><span className='delete'></span></div>
                         </li>
                         <li className='clearfix'>
                           <div>摄像头1</div>
-                          <div>已添加</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
+                        </li>
+                        <li className='clearfix'>
+                          <div>摄像头1</div>
+                          <div><span className='delete'></span></div>
                         </li>
                       </ul>
                     </div>
-                    <div>456</div>
                   </div>
                   { footer }
                 </div>)
