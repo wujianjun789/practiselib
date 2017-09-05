@@ -13,10 +13,10 @@ export default class FirstStepComponet extends Component {
   render() {
     const props = this.props;
     const footer = <PanelFooter funcNames={ ['onCancel', 'onFlip'] } btnTitles={ ['取消', '下一步'] } {...props}/>;
-    return (<div>
-              <ul>
-                <li>路灯名称:
-                  <InputCheck/>
+    return (<div id='first-step'>
+              <ul className='clearfix'>
+                <li>
+                  <InputCheck label='路灯名称' className='lightName-input' />
                 </li>
                 <li>选择:
                   <Select/>
