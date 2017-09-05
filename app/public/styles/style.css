@@ -1178,9 +1178,11 @@ ul {
     color: #4d4d4d;
     margin-bottom: 0;
 }
+.alter-pw-popup .modal-body .inputCheck .has-feedback{
+    width: 315px;
+}
 
 .alter-pw-popup .modal-body .inputCheck .form-control {
-    width: 300px;
     height: 40px;
 }
 
