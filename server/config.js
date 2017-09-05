@@ -10,6 +10,7 @@ const config = {
             {key: 'permission', title: '权限管理', link: '/permissionManage'},
             {key: 'maintenance', title: '系统运维', link: '/systemOperation'},
             {key: 'control', title: '系统控制', link: '/'},
+            {key: 'light', title: '智能照明', link: '/light'},
             {key: 'report', title: '报表管理', link: '/'},
             {key: 'publish', title: '媒体发布', link: '/'},
             {key: 'visual', title: '可视化', link: '/'},

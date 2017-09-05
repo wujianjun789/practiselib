@@ -242,7 +242,7 @@ export default class Map{
         if (!data || this.markerList.length <= 0) {
             return;
         }
-
+        
         data.lamp && data.lamp.map(function (item) {
             var marker = this.getMarkerById('DEVICE', item.id);
             if (marker != null) {

@@ -150,7 +150,7 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
     color: #00d8ff;
     font-size: 18px;
     font-weight: normal;
-line-height: 60px;
+    line-height: 60px;
 
     vertical-align: top;
 }
@@ -779,6 +779,96 @@ ul {
 .icon.icon_collect_hover{
     background: url("../images/smartLight/icon_collect_hover.png");
 }
+/********************lanauage switch styles*********************/
+.lanauage-switch{
+    float: right;
+    position: relative;
+    z-index: 10000;
+
+    cursor: pointer;
+}
+
+.lanauage-switch .lanauage-icon{
+    padding: 19px 20px 15px 20px;
+}
+
+.lanauage-switch svg{
+    display: inline-block;
+
+    width: 36px;
+    height: 21px;
+}
+
+.lanauage-switch .svgOnload{
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+.lanauage-switch ul{
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+
+    margin-bottom: 0;
+}
+
+.lanauage-switch ul li{
+    width: 120px;
+    height: 40px;
+
+    margin-bottom: 0;
+    padding: 0;
+
+    line-height: 40px;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #f8f8f8;
+    font-size: 12px;
+    color: #000;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.lanauage-switch ul li svg{
+    margin-top: 8.5px;
+    margin-right: 10px;
+    margin-left: 10px;
+
+    float: left;
+}
+
+.lanauage-switch ul li span{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+
+    float: left;
+}
+
+.lanauage-switch ul li:first-child{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.lanauage-switch ul li:hover{
+    background-color: #e4e6ea;
+}
+
+.lanauage-switch ul li:last-child {
+    border-bottom: none;
+
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.lanauage-switch .lanauage-switch:hover{
+    background: #52586e;
+}
+
+.lanauage-switch:hover > ul{
+    display: block;
+}
 /******************* user center styles ***********************/
 .user-center {
     float: right;
@@ -1191,6 +1281,9 @@ ul {
 .btn-eqpManage{color:#fff;background-color:#337ab7;border-color:#2d6da3}.btn-eqpManage:focus,.btn-eqpManage.focus{color:#fff;background-color:#285f8f;border-color:#122a3f}.btn-eqpManage:hover{color:#fff;background-color:#285f8f;border-color:#204d73}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{color:#fff;background-color:#285f8f;border-color:#204d73}.btn-eqpManage:active:hover,.btn-eqpManage.active:hover,.open>.dropdown-toggle.btn-eqpManage:hover,.btn-eqpManage:active:focus,.btn-eqpManage.active:focus,.open>.dropdown-toggle.btn-eqpManage:focus,.btn-eqpManage:active.focus,.btn-eqpManage.active.focus,.open>.dropdown-toggle.btn-eqpManage.focus{color:#fff;background-color:#204d73;border-color:#122a3f}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{background-image:none}.btn-eqpManage.disabled:hover,.btn-eqpManage[disabled]:hover,fieldset[disabled] .btn-eqpManage:hover,.btn-eqpManage.disabled:focus,.btn-eqpManage[disabled]:focus,fieldset[disabled] .btn-eqpManage:focus,.btn-eqpManage.disabled.focus,.btn-eqpManage[disabled].focus,fieldset[disabled] .btn-eqpManage.focus{background-color:#337ab7;border-color:#2d6da3}.btn-eqpManage .badge{color:#337ab7;background-color:#fff}
 .btn-sysManage{color:#fff;background-color:#4a5064;border-color:#3f4455}.btn-sysManage:focus,.btn-sysManage.focus{color:#fff;background-color:#343947;border-color:#090a0c}.btn-sysManage:hover{color:#fff;background-color:#343947;border-color:#252832}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{color:#fff;background-color:#343947;border-color:#252832}.btn-sysManage:active:hover,.btn-sysManage.active:hover,.open>.dropdown-toggle.btn-sysManage:hover,.btn-sysManage:active:focus,.btn-sysManage.active:focus,.open>.dropdown-toggle.btn-sysManage:focus,.btn-sysManage:active.focus,.btn-sysManage.active.focus,.open>.dropdown-toggle.btn-sysManage.focus{color:#fff;background-color:#252832;border-color:#090a0c}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{background-image:none}.btn-sysManage.disabled:hover,.btn-sysManage[disabled]:hover,fieldset[disabled] .btn-sysManage:hover,.btn-sysManage.disabled:focus,.btn-sysManage[disabled]:focus,fieldset[disabled] .btn-sysManage:focus,.btn-sysManage.disabled.focus,.btn-sysManage[disabled].focus,fieldset[disabled] .btn-sysManage.focus{background-color:#4a5064;border-color:#3f4455}.btn-sysManage .badge{color:#4a5064;background-color:#fff}
 
+.inputCheck{
+    float: left;
+}
 
 .inputCheck::before,
 .inputCheck::after {
@@ -1199,8 +1292,10 @@ ul {
     clear: both;
 }
 
-.inputCheck .col-sm-8 {
-    padding-right:0px;
+.inputCheck .has-feedback {
+    padding-left:15px;
+    width:240px;
+    float: left;
 }
 
 .inputCheck .reminder{
@@ -1218,4 +1313,6 @@ ul {
     line-height: 34px;
     color: #4d4d4d;
     font-size: 14px;
+    width: 100px;
+    float: left;
 }
