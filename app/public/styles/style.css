@@ -150,7 +150,7 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
     color: #00d8ff;
     font-size: 18px;
     font-weight: normal;
-line-height: 60px;
+    line-height: 60px;
 
     vertical-align: top;
 }
@@ -778,6 +778,96 @@ ul {
 }
 .icon.icon_collect_hover{
     background: url("../images/smartLight/icon_collect_hover.png");
+}
+/********************lanauage switch styles*********************/
+.lanauage-switch{
+    float: right;
+    position: relative;
+    z-index: 10000;
+
+    cursor: pointer;
+}
+
+.lanauage-switch .lanauage-icon{
+    padding: 19px 20px 15px 20px;
+}
+
+.lanauage-switch svg{
+    display: inline-block;
+
+    width: 36px;
+    height: 21px;
+}
+
+.lanauage-switch .svgOnload{
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+.lanauage-switch ul{
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+
+    margin-bottom: 0;
+}
+
+.lanauage-switch ul li{
+    width: 120px;
+    height: 40px;
+
+    margin-bottom: 0;
+    padding: 0;
+
+    line-height: 40px;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #f8f8f8;
+    font-size: 12px;
+    color: #000;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.lanauage-switch ul li svg{
+    margin-top: 8.5px;
+    margin-right: 10px;
+    margin-left: 10px;
+
+    float: left;
+}
+
+.lanauage-switch ul li span{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+
+    float: left;
+}
+
+.lanauage-switch ul li:first-child{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.lanauage-switch ul li:hover{
+    background-color: #e4e6ea;
+}
+
+.lanauage-switch ul li:last-child {
+    border-bottom: none;
+
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.lanauage-switch .lanauage-switch:hover{
+    background: #52586e;
+}
+
+.lanauage-switch:hover > ul{
+    display: block;
 }
 /******************* user center styles ***********************/
 .user-center {
