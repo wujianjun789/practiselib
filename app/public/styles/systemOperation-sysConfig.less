@@ -158,7 +158,7 @@
                      margin-top: 20px;
                      margin-left: 20px;
                      height: 130px;
-                     overflow-y: scroll;
+                     overflow-y: auto;
                      li {
                          margin: 20px 0px;
                          font-size: 14px;
@@ -191,13 +191,14 @@
              height: 16px;
              padding: 0;
              background-image: url('/images/icon_delete.png');
+             cursor: pointer;
          }
          span {
              .front-init;
              font-weight: 700;
          }
          .secstep_selectdevice-content {
-             float: right; //width: 540px;
+             float: right;
              height: 250px;
              margin-left: 15px;
              margin-bottom: 20px;
@@ -223,7 +224,7 @@
                      float: left;
                      width: 270px;
                      height: 120px;
-                     overflow-y: scroll;
+                     overflow-y: auto;
                      li {
                          margin: 20px 0px;
                          margin-left: 20px;
@@ -249,9 +250,11 @@
              }
          }
          .secstep_whole-content {
+             width: 270px;
              ul {
                  height: 250px;
-                 overflow-y: scroll;
+                 overflow-x: hidden;
+                 overflow-y: auto;
              }
              ul>li {
                  position: relative;
