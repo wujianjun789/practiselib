@@ -26,7 +26,7 @@ export class App extends Component{
     }
 
     render(){
-        const {title="StarRiver", name="智慧路灯管理系统", items} = this.props;
+        const {title="StarRiver", name, items} = this.props;
         return (
             <div className="app">
                 <div className="header clearfix">

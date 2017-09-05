@@ -45,6 +45,11 @@ function moduleInit(state, data) {
                 item.title = '智慧路灯';
                 item.link = '/smartLight';
                 break;
+            case 'light':
+                item.key = 'light';
+                item.title = '智慧照明';
+                item.link = '/light/map';
+                break;
             case 'report':
                 item.key = 'report';
                 item.title = '报表管理';

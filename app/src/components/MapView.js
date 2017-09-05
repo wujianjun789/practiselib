@@ -36,12 +36,10 @@ export default class MapView extends Component {
     initMap() {
         const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
         let {latlng={lat: null, lng: null}} = mapData
-
         if (mapData) {
             if (!this.state[mapData.id]) {
                 this.state[mapData.id] = new Map();
             }
-
             this.state[mapData.id].clearMarker();
             this.state[mapData.id].updateMap({
                 id: mapData.id,
