@@ -65,7 +65,9 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <li
           aria-disabled={true}
@@ -74,7 +76,9 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <div
           className="rc-pagination-options" />
@@ -82,7 +86,12 @@ exports[`test DomainEdit renders 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid sidebar-info ">
+    className="container-fluid sidebar-info "
+    style={
+      Object {
+        "height": "100%",
+      }
+    }>
     <div
       className="row collapse-container"
       onClick={[Function]}>

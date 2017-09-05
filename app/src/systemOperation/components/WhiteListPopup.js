@@ -129,7 +129,7 @@ export default class WhiteListPopup extends Component {
 
 
     render() {
-        let {className='', data, id} = this.props;
+        let {className='', id} = this.props;
         let {search, whiteList} = this.state;
         let {lcsList} = this.state;   //可添加的单灯数据
         let datalist = [];
@@ -142,7 +142,7 @@ export default class WhiteListPopup extends Component {
         }
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
-
+                                  
         return <div className={className}>
             <Panel title='白名单' footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row search-group">

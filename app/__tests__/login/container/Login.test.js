@@ -32,10 +32,10 @@ describe('<Login />',() => {
         expect(tree).toMatchSnapshot();
     });
     
-    it('loginHandler ',()=>{
-        const fn = jest.fn();
-        loginHandler('','',fn)();
-        expect(fn).toHaveBeenCalledTimes(1);
-    })
+    // it('loginHandler ',()=>{
+    //     const fn = jest.fn();
+    //     loginHandler('','',fn)();
+    //     expect(fn).toHaveBeenCalledTimes(1);
+    // })
 
 })
