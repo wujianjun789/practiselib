@@ -173,6 +173,28 @@ export function getModuleConfig(responseFun, errFun) {
     })
 }
 
+export function getStrategyDeviceConfig(responseFun, errFun) {
+    httpRequest('/config/strategyDevice',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
+export function getLightLevelConfig(responseFun, errFun) {
+    httpRequest('/config/lightLevel',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
 export function login(data, responseCall, errCall) {
     let host = getHostIP();
     httpRequest(`${host}/users/login`, {

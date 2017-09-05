@@ -16,7 +16,17 @@ export function timeStrategy(data) {
         margin: {top:20, right:0, bottom:20,left:0},
         label: "亮度",
         style: {fill:'none',width:1, color:'#000000', opacity:1},
-        data: data.data
+        yMin: 0,
+        yMax: 100,
+        data: data.data,
+        xAccessor:d=>d.x,
+        yAccessor:d=>{
+            if(d.y=="关"){
+                return 0;
+            }
+
+            return d.y;
+        }
     })
 
     return lineAreaChart;

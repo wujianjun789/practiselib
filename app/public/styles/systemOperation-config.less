@@ -1,7 +1,7 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-.lc, .lcc ,.sensor ,.screen {
+.lc, .lcc ,.sensor ,.screen,.smartLight,.smartLightPole,.collect {
   .content {
     .heading{
       height: 70px;
@@ -68,26 +68,31 @@
       button{
         margin-left: 15px;
         border: 0;
-        &.btn-primary{
-          background: #00bcff;
-        }
-        &.btn-danger{
-          width: 60px;
-          height: 30px;
-          background: #ff5c68;
-        }
+        // &.btn-primary{
+        //   background: #00bcff;
+        // }
+        // &.btn-danger{
+        //   width: 60px;
+        //   height: 30px;
+        //   background: #ff5c68;
+        // }
       }
     }
 
-    .sidebar-info .whitelist > .panel-heading {
-      position: relative;
-      top: 0;
+    .sidebar-info .whitelist,
+    .sidebar-info .dataOrigin  {
+      > .panel-heading{
+        position: relative;
+        top: 0;
+      }
     }
 
     > .lc,
     > .lcc,
     > .sensor,
-    > .screen {
+    > .screen,
+    > .smartLight,
+    > .dataCollect{
       margin-right: 300px;
       -webkit-transition: margin-right .3s;
       -moz-transition: margin-right .3s;
@@ -106,7 +111,7 @@
   }
 
   .sidebar-info.sidebar-collapse{
-    .whitelist > .panel-heading {
+    .whitelist,.dataOrigin > .panel-heading {
       transition: top .25s linear;
       top: -60px;
     }
@@ -145,7 +150,8 @@
   }
 }
 
-.lcc{
+.lcc,
+.collect{
   .sidebar-info .map-position{
     top: 230px;
   }
@@ -159,7 +165,9 @@
 
 .lc,
 .sensor,
-.screen{
+.screen,
+.smartLight,
+.smartLightPole,{
   .sidebar-info .map-position{
     top: 130px;
   }
@@ -326,5 +334,80 @@
   .modal-content {
     border-bottom-right-radius:6px;
     border-bottom-left-radius:6px;
+  }
+}
+
+.dataOrigin-popup{
+  width: 560px;
+  .modal-body{
+    padding: 5px;
+    overflow: hidden;
+    .col-sm-9{
+      width:446px;
+    }
+    >.form-group{
+      margin-top: 20px;
+      height: 40px;
+      line-height: 40px;
+      .control-label {
+        float: left;
+        padding-left: 20px;
+        text-align: right;        
+      }
+      .form-control {
+        display: block;
+        height: 40px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+    }
+    >.selectItem{
+      padding-top: 15px;
+      .control-label {
+        float: left;
+        padding-left: 20px;
+        width: 104px;
+        text-align: right;
+      }
+      
+      .select-Sensor{
+        .checkbox-inline{
+          min-width: 130px;
+          color: #808080;
+          font-size: 14px;
+          margin-left: 0;
+          margin-bottom: 10px;
+        }
+      }
+      .rfid-label{
+          border: 1px solid #ddd;
+          height: 300px;
+          width: 416px;
+          margin: 0 15px; 
+          padding: 0;
+          overflow-y: scroll;
+          >.form-group{
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            >input{
+              float: left;
+              margin-right: 20px;
+              width:277px;
+              height: 30px;
+            }
+            >button{
+              float: right;
+            }
+          }
+          >.label-list{
+            padding:0 15px;
+          }    
+      }
+    }
+    
+  }
+  .modal-footer {
+    padding:25px 20px 20px 20px;
+    border-top: none;
   }
 }

@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react'
 import UserCenter from '../common/containers/UserCenter'
+import LanauageSwitch from '../common/containers/LanauageSwitch';
 
 export default class HeadBar extends Component{
     constructor(props){
@@ -26,6 +27,7 @@ export default class HeadBar extends Component{
             </div>
             <span className="title">{moduleName}</span>
             <UserCenter />
+            <LanauageSwitch />
         </div>
     }
 }

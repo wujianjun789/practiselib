@@ -1,14 +1,13 @@
 /**
  * Created by a on 2017/7/25.
  */
-
 export const TreeData=[
     {
         "id": "domainEdit",
         "name":"域编辑",
         "toggled": true,
         "active": true,
-        "link": "/domainManage/domainEdit",
+        "link": "/domainManage/domainEdit/list",
         "level":1,
         "children": [
             {

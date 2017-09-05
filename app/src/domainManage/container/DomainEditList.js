@@ -15,6 +15,7 @@ import Page from '../../components/Page'
 import DomainPopup from '../component/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
+import {addNotify} from '../../common/actions/notifyPopup'
 
 import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
@@ -177,7 +178,8 @@ export class DomainEditList extends Component {
                                                         domain.parentId = data.prevDomain;
 
                                                         addDomain(domain, ()=>{
-                                                            actions.overlayerHide();
+                                                            actions.addNotify(1, "添加域成功");
+                                                            // actions.overlayerHide();
                                                             this.requestDomain();
                                                             this.requestSearch();
                                                         });
@@ -318,7 +320,8 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
             overlayerShow: overlayerShow,
-            overlayerHide: overlayerHide
+            overlayerHide: overlayerHide,
+            addNotify: addNotify
         }, dispatch)
     }
 }

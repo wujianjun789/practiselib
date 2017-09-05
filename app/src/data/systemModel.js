@@ -1,79 +1,110 @@
 /**
  * Created by a on 2017/8/1.
  */
-import {getAssetModelList} from '../api/asset'
-import {intlFormat, getClassByModel} from '../util/index'
+import { getAssetModelList } from '../api/asset'
+import { intlFormat, getClassByModel } from '../util/index'
 
-let models=[
+let models = []
 
+export const TreeData = [
+  {
+    "id": "config",
+    "name": "设备配置",
+    "toggled": true,
+    "active": true,
+    "link": "/systemOperation/config",
+    "level": 1,
+    "children": [
+      {
+        "id": 'lcc',
+        "name": "灯集中控制器",
+        "class": "icon_light_control",
+        "active": true
+      }, {
+        "id": 'lc',
+        "name": "单灯控制器",
+        "class": "icon_single_lamp_control",
+        "active": false
+      }
+    ]
+  }, {
+    "id": "strategy",
+    "name": "控制策略",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/strategy/timeTable",
+    "level": 1,
+    "children": [
+      {
+        "id": 'timeTable',
+        "name": "时间表",
+        "class": "icon_time_strategy",
+        "active": false,
+        "link": "/systemOperation/strategy/timeTable"
+      }, {
+        "id": 'sensor',
+        "name": "传感器",
+        "class": "icon_sensor_strategy",
+        "active": false,
+        "link": "/systemOperation/strategy/sensor"
+      }, {
+        "id": 'latlng',
+        "name": "经纬度",
+        "class": "icon_latlng_strategy",
+        "active": false,
+        "link": "/systemOperation/strategy/latlng"
+      }
+    ]
+
+  }, {
+    "id": "serviceMonitor",
+    "name": "服务监控",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation",
+    "level": 1
+  }, {
+    "id": "systemConfig",
+    "name": "系统配置",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/systemConfig/sysConfigSmartLight",
+    "level": 1,
+    "children": [
+      {
+        "id": 'sysConfigSmartLight',
+        "name": '智慧路灯',
+        "class": '',
+        "active": true,
+        "link": "/systemOperation/systemConfig/sysConfigSmartLight"
+      }
+    ]
+  }, {
+    "id": "deviceMonitor",
+    "name": "设备监控",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/deviceMonitor/deviceState",
+    "level": 1,
+    "children": [
+      {
+        "id": 'deviceTopology',
+        "name": "设备拓扑图",
+        "class": '',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceTopology"
+      }, {
+        "id": 'deviceState',
+        "name": "设备状态图",
+        "class": '',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceState"
+      }
+    ]
+  }
 ]
 
-export const TreeData=[
-    {
-        "id": "config",
-        "name":"设备配置",
-        "toggled": true,
-        "active": true,
-        "link": "/systemOperation/config",
-        "level":1,
-        "children": [
-            {
-                "id": 'lcc',
-                "name":"灯集中控制器",
-                "class":"icon_light_control",
-                "active":true
-            },
-            {
-                "id": 'lc',
-                "name":"单灯控制器",
-                "class":"icon_single_lamp_control",
-                "active":false
-            }
-        ]
-    },
-    {
-        "id":"strategy",
-        "name":"控制策略",
-        "toggled": false,
-        "active": true,
-        "link":"/systemOperation/strategy",
-        "level":1,
-        "children":[
-            {
-                "id":'timeTable',
-                "name":"时间表",
-                "class":"icon_time_strategy",
-                "active":false,
-                "link":"/systemOperation/strategy/timeTable"
-            },
-            {
-                "id":'sensor',
-                "name":"传感器",
-                "class":"icon_sensor_strategy",
-                "active":false,
-                "link":"/systemOperation/strategy/sensor"
-            },
-            {
-                "id":'latlng',
-                "name":"经纬度",
-                "class":"icon_latlng_strategy",
-                "active":false,
-                "link":"/systemOperation/strategy/latlng"
-            }
-        ]
-
-    },
-    {
-        "id": "serviceMonitor",
-        "name":"服务监控",
-        "toggled": false,
-        "active": true,
-        "link": "/systemOperation",
-        "level": 1
-    }
-]
-
-export const modelData=[
+export const modelData = [
   {
     "key": "lc",
     "name": "lc",
@@ -92,8 +123,7 @@ export const modelData=[
       "comm"
     ],
     "types": [
-      "LAMP_SANSI",
-      "LAMP_HWNB"
+      "LAMP_SANSI", "LAMP_HWNB"
     ],
     "intl": {
       "name": {
@@ -163,9 +193,7 @@ export const modelData=[
     },
     "defaults": {
       "props": [
-        "power",
-        "dimmingMode",
-        "comm"
+        "power", "dimmingMode", "comm"
       ],
       "values": {
         "LAMP_SANSI": {
@@ -180,8 +208,7 @@ export const modelData=[
         }
       }
     }
-  },
-  {
+  }, {
     "key": "lcc",
     "name": "lcc",
     "props": [
@@ -193,9 +220,7 @@ export const modelData=[
       "comm"
     ],
     "types": [
-      "LC300",
-      "LC600",
-      "LCMini"
+      "LC300", "LC600", "LCMini"
     ],
     "intl": {
       "name": {
@@ -244,9 +269,7 @@ export const modelData=[
       }
     },
     "defaults": {
-      "props": [
-        "comm"
-      ],
+      "props": ["comm"],
       "values": {
         "LC300": {
           "comm": "Wireless"
@@ -259,16 +282,11 @@ export const modelData=[
         }
       }
     }
-  },
-  {
+  }, {
     "key": "sensor",
     "name": "sensor",
     "props": [
-      "manufacturer",
-      "unit",
-      "accuracy",
-      "max",
-      "min"
+      "manufacturer", "unit", "accuracy", "max", "min"
     ],
     "types": [
       "SENSOR_NOISE",
@@ -359,10 +377,7 @@ export const modelData=[
     },
     "defaults": {
       "props": [
-        "unit",
-        "accuracy",
-        "max",
-        "min"
+        "unit", "accuracy", "max", "min"
       ],
       "values": {
         "SENSOR_NOISE": {
@@ -433,7 +448,7 @@ export const modelData=[
         }
       }
     }
-  },{
+  }, {
     "key": "screen",
     "name": "screen",
     "props": [
@@ -446,8 +461,7 @@ export const modelData=[
       "manufactureDate",
       "min"
     ],
-    "types": [
-    ],
+    "types": [],
     "intl": {
       "name": {
         "en": "display screen",
@@ -487,108 +501,344 @@ export const modelData=[
           "zh": "硬件版本"
         }
       },
+      "types": {}
+    },
+    "defaults": {
+      "props": [],
+      "values": {}
+    }
+  }, {
+    "key": "pole",
+    "name": "pole",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "灯杆"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
       "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
       }
     },
     "defaults": {
-      "props": [
-      ],
+      "props": ["comm"],
       "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
+    }
+  }, {
+    "key": "smartlight",
+    "name": "smartlight",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "智慧路灯"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
+    },
+    "defaults": {
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
+      }
+    }
+  }, {
+    "key": "collect",
+    "name": "dataCollect",
+    "props": [
+      "software",
+      "system",
+      "kernel",
+      "hardware",
+      "manufacturer",
+      "comm"
+    ],
+    "types": [
+      "LC300", "LC600", "LCMini"
+    ],
+    "intl": {
+      "name": {
+        "en": "light controller container",
+        "zh": "数据采集仪"
+      },
+      "props": {
+        "software": {
+          "en": "software",
+          "zh": "软件版本"
+        },
+        "system": {
+          "en": "system",
+          "zh": "系统版本"
+        },
+        "kernel": {
+          "en": "kernel",
+          "zh": "内核版本"
+        },
+        "hardware": {
+          "en": "hardware",
+          "zh": "硬件版本"
+        },
+        "manufacturer": {
+          "en": "manufacturer",
+          "zh": "厂商信息"
+        },
+        "comm": {
+          "en": "control type : 485 | PLC | Wireless",
+          "zh": "控制方式 : 485 | PLC | Wireless"
+        }
+      },
+      "types": {
+        "LC300": {
+          "en": "LC300 Light Controller",
+          "zh": "LC300 灯控"
+        },
+        "LC600": {
+          "en": "LC600 Light Controller",
+          "zh": "LC600 灯控"
+        },
+        "LCMini": {
+          "en": "LCMini Light Controller",
+          "zh": "LCMini 灯控"
+        }
+      }
+    },
+    "defaults": {
+      "props": ["comm"],
+      "values": {
+        "LC300": {
+          "comm": "Wireless"
+        },
+        "LC600": {
+          "comm": "Wireless"
+        },
+        "LCMini": {
+          "comm": "Wireless"
+        }
       }
     }
   }
 ]
 
 export function getModelData(model, cb) {
-    // if(models && models.length>0){
-    //     cb && cb();
-    //     return
-    // }
-    getAssetModelList(response=>{
-        models = response;
-        TreeData.map(item=>{
-            if(item.id == "config"){
-                let curModel = getModelById(model);
-                if(curModel){
-                    item.link = "/systemOperation/config/"+curModel.key;
-                }
-                item.children = [];
-                response.map((data, index)=>{
-                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:data.key==model?true:false, link:getLinkByModel(data.key)};
-                    item.children.push(child)
-                })
-            }
+  // if(models && models.length>0){     cb && cb();     return }
+  getAssetModelList(response => {
+    models = response;
+    TreeData.map(item => {
+      if (item.id == "config") {
+        let curModel = getModelById(model);
+        if (curModel) {
+          // item.link = "/systemOperation/config/" + curModel.key;
+        }
+        item.children = [];
+        response.map((data, index) => {
+          let child = {
+            id: data.key,
+            name: intlFormat(data.intl.name),
+            class: getClassByModel(data.key),
+            active: data.key == model ? true : false,
+            link: getLinkByModel(data.key)
+          };
+          if (index == 0) {
+            item.link = "/systemOperation/" + item.id + "/" + data.key;
+          }
+          item.children.push(child)
         })
+      }
+    })
 
-        cb && cb();
-    });
+    cb && cb();
+  });
 }
 
 export function getModelList() {
-    let list = []
-    for(let key in models){
-        let model = models[key]
-        list.push({id:model.key, title:intlFormat(model.intl.name), value:intlFormat(model.intl.name)})
-    }
+  let list = []
+  for (let key in models) {
+    let model = models[key]
+    list.push({
+      id: model.key,
+      title: intlFormat(model.intl.name),
+      value: intlFormat(model.intl.name)
+    })
+  }
 
-    return list;
+  return list;
 }
 
 export function getModelById(id) {
-    for(let key in models){
-        if(models[key].key == id){
-            return models[key];
-        }
+  for (let key in models) {
+    if (models[key].key == id) {
+      return models[key];
     }
+  }
 
-    return null;
+  return null;
 }
 
 export function getModelNameById(id) {
-    let model = getModelById(id);
-    if(model){
-        return intlFormat(model.intl.name);
-    }
+  let model = getModelById(id);
+  if (model) {
+    return intlFormat(model.intl.name);
+  }
 
-    return null;
+  return null;
 }
 
-export function getModelTypesById(id){
-    let model = getModelById(id);
-    let list = [];
-    if(model){
-        list = model.types.map(type=>{
-            return {id:type, title:intlFormat(model.intl.types[type])}
-        });    
-    }
+export function getModelTypesById(id) {
+  let model = getModelById(id);
+  let list = [];
+  if (model) {
+    list = model
+      .types
+      .map(type => {
+        return {
+          id: type,
+          title: intlFormat(model.intl.types[type])
+        }
+      });
+  }
 
-    return list;
+  return list;
 }
 
-export function getModelTypesNameById(modelId, typeId){
-    let model = getModelById(modelId);
-    return intlFormat(model.intl.types[typeId]);
+export function getModelTypesNameById(modelId, typeId) {
+  let model = getModelById(modelId);
+  return intlFormat(model.intl.types[typeId]);
 }
 
 function getLinkByModel(key) {
-    switch(key){
-        case 'lcc':
-            return '/systemOperation/config/lcc';
-        case 'lc':
-            return '/systemOperation/config/lc';
-        case 'sensor':
-            return '/systemOperation/config/sensor';
-        case 'plc':
-            return 'icon_plc_control';
-        case 'ammeter':
-            return 'icon_ammeter';
-        case 'pole':
-            return 'icon_pole';
-        case 'screen':
-            return '/systemOperation/config/screen';
-        case 'collect':
-            return 'icon_collect'
-        default:
-            return 'icon_led_light';
-    }
+  switch (key) {
+    case 'lcc':
+      return '/systemOperation/config/lcc';
+    case 'lc':
+      return '/systemOperation/config/lc';
+    case 'sensor':
+      return '/systemOperation/config/sensor';
+    case 'sysConfigSmartLight':
+      return '/systemOperation/systemConfig/sysConfigSmartLight';
+    case 'plc':
+      return 'icon_plc_control';
+    case 'ammeter':
+      return 'icon_ammeter';
+    case 'pole':
+      return '/systemOperation/config/pole';
+    case 'screen':
+      return '/systemOperation/config/screen';
+    case 'collect':
+      return '/systemOperation/config/collect';
+    default:
+      return 'icon_led_light';
+  }
 }

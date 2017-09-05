@@ -3,17 +3,17 @@
  */
 let language = "";
 export function getLanguage() {
-    if(!language){
+    if (!language) {
         language = navigator.language;
     }
 
-    if(!language){
+    if (!language) {
         language = navigator.browserLanguage;
     }
 
-    if(language){
+    if (language) {
         let lans = language.split('-')
-        if(lans.length > 1){
+        if (lans.length > 1) {
             language = lans[0]
         }
     }
@@ -28,12 +28,14 @@ export function setLanguage(language) {
 export function intlFormat(data) {
     let lan = getLanguage();
 
-    return data[lan] ? data[lan] : data['en'];
+    return data[lan]
+        ? data[lan]
+        : data['en'];
 }
 
 export function getObjectByKey(list, key, value) {
-    for(var i=0;i<list.length;i++){
-        if(list[i][key] == value){
+    for (var i = 0; i < list.length; i++) {
+        if (list[i][key] == value) {
             return list[i];
         }
     }
@@ -41,8 +43,8 @@ export function getObjectByKey(list, key, value) {
 }
 
 export function getIndexByKey(list, key, value) {
-    for(var i=0;i<list.length;i++){
-        if(list[i][key] == value){
+    for (var i = 0; i < list.length; i++) {
+        if (list[i][key] == value) {
             return i;
         }
     }
@@ -53,15 +55,19 @@ export function getIndexByKey(list, key, value) {
  *  获取字符串填充html元素宽度
  *  @str
  */
-export function getElementOffwidth(str, fontSize="14px") {
+export function getElementOffwidth(str, fontSize = "14px") {
     var w = 0;
     var html = document.createElement('span');
     html.style.visibility = 'hidden';
     html.style.fontSize = fontSize;
     html.innerHTML = str;
-    document.body.appendChild(html);
+    document
+        .body
+        .appendChild(html);
     w = html.offsetWidth;
-    document.body.removeChild(html);
+    document
+        .body
+        .removeChild(html);
 
     return w;
 }
@@ -71,13 +77,18 @@ export function getElementOffwidth(str, fontSize="14px") {
  * @param key(model)
  */
 export function getClassByModel(key) {
-    switch (key){
+    switch (key) {
         case 'lcc':
             return 'icon_light_control';
         case 'lc':
             return 'icon_led_light';
         case 'sensor':
             return 'icon_plc_control';
+            //智慧路灯 icon
+        case 'smartlight':
+            return 'icon_smart_light';
+        case 'smartLightPole':
+            return 'icon_light_control';
         case 'ammeter':
             return 'icon_ammeter';
         case 'pole':
@@ -85,14 +96,14 @@ export function getClassByModel(key) {
         case 'screen':
             return 'icon_screen';
         case 'collect':
-            return 'icon_collect'
+            return 'icon_collect';
         default:
             return 'icon_led_light';
     }
 }
 
 export function getDeviceTypeByModel(key) {
-    switch (key){
+    switch (key) {
         case 'lightController':
             return 'CONTROLLER';
         case 'led':
@@ -113,7 +124,7 @@ export function getDeviceTypeByModel(key) {
 }
 
 export function transformDeviceType(deviceType) {
-    switch(deviceType){
+    switch (deviceType) {
         case "DEVICE":
             return 'lamp';
         case "CONTROLLER":
@@ -124,6 +135,17 @@ export function transformDeviceType(deviceType) {
             return 'charger';
         default:
             return null;
+    }
+}
+
+export function getNotifyStateClass(state) {
+    switch (state) {
+        case 0:
+            return 'fail';
+        case 1:
+            return 'success'
+        case 2:
+            return 'warning'
     }
 }
 
@@ -149,14 +171,14 @@ export function IPValid(ip) {
 }
 
 export function PORTValid(port) {
-    if(port < 1 || port > 65535){
+    if (port < 1 || port > 65535) {
         return false;
     }
 
     return /^([1-9]\d*|0)$/.test(port)
 }
 
-export function MACValid(mac){
+export function MACValid(mac) {
     return /^[a-f0-9]*$/i.test(mac)
 }
 
@@ -168,8 +190,8 @@ export function latValid(value) {
     return /^[-]?(\d|([1-8]\d)|(90))(\.\d*)?$/.test(value);
 }
 
-export function latlngValid(str){
-    return str.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')
+export function latlngValid(str) {
+    return str.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g, '')
 }
 
 export function PassWordValid(password) {

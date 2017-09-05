@@ -19,8 +19,10 @@ import {getObjectByKey} from '../../util/index';
 import {dateStringFormat} from '../../util/string'
 import {getMomentDate, momentDateFormat} from '../../util/time'
 
-import {getAssetModelList} from '../../api/asset'
+import {getModelData, getModelList} from '../../data/assetModels'
+
 import {getStrategyListByName, getStrategyCountByName, addStrategy, updateStrategy, delStrategy} from '../../api/strategy'
+import {getStrategyDeviceConfig} from '../../util/network'
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -40,11 +42,11 @@ class TimeStrategy extends Component{
                 total: 0
             }),
             deviceList:{titleKey:"name", valueKey:"name", options:[/*{id:1, name:"test灯"},{id:2, name:"test显示屏"}*/]},
-            strategyList:[/*{id:1,time:"15:00", light:"50"},{id:2,time:"16:00", light:"关"}*/],
+            strategyList:[/*{id:"start", time:"00:00", light:0}, {id:"end", time:"24:00", light:0}*/],
             data:Immutable.fromJS([
             ])
         }
-
+        this.deviceDefault = [/*"lc", "screen"*/]
         this.columns =  [
             {id: 0, field:"name", title:"策略名称"},
             {id: 1, field: "timeRange", title: "时间范围"}
@@ -67,7 +69,12 @@ class TimeStrategy extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        getAssetModelList(data=>this.mounted && this.initDeviceList(data));
+        getStrategyDeviceConfig(data=>{
+            this.mounted && this.setState(this.deviceDefault=data, ()=>{
+                getModelData(()=>this.mounted && this.initDeviceList(getModelList()));
+            })
+        })
+
         this.requestSearch();
     }
 
@@ -123,8 +130,12 @@ class TimeStrategy extends Component{
     }
 
     initDeviceList(data){
-        let list = data.map(model=>{
-            return {id:model.key, name:model.name};
+        let list = [];
+        this.deviceDefault.map(key=>{
+            let model = getObjectByKey(data, 'id', key)
+            if(model){
+                list.push({id:model.id, name:model.name})
+            }
         })
 
         this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:list})})
@@ -137,6 +148,7 @@ class TimeStrategy extends Component{
             name:"",
             device:deviceList.options.length?deviceList.options[0]:null
         }
+
         actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData} deviceList={deviceList} strategyList={strategyList}
                                                  onConfirm={(data)=>{
                                                     let weekList = data.workTime.map(day=>{
@@ -187,9 +199,23 @@ class TimeStrategy extends Component{
         }
 
         let strategyList=[];
+        // let Isrepeat = false;
+        // strategyList.push({id:row.get("id"), time:"00:00", light:0})
         row.get("strategy").map(strategy=>{
-            strategyList.push({id:row.get("id"), time:strategy.getIn(["condition", "time"]), light:strategy.getIn(["rpc", "brightness"])})
+            let strategyTime = strategy.getIn(["condition", "time"]);
+            // if(strategyTime.indexOf("00:00")>-1){
+            //     strategyList.splice(0, 1, {id:row.get("id"), time:strategyTime, light:strategy.getIn(["rpc", "brightness"])});
+            // }else{
+                strategyList.push({id:row.get("id"), time:strategyTime, light:strategy.getIn(["rpc", "brightness"])});
+            // }
+
+
         })
+
+        // if(!Isrepeat){
+        //     strategyList.push({id:row.get("id"), time:"24:00", light:0});
+        // }
+
 
         let expR = row.getIn(["expire", "expireRange"])
         let exeR = row.getIn(["expire", "executionRange"])

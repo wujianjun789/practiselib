@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Panel from './../../components/Panel';
 import PanelFooter from './../../components/PanelFooter';
+
+import NotifyPopup from '../../common/containers/NotifyPopup'
 /**
  * Domain component
  * @param {String}      title       'domain title,
@@ -166,6 +168,7 @@ export default class DomainPopup extends PureComponent {
                                      mapCallFun={{mapDragendHandler:this.mapDragend}} markerCallFun={{markerDragendHandler:this.mapDragend}}/>
                     </div>
                 </div>
+                <NotifyPopup />
             </Panel>
         </div>
     }

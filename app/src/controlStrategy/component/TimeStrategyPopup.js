@@ -18,6 +18,7 @@ import {STRATEGY_NAME_LENGTH, Name2Valid} from '../../util/index'
 import {dateAddZero} from '../../util/string'
 import Immutable from 'immutable'
 
+import {getLightLevelConfig} from '../../util/network'
 const date_year = "不限";
 export default class TimeStrategyPopup extends Component{
     constructor(props){
@@ -43,7 +44,9 @@ export default class TimeStrategyPopup extends Component{
             time:getCurHM(),
             light:Immutable.fromJS({
                 list:[
-                    {id:1, value:"关"},{id:2, value:20},{id:3, value:40},{id:4, value:60},{id:5, value:80}
+                    /*{id:1, value:"关"},{id:2, value:0},{id:3, value:10},{id:4, value:20},{id:5, value:30},
+                    {id:6, value:40},{id:7, value:50},{id:8, value:60},{id:9, value:70},{id:10, value:80},
+                    {id:11, value:90},{id:12, value:100}*/
                 ],
                 placeholder:"选择灯亮度",
                 value:"开",
@@ -77,7 +80,16 @@ export default class TimeStrategyPopup extends Component{
     }
 
     componentWillMount(){
+        this.mounted = true;
+        getLightLevelConfig((data)=>{
+            this.setState({light:this.state.light.update("list", v=>{
+                 let newList = data.map((key, index)=>{
+                    return {id:index, value:key, title:key=="关"?key:"亮度"+key};
+                 })
 
+                return Immutable.fromJS(newList);
+            })})
+        })
         const {startTime, endTime, workTime} = this.state
         let year = [];
         let month = [];
@@ -270,7 +282,16 @@ export default class TimeStrategyPopup extends Component{
         let strategy2 = {time:curTime, light:curlight};
         let newList = this.state.strategyList;
         newList.push(strategy2)
-        this.setState({strategyList:newList}, ()=>{
+
+        this.setState({strategyList:newList.sort((a,b)=>{
+            let aList = a.time.split(":");
+            let bList = b.time.split(":");
+            if(parseInt(aList[0]) == parseInt(bList[0])){
+                return parseInt(aList[1] > parseInt(bList[1]));
+            }
+
+            return (parseInt(aList[0]) > parseInt(bList[0]));
+        })}, ()=>{
             this.updateChart();
         });
     }
@@ -289,10 +310,26 @@ export default class TimeStrategyPopup extends Component{
             return;
         }
 
+        let IsStart = false;
+        let IsEnd = false;
         const {strategyList} = this.state;
         let chartList = strategyList.map(strategy=>{
-            return {x:strategy.time, y:strategy.light=="关"||strategy.light=="开"?0:strategy.light}
+            if(strategy.time.indexOf("00:00")>-1){
+                IsStart = true;
+            }
+
+            if(strategy.time.indexOf("24:00")>-1){
+                IsEnd = true;
+            }
+            return {x:strategy.time, y:/*strategy.light=="关"||strategy.light=="开"?0:*/strategy.light}
         })
+
+        if(!IsStart){
+            chartList.unshift({x:"00:00", y:0});
+        }
+        if(!IsEnd){
+            chartList.push({x:"24:00", y:0});
+        }
         if(chartList){
             this.timeStrategy && this.timeStrategy.destory();
             this.timeStrategy = timeStrategy({id:chartId, data:chartList});
@@ -316,7 +353,6 @@ export default class TimeStrategyPopup extends Component{
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>
-
         return <div className="time-strategy-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} footer={footer}>
                 <div className="row name-container">
@@ -418,7 +454,7 @@ export default class TimeStrategyPopup extends Component{
                                     <input className="form-control" id="time" type="time" value={time} onChange={this.onChange}/>
                                 </div>
                                 <div className="col-sm-4 select-container">
-                                    <Select className="form-control" data={light} onChange={selectedIndex=>{this.setLightOnChange("light", selectedIndex)}}></Select>
+                                    <Select className="form-control" valueKey="value" titleKey="title" data={light} onChange={selectedIndex=>{this.setLightOnChange("light", selectedIndex)}}></Select>
                                 </div>
                             </div>
                             <div className="row list-group">

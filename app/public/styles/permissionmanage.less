@@ -73,9 +73,9 @@
 .user-add-popup,.user-edit-popup,.user-domain-edit-popup{
     width:700px;
     .modal-body{
-        padding-right:70px;
+        padding-right:50px;
         padding-top:35px;
-        padding-left:10px;
+        padding-left:0px;
         padding-bottom:35px;
         >.form-group{
             margin-bottom: 0px;
@@ -86,7 +86,7 @@
         background-color: transparent;
         padding-top: 0;
         padding-bottom: 35px;
-        padding-right:20px;
+        padding-right:50px;
         text-align:right
     }
     .control-label{
@@ -96,6 +96,8 @@
         line-height: 34px;
         color: #4d4d4d;
         font-size: 14px;
+        width: 100px;
+        float: left;
     }
 }
 
@@ -111,15 +113,19 @@
         }
     }
     .module-per{
-        .row{
-            margin: 6px 0 14px 0;
-            >.checkbox-inline{
+        >div{
+            width:580px;
+            float: left;
+            padding-left: 15px;
+            .checkbox-inline{
                 min-width: 106px;
                 padding-right: 30px;
                 color: #808080;
                 font-size: 14px;
+                margin: 6px 0 14px 0;
             }
         }
+        
     }
 
     

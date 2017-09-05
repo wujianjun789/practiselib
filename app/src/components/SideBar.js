@@ -1,29 +1,29 @@
 /**
  * Created by a on 2017/7/4.
  */
-import React,{Component} from 'react'
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import TreeView from './TreeView'
 
-export default class SideBar extends Component{
-    constructor(props){
+export default class SideBar extends Component {
+    constructor(props) {
         super(props);
         this.onToggle = this.onToggle.bind(this);
     }
 
-    componentWillReceiveProps(){
+    componentWillReceiveProps() {
         // console.log("receive receive");
     }
 
-    onToggle(node){
+    onToggle(node) {
         this.props.onToggle && this.props.onToggle(node);
     }
 
-    render(){
+    render() {
         return <div className="sidebar">
-            <TreeView onToggle={(node)=>this.onToggle(node)}/>
-        </div>
+                 <TreeView onToggle={ (node) => this.onToggle(node) } />
+               </div>
     }
 }

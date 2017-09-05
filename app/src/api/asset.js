@@ -10,6 +10,7 @@ export function getAssetModelList(cb) {
         headers: headers,
         method: 'GET'
     }, response=>{
+        // console.log("responseServer:", response)
         cb && cb(modelData);
     })
 }
@@ -69,7 +70,7 @@ export function getAssetsCount(cb) {
  *
  * @param model(资产模型类型)
  */
-export function getAssetsByModel(model){
+export function getAssetsByModel(model, cb){
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/'+model+'s', {
         headers: headers,
@@ -79,11 +80,24 @@ export function getAssetsByModel(model){
     })
 }
 
+export function getAssetsBaseByModel(model, cb){
+   
+    let headers = getHttpHeader();
+
+    let paramStr = JSON.stringify({"where":getSearchParam("", model, "")})
+  
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
 /**
  *
  * @param model(资产模型类型)
  */
-export function getAssetsCountByModel(model){
+export function getAssetsCountByModel(model, cb){
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/'+model+'s/count', {
         headers: headers,

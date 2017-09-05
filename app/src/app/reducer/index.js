@@ -28,7 +28,7 @@ function moduleInit(state, data) {
             case 'asset':
                 item.key = 'asset';
                 item.title = '资产管理';
-                item.link = '/assetManage/model';
+                item.link = '/assetManage/model/lc';
                 break;
             case 'permission':
                 item.key = 'permission';
@@ -43,7 +43,7 @@ function moduleInit(state, data) {
             case 'control':
                 item.key = 'control';
                 item.title = '智慧路灯';
-                item.link = '/smartLight';
+                item.link = '/smartLight/map';
                 break;
             case 'light':
                 item.key = 'light';
@@ -68,7 +68,7 @@ function moduleInit(state, data) {
             case 'domain':
                 item.key = 'domain';
                 item.title = '域管理';
-                item.link = '/domainManage/domainEdit';
+                item.link = '/domainManage/domainEdit/list';
                 break;
         }
         return item;
