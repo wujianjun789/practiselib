@@ -17,7 +17,7 @@ export default class SecondStepComponet extends Component {
                   <div className='secstep_selectdevice-content clearfix'>
                     <div>
                       <Select className='secstep_selectdevice-select' />
-                      <SearchText className='secstep_selectdevice-searchtext' />
+                      <SearchText className='secstep_selectdevice-searchtext' placeholder='输入设备名称' />
                       <ul className='secstep_selectdevice-ul'>
                         <li className='clearfix'>
                           <div>摄像头1</div>
