@@ -7,6 +7,7 @@ import DomainManage from '../domainManage/container/index'
 import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
 import SmartLightManage from '../smartLightManage/container/index'
+import LightManage from '../lightManage/container/index'
 import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
@@ -228,6 +229,13 @@ export default (
                                                   }, 'starriverpro.smartLightControl.strategy')
                                               } } />
       </Route>
+    </Route>
+    <Route path="/light" component={LightManage}>
+                <Route path="map" getComponent={(nextState, cb)=>{
+                      require.ensure([], (require) => {
+                            cb(null, require('../lightManage/container/lightMap').default)
+                        }, 'starriverpro.lightManage.lightMap')
+                }}/>
     </Route>
   </Route>
   <Route path="*" getComponent={ (nextState, cb) => {

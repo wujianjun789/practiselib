@@ -28,12 +28,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="id">
             设备编号：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               disabled={false}
@@ -52,12 +52,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="name">
             名称：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               id="name"
@@ -75,12 +75,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="model">
             型号：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -121,12 +121,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="domain">
             域：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -171,12 +171,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="lng">
             经度：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               id="lng"
@@ -193,12 +193,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="lat">
             纬度：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               id="lat"
@@ -271,12 +271,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="id">
             设备编号：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               disabled={true}
@@ -295,12 +295,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="name">
             名称：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               id="name"
@@ -318,12 +318,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="model">
             型号：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -364,12 +364,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="domain">
             域：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <select
               className="form-control select form-control"
               disabled={undefined}
@@ -414,12 +414,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="lng">
             经度：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               id="lng"
@@ -436,12 +436,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
         <div
           className="form-group clearfix">
           <label
-            className="col-sm-4 control-label"
+            className="fixed-width-left control-label"
             htmlFor="lat">
             纬度：
           </label>
           <div
-            className="col-sm-7">
+            className="fixed-width-right">
             <input
               className="form-control"
               id="lat"

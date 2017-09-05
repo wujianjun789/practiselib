@@ -1,113 +1,244 @@
-        /** Created By ChrisWen
+ /** Created By ChrisWen
 *   17/09/01
 *   systemOperation/systemConfig/sysConfigSmartLight - less
 *   系统运维/系统配置/智慧路灯模块 - 样式
+*   Declaring: All less code will follow the usual CSS rules:position-size-font-background-others;
 */
 
-        // @topology-domain-list-height: 172px;
-        // @topology-domain-list-height-en: 152px;
-        /********  区域/组件 样式初始化 ****************/
+ @topology-domain-list-height: 172px;
+ @topology-domain-list-height-en: 152px;
+ /********  区域/组件 样式初始化 ****************/
 
-        //初始化button
-        .button-init(@color: white) {
-            height: 30px;
-            padding: 4px 12px;
-            color: @color;
-        } //初始化区域
-        .block-init {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            height: 70px;
-            background-color: #fff;
-        } //清除浮动
-        .clearfix:after {
-            display: block;
-            clear: both;
-            content: '';
-        }
+ #sysConfigSmartLight {
+     //初始化button
+     .button-init(@color: white) {
+         padding: 4px 12px;
+         height: 30px;
+         color: @color;
+     } //初始化区域
+     .block-init {
+         display: flex;
+         justify-content: flex-start;
+         align-items: center;
+         height: 70px;
+         background-color: #fff;
+     } //清除浮动
+     .clearfix:after {
+         display: block;
+         clear: both;
+         content: '';
+     }
+     .offset-right {
+         /******** header 样式定制 **************/
+         header {
+             .block-init;
+             min-height: 70px; //下拉选择菜单 样式
+             .select {
+                 width: 160px;
+                 height: 30px;
+                 margin-left: 20px;
+             } //搜索框 样式
+             .searchText {
+                 height: 30px;
+                 margin-left: 20px;
+                 >input[type='search'] {
+                     padding-right: 16px;
+                     padding-left: 15px;
+                 }
+             } //添加按钮 样式
+             >.btn.btn-primary {
+                 .button-init;
+                 margin-left: 25px;
+             }
+         }
+         /******** Table 样式定制 ****************/
+         .table-container {
+             margin: 20px 320px 20px 20px;
+             background: #fff;
+             border: solid 1px #e6e6e6;
+             transition: margin-right .3s;
+             .dataTable {
+                 padding: 20px;
+             }
+         }
+         /******** SideBarInfor 样式定制 ********/
+         .sidebar-info .map-position {
+             top: 130px;
+         }
+         Button {
+             .button-init;
+             margin-left: 15px;
+         }
+         .sidebar-info.sidebar-collapse {
+             >.panel.panel-default.map-position {
+                 top: 70px;
+             }
+         }
+         .domain-property {
+             background-color: #eaeef2;
+         }
+         &.collapsed {
+             .table-container {
+                 margin-right: 80px;
+             }
+         }
+     }
+ }
+ /******** AddOrEditPopup 样式定制 ********/
 
-        #sysConfigSmartLight {
-            .offset-right {
-                /******** header 样式定制 **************/
-                header {
-                    .block-init; //color: red;
-                    min-height: 70px; //下拉选择菜单 样式
-                    .select {
-                        width: 160px;
-                        height: 30px;
-                        margin-left: 20px;
-                    } //搜索框 样式
-                    .searchText {
-                        height: 30px;
-                        margin-left: 20px;
-                        >input[type='search'] {
-                            padding-right: 16px;
-                            padding-left: 15px;
-                        }
-                    } //添加按钮 样式
-                    >.btn.btn-primary {
-                        .button-init;
-                        margin-left: 25px;
-                    }
-                }
-                /******** Table 样式定制 ****************/
-                .table-container {
-                    transition: margin-right .3s;
-                    margin: 20px 320px 20px 20px;
-                    background: #fff;
-                    border: solid 1px #e6e6e6;
-                    .dataTable {
-                        padding: 20px;
-                    }
-                }
-                /******** SideBarInfor 样式定制 ********/
-                .sidebar-info .map-position {
-                    top: 130px;
-                }
-                Button {
-                    .button-init;
-                    margin-left: 15px;
-                }
-                .sidebar-info.sidebar-collapse {
-                    >.panel.panel-default.map-position {
-                        top: 70px;
-                    }
-                }
-                .domain-property {
-                    background-color: #eaeef2;
-                }
-                &.collapsed {
-                    .table-container {
-                        margin-right: 80px;
-                    }
-                }
-            }
-        }
-        /******** AddOrEditPopup 样式定制 ********/
-
-        #sysConfigSmartLight-popup {
-            width: 700px;
-            #first-step {
-                width: 620px;
-                margin-left: 30px;
-                margin-right: 50px;
-                font-size: 14px;
-                ul li:first-child {
-                    //border: 1px solid blue;
-                    label {
-                        width: auto;
-                        padding: 0px;
-                    }
-                    .has-feedback {
-                        min-width: 560px;
-                    }
-                }
-                .modal-footer {
-                    border: none; //border: 1px solid green;
-                    .btn-primary {
-                        margin-right: -15px;
-                    }
-                }
-            }
-        }
+ #sysConfigSmartLight-popup {
+     width: 700px;
+     /**** 提取部分init样式 ********************/
+     .front-init(@height: 34px) {
+         height: @height;
+         font-size: 14px;
+         line-height: @height;
+         color: #4d4d4d;
+     }
+     .step-init {
+         margin-top: 5px;
+         margin-right: 35px;
+         margin-left: 15px;
+         font-size: 14px;
+     }
+     /**** 去除footer的默认样式****************/
+     .modal-footer {
+         margin-top: 5px;
+         border: none;
+         .btn-primary {
+             margin-right: -15px;
+         }
+     }
+     /*******对话框第一步样式******************/
+     #firstep {
+         .step-init;
+         ul li:first-child {
+             label {
+                 width: auto;
+                 padding: 0px;
+             }
+             .has-feedback {
+                 min-width: 560px;
+             }
+             .form-control-feedback {
+                 display: none;
+             }
+             input[type='text'] {
+                 border-color: rgb(221, 221, 221);
+             }
+         }
+         ul>li:nth-child(2) {
+             span {
+                 .front-init;
+                 font-weight: 700;
+             }
+             .firstep_selectpole-content {
+                 float: right;
+                 width: 545px;
+                 margin-left: 15px;
+                 padding-top: 20px;
+                 border: 1px solid rgb(221, 221, 221);
+                 .firstep_selectpole-select,
+                 .firstep_selectpole-searchtext {
+                     float: left;
+                     width: 230px;
+                 }
+                 .firstep_selectpole-select {
+                     margin-left: 20px;
+                 }
+                 .firstep_selectpole-searchtext {
+                     margin-left: 30px;
+                     span {
+                         top: 25%;
+                     }
+                 }
+                 .firstep_selectpole-ul {
+                     float: left;
+                     width: 523px;
+                     margin-top: 20px;
+                     margin-left: 20px;
+                     height: 130px;
+                     overflow-y: scroll;
+                     li {
+                         margin: 20px 0px;
+                         font-size: 14px;
+                         line-height: 14px;
+                         div:first-child {
+                             float: left;
+                             color: #808080;
+                         }
+                         div:nth-child(2) {
+                             float: right;
+                             margin-right: 20px;
+                             color: #00bcff;
+                         }
+                     }
+                     li:first-child {
+                         margin: 0px;
+                     }
+                 }
+             }
+         }
+     }
+     /*******对话框第二步样式******************/
+     #secstep {
+         .step-init;
+         span {
+             .front-init;
+             font-weight: 700;
+         }
+         .secstep_selectdevice-content {
+             float: right;
+             width: 540px;
+             height: 250px;
+             margin-left: 15px;
+             margin-bottom: 20px;
+             border: 1px solid rgb(221, 221, 221);
+             div {
+                 float: left;
+             }
+             div:first-child {
+                 width: 270px;
+                 border-right: 1px solid #dddddd;
+                 .secstep_selectdevice-select,
+                 .secstep_selectdevice-searchtext {
+                     margin: 20px;
+                     width: 230px;
+                 }
+                 .secstep_selectdevice-searchtext {
+                     margin-top: 0px;
+                     span {
+                         top: 25%;
+                     }
+                 }
+                 .secstep_selectdevice-ul {
+                     float: left;
+                     width: 270px;
+                     height: 120px;
+                     overflow-y: scroll;
+                     li {
+                         margin: 20px 0px;
+                         margin-left: 20px;
+                         font-size: 14px;
+                         line-height: 14px;
+                         width: 225px;
+                         div {
+                             width: auto;
+                             border: none;
+                         }
+                         div:first-child {
+                             float: left;
+                         }
+                         div:nth-child(2) {
+                             float: right;
+                             color: #00bcff;
+                         }
+                     }
+                     li:first-child {
+                         margin-top: 0px;
+                     }
+                 }
+             }
+         }
+     }
+ }

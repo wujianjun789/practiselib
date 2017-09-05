@@ -37,7 +37,26 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
             type="search"
             value="" />
           <ul
-            className="" />
+            className="">
+            <li
+              className=""
+              onClick={[Function]}
+              value="lamp1">
+              lamp1
+            </li>
+            <li
+              className=""
+              onClick={[Function]}
+              value="lamp2">
+              lamp2
+            </li>
+            <li
+              className=""
+              onClick={[Function]}
+              value="lamp3">
+              lamp3
+            </li>
+          </ul>
           <span
             className="glyphicon glyphicon-search"
             onClick={[Function]} />
@@ -65,80 +84,7 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
         </ul>
         <div
           className="table-body">
-          <ul>
-            <li
-              className="body-row clearfix">
-              <div
-                className="tables-cell">
-                灯集中控制器
-              </div>
-              <div
-                className="tables-cell">
-                00158D0000CABAD5
-              </div>
-              <div
-                className="tables-cell">
-                <span
-                  className="glyphicon glyphicon-trash"
-                  id={1}
-                  onClick={[Function]} />
-              </div>
-            </li>
-            <li
-              className="body-row clearfix">
-              <div
-                className="tables-cell">
-                灯集中控制器
-              </div>
-              <div
-                className="tables-cell">
-                00158D0000CABAD5
-              </div>
-              <div
-                className="tables-cell">
-                <span
-                  className="glyphicon glyphicon-trash"
-                  id={2}
-                  onClick={[Function]} />
-              </div>
-            </li>
-            <li
-              className="body-row clearfix">
-              <div
-                className="tables-cell">
-                灯集中控制器
-              </div>
-              <div
-                className="tables-cell">
-                00158D0000CABAD5
-              </div>
-              <div
-                className="tables-cell">
-                <span
-                  className="glyphicon glyphicon-trash"
-                  id={3}
-                  onClick={[Function]} />
-              </div>
-            </li>
-            <li
-              className="body-row clearfix">
-              <div
-                className="tables-cell">
-                灯集中控制器
-              </div>
-              <div
-                className="tables-cell">
-                00158D0000CABAD5
-              </div>
-              <div
-                className="tables-cell">
-                <span
-                  className="glyphicon glyphicon-trash"
-                  id={4}
-                  onClick={[Function]} />
-              </div>
-            </li>
-          </ul>
+          <ul />
         </div>
       </div>
     </div>

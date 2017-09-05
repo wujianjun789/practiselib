@@ -1178,9 +1178,11 @@ ul {
     color: #4d4d4d;
     margin-bottom: 0;
 }
+.alter-pw-popup .modal-body .inputCheck .has-feedback{
+    width: 315px;
+}
 
 .alter-pw-popup .modal-body .inputCheck .form-control {
-    width: 300px;
     height: 40px;
 }
 
@@ -1281,6 +1283,9 @@ ul {
 .btn-eqpManage{color:#fff;background-color:#337ab7;border-color:#2d6da3}.btn-eqpManage:focus,.btn-eqpManage.focus{color:#fff;background-color:#285f8f;border-color:#122a3f}.btn-eqpManage:hover{color:#fff;background-color:#285f8f;border-color:#204d73}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{color:#fff;background-color:#285f8f;border-color:#204d73}.btn-eqpManage:active:hover,.btn-eqpManage.active:hover,.open>.dropdown-toggle.btn-eqpManage:hover,.btn-eqpManage:active:focus,.btn-eqpManage.active:focus,.open>.dropdown-toggle.btn-eqpManage:focus,.btn-eqpManage:active.focus,.btn-eqpManage.active.focus,.open>.dropdown-toggle.btn-eqpManage.focus{color:#fff;background-color:#204d73;border-color:#122a3f}.btn-eqpManage:active,.btn-eqpManage.active,.open>.dropdown-toggle.btn-eqpManage{background-image:none}.btn-eqpManage.disabled:hover,.btn-eqpManage[disabled]:hover,fieldset[disabled] .btn-eqpManage:hover,.btn-eqpManage.disabled:focus,.btn-eqpManage[disabled]:focus,fieldset[disabled] .btn-eqpManage:focus,.btn-eqpManage.disabled.focus,.btn-eqpManage[disabled].focus,fieldset[disabled] .btn-eqpManage.focus{background-color:#337ab7;border-color:#2d6da3}.btn-eqpManage .badge{color:#337ab7;background-color:#fff}
 .btn-sysManage{color:#fff;background-color:#4a5064;border-color:#3f4455}.btn-sysManage:focus,.btn-sysManage.focus{color:#fff;background-color:#343947;border-color:#090a0c}.btn-sysManage:hover{color:#fff;background-color:#343947;border-color:#252832}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{color:#fff;background-color:#343947;border-color:#252832}.btn-sysManage:active:hover,.btn-sysManage.active:hover,.open>.dropdown-toggle.btn-sysManage:hover,.btn-sysManage:active:focus,.btn-sysManage.active:focus,.open>.dropdown-toggle.btn-sysManage:focus,.btn-sysManage:active.focus,.btn-sysManage.active.focus,.open>.dropdown-toggle.btn-sysManage.focus{color:#fff;background-color:#252832;border-color:#090a0c}.btn-sysManage:active,.btn-sysManage.active,.open>.dropdown-toggle.btn-sysManage{background-image:none}.btn-sysManage.disabled:hover,.btn-sysManage[disabled]:hover,fieldset[disabled] .btn-sysManage:hover,.btn-sysManage.disabled:focus,.btn-sysManage[disabled]:focus,fieldset[disabled] .btn-sysManage:focus,.btn-sysManage.disabled.focus,.btn-sysManage[disabled].focus,fieldset[disabled] .btn-sysManage.focus{background-color:#4a5064;border-color:#3f4455}.btn-sysManage .badge{color:#4a5064;background-color:#fff}
 
+.inputCheck{
+    float: left;
+}
 
 .inputCheck::before,
 .inputCheck::after {
@@ -1289,8 +1294,10 @@ ul {
     clear: both;
 }
 
-.inputCheck .col-sm-8 {
-    padding-right:0px;
+.inputCheck .has-feedback {
+    padding-left:15px;
+    width:240px;
+    float: left;
 }
 
 .inputCheck .reminder{
@@ -1308,4 +1315,6 @@ ul {
     line-height: 34px;
     color: #4d4d4d;
     font-size: 14px;
+    width: 100px;
+    float: left;
 }

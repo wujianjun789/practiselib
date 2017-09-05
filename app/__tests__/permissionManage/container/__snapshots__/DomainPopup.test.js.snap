@@ -54,20 +54,7 @@ exports[`<DomainPopup snapshot 1`] = `
         </div>
         <div
           className="col-sm-6 domain-list">
-          <ul>
-            <li>
-              <span
-                className="icon-table-delete"
-                onClick={[Function]} />
-              中国-杭州
-            </li>
-            <li>
-              <span
-                className="icon-table-delete"
-                onClick={[Function]} />
-              中国-上海
-            </li>
-          </ul>
+          <ul />
         </div>
       </div>
     </div>

@@ -89,6 +89,7 @@ export default class MapPreview extends Component{
 
         let domain = domainList && domainList.length  ? domainList[curDomain]:null;
         let latlng = domain && domain.geoPoint ? domain.geoPoint : null;
+
         return <Content className="map-preview">
             <MapView mapData={{id:mapId, latlng:latlng, position:positionList, data:domainList}}
                      panLatlng={panLatlng} panCallFun={this.panCallFun}/>

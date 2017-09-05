@@ -7,20 +7,87 @@ import SearchText from '../../../components/SearchText.js';
 export default class FirstStepComponet extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      value: '123'
+    }
   }
 
 
   render() {
     const props = this.props;
     const footer = <PanelFooter funcNames={ ['onCancel', 'onFlip'] } btnTitles={ ['取消', '下一步'] } {...props}/>;
-    return (<div id='first-step'>
-              <ul className='clearfix'>
+    return (<div id='firstep'>
+              <ul className='clearfix firstep-ul'>
                 <li>
-                  <InputCheck label='路灯名称' className='lightName-input' />
+                  <InputCheck label='路灯名称' {...props}/>
                 </li>
-                <li>选择:
-                  <Select/>
-                  <SearchText/>
+                <li className='clearfix'><span>选择灯杆:</span>
+                  <div className='firstep_selectpole-content clearfix'>
+                    <Select className='firstep_selectpole-select' />
+                    <SearchText className='firstep_selectpole-searchtext' placeholder='输入灯杆名称' />
+                    <ul className='firstep_selectpole-ul'>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                      <li className='clearfix'>
+                        <div>灯杆1</div>
+                        <div>选择</div>
+                      </li>
+                    </ul>
+                  </div>
                 </li>
               </ul>
               { footer }
