@@ -116,7 +116,8 @@ exports[`<LampConCenter /> component snapshot 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid sidebar-info ">
+    className="container-fluid sidebar-info "
+    style={undefined}>
     <div
       className="row collapse-container"
       onClick={[Function]}>
@@ -165,7 +166,7 @@ exports[`<LampConCenter /> component snapshot 1`] = `
         className="panel-body domain-property">
         <span
           className="domain-name">
-          包含：0 个项目
+          包含：0 个设备
         </span>
         <button
           className="btn btn-primary pull-right"

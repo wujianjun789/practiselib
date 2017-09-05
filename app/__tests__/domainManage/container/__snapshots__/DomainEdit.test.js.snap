@@ -82,7 +82,12 @@ exports[`test DomainEdit renders 1`] = `
     </div>
   </div>
   <div
-    className="container-fluid sidebar-info ">
+    className="container-fluid sidebar-info "
+    style={
+      Object {
+        "height": "100%",
+      }
+    }>
     <div
       className="row collapse-container"
       onClick={[Function]}>

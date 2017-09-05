@@ -1,6 +1,7 @@
 exports[`test SidebarInfo renders 1`] = `
 <div
-  className="container-fluid sidebar-info ">
+  className="container-fluid sidebar-info "
+  style={undefined}>
   <div
     className="row collapse-container"
     onClick={[Function]}>

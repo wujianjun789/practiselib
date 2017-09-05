@@ -1,5 +1,6 @@
 /** Created By ChrisWen
  *  17/09/04
+ *  Declaring: All componets' className all follw the B_E-M(Block_Element-Modify) rules.
  */
 import React, { Component } from 'react';
 import FirstStepComponet from './firStep.js';
@@ -20,8 +21,13 @@ export default class StepComponent extends Component {
         })
     }
 
+    onCancel() {}
+
     render() {
-        const StepComponent = this.state.showFirstPage === true ? <FirstStepComponet onFlip={ this.onFlip } /> : <SecondStepComponet onFlip={ this.onFlip } />
+
+        const StepComponent = this.state.showFirstPage === true
+            ? <FirstStepComponet onFlip={ this.onFlip } disabled/>
+            : <SecondStepComponet onFlip={ this.onFlip } />
         return (<div>
                   { StepComponent }
                 </div>)

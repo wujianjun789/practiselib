@@ -2,12 +2,12 @@ exports[`<InputCheck /> snapshot 1`] = `
 <div
   className="inputCheck ">
   <label
-    className="col-sm-4 control-label">
+    className="control-label">
     用户名
     :
   </label>
   <div
-    className="has-feedback col-sm-8 has-error">
+    className="has-feedback has-error">
     <input
       className="form-control"
       disabled={false}

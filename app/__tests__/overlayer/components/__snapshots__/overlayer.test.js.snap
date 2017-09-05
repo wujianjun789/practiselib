@@ -40,12 +40,12 @@ exports[`<Overlayer /> snapshot show 1`] = `
         <div
           className="inputCheck ">
           <label
-            className="col-sm-4 control-label">
+            className="control-label">
             旧密码
             :
           </label>
           <div
-            className="has-feedback col-sm-8 ">
+            className="has-feedback ">
             <input
               className="form-control"
               disabled={false}
@@ -68,12 +68,12 @@ exports[`<Overlayer /> snapshot show 1`] = `
         <div
           className="inputCheck ">
           <label
-            className="col-sm-4 control-label">
+            className="control-label">
             新密码
             :
           </label>
           <div
-            className="has-feedback col-sm-8 ">
+            className="has-feedback ">
             <input
               className="form-control"
               disabled={false}
@@ -96,12 +96,12 @@ exports[`<Overlayer /> snapshot show 1`] = `
         <div
           className="inputCheck ">
           <label
-            className="col-sm-4 control-label">
+            className="control-label">
             重复密码
             :
           </label>
           <div
-            className="has-feedback col-sm-8 ">
+            className="has-feedback ">
             <input
               className="form-control"
               disabled={false}

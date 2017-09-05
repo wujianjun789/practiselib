@@ -28,9 +28,7 @@ export function setLanguage(language) {
 export function intlFormat(data) {
     let lan = getLanguage();
 
-    return data[lan]
-        ? data[lan]
-        : data['en'];
+    return data[lan] ? data[lan] : data['en'];
 }
 
 export function getObjectByKey(list, key, value) {

@@ -98,7 +98,8 @@ exports[`test AssetStatistics renders 1`] = `
     </ul>
   </div>
   <div
-    className="container-fluid sidebar-info ">
+    className="container-fluid sidebar-info "
+    style={undefined}>
     <div
       className="row collapse-container"
       onClick={[Function]}>

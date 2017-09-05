@@ -124,10 +124,10 @@ export default class DomainPopup extends PureComponent {
         return <div className="domain-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
                 <div className="row">
-                    <div className="col-sm-6 popup-left">
+                    <div className="col-sm-6 col-xs-6 popup-left">
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="domainName">域名称：</label>
-                            <div className="col-sm-8">
+                            <label className="fixed-width-left control-label" htmlFor="domainName">域名称：</label>
+                            <div className="fixed-width-right">
                                 <input type="text" className="form-control" id="domainName" placeholder="输入域名称" maxLength="16" value={domainName}
                                        onChange={this.onChange}/>
                                 <span className={prompt.domainName?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
@@ -135,23 +135,23 @@ export default class DomainPopup extends PureComponent {
 
                         </div>
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label " htmlFor="lng">经度：</label>
-                            <div className="col-sm-8">
+                            <label className="fixed-width-left control-label " htmlFor="lng">经度：</label>
+                            <div className="fixed-width-right">
                                 <input type="email" className="form-control" id="lng" placeholder="输入GPS坐标" value={lng}
                                         onChange={this.onChange}/>
                                 <span className={prompt.lng?"prompt ":"prompt hidden"}>{"经度数不合法"}</span>
                             </div>
                         </div> 
                         <div className="form-group row">   
-                            <label className="col-sm-3 control-label" htmlFor="lat">纬度：</label>
-                            <div className="col-sm-8">
+                            <label className="fixed-width-left control-label" htmlFor="lat">纬度：</label>
+                            <div className="fixed-width-right">
                                 <input type="email" className="form-control" id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
                                 <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="prevDomain">上级域：</label>
-                            <div className="col-sm-8">
+                            <label className="fixed-width-left control-label" htmlFor="prevDomain">上级域：</label>
+                            <div className="fixed-width-right">
                                 <select className="form-control" id="prevDomain" placeholder="选择上级域" value={curDomain?curDomain.name:"无"} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
@@ -161,7 +161,7 @@ export default class DomainPopup extends PureComponent {
                         </div>
                         {footer}
                     </div>
-                    <div className="col-sm-6 popup-map">
+                    <div className="col-sm-6 col-xs-6 popup-map">
 
                             <MapView option={{mapZoom:false, markerDraggable:true}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
                         position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}
