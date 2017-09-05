@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
 import Card from './Card';
 import UserCenter from '../../common/containers/UserCenter';
-import LanauageSwitch from '../../common/containers/LanauageSwitch'
+import LanguageSwitch from '../../common/containers/LanguageSwitch'
 import Overlayer from '../../common/containers/Overlayer';
 import {getModule} from '../action/index'
 /**
@@ -36,7 +36,7 @@ export class App extends Component{
                         <span className="tit">{title}</span>
                     </div>
                     <UserCenter />
-                    <LanauageSwitch/>
+                    <LanguageSwitch/>
                     <div className="header-right clearfix">
                         <span className="name">{name}</span>
                     </div>
