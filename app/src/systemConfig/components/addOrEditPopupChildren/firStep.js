@@ -24,8 +24,8 @@ export default class FirstStepComponet extends Component {
                 <li className='clearfix'><span>选择灯杆:</span>
                   <div className='firstep_selectpole-content clearfix'>
                     <Select className='firstep_selectpole-select' />
-                    <SearchText className='firstep_selectpole-searchtext' />
-                    <ul className='firstep_selectpole-list'>
+                    <SearchText className='firstep_selectpole-searchtext' placeholder='输入灯杆名称' />
+                    <ul className='firstep_selectpole-ul'>
                       <li className='clearfix'>
                         <div>灯杆1</div>
                         <div>选择</div>

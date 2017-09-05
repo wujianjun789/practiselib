@@ -2,6 +2,7 @@
 *   17/09/01
 *   systemOperation/systemConfig/sysConfigSmartLight - less
 *   系统运维/系统配置/智慧路灯模块 - 样式
+*   Declaring: All less code will follow the usual CSS rules:position-size-font-background-others;
 */
 
  @topology-domain-list-height: 172px;
@@ -11,8 +12,8 @@
  #sysConfigSmartLight {
      //初始化button
      .button-init(@color: white) {
-         height: 30px;
          padding: 4px 12px;
+         height: 30px;
          color: @color;
      } //初始化区域
      .block-init {
@@ -30,7 +31,7 @@
      .offset-right {
          /******** header 样式定制 **************/
          header {
-             .block-init; //color: red;
+             .block-init;
              min-height: 70px; //下拉选择菜单 样式
              .select {
                  width: 160px;
@@ -52,10 +53,10 @@
          }
          /******** Table 样式定制 ****************/
          .table-container {
-             transition: margin-right .3s;
              margin: 20px 320px 20px 20px;
              background: #fff;
              border: solid 1px #e6e6e6;
+             transition: margin-right .3s;
              .dataTable {
                  padding: 20px;
              }
@@ -90,22 +91,27 @@
      /**** 提取部分init样式 ********************/
      .front-init(@height: 34px) {
          height: @height;
+         font-size: 14px;
          line-height: @height;
          color: #4d4d4d;
+     }
+     .step-init {
+         margin-top: 5px;
+         margin-right: 35px;
+         margin-left: 15px;
          font-size: 14px;
      }
      /**** 去除footer的默认样式****************/
      .modal-footer {
-         border: none;
          margin-top: 5px;
+         border: none;
          .btn-primary {
              margin-right: -15px;
          }
      }
+     /*******对话框第一步样式******************/
      #firstep {
-         width: 620px;
-         margin-left: 30px;
-         font-size: 14px;
+         .step-init;
          ul li:first-child {
              label {
                  width: auto;
@@ -127,11 +133,11 @@
                  font-weight: 700;
              }
              .firstep_selectpole-content {
-                 border: 1px solid rgb(221, 221, 221);
                  float: right;
-                 padding-top: 20px;
-                 margin-left: 15px;
                  width: 545px;
+                 margin-left: 15px;
+                 padding-top: 20px;
+                 border: 1px solid rgb(221, 221, 221);
                  .firstep_selectpole-select,
                  .firstep_selectpole-searchtext {
                      float: left;
@@ -146,18 +152,17 @@
                          top: 25%;
                      }
                  }
-                 .firstep_selectpole-list {
-                     float: left; //border: 2px solid red;
+                 .firstep_selectpole-ul {
+                     float: left;
                      width: 523px;
                      margin-top: 20px;
                      margin-left: 20px;
-                     overflow-y: scroll;
                      height: 130px;
+                     overflow-y: scroll;
                      li {
-                         //border: 1px solid blanchedalmond;
                          margin: 20px 0px;
-                         line-height: 14px;
                          font-size: 14px;
+                         line-height: 14px;
                          div:first-child {
                              float: left;
                              color: #808080;
@@ -170,6 +175,67 @@
                      }
                      li:first-child {
                          margin: 0px;
+                     }
+                 }
+             }
+         }
+     }
+     /*******对话框第二步样式******************/
+     #secstep {
+         .step-init;
+         span {
+             .front-init;
+             font-weight: 700;
+         }
+         .secstep_selectdevice-content {
+             float: right;
+             width: 540px;
+             height: 250px;
+             margin-left: 15px;
+             margin-bottom: 20px;
+             border: 1px solid rgb(221, 221, 221);
+             div {
+                 float: left;
+             }
+             div:first-child {
+                 width: 270px;
+                 border-right: 1px solid #dddddd;
+                 .secstep_selectdevice-select,
+                 .secstep_selectdevice-searchtext {
+                     margin: 20px;
+                     width: 230px;
+                 }
+                 .secstep_selectdevice-searchtext {
+                     margin-top: 0px;
+                     span {
+                         top: 25%;
+                     }
+                 }
+                 .secstep_selectdevice-ul {
+                     float: left;
+                     width: 270px;
+                     height: 120px;
+                     overflow-y: scroll;
+                     li {
+                         margin: 20px 0px;
+                         margin-left: 20px;
+                         font-size: 14px;
+                         line-height: 14px;
+                         width: 225px;
+                         div {
+                             width: auto;
+                             border: none;
+                         }
+                         div:first-child {
+                             float: left;
+                         }
+                         div:nth-child(2) {
+                             float: right;
+                             color: #00bcff;
+                         }
+                     }
+                     li:first-child {
+                         margin-top: 0px;
                      }
                  }
              }
