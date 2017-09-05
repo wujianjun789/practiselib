@@ -15,7 +15,7 @@ export default class AddOrEditPopup extends Component {
         const props = this.props;
         return (
             <div id='sysConfigSmartLight-popup'>
-              <Panel {...props}>
+              <Panel {...props} closeBtn>
                 <StepComponet/>
               </Panel>
             </div>
