@@ -39,7 +39,11 @@ export function getCookie(key) {
     }
 
     if(!!user){
-        return JSON.parse(user);
+        try{
+            return JSON.parse(user);
+        }catch (err){
+            deleteCookie('user')
+        }
     }
     return null;
     // return user = {
