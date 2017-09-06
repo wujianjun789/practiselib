@@ -30,7 +30,7 @@ export class Sensor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: "",
+            model: "sensor",
             collapse: false,
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -214,7 +214,8 @@ export class Sensor extends Component {
     componentWillMount() {
         this.mounted = true;
         const {route} = this.props;
-        let model = route && route.path;
+        let {model} = this.state;
+        // let model = route && route.path;
         getModelData(model, () => {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
