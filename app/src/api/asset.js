@@ -11,7 +11,8 @@ export function getAssetModelList(cb) {
         method: 'GET'
     }, response=>{
         // console.log("responseServer:", response)
-        cb && cb(modelData);
+        // cb && cb(modelData);
+        cb && cb(response);
     })
 }
 

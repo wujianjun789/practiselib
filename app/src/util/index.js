@@ -93,7 +93,7 @@ export function getClassByModel(key) {
             return 'icon_pole';
         case 'screen':
             return 'icon_screen';
-        case 'collect':
+        case 'xes':
             return 'icon_collect';
         default:
             return 'icon_led_light';
@@ -114,7 +114,7 @@ export function getDeviceTypeByModel(key) {
             return 'POLE';
         case 'screen':
             return 'SCREEN';
-        case 'collect':
+        case 'xes':
             return 'POLE'
         default:
             return 'DEVICE';
