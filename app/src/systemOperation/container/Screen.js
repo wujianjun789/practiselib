@@ -18,7 +18,7 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import {TreeData, getModelData, modelData, getModelNameById, getModelTypesById, getModelTypesNameById} from '../../data/systemModel'
+import {TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById} from '../../data/systemModel'
 
 import {getDomainList} from '../../api/domain'
 import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'

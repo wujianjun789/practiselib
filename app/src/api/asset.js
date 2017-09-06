@@ -2,7 +2,6 @@
  * Created by a on 2017/7/26.
  */
 import {HOST_IP, getHttpHeader, httpRequest} from '../util/network'
-import {modelData} from '../data/systemModel'
 
 export function getAssetModelList(cb) {
     let headers = getHttpHeader();
@@ -10,8 +9,6 @@ export function getAssetModelList(cb) {
         headers: headers,
         method: 'GET'
     }, response=>{
-        // console.log("responseServer:", response)
-        // cb && cb(modelData);
         cb && cb(response);
     })
 }

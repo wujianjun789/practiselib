@@ -21,7 +21,7 @@ export const TreeData = [
             {
                 "id": 'lc',
                 "name": "单灯控制器",
-                "class": "icon_single_lamp_control",
+                "class": "icon_led_light",
                 "active": false,
                 "link": "/smartLight/list"
             },
@@ -47,7 +47,7 @@ export const TreeData = [
                 "link": "/smartLight/list/sensor"
             },
             {
-                "id": 'xes',
+                "id": 'collect',
                 "name": "数据采集仪",
                 "class": "icon_collect",
                 "active": false,

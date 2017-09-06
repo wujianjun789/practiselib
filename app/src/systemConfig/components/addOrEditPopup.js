@@ -9,14 +9,22 @@ export default class AddOrEditPopup extends Component {
     constructor(props) {
         super(props);
     }
+
+    // onCancel() {
+    //     console.log('在popup调用onCancel')
+    // }
+
+    onConfirmed() {
+        console.log(345)
+    }
+
     render() {
-        //const {funcNames, btnTitles, btnDisabled=[false, false], btnClassName=['btn-default','btn-primary']} = this.props;
-        const footer = <PanelFooter funcNames={ ['onCancel', 'onNext'] } btnTitles={ ['取消', '下一步'] } />;
         const props = this.props;
+        console.log('props', props)
         return (
             <div id='sysConfigSmartLight-popup'>
               <Panel {...props} closeBtn>
-                <StepComponet/>
+                <StepComponet {...props}/>
               </Panel>
             </div>
         )

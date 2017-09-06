@@ -3,7 +3,6 @@
  *  systemOperation/systemConfig/smartLightComponent;
  *  Declaring：We use smartLight as 智慧路灯,sysConfig as 系统配置模块,which is shortted from systemConfig;
  *  All componets were named follow the HumpRules,even if they were combinend;
- *  Declaring： childrenComponets is a childrenComponent model.Provide all the childrenComponets in this section;
  */
 
 //import BaseFunction/Component
@@ -32,7 +31,7 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js'
 import { treeViewInit } from '../../common/actions/treeView';
 
 //import childrenComponentsModel
-import { childrenComponents } from '../components/childrenComponents.js';
+import SiderBarComponet from '../components/sidebarComponents.js';
 import AddOrEditPopup from '../components/addOrEditPopup.js';
 
 export class sysConfigSmartLight extends Component {
@@ -87,6 +86,8 @@ export class sysConfigSmartLight extends Component {
         this.domainSelect = this.domainSelect.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
+        this.onCancel = this.onCancel.bind(this);
+        this.onConfirmed = this.onConfirmed.bind(this);
     }
 
     //Hook functions
@@ -102,6 +103,7 @@ export class sysConfigSmartLight extends Component {
     }
 
     //Declare functions
+    // when componenetWillMount,we call this function to provide DomainList to be choosen.
     initDomainList(data) {
         let newObj = DomainList.init(data);
         let domainList = {
@@ -113,6 +115,7 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
+    //This is the DomainSelect function,bind in <Select/>
     domainSelect(event) {
         let {domainList} = this.state;
         let newObj = DomainList.select(event, domainList);
@@ -131,13 +134,23 @@ export class sysConfigSmartLight extends Component {
         //console.log(this.state.domainList)
     }
 
+    onConfirmed() {
+        console.log('在最上层调用onConfirm');
+        this.onCancel();
+    }
+
+    onCancel() {
+        console.log('在最上层调用onCancel');
+        this.props.actions.overlayerHide();
+    }
+
     domainHandler(e) {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
         let id = e.target.id;
         switch (id) {
             case 'sys-add':
-                overlayerShow(<AddOrEditPopup title='新建/修改智慧路灯' />);
+                overlayerShow(<AddOrEditPopup title='新建/修改智慧路灯' onCancel={ this.onCancel } onConfirmed={ this.onConfirmed } />);
                 break;
             case 'sys-update':
             case 'sys-delete':
@@ -145,6 +158,8 @@ export class sysConfigSmartLight extends Component {
                 return false;
         }
     }
+
+
 
     collpseHandler() {
         this.setState({
@@ -154,8 +169,6 @@ export class sysConfigSmartLight extends Component {
 
     render() {
         const {collapse, search, data, page, domainList} = this.state;
-        const SideBarInfoChildren = childrenComponents.sideBar();
-
         return (
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
@@ -170,7 +183,7 @@ export class sysConfigSmartLight extends Component {
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  { SideBarInfoChildren }
+                  <SiderBarComponet />
                 </SideBarInfo>
               </Content>
             </div>

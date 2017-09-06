@@ -315,6 +315,33 @@
             .focus{
               .col-sm-9{
                 margin-top: 3px;
+                input{
+                  display: inline-block;
+                }
+                .glyphicon{
+                  position: absolute;
+
+                  border: solid 1px #333;
+                  border-radius: 8px;
+                  color: #333;
+                  font-size: 16px;
+                  font-weight: normal;
+                  font-family: normal;
+
+                  padding: 0 1.08px;
+                  line-height: 13px;
+
+                  cursor: pointer;
+                  &.minus{
+                    top: 2px;
+                    left: -6px;
+                  }
+
+                  &.plus{
+                    top: 2px;
+                    right: -6px;
+                  }
+                }
               }
             }
           }
