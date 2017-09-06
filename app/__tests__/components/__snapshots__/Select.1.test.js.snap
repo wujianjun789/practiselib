@@ -1,7 +1,6 @@
 exports[`<Select.1 />> snapshot 1`] = `
 <select
   className="form-control select select-primary"
-  disabled={undefined}
   id=""
   onChange={undefined}
   value="value02">

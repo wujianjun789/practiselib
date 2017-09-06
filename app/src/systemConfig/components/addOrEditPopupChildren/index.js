@@ -1,6 +1,9 @@
 /** Created By ChrisWen
  *  17/09/04
  *  Declaring: All componets' className all follw the B_E-M(Block_Element-Modify) rules.
+ *  Declaring: This componet provides AddOrEdit function as a popup.Import all two childrenCoponents;
+ *  ChildrenComponets just recevied all props that from parentComponet, with no logic funtions;
+ *  All the datas and logic functions were setted or declared here.
  */
 import React, { Component } from 'react';
 import FirstStepComponet from './firStep.js';
