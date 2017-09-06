@@ -206,7 +206,7 @@ export default (
                                                     cb(null, require('../smartLightList/containers/Screen').default);
                                                 }, 'starriverpro.smartLightList.Screen');
                                             } } />
-        <Route path="collect" getComponent={ (nextState, cb) => {
+        <Route path="xes" getComponent={ (nextState, cb) => {
                                                  require.ensure([], (require) => {
                                                      cb(null, require('../smartLightList/containers/CollectionInstrument').default);
                                                  }, 'starriverpro.smartLightList.CollectionInstrument');

@@ -47,11 +47,11 @@ export const TreeData = [
                 "link": "/smartLight/list/sensor"
             },
             {
-                "id": 'collect',
+                "id": 'xes',
                 "name": "数据采集仪",
                 "class": "icon_collect",
                 "active": false,
-                "link": "/smartLight/list/collect"
+                "link": "/smartLight/list/xes"
             }
         ]
     },
