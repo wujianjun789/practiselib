@@ -74,7 +74,7 @@ export const TreeData = [
       {
         "id": 'sysConfigSmartLight',
         "name": '智慧路灯',
-        "class": '',
+        "class": 'icon_pole',
         "active": true,
         "link": "/systemOperation/systemConfig/sysConfigSmartLight"
       }
@@ -199,8 +199,6 @@ function getLinkByModel(key) {
       return '/systemOperation/config/lc';
     case 'sensor':
       return '/systemOperation/config/sensor';
-    case 'sysConfigSmartLight':
-      return '/systemOperation/systemConfig/sysConfigSmartLight';
     case 'plc':
       return 'icon_plc_control';
     case 'ammeter':
