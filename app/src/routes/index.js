@@ -48,7 +48,7 @@ export default (
                                                   cb(null, require('../assetManage/container/Pole').default)
                                               }, 'starriverpro.assetmanage.pole')
                                           } } />
-        <Route path="collect" getComponent={ (nextState, cb) => {
+        <Route path="xes" getComponent={ (nextState, cb) => {
                                                  require.ensure([], (require) => {
                                                      cb(null, require('../assetManage/container/Collect').default)
                                                  }, 'starriverpro.assetmanage.collect')
@@ -85,7 +85,7 @@ export default (
                                                   cb(null, require('../assetStatistics/container/Pole').default)
                                               }, 'starriverpro.assetmanage.pole')
                                           } } />
-        <Route path="collect" getComponent={ (nextState, cb) => {
+        <Route path="xes" getComponent={ (nextState, cb) => {
                                                  require.ensure([], (require) => {
                                                      cb(null, require('../assetStatistics/container/Collect').default)
                                                  }, 'starriverpro.assetmanage.collect')

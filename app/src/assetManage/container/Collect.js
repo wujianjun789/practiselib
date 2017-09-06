@@ -14,7 +14,7 @@ export class SingleLamp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model:"collect",
+            model:"xes",
             devicePro:Immutable.fromJS([
                 "软件版本",
                 "系统版本",
