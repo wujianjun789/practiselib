@@ -3,7 +3,6 @@
  *  systemOperation/systemConfig/smartLightComponent;
  *  Declaring：We use smartLight as 智慧路灯,sysConfig as 系统配置模块,which is shortted from systemConfig;
  *  All componets were named follow the HumpRules,even if they were combinend;
- *  Declaring： childrenComponets is a childrenComponent model.Provide all the childrenComponets in this section;
  */
 
 //import BaseFunction/Component
@@ -32,7 +31,7 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js'
 import { treeViewInit } from '../../common/actions/treeView';
 
 //import childrenComponentsModel
-import { childrenComponents } from '../components/childrenComponents.js';
+import SiderBarComponet from '../components/sidebarComponents.js';
 import AddOrEditPopup from '../components/addOrEditPopup.js';
 
 export class sysConfigSmartLight extends Component {
@@ -104,6 +103,7 @@ export class sysConfigSmartLight extends Component {
     }
 
     //Declare functions
+    // when componenetWillMount,we call this function to provide DomainList to be choosen.
     initDomainList(data) {
         let newObj = DomainList.init(data);
         let domainList = {
@@ -115,6 +115,7 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
+    //This is the DomainSelect function,bind in <Select/>
     domainSelect(event) {
         let {domainList} = this.state;
         let newObj = DomainList.select(event, domainList);
@@ -168,8 +169,6 @@ export class sysConfigSmartLight extends Component {
 
     render() {
         const {collapse, search, data, page, domainList} = this.state;
-        const SideBarInfoChildren = childrenComponents.sideBar();
-
         return (
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
@@ -184,7 +183,7 @@ export class sysConfigSmartLight extends Component {
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  { SideBarInfoChildren }
+                  <SiderBarComponet />
                 </SideBarInfo>
               </Content>
             </div>
