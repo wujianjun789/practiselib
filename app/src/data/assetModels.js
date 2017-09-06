@@ -125,7 +125,7 @@ function getLinkByModel(parentId, key) {
             return '/assetManage/'+parentId+'/pole'
         case 'screen':
             return '/assetManage/'+parentId+'/screen';
-        case 'collect':
+        case 'xes':
             return '/assetManage/'+parentId+'/collect';
         case 'smartlight':
             return '/assetManage/'+parentId+'/smartlight'

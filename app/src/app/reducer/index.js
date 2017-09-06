@@ -47,7 +47,7 @@ function moduleInit(state, data) {
                 break;
             case 'light':
                 item.key = 'light';
-                item.title = '智慧照明';
+                item.title = '智能照明';
                 item.link = '/light/map';
                 break;
             case 'report':

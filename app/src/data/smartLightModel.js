@@ -21,7 +21,7 @@ export const TreeData = [
             {
                 "id": 'lc',
                 "name": "单灯控制器",
-                "class": "icon_single_lamp_control",
+                "class": "icon_led_light",
                 "active": false,
                 "link": "/smartLight/list"
             },
