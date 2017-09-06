@@ -131,10 +131,10 @@ export default (
                                                     cb(null, require('../systemOperation/container/Screen').default)
                                                 }, 'starriverpro.systemoperation.screen')
                                             } } />
-        <Route path="collect" getComponent={(nextState, cb) => {
+        <Route path="xes" getComponent={(nextState, cb) => {
                                                 require.ensure([], (require) => {
-                                                    cb(null, require('../systemOperation/container/DataCollect').default)
-                                                }, 'starriverpro.systemoperation.dataCollect')
+                                                    cb(null, require('../systemOperation/container/Xes').default)
+                                                }, 'starriverpro.systemoperation.xes')
                                             } }/>
       </Route>
       <Route path="strategy">

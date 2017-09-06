@@ -207,8 +207,8 @@ function getLinkByModel(key) {
       return '/systemOperation/config/pole';
     case 'screen':
       return '/systemOperation/config/screen';
-    case 'collect':
-      return '/systemOperation/config/collect';
+    case 'xes':
+      return '/systemOperation/config/xes';
     default:
       return 'icon_led_light';
   }
