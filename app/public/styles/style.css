@@ -172,7 +172,7 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
     bottom: 0;
     left: 180px;
     min-width: 1025px;
-
+    overflow-x: hidden;    
     background: #f2f2f4;
 }
 
@@ -1100,9 +1100,18 @@ ul {
 .modal-header .close {
     font-size: 43px;
     font-weight: lighter;
-    position:absolute;
-    right:15px;
-    top:6px;
+    position: absolute;
+    right: 15px;
+    top: 0px;
+    display: block;
+    padding-bottom: 27.5px;
+    line-height: 1.1;
+    height: 55px;
+    margin-top:0px;
+}
+.modal-header .close span {
+    display: inline-block;
+    height:55px;
 }
 .modal-dialog {
     width: 100%;

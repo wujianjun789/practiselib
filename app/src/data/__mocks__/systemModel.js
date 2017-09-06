@@ -26,7 +26,7 @@ export const TreeData=[
             {
                 "id": 'singleLampCon',
                 "name":"单灯控制器",
-                "class":"icon_single_lamp_control",
+                "class":"icon_led_light",
                 "active":false
             }
         ]

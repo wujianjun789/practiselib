@@ -126,7 +126,7 @@ function getLinkByModel(parentId, key) {
         case 'screen':
             return '/assetManage/'+parentId+'/screen';
         case 'xes':
-            return '/assetManage/'+parentId+'/xes';
+            return '/assetManage/'+parentId+'/collect';
         case 'smartlight':
             return '/assetManage/'+parentId+'/smartlight'
         default:
