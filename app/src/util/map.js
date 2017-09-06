@@ -723,9 +723,8 @@ function markerOver(event) {
     var marker = event.target;
     marker.off("mouseover", markerOver);
     marker.on("mouseout", markerOut);
-
-    var icon = getCustomMarkerByDeviceType(marker.options.type, 3, marker.options.digital)
-    marker.setIcon(icon);
+    //var icon = getCustomMarkerByDeviceType(marker.options.type, 3, marker.options.digital)
+    //marker.setIcon(icon);
     markerMouseOverHandler({
         mapId: marker.options.mapId,
         type: marker.options.type,
@@ -737,8 +736,8 @@ function markerOut(event) {
     var marker = event.target;
     marker.on("mouseover", markerOver);
     marker.off("mouseout", markerOut)
-    var icon = getCustomMarkerByDeviceType(marker.options.type, marker.options.status, marker.options.digital)
-    marker.setIcon(icon)
+    //var icon = getCustomMarkerByDeviceType(marker.options.type, marker.options.status, marker.options.digital)
+    //marker.setIcon(icon)
     markerMouseOutHandler({
         type: marker.options.type,
         id: marker.options.id,
