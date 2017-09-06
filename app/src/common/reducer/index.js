@@ -11,7 +11,6 @@ import assetManage from '../../assetManage/reducer/index'
 import assetStatistics from '../../assetStatistics/reducer/index'
 import domainManage from '../../domainManage/reducer/index'
 import treeView from './treeView';
-import userCenter from './userCenter';
 import permissionManage from '../../permissionManage/reducer/index'
 import sysOperation from '../../systemOperation/reducer/index';
 import lampConCenter from '../../systemOperation/reducer/lampConCenter';
@@ -23,7 +22,6 @@ const reducer = combineReducers({
     intl,
     auth,
     overlayer,
-    userCenter,
     treeView,
     notifyPopup,
     // login,
