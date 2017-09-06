@@ -107,11 +107,10 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
 
 .head .home {
     display: inline-block;
-    padding: 17px;
-
     border-right: solid 1px #272a37;
-
-    vertical-align: top;
+    width:60px;
+    height:60px;
+    text-align: center;
 }
 
 .head .home:hover{
@@ -137,7 +136,18 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
 
 .head .home span {
     font-size: 24px;
+    width:24px;
+    height:24px;
+    display: inline-block;
+    top:18px;
     cursor: pointer;
+}
+.head .home span:before {
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:24px;
+    width:24px;
 }
 
 .head .avatar span {
@@ -146,7 +156,7 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
 
 .head .title {
     display: inline-block;
-
+    height:60px;
     color: #00d8ff;
     font-size: 18px;
     font-weight: normal;
@@ -890,8 +900,18 @@ ul {
 
 .user-center > .user-icon span {
     color:#fff;
-    line-height: 60px;
+    width:24px;
+    height:24px;
+    display: inline-block;
+    top:18px;
     font-size:24px;
+}
+.user-center > .user-icon span:before {
+position:absolute;
+top:0px;
+left:0px;
+height:24px;
+width:24px;
 }
 
 .user-center > .user-icon > .icon.icon-usr {
