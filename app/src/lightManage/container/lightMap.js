@@ -43,11 +43,11 @@ export default class SmartLightMap extends Component{
             resDevice:Immutable.fromJS([{id:1, name:"疏影路灯杆1号", lamp:[]},{id:2, name:"疏影路灯杆2号", screen:23, charge:45, camera:56, lamp:89, collect:99},{id:3, name:"疏影路灯杆3号", screen:23, charge:45, camera:56, lamp:89, collect:99}]),
             resPosition:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239758843127766},{"device_id": 2,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756},{"device_id": 3,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239558843127756}],
             resDomain:[{}],
-            curPosition:[{}],
+            curPosition:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239758843127766},{"device_id": 2,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756},{"device_id": 3,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239558843127756}],
             curDevice:Immutable.fromJS([]),
             positionList:[],
             searchList:Immutable.fromJS([]),
-            deviceList:Immutable.fromJS([]),
+            deviceList:Immutable.fromJS([{id:1, name:"疏影路灯杆1号", lamp:[]},{id:2, name:"疏影路灯杆2号", screen:23, charge:45, camera:56, lamp:89, collect:99},{id:3, name:"疏影路灯杆3号", screen:23, charge:45, camera:56, lamp:89, collect:99}]),
             domainList: {
                 titleField: 'name',
                 valueField: 'name',
@@ -138,9 +138,17 @@ export default class SmartLightMap extends Component{
     searchInputOnKeyUp(e){
         if (e.keyCode === 13 || e=="toSearch"){}else{return}
         if(this.state.searchMode=="设备"){
-            /*  根据input值执行api获取数据  */
+            /*  先在已经请求到的域内的所有设备中寻找  */
+            let searchObj = this.state.deviceList.toJS();
+            searchObj.map((item)=>{
+                if(item.name.indexOf(this.state.search.get("value"))>0){
+                    console.log(item);
+                    this.setState({searchList:Immutable.fromJS([item])},()=>{console.log("aaaaaa")});
+                }
+            })
+            /*  如没有找到则根据input值执行api获取数据  */
             /*  根据返回数据添加到searchList变量中  */
-            this.setState({searchList:this.state.resDevice},()=>{});
+            //this.setState({searchList:this.state.resDevice},()=>{});
             this.setState({IsSearchResult:true},()=>{
                 this.setState({search:this.state.search.update("value",v=>'')});
                 this.setSize();
