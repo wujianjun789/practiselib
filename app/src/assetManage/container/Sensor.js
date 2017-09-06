@@ -10,7 +10,7 @@ import Content from '../../components/Content'
 import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults} from '../../data/assetModels'
 import Immutable from 'immutable';
 
-export class SingleLamp extends Component {
+export class Sensor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -142,4 +142,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(SingleLamp);
+)(Sensor);
