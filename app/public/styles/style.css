@@ -172,7 +172,7 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
     bottom: 0;
     left: 180px;
     min-width: 1025px;
-
+    overflow-x: hidden;    
     background: #f2f2f4;
 }
 
