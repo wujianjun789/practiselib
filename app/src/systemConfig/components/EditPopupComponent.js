@@ -12,6 +12,7 @@ export default class EditPopupComponet extends Component {
 
     render() {
         const props = this.props;
+        console.log('EditPopup.props', props)
         const footer = <PanelFooter funcNames={ [null, 'onConfirmed'] } btnTitles={ [null, '完成'] } {...props}/>;
         const data = [{
             name: '摄像头1',
@@ -23,16 +24,17 @@ export default class EditPopupComponet extends Component {
             name: '摄像头3',
             added: false
         }];
-        return (<div id='secstep' className='clearfix'>
+        return (<div id='edit-popup' className='clearfix'>
                   <span>选择设备:</span>
-                  <div className='secstep_selectdevice-content clearfix'>
+                  <div className='edit_selectdevice-content clearfix'>
                     <div>
-                      <Select className='secstep_selectdevice-select' />
-                      <SearchText className='secstep_selectdevice-searchtext' placeholder='输入设备名称' />
-                      <DeviceList className='secstep_selectdevice-ul' data={ data } operations={ ['添加', '已添加'] } />
+                      <Select className='edit_selectdevice-select' />
+                      <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' />
+                      <DeviceList className='edit_selectdevice-ul' data={ data } operations={ ['添加', '已添加'] } />
                     </div>
-                    <div className='secstep_whole-content clearfix'>
-                      <ul className='secstep_whole-ul'>
+                    <div className='edit_whole-content clearfix'>
+                      <ul className='edit_whole-ul'>
+                        <DeviceList className='edit_selectdevice-ul' data={ data } showIcon={ true } {...props}/>
                       </ul>
                     </div>
                   </div>
