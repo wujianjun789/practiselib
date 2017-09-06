@@ -106,7 +106,7 @@ export class PermissionManage extends Component{
                     roleName = {title:'设备管理员',cls:"eqpManage"};
                     break;
                 case 3:
-                    roleName = {title:'设备操作员',cls:"info"};
+                    roleName = {title:'设备操作员',cls:"eqpOperate"};
                     break;
                 case 4:
                     roleName = {title:'访客',cls:"success"};

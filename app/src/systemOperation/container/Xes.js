@@ -27,7 +27,7 @@ import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
 import {getModelSummariesByModelID} from '../../api/strategy'
-export class DataCollect extends Component {
+export class Xes extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -327,7 +327,7 @@ export class DataCollect extends Component {
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>添加</button>
             </div>
-            <div className='dataCollect'>
+            <div className='xes'>
                 <div className="table-container">
                     <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                            rowClick={this.tableClick}/>
@@ -385,4 +385,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataCollect);
+export default connect(mapStateToProps, mapDispatchToProps)(Xes);

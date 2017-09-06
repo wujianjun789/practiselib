@@ -13,7 +13,7 @@ import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
-import { getModelData, TreeData, modelData } from '.././../data/systemModel'
+import { getModelData, TreeData } from '.././../data/systemModel'
 import { treeViewInit } from '../../common/actions/treeView'
 import { sideBarToggled } from '../action/index'
 import { intlFormat, getClassByModel } from '../../util/index'

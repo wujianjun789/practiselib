@@ -6,28 +6,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class DeviceList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            stepCount: 1
-        }
-        this.nextStep = this.nextStep.bind(this);
-    }
-
-    nextStep(e) {
-        e.target.innerHTML = this.props.operations[1];
-    }
-
     render() {
         let {className='', data, showIcon=false, operations=['firstOperation', 'secondOperation']} = this.props;
+        const showDiv = showIcon === false ? <div>
+                                               { operations[0] }
+                                             </div> : <div onClick={ this.props.onDeleted }><span className='delete'></span></div>
         const deviceList = data.map((item, index) => {
-            return (<li className='clearfix' key={ index } onClick={ this.nextStep }>
+            return (<li className='clearfix' key={ index }>
                       <div>
                         { item.name }
                       </div>
-                      <div>
-                        { item.added === false ? operations[0] : operations[1] }
-                      </div>
+                      { showDiv }
                     </li>)
         })
         return (<ul className={ className }>
