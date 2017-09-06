@@ -125,6 +125,22 @@ export function postAssetsByModel(model, data, cb){
  * param data({modelId:设备型号})
  * 
  */
+export function postXes(model, data, cb){
+    let headers = getHttpHeader();
+    let dat = {id:data.id, type:data.modelId, base:{name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:model, domainId:data.domainId}};
+    httpRequest(HOST_IP+'/xes', {
+        headers: headers,
+        method: 'POST',
+        body:JSON.stringify(dat)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+/**
+ * param data({modelId:设备型号})
+ * 
+ */
 export function updateAssetsByModel(model, data, cb) {
     let headers = getHttpHeader();
     let dat = {type:data.modelId};
@@ -137,9 +153,40 @@ export function updateAssetsByModel(model, data, cb) {
     })
 }
 
+export function updateXes(model,data, cb){ 
+    let headers = getHttpHeader();
+    let dat = {
+        "geoType":0,
+        name:data.name, 
+        geoPoint:{
+            lat:data.lat, 
+            lng:data.lng
+        }, 
+        extendType:model, 
+        domainId:data.domainId
+    };
+    httpRequest(HOST_IP+'/assets/'+data.id,{
+        headers: headers,
+        method: 'PATCH',
+        body:JSON.stringify(dat)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
 export function delAssetsByModel(model, id, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/'+model+'s/'+id, {
+        headers: headers,
+        method: 'DELETE'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function delXes(model, id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/xes/'+id, {
         headers: headers,
         method: 'DELETE'
     }, response=>{

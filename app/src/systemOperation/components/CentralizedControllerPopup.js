@@ -82,14 +82,14 @@ export default class CentralizedControllerPopup extends Component {
     }
 
     renderHtmlForModel() {
-        if (this.props.model === "screen"||this.props.model === "xes") {
+        if (this.props.model === "screen") {
             return null
         }
         return <div className="form-group clearfix">
                  <label htmlFor="model" className="fixed-width-left control-label">型号：</label>
                  <div className="fixed-width-right">
                    <Select id="model" className="form-control" titleField={ this.props.modelList.titleField } valueField={ this.props.modelList.valueField } options={ this.props.modelList.options } value={ this.state.model }
-                     onChange={ this.onChange } />
+                     onChange={ this.onChange } disabled={this.props.model === "xes"&&this.props.popId=='edit'?true:false}/>
                  </div>
                </div>
 

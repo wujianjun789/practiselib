@@ -21,7 +21,7 @@ import Content from '../../components/Content';
 import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel'
 
 import {getDomainList} from '../../api/domain'
-import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'
+import {getSearchAssets, getSearchCount, postXes, updateXes, delXes} from '../../api/asset'
 
 import {getObjectByKey} from '../../util/index'
 
@@ -113,9 +113,9 @@ export class Xes extends Component {
                 this.props.actions.treeViewInit(TreeData);
                 this.setState({
                     model: model,
-                    // modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type)=>{
-                    //     return  {id: type.id, title: type.title, value: type.title}
-                    // })})
+                    modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type)=>{
+                        return  {id: type.id, title: type.title, value: type.title}
+                    })})
                 });
                 getDomainList(data=> {
                     this.mounted && this.initDomainList(data)
@@ -163,13 +163,13 @@ export class Xes extends Component {
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
-        // getSearchCount(domain?domain.id:null, model, name, data=> {
-        //     this.mounted && this.initPageSize(data)
-        // })
+        getSearchCount(domain?domain.id:null, model, name, data=> {
+            this.mounted && this.initPageSize(data)
+        })
 
-        // getSearchAssets(domain?domain.id:null, model, name, offset, size, data=> {
-        //     this.mounted && this.initAssetList(data)
-        // })
+        getSearchAssets(domain?domain.id:null, model, name, offset, size, data=> {
+            this.mounted && this.initAssetList(data)
+        })
     }
 
     initPageSize(data) {
@@ -209,7 +209,7 @@ export class Xes extends Component {
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
-        delAssetsByModel(model, selectDevice.data.length&&selectDevice.data[0].id, ()=>{
+        delXes(model, selectDevice.data.length&&selectDevice.data[0].id, ()=>{
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
@@ -218,13 +218,16 @@ export class Xes extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, data,sensorTypeList} = this.state
+        const {model, selectDevice, domainList, modelList,sensorTypeList} = this.state
         const {overlayerShow, overlayerHide} = this.props.actions;
+        let curType = modelList.options.length?modelList.options[0]:null;        
         switch (id) {
             case 'sys-add':
                 const dataInit = {
                     id: '',
                     name: '',
+                    model: curType?curType.title:"",
+                    modelId: curType?curType.id:"",
                     domain: domainList.value,
                     domainId: domainList.options.length?domainList.options[domainList.index].id:"",
                     lng: "",
@@ -232,9 +235,9 @@ export class Xes extends Component {
                 };
 
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={model}
-                                                        data={dataInit} domainList={domainList}
+                                                        data={dataInit} domainList={domainList} modelList={modelList}
                                                         overlayerHide={overlayerHide} onConfirm={(data)=>{
-                                                                postAssetsByModel(model, data, ()=>{
+                                                            postXes(model, data, ()=>{
                                                                     this.requestSearch();
                                                                 });
                                                           }}/>);
@@ -245,15 +248,17 @@ export class Xes extends Component {
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
+                    model: data?getModelTypesNameById(model,data.type):"",
+                    modelId: data?data.type:null,
                     domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
                 overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="数据采集仪" model={model}
-                                                          data={dataInit2} domainList={domainList}
+                                                          data={dataInit2} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={data=>{
-                                                                updateAssetsByModel(model, data, (data)=>{
+                                                            updateXes(model, data, (data)=>{
                                                                     this.requestSearch();
                                                                     overlayerHide();
                                                                 })
@@ -287,7 +292,7 @@ export class Xes extends Component {
         selectDevice.domainId = item.domainId;
         selectDevice.domainName = item.domainName;
         selectDevice.position.splice(0);
-        selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'}));
+        selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'},item.geoPoint));
         this.setState({selectDevice: selectDevice});
     }
 

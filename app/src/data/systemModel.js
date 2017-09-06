@@ -173,9 +173,7 @@ export function getModelTypesById(id) {
   let model = getModelById(id);
   let list = [];
   if (model) {
-    list = model
-      .types
-      .map(type => {
+    list = model.types.map(type => {
         return {
           id: type,
           title: intlFormat(model.intl.types[type])
