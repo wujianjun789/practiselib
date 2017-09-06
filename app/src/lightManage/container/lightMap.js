@@ -139,12 +139,16 @@ export default class SmartLightMap extends Component{
         if (e.keyCode === 13 || e=="toSearch"){}else{return}
         if(this.state.searchMode=="设备"){
             /*  先在已经请求到的域内的所有设备中寻找  */
-            let searchObj = this.state.deviceList.toJS();
-            searchObj.map((item)=>{
-                if(item.name.indexOf(this.state.search.get("value"))>0){
-                    console.log(item);
-                    this.setState({searchList:Immutable.fromJS([item])},()=>{console.log("aaaaaa")});
-                }
+            let searchObj = this.state.resDevice.toJS();
+            let num = searchObj.length-1;
+            let list = [];
+            searchObj.map((item,index)=>{
+                    if(item.name.indexOf(this.state.search.get("value"))>0){
+                        list.push(item)
+                    }
+                    if(index==num){this.setState({searchList:Immutable.fromJS(list)},()=>{
+                            console.log("success")
+                    })};
             })
             /*  如没有找到则根据input值执行api获取数据  */
             /*  根据返回数据添加到searchList变量中  */
@@ -293,7 +297,6 @@ export default class SmartLightMap extends Component{
 
     searchDeviceSelect(id){
         if(this.state.curDevice.get(id)==undefined){/* has not device */ console.log("has not "+id);
-        this.test()
         return}
         this.setState({deviceId:id});
     }
