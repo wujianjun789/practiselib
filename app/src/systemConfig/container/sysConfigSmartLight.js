@@ -87,6 +87,7 @@ export class sysConfigSmartLight extends Component {
         this.domainHandler = this.domainHandler.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.onConfirmed = this.onConfirmed.bind(this);
+        this.onDeleted = this.onDeleted.bind(this);
     }
 
     //Hook functions
@@ -138,13 +139,15 @@ export class sysConfigSmartLight extends Component {
         this.props.actions.overlayerHide();
     }
 
+    onDeleted() {
+        alert('DELETE!');
+    }
+
     domainHandler() {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } />);
+        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } />);
     }
-
-
 
     collpseHandler() {
         this.setState({
