@@ -70,12 +70,15 @@ export default class SmartLightMap extends Component{
         this.lightSwitch = {id:"lightSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
         this.presetList = {id:"preset", value:"1",options:[{id:1, value:"1"},{id:2, value:"2"}]};
 
+        this.focusInput = {min:0, max:100, step:10};
+
         this.renderInfo = this.renderInfo.bind(this);
         this.renderState = this.renderState.bind(this);
         this.renderControl = this.renderControl.bind(this);
 
         this.setSize = this.setSize.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.focusClick = this.focusClick.bind(this);
         this.submit = this.submit.bind(this);
         this.backHandler = this.backHandler.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
@@ -186,6 +189,19 @@ export default class SmartLightMap extends Component{
                 this.setState(this.presetList);
                 break;
         }
+    }
+
+    focusClick(id){
+        const {camera} = this.state;
+        let curVal = camera.get("focus");
+        const {min, max, step} = this.focusInput;
+        if(id == "minus" && curVal>min){
+            curVal -= step;
+        }else if(id=="plus" && curVal<max){
+            curVal += step;
+        }
+
+        this.setState({camera:this.state.camera.update("focus", v=>curVal)});
     }
 
     faultClick(event){
@@ -431,6 +447,7 @@ export default class SmartLightMap extends Component{
                     </div>
             case "camera":
                 const {camera} = this.state;
+                const {min, max, step} = this.focusInput;
                 return <div className="row state-control camera">
                     <div className="col-sm-12 video">
                         <canvas ref="camera">
@@ -439,7 +456,9 @@ export default class SmartLightMap extends Component{
                     <div className="col-sm-12 form-group focus">
                         <label className="col-sm-3">变焦:</label>
                         <div className="col-sm-9">
-                            <input  type="range" min="0" max="100" step="1" value={camera.get("focus")} onChange={event=>this.onChange("focus", event)}/>
+                            <span className="glyphicon glyphicon-minus minus" onClick={()=>this.focusClick('minus')}></span>
+                            <input type="range" min={min} max={max} step={step} value={camera.get("focus")} onChange={event=>this.onChange("focus", event)}/>
+                            <span className="glyphicon glyphicon-plus plus" onClick={()=>this.focusClick('plus')}></span>
                         </div>
                     </div>
                     <div className="col-sm-12 form-group preset">
