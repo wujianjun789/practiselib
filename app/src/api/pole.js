@@ -13,9 +13,9 @@ export function getPoleList(cb) {
     })
 }
 
-export function getPoleListByName(name) {
+export function getPoleListByModelWithName(model, name, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/poles?filter='+encodeURIComponent(JSON.stringify({"where":{name:{like:name}}})), {
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"include":["extend"],"where":getSearchParam(model, name)})), {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -23,9 +23,33 @@ export function getPoleListByName(name) {
     })
 }
 
-export function getPoleListByDomainName(domainName) {
+function getSearchParam(model, name) {
+    let param = {};
+    if(model){
+        Object.assign(param, {"extendType":model})
+    }
+    if(name){
+        Object.assign(param, {"name":{"like":name}})
+    }
+
+    return param;
+}
+/**
+ * @param id(pole id)
+ */
+export function getPoleAssetById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/poles?filter='+encodeURIComponent(JSON.stringify({"where":{domainName:{like:domainName}}})), {
+    httpRequest(HOST_IP+'/poles/'+id+'/assets',{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(id, response);
+    })
+}
+
+export function getPoleListByModelDomainId(model, domainId) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"include":["extend"],"where":{domainId:domainId}})), {
         headers: headers,
         method: 'GET'
     }, response=>{

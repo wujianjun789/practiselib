@@ -136,6 +136,11 @@ export default (
                                                     cb(null, require('../systemOperation/container/Xes').default)
                                                 }, 'starriverpro.systemoperation.xes')
                                             } }/>
+        <Route path="pole" getComponent={(nextState, cb) => {
+                                                require.ensure([], (require) => {
+                                                    cb(null, require('../systemOperation/container/Pole').default)
+                                                }, 'starriverpro.systemoperation.pole')
+                                            } }/> 
       </Route>
       <Route path="strategy">
         <Route path="timeTable" getComponent={ (nextState, cb) => {

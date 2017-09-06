@@ -3,9 +3,9 @@ import Panel from '../../components/Panel.js';
 import PanelFooter from '../../components/PanelFooter.js';
 import Select from '../../components/Select.1.js';
 
-import StepComponet from './addOrEditPopupChildren/index.js';
+import EditPopupComponet from './EditPopupComponent.js';
 
-export default class AddOrEditPopup extends Component {
+export default class EditPopup extends Component {
     constructor(props) {
         super(props);
     }
@@ -14,9 +14,7 @@ export default class AddOrEditPopup extends Component {
     //     console.log('在popup调用onCancel')
     // }
 
-    onConfirmed() {
-        console.log(345)
-    }
+    onConfirmed() {}
 
     render() {
         const props = this.props;
@@ -24,7 +22,7 @@ export default class AddOrEditPopup extends Component {
         return (
             <div id='sysConfigSmartLight-popup'>
               <Panel {...props} closeBtn>
-                <StepComponet {...props}/>
+                <EditPopupComponet {...props}/>
               </Panel>
             </div>
         )
