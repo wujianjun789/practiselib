@@ -21,11 +21,11 @@ export default class DeviceList extends Component {
     render() {
         let {className='', data, showIcon=false, operations=['firstOperation', 'secondOperation']} = this.props;
         const deviceList = data.map((item, index) => {
-            return (<li className='clearfix' key={ index } onClick={ this.nextStep }>
+            return (<li className='clearfix' key={ index }>
                       <div>
                         { item.name }
                       </div>
-                      <div>
+                      <div onClick={ this.nextStep }>
                         { item.added === false ? operations[0] : operations[1] }
                       </div>
                     </li>)
