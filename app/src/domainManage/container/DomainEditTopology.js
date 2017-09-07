@@ -282,8 +282,6 @@ class DomainEditTopology extends Component{
                                                             if(selectDomain.parentId){
                                                                 let parentDomain = getObjectByKey(this.domainList, 'id', selectDomain.parentId);
                                                                 this.updateSelectDomain(parentDomain);
-                                                            }else{
-                                                                this.initDomain();
                                                             }
                                                         })
                                                    }}/>);
