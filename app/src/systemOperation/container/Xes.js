@@ -338,7 +338,7 @@ export class Xes extends Component {
             <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                 <div className="panel panel-default device-statics-info">
                     <div className="panel-heading">
-                        <span className="icon_sys_select"></span>选中设备
+                        <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                     </div>
                     <div className="panel-body domain-property">
                         <span className="domain-name">{selectDevice.data.length?selectDevice.data[0].name:''}</span>
@@ -350,15 +350,7 @@ export class Xes extends Component {
                 </div>
                 <div className="panel panel-default device-statics-info dataOrigin">
                     <div className="panel-heading">
-                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 15 15">
-                            <g>
-                                <path d="M15,7.5a2.53,2.53,0,0,0-1-1.87,2.53,2.53,0,0,0,1-1.88C15,1.68,11.64,0,7.5,0S0,1.68,0,3.75
-                                A2.53,2.53,0,0,0,1,5.63,2.53,2.53,0,0,0,0,7.5,2.53,2.53,0,0,0,1,9.38a2.53,2.53,0,0,0-1,1.87C0,13.32,3.36,15,7.5,15S15,13.32,15,11.25
-                                a2.53,2.53,0,0,0-1-1.87A2.53,2.53,0,0,0,15,7.5ZM7.5,1C11.22,1,14,2.45,14,3.75S11.22,6.5,7.5,6.5,1,5,1,3.75,3.78,1,7.5,1ZM14,11.25
-                                C14,12.55,11.22,14,7.5,14S1,12.55,1,11.25A1.77,1.77,0,0,1,1.86,10,11.71,11.71,0,0,0,7.5,11.25,11.71,11.71,0,0,0,13.14,10,1.77,1.77,0,0,1,14,11.25Zm-6.5-1
-                                C3.78,10.25,1,8.8,1,7.5a1.76,1.76,0,0,1,.86-1.28A11.71,11.71,0,0,0,7.5,7.5a11.71,11.71,0,0,0,5.64-1.28A1.77,1.77,0,0,1,14,7.5C14,8.8,11.22,10.25,7.5,10.25Z
-                            "/></g>
-                        </svg>数据源
+                        <svg><use xlinkHref={"#icon_sys_xes"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>数据源
                     </div>
                     <div className="panel-body domain-property">
                         <span className="domain-name">{`包含：${selectDevice.data.length} 个数据源`}</span>

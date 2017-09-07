@@ -13,30 +13,32 @@
 
   &.sidebar-collapse{
     right: -240px;
-
     background: #eaeef2;
-
     .collapse-container{
       .icon_horizontal{
         margin: 7.5px 22.5px;
-
         width: 15px;
         height: 15px;
-
         display: block;
       }
     }
 
     .device-statics-info, .map-position {
       .panel-heading {
+        background:#eee;
         span,svg{
-          margin: 2.5px 27.5px 7.5px 8px;
+          margin: 2px 27.5px 0px 8px;
+          fill:#333;
         }
       }
-
+      .panel-heading:hover{
+        background:#ddd;
+      }
+      .panel-heading:hover svg{
+        fill:#000;
+      }
       .map-container{
         opacity: 0;
-
         cursor: default;
       }
     }
@@ -46,6 +48,7 @@
   }
 
   .collapse-container{
+
     margin: 0;
 
     background: #b6bac1;
@@ -65,20 +68,21 @@
     }
 
     .addAnimation();
+
   }
 
   .device-statics-info, .map-position{
     margin: 0;
     border: 0;
     border-radius: 0;
-
+    width:300px;
     .panel-heading{
       border: 0px;
       border-radius: 0;
 
-      background: #d2d9dc;
+      background: #d3d8dd;
 
-      /*.icon_statistics, .icon_map_position, .icon_domain_property*/span,svg{
+      /*.icon_statistics, .icon_map_position, .icon_domain_property*/span{
         display: block;
         width: 15px;
         height: 15px;
@@ -88,6 +92,14 @@
         margin: 2.5px 7.5px 7.5px 0;
 
         .addAnimation();
+      }
+      svg{
+        width:20px;
+        height:20px;
+        display:inline-block;
+        float:left;
+        padding:1px 0px 0px 0px;
+        margin-right:3px;
       }
     }
 
@@ -153,6 +165,10 @@
     bottom: 0;
     left: 0;
 
+    .addAnimation();
+  }
+
+  .whitelist,.dataOrigin{
     .addAnimation();
   }
 }

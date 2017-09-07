@@ -475,6 +475,13 @@ ul {
     line-height: 20px;
     background: #d3d8dd;
 }
+.tree-list .tree-1 > li > a > div:hover {
+    height: 40px;
+    padding: 10px 0px 10px 25px;
+    line-height: 20px;
+    background: #cdd1d6;
+    color:#333744;
+}
 
 .tree-list .tree-1 > li span {
     margin-right: 12px;

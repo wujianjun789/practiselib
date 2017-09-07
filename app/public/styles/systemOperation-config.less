@@ -81,9 +81,9 @@
 
     .sidebar-info .whitelist,
     .sidebar-info .dataOrigin  {
+      position: absolute;
+      top: 130px;
       > .panel-heading{
-        position: relative;
-        top: 0;
       }
     }
 
@@ -116,8 +116,6 @@
 
   .sidebar-info.sidebar-collapse{
     .whitelist,.dataOrigin > .panel-heading {
-      transition: top .25s linear;
-      top: -60px;
     }
   }
 }
@@ -164,6 +162,9 @@
     > .panel.panel-default.map-position {
       top: 110px;
     }
+    > .panel.panel-default.whitelist,.panel.panel-default.dataOrigin {
+      top: 70px;
+    }
   }
 }
 
@@ -181,6 +182,7 @@
     > .panel.panel-default.map-position {
       top: 70px;
     }
+
   }
 }
 
