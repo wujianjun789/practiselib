@@ -31,7 +31,7 @@ export class Xes extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: "",
+            model: "xes",
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
@@ -106,14 +106,11 @@ export class Xes extends Component {
 
     componentWillMount() {
         this.mounted = true;
-        const {route} = this.props;
-        let model = route && route.path;
-        getModelData(model, ()=> {
+        getModelData(this.state.model, ()=> {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
                 this.setState({
-                    model: model,
-                    modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type)=>{
+                    modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(this.state.model).map((type)=>{
                         return  {id: type.id, title: type.title, value: type.title}
                     })})
                 });
@@ -220,7 +217,9 @@ export class Xes extends Component {
         let id = e.target.id;
         const {model, selectDevice, domainList, modelList,sensorTypeList} = this.state
         const {overlayerShow, overlayerHide} = this.props.actions;
-        let curType = modelList.options.length?modelList.options[0]:null;        
+        let curType = modelList.options.length?modelList.options[0]:null;
+        let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}            
+        let data = selectDevice.data.length?selectDevice.data[0]:null;
         switch (id) {
             case 'sys-add':
                 const dataInit = {
@@ -243,8 +242,6 @@ export class Xes extends Component {
                                                           }}/>);
                 break;
             case 'sys-update':
-                let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}            
-                let data = selectDevice.data.length?selectDevice.data[0]:null;
                 const dataInit2 = {
                     id: data?data.id:null,
                     name: data?data.name:null,
@@ -269,7 +266,7 @@ export class Xes extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-dataOrigin':
-                overlayerShow(<DataOriginPopup className="dataOrigin-popup" sensorTypeList={sensorTypeList} overlayerHide={overlayerHide}/>)
+                overlayerShow(<DataOriginPopup className="dataOrigin-popup"  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide}/>)
                 break;
         }
     }
@@ -297,9 +294,10 @@ export class Xes extends Component {
     }
 
     searchSubmit() {
-        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
             this.requestSearch();
-        // });
+        });    
     }
 
     searchChange(value) {

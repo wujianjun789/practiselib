@@ -62,24 +62,17 @@ export default class DataOriginPopup extends Component {
     }
 
     render() {
-        let {className='',sensorTypeList} = this.props;
+        let {className='',sensorTypeList,type} = this.props;
         const {dataOriList,dataOrigin,rfidList} = this.state;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
         return <div className={className}>
             <Panel title='数据源' footer={footer} closeBtn={true} closeClick={this.onCancel}>
-                <div className="form-group clearfix">
-                    <label htmlFor="dataOrigin" className="control-label">选择数据源：</label>
-                    <div className="select-origin">
-                        <Select id="dataOrigin" onChange={this.onChange} titleField={dataOriList.titleField}
-                            valueField={dataOriList.valueField} options={dataOriList.options} value={dataOrigin}/>
-                    </div>
-                </div>
                 <div className="selectItem">
                         <label className="control-label">{dataOrigin == 'sensor'?'选择传感器：':'修改标签：'}</label>
                         {
-                            dataOrigin == 'sensor'?
+                            type == 'XES-200S'?
                             <div className = 'select-Sensor'>
                                 {
                                     sensorTypeList.map(item=>{
