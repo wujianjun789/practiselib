@@ -13,9 +13,20 @@ export function getPoleList(cb) {
     })
 }
 
-export function getPoleListByModelWithName(model, name, cb) {
+/**
+ *  地图搜索
+ * @param type
+ * @param model
+ * @param searchValue
+ * @param cb
+ */
+export function getPoleListByModelWithName(searchType, model, searchValue, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"include":["extend"],"where":getSearchParam(model, name)})), {
+    if(searchType == "domain"){
+
+    }
+
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"include":["extend"],"where":getSearchParam(searchType, model, searchValue)})), {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -23,13 +34,22 @@ export function getPoleListByModelWithName(model, name, cb) {
     })
 }
 
-function getSearchParam(model, name) {
+function getSearchParam(searchType, model, searchValue) {
     let param = {};
-    if(model){
-        Object.assign(param, {"extendType":model})
-    }
-    if(name){
-        Object.assign(param, {"name":{"like":name}})
+    if(searchType == "domain"){
+        if(model){
+            Object.assign(param, {"extendType":model})
+        }
+        if(searchValue){
+            Object.assign(param, {"domainId":searchValue})
+        }
+    }else{
+        if(model){
+            Object.assign(param, {"extendType":model})
+        }
+        if(searchValue){
+            Object.assign(param, {"name":{"like":searchValue}})
+        }
     }
 
     return param;
