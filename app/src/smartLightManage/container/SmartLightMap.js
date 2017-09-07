@@ -21,7 +21,7 @@ export default class SmartLightMap extends Component{
             IsSearch: true,
             IsSearchResult: false,
             curDevice:Immutable.fromJS({
-              id:1, name:"疏影路灯杆1号", screen:23, charge:45, camera:56, lamp:89, collect:99
+              id:1, name:"疏影路灯杆1号", asset:{screen:23, charge:45, camera:56, lamp:89, collect:99}
             }),
             curId:"screen",
             search:Immutable.fromJS({id:"search", value:''}),
@@ -62,7 +62,7 @@ export default class SmartLightMap extends Component{
             {id:"pole", className:"icon_pole"},
             {id:"screen", className:"icon_screen"},
             {id:"camera", className:"icon_camera"},
-            {id:"lamp", className:"icon_lamp"},
+            {id:"lc", className:"icon_lamp"},
             {id:"charge", className:"icon_charge"}
         ];
 
@@ -160,12 +160,14 @@ export default class SmartLightMap extends Component{
         console.log(data);
         let searchList = Immutable.fromJS(data);
         let positionList = data.map((pole)=>{
-            return {"device_id": pole.id,"device_type": 'DEVICE', lng: pole.geoPoint.lng, lat: pole.geoPoint.lat}
+            let latlng = pole.geoPoint;
+            return {"device_id": pole.id,"device_type": 'DEVICE', lng: latlng?latlng.lng:null, lat: latlng?latlng.lat:null}
         });
 
         if(data && data.length){
             let fPole = data[0];
-            this.setState({searchList:searchList, mapLatlng:{lng:fPole.geoPoint.lng, lat:fPole.geoPoint.lat},positonList:positionList}, ()=>{
+            let flatlng = fPole.geoPoint;
+            this.setState({searchList:searchList, mapLatlng:{lng:flatlng?flatlng.lng:null, lat:flatlng?flatlng.lat:null},positonList:positionList}, ()=>{
                 this.requestPoleAsset(data);
             });
         }else{
@@ -176,6 +178,11 @@ export default class SmartLightMap extends Component{
     }
 
     requestPoleAsset(data){
+        const {model} = this.state;
+        if(model != "pole"){
+            return;
+        }
+
         data.map(pole=>{
             getPoleAssetById(pole.id, (id,data)=>{this.mounted && this.updatePoleAsset(id, data)});
         })
@@ -277,10 +284,30 @@ export default class SmartLightMap extends Component{
         console.log(key);
     }
 
-    itemClick(){
-        this.setState({IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
-            this.setSize();
-        });
+    itemClick(asset){
+        const {model} = this.state
+        if(model == "pole"){
+            let curId = "";
+            if(asset.getIn(["asset","screen"])){
+                curId = "screen";
+            } else if(asset.getIn(["asset","lamp"])) {
+                curId = "lamp";
+            } else if(asset.getIn(["asset","camera"])){
+                curId = "camera";
+            } else if(asset.getIn(["asset","charge"])){
+                curId = "charge";
+            } else if(asset.getIn(["asset","collect"])){
+                curId = "collect";
+            }
+            this.setState({curDevice:asset, curId:curId, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+                this.setSize();
+            });
+
+        }else{
+            this.setState({curDevice:asset, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+                this.setSize();
+            });
+        }
     }
 
     backHandler(){
@@ -290,7 +317,7 @@ export default class SmartLightMap extends Component{
     }
 
     searchDeviceSelect(id){
-        this.setState({model:id});
+        this.setState({model:id, IsSearch:true, IsSearchResult:false, IsOpenFault:false});
     }
 
     infoDeviceSelect(id){
@@ -300,7 +327,7 @@ export default class SmartLightMap extends Component{
     }
 
     searchSubmit(e){
-        this.setState({IsSearchResult:true},()=>{
+        this.setState({IsSearch:true, IsSearchResult:true},()=>{
             this.setSize();
             this.requestSearch();
         });
@@ -608,7 +635,7 @@ console.log("searchList:",searchList.toJS());
                     <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
                         {
                             searchList.map(pole=>{
-                                return <li key={pole.get("id")} className="list-group-item" onClick={this.itemClick}>
+                                return <li key={pole.get("id")} className="list-group-item" onClick={()=>this.itemClick(pole)}>
                                     {pole.get("name")}
 
                                     {pole.getIn(["asset","collect"]) && <span className="icon icon_collect"></span>}
@@ -633,12 +660,12 @@ console.log("searchList:",searchList.toJS());
                             <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
-                            <ul className="btn-group">
-                                {curDevice.get("screen") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
-                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lamp"+(curId=="lamp"?"_hover":"")}></span></li>}
-                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
-                                {curDevice.get("charge") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge"+(curId=="charge"?"_hover":"")}></span></li>}
-                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
+                            <ul className={"btn-group "+(model=="pole"?"":"hidden")}>
+                                {curDevice.getIn(["asset","screen"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","lamp"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lamp"+(curId=="lamp"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","camera"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","charge"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge"+(curId=="charge"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","collect"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
                             </ul>
                             {
                                 this.renderInfo(curId,this.state[curId])
