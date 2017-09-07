@@ -30,7 +30,7 @@ export class SingleLampCon extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: "",
+            model: "lc",
             collapse: false,
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -134,7 +134,8 @@ export class SingleLampCon extends Component {
     componentWillMount() {
         this.mounted = true;
         const {route} = this.props;
-        let model = route && route.path;
+        let {model} = this.state;
+        // let model = route && route.path;
         getModelData(model, ()=> {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
@@ -300,9 +301,10 @@ export class SingleLampCon extends Component {
     }
 
     searchSubmit() {
-        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
-        this.requestSearch();
-        // });
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
+            this.requestSearch();
+        });    
     }
 
     searchChange(value) {
