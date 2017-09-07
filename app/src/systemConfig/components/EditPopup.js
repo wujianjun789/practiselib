@@ -18,10 +18,10 @@ export default class EditPopup extends Component {
 
     render() {
         const props = this.props;
-        console.log('props', props)
+        console.log('props', props);
         return (
             <div id='sysConfigSmartLight-popup'>
-              <Panel {...props} closeBtn>
+              <Panel {...props} closeClick={ this.props.closeClick } closeBtn>
                 <EditPopupComponet {...props}/>
               </Panel>
             </div>

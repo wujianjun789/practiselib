@@ -1,9 +1,8 @@
 /** Created By ChrisWen
  *  17/08/31
- *  These Two functions is provide initData to smartLight-smartLightPole.
+ *  Provide a model that has mostInit functions and data.
  */
-
-export const sysInitData = {
+export const sysDataHandle = {
     add(curType, domainList) {
         return {
             id: '',
@@ -28,6 +27,25 @@ export const sysInitData = {
             lat: latlng.lat
         }
     },
+    //provide data that used to init
+    init(data) {
+        return {
+            //index: 0,
+            value: data.length ? data[0].name : "",
+            options: data
+        }
+    },
+    //provide data that used to selectDomain in <Select change/>
+    select(event, dataList) {
+        let index = event.target.selectedIndex;
+        return {
+            //index: index,
+            value: dataList.options[index].name
+        }
+    },
+    /**
+     *  ↓↓↓↓↓ StaticDataSource ↓↓↓↓↓
+     */
     smartLight: [
         {
             id: 0,
@@ -53,9 +71,34 @@ export const sysInitData = {
             id: 6,
             field: "electricStation",
             title: "充电桩"
-        }
+        },
     ],
-    smartLightPole: []
+    smartLightPole: [],
+    equipmentSelectList: [{
+        id: 1,
+        title: 'light',
+        value: '灯'
+    }, {
+        id: 2,
+        title: 'screen',
+        value: '显示屏'
+    }, {
+        id: 3,
+        title: 'camera',
+        value: '摄像头'
+    }, {
+        id: 4,
+        title: 'chargeStake',
+        value: '充电桩'
+    }],
+    equipmentList: [{
+        name: '摄像头1',
+        added: true
+    }, {
+        name: '摄像头2',
+        added: true
+    }, {
+        name: '摄像头3',
+        added: false
+    }]
 }
-
-

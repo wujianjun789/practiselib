@@ -23,9 +23,8 @@ import ConfirmPopup from '../../components/ConfirmPopup';
 import Content from '../../components/Content.js';
 
 //import functions
-import { sysInitData } from '../initData/index.js';
 import { getDomainList } from '../../api/domain.js';
-import { DomainList } from '../model/domainList.js';
+//import { DomainList } from '../model/sysDataHandle.js';
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
@@ -34,11 +33,16 @@ import { treeViewInit } from '../../common/actions/treeView';
 import SiderBarComponet from '../components/sidebarComponents.js';
 import EditPopup from '../components/EditPopup.js';
 
+//import initDataModel
+import { sysDataHandle } from '../model/sysDataHandle.js';
+import { sysInitStateModel } from '../model/sysInitStateModel.js';
+
 export class sysConfigSmartLight extends Component {
     constructor(props) {
         super(props);
         this.state = {
             model: '',
+            isEdit: false,
             collapse: false,
             // page -> 分页器属性
             page: Immutable.fromJS({
@@ -58,36 +62,29 @@ export class sysConfigSmartLight extends Component {
                 whiteCount: 0
             },
             //data -> dataTable的数据
-            data: Immutable.fromJS([]),
+            data: sysDataHandle.equipmentList,
             //domainList -> 域名列表
-            domainList: {
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options: []
-            },
+            domainList: sysInitStateModel('domainList'),
             //modelList -> 模型列表
-            modelList: {
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options: []
-            },
+            modelList: sysInitStateModel('modelList'),
             //whiteListData -> 白名单列表
-            whiteListData: {}
+            whiteListData: {},
+            //EditPopup - Select -> 数据源
+            equipmentSelectList: sysInitStateModel('equipmentSelectList'),
+            selectValue: ''
         }
         //Table 数据相关
-        this.columns = sysInitData.smartLight;
+        this.columns = sysDataHandle.smartLight;
 
         //bind functions
         this.initDomainList = this.initDomainList.bind(this);
         this.domainSelect = this.domainSelect.bind(this);
-        this.domainHandler = this.domainHandler.bind(this);
+        this.showPopup = this.showPopup.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.onConfirmed = this.onConfirmed.bind(this);
         this.onDeleted = this.onDeleted.bind(this);
+        this.closeClick = this.closeClick.bind(this);
+        this.onEquipmentSelectChange = this.onEquipmentSelectChange.bind(this);
     }
 
     //Hook functions
@@ -103,9 +100,14 @@ export class sysConfigSmartLight extends Component {
     }
 
     //Declare functions
+    //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
+    closeClick() {
+        this.props.actions.overlayerHide();
+    }
+
     // when componenetWillMount,we call this function to provide DomainList to be choosen.
     initDomainList(data) {
-        let newObject = DomainList.init(data);
+        let newObject = sysDataHandle.init(data);
         let domainList = {
             ...this.state.domainList,
             ...newObject
@@ -118,10 +120,10 @@ export class sysConfigSmartLight extends Component {
     //This is the DomainSelect function,bind in <Select/>
     domainSelect(event) {
         let {domainList} = this.state;
-        let newObj = DomainList.select(event, domainList);
+        let newObject = sysDataHandle.select(event, domainList);
         let newDomainList = {
             ...domainList,
-            ...newObj
+            ...newObject
         };
         this.setState({
             domainList: newDomainList
@@ -130,23 +132,39 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
+    onEquipmentSelectChange(event) {
+        let {equipmentSelectList} = this.state;
+        let newObject = sysDataHandle.select(event, equipmentSelectList);
+        let newEquipmentSelectList = {
+            ...equipmentSelectList,
+            ...newObject
+        };
+        this.setState({
+            equipmentSelectList: newEquipmentSelectList
+        })
+    }
+
     requestSearch() {
         //console.log(this.state.domainList)
     }
 
+    //Bind on EditPopup - Confirm_Button.
     onConfirmed() {
         console.log('在最上层调用onConfirm');
-        this.props.actions.overlayerHide();
+        this.closeClick();
     }
+
+
 
     onDeleted() {
         alert('DELETE!');
     }
 
-    domainHandler() {
+    showPopup() {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
-        const {overlayerShow, overlayerHide} = this.props.actions;
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } />);
+        const {overlayerShow} = this.props.actions;
+        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.onEquipmentSelectChange } data={ this.state.data }
+                        equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
     }
 
     collpseHandler() {
@@ -155,22 +173,23 @@ export class sysConfigSmartLight extends Component {
         })
     }
 
+
+
     render() {
         const {collapse, search, data, page, domainList} = this.state;
         return (
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
                 <header>
-                  <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
-                  />
+                  <Select id="domain" {...domainList} onChange={ this.domainSelect } />
                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
                 </header>
                 <div className="table-container">
-                  <Table className="dataTable" columns={ this.columns } data={ data } />
+                  <Table className="dataTable" columns={ this.columns } />
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.domainHandler } />
+                  <SiderBarComponet onClick={ this.showPopup } />
                 </SideBarInfo>
               </Content>
             </div>

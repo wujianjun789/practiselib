@@ -417,9 +417,10 @@ export class Sensor extends Component {
     }
 
     searchSubmit() {
-        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
-        this.requestSearch();
-    // });
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
+            this.requestSearch();
+        });    
     }
 
     searchChange(value) {
@@ -467,7 +468,7 @@ export class Sensor extends Component {
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                    <div className="panel panel-default device-statics-info">
                      <div className="panel-heading">
-                       <span className="icon_sys_select"></span>选中设备
+                       <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>

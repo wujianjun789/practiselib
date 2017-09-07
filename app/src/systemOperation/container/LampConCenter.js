@@ -434,9 +434,10 @@ export class LampConCenter extends Component {
     }
 
     searchSubmit() {
-        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
-        this.requestSearch();
-    // });
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
+            this.requestSearch();
+        });    
     }
 
     searchChange(value) {
@@ -468,23 +469,22 @@ export class LampConCenter extends Component {
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
         return <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                
                  <div className="heading">
-                   <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
-                   />
+                   <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                    <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                    <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
                  </div>
                  <div className='lcc'>
                    <div className="table-container">
                      <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
-                     <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
-                     />
+                     <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
                    </div>
                  </div>
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                    <div className="panel panel-default device-statics-info">
                      <div className="panel-heading">
-                       <span className="icon_sys_select"></span>选中设备
+                       <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
@@ -496,7 +496,7 @@ export class LampConCenter extends Component {
                    </div>
                    <div className="panel panel-default device-statics-info whitelist">
                      <div className="panel-heading">
-                       <span className="icon_sys_whitelist"></span>白名单
+                       <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>白名单
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ `包含：${selectDevice.whiteCount} 个设备` }</span>
