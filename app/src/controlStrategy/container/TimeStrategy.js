@@ -303,8 +303,11 @@ class TimeStrategy extends Component{
         });
     }
 
-    searchSubmit(){
-        this.requestSearch();
+    searchSubmit() {
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
+            this.requestSearch();
+        });    
     }
 
     searchChange(value){

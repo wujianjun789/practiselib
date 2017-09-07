@@ -416,9 +416,10 @@ export class Sensor extends Component {
     }
 
     searchSubmit() {
-        // this.setState({search: this.state.search.update('value', () => '')}, ()=>{
-        this.requestSearch();
-    // });
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
+            this.requestSearch();
+        });    
     }
 
     searchChange(value) {

@@ -262,8 +262,11 @@ export class DomainEditList extends Component {
         this.setState({selectDomain:selectDomain})
     }
 
-    searchSubmit(){
-        this.requestSearch();
+    searchSubmit() {
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page},()=>{
+            this.requestSearch();
+        });    
     }
 
     searchChange(value){
