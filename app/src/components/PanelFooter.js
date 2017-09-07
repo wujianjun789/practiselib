@@ -6,6 +6,12 @@ import PropTypes from 'prop-types';
  * @prop btnTitles {array}  btn's title
  */
 export default class PanelFooter extends PureComponent {
+    static propTypes = {
+        funcNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+        btnTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
+        btnDisabled: PropTypes.arrayOf(PropTypes.bool)
+    }
+    
     render() {
         const {funcNames, btnTitles, btnDisabled=[false, false], btnClassName=['btn-default','btn-primary']} = this.props;
         return (
@@ -15,10 +21,4 @@ export default class PanelFooter extends PureComponent {
             </div>
         )
     }
-}
-
-PanelFooter.PropTypes = {
-    funcNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-    btnTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
-    btnDisabled: PropTypes.arrayOf(PropTypes.bool)
 }
