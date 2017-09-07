@@ -24,7 +24,7 @@ import Content from '../../components/Content.js';
 
 //import functions
 import { getDomainList } from '../../api/domain.js';
-import { DomainList } from '../model/domainList.js';
+//import { DomainList } from '../model/sysDataHandle.js';
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
@@ -34,7 +34,8 @@ import SiderBarComponet from '../components/sidebarComponents.js';
 import EditPopup from '../components/EditPopup.js';
 
 //import initDataModel
-import { sysInitData } from '../model/sysInitData.js';
+import { sysDataHandle } from '../model/sysDataHandle.js';
+import { sysInitStateModel } from '../model/sysInitStateModel.js';
 
 export class sysConfigSmartLight extends Component {
     constructor(props) {
@@ -61,34 +62,19 @@ export class sysConfigSmartLight extends Component {
                 whiteCount: 0
             },
             //data -> dataTable的数据
-            data: sysInitData.equipmentList,
+            data: sysDataHandle.equipmentList,
             //domainList -> 域名列表
-            domainList: {
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options: []
-            },
+            domainList: sysInitStateModel('domainList'),
             //modelList -> 模型列表
-            modelList: {
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options: []
-            },
+            modelList: sysInitStateModel('modelList'),
             //whiteListData -> 白名单列表
             whiteListData: {},
             //EditPopup - Select -> 数据源
-            equipmentSelectList: Immutable.fromJS({
-                list: sysInitData.equipmentSelectList
-            // ,index: 0,
-            // value: '访客'
-            })
+            equipmentSelectList: sysInitStateModel('equipmentSelectList'),
+            selectValue: ''
         }
         //Table 数据相关
-        this.columns = sysInitData.smartLight;
+        this.columns = sysDataHandle.smartLight;
 
         //bind functions
         this.initDomainList = this.initDomainList.bind(this);
@@ -121,7 +107,7 @@ export class sysConfigSmartLight extends Component {
 
     // when componenetWillMount,we call this function to provide DomainList to be choosen.
     initDomainList(data) {
-        let newObject = DomainList.init(data);
+        let newObject = sysDataHandle.init(data);
         let domainList = {
             ...this.state.domainList,
             ...newObject
@@ -134,16 +120,28 @@ export class sysConfigSmartLight extends Component {
     //This is the DomainSelect function,bind in <Select/>
     domainSelect(event) {
         let {domainList} = this.state;
-        let newObj = DomainList.select(event, domainList);
+        let newObject = sysDataHandle.select(event, domainList);
         let newDomainList = {
             ...domainList,
-            ...newObj
+            ...newObject
         };
         this.setState({
             domainList: newDomainList
         }, () => {
             this.requestSearch()
         });
+    }
+
+    onEquipmentSelectChange(event) {
+        let {equipmentSelectList} = this.state;
+        let newObject = sysDataHandle.select(event, equipmentSelectList);
+        let newEquipmentSelectList = {
+            ...equipmentSelectList,
+            ...newObject
+        };
+        this.setState({
+            equipmentSelectList: newEquipmentSelectList
+        })
     }
 
     requestSearch() {
@@ -164,9 +162,9 @@ export class sysConfigSmartLight extends Component {
 
     showPopup() {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
-        const {overlayerShow, overlayerHide} = this.props.actions;
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.onEquipmentSelectChange } equipmentSelectList={ this.state.equipmentSelectList }
-                        data={ this.state.data } />);
+        const {overlayerShow} = this.props.actions;
+        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.onEquipmentSelectChange } data={ this.state.data }
+                        equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
     }
 
     collpseHandler() {
@@ -175,9 +173,7 @@ export class sysConfigSmartLight extends Component {
         })
     }
 
-    onEquipmentSelectChange() {
-        console.log('最上层调用该函数');
-    }
+
 
     render() {
         const {collapse, search, data, page, domainList} = this.state;
@@ -185,8 +181,7 @@ export class sysConfigSmartLight extends Component {
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
                 <header>
-                  <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
-                  />
+                  <Select id="domain" {...domainList} onChange={ this.domainSelect } />
                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
                 </header>
                 <div className="table-container">

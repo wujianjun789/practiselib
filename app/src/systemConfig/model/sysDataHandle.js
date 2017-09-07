@@ -2,7 +2,7 @@
  *  17/08/31
  *  Provide a model that has mostInit functions and data.
  */
-export const sysInitData = {
+export const sysDataHandle = {
     add(curType, domainList) {
         return {
             id: '',
@@ -27,6 +27,25 @@ export const sysInitData = {
             lat: latlng.lat
         }
     },
+    //provide data that used to init
+    init(data) {
+        return {
+            //index: 0,
+            value: data.length ? data[0].name : "",
+            options: data
+        }
+    },
+    //provide data that used to selectDomain in <Select change/>
+    select(event, dataList) {
+        let index = event.target.selectedIndex;
+        return {
+            //index: index,
+            value: dataList.options[index].name
+        }
+    },
+    /**
+     *  ↓↓↓↓↓ StaticDataSource ↓↓↓↓↓
+     */
     smartLight: [
         {
             id: 0,
@@ -56,16 +75,20 @@ export const sysInitData = {
     ],
     smartLightPole: [],
     equipmentSelectList: [{
-        id: 'light',
+        id: 1,
+        title: 'light',
         value: '灯'
     }, {
-        id: 'camera',
-        value: '摄像头'
-    }, {
-        id: 'screen',
+        id: 2,
+        title: 'screen',
         value: '显示屏'
     }, {
-        id: 'chargeStake',
+        id: 3,
+        title: 'camera',
+        value: '摄像头'
+    }, {
+        id: 4,
+        title: 'chargeStake',
         value: '充电桩'
     }],
     equipmentList: [{
