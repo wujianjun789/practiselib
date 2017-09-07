@@ -811,6 +811,11 @@ ul {
 }
 
 .language-switch .lanauage-icon svg{
+    fill:#fff;
+}
+
+.language-switch .list-group svg{
+    fill:#999;
 }
 
 .language-switch svg{
@@ -1207,7 +1212,7 @@ width:24px;
 }
 
 .alter-pw-popup .modal-body {
-    padding: 20px 45px 0 0;
+    padding: 35px 45px 0 0;
     font-size: 14px;
 } 
 
@@ -1242,7 +1247,7 @@ width:24px;
     background-color: transparent;
     padding-top: 0;
     padding-right: 45px;
-    padding-bottom: 20px;
+    padding-bottom: 25px;
 }
 .alter-pw-popup .modal-footer .btn-toolbar{
     margin-right: 45px;
@@ -1254,7 +1259,7 @@ width:24px;
     border-radius: 9px;
     background-color: #fff;
     text-align: center;
-    padding: 35px 42px 35px;
+    padding: 28px 42px 25px 42px; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
 }
 
@@ -1274,7 +1279,7 @@ width:24px;
 }
 
 .usr-exit .btn-toolbar {
-    margin-top: 35px;
+    margin-top: 25px;
     margin-left: 0;
 }
 .usr-exit button {
