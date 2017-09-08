@@ -136,39 +136,41 @@
         margin-right:0px;
     }
     .domain-per{
-        >.col-sm-2{
+        >.control-label{
             text-align: right;
             line-height: 20px;
+            float: left;
+            width: 105px;
         }
-        .domain-add{
+        >.domain-content{
+            width: 545px;
+            margin-left: 15px;
+            float: left;
+        }
+        .domain-tree{
+            float: left;
+            width: 55%;
             height:230px;
             border: 1px solid #ccc;
-            padding-right:17px;
-            .domain-tree{
-                padding-left:0px;
-                padding-right:17px;
-                margin-right: -17px;
-                height: 228px;
-                overflow-x: hidden;
-                overflow-y: scroll;
-                .searchText{
-                    width:100%;
-                    margin-bottom:5px;
-                }
+            padding:20px;
+            .searchText{
+                width:100%;
+                margin-bottom:5px;
             }
-            .search{
-                height: 30px;
-                margin-top:15px;
+            >ul{
+                height: 170px;
+                overflow-y: scroll;
+                padding-right: 10px;
             }
         }
         .domain-list{
+            float: left;
+            width: 45%;  
             height:230px;
             border: 1px solid #ccc;
-            padding:0px;
+            overflow-y: scroll;
             >ul{
-                height: 228px;
-                overflow-y: scroll;
-                padding: 15px 17px 0 15px;
+                padding: 10px 17px 0 20px;
                 >li{
                     color: #808080;
                     font-size: 14px;

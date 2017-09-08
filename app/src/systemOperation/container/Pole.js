@@ -280,9 +280,6 @@ export class Sensor extends Component {
             case 'sys-delete':
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
-            case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />)
-                break;
         }
     }
 
