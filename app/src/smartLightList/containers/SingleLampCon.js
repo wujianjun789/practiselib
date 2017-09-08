@@ -30,8 +30,16 @@ export default class SingleLampCon extends Component {
         };
 
         this.columns = [
-            {field: 'name', title: '策略名称'},
-            {field: 'sensorType', title: '传感器类型'}
+            {field: 'name', title: '设备名称'},
+            {field: 'domain', title: '所属域'},
+            {field: 'onlineStatus', title: '在线状态'},
+            {field: 'lampStatus', title: '灯状态'},
+            {field: 'switchStatus', title: '开关状态'},
+            {field: 'brightness', title: '亮度'},
+            {field: 'volt', title: '电压'},
+            {field: 'amp', title: '电流'},
+            {field: 'power', title: '功率'},
+            {field: 'updateTime', title: '更新时间'},
         ];
 
         this.collpseHandler = this.collpseHandler.bind(this);
@@ -74,7 +82,6 @@ export default class SingleLampCon extends Component {
                     <div className="content-left">
                         <div className="heading">
                             <Select />
-                            <Select />
                             <SearchText placeholder={placeholder} value={value} onChange={this.searchChange}/>
                         </div>
                         <div className="body">
@@ -101,7 +108,7 @@ export default class SingleLampCon extends Component {
                             </div>
                             <div className="panel-body">
                                 <div><span className="tit">控制模式：</span><Select /><button className="btn btn-primary">应用</button></div>
-                                <div><span className="tit">校时：</span><span className="note">(点击以校准时间)</span><button className="btn btn-primary">校时</button></div>
+                                <div><span className="tit">调光：</span><Select /><button className="btn btn-primary">应用</button></div>
                             </div>
                         </div>
                     </div>

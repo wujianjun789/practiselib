@@ -40,18 +40,25 @@ export const TreeData = [
                 "link": "/smartLight/list/screen"
             },
             {
-                "id": 'sensor',
-                "name": "传感器",
-                "class": "icon_sensor_strategy",
-                "active": false,
-                "link": "/smartLight/list/sensor"
-            },
-            {
                 "id": 'xes',
                 "name": "数据采集仪",
                 "class": "icon_collect",
                 "active": false,
                 "link": "/smartLight/list/xes"
+            },
+            {
+                "id": 'chargePole',
+                "name": "充电桩",
+                "class": "icon_chargePole_smartlight",
+                "active": false,
+                "link": "/smartLight/list/chargePole"
+            },
+            {
+                "id": 'sensor',
+                "name": "传感器",
+                "class": "icon_sensor_strategy",
+                "active": false,
+                "link": "/smartLight/list/sensor"
             }
         ]
     },
