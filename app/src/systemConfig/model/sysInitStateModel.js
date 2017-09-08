@@ -8,7 +8,7 @@ export const sysInitStateModel = modelName => {
         //modelName: initModelName,
         titleField: 'name',
         valueField: 'name',
-        //index: 0,
+        index: 0,
         value: "",
         options: []
     }
