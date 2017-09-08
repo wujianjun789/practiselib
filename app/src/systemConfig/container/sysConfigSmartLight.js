@@ -29,6 +29,7 @@ import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTy
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
+import { getObjectByKey } from '../../util/index';
 //import netRequestAPI
 import { getPoleList } from '../../api/pole.js';
 
@@ -179,13 +180,11 @@ export class sysConfigSmartLight extends Component {
     requestSearch() {
         const {model, domainList, search, page} = this.state;
         let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-        //console.log('DOMAIN', domain);
         let name = search.get('value');
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-            // console.log('getSearchAssets', data);
             this.initAssetList(data);
         })
     }
@@ -201,6 +200,7 @@ export class sysConfigSmartLight extends Component {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
                 domainName = domain ? domain.name : "";
             }
+            //return a new object that contains all properties that we need;
             return {
                 ...asset,
                 ...asset,
@@ -214,7 +214,11 @@ export class sysConfigSmartLight extends Component {
                 }
             }
         });
-        console.log('List', list);
+        this.setState({
+            tableData: Immutable.fromJS(list)
+        })
+        console.log('list', list);
+
 
     }
 
