@@ -40,7 +40,6 @@ export default class CollectionInstrument extends Component{
 
         this.columns = [
             {field: 'name', title: '设备名称'},
-            {field: 'domain', title: '所属域'},
             {field: 'onlineStatus', title: '在线状态'},
             {field: 'faultStatus', title: '故障状态'},
         ];
@@ -119,7 +118,7 @@ export default class CollectionInstrument extends Component{
     }
 
     pageChange(page) {
-        this.setState({page: {...this.state.page, current: page}}, this.initData);
+        this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
     }
 
     searchChange(value) {

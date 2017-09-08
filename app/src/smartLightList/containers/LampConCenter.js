@@ -29,10 +29,19 @@ export default class LampConCenter extends Component{
             currentDevice: null,
             deviceList: [],
             currentDomain: '',
-            domainList:{
+            domainList: {
                 titleField: 'name',
                 valueField: 'name',
                 options: []
+            },
+            currentControlMode: '',
+            controlModeList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {title: '远程', value: 'remote'},
+                    {title: '自动', value: 'auto'}
+                ]
             }
         };
 
@@ -40,7 +49,6 @@ export default class LampConCenter extends Component{
 
         this.columns = [
             {field: 'name', title: '设备名称'},
-            {field: 'domain', title: '所属域'},
             {field: 'commStatus', title: '通信状态'},
             {field: 'deviceStatus', title: '设备状态'},
             {field: 'DimmingMode', title: '调光模式'},
@@ -117,11 +125,14 @@ export default class LampConCenter extends Component{
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
+            case 'controlMode':
+                this.setState({currentControlMode: value});
+                break;
         }
     }
 
     pageChange(page) {
-        this.setState({page: {...this.state.page, current: page}}, this.initData);
+        this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
     }
 
     searchChange(value) {
@@ -143,11 +154,11 @@ export default class LampConCenter extends Component{
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList} = this.state;
+        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList, currentControlMode, controlModeList} = this.state;
         return <Content className={`list-lcc ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
-                        <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}  value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}  value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
                             <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
                         </div>
                         <div className="table-container">
@@ -173,8 +184,16 @@ export default class LampConCenter extends Component{
                                 <span className="icon_sys_select"></span>设备操作
                             </div>
                             <div className="panel-body">
-                                <div><span className="tit">控制模式：</span><Select /><button className="btn btn-primary">应用</button></div>
-                                <div><span className="tit">校时：</span><span className="note">(点击以校准时间)</span><button className="btn btn-primary">校时</button></div>
+                                <div>
+                                    <span className="tit">控制模式：</span>
+                                    <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField} options={controlModeList.options}  value={currentControlMode} onChange={this.onChange}/>
+                                    <button className="btn btn-primary">应用</button>
+                                </div>
+                                <div>
+                                    <span className="tit">校时：</span>
+                                    <span className="note">(点击以校准时间)</span>
+                                    <button className="btn btn-primary">校时</button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -33,6 +33,15 @@ export default class Screen extends Component {
                 titleField: 'name',
                 valueField: 'name',
                 options: []
+            },
+            currentSwitchStatus: '',
+            deviceSwitchList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {value: 'on', title: '开启'},
+                    {value: 'off', title: '关闭'}
+                ]
             }
         };
 
@@ -40,7 +49,6 @@ export default class Screen extends Component {
 
         this.columns = [
             {field: 'name', title: '设备名称'},
-            {field: 'domain', title: '所属域'},
             {field: 'onlineStatus', title: '在线状态'},
             {field: 'faultStatus', title: '故障状态'},
             {field: 'brightness', title: '当前亮度'},
@@ -118,11 +126,14 @@ export default class Screen extends Component {
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
+            case 'deviceSwitch': 
+                this.setState({currentSwitchStatus: value});
+                break;
         }
     }
 
     pageChange(page) {
-        this.setState({page: {...this.state.page, current: page}}, this.initData);
+        this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
     }
 
     searchChange(value) {
@@ -144,7 +155,7 @@ export default class Screen extends Component {
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList} = this.state;
+        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList, currentSwitchStatus, deviceSwitchList} = this.state;
         return <Content className={`list-screen ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
@@ -174,7 +185,11 @@ export default class Screen extends Component {
                                 <span className="icon_sys_select"></span>设备操作
                             </div>
                             <div className="panel-body">
-                                <div><span className="tit">设备开关：</span><Select /><button className="btn btn-primary">应用</button></div>
+                                <div>
+                                    <span className="tit">设备开关：</span>
+                                    <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField} options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange}/>
+                                    <button className="btn btn-primary">应用</button>
+                                </div>
                             </div>
                         </div>
                     </div>

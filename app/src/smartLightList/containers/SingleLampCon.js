@@ -10,6 +10,7 @@ import Table from '../../components/Table2';
 import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../api/asset';
+import {getLightLevelConfig} from '../../util/network';
 export default class SingleLampCon extends Component {
     constructor(props) {
         super(props);
@@ -28,9 +29,24 @@ export default class SingleLampCon extends Component {
             currentDevice: null,
             deviceList: [],
             currentDomain: null,
-            domainList:{
+            domainList: {
                 titleField: 'name',
                 valueField: 'name',
+                options: []
+            },
+            currentSwitchStatus: '',
+            deviceSwitchList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: [
+                    {value: 'on', title: '开启'},
+                    {value: 'off', title: '关闭'}
+                ]
+            },
+            currentBrightness: '',
+            brightnessList: {
+                titleField: 'title',
+                valueField: 'value',
                 options: []
             }
         };
@@ -39,7 +55,6 @@ export default class SingleLampCon extends Component {
 
         this.columns = [
             {field: 'name', title: '设备名称'},
-            {field: 'domain', title: '所属域'},
             {field: 'onlineStatus', title: '在线状态'},
             {field: 'lampStatus', title: '灯状态'},
             {field: 'switchStatus', title: '开关状态'},
@@ -62,6 +77,7 @@ export default class SingleLampCon extends Component {
         this.initDeviceData = this.initDeviceData.bind(this);
         this.updateDeviceData = this.updateDeviceData.bind(this);
         this.updatePageSize = this.updatePageSize.bind(this);
+        this.updateBrightnessList = this.updateBrightnessList.bind(this);
     }
 
     componentWillMount() {
@@ -78,6 +94,7 @@ export default class SingleLampCon extends Component {
             this.mounted && this.updateDomainData(data);
             this.mounted && this.initDeviceData();
         });
+        getLightLevelConfig(this.updateBrightnessList);
     }
 
     updateDomainData(data) {
@@ -113,6 +130,19 @@ export default class SingleLampCon extends Component {
         this.setState({page: {...this.state.page, total: data.count}})
     }
 
+    updateBrightnessList(data) {
+        // ["关", 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+        let opt = [];
+        data.shift();   // 删除"关"
+        data.forEach(value => {
+            let val = value;
+            let title = `亮度${val}`;
+
+            opt.push({value: val, title});
+        });
+        this.setState({brightnessList: Object.assign({}, this.state.brightnessList, {options: opt})});
+    }
+
     onChange(e) {
         const {id, value} = e.target;
         switch(id) {
@@ -120,11 +150,17 @@ export default class SingleLampCon extends Component {
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
+            case 'deviceSwitch': 
+                this.setState({currentSwitchStatus: value});
+                break;
+            case 'dimming': 
+                this.setState({currentBrightness: value});
+                break;
         }
     }
 
     pageChange(page) {
-        this.setState({page: {...this.state.page, current: page}}, this.initData);
+        this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
     }
 
     searchChange(value) {
@@ -146,7 +182,7 @@ export default class SingleLampCon extends Component {
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList} = this.state;
+        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList, deviceSwitchList, brightnessList, currentSwitchStatus, currentBrightness} = this.state;
         return <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
@@ -176,8 +212,8 @@ export default class SingleLampCon extends Component {
                                 <span className="icon_sys_select"></span>设备操作
                             </div>
                             <div className="panel-body">
-                                <div><span className="tit">设备开关：</span><Select /><button className="btn btn-primary">应用</button></div>
-                                <div><span className="tit">调光：</span><Select /><button className="btn btn-primary">应用</button></div>
+                                <div><span className="tit">设备开关：</span><Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField} options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange}/><button className="btn btn-primary">应用</button></div>
+                                <div><span className="tit">调光：</span><Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField} options={brightnessList.options}  value={currentBrightness} onChange={this.onChange}/><button className="btn btn-primary">应用</button></div>
                             </div>
                         </div>
                     </div>
