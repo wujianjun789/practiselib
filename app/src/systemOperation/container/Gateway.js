@@ -1,10 +1,9 @@
 /**
- * Created by a on 2017/8/14.
+ * Created by a on 2017/8/1.
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import '../../../public/styles/systemOperation-config.less';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
@@ -18,19 +17,20 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
+import { TreeData, getModelData, getModelList, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
 
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
+import { requestWhiteListCountById } from '../../api/domain'
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
-export class Sensor extends Component {
+export class LampConCenter extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: "",
+            model: "gateway",
             collapse: false,
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -43,24 +43,66 @@ export class Sensor extends Component {
             }),
             selectDevice: {
                 id: "systemOperation",
-                // latlng:{lng: 121.49971691534425,
-                //     lat: 31.239658843127756}
                 position: [],
-                data: []
+                data: [],
+                whiteCount: 0
             },
             domainList: {
                 titleField: 'name',
                 valueField: 'name',
                 index: 0,
                 value: "",
-                options: []
+                options: [
+                    
+                ]
             },
             modelList: {
                 titleField: 'title',
                 valueField: 'value',
-                options: []
+                options: [
+                    {
+                        id: 1,
+                        title: 'model01',
+                        value: 'model01'
+                    },
+                    {
+                        id: 2,
+                        title: 'model02',
+                        value: 'model02'
+                    },
+                    {
+                        id: 3,
+                        title: 'model03',
+                        value: 'model03'
+                    }
+                ]
             },
-            data: Immutable.fromJS([])
+            whitelistData: [
+                {
+                    id: 1,
+                    name: '灯集中控制器',
+                    number: '00158D0000CABAD5',
+                    model: 8080,
+                    lng: '000.000.000.000',
+                    lat: '000.000.000.000'
+                },
+                {
+                    id: 2,
+                    name: '灯集中控制器',
+                    number: '00158D0000CABAD5',
+                    model: 8080,
+                    lng: '000.000.000.000',
+                    lat: '000.000.000.000'
+                }
+            ],
+            data: Immutable.fromJS([ /*{
+                id: 0,
+                name: '设备1',
+                model: 'model01',
+                domain: 'domain01',
+                lng: 121.49971691534425,
+                lat: 31.239658843127756
+            }*/ ])
         }
 
         this.columns = [
@@ -112,12 +154,12 @@ export class Sensor extends Component {
         this.initPageSize = this.initPageSize.bind(this);
         this.initDomainList = this.initDomainList.bind(this);
         this.initAssetList = this.initAssetList.bind(this);
+        this.requestWhiteListCount = this.requestWhiteListCount.bind(this);
     }
 
     componentWillMount() {
         this.mounted = true;
-        const {route} = this.props;
-        let model = route && route.path;
+        let {model} = this.state;
         getModelData(model, () => {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
@@ -137,15 +179,12 @@ export class Sensor extends Component {
                     this.mounted && this.initDomainList(data)
                 })
             }
-        })
-
+        });
     }
 
     componentWillUnmount() {
         this.mounted = false;
     }
-
-    componentDidMount() {}
 
     requestSearch() {
         const {model, domainList, search, page} = this.state
@@ -159,7 +198,8 @@ export class Sensor extends Component {
         })
 
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-            this.mounted && this.initAssetList(data)
+            this.mounted && this.initAssetList(data);
+            this.requestWhiteListCount();
         })
     }
 
@@ -202,8 +242,8 @@ export class Sensor extends Component {
         this.setState({
             data: Immutable.fromJS(list)
         });
-        if (data.length) {
-            let item = data[0]
+        if (list.length) {
+            let item = list[0]
             this.updateSelectDevice(item);
         } else {
             this.setState({
@@ -212,6 +252,18 @@ export class Sensor extends Component {
                 })
             });
         }
+    }
+
+    requestWhiteListCount() {
+        const {selectDevice} = this.state;
+        let lccId = selectDevice.data[0].id;
+        requestWhiteListCountById(lccId, (lcCount) => {
+            this.setState({
+                selectDevice: Object.assign({}, selectDevice, {
+                    whiteCount: lcCount.count
+                })
+            });
+        })
     }
 
     popupCancel() {
@@ -229,7 +281,7 @@ export class Sensor extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, modelList, whitelistData} = this.state
+        const {model, selectDevice, domainList, modelList, whitelistData} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
         let curType = modelList.options.length ? modelList.options[0] : null;
         switch (id) {
@@ -280,7 +332,10 @@ export class Sensor extends Component {
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
             case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={ whitelistData } overlayerHide={ overlayerHide } />)
+                let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
+                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
+                                                                                                                                 this.requestWhiteListCount()
+                                                                                                                             } } />)
                 break;
         }
     }
@@ -308,6 +363,7 @@ export class Sensor extends Component {
             name: item.name
         });
         selectDevice.domainId = item.domainId;
+        selectDevice.domainName = item.domainName;
         selectDevice.position.splice(0);
         selectDevice.position.push(Object.assign({}, {
             "device_id": item.id,
@@ -316,6 +372,7 @@ export class Sensor extends Component {
         this.setState({
             selectDevice: selectDevice
         });
+        this.requestWhiteListCount(); //点击列表行后更新项目数量
     }
 
     searchSubmit() {
@@ -354,12 +411,13 @@ export class Sensor extends Component {
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
         return <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                
                  <div className="heading">
                    <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                    <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                    <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
                  </div>
-                 <div className='sensor'>
+                 <div className='gateway'>
                    <div className="table-container">
                      <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
                      <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
@@ -375,6 +433,17 @@ export class Sensor extends Component {
                        <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>编辑
                        </button>
                        <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>删除
+                       </button>
+                     </div>
+                   </div>
+                   <div className="panel panel-default device-statics-info whitelist">
+                     <div className="panel-heading">
+                       <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>白名单
+                     </div>
+                     <div className="panel-body domain-property">
+                       <span className="domain-name">{ `包含：${selectDevice.whiteCount} 个设备` }</span>
+                       <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>
+                         编辑
                        </button>
                      </div>
                    </div>
@@ -396,4 +465,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sensor);
+export default connect(mapStateToProps, mapDispatchToProps)(LampConCenter);
