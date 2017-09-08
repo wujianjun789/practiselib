@@ -20,7 +20,7 @@ export default class WhiteListPopup extends Component {
         }
 
         this.columns = [
-            {field: "id", title: "名称"},
+            {field: "type", title: "型号"},
             {field: "id", title: "编号"},
         ];
 
