@@ -212,6 +212,11 @@ export default (
                                                     cb(null, require('../smartLightList/containers/Screen').default);
                                                 }, 'starriverpro.smartLightList.Screen');
                                             } } />
+        <Route path="chargePole" getComponent={ (nextState, cb) => {
+                                                 require.ensure([], (require) => {
+                                                     cb(null, require('../smartLightList/containers/ChargePole').default);
+                                                 }, 'starriverpro.smartLightList.ChargePole');
+                                             } } />
         <Route path="xes" getComponent={ (nextState, cb) => {
                                                  require.ensure([], (require) => {
                                                      cb(null, require('../smartLightList/containers/CollectionInstrument').default);

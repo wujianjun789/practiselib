@@ -25,12 +25,16 @@ import Content from '../../components/Content.js';
 //import functions
 import { getDomainList } from '../../api/domain.js';
 //import { DomainList } from '../model/sysDataHandle.js';
+import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
+import { getObjectByKey } from '../../util/index';
+//import netRequestAPI
+import { getPoleList } from '../../api/pole.js';
 
 //import childrenComponentsModel
-import SiderBarComponet from '../components/sidebarComponents.js';
+import SiderBarComponet from '../components/SideBarComponents.js';
 import EditPopup from '../components/EditPopup.js';
 
 //import initDataModel
@@ -44,6 +48,8 @@ export class sysConfigSmartLight extends Component {
             model: '',
             isEdit: false,
             collapse: false,
+            //编辑 按钮的 Disabled 状态
+            disabled: false,
             // page -> 分页器属性
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -63,6 +69,14 @@ export class sysConfigSmartLight extends Component {
             },
             //data -> dataTable的数据
             data: sysDataHandle.equipmentList,
+            tableData: Immutable.fromJS([{
+                "name": "123",
+                "domainName": "上海",
+                "lightCount": 2,
+                "cameraCount": 2,
+                "screenCount": 2,
+                "chargeStakeCount": 2
+            }]),
             //domainList -> 域名列表
             domainList: sysInitStateModel('domainList'),
             //modelList -> 模型列表
@@ -84,12 +98,33 @@ export class sysConfigSmartLight extends Component {
         this.onConfirmed = this.onConfirmed.bind(this);
         this.onDeleted = this.onDeleted.bind(this);
         this.closeClick = this.closeClick.bind(this);
-        this.onEquipmentSelectChange = this.onEquipmentSelectChange.bind(this);
+        this.equipmentSelect = this.equipmentSelect.bind(this);
+        this.rowCheckChange = this.rowCheckChange.bind(this);
     }
+
 
     //Hook functions
     componentWillMount() {
         this.mounted = true;
+        let model = 'pole';
+        getModelData(model, () => {
+            this.props.actions.treeViewInit(TreeData);
+            //console.log('getModelTypesById', getModelTypesById(model));
+            this.setState({
+                model: model,
+                modelList: {
+                    ...this.state.modelList,
+                    ...{
+                        options: getModelTypesById(model).map(type => {
+                            return {
+                                ...type,
+                                value: type.title
+                            }
+                        })
+                    }
+                }
+            })
+        });
         getDomainList(data => {
             this.mounted && this.initDomainList(data);
         });
@@ -98,7 +133,6 @@ export class sysConfigSmartLight extends Component {
     componentWillUnmount() {
         this.mounted = false;
     }
-
     //Declare functions
     //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
     closeClick() {
@@ -114,48 +148,88 @@ export class sysConfigSmartLight extends Component {
         };
         this.setState({
             domainList: domainList
-        });
+        }, () => this.requestSearch());
+
+    }
+
+    //Basic selectFunction with no ImmutableData.
+    mainSelect(event, dataList) {
+        let newObject = sysDataHandle.select(event, dataList);
+        let newDataList = {
+            ...dataList,
+            ...newObject
+        };
+        return newDataList;
     }
 
     //This is the DomainSelect function,bind in <Select/>
     domainSelect(event) {
         let {domainList} = this.state;
-        let newObject = sysDataHandle.select(event, domainList);
-        let newDomainList = {
-            ...domainList,
-            ...newObject
-        };
+        let newDataList = this.mainSelect(event, domainList);
         this.setState({
-            domainList: newDomainList
-        }, () => {
-            this.requestSearch()
-        });
+            domainList: newDataList
+        }, () => this.requestSearch())
     }
-
-    onEquipmentSelectChange(event) {
+    equipmentSelect(event) {
         let {equipmentSelectList} = this.state;
-        let newObject = sysDataHandle.select(event, equipmentSelectList);
-        let newEquipmentSelectList = {
-            ...equipmentSelectList,
-            ...newObject
-        };
+        let newDataList = this.mainSelect(event, equipmentSelectList);
         this.setState({
-            equipmentSelectList: newEquipmentSelectList
+            equipmentSelectList: newDataList
+        })
+    }
+    requestSearch() {
+        const {model, domainList, search, page} = this.state;
+        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
+        let name = search.get('value');
+        let cur = page.get('current');
+        let size = page.get('pageSize');
+        let offset = (cur - 1) * size;
+        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
+            this.initAssetList(data);
         })
     }
 
-    requestSearch() {
-        //console.log(this.state.domainList)
+    initAssetList(data) {
+        console.log('initAssetList', data, this.state.domainList.options.length);
+
+        let list = data.map((asset, index) => {
+            let domainName = '';
+            // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
+            // First, need to judge the domainList has already exeists;
+            if (this.state.domainList.options.length && asset.domainId) {
+                let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
+                domainName = domain ? domain.name : "";
+            }
+            //return a new object that contains all properties that we need;
+            return {
+                ...asset,
+                ...asset,
+                ...asset.extend,
+                ...asset.geoPoint,
+                ...{
+                    domainName: domainName
+                },
+                ...{
+                    typeName: getModelTypesNameById(this.state.model, asset.extend.type)
+                }
+            }
+        });
+        this.setState({
+            tableData: Immutable.fromJS(list)
+        })
+        console.log('list', list);
+
+
     }
 
     //Bind on EditPopup - Confirm_Button.
     onConfirmed() {
-        console.log('在最上层调用onConfirm');
+        // console.log('在最上层调用onConfirm');
         this.closeClick();
     }
-
-
-
+    rowCheckChange() {
+        //console.log('123');
+    }
     onDeleted() {
         alert('DELETE!');
     }
@@ -163,8 +237,11 @@ export class sysConfigSmartLight extends Component {
     showPopup() {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
         const {overlayerShow} = this.props.actions;
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.onEquipmentSelectChange } data={ this.state.data }
+        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } data={ this.state.data }
                         equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
+        this.setState({
+            disabled: true
+        });
     }
 
     collpseHandler() {
@@ -173,10 +250,8 @@ export class sysConfigSmartLight extends Component {
         })
     }
 
-
-
     render() {
-        const {collapse, search, data, page, domainList} = this.state;
+        const {collapse, search, data, page, domainList, modelList} = this.state;
         return (
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
@@ -185,11 +260,11 @@ export class sysConfigSmartLight extends Component {
                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
                 </header>
                 <div className="table-container">
-                  <Table className="dataTable" columns={ this.columns } />
+                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowCheckChange={ this.rowCheckChange } />
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.showPopup } />
+                  <SiderBarComponet onClick={ this.showPopup } disabled={ this.state.disabled } />
                 </SideBarInfo>
               </Content>
             </div>

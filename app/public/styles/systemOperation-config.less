@@ -1,7 +1,7 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-.lc, .lcc ,.sensor ,.screen ,.smartLight ,.smartLightPole ,.xes ,.pole {
+.lc, .lcc ,.sensor ,.screen ,.smartLight ,.smartLightPole ,.xes ,.pole,.gateway {
   .content {
     .heading{
       height: 70px;
@@ -93,7 +93,8 @@
     > .screen,
     > .smartLight,
     > .xes,
-    > .pole{
+    > .pole,
+    > .gateway{
       margin-right: 300px;
       -webkit-transition: margin-right .3s;
       -moz-transition: margin-right .3s;
@@ -107,8 +108,9 @@
       > .lcc,
       > .sensor,
       > .screen,
-      > .xes
-      > .pole{
+      > .xes,
+      > .pole,
+      > .gateway{
         margin-right: 60px;
       }
     }
@@ -153,7 +155,8 @@
 }
 
 .lcc,
-.xes{
+.xes,
+.gateway{
   .sidebar-info .map-position{
     top: 230px;
   }
@@ -200,12 +203,12 @@
   width: 460px;
   .modal-body {
     padding-bottom: 0;
-    padding-top: 35px;
     .search-group {
       margin-top: -15px;
       padding: 20px 0 20px 30px;
       .searchText {
         float: left;
+        width:320px;
         > input[type="search"] {
           height: 30px;
           line-height: 30px;

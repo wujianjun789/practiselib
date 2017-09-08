@@ -8,6 +8,8 @@ import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
 import Table from '../../components/Table2';
 import Page from '../../components/Page';
+import {getDomainList} from '../../api/domain';
+import {getSearchAssets, getSearchCount} from '../../api/asset';
 export default class SingleLampCon extends Component {
     constructor(props) {
         super(props);
@@ -23,22 +25,43 @@ export default class SingleLampCon extends Component {
 
             },
             sidebarCollapse: false,
-            data: [],
-            selectDevice: {
-
+            currentDevice: null,
+            deviceList: [],
+            currentDomain: null,
+            domainList:{
+                titleField: 'name',
+                valueField: 'name',
+                options: []
             }
         };
 
+        this.model = 'lc';
+
         this.columns = [
-            {field: 'name', title: '策略名称'},
-            {field: 'sensorType', title: '传感器类型'}
+            {field: 'name', title: '设备名称'},
+            {field: 'domain', title: '所属域'},
+            {field: 'onlineStatus', title: '在线状态'},
+            {field: 'lampStatus', title: '灯状态'},
+            {field: 'switchStatus', title: '开关状态'},
+            {field: 'brightness', title: '亮度'},
+            {field: 'volt', title: '电压'},
+            {field: 'amp', title: '电流'},
+            {field: 'power', title: '功率'},
+            {field: 'updateTime', title: '更新时间'},
         ];
 
         this.collpseHandler = this.collpseHandler.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.tableClick = this.tableClick.bind(this);
 
         this.initData = this.initData.bind(this);
+        this.updateDomainData = this.updateDomainData.bind(this);
+        this.initDeviceData = this.initDeviceData.bind(this);
+        this.updateDeviceData = this.updateDeviceData.bind(this);
+        this.updatePageSize = this.updatePageSize.bind(this);
     }
 
     componentWillMount() {
@@ -51,7 +74,53 @@ export default class SingleLampCon extends Component {
     }
     
     initData() {
+        getDomainList((data) =>{
+            this.mounted && this.updateDomainData(data);
+            this.mounted && this.initDeviceData();
+        });
+    }
 
+    updateDomainData(data) {
+        let currentDomain,
+            options = data;
+        if (data.length == 0) {
+            currentDomain = null;
+        } else {
+            currentDomain = data[0];
+        }
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+    }
+
+    initDeviceData(isSearch) {
+        const {search: {value}, page, currentDomain} = this.state;
+        if(isSearch){
+            page.current = 1;
+            this.setState({page:page});
+        }
+
+        const {limit, current} = this.state.page;
+        const offset = limit * ( current - 1 );
+        getSearchAssets(currentDomain?currentDomain.id:null, this.model, value, offset, limit, this.mounted&&this.updateDeviceData);
+        getSearchCount(currentDomain?currentDomain.id:null, this.model, value, this.mounted&&this.updatePageSize);
+    }
+
+    updateDeviceData(data) {
+        let currentDevice = data.length == 0 ? null : data[0];
+        this.setState({deviceList: data, currentDevice});
+    }
+
+    updatePageSize(data) {
+        this.setState({page: {...this.state.page, total: data.count}})
+    }
+
+    onChange(e) {
+        const {id, value} = e.target;
+        switch(id) {
+            case 'domain':
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                this.setState({currentDomain}, this.initDeviceData);
+                break;
+        }
     }
 
     pageChange(page) {
@@ -64,21 +133,28 @@ export default class SingleLampCon extends Component {
         })
     }
 
-    collpseHandler(){
+    searchSubmit() {
+        this.initDeviceData(true);
+    }
+
+    collpseHandler() {
         this.setState({sidebarCollapse: !this.state.sidebarCollapse});
+    }
+
+    tableClick(currentDevice) {
+        this.setState({currentDevice});
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, data, search: {value, placeholder}} = this.state;
+        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList} = this.state;
         return <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
-                            <Select />
-                            <Select />
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange}/>
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options} value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
+                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
                         </div>
-                        <div className="body">
-                            <Table columns={this.columns} keyField='id' data={data} isEdit rowEdit={this.tableRowEdit} rowDelete={this.tableRowDelete} />
+                        <div className="table-container">
+                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice/* .data.length && selectDevice.data[0].id */}/>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -87,12 +163,21 @@ export default class SingleLampCon extends Component {
                         <div className="row collapse-container" onClick={this.collpseHandler}>
                             <span className={sidebarCollapse ? "icon_horizontal"  :"icon_verital"}></span>
                         </div>
-                        <div className="panel panel-default">
+                        <div className="panel panel-default panel-1">
                             <div className="panel-heading">
                                 <span className="icon_sys_select"></span>选中设备
                             </div>
                             <div className="panel-body">
-                                <span className="domain-name">{'To be or not to be'}</span>
+                                <span className="domain-name">{currentDevice == null ? '' : currentDevice.name}</span>
+                            </div>
+                        </div>
+                        <div className="panel panel-default panel-2">
+                            <div className="panel-heading">
+                                <span className="icon_sys_select"></span>设备操作
+                            </div>
+                            <div className="panel-body">
+                                <div><span className="tit">设备开关：</span><Select /><button className="btn btn-primary">应用</button></div>
+                                <div><span className="tit">调光：</span><Select /><button className="btn btn-primary">应用</button></div>
                             </div>
                         </div>
                     </div>

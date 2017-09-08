@@ -57,26 +57,9 @@ export class Xes extends Component {
                 valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {id: 1, title: 'domain01', value: 'domain01'},
-                    {id: 2, title: 'domain02', value: 'domain02'},
-                    {id: 3, title: 'domain03', value: 'domain03'},
-                    {id: 4, title: 'domain04', value: 'domain04'},
-                    {id: 5, title: 'domain05', value: 'domain05'},
-                    {id: 6, title: 'domain06', value: 'domain06'},
-                    {id: 7, title: 'domain07', value: 'domain07'}
-                ]
+                options: []
             },
-            data: Immutable.fromJS([
-                // {
-                //     name:'数据采集仪1',
-                //     domainId:1,
-                //     domainName:"闵行区",
-                //     id:'00158D0000CABAD5',
-                //     lng: 121.49971691534425,
-                //     lat: 31.239658843127756
-                // }
-            ]),
+            data: Immutable.fromJS([]),
             sensorTypeList:[]
         }
 

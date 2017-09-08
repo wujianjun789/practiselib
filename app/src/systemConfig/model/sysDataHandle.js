@@ -39,7 +39,7 @@ export const sysDataHandle = {
     select(event, dataList) {
         let index = event.target.selectedIndex;
         return {
-            //index: index,
+            index: index,
             value: dataList.options[index].name
         }
     },
@@ -61,15 +61,15 @@ export const sysDataHandle = {
             title: "灯"
         }, {
             id: 3,
-            field: "camera",
+            field: "cameraCount",
             title: "摄像头"
         }, {
             id: 5,
-            field: "screen",
+            field: "screenCount",
             title: "显示屏"
         }, {
             id: 6,
-            field: "electricStation",
+            field: "chargeStakeCount",
             title: "充电桩"
         },
     ],
