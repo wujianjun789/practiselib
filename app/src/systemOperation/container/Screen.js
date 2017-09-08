@@ -77,24 +77,6 @@ export class Screen extends Component {
                     {id: 7, title: 'model07', value: 'model07'}
                 ]
             },
-            whitelistData: [
-                {
-                    id: 1,
-                    name: '灯集中控制器',
-                    number: '00158D0000CABAD5',
-                    model: 8080,
-                    lng: '000.000.000.000',
-                    lat: '000.000.000.000'
-                },
-                {
-                    id: 2,
-                    name: '灯集中控制器',
-                    number: '00158D0000CABAD5',
-                    model: 8080,
-                    lng: '000.000.000.000',
-                    lat: '000.000.000.000'
-                }
-            ],
             data: Immutable.fromJS([/*{
              id: 0,
              name: '设备1',
@@ -134,9 +116,7 @@ export class Screen extends Component {
 
     componentWillMount() {
         this.mounted = true;
-        const {route} = this.props;
         let {model} = this.state;
-        // let model = route && route.path;
         getModelData(model, ()=> {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
@@ -222,7 +202,7 @@ export class Screen extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, modelList, whitelistData} = this.state
+        const {model, selectDevice, domainList, modelList} = this.state
         const {overlayerShow, overlayerHide} = this.props.actions;
         let curType = modelList.options.length?modelList.options[0]:null;
         switch (id) {
@@ -271,9 +251,6 @@ export class Screen extends Component {
             case 'sys-delete':
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel }
                                             confirm={ this.popupConfirm }/>)
-                break;
-            case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whitelistData} overlayerHide={overlayerHide}/>)
                 break;
         }
     }
