@@ -247,7 +247,6 @@ export class Sensor extends Component {
     requestSearch() {
         const {model, domainList, search, page} = this.state
         let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-        console.log('DOMAIN', domainList.index);
         let name = search.get('value');
         let cur = page.get('current');
         let size = page.get('pageSize');
@@ -255,8 +254,8 @@ export class Sensor extends Component {
         getSearchCount(domain ? domain.id : null, model, name, data => {
             this.mounted && this.initPageSize(data)
         })
+
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-            console.log('getSearchAssets', data)
             this.mounted && this.initAssetList(data)
         })
     }

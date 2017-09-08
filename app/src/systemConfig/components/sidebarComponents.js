@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class SiderBarComponent extends Component {
   render() {
     const props = this.props;
-    console.log('sideBarComponents', props);
+    //console.log('sideBarComponents', props);
     return (<div className="panel panel-default device-statics-info">
               <div className="panel-heading">
                 <span className="icon_sys_select"></span>选中设备
