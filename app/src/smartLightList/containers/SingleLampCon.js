@@ -87,12 +87,21 @@ export default class SingleLampCon extends Component {
                         <div className="row collapse-container" onClick={this.collpseHandler}>
                             <span className={sidebarCollapse ? "icon_horizontal"  :"icon_verital"}></span>
                         </div>
-                        <div className="panel panel-default">
+                        <div className="panel panel-default panel-1">
                             <div className="panel-heading">
                                 <span className="icon_sys_select"></span>选中设备
                             </div>
                             <div className="panel-body">
-                                <span className="domain-name">{'To be or not to be'}</span>
+                                <span className="domain-name">{"单灯控制器"}</span>
+                            </div>
+                        </div>
+                        <div className="panel panel-default panel-2">
+                            <div className="panel-heading">
+                                <span className="icon_sys_select"></span>设备操作
+                            </div>
+                            <div className="panel-body">
+                                <div><span className="tit">控制模式：</span><Select /><button className="btn btn-primary">应用</button></div>
+                                <div><span className="tit">校时：</span><span className="note">(点击以校准时间)</span><button className="btn btn-primary">校时</button></div>
                             </div>
                         </div>
                     </div>

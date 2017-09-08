@@ -32,7 +32,7 @@
     }
     > .sidebar-info {
         width: 300px;
-        background-color: #fff;
+        background-color: #eaeef2;;
         overflow-x: hidden;
         > .panel.panel-default {
             width: 300px;
@@ -41,7 +41,53 @@
             box-shadow: unset;
             margin-bottom: 0;
             overflow: hidden;
-            transition: height .3s;
+
+            &.panel-1,
+            &.panel-2,
+            &.panel-3 {
+                position: absolute;
+                left: 0;
+                transition: all .3s ease;
+            }
+            &.panel-1 {
+                top: 30px;
+            }
+            &.panel-2 {
+                top: 130px;
+            }
+            &.panel-3 {
+                top: 230px;
+            }
+
+            &.panel-1 {
+                height: 100px;
+            }
+            &.panel-2 {
+                height: 160px;
+                .panel-body > div {
+                    margin-bottom: 20px;
+                    .tit,
+                    .note,
+                    .select,
+                    .btn {
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        vertical-align: middle;
+                    }
+                    .tit {
+                        width: 70px;
+                        text-align: right;
+                    }
+                    .note,
+                    .select {
+                        width: 110px;
+                        margin-right: 20px;
+                        margin-left: 5px;
+                    }
+                }
+            }
+
             > .panel-heading {
                 background: #d2d9dc;
                 border-radius: unset;
@@ -53,6 +99,8 @@
                 }
             }
             > .panel-body {
+                padding-top: 20px;
+                padding-bottom: 20px;
                 background: #eaeef2;
             }
         }
@@ -72,7 +120,18 @@
             width: 60px;
             right: 0;
             > .panel.panel-default {
-                height: 41px;
+                height: 40px;
+                &.panel-1 {
+                    top: 30px;
+                    
+                }
+                &.panel-2 {
+                    top: 70px;
+                }
+                &.panel-3 {
+                    top: 110px;
+                }
+
                 > .panel-heading {
                     > span {
                         margin: 2.5px 23px 7.5px 7.5px;
