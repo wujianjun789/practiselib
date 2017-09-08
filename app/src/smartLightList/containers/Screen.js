@@ -8,6 +8,9 @@ import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
 import Table from '../../components/Table2';
 import Page from '../../components/Page';
+import {getDomainList} from '../../api/domain';
+import {getSearchAssets, getSearchCount} from '../../api/asset';
+
 export default class Screen extends Component {
     constructor(props) {
         super(props);
@@ -23,11 +26,17 @@ export default class Screen extends Component {
 
             },
             sidebarCollapse: false,
-            data: [],
-            selectDevice: {
-
+            currentDevice: null,
+            deviceList: [],
+            currentDomain: '',
+            domainList:{
+                titleField: 'name',
+                valueField: 'name',
+                options: []
             }
         };
+
+        this.model = 'screen';
 
         this.columns = [
             {field: 'name', title: '设备名称'},
@@ -40,10 +49,17 @@ export default class Screen extends Component {
         ];
 
         this.collpseHandler = this.collpseHandler.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.tableClick = this.tableClick.bind(this);
 
         this.initData = this.initData.bind(this);
+        this.updateDomainData = this.updateDomainData.bind(this);
+        this.initDeviceData = this.initDeviceData.bind(this);
+        this.updateDeviceData = this.updateDeviceData.bind(this);
+        this.updatePageSize = this.updatePageSize.bind(this);
     }
 
     componentWillMount() {
@@ -56,7 +72,53 @@ export default class Screen extends Component {
     }
     
     initData() {
+        getDomainList((data) =>{
+            this.mounted && this.updateDomainData(data);
+            this.mounted && this.initDeviceData();
+        });
+    }
 
+    updateDomainData(data) {
+        let currentDomain,
+        options = data;
+        if (data.length == 0) {
+            currentDomain = null;
+        } else {
+            currentDomain = data[0];
+        }
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+    }
+
+    initDeviceData(isSearch) {
+        const {search: {value}, page, currentDomain} = this.state;
+        if(isSearch){
+            page.current = 1;
+            this.setState({page:page});
+        }
+
+        const {limit, current} = this.state.page;
+        const offset = limit * ( current - 1 );
+        getSearchAssets(currentDomain?currentDomain.id:null, this.model, value, offset, limit, this.mounted&&this.updateDeviceData);
+        getSearchCount(currentDomain?currentDomain.id:null, this.model, value, this.mounted&&this.updatePageSize);
+    }
+
+    updateDeviceData(data) {
+        let currentDevice = data.length == 0 ? null : data[0];
+        this.setState({deviceList: data, currentDevice});
+    }
+
+    updatePageSize(data) {
+        this.setState({page: {...this.state.page, total: data.count}})
+    }
+
+    onChange(e) {
+        const {id, value} = e.target;
+        switch(id) {
+            case 'domain':
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                this.setState({currentDomain}, this.initDeviceData);
+                break;
+        }
     }
 
     pageChange(page) {
@@ -69,20 +131,28 @@ export default class Screen extends Component {
         })
     }
 
+    searchSubmit() {
+        this.initDeviceData(true);
+    }
+
     collpseHandler(){
         this.setState({sidebarCollapse: !this.state.sidebarCollapse});
     }
+
+    tableClick(currentDevice) {
+        this.setState({currentDevice});
+    }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, data, search: {value, placeholder}} = this.state;
+        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList} = this.state;
         return <Content className={`list-screen ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
-                            <Select />
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange}/>
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options} value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
+                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
                         </div>
-                        <div className="body">
-                            <Table columns={this.columns} keyField='id' data={data} isEdit rowEdit={this.tableRowEdit} rowDelete={this.tableRowDelete} />
+                        <div className="table-container">
+                        <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice/* .data.length && selectDevice.data[0].id */}/>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -96,7 +166,7 @@ export default class Screen extends Component {
                                 <span className="icon_sys_select"></span>选中设备
                             </div>
                             <div className="panel-body">
-                                <span className="domain-name">{"显示屏"}</span>
+                                <span className="domain-name">{currentDevice == null ? '' : currentDevice.name}</span>
                             </div>
                         </div>
                         <div className="panel panel-default panel-2">
