@@ -44,6 +44,8 @@ export class sysConfigSmartLight extends Component {
             model: '',
             isEdit: false,
             collapse: false,
+            //编辑 按钮的 Disabled 状态
+            disabled: true,
             // page -> 分页器属性
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -84,7 +86,7 @@ export class sysConfigSmartLight extends Component {
         this.onConfirmed = this.onConfirmed.bind(this);
         this.onDeleted = this.onDeleted.bind(this);
         this.closeClick = this.closeClick.bind(this);
-        this.onEquipmentSelectChange = this.onEquipmentSelectChange.bind(this);
+        this.equipmentSelect = this.equipmentSelect.bind(this);
     }
 
     //Hook functions
@@ -93,6 +95,7 @@ export class sysConfigSmartLight extends Component {
         getDomainList(data => {
             this.mounted && this.initDomainList(data);
         });
+
     }
 
     componentWillUnmount() {
@@ -103,6 +106,8 @@ export class sysConfigSmartLight extends Component {
     //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
     closeClick() {
         this.props.actions.overlayerHide();
+        let {equipmentSelectList} = this.state;
+        this.mainSelect(event, equipmentSelectList);
     }
 
     // when componenetWillMount,we call this function to provide DomainList to be choosen.
@@ -117,32 +122,36 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
+    //Basic selectFunction with no ImmutableData.
+    mainSelect(event, dataList) {
+        let newObject = sysDataHandle.select(event, dataList);
+        let newDataList = {
+            ...dataList,
+            ...newObject
+        };
+        return newDataList;
+    }
+
     //This is the DomainSelect function,bind in <Select/>
     domainSelect(event) {
         let {domainList} = this.state;
-        let newObject = sysDataHandle.select(event, domainList);
-        let newDomainList = {
-            ...domainList,
-            ...newObject
-        };
+        let newDataList = this.mainSelect(event, domainList);
         this.setState({
-            domainList: newDomainList
+            domainList: newDataList
         }, () => {
             this.requestSearch()
-        });
-    }
-
-    onEquipmentSelectChange(event) {
-        let {equipmentSelectList} = this.state;
-        let newObject = sysDataHandle.select(event, equipmentSelectList);
-        let newEquipmentSelectList = {
-            ...equipmentSelectList,
-            ...newObject
-        };
-        this.setState({
-            equipmentSelectList: newEquipmentSelectList
         })
     }
+    equipmentSelect(event) {
+        let {equipmentSelectList} = this.state;
+        let newDataList = this.mainSelect(event, equipmentSelectList);
+        this.setState({
+            equipmentSelectList: newDataList
+        })
+    }
+
+
+
 
     requestSearch() {
         //console.log(this.state.domainList)
@@ -163,7 +172,7 @@ export class sysConfigSmartLight extends Component {
     showPopup() {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
         const {overlayerShow} = this.props.actions;
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.onEquipmentSelectChange } data={ this.state.data }
+        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } data={ this.state.data }
                         equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
     }
 
@@ -189,7 +198,7 @@ export class sysConfigSmartLight extends Component {
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.showPopup } />
+                  <SiderBarComponet onClick={ this.showPopup } disabled={ this.state.disabled } />
                 </SideBarInfo>
               </Content>
             </div>
