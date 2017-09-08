@@ -44,6 +44,8 @@ export class sysConfigSmartLight extends Component {
             model: '',
             isEdit: false,
             collapse: false,
+            //编辑 按钮的 Disabled 状态
+            disabled: true,
             // page -> 分页器属性
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -196,7 +198,7 @@ export class sysConfigSmartLight extends Component {
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.showPopup } />
+                  <SiderBarComponet onClick={ this.showPopup } disabled={ this.state.disabled } />
                 </SideBarInfo>
               </Content>
             </div>
