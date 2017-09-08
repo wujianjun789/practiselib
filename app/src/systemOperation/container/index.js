@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import '../../../public/styles/systemOperation-config.less';
 import '../../../public/styles/systemOperation-strategy.less';
 import '../../../public/styles/systemOperation-sysConfig.less';
+import '../../../public/styles/systemOperation-serviceMonitoring.less';
 
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'

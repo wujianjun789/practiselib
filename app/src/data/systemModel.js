@@ -61,7 +61,7 @@ export const TreeData = [
     "name": "服务监控",
     "toggled": false,
     "active": true,
-    "link": "/systemOperation",
+    "link": "/systemOperation/serviceMonitor",
     "level": 1
   }, {
     "id": "systemConfig",
