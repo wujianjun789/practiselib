@@ -49,7 +49,7 @@ export const TreeData = [
             {
                 "id": 'chargePole',
                 "name": "充电桩",
-                "class": "icon_chargePole_smartlight",
+                "class": "icon_charge_pole",
                 "active": false,
                 "link": "/smartLight/list/chargePole"
             },
