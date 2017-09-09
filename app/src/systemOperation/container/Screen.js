@@ -54,55 +54,14 @@ export class Screen extends Component {
                 valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {id: 1, title: 'domain01', value: 'domain01'},
-                    {id: 2, title: 'domain02', value: 'domain02'},
-                    {id: 3, title: 'domain03', value: 'domain03'},
-                    {id: 4, title: 'domain04', value: 'domain04'},
-                    {id: 5, title: 'domain05', value: 'domain05'},
-                    {id: 6, title: 'domain06', value: 'domain06'},
-                    {id: 7, title: 'domain07', value: 'domain07'}
-                ]
+                options: []
             },
             modelList: {
                 titleField: 'title',
                 valueField: 'value',
-                options: [
-                    {id: 1, title: 'model01', value: 'model01'},
-                    {id: 2, title: 'model02', value: 'model02'},
-                    {id: 3, title: 'model03', value: 'model03'},
-                    {id: 4, title: 'model04', value: 'model04'},
-                    {id: 5, title: 'model05', value: 'model05'},
-                    {id: 6, title: 'model06', value: 'model06'},
-                    {id: 7, title: 'model07', value: 'model07'}
-                ]
+                options: []
             },
-            whitelistData: [
-                {
-                    id: 1,
-                    name: '灯集中控制器',
-                    number: '00158D0000CABAD5',
-                    model: 8080,
-                    lng: '000.000.000.000',
-                    lat: '000.000.000.000'
-                },
-                {
-                    id: 2,
-                    name: '灯集中控制器',
-                    number: '00158D0000CABAD5',
-                    model: 8080,
-                    lng: '000.000.000.000',
-                    lat: '000.000.000.000'
-                }
-            ],
-            data: Immutable.fromJS([/*{
-             id: 0,
-             name: '设备1',
-             model: 'model01',
-             domain: 'domain01',
-             lng: 121.49971691534425,
-             lat: 31.239658843127756
-             }*/])
+            data: Immutable.fromJS([])
         }
 
         this.columns = [
@@ -134,9 +93,7 @@ export class Screen extends Component {
 
     componentWillMount() {
         this.mounted = true;
-        const {route} = this.props;
         let {model} = this.state;
-        // let model = route && route.path;
         getModelData(model, ()=> {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
@@ -222,7 +179,7 @@ export class Screen extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, modelList, whitelistData} = this.state
+        const {model, selectDevice, domainList, modelList} = this.state
         const {overlayerShow, overlayerHide} = this.props.actions;
         let curType = modelList.options.length?modelList.options[0]:null;
         switch (id) {
@@ -271,9 +228,6 @@ export class Screen extends Component {
             case 'sys-delete':
                 overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel }
                                             confirm={ this.popupConfirm }/>)
-                break;
-            case 'sys-whitelist':
-                overlayerShow(<WhiteListPopup className="whitelist-popup" data={whitelistData} overlayerHide={overlayerHide}/>)
                 break;
         }
     }

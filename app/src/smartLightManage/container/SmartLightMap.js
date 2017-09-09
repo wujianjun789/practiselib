@@ -2,23 +2,37 @@
  * Created by a on 2017/8/24.
  */
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
 import {findDOMNode} from 'react-dom'
 import Content from '../../components/Content'
 
 import MapView from '../../components/MapView'
 import Panel from '../component/FaultPanel'
+import NotifyPopup from '../../common/containers/NotifyPopup';
+
+import {addNotify} from '../../common/actions/notifyPopup';
+
 import Immutable from 'immutable';
 
 import {getLightLevelConfig} from '../../util/network'
+import {getDomainList} from '../../api/domain'
 import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
 
 import {getIndexByKey} from '../../util/algorithm'
-export default class SmartLightMap extends Component{
+import {getObjectByKey} from '../../util/index'
+import {keyboard_key_up, keyboard_key_down, keyboard_key_enter} from '../../util/keyboard'
+export class SmartLightMap extends Component{
     constructor(props){
         super(props);
         this.state = {
             model:"pole",
             IsSearch: true,
+
+            interactive:false,
+            tableIndex: 0,
+
             IsSearchResult: false,
             curDevice:Immutable.fromJS({
               id:1, name:"疏影路灯杆1号", asset:{screen:23, charge:45, camera:56, lamp:89, collect:99}
@@ -26,6 +40,7 @@ export default class SmartLightMap extends Component{
             curId:"screen",
             search:Immutable.fromJS({id:"search", value:''}),
             mapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
+            panLatlng:null,
             positionList:[/*{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}*/],
             searchList:Immutable.fromJS([
                 {id:1, name:"疏影路灯杆1号", asset:{screen:23, charge:45, camera:56, lamp:89, collect:99}},
@@ -70,11 +85,15 @@ export default class SmartLightMap extends Component{
             /*{id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
             {id:"6", value:50}, {id:"7", value:60}, {id:"9", value:70}, {id:"10", value:80}, {id:"11", value:90}, {id:"12", value:100}*/
         ]}
+
+        this.searchPromptList = [{id:"device", value:"设备"},{id:"domain", value:"域"}];
         this.screenSwitch = {id:"screenSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
         this.lightSwitch = {id:"lightSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
         this.presetList = {id:"preset", value:"1",options:[{id:1, value:"1"},{id:2, value:"2"}]};
 
         this.focusInput = {min:0, max:100, step:10};
+
+        this.domainList = [];
 
         this.renderInfo = this.renderInfo.bind(this);
         this.renderState = this.renderState.bind(this);
@@ -93,6 +112,10 @@ export default class SmartLightMap extends Component{
         this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
         this.closeClick = this.closeClick.bind(this);
 
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.onkeydown = this.onkeydown.bind(this);
+
         this.updateCameraVideo = this.updateCameraVideo.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
         this.requestPoleAsset = this.requestPoleAsset.bind(this);
@@ -108,6 +131,12 @@ export default class SmartLightMap extends Component{
                     return {id:index, value:key}
                 });
                 this.setState(this.lightList)}
+        })
+
+        getDomainList(data=>{
+            if(this.mounted){
+                this.domainList = data;
+            }
         })
         window.onresize = event=>{
             this.mounted && this.setSize();
@@ -151,9 +180,22 @@ export default class SmartLightMap extends Component{
     }
 
     requestSearch(){
-        const {model, search} = this.state;
-
-        getPoleListByModelWithName(model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
+        const {model, search, tableIndex} = this.state;
+console.log(tableIndex);
+        let searchType = this.searchPromptList[tableIndex].id;
+        console.log(this.domainList);
+        if(searchType=="domain"){
+            let curDomain = getObjectByKey(this.domainList, 'name', search.get("value"));
+            if(curDomain){
+                getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
+            }else{
+                this.props.actions.addNotify(0, "没有找到匹配域。");
+                this.setState({IsSearchResult:false});
+            }
+            return;
+        }
+console.log("%%%%%%%")
+        getPoleListByModelWithName(searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
     }
 
     updateSearch(data){
@@ -161,13 +203,13 @@ export default class SmartLightMap extends Component{
         let searchList = Immutable.fromJS(data);
         let positionList = data.map((pole)=>{
             let latlng = pole.geoPoint;
-            return {"device_id": pole.id,"device_type": 'DEVICE', lng: latlng?latlng.lng:null, lat: latlng?latlng.lat:null}
+            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE'}, latlng)
         });
 
         if(data && data.length){
             let fPole = data[0];
             let flatlng = fPole.geoPoint;
-            this.setState({searchList:searchList, mapLatlng:{lng:flatlng?flatlng.lng:null, lat:flatlng?flatlng.lat:null},positonList:positionList}, ()=>{
+            this.setState({searchList:searchList, mapLatlng:flatlng,positonList:positionList}, ()=>{
                 this.requestPoleAsset(data);
             });
         }else{
@@ -207,6 +249,12 @@ export default class SmartLightMap extends Component{
             if(ass.extendType == "xes"){
                 asset = Object.assign({}, asset, {collect:ass});
             }
+            if(ass.extendType == "camera"){
+                asset = Object.assign({}, asset, {camera:ass});
+            }
+            if(ass.extendType == "charge"){
+                asset = Object.assign({}, asset, {charge:ass});
+            }
         })
 
         this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))});
@@ -232,8 +280,12 @@ export default class SmartLightMap extends Component{
 
     onChange(key, event){
         switch (key){
-            case "search":
-                this.setState({search:this.state.search.update("value",v=>event.target.value)});
+            case "search"://特殊处理
+                if (event.target.value){
+                    this.setState({search:this.state.search.update("value",v=>event.target.value), interactive:true,IsSearchResult:false});
+                }else{
+                    this.setState({search:this.state.search.update("value",v=>event.target.value)});
+                }
                 break;
             case "screenSwitch":
                 this.screenSwitch.value = this.screenSwitch.options[event.target.selectedIndex].value;
@@ -299,12 +351,12 @@ export default class SmartLightMap extends Component{
             } else if(asset.getIn(["asset","collect"])){
                 curId = "collect";
             }
-            this.setState({curDevice:asset, curId:curId, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+            this.setState({curDevice:asset, curId:curId, panLatlng:asset.geoPoint,IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
                 this.setSize();
             });
 
         }else{
-            this.setState({curDevice:asset, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+            this.setState({curDevice:asset, panLatlng:asset.geoPoint, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
                 this.setSize();
             });
         }
@@ -326,11 +378,43 @@ export default class SmartLightMap extends Component{
         });
     }
 
-    searchSubmit(e){
-        this.setState({IsSearch:true, IsSearchResult:true},()=>{
+    searchSubmit(index){
+        this.setState({IsSearch:true, IsSearchResult:true, tableIndex:index},()=>{
             this.setSize();
             this.requestSearch();
         });
+    }
+
+    onFocus(event){
+        // this.setState({interactive:true});
+    }
+
+    onBlur(event){
+        this.timeOut = setTimeout(()=>{this.setState({interactive:false});}, 1000)
+    }
+
+    onkeydown(event){
+        let tableIndex = this.state.tableIndex;
+        let datalist = this.searchPromptList;
+        switch(event.key){
+            case keyboard_key_up:
+                if(tableIndex>0){
+                    tableIndex--;
+                }
+                break;
+            case keyboard_key_down:
+                if(tableIndex<datalist.length-1){
+                    tableIndex++;
+                }
+                break;
+            case keyboard_key_enter:
+                if(tableIndex>-1&&tableIndex<datalist.length){
+                    this.setState({interactive:false}, ()=>this.searchSubmit(tableIndex));
+                }
+                break;
+        }
+console.log("tableIndex:",tableIndex)
+        this.setState({tableIndex:tableIndex});
     }
 
     poleInfoCloseClick(){
@@ -616,21 +700,29 @@ export default class SmartLightMap extends Component{
      </div>*/
     
     render(){
-        const {model, search, IsSearch, IsSearchResult, curDevice, curId, positionList,searchList,
+        const {model, search, IsSearch, interactive,tableIndex,IsSearchResult, curDevice, curId, mapLatlng, panLatLng, positionList,searchList,
             listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl} = this.state;
 
         let IsControl = false;
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
+
 console.log("searchList:",searchList.toJS());
         return (
             <Content>
-                <MapView mapData={{id:"smartLightMap", latlng:{}, position:positionList, data:searchList.toJS()}}/>
+                <MapView mapData={{id:"smartLightMap", latlng:mapLatlng, position:positionList, data:searchList.toJS()}} panLatlng={panLatLng}/>
                 <div className="search-container">
-                    <div className="searchText">
-                        <input type="search" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onChange={(event)=>{this.onChange("search", event)}}/>
-                        <span className="glyphicon glyphicon-search" onClick={this.searchSubmit}></span>
+                    <div className={"searchText smartLight-map"} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={this.onkeydown}>
+                        <input type="search" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>
+                        <ul className={interactive ? 'select-active':''} >
+                            {
+                                this.searchPromptList.map((item, index)=>{
+                                    return <li className={index==tableIndex?"active":""} key={index} value={item.value} onClick={()=>this.searchSubmit(index)}><span>{item.value}</span>{search.get("value")}</li>
+                                })
+                            }
+                        </ul>
+                        <span className="glyphicon glyphicon-search hidden"></span>
                     </div>
                     <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
                         {
@@ -657,7 +749,7 @@ console.log("searchList:",searchList.toJS());
                          style={{"maxHeight":infoStyle.maxHeight+"px"}}>
                         <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?38:infoStyle.maxHeight)+"px"}}>
                             <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{curDevice.get("name")}</h3>
-                            <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
+
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className={"btn-group "+(model=="pole"?"":"hidden")}>
@@ -697,7 +789,24 @@ console.log("searchList:",searchList.toJS());
                         }
                     </ul>
                 </div>
+                <NotifyPopup />
             </Content>
         )
     }
 }
+
+// <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+        addNotify:addNotify
+    }, dispatch),
+})
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(SmartLightMap);

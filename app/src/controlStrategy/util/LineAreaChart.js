@@ -39,7 +39,7 @@ export default function LineAreaChart(parentId, chartData) {
     })*/
 
     var yAxis = d3.axisLeft(y)
-        .ticks([10])
+        .ticks(10)
         .tickSize(-width)
 
     var area = d3.area()
