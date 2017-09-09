@@ -59,25 +59,28 @@
 
       margin: 20px;
       background: #fff;
-
+      padding-top:10px;
       overflow: auto;
 
       &.zh, &.en{
+        .row{
+          margin: 0 20px;
+
+        }
         ul{
+          display:inline-block;
+          // min-width:500px;
           &.children{
             border-top: solid 1px #808080;
           }
-
-          margin: 0 20px;
-
-          padding-top: 10px;
-          padding-bottom: 10px;
 
           li {
             display: inline-block;
             vertical-align: top;
 
             margin-right: 20px;
+            margin-top:10px;
+            margin-bottom: 10px;
             padding: 15px 6px;
 
             border-radius: 5px;
@@ -89,53 +92,52 @@
             cursor:pointer;
           }
 
-          &.topology-0 {
-            border-top:0;
-            white-space: nowrap;
-            margin: 20px;
-            margin-bottom: 10px;
-            padding-top: 0;
-            padding-bottom: 0;
-            li{
+          &.topology-list{    
+            li{     
               position: relative;
               height: 30px;
               width: 136px;
               text-align: center;
-
               padding:3px 20px;
 
-              color: #fff;
-              background: #4a5064;
-
-              &.active {
+              &.active{
                 color:#fff;
                 background: #5478f0;
 
                 &.children{
-                  &:after{
-                    content:'';
-                    border-left: solid 1px #808080;
+                  &.active {
+                    &:after{
+                      content:'';
+                      border-left: solid 1px #808080;
 
-                    width: 50px;
-                    height: 10px;
+                      width: 50px;
+                      height: 10px;
 
-                    position: absolute;
-                    bottom: -10px;
-                    left: 50%;
+                      position: absolute;
+                      bottom: -10px;
+                      left: 50%;
+                    }
                   }
                 }
               }
             }
+          }  
+          &.topology-0 {
+            border-top:0;
+            white-space: nowrap;
+            // margin: 20px;
+            // margin-bottom: 10px;
+            padding-top: 0;
+            padding-bottom: 0;
+            li{
+              color: #fff;
+              background: #4a5064;
+            }
           }
 
-           &.topology-1, &.topology-2, &.topology-3, &.topology-4, &.topology-5, &.topology-6, &.topology-7 {
-            // padding-top: 10px;
+           &.topology-x{
+            white-space: nowrap;
             li{
-              position: relative;
-              height: 30px;
-              width: 136px;
-              text-align: center;
-              padding:3px 20px;
               &:before{
                   content:'';
                   border-left: solid 1px #808080;
@@ -149,232 +151,8 @@
                   top: -10px;
                   left: 50%;
               }
-
-              &.children{
-                &.active {
-                  &:after{
-                    content:'';
-                    border-left: solid 1px #808080;
-
-                    width: 50px;
-                    height: 10px;
-
-                    position: absolute;
-                    bottom: -10px;
-                    left: 50%;
-                  }
-                  }
-              }
-              &.active {
-                color: #fff;
-                background: #5478f0;
-              }
             }
           }
-
-
-          // &.topology-2 {
-          //   li{
-          //     position: relative;
-          //     .topology-top-line();
-          //     .topology-zh-list();
-          //     //line-height: @topology-domain-list-height;
-
-          //     &.active {
-          //       color: #fff;
-          //       background: #5478f0;
-          //       .topology-bottom-line();
-
-          //     }
-          //   }
-          // }
-
-          // &.topology-3 {
-          //   li{
-          //     position: relative;
-          //     .topology-top-line();
-          //     .topology-zh-list();
-
-          //     &.active {
-          //       background: #00bcff;
-          //       color: #fff;
-          //       .topology-bottom-line();
-          //     }
-          //   }
-          // }
-
-          // &.topology-4 {
-          //   li{
-          //     position: relative;
-          //     .topology-top-line();
-          //     .topology-zh-list();
-          //     &.active {
-          //       background: #00bcff;
-          //       color: #fff;
-          //       .topology-bottom-line();
-          //     }
-          //   }
-          // }
-
-          // &.topology-5 {
-          //   li{
-          //     position: relative;
-          //     .topology-top-line();
-          //     .topology-zh-list();
-          //     &.active {
-          //       background: #00bcff;
-          //       color: #fff;
-          //       .topology-bottom-line();
-          //     }
-          //   }
-          // }
-        }
-      }
-
-      // &.en{
-      //   ul{
-      //     margin: 0 20px;
-
-      //     padding-top: 10px;
-      //     padding-bottom: 10px;
-
-      //     &.children{
-      //       border-top: solid 1px #808080;
-      //     }
-
-      //     li {
-      //       display: inline-block;
-      //       vertical-align: top;
-
-      //       margin-right: 20px;
-      //       padding: 20px 6px;
-
-      //       border-radius: 5px;
-
-      //       background: #eaedf1;
-      //       color: #808080;
-      //       font-size: 16px;
-
-      //       cursor:pointer;
-      //     }
-
-      //     &.topology-0 {
-      //       border-top: 0;
-      //       margin: 20px;
-      //       padding-top: 0;
-      //       padding-bottom: 0;
-
-      //       li{
-      //         width: 127px;
-      //         height: 30px;
-      //         padding:3px 20px;
-
-      //         color: #fff;
-      //         background: #4a5064;
-
-      //         text-align: center;
-      //         &.active {
-      //           background: #5478f0;
-      //         }
-      //       }
-      //     }
-
-      //     &.topology-1 {
-      //       border-top: 0;
-      //       padding-top: 0;
-      //       li{
-      //         position: relative;
-
-      //         width: 127px;
-      //         height: 30px;
-
-      //         padding:3px 20px;
-
-      //         text-align: center;
-      //         &.active {
-      //           color: #fff;
-      //           background: #5478f0;
-
-      //           &.children{
-      //             &:after{
-      //               content:'';
-      //               border-left: solid 1px #808080;
-
-      //               width: 50px;
-      //               height: 10px;
-
-      //               position: absolute;
-      //               bottom: -10px;
-      //               left: 63px;
-      //             }
-      //           }
-      //         }
-      //       }
-      //     }
-
-      //     &.topology-2 {
-      //       li{
-      //         position: relative;
-      //         .topology-top-line();
-      //         //line-height: @topology-domain-list-height;
-      //        .topology-en-list();
-
-      //         &.active {
-      //           color: #fff;
-      //           background: #5478f0;
-      //           .topology-bottom-line();
-
-      //         }
-      //       }
-      //     }
-
-      //     &.topology-3 {
-      //       li{
-      //         position: relative;
-      //         .topology-top-line();
-
-      //         .topology-en-list();
-
-      //         &.active {
-      //           background: #00bcff;
-      //           color: #fff;
-      //           .topology-bottom-line();
-      //         }
-      //       }
-      //     }
-
-      //     &.topology-4 {
-      //       li{
-      //         position: relative;
-      //         .topology-top-line();
-
-      //         .topology-en-list();
-
-      //         &.active {
-      //           background: #00bcff;
-      //           color: #fff;
-      //           .topology-bottom-line();
-      //         }
-      //       }
-      //     }
-
-      //     &.topology-5 {
-      //       li{
-      //         position: relative;
-      //         .topology-top-line();
-
-      //        .topology-en-list();
-
-      //         &.active {
-      //           background: #00bcff;
-      //           color: #fff;
-      //           .topology-bottom-line();
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-
     }
 
     .sidebar-info .domain-property{

@@ -299,8 +299,9 @@ class DomainEditTopology extends Component{
         })
     }
 
-    renderChild(list, depth){
-        return <ul key={depth} className={"topology-"+depth+" "+(list && list.length?'children':'')}>
+    renderChild(list, depth, parentLen){
+        return <div className='row'>
+        <ul key={depth} className={(depth==0?"topology-0 ":("topology-x "))+(list && list.length?'children':'')+" topology-list"} style={{minWidth:parentLen*154+"px"}}>
             {
                 list.map(item=>{
 
@@ -330,10 +331,8 @@ class DomainEditTopology extends Component{
 
                     let value = item.name.slice(0, curIndex);
 
-                    if(depth==0 || depth==1 || depth==2 || depth==3|| depth==4 || depth==5|| depth==6 || depth==7){
                         return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                                    onClick={()=>this.itemClick(item)}><div>{value}</div></li>
-                    }
 
                     let strs = getStringlistByLanguage(value);
                     return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
@@ -354,15 +353,17 @@ class DomainEditTopology extends Component{
                 })
             }
         </ul>
+      </div>
     }
 
     render(){
         const {language, collapse, search,  selectDomain, domainList} = this.state;
-
-        let curDomain = domainList
+        
+        let curDomain = domainList;
         let renderList = [];
         this.getDatalist(curDomain, renderList);
-
+        let lastParentLen = curDomain.length;
+        let parentLen = null;
         let disabled = selectDomain.data.length?false:true;
         return <Content className={'offset-right topology-mode '+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -372,11 +373,13 @@ class DomainEditTopology extends Component{
                 </div>
                 <div className={"topology-mode "+language}>
                     {
-                        this.renderChild(curDomain, 0)
+                        this.renderChild(curDomain, 0, 0)
                     }
                     {
                         renderList.map((domain, index)=>{
-                            return this.renderChild(domain.children, index+1)
+                             if(parentLen) {lastParentLen = parentLen;}
+                             parentLen = domain.children.length;
+                            return this.renderChild(domain.children, index+1, lastParentLen)
                         })
                     }
                 </div>
