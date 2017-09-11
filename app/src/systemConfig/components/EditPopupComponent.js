@@ -6,31 +6,31 @@ import DeviceList from './list/index.js';
 
 
 export default class EditPopupComponet extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        const props = this.props;
-        const {equipmentSelectList} = props;
-        console.log('EditPopup.props', props);
-        console.log(equipmentSelectList);
-        const footer = <PanelFooter funcNames={ [null, 'onConfirmed'] } btnTitles={ [null, '完成'] } {...props}/>;
-        return (<div id='edit-popup' className='clearfix'>
-                  <span>选择设备:</span>
-                  <div className='edit_selectdevice-content clearfix'>
-                    <div>
-                      <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...equipmentSelectList}/>
-                      <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' />
-                      <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } {...props}/>
-                    </div>
-                    <div className='edit_whole-content clearfix'>
-                      <ul className='edit_whole-ul'>
-                        <DeviceList className='edit_selectdevice-ul' showIcon={ true } {...props}/>
-                      </ul>
-                    </div>
-                  </div>
-                  { footer }
-                </div>)
-    }
+  render() {
+    const props = this.props;
+    const {equipmentSelectList} = props;
+    // console.log('EditPopup.props', props);
+    //console.log(equipmentSelectList);
+    const footer = <PanelFooter funcNames={ [null, 'onConfirmed'] } btnTitles={ [null, '完成'] } {...props}/>;
+    return (<div id='edit-popup' className='clearfix'>
+              <span>选择设备:</span>
+              <div className='edit_selectdevice-content clearfix'>
+                <div>
+                  <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...equipmentSelectList}/>
+                  <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' />
+                  <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } {...props}/>
+                </div>
+                <div className='edit_whole-content clearfix'>
+                  <ul className='edit_whole-ul'>
+                    <DeviceList className='edit_selectdevice-ul' showIcon={ true } {...props}/>
+                  </ul>
+                </div>
+              </div>
+              { footer }
+            </div>)
+  }
 }

@@ -69,20 +69,13 @@ export class sysConfigSmartLight extends Component {
             },
             //data -> dataTable的数据
             data: sysDataHandle.equipmentList,
-            tableData: Immutable.fromJS([{
-                "name": "123",
-                "domainName": "上海",
-                "lightCount": 2,
-                "cameraCount": 2,
-                "screenCount": 2,
-                "chargeStakeCount": 2
-            }]),
+            tableData: Immutable.fromJS([]),
             //domainList -> 域名列表
             domainList: sysInitStateModel('domainList'),
             //modelList -> 模型列表
             modelList: sysInitStateModel('modelList'),
             //whiteListData -> 白名单列表
-            whiteListData: {},
+            //whiteListData: {},
             //EditPopup - Select -> 数据源
             equipmentSelectList: sysInitStateModel('equipmentSelectList'),
             selectValue: ''
@@ -99,7 +92,11 @@ export class sysConfigSmartLight extends Component {
         this.onDeleted = this.onDeleted.bind(this);
         this.closeClick = this.closeClick.bind(this);
         this.equipmentSelect = this.equipmentSelect.bind(this);
-        this.rowCheckChange = this.rowCheckChange.bind(this);
+        this.rowClick = this.rowClick.bind(this);
+        this.updateSelectDevice = this.updateSelectDevice.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.pageChange = this.pageChange.bind(this);
     }
 
 
@@ -133,13 +130,11 @@ export class sysConfigSmartLight extends Component {
     componentWillUnmount() {
         this.mounted = false;
     }
-    //Declare functions
-    //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
-    closeClick() {
-        this.props.actions.overlayerHide();
-    }
 
-    // when componenetWillMount,we call this function to provide DomainList to be choosen.
+    /* Declare functions
+    * Init functions --- all componets init functions are here.
+    * when componenetWillMount,we call this function to provide DomainList to be choosen.
+    */
     initDomainList(data) {
         let newObject = sysDataHandle.init(data);
         let domainList = {
@@ -149,49 +144,10 @@ export class sysConfigSmartLight extends Component {
         this.setState({
             domainList: domainList
         }, () => this.requestSearch());
-
-    }
-
-    //Basic selectFunction with no ImmutableData.
-    mainSelect(event, dataList) {
-        let newObject = sysDataHandle.select(event, dataList);
-        let newDataList = {
-            ...dataList,
-            ...newObject
-        };
-        return newDataList;
-    }
-
-    //This is the DomainSelect function,bind in <Select/>
-    domainSelect(event) {
-        let {domainList} = this.state;
-        let newDataList = this.mainSelect(event, domainList);
-        this.setState({
-            domainList: newDataList
-        }, () => this.requestSearch())
-    }
-    equipmentSelect(event) {
-        let {equipmentSelectList} = this.state;
-        let newDataList = this.mainSelect(event, equipmentSelectList);
-        this.setState({
-            equipmentSelectList: newDataList
-        })
-    }
-    requestSearch() {
-        const {model, domainList, search, page} = this.state;
-        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-        let name = search.get('value');
-        let cur = page.get('current');
-        let size = page.get('pageSize');
-        let offset = (cur - 1) * size;
-        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-            this.initAssetList(data);
-        })
     }
 
     initAssetList(data) {
-        console.log('initAssetList', data, this.state.domainList.options.length);
-
+        //console.log('initAssetList', data, this.state.domainList.options.length);
         let list = data.map((asset, index) => {
             let domainName = '';
             // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
@@ -216,24 +172,136 @@ export class sysConfigSmartLight extends Component {
         });
         this.setState({
             tableData: Immutable.fromJS(list)
+        }, () => this.initSelectDevice(data));
+    }
+
+    initSelectDevice(data) {
+        // console.log('initSelectDevice', data);
+        if (data.length) {
+            let item = data[0];
+            this.updateSelectDevice(item);
+        } else {
+            let newDevice = {
+                ...this.state.selectDevice,
+                ...{
+                    data: []
+                }
+            };
+            this.setState({
+                selectDevice: newDevice
+            });
+        }
+    }
+
+    initPageSize(data) {
+        let page = this.state.page.set('total', data.count);
+        this.setState({
+            page: page
+        });
+    }
+
+    //SearchText Functions
+    //Base search function.In this function,we will call initFunctions to provide AssetData or other functions.
+    //When this function is called,almost datas will be updated or init again.
+    requestSearch() {
+        const {model, domainList, search, page} = this.state;
+        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
+        let name = search.get('value');
+        let cur = page.get('current');
+        let size = page.get('pageSize');
+        let offset = (cur - 1) * size;
+        getSearchCount(domain ? domain.id : null, model, name, data => {
+            this.mounted && this.initPageSize(data)
         })
-        console.log('list', list);
-
-
+        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
+            this.initAssetList(data);
+        })
     }
 
-    //Bind on EditPopup - Confirm_Button.
-    onConfirmed() {
-        // console.log('在最上层调用onConfirm');
-        this.closeClick();
+    searchChange(value) {
+        this.setState({
+            search: this.state.search.update('value', () => value)
+        });
     }
-    rowCheckChange() {
-        //console.log('123');
-    }
-    onDeleted() {
-        alert('DELETE!');
+    searchSubmit() {
+        let page = this.state.page.set('current', 1);
+        this.setState({
+            page: page
+        }, () => {
+            this.requestSearch();
+        });
     }
 
+    //Select functions --- all componets slectfunctions are here.
+    //Basic selectFunction with no ImmutableData.
+    mainSelect(event, dataList) {
+        let newObject = sysDataHandle.select(event, dataList);
+        let newDataList = {
+            ...dataList,
+            ...newObject
+        };
+        return newDataList;
+    }
+
+    //This is the DomainSelect function,bind in <Select/>
+    domainSelect(event) {
+        let {domainList} = this.state;
+        let newDataList = this.mainSelect(event, domainList);
+        this.setState({
+            domainList: newDataList
+        }, () => this.requestSearch())
+    }
+
+    equipmentSelect(event) {
+        let {equipmentSelectList} = this.state;
+        let newDataList = this.mainSelect(event, equipmentSelectList);
+        this.setState({
+            equipmentSelectList: newDataList
+        })
+    }
+
+    //When Page componet is changed,we call this function to provide data in other Pages.
+    pageChange(current, pageSize) {
+        let page = this.state.page.set('current', current);
+        this.setState({
+            page: page
+        }, () => {
+            this.requestSearch();
+        });
+    }
+
+    //This function can update the data that you choose.The data is setted in state,can be read in some Componets here.
+    //Base function.
+    updateSelectDevice(item) {
+        let selectDevice = this.state.selectDevice;
+        selectDevice.latlng = item.geoPoint;
+        selectDevice.data.splice(0);
+        selectDevice.data.push({
+            id: item.id,
+            type: item.extend.type,
+            name: item.name
+        });
+        selectDevice.domainId = item.domainId;
+        selectDevice.position.splice(0);
+        selectDevice.position.push({
+            ...{
+                "device_id": item.id,
+                "device_type": 'DEVICE'
+            },
+            ...item.geoPoint
+        });
+        this.setState({
+            selectDevice: selectDevice
+        });
+    }
+
+    //Declaring the Table Component Function
+    rowClick(row) {
+        this.updateSelectDevice(row.toJS());
+    }
+
+    //EditPopup functions
+    //Basic functions.Controning the EditPopup whether showing or hidden. 
     showPopup() {
         const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
         const {overlayerShow} = this.props.actions;
@@ -243,28 +311,44 @@ export class sysConfigSmartLight extends Component {
             disabled: true
         });
     }
+    //Bind on EditPopup - Confirm_Button.
+    onConfirmed() {
+        this.closeClick();
+    }
+    //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
+    closeClick() {
+        this.props.actions.overlayerHide();
+    }
+    onDeleted() {
+        alert('DELETE!');
+    }
 
+    //Animating functions --- controling the SideBar wether showing or hidden with its styles;
     collpseHandler() {
         this.setState({
             collapse: !this.state.collapse
         })
     }
 
+
     render() {
-        const {collapse, search, data, page, domainList, modelList} = this.state;
+        const {collapse, search, data, page, domainList, modelList, selectDevice} = this.state;
+        let initSelectDeviceName = selectDevice.data.length ? selectDevice.data[0].name : '';
+        let activeId = selectDevice.data.length && selectDevice.data[0].id;
         return (
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
                 <header>
                   <Select id="domain" {...domainList} onChange={ this.domainSelect } />
-                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
+                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                 </header>
                 <div className="table-container">
-                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowCheckChange={ this.rowCheckChange } />
-                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
+                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />
+                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                  />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.showPopup } disabled={ this.state.disabled } />
+                  <SiderBarComponet onClick={ this.showPopup } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
                 </SideBarInfo>
               </Content>
             </div>
