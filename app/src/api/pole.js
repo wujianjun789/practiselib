@@ -75,7 +75,9 @@ export function getPoleAssetById(id, cb) {
         headers: headers,
         method: 'GET'
     }, response => {
+        //return response;
         cb && cb(id, response);
+    //console.log(response)
     })
 }
 
@@ -93,3 +95,14 @@ export function getPoleListByModelDomainId(model, domainId) {
             cb && cb(response);
         })
 }
+
+//http://localhost:3000/api/poles/001/assets?
+// export function getPoleAssertListsById(poleId,cb){
+// let headers = getHttpHeader();
+//     httpRequest(HOST_IP + '/poles/' + id + '/assets', {
+//         headers: headers,
+//         method: 'GET'
+//     }, response => {
+//         cb && cb(id, response);
+//     })
+// }
