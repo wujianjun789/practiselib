@@ -69,14 +69,7 @@ export class sysConfigSmartLight extends Component {
             },
             //data -> dataTable的数据
             data: sysDataHandle.equipmentList,
-            tableData: Immutable.fromJS([{
-                "name": "123",
-                "domainName": "上海",
-                "lightCount": 2,
-                "cameraCount": 2,
-                "screenCount": 2,
-                "chargeStakeCount": 2
-            }]),
+            tableData: Immutable.fromJS([]),
             //domainList -> 域名列表
             domainList: sysInitStateModel('domainList'),
             //modelList -> 模型列表
@@ -99,7 +92,8 @@ export class sysConfigSmartLight extends Component {
         this.onDeleted = this.onDeleted.bind(this);
         this.closeClick = this.closeClick.bind(this);
         this.equipmentSelect = this.equipmentSelect.bind(this);
-        this.rowCheckChange = this.rowCheckChange.bind(this);
+        this.rowClick = this.rowClick.bind(this);
+        this.updateSelectDevice = this.updateSelectDevice.bind(this);
     }
 
 
@@ -177,6 +171,8 @@ export class sysConfigSmartLight extends Component {
             equipmentSelectList: newDataList
         })
     }
+
+    //
     requestSearch() {
         const {model, domainList, search, page} = this.state;
         let domain = domainList.options.length ? domainList.options[domainList.index] : null;
@@ -184,14 +180,17 @@ export class sysConfigSmartLight extends Component {
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
+        getSearchCount(domain ? domain.id : null, model, name, data => {
+            // this.mounted && this.initPageSize(data)
+            console.log('DATA', data);
+        })
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
             this.initAssetList(data);
         })
     }
 
     initAssetList(data) {
-        console.log('initAssetList', data, this.state.domainList.options.length);
-
+        //console.log('initAssetList', data, this.state.domainList.options.length);
         let list = data.map((asset, index) => {
             let domainName = '';
             // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
@@ -216,19 +215,53 @@ export class sysConfigSmartLight extends Component {
         });
         this.setState({
             tableData: Immutable.fromJS(list)
-        })
-        console.log('list', list);
+        }, () => this.initSelectDevice(data));
+    }
 
+    initSelectDevice(data) {
+        console.log('initSelectDevice', data);
+        if (data.length) {
+            let item = data[0];
+            this.updateSelectDevice(item);
+        } else {
+            let newDevice = {
+                ...this.state.selectDevice,
+                ...{
+                    data: []
+                }
+            };
+            this.setState({
+                selectDevice: newDevice
+            });
+        }
+    }
 
+    updateSelectDevice(item) {
+        let selectDevice = this.state.selectDevice;
+        selectDevice.latlng = item.geoPoint;
+        selectDevice.data.splice(0);
+        selectDevice.data.push({
+            id: item.id,
+            type: item.extend.type,
+            name: item.name
+        });
+        selectDevice.domainId = item.domainId;
+        selectDevice.position.splice(0);
+        selectDevice.position.push({
+            ...{
+                "device_id": item.id,
+                "device_type": 'DEVICE'
+            },
+            ...item.geoPoint
+        });
+        this.setState({
+            selectDevice: selectDevice
+        }, console.log('updateSelectDevice', this.state.selectDevice));
     }
 
     //Bind on EditPopup - Confirm_Button.
     onConfirmed() {
-        // console.log('在最上层调用onConfirm');
         this.closeClick();
-    }
-    rowCheckChange() {
-        //console.log('123');
     }
     onDeleted() {
         alert('DELETE!');
@@ -250,6 +283,12 @@ export class sysConfigSmartLight extends Component {
         })
     }
 
+    //Declaring the Table Component Function
+    rowClick(row) {
+        console.log('调用了Table点击函数', row.toJS());
+        this.updateSelectDevice(row.toJS());
+    }
+
     render() {
         const {collapse, search, data, page, domainList, modelList} = this.state;
         return (
@@ -260,7 +299,7 @@ export class sysConfigSmartLight extends Component {
                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
                 </header>
                 <div className="table-container">
-                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowCheckChange={ this.rowCheckChange } />
+                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } />
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
