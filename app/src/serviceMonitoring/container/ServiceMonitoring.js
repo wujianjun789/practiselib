@@ -64,7 +64,6 @@ export default class ServiceMonitoring extends Component{
         if(!ref){
             return;
         }
-        console.log("%%%%%%%%%%%%%%%", ref);
         drawCur(id, Object.assign({}, {width:ref.parentNode.offsetWidth, height:ref.parentNode.offsetHeight*0.95},this.state.data[id]))
     }
 

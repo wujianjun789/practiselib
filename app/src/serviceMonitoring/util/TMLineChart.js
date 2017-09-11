@@ -57,7 +57,7 @@ export default function TMLineChart(id, chartData) {
             .y(function (d, i) {
                 return scale_y(d.y);
             })
-            .curve(d3.curveMonotoneX);
+            // .curve(d3.curveMonotoneX);
 
         group = svg.append("g").attr("class", "line");
         path = group.append("path");
@@ -67,7 +67,7 @@ export default function TMLineChart(id, chartData) {
             .x(function(d) { return scale_x(d.x); })
             .y0(height)
             .y1(function(d) { return scale_y(d.y); })
-            .curve(d3.curveMonotoneX)
+            // .curve(d3.curveMonotoneX)
 
         areaGroup = svg.append('g').attr("class", "area");
         areaPath = areaGroup.append("path");
@@ -164,7 +164,6 @@ export default function TMLineChart(id, chartData) {
     }
 
     function make_scale_y() {
-        console.log(min_y, max_y);
         return d3.scaleLinear().domain([min_y, max_y]).range([height, 0]);
     }
 
