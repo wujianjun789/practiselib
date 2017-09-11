@@ -154,15 +154,22 @@ export default class LampConCenter extends Component{
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList, currentControlMode, controlModeList} = this.state;
+        const {
+            page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
+            search: {value, placeholder}, currentDomain,
+            domainList, currentControlMode, controlModeList
+        } = this.state;
+        const disabled = deviceList.length == 0 ? true : false;
         return <Content className={`list-lcc ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
-                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}  value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                                value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
                         </div>
                         <div className="table-container">
-                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice/* .data.length && selectDevice.data[0].id */}/>
+                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+                                activeId={currentDevice == null ? '' : currentDevice.id}/>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -186,13 +193,14 @@ export default class LampConCenter extends Component{
                             <div className="panel-body">
                                 <div>
                                     <span className="tit">控制模式：</span>
-                                    <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField} options={controlModeList.options}  value={currentControlMode} onChange={this.onChange}/>
-                                    <button className="btn btn-primary">应用</button>
+                                    <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField}
+                                        options={controlModeList.options}  value={currentControlMode} onChange={this.onChange} disabled={disabled}/>
+                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
                                 </div>
                                 <div>
                                     <span className="tit">校时：</span>
                                     <span className="note">(点击以校准时间)</span>
-                                    <button className="btn btn-primary">校时</button>
+                                    <button className="btn btn-primary" disabled={disabled}>校时</button>
                                 </div>
                             </div>
                         </div>
