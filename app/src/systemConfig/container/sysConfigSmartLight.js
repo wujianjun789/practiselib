@@ -181,8 +181,8 @@ export class sysConfigSmartLight extends Component {
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
         getSearchCount(domain ? domain.id : null, model, name, data => {
-            // this.mounted && this.initPageSize(data)
-            console.log('DATA', data);
+            this.mounted && this.initPageSize(data)
+        //console.log('DATA', data);
         })
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
             this.initAssetList(data);
@@ -234,6 +234,13 @@ export class sysConfigSmartLight extends Component {
                 selectDevice: newDevice
             });
         }
+    }
+
+    initPageSize(data) {
+        let page = this.state.page.set('total', data.count);
+        this.setState({
+            page: page
+        });
     }
 
     updateSelectDevice(item) {
@@ -290,7 +297,9 @@ export class sysConfigSmartLight extends Component {
     }
 
     render() {
-        const {collapse, search, data, page, domainList, modelList} = this.state;
+        const {collapse, search, data, page, domainList, modelList, selectDevice} = this.state;
+        let initSelectDeviceName = selectDevice.data.length ? selectDevice.data[0].name : '';
+        let activeId = selectDevice.data.length && selectDevice.data[0].id;
         return (
             <div id='sysConfigSmartLight'>
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
@@ -300,10 +309,11 @@ export class sysConfigSmartLight extends Component {
                 </header>
                 <div className="table-container">
                   <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } />
-                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } />
+                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } activeId={ activeId } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') }
+                  />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.showPopup } disabled={ this.state.disabled } />
+                  <SiderBarComponet onClick={ this.showPopup } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
                 </SideBarInfo>
               </Content>
             </div>
