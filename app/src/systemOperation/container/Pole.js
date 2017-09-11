@@ -156,6 +156,7 @@ export class Sensor extends Component {
         let offset = (cur - 1) * size;
         getSearchCount(domain ? domain.id : null, model, name, data => {
             this.mounted && this.initPageSize(data)
+
         })
 
         getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
