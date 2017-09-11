@@ -150,70 +150,64 @@ export class LatlngStrategyPopup extends Component{
         btnDisabled={[false, disabled]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
-                <div className='row'>
-                    <div className="form-group col-sm-6">
-                        <label htmlFor="name" className="col-sm-4 control-label">策略名称：</label>
-                        <div className="col-sm-8">
-                            <input type="text" className="form-control" id="name" placeholder="请输入策略名" value={name} maxLength = {16}
-                                    onChange={this.onChange}/>
-                            <span className={prompt.name.hidden?"prompt hidden":"prompt"}>{prompt.name.text}</span>
-                        </div>
-                    </div>
-                    <div className="form-group col-sm-6">
-                        <label htmlFor="device" className="col-sm-4 control-label">控制设备：</label>
-                        <div className="col-sm-8">
-                            <Select id="device" onChange={this.onChange} titleField={deviceList.titleField}
-                                    valueField={deviceList.valueField} options={deviceList.options} value={device}/>
-                            <span className={prompt.device.hidden?"prompt hidden":"prompt"}>{prompt.device.text}</span>
-                        </div>
+                <div className="form-group">
+                    <label htmlFor="name" className="control-label">策略名称：</label>
+                    <div className="input-group">
+                        <input type="text" className="form-control" id="name" placeholder="请输入策略名" value={name} maxLength = {16}
+                                onChange={this.onChange}/>
+                        <span className={prompt.name.hidden?"prompt hidden":"prompt"}>{prompt.name.text}</span>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className="form-group col-sm-6">
-                        <label htmlFor="sunrise" className="col-sm-4 control-label">日出：</label>
-                        <div className="col-sm-8">
-                            {
-                                device == 'lc' ?
-                                <Select id="sunrise" onChange={this.onChange} titleField={brightnessList.titleField}
-                                        valueField={brightnessList.valueField} options={brightnessList.options} value={sunrise}/>
-                                :
-                                <Select id="sunrise" onChange={this.onChange} titleField={screenSwitchList.titleField}
-                                        valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunrise}/>
-                            }
-                            <span className={prompt.sunrise.hidden?"prompt hidden":"prompt"}>{prompt.sunrise.text}</span>
-                        </div>
-                    </div>
-                    <div className="form-group col-sm-6">
-                        <label htmlFor="sunriseTime" className="col-sm-4 control-label">日出时间差：</label>
-                        <div className="col-sm-8">
-                            <input type="text" className="form-control" id="sunriseTime" placeholder="输入分钟数（日出后为正数）" value={sunriseTime} maxLength = {16}
-                                    onChange={this.onChange}/>
-                            <span className={prompt.sunriseTime.hidden?"prompt hidden":"prompt"}>{prompt.sunriseTime.text}</span>
-                        </div>
+                <div className="form-group">
+                    <label htmlFor="device" className="control-label">控制设备：</label>
+                    <div className="input-group">
+                        <Select id="device" onChange={this.onChange} titleField={deviceList.titleField}
+                                valueField={deviceList.valueField} options={deviceList.options} value={device}/>
+                        <span className={prompt.device.hidden?"prompt hidden":"prompt"}>{prompt.device.text}</span>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className="form-group col-sm-6">
-                        <label htmlFor="sunset" className="col-sm-4 control-label">日落：</label>
-                        <div className="col-sm-8">
-                            {
-                                device == 'lc' ?
-                                <Select id="sunset" onChange={this.onChange} titleField={brightnessList.titleField}
-                                        valueField={brightnessList.valueField} options={brightnessList.options} value={sunset}/>
-                                :
-                                <Select id="sunset" onChange={this.onChange} titleField={screenSwitchList.titleField}
-                                        valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunset}/>
-                            }                
-                            <span className={prompt.sunset.hidden?"prompt hidden":"prompt"}>{prompt.sunset.text}</span>
-                        </div>
+                <div className="form-group">
+                    <label htmlFor="sunrise" className="control-label">日出：</label>
+                    <div className="input-group">
+                        {
+                            device == 'lc' ?
+                            <Select id="sunrise" onChange={this.onChange} titleField={brightnessList.titleField}
+                                    valueField={brightnessList.valueField} options={brightnessList.options} value={sunrise}/>
+                            :
+                            <Select id="sunrise" onChange={this.onChange} titleField={screenSwitchList.titleField}
+                                    valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunrise}/>
+                        }
+                        <span className={prompt.sunrise.hidden?"prompt hidden":"prompt"}>{prompt.sunrise.text}</span>
                     </div>
-                    <div className="form-group col-sm-6">
-                        <label htmlFor="sunsetTime" className="col-sm-4 control-label">日落时间差：</label>
-                        <div className="col-sm-8">
-                            <input type="text" className="form-control" id="sunsetTime" placeholder="输入分钟数（日落后为正数）" value={sunsetTime} maxLength = {16}
-                                    onChange={this.onChange}/>
-                            <span className={prompt.sunsetTime.hidden?"prompt hidden":"prompt"}>{prompt.sunsetTime.text}</span>
-                        </div>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="sunriseTime" className="control-label">日出时间差：</label>
+                    <div className="input-group">
+                        <input type="text" className="form-control" id="sunriseTime" placeholder="输入分钟数（日出后为正数）" value={sunriseTime} maxLength = {16}
+                                onChange={this.onChange}/>
+                        <span className={prompt.sunriseTime.hidden?"prompt hidden":"prompt"}>{prompt.sunriseTime.text}</span>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="sunset" className="control-label">日落：</label>
+                    <div className="input-group">
+                        {
+                            device == 'lc' ?
+                            <Select id="sunset" onChange={this.onChange} titleField={brightnessList.titleField}
+                                    valueField={brightnessList.valueField} options={brightnessList.options} value={sunset}/>
+                            :
+                            <Select id="sunset" onChange={this.onChange} titleField={screenSwitchList.titleField}
+                                    valueField={screenSwitchList.valueField} options={screenSwitchList.options} value={sunset}/>
+                        }                
+                        <span className={prompt.sunset.hidden?"prompt hidden":"prompt"}>{prompt.sunset.text}</span>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="sunsetTime" className="control-label">日落时间差：</label>
+                    <div className="input-group">
+                        <input type="text" className="form-control" id="sunsetTime" placeholder="输入分钟数（日落后为正数）" value={sunsetTime} maxLength = {16}
+                                onChange={this.onChange}/>
+                        <span className={prompt.sunsetTime.hidden?"prompt hidden":"prompt"}>{prompt.sunsetTime.text}</span>
                     </div>
                 </div>
             </Panel>
