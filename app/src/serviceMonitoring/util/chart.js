@@ -21,7 +21,7 @@ export function drawCur(id, chartData) {
             id:id,
             w: chartData.width,
             h: chartData.height,
-            margin: {top: 10, right: 20, bottom: 10, left: 20},
+            margin: {top: 10, right: 5, bottom: 10, left: 5},
             min_y: chartData.min,
             max_y: chartData.max,
             data:data

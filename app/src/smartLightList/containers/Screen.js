@@ -155,15 +155,21 @@ export default class Screen extends Component {
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList, currentSwitchStatus, deviceSwitchList} = this.state;
+        const {
+            page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
+            search: {value, placeholder}, currentDomain, domainList, currentSwitchStatus, deviceSwitchList
+        } = this.state;
+        const disabled = deviceList.length == 0 ? true : false;
         return <Content className={`list-screen ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
-                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options} value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                                value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
                             <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
                         </div>
                         <div className="table-container">
-                        <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice/* .data.length && selectDevice.data[0].id */}/>
+                        <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+                                activeId={currentDevice == null ? '' : currentDevice.id}/>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -187,8 +193,10 @@ export default class Screen extends Component {
                             <div className="panel-body">
                                 <div>
                                     <span className="tit">设备开关：</span>
-                                    <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField} options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange}/>
-                                    <button className="btn btn-primary">应用</button>
+                                    <Select id="deviceSwitch" titleField={deviceSwitchList.titleField}
+                                            valueField={deviceSwitchList.valueField} options={deviceSwitchList.options}
+                                            value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
+                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
                                 </div>
                             </div>
                         </div>

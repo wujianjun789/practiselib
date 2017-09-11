@@ -182,15 +182,22 @@ export default class SingleLampCon extends Component {
     }
   
     render() {
-        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList, search: {value, placeholder}, currentDomain, domainList, deviceSwitchList, brightnessList, currentSwitchStatus, currentBrightness} = this.state;
+        const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
+                search: {value, placeholder}, currentDomain, domainList, deviceSwitchList,
+                brightnessList, currentSwitchStatus, currentBrightness} = this.state;
+
+        const disabled = deviceList.length == 0 ? true : false;
+
         return <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
-                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options} value={currentDomain==null?'':currentDomain[this.state.domainList.valueField]} onChange={this.onChange}/>
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                                value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
                         </div>
                         <div className="table-container">
-                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice/* .data.length && selectDevice.data[0].id */}/>
+                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+                                activeId={currentDevice == null ? '' : currentDevice.id}/>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -212,8 +219,18 @@ export default class SingleLampCon extends Component {
                                 <span className="icon_sys_select"></span>设备操作
                             </div>
                             <div className="panel-body">
-                                <div><span className="tit">设备开关：</span><Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField} options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange}/><button className="btn btn-primary">应用</button></div>
-                                <div><span className="tit">调光：</span><Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField} options={brightnessList.options}  value={currentBrightness} onChange={this.onChange}/><button className="btn btn-primary">应用</button></div>
+                                <div>
+                                    <span className="tit">设备开关：</span>
+                                    <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField}
+                                        options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
+                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                </div>
+                                <div>
+                                    <span className="tit">调光：</span>
+                                    <Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField}
+                                        options={brightnessList.options}  value={currentBrightness} onChange={this.onChange} disabled={disabled} />
+                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                </div>
                             </div>
                         </div>
                     </div>
