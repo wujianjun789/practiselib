@@ -343,9 +343,9 @@ export class sysConfigSmartLight extends Component {
                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                 </header>
                 <div className="table-container">
-                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } />
-                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } activeId={ activeId } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') }
-                    onChange={ this.pageChange } />
+                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />
+                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                  />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
                   <SiderBarComponet onClick={ this.showPopup } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
