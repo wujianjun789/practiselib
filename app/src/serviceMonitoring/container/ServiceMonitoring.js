@@ -47,7 +47,7 @@ export default class ServiceMonitoring extends Component{
     initResult(){
         for(let key in this.state.data)
         {
-            if(this.state.data[key].list.length>=24){
+            if(this.state.data[key].list.length>=10){
                 this.state.data[key].list.shift();
             }
             this.state.data[key].list.push({x:momentDateFormat(getMomentDate(), TIME_FORMAT), y:parseInt(Math.random()*100)})
@@ -55,7 +55,9 @@ export default class ServiceMonitoring extends Component{
 
         this.setState({data:this.state.data},()=>{
             for(let key in this.state.data){
-                drawCur(key,Object.assign({}, {width:1000, height:240},this.state.data[key]))
+                let data = this.state.data[key];
+
+                drawCur(key,data)
             }
         })
     }
@@ -64,6 +66,7 @@ export default class ServiceMonitoring extends Component{
         if(!ref){
             return;
         }
+
         drawCur(id, Object.assign({}, {width:ref.parentNode.offsetWidth, height:ref.parentNode.offsetHeight*0.95},this.state.data[id]))
     }
 

@@ -35,8 +35,8 @@ export const TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export function getCurDate(minValue) {
     let list = []
 
-    let lastDate = new Date().getTime()-24*1000;
-    for(var i=0;i<23;i++){
+    let lastDate = new Date().getTime()-9*1000;
+    for(var i=0;i<10;i++){
         list.push({x:momentDateFormat(getMomentDate(lastDate+i*1000), TIME_FORMAT), y:''})
     }
 

@@ -1,7 +1,6 @@
 /**
- * Created by a on 2016/11/23.
+ * Created by a on 2017/9/8.
  */
-
 
 /**
  *  随着时间移动折线图
@@ -61,7 +60,7 @@ export default function TMLineChart(id, chartData) {
 
         group = svg.append("g").attr("class", "line");
         path = group.append("path");
-        path.transition().duration(1000).attr("d", line(dataset));
+        path.transition().duration(33).attr("d", line(dataset));
 
         area = d3.area()
             .x(function(d) { return scale_x(d.x); })
@@ -71,7 +70,7 @@ export default function TMLineChart(id, chartData) {
 
         areaGroup = svg.append('g').attr("class", "area");
         areaPath = areaGroup.append("path");
-        areaPath.transition().duration(1000).attr("d", area(dataset));
+        areaPath.transition().duration(33).attr("d", area(dataset));
 
         // drawCircle(dataset);
         // drawLabel(dataset);
@@ -182,7 +181,6 @@ export default function TMLineChart(id, chartData) {
             max_y = data.max_y?data.max_y:0;
 
             dataset = data.data;
-
             _reDraw();
         },
         destory: function () {
