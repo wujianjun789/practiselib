@@ -186,11 +186,13 @@ export class DomainPopup extends Component{
                     <div className="domain-content">
                         <div className='domain-tree'>
                                 <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
+                                <div className='domain-tree-list'>
                                 {
                                     tree && tree.map((node)=>{
                                         return <Node key={node.id} tree={node} nodes={nodes} onToggle={this.onToggle} onClick={this.domainAdd}/>
                                     })
                                 }
+                                </div>
                         </div>
                         <div className='domain-list'>
                             <ul>
