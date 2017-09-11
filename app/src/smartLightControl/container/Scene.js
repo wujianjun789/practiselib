@@ -58,6 +58,7 @@ export default class Scene extends Component{
                                 onChange={value=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>
                 </div>
                 <div className="screen-container">
+                    <div className="scroll-container">
                     {
                         sceneList.map(scene=>{
                             return <div key={scene.id} className="col-sm-4 scene-item-container">
@@ -66,6 +67,7 @@ export default class Scene extends Component{
                                 </div>
                         })
                     }
+                        </div>
                 </div>
             </Content>
         )

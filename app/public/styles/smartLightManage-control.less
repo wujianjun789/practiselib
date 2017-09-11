@@ -1,5 +1,7 @@
 .smartLight-scene{
   .content{
+    overflow-x: hidden;
+    min-width: auto;
     .heading{
       height: 70px;
 
@@ -37,6 +39,10 @@
     }
 
     .screen-container{
+      overflow-x: auto;
+      .scroll-container{
+        min-width: 800px;
+      }
       margin: 40px 20px 0px 20px;
       .scene-item-container{
         padding-right: 0;
