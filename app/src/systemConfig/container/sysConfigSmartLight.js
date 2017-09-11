@@ -94,6 +94,9 @@ export class sysConfigSmartLight extends Component {
         this.equipmentSelect = this.equipmentSelect.bind(this);
         this.rowClick = this.rowClick.bind(this);
         this.updateSelectDevice = this.updateSelectDevice.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.pageChange = this.pageChange.bind(this);
     }
 
 
@@ -144,6 +147,21 @@ export class sysConfigSmartLight extends Component {
             domainList: domainList
         }, () => this.requestSearch());
 
+    }
+
+    //SearchText Functions
+    searchChange(value) {
+        this.setState({
+            search: this.state.search.update('value', () => value)
+        });
+    }
+    searchSubmit() {
+        let page = this.state.page.set('current', 1);
+        this.setState({
+            page: page
+        }, () => {
+            this.requestSearch();
+        });
     }
 
     //Basic selectFunction with no ImmutableData.
@@ -243,6 +261,15 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
+    pageChange(current, pageSize) {
+        let page = this.state.page.set('current', current);
+        this.setState({
+            page: page
+        }, () => {
+            this.requestSearch();
+        });
+    }
+
     updateSelectDevice(item) {
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
@@ -305,12 +332,12 @@ export class sysConfigSmartLight extends Component {
               <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
                 <header>
                   <Select id="domain" {...domainList} onChange={ this.domainSelect } />
-                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } />
+                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                 </header>
                 <div className="table-container">
                   <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } />
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } activeId={ activeId } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') }
-                  />
+                    onChange={ this.pageChange } />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
                   <SiderBarComponet onClick={ this.showPopup } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
