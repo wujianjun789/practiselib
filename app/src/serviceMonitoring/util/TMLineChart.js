@@ -171,7 +171,7 @@ export default function TMLineChart(id, chartData) {
     }
 
     function make_axis_y(scaleY) {
-        return d3.axisLeft(scaleY).ticks(10).tickSize(-width);
+        return d3.axisLeft(scaleY).ticks(10).tickSize(-width).tickFormat("");
     }
 
     return {
