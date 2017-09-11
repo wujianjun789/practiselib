@@ -2,6 +2,8 @@
  *  17/08/31
  *  Provide a model that has mostInit functions and data.
  */
+
+import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
 export const sysDataHandle = {
     add(curType, domainList) {
         return {

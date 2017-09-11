@@ -75,7 +75,7 @@ export class sysConfigSmartLight extends Component {
             //modelList -> 模型列表
             modelList: sysInitStateModel('modelList'),
             //whiteListData -> 白名单列表
-            whiteListData: {},
+            //whiteListData: {},
             //EditPopup - Select -> 数据源
             equipmentSelectList: sysInitStateModel('equipmentSelectList'),
             selectValue: ''
