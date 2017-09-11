@@ -76,31 +76,27 @@ export const sysDataHandle = {
         },
     ],
     smartLightPole: [],
-    equipmentSelectList: [{
-        id: 1,
-        title: 'light',
-        value: '灯'
-    }, {
-        id: 2,
-        title: 'screen',
-        value: '显示屏'
-    }, {
-        id: 3,
-        title: 'camera',
-        value: '摄像头'
-    }, {
-        id: 4,
-        title: 'chargeStake',
-        value: '充电桩'
-    }],
-    equipmentList: [{
-        name: '摄像头1',
-        added: true
-    }, {
-        name: '摄像头2',
-        added: true
-    }, {
-        name: '摄像头3',
-        added: false
-    }]
+    equipmentSelectList: {
+        titleFiled: 'name',
+        valueFiled: 'name',
+        value: '灯',
+        index: 0,
+        options: [{
+            id: 1,
+            title: 'light',
+            value: '灯'
+        }, {
+            id: 2,
+            title: 'screen',
+            value: '显示屏'
+        }, {
+            id: 3,
+            title: 'camera',
+            value: '摄像头'
+        }, {
+            id: 4,
+            title: 'chargeStake',
+            value: '充电桩'
+        }]
+    }
 }
