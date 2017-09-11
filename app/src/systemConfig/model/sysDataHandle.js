@@ -32,7 +32,7 @@ export const sysDataHandle = {
     //provide data that used to init
     init(data) {
         return {
-            //index: 0,
+            index: 0,
             value: data.length ? data[0].name : "",
             options: data
         }
@@ -40,6 +40,8 @@ export const sysDataHandle = {
     //provide data that used to selectDomain in <Select change/>
     select(event, dataList) {
         let index = event.target.selectedIndex;
+        console.log('INDEX', index);
+        console.log('dataList', dataList);
         return {
             index: index,
             value: dataList.options[index].name
@@ -77,26 +79,28 @@ export const sysDataHandle = {
     ],
     smartLightPole: [],
     equipmentSelectList: {
-        titleFiled: 'name',
-        valueFiled: 'name',
-        value: '灯',
+        value: '',
         index: 0,
         options: [{
             id: 1,
             title: 'light',
-            value: '灯'
+            value: '灯',
+            name: '灯'
         }, {
             id: 2,
             title: 'screen',
-            value: '显示屏'
+            value: '显示屏',
+            name: '显示屏'
         }, {
             id: 3,
             title: 'camera',
-            value: '摄像头'
+            value: '摄像头',
+            name: '摄像头'
         }, {
             id: 4,
             title: 'chargeStake',
-            value: '充电桩'
+            value: '充电桩',
+            name: '充电桩'
         }]
     }
 }

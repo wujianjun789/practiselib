@@ -78,7 +78,8 @@ export class sysConfigSmartLight extends Component {
             //whiteListData -> 白名单列表
             //whiteListData: {},
             //EditPopup - Select -> 数据源
-            equipmentSelectList: sysDataHandle.equipmentSelectList,
+            equipmentSelectList: sysInitStateModel(),
+            //sysDataHandle.equipmentSelectList,
             selectValue: sysDataHandle.equipmentSelectList
         }
         //Table 数据相关
@@ -148,7 +149,6 @@ export class sysConfigSmartLight extends Component {
     }
 
     initAssetList(data) {
-        //console.log('initAssetList', data, this.state.domainList.options.length);
         let list = data.map((asset, index) => {
             let domainName = '';
             // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
@@ -256,6 +256,7 @@ export class sysConfigSmartLight extends Component {
     equipmentSelect(event) {
         let {equipmentSelectList} = this.state;
         let newDataList = this.mainSelect(event, equipmentSelectList);
+        console.log('newDataList', newDataList);
         this.setState({
             equipmentSelectList: newDataList
         })
