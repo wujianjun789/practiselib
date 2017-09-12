@@ -237,6 +237,7 @@
         height: 40px;
         line-height: 40px;
         overflow: hidden;
+        font-weight: bold;
       }
       > .table-body {
         max-height: 155px;
@@ -246,6 +247,9 @@
           overflow: hidden;
           border-top: 1px solid #e6e6e6;
           margin-right: 13px;
+          &:hover{
+            background-color: #f5f5f5;
+          }
           &:last-child {
             border-bottom: 1px solid #e6e6e6;
           }
@@ -255,7 +259,6 @@
       > .table-header,
       > .table-body {
         .tables-cell {
-          display: inline-block;
           float: left;
           height: 40px;
           line-height: 40px;
@@ -267,6 +270,9 @@
           }
           &:last-child {
             width: 60px;
+            >span{
+              cursor: pointer;              
+            }
           }
         }
       }
