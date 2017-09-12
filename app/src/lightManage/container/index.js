@@ -44,12 +44,17 @@ class SystemOperationIndex extends Component{
     }
 
     render(){
-        let path = "";
-        const {children} = this.props;
-        if(children){
-            path = children.props.route.path;
+        let parentPath = "";
+        let childPath = "";
+        const {routes} = this.props;
+        if(routes.length>3){
+            parentPath = routes[3].path;
         }
-        return <div className={"container light-"+path}>
+
+        if(routes.length>4){
+            childPath = routes[4].path;
+        }
+        return <div className={"container light-"+parentPath+" "+parentPath+"-"+childPath}>
                     <HeadBar moduleName={"智能照明"} router={this.props.router}/>
                     <SideBar onToggle={this.onToggle}/>
                     {this.props.children}

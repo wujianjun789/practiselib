@@ -45,12 +45,18 @@ class SystemOperationIndex extends Component{
     }
 
     render(){
-        let path = "";
-        const {children} = this.props;
-        if(children){
-            path = children.props.route.path;
+        let parentPath = "";
+        let childPath = "";
+        const {routes} = this.props;
+        if(routes.length>3){
+            parentPath = routes[3].path;
         }
-        return <div className={"container smartLight-"+path}>
+
+        if(routes.length>4){
+            childPath = routes[4].path;
+        }
+
+        return <div className={"container smartLight-"+parentPath+" "+parentPath+"-"+childPath}>
             <svg className="svgOnload" >
                 <symbol id="icon_sys_select"><path d="M155.345,71.726c-0.216-3.823-1.282-6.092-3.889-8.699c-5.287-5.287-13.352-1.437-15.38,0.625l-50.994,52.11L62.997,93.429
         c-4.147-4.283-10.981-4.393-15.263-0.246c-0.083,0.081-0.165,0.162-0.246,0.246c-4.256,4.342-4.256,11.291,0,15.633l30.15,30.15
