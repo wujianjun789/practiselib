@@ -1,16 +1,14 @@
-.smartLight-scene{
-  .content{
+.smartLight-control {
+  .content {
     overflow-x: hidden;
     min-width: auto;
-    .heading{
+    .heading {
       height: 70px;
+      margin-right: 300px;
 
       background: #ffffff;
 
-      // margin-right: auto;
-      // margin-left: auto;
-
-      .sort{
+      .sort {
         width: 160px;
         height: 30px;
 
@@ -20,7 +18,7 @@
         margin-left: 20px;
       }
 
-      .device{
+      .strategy {
         width: 160px;
         height: 30px;
         margin-top: 20px;
@@ -28,7 +26,7 @@
         margin-bottom: 20px;
       }
 
-      .search{
+      .search {
         width: 200px;
         height: 30px;
         margin-top: 20px;
@@ -38,18 +36,18 @@
 
     }
 
-    .screen-container{
+    .screen-container {
       overflow-x: auto;
-      .scroll-container{
+      .scroll-container {
         min-width: 800px;
       }
       margin: 40px 20px 0px 20px;
-      .scene-item-container{
+      .scene-item-container {
         padding-right: 0;
         padding-left: 0;
       }
 
-      .scene-item{
+      .scene-item {
         padding-right: 0;
         padding-left: 0;
 
@@ -57,14 +55,14 @@
         margin-bottom: 40px;
         margin-left: 20px;
 
-        .panel-heading{
+        .panel-heading {
           color: #333744;
           font-size: 14px;
 
           background: #eaedf1;
           border-radius: 5px;
 
-          button{
+          button {
             width: 80px;
             height: 41px;
 
@@ -74,11 +72,153 @@
           }
         }
 
-        .panel-body{
+        .panel-body {
           color: #808080;
           font-size: 14px;
         }
       }
     }
+
+    .table-container {
+      margin-top: 20px;
+      margin-right: 320px;
+      margin-bottom: 17px;
+      margin-left: 20px;
+      padding: 20px;
+      border: solid 1px #e6e6e6;
+      background: #fff;
+
+      -webkit-transition: margin-right .3s;
+      -moz-transition: margin-right .3s;
+      -ms-transition: margin-right .3s;
+      -o-transition: margin-right .3s;
+      transition: margin-right .3s;
+    }
+
+    .page {
+      text-align: center
+    }
+    .page li {
+      display: inline-block
+    }
+
+    &.collapsed {
+      .heading {
+        margin-right: 60px;
+      }
+      .table-container {
+        margin-right: 80px;
+      }
+    }
+
+    .sidebar-info {
+      .addAnimation();
+      &.sidebar-collapse{
+        .strategy-info, .strategy-param, .strategy-device{
+          height: 40px;
+          .panel-body{
+            opacity: 0;
+            display: none;
+          }
+        }
+        .strategy-device{
+          top: 110px;
+        }
+      }
+
+      .strategy-info{
+        height: 100px;
+        .addAnimation();
+      }
+      .strategy-param {
+        .addAnimation();
+        .panel-body {
+          height: 200px;
+
+          &.strategy-chart {
+            .y.axis {
+              path {
+                display: none;
+              }
+
+              g {
+                line {
+                  stroke-width: 1px;
+                  stroke: #e6e6e6;
+                }
+              }
+            }
+
+            .node {
+              .last {
+                text-anchor: end;
+              }
+            }
+
+            .area-group {
+              .area {
+                fill: #ff5c68;
+                fill-opacity: 0.1;
+              }
+            }
+
+            .line-group {
+              .path-line {
+                fill: none;
+                stroke-width: 3px;
+                stroke: #ff5c68;
+              }
+
+              circle {
+                fill: #ff5c68;
+
+                title {
+                  background: linear-gradient(#333744, #4a5064);
+                  color: #ffffff;
+
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .strategy-device{
+        position: absolute;
+        top: 370px;
+        bottom: 0;
+
+        .addAnimation();
+        .panel-body{
+          position: absolute;
+          top: 40px;
+          right: 0;
+          bottom: 0;
+          left: 0;
+
+          ul li{
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
   }
+
+  &.control-scene{
+    .content{
+      .heading{
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.addAnimation {
+  @time: .3s;
+  -webkit-transition: all @time;
+  -moz-transition: all @time;
+  -ms-transition: all @time;
+  -o-transition: all @time;
+  transition: all @time;
 }

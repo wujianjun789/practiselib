@@ -48,13 +48,18 @@ class AssetManageIndex extends Component{
     }
 
     render(){
-        let path = "";
+        let parentPath = "";
+        let childPath = "";
         const {routes} = this.props;
         if(routes.length>3){
-            path = routes[3].path;
+            parentPath = routes[3].path;
         }
 
-        return <div className={"container "+"asset-"+path}>
+        if(routes.length>4){
+            childPath = routes[4].path;
+        }
+
+        return <div className={"container "+"asset-"+parentPath+" "+parentPath+"-"+childPath}>
             <HeadBar moduleName={this.props.intl.formatMessage({id:"app.asset.manage"})} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}

@@ -13,7 +13,8 @@ import SensorStrategyPopup from '../component/SensorStrategyPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Page from '../../components/Page';
 import Immutable from 'immutable';
-import {getStrategyListByName, getStrategyCountByName, delStrategy, getModelSummariesByModelID} from '../../api/strategy';
+import {getStrategyListByName, getStrategyCountByName, delStrategy} from '../../api/strategy';
+import {getModelSummariesByModelID} from '../../api/asset'
 import {getLightLevelConfig, getStrategyDeviceConfig} from '../../util/network';
 import {getObjectByKeyObj} from '../../util/algorithm';
 

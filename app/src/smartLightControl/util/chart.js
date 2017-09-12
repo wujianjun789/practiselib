@@ -12,8 +12,8 @@ export function timeStrategy(data) {
     let lineAreaChart = new LineAreaChart(data.id, {
         id:'timeStrategy',
         w: svg_width,
-        h: 160,
-        margin: {top:20, right:0, bottom:20,left:0},
+        h: 180,
+        margin: {top:15, right:10, bottom:15,left:10},
         label: "亮度",
         style: {fill:'none',width:1, color:'#000000', opacity:1},
         yMin: 0,

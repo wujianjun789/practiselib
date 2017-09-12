@@ -21,12 +21,12 @@ import Content from '../../components/Content';
 import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel'
 
 import {getDomainList} from '../../api/domain'
-import {getSearchAssets, getSearchCount, postXes, updateXes, delXes} from '../../api/asset'
+import {getSearchAssets, getSearchCount, postXes, updateXes, delXes,updateDataOrigin} from '../../api/asset'
 
 import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
-import {getModelSummariesByModelID} from '../../api/strategy'
+import {getModelSummariesByModelID} from '../../api/asset'
 export class Xes extends Component {
     constructor(props) {
         super(props);
@@ -249,7 +249,7 @@ export class Xes extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-dataOrigin':
-                overlayerShow(<DataOriginPopup className="dataOrigin-popup"  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide}/>)
+                overlayerShow(<DataOriginPopup className="dataOrigin-popup"  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide} onConfirm={(data,type)=>updateDataOrigin(data,type)}/>)
                 break;
         }
     }
@@ -313,13 +313,11 @@ export class Xes extends Component {
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>添加</button>
             </div>
-            <div className='xes'>
-                <div className="table-container">
-                    <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
-                           rowClick={this.tableClick}/>
-                    <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
-                          current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
-                </div>
+            <div className="table-container">
+                <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
+                        rowClick={this.tableClick}/>
+                <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
+                        current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
             </div>
             <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                 <div className="panel panel-default device-statics-info">

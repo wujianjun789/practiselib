@@ -77,6 +77,13 @@ export const TreeData = [
         "class": 'icon_pole',
         "active": true,
         "link": "/systemOperation/systemConfig/sysConfigSmartLight"
+      },
+      {
+        "id": 'sysConfigScene',
+        "name": '场景',
+        "class": 'icon_scene',
+        "active": false,
+        "link": "/systemOperation/systemConfig/sysConfigScene"
       }
     ]
   }, {

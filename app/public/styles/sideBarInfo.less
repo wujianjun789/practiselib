@@ -1,7 +1,7 @@
-.sidebar-info{
-   //position: fixed;
+.sidebar-info {
+  //position: fixed;
   position: absolute;
-   //top: 60px;
+  //top: 60px;
   top: 0;
   right: 0;
 
@@ -11,11 +11,11 @@
 
   .addAnimation();
 
-  &.sidebar-collapse{
+  &.sidebar-collapse {
     right: -240px;
     background: #eaeef2;
-    .collapse-container{
-      .icon_horizontal{
+    .collapse-container {
+      .icon_horizontal {
         margin: 7.5px 22.5px;
         width: 15px;
         height: 15px;
@@ -23,31 +23,33 @@
       }
     }
 
-    .device-statics-info, .map-position {
+    /*.device-statics-info, .map-position*/
+    .panel {
       .panel-heading {
-        background:#eee;
-        span,svg{
+        background: #eee;
+        span, svg {
           margin: 2px 27.5px 0px 8px;
-          fill:#333;
+          fill: #333;
         }
       }
-      .panel-heading:hover{
-        background:#ddd;
+      .panel-heading:hover {
+        background: #ddd;
       }
-      .panel-heading:hover svg{
-        fill:#000;
+      .panel-heading:hover svg {
+        fill: #000;
       }
-      .map-container{
+      .map-container {
         opacity: 0;
         cursor: default;
       }
     }
-    .map-position{
+
+    .map-position {
       top: 70px;
     }
   }
 
-  .collapse-container{
+  .collapse-container {
 
     margin: 0;
 
@@ -57,7 +59,7 @@
 
     cursor: pointer;
 
-    .icon_verital{
+    .icon_verital {
       margin-right: auto;
       margin-left: auto;
       width: 15px;
@@ -71,18 +73,20 @@
 
   }
 
-  .device-statics-info, .map-position{
+  /*.device-statics-info, .map-position*/
+  .panel {
     margin: 0;
     border: 0;
     border-radius: 0;
-    width:300px;
-    .panel-heading{
+    width: 300px;
+    .panel-heading {
       border: 0px;
       border-radius: 0;
-      color:#222;
+      color: #222;
       background: #d3d8dd;
 
-      /*.icon_statistics, .icon_map_position, .icon_domain_property*/span{
+      /*.icon_statistics, .icon_map_position, .icon_domain_property*/
+      span {
         display: block;
         width: 15px;
         height: 15px;
@@ -93,51 +97,52 @@
 
         .addAnimation();
       }
-      svg{
-        fill:#333;
-        width:20px;
-        height:20px;
-        display:inline-block;
-        float:left;
-        padding:1px 0px 0px 0px;
-        margin-right:3px;
+      svg {
+        fill: #333;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        float: left;
+        padding: 1px 0px 0px 0px;
+        margin-right: 3px;
       }
     }
 
-    .view{
-      height: 166px;
-
+    .panel-body {
       background: #eaeef2;
+    }
 
+    .view {
+      height: 166px;
       padding: 8px 0 0 0;
 
-      >div{
+      > div {
         display: inline-block;
 
         margin-right: 5px;
 
-        &.circle1{
-          .type{
+        &.circle1 {
+          .type {
             font-size: 36px;
             fill: #000;
             text-anchor: middle;
           }
 
-          .val{
+          .val {
             font-size: 75px;
             fill: #04c1fe;
             text-anchor: middle;
           }
         }
 
-        &.circle2{
-          .type{
+        &.circle2 {
+          .type {
             font-size: 36px;
             fill: #000;
             text-anchor: middle;
           }
 
-          .val{
+          .val {
             font-size: 75px;
             fill: #fa6262;
             text-anchor: middle;
@@ -146,7 +151,7 @@
       }
     }
 
-    .map-container{
+    .map-container {
       position: absolute;
       top: 40px;
       right: 0;
@@ -159,7 +164,7 @@
     }
   }
 
-  .map-position{
+  .map-position {
     position: absolute;
     top: 236px;
     right: 0;
@@ -169,12 +174,12 @@
     .addAnimation();
   }
 
-  .whitelist,.dataOrigin{
+  .whitelist, .dataOrigin {
     .addAnimation();
   }
 }
 
-.addAnimation{
+.addAnimation {
   @time: .3s;
   -webkit-transition: all @time;
   -moz-transition: all @time;

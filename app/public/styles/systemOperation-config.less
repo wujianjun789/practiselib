@@ -1,7 +1,7 @@
 @topology-domain-list-height: 172px;
 @topology-domain-list-height-en: 152px;
 
-.lc, .lcc ,.sensor ,.screen ,.smartLight ,.smartLightPole ,.xes ,.pole,.gateway {
+.systemOperation-config {
   .content {
     .heading{
       height: 70px;
@@ -83,19 +83,26 @@
     .sidebar-info .dataOrigin  {
       position: absolute;
       top: 130px;
-      > .panel-heading{
-      }
     }
 
-    > .lc,
-    > .lcc,
-    > .sensor,
-    > .screen,
-    > .smartLight,
-    > .xes,
-    > .pole,
-    > .gateway{
-      margin-right: 300px;
+    // > .lc,
+    // > .lcc,
+    // > .sensor,
+    // > .screen,
+    // > .smartLight,
+    // > .xes,
+    // > .pole,
+    // > .gateway{
+    //   margin-right: 300px;
+    //   -webkit-transition: margin-right .3s;
+    //   -moz-transition: margin-right .3s;
+    //   -ms-transition: margin-right .3s;
+    //   -o-transition: margin-right .3s;
+    //   transition: margin-right .3s;
+    // }
+
+    .table-container {
+      margin-right: 320px;
       -webkit-transition: margin-right .3s;
       -moz-transition: margin-right .3s;
       -ms-transition: margin-right .3s;
@@ -103,21 +110,21 @@
       transition: margin-right .3s;
     }
 
+    // &.collapsed {
+    //   > .lc,
+    //   > .lcc,
+    //   > .sensor,
+    //   > .screen,
+    //   > .xes,
+    //   > .pole,
+    //   > .gateway{
+    //     margin-right: 60px;
+    //   }
+    // }
     &.collapsed {
-      > .lc,
-      > .lcc,
-      > .sensor,
-      > .screen,
-      > .xes,
-      > .pole,
-      > .gateway{
-        margin-right: 60px;
+      .table-container{
+        margin-right: 80px;
       }
-    }
-  }
-
-  .sidebar-info.sidebar-collapse{
-    .whitelist,.dataOrigin > .panel-heading {
     }
   }
 }
@@ -154,9 +161,8 @@
   }
 }
 
-.lcc,
-.xes,
-.gateway{
+.config-lcc,
+.config-xes{
   .sidebar-info .map-position{
     top: 230px;
   }
@@ -171,12 +177,12 @@
   }
 }
 
-.lc,
-.sensor,
-.screen,
-.smartLight,
-.smartLightPole,
-.pole{
+.config-lc,
+.config-sensor,
+.config-screen,
+.config-smartLight,
+.config-smartLightPole,
+.config-pole{
   .sidebar-info .map-position{
     top: 130px;
   }
@@ -319,8 +325,8 @@
           display: block;
           height: 40px;
           // line-height: 40px;
-          padding-top: 10px;
-          padding-bottom: 10px;
+          padding-top: 8px;
+          padding-bottom: 8px;
         }
           .prompt {
           position: absolute;

@@ -41,7 +41,7 @@ export const sysDataHandle = {
     select(event, dataList) {
         let index = event.target.selectedIndex;
         console.log('INDEX', index);
-        console.log('dataList', dataList);
+        console.log('dataList-value', dataList);
         return {
             index: index,
             value: dataList.options[index].name
@@ -101,6 +101,11 @@ export const sysDataHandle = {
             title: 'chargeStake',
             value: '充电桩',
             name: '充电桩'
+        }, {
+            id: 5,
+            title: 'sensor',
+            value: '传感器',
+            name: '传感器'
         }]
     }
 }
