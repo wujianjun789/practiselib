@@ -27,7 +27,7 @@ export default class EditPopupComponet extends Component {
                 </div>
                 <div className='edit_whole-content clearfix'>
                   <ul className='edit_whole-ul'>
-                    <DeviceList className='edit_selectdevice-ul' showIcon={ true } {...props}/>
+                    <DeviceList className='edit_selectdevice-ul' showIcon={ true } data={ this.props.allPoleEquipmentsData } {...props}/>
                   </ul>
                 </div>
               </div>

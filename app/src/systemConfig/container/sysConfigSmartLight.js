@@ -32,6 +32,7 @@ import { getPoleAssetById } from '../../api/pole.js';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
+import { intersection } from '../model/sysAlgorithm.js';
 //import netRequestAPI
 import { getPoleList } from '../../api/pole.js';
 
@@ -82,7 +83,10 @@ export class sysConfigSmartLight extends Component {
             equipmentSelectList: sysInitStateModel(),
             //sysDataHandle.equipmentSelectList,
             selectValue: sysDataHandle.equipmentSelectList,
-            allEquipmentsData: []
+            //This state save all equipments --- whether they were added in pole or not.
+            allEquipmentsData: [],
+            //This state save all equipments that added into pole.
+            allPoleEquipmentsData: []
         }
         //Table 数据相关
         this.columns = sysDataHandle.smartLight;
@@ -207,7 +211,7 @@ export class sysConfigSmartLight extends Component {
     //Base search function.In this function,we will call initFunctions to provide AssetData or other functions.
     //When this function is called,almost datas will be updated or init again.
     requestSearch() {
-        console.log('成功调用requestSearch!');
+        // console.log('成功调用requestSearch!');
         const {model, domainList, search, page} = this.state;
         let domain = domainList.options.length ? domainList.options[domainList.index] : null;
         let name = search.get('value');
@@ -251,7 +255,7 @@ export class sysConfigSmartLight extends Component {
     domainSelect(event) {
         let {domainList} = this.state;
         let newDataList = this.mainSelect(event, domainList);
-        console.log('newDataList', newDataList);
+        //  console.log('newDataList', newDataList);
         this.setState({
             domainList: newDataList
         }, () => this.requestSearch())
@@ -261,6 +265,8 @@ export class sysConfigSmartLight extends Component {
         let {equipmentSelectList} = this.state;
         let newDataList = this.mainSelect(event, equipmentSelectList);
         this.searchAssetsByModel(newDataList);
+        console.log('123', newDataList);
+        //console.log(intersection(this.state.equipmentSelectList, this.state.allPoleEquipmentsData));
         this.setState({
             equipmentSelectList: newDataList
         }, () => {
@@ -307,6 +313,7 @@ export class sysConfigSmartLight extends Component {
     initEditPopup(id, response) {
         let asset = response;
         let {equipmentSelectList} = this.state;
+        //console.log('equipmentSelectList', equipmentSelectList);
 
         /*  Redirect equipmentSelectList's initData.For some reason,there still exeits some logic mistake.
          *  options: options are displayed in <Select /> componets in EditPopup,such as ['灯','显示屏','传感器']
@@ -316,7 +323,7 @@ export class sysConfigSmartLight extends Component {
         equipmentSelectList.value = equipmentSelectList.value.length === 0 ? equipmentSelectList.options[0].value : equipmentSelectList.value;
         this.searchAssetsByModel(equipmentSelectList);
         this.setState({
-            data: asset
+            allPoleEquipmentsData: asset
         }, () => {
             this.showPopup();
         });
@@ -326,12 +333,14 @@ export class sysConfigSmartLight extends Component {
         let {index, options} = equipmentSelectList;
         let assetModel = options[index].title;
         getAssetsBaseByModel(assetModel, data => {
-            console.log('AssetsModel', data);
+            // console.log('AssetsModel', data);
+            // console.log('allPoleEquipmentsData', this.state.allPoleEquipmentsData)
+            let newList = intersection(data, this.state.allPoleEquipmentsData);
             this.setState({
-                allEquipmentsData: data
+                allEquipmentsData: newList
             }, () => this.showPopup())
         })
-        console.log('assetModel', assetModel);
+    //console.log('assetModel', assetModel);
     }
 
     //Declaring the Table Component Function
@@ -350,11 +359,11 @@ export class sysConfigSmartLight extends Component {
     }
 
     showPopup() {
-        const {selectDevice, allEquipmentsData} = this.state;
+        const {selectDevice, allEquipmentsData, allPoleEquipmentsData} = this.state;
         const {overlayerShow} = this.props.actions;
         this.requestSearch();
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } data={ this.state.data }
-                        equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } />);
+        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
+                        selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } />);
     }
 
     //Bind on EditPopup - Confirm_Button.
