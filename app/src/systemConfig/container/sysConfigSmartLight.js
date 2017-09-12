@@ -3,6 +3,7 @@
  *  systemOperation/systemConfig/smartLightComponent;
  *  Declaring：We use smartLight as 智慧路灯,sysConfig as 系统配置模块,which is shortted from systemConfig;
  *  All componets were named follow the HumpRules,even if they were combinend;
+ *  We detaching almost dataModel or functionModel to provide reUsing.
  */
 
 //import BaseFunction/Component
@@ -26,7 +27,7 @@ import Content from '../../components/Content.js';
 import { getDomainList } from '../../api/domain.js';
 //import { DomainList } from '../model/sysDataHandle.js';
 import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
-import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset';
+import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel, getAssetsByModel, getAssetsBaseByModel } from '../../api/asset';
 import { getPoleAssetById } from '../../api/pole.js';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
@@ -80,7 +81,8 @@ export class sysConfigSmartLight extends Component {
             //EditPopup - Select -> 数据源
             equipmentSelectList: sysInitStateModel(),
             //sysDataHandle.equipmentSelectList,
-            selectValue: sysDataHandle.equipmentSelectList
+            selectValue: sysDataHandle.equipmentSelectList,
+            allEquipmentsData: []
         }
         //Table 数据相关
         this.columns = sysDataHandle.smartLight;
@@ -258,6 +260,7 @@ export class sysConfigSmartLight extends Component {
     equipmentSelect(event) {
         let {equipmentSelectList} = this.state;
         let newDataList = this.mainSelect(event, equipmentSelectList);
+        this.searchAssetsByModel(newDataList);
         this.setState({
             equipmentSelectList: newDataList
         }, () => {
@@ -304,14 +307,31 @@ export class sysConfigSmartLight extends Component {
     initEditPopup(id, response) {
         let asset = response;
         let {equipmentSelectList} = this.state;
+
+        /*  Redirect equipmentSelectList's initData.For some reason,there still exeits some logic mistake.
+         *  options: options are displayed in <Select /> componets in EditPopup,such as ['灯','显示屏','传感器']
+         *  value: value is the model that we need to search all the same assets
+         */
         equipmentSelectList.options = sysDataHandle.equipmentSelectList.options;
         equipmentSelectList.value = equipmentSelectList.value.length === 0 ? equipmentSelectList.options[0].value : equipmentSelectList.value;
-        console.log('equipmentSelectList', equipmentSelectList);
+        this.searchAssetsByModel(equipmentSelectList);
         this.setState({
             data: asset
         }, () => {
             this.showPopup();
         });
+    }
+
+    searchAssetsByModel(equipmentSelectList) {
+        let {index, options} = equipmentSelectList;
+        let assetModel = options[index].title;
+        getAssetsBaseByModel(assetModel, data => {
+            console.log('AssetsModel', data);
+            this.setState({
+                allEquipmentsData: data
+            }, () => this.showPopup())
+        })
+        console.log('assetModel', assetModel);
     }
 
     //Declaring the Table Component Function
@@ -330,11 +350,11 @@ export class sysConfigSmartLight extends Component {
     }
 
     showPopup() {
-        const {selectDevice} = this.state;
+        const {selectDevice, allEquipmentsData} = this.state;
         const {overlayerShow} = this.props.actions;
         this.requestSearch();
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } data={ this.state.data }
-                        equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
+                        equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } />);
     }
 
     //Bind on EditPopup - Confirm_Button.
