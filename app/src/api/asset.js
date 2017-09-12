@@ -13,6 +13,21 @@ export function getAssetModelList(cb) {
     })
 }
 
+/**
+ * 获取 model summary 通过 model ID
+ * @param {String} modelID
+ * @param {Function} cb
+ * @return {Object}
+ */
+export function getModelSummariesByModelID(modelID, cb) {
+    httpRequest(`${HOST_IP}/model-summaries/${modelID}`,{
+        headers: getHttpHeader(),
+        method: 'GET'
+    }, response => {
+        cb && cb(response);
+    })
+}
+
 export function getSearchAssets(domainId, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
 

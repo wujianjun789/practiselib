@@ -9,7 +9,7 @@
  @topology-domain-list-height-en: 152px;
  /********  区域/组件 样式初始化 ****************/
 
- #sysConfigSmartLight {
+ #sysConfigSmartLight, #sysConfigScene {
      //初始化button
      .button-init(@color: white) {
          padding: 4px 12px;
@@ -25,7 +25,7 @@
      }
      .offset-right {
          /******** header 样式定制 **************/
-         header {
+         header, .heading {  //添加Scene-heading样式
              .block-init;
              min-height: 70px; //下拉选择菜单 样式
              .select {
@@ -63,6 +63,9 @@
          /******** SideBarInfor 样式定制 ********/
          .sidebar-info .map-position {
              top: 130px;
+         }
+         .sidebar-info {
+             background: #e4e6ea;
          }
          Button {
              .button-init;
