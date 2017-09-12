@@ -205,3 +205,7 @@ export function updateAssetsById(id, data, cb){
         cb && cb(response);
     })
 }
+
+export function updateDataOrigin(data,key){
+    
+}

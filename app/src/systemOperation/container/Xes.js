@@ -21,7 +21,7 @@ import Content from '../../components/Content';
 import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel'
 
 import {getDomainList} from '../../api/domain'
-import {getSearchAssets, getSearchCount, postXes, updateXes, delXes} from '../../api/asset'
+import {getSearchAssets, getSearchCount, postXes, updateXes, delXes,updateDataOrigin} from '../../api/asset'
 
 import {getObjectByKey} from '../../util/index'
 
@@ -249,7 +249,7 @@ export class Xes extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-dataOrigin':
-                overlayerShow(<DataOriginPopup className="dataOrigin-popup"  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide}/>)
+                overlayerShow(<DataOriginPopup className="dataOrigin-popup"  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide} onConfirm={(data,type)=>updateDataOrigin(data,type)}/>)
                 break;
         }
     }
