@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import '../../../public/styles/smartLightManage-map.less';
+import '../../../public/styles/smartLightManage-control.less';
 
 import HeadBar from '../../components/HeadBar'
 import SideBar from '../../components/SideBar'

@@ -27,6 +27,7 @@ import { getDomainList } from '../../api/domain.js';
 //import { DomainList } from '../model/sysDataHandle.js';
 import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset';
+import { getPoleAssetById } from '../../api/pole.js';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js';
 import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
@@ -67,8 +68,8 @@ export class sysConfigSmartLight extends Component {
                 data: [],
                 whiteCount: 0
             },
-            //data -> dataTable的数据
-            data: sysDataHandle.equipmentList,
+            //data -> EditPopup的数据
+            data: [],
             tableData: Immutable.fromJS([]),
             //domainList -> 域名列表
             domainList: sysInitStateModel('domainList'),
@@ -77,8 +78,9 @@ export class sysConfigSmartLight extends Component {
             //whiteListData -> 白名单列表
             //whiteListData: {},
             //EditPopup - Select -> 数据源
-            equipmentSelectList: sysInitStateModel('equipmentSelectList'),
-            selectValue: ''
+            equipmentSelectList: sysInitStateModel(),
+            //sysDataHandle.equipmentSelectList,
+            selectValue: sysDataHandle.equipmentSelectList
         }
         //Table 数据相关
         this.columns = sysDataHandle.smartLight;
@@ -97,6 +99,7 @@ export class sysConfigSmartLight extends Component {
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
+        this.editButtonClick = this.editButtonClick.bind(this);
     }
 
 
@@ -106,7 +109,6 @@ export class sysConfigSmartLight extends Component {
         let model = 'pole';
         getModelData(model, () => {
             this.props.actions.treeViewInit(TreeData);
-            //console.log('getModelTypesById', getModelTypesById(model));
             this.setState({
                 model: model,
                 modelList: {
@@ -147,7 +149,6 @@ export class sysConfigSmartLight extends Component {
     }
 
     initAssetList(data) {
-        //console.log('initAssetList', data, this.state.domainList.options.length);
         let list = data.map((asset, index) => {
             let domainName = '';
             // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
@@ -255,6 +256,7 @@ export class sysConfigSmartLight extends Component {
     equipmentSelect(event) {
         let {equipmentSelectList} = this.state;
         let newDataList = this.mainSelect(event, equipmentSelectList);
+        console.log('newDataList', newDataList);
         this.setState({
             equipmentSelectList: newDataList
         })
@@ -293,6 +295,14 @@ export class sysConfigSmartLight extends Component {
         this.setState({
             selectDevice: selectDevice
         });
+
+    }
+
+    initEditPopup(id, response) {
+        let assert = response;
+        this.setState({
+            data: assert
+        }, () => this.showPopup());
     }
 
     //Declaring the Table Component Function
@@ -302,15 +312,21 @@ export class sysConfigSmartLight extends Component {
 
     //EditPopup functions
     //Basic functions.Controning the EditPopup whether showing or hidden. 
+    editButtonClick() {
+        const {selectDevice} = this.state;
+        const id = selectDevice.data[0].id;
+        getPoleAssetById(id, (id, response) => {
+            this.initEditPopup(id, response);
+        });
+    }
+
     showPopup() {
-        const {model, selectDevice, domainList, modelList, whiteListData} = this.state;
+        const {selectDevice} = this.state;
         const {overlayerShow} = this.props.actions;
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } data={ this.state.data }
                         equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
-        this.setState({
-            disabled: true
-        });
     }
+
     //Bind on EditPopup - Confirm_Button.
     onConfirmed() {
         this.closeClick();
@@ -323,7 +339,7 @@ export class sysConfigSmartLight extends Component {
         alert('DELETE!');
     }
 
-    //Animating functions --- controling the SideBar wether showing or hidden with its styles;
+    //Animating functions --- controling the SideBar whether showing or hidden with its styles;
     collpseHandler() {
         this.setState({
             collapse: !this.state.collapse
@@ -348,7 +364,7 @@ export class sysConfigSmartLight extends Component {
                   />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.showPopup } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
+                  <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
                 </SideBarInfo>
               </Content>
             </div>
