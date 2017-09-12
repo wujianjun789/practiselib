@@ -95,6 +95,8 @@ export function getClassByModel(key) {
             return 'icon_screen';
         case 'xes':
             return 'icon_collect';
+        case 'scene':
+            return 'icon_scene';
         default:
             return 'icon_led_light';
     }
