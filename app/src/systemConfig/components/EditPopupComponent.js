@@ -13,14 +13,15 @@ export default class EditPopupComponet extends Component {
   render() {
     const props = this.props;
     const {equipmentSelectList} = props;
-    console.log('EditPopup.props', props);
-    console.log(equipmentSelectList);
+    //console.log('EditPopup.props', props);
+    //equipmentSelectList.value = equipmentSelectList.value.length === 0 ? equipmentSelectList.options[0].value : equipmentSelectList.value;
+    console.log('props', equipmentSelectList);
     const footer = <PanelFooter funcNames={ [null, 'onConfirmed'] } btnTitles={ [null, '完成'] } {...props}/>;
     return (<div id='edit-popup' className='clearfix'>
               <span>选择设备:</span>
               <div className='edit_selectdevice-content clearfix'>
                 <div>
-                  <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...equipmentSelectList}/>
+                  <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...props.equipmentSelectList}/>
                   <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' />
                   <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } {...props}/>
                 </div>

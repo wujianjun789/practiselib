@@ -41,7 +41,7 @@ export const sysDataHandle = {
     select(event, dataList) {
         let index = event.target.selectedIndex;
         console.log('INDEX', index);
-        console.log('dataList', dataList);
+        console.log('dataList-value', dataList.options[index].name);
         return {
             index: index,
             value: dataList.options[index].name
