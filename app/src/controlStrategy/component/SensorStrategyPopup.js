@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
-import LineChart from '../util/LineChart';
+import LineChart from '../../common/util/LineChart';
 import PropTypes from 'prop-types';
 import {NameValid, numbersValid} from '../../util/index';
 import {IsExistInArray1} from '../../util/algorithm';
