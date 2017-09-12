@@ -26,7 +26,7 @@ import {getSearchAssets, getSearchCount, postXes, updateXes, delXes} from '../..
 import {getObjectByKey} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
-import {getModelSummariesByModelID} from '../../api/strategy'
+import {getModelSummariesByModelID} from '../../api/asset'
 export class Xes extends Component {
     constructor(props) {
         super(props);

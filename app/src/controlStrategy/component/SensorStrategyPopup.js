@@ -6,7 +6,8 @@ import LineChart from '../util/LineChart';
 import PropTypes from 'prop-types';
 import {NameValid, numbersValid} from '../../util/index';
 import {IsExistInArray1} from '../../util/algorithm';
-import {getModelSummariesByModelID, addStrategy, updateStrategy} from '../../api/strategy';
+import {addStrategy, updateStrategy} from '../../api/strategy';
+import {getModelSummariesByModelID} from '../../api/asset'
 
 export default class SensorStrategyPopup extends Component {
     constructor(props) {

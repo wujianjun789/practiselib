@@ -1,7 +1,7 @@
 /**
  * Created by a on 2017/8/16.
  */
-import LineAreaChart from './LineAreaChart'
+import LineAreaChart from '../../common/util/LineAreaChart'
 export function timeStrategy(data) {
     var svg_width = 1100;
     var energy = document.getElementById(data.id);

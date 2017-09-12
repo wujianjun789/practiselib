@@ -1,4 +1,4 @@
-.smartLight-scene{
+.smartLight-scene, .smartLight-strategy{
   .content{
     overflow-x: hidden;
     min-width: auto;
@@ -79,6 +79,31 @@
           font-size: 14px;
         }
       }
+    }
+
+    .table-container{
+      margin-top: 20px;
+      margin-right: 320px;
+      margin-bottom: 17px;
+      margin-left: 20px;
+      padding: 20px;
+      border: solid 1px #e6e6e6;
+      background: #fff;
+      .page{
+        text-align:center
+      }
+      .page li{
+        display:inline-block
+      }
+      -webkit-transition: margin-right .3s;
+      -moz-transition: margin-right .3s;
+      -ms-transition: margin-right .3s;
+      -o-transition: margin-right .3s;
+      transition: margin-right .3s;
+    }
+
+    &.collapsed .table-container {
+      margin-right: 80px;
     }
   }
 }

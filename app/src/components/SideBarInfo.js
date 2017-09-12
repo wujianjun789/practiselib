@@ -32,9 +32,7 @@ export default class SideBarInfo extends Component {
 
     render() {
         const {collapse} = this.state;
-        const {mapDevice={
-                id: 'example'
-            }, style} = this.props;
+        const {IsHaveMap=true,mapDevice={id: 'example'}, style} = this.props;
         return <div className={ "container-fluid sidebar-info " + (collapse ? "sidebar-collapse" : "") } style={ style }>
                     <svg className="svgOnload">
                         <symbol id="icon_map_position"><path d="M103.123,152.141l31.099-35.651c12.158-11.784,18.903-27.393,18.841-43.601c-0.074-36.12-32.128-65.346-71.594-65.278l0,0
@@ -50,6 +48,7 @@ export default class SideBarInfo extends Component {
                    <span className={ collapse ? "icon_horizontal" : "icon_verital" }></span>
                  </div>
                  { this.props.children }
+                {IsHaveMap &&
                  <div className="panel panel-default map-position">
                    <div className="panel-heading">
                      <svg><use xlinkHref={"#icon_map_position"} transform="scale(0.086,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>地图位置
@@ -57,7 +56,7 @@ export default class SideBarInfo extends Component {
                    <div className="map-container panel-body">
                      <MapView option={ { mapZoom: false } } mapData={ mapDevice } />
                    </div>
-                 </div>
+                 </div>}
                </div>
     }
 }
