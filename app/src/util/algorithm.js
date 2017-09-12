@@ -77,6 +77,23 @@ export function getIndexByKey(list, key, value) {
 
     return -1;
 }
+
+/**
+ * 通过键值获取索引
+ * @param list
+ * @param key
+ * @param value
+ * @returns {number}
+ */
+export function getIndexByKey2(list, key, value) {
+    for(var i=0;i<list.length;i++){
+        if(list[i][key] == value){
+            return i;
+        }
+    }
+
+    return -1;
+}
 /**
  * 根据键值搜索数组中匹配项
  * @param list
