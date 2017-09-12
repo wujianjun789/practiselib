@@ -41,6 +41,7 @@ export default function LineAreaChart(parentId, chartData) {
     var yAxis = d3.axisLeft(y)
         .ticks(10)
         .tickSize(-width)
+        .tickFormat("");
 
     var area = d3.area()
         .x(function(d) { return x(xAccessor(d)); })
@@ -126,6 +127,7 @@ export default function LineAreaChart(parentId, chartData) {
             .attr("class", "last")
             .attr("x", w-margin.left-margin.right)
             .attr("y", h-margin.bottom)
+            .attr("text-anchor", "end")
             .text(function (d) {
                 return dataset.length?dataset[dataset.length-1].x:""
             })

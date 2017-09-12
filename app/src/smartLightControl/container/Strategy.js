@@ -10,6 +10,7 @@ import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 
+import {timeStrategy} from '../util/chart'
 import Immutable from 'immutable';
 export default class Strategy extends Component{
     constructor(props){
@@ -27,17 +28,23 @@ export default class Strategy extends Component{
             }),
 
             selectDevice:{
-                id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定'
+                id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
+                deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
+                strategyList:[]
             },
 
             data:Immutable.fromJS([
                 {id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定'},
-                {id:1, strategyName:"策略2", strategyType:'传感器策略', deviceType:'屏幕', setState:'未设定'}
+                {id:2, strategyName:"策略2", strategyType:'传感器策略', deviceType:'屏幕', setState:'未设定'}
             ])
         }
 
         this.columns = [{field:"strategyName", title:"策略名称"}, {field:"strategyType", title:"策略类型"},
             {field:"deviceType", title:"设备种类"}, {field:"setState", title:"设定状态"}]
+
+        this.timeStrategy = null;
+        this.renderChart = this.renderChart.bind(this);
+        this.updateChart = this.updateChart.bind(this);
 
         this.onChange = this.onChange.bind(this);
         this.tableClick = this.tableClick.bind(this);
@@ -59,6 +66,46 @@ export default class Strategy extends Component{
 
     collpseHandler(){
         this.setState({collapse: !this.state.collapse})
+    }
+
+    updateChart(){
+        const {chartId} = this.state;
+        if(!chartId) {
+            return;
+        }
+
+        let IsStart = false;
+        let IsEnd = false;
+        const {strategyList} = this.state.selectDevice;
+        let chartList = strategyList.map(strategy=>{
+            if(strategy.time.indexOf("00:00")>-1){
+                IsStart = true;
+            }
+
+            if(strategy.time.indexOf("24:00")>-1){
+                IsEnd = true;
+            }
+            return {x:strategy.time, y:/*strategy.light=="关"||strategy.light=="开"?0:*/strategy.light}
+        })
+
+        if(!IsStart){
+            chartList.unshift({x:"00:00", y:0});
+        }
+        if(!IsEnd){
+            chartList.push({x:"24:00", y:0});
+        }
+        if(chartList){
+            this.timeStrategy && this.timeStrategy.destory();
+            this.timeStrategy = timeStrategy({id:chartId, data:chartList});
+        }
+    }
+
+    renderChart(ref){
+        if(ref){
+            this.setState({chartId:ref.id}, ()=>{
+                this.updateChart();
+            });
+        }
     }
 
     render(){
@@ -93,7 +140,7 @@ export default class Strategy extends Component{
                         <div className="panel-heading">
                             <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>策略参数
                         </div>
-                        <div className="panel-body strategy-chart">
+                        <div className="panel-body strategy-chart" id="strategyChart" ref={this.renderChart}>
 
                         </div>
                     </div>
@@ -102,9 +149,13 @@ export default class Strategy extends Component{
                             <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含目标设备
                         </div>
                         <div className="panel-body">
+                            <ul>
                             {
-
+                                selectDevice.deviceList.map(device=>{
+                                    return <li key={device.id}><span>{device.name}</span>({device.groupName})</li>
+                                })
                             }
+                            </ul>
                         </div>
                     </div>
                 </SideBarInfo>
