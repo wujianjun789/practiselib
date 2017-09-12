@@ -25,11 +25,11 @@ export default class DeviceList extends Component {
     // // const showOperation = 
     // const showDiv = showIcon === false ? operations[0] : <span className='delete'></span>;
     const deviceList = data.map((item, index) => {
-      return (<li className='clearfix' key={ index } onClick={ () => this.onClick(item) }>
+      return (<li className='clearfix' key={ index }>
                 <div>
                   { item.name }
                 </div>
-                <div>
+                <div onClick={ () => this.onClick(item) }>
                   { showDiv(item) }
                 </div>
               </li>)

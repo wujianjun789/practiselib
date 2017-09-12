@@ -86,7 +86,11 @@ export class sysConfigSmartLight extends Component {
             //This state save all equipments --- whether they were added in pole or not.
             allEquipmentsData: [],
             //This state save all equipments that added into pole.
-            allPoleEquipmentsData: []
+            allPoleEquipmentsData: [],
+            editPopupSearch: Immutable.fromJS({
+                placeholder: '输入设备名称',
+                value: ''
+            })
         }
         //Table 数据相关
         this.columns = sysDataHandle.smartLight;
@@ -106,6 +110,7 @@ export class sysConfigSmartLight extends Component {
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.editButtonClick = this.editButtonClick.bind(this);
+        this.searchTextOnChange = this.searchTextOnChange.bind(this);
     }
 
 
@@ -255,7 +260,6 @@ export class sysConfigSmartLight extends Component {
     domainSelect(event) {
         let {domainList} = this.state;
         let newDataList = this.mainSelect(event, domainList);
-        //  console.log('newDataList', newDataList);
         this.setState({
             domainList: newDataList
         }, () => this.requestSearch())
@@ -283,6 +287,10 @@ export class sysConfigSmartLight extends Component {
         }, () => {
             this.requestSearch();
         });
+    }
+
+    searchTextOnChange(e) {
+        console.log(e.target);
     }
 
     //This function can update the data that you choose.The data is setted in state,can be read in some Componets here.
@@ -363,7 +371,8 @@ export class sysConfigSmartLight extends Component {
         const {overlayerShow} = this.props.actions;
         this.requestSearch();
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
-                        selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } />);
+                        selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } search={ this.state.editPopupSearch } searchTextOnChange={ this.searchTextOnChange }
+                      />);
     }
 
     //Bind on EditPopup - Confirm_Button.
