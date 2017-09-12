@@ -796,6 +796,10 @@ ul {
 .icon.icon_collect_hover{
     background: url("../images/smartLight/icon_collect_hover.png");
 }
+.icon.icon_device_operate {
+    background-image: url(../images/icon_thumb_up.png);
+    background-size: 100% 100%;
+}
 /********************lanauage switch styles*********************/
 .language-switch{
     float: right;
