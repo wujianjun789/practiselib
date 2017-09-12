@@ -6,6 +6,7 @@ import Content from '../../components/Content'
 
 import Select from '../../components/Select'
 import SearchText from '../../components/SearchText'
+import Page from '../../components/Page';
 import SceneItem from '../component/SceneItem'
 
 import Immutable from 'immutable';
@@ -20,11 +21,17 @@ export default class Scene extends Component{
                 {id:2, name:"场景2", active:false, asset:[{id:3, name:"灯1"},{id:4, name:"屏幕"}]},
                 {id:3, name:"场景3", active:false, asset:[{id:5, name:"灯1"},{id:6, name:"屏幕"}]},
                 {id:4, name:"场景4", active:false, asset:[{id:7, name:"灯1"},{id:8, name:"屏幕"}]},
-            ]
+            ],
+            page: Immutable.fromJS({
+                pageSize:12,
+                current: 1,
+                total: 0
+            }),
         }
 
         this.sortChange = this.sortChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.activeClick = this.activeClick.bind(this);
     }
@@ -35,6 +42,12 @@ export default class Scene extends Component{
 
     searchSubmit(){
 
+    }
+
+    onChange(current, pageSize) {
+        let page = this.state.page.set('current', current);
+        this.setState({page: page}, ()=>{
+        });
     }
 
     sortChange(selectIndex){
@@ -49,7 +62,7 @@ export default class Scene extends Component{
     }
 
     render(){
-        const {sort, search, sceneList} = this.state;
+        const {sort, search, sceneList,page} = this.state;
         return (
             <Content>
                 <div className="heading">
@@ -69,6 +82,8 @@ export default class Scene extends Component{
                     }
                         </div>
                 </div>
+                <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
+                      current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
             </Content>
         )
     }

@@ -18,7 +18,7 @@
         margin-left: 20px;
       }
 
-      .device {
+      .strategy {
         width: 160px;
         height: 30px;
         margin-top: 20px;
@@ -87,17 +87,19 @@
       padding: 20px;
       border: solid 1px #e6e6e6;
       background: #fff;
-      .page {
-        text-align: center
-      }
-      .page li {
-        display: inline-block
-      }
+
       -webkit-transition: margin-right .3s;
       -moz-transition: margin-right .3s;
       -ms-transition: margin-right .3s;
       -o-transition: margin-right .3s;
       transition: margin-right .3s;
+    }
+
+    .page {
+      text-align: center
+    }
+    .page li {
+      display: inline-block
     }
 
     &.collapsed {
@@ -199,6 +201,14 @@
             margin-bottom: 10px;
           }
         }
+      }
+    }
+  }
+
+  &.control-scene{
+    .content{
+      .heading{
+        margin-right: 0;
       }
     }
   }
