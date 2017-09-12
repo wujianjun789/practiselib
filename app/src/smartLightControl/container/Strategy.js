@@ -24,18 +24,22 @@ export default class Strategy extends Component{
             page: Immutable.fromJS({
                 pageSize:10,
                 current: 1,
-                total: 2
+                total: 0
             }),
 
             selectDevice:{
-                id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
+               /* id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
                 deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
-                strategyList:[]
+                strategyList:[]*/
             },
 
             data:Immutable.fromJS([
-                {id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定'},
-                {id:2, strategyName:"策略2", strategyType:'传感器策略', deviceType:'屏幕', setState:'未设定'}
+                {id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
+                    deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
+                    strategyList:[]},
+                {id:2, strategyName:"策略2", strategyType:'传感器策略', deviceType:'屏幕', setState:'未设定',
+                    deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
+                    strategyList:[]}
             ])
         }
 
@@ -57,11 +61,29 @@ export default class Strategy extends Component{
     }
 
     tableClick(row){
-
+        this.setState({selectDevice:row.toJS()}, ()=>{
+            this.updateChart();
+        });
     }
 
     onChange(key, value){
-
+        switch(key){
+            case "sort":
+            case "strategy":
+                this.setState({[key]:this.state[key].update('index', v=>value)})
+                this.setState({[key]:this.state[key].update('value', v=>{
+                    return this.state[key].getIn(['list', value, 'value']);
+                })})
+                break;
+            case "search":
+                this.setState({search:this.state.search.update("value", v=>value)});
+                break;
+            case "page":
+                let page = this.state.page.set('current', value);
+                this.setState({page: page}, ()=>{
+                });
+                break;
+        }
     }
 
     collpseHandler(){
@@ -77,6 +99,9 @@ export default class Strategy extends Component{
         let IsStart = false;
         let IsEnd = false;
         const {strategyList} = this.state.selectDevice;
+        if(!strategyList){
+            return;
+        }
         let chartList = strategyList.map(strategy=>{
             if(strategy.time.indexOf("00:00")>-1){
                 IsStart = true;
@@ -110,12 +135,13 @@ export default class Strategy extends Component{
 
     render(){
         const {sort, strategy, search, selectDevice, page, collapse, data} = this.state;
+
         return (
             <Content className={collapse?'collapsed':''}>
                 <div className="heading">
                     <Select className="sort" data={sort}
                             onChange={(selectIndex)=>this.onChange("sort", selectIndex)}/>
-                    <Select className="device" data={strategy}
+                    <Select className="strategy" data={strategy}
                      onChange={(selectIndex)=>this.onChange("strategy", selectIndex)}/>
                     <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={value=>this.onChange("search", value)} submit={()=>this.searchSubmit()}/>
@@ -123,7 +149,7 @@ export default class Strategy extends Component{
                 <div className="table-container">
                     <Table columns={this.columns} data={data} activeId={selectDevice.id} rowClick={(row)=>this.tableClick(row)}/>
                     <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
-                          current={page.get('current')} total={page.get('total')} onChange={page=>this.onChange("page", page)} />
+                          current={page.get('current')} total={page.get('total')} onChange={(current,page)=>this.onChange("page", current)} />
                 </div>
                 <SideBarInfo IsHaveMap={false} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default strategy-info">
@@ -151,7 +177,7 @@ export default class Strategy extends Component{
                         <div className="panel-body">
                             <ul>
                             {
-                                selectDevice.deviceList.map(device=>{
+                                selectDevice.deviceList && selectDevice.deviceList.map(device=>{
                                     return <li key={device.id}><span>{device.name}</span>({device.groupName})</li>
                                 })
                             }
