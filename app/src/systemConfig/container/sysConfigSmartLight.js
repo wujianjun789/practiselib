@@ -205,6 +205,7 @@ export class sysConfigSmartLight extends Component {
     //Base search function.In this function,we will call initFunctions to provide AssetData or other functions.
     //When this function is called,almost datas will be updated or init again.
     requestSearch() {
+        console.log('成功调用requestSearch!');
         const {model, domainList, search, page} = this.state;
         let domain = domainList.options.length ? domainList.options[domainList.index] : null;
         let name = search.get('value');
@@ -248,6 +249,7 @@ export class sysConfigSmartLight extends Component {
     domainSelect(event) {
         let {domainList} = this.state;
         let newDataList = this.mainSelect(event, domainList);
+        console.log('newDataList', newDataList);
         this.setState({
             domainList: newDataList
         }, () => this.requestSearch())
@@ -256,9 +258,11 @@ export class sysConfigSmartLight extends Component {
     equipmentSelect(event) {
         let {equipmentSelectList} = this.state;
         let newDataList = this.mainSelect(event, equipmentSelectList);
-        console.log('newDataList', newDataList);
         this.setState({
             equipmentSelectList: newDataList
+        }, () => {
+            this.showPopup();
+            this.requestSearch();
         })
     }
 
@@ -295,14 +299,19 @@ export class sysConfigSmartLight extends Component {
         this.setState({
             selectDevice: selectDevice
         });
-
     }
 
     initEditPopup(id, response) {
-        let assert = response;
+        let asset = response;
+        let {equipmentSelectList} = this.state;
+        equipmentSelectList.options = sysDataHandle.equipmentSelectList.options;
+        equipmentSelectList.value = equipmentSelectList.value.length === 0 ? equipmentSelectList.options[0].value : equipmentSelectList.value;
+        console.log('equipmentSelectList', equipmentSelectList);
         this.setState({
-            data: assert
-        }, () => this.showPopup());
+            data: asset
+        }, () => {
+            this.showPopup();
+        });
     }
 
     //Declaring the Table Component Function
@@ -323,6 +332,7 @@ export class sysConfigSmartLight extends Component {
     showPopup() {
         const {selectDevice} = this.state;
         const {overlayerShow} = this.props.actions;
+        this.requestSearch();
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } data={ this.state.data }
                         equipmentSelectList={ this.state.equipmentSelectList } selectValue={ this.state.selectValue } />);
     }
