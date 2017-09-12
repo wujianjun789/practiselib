@@ -87,15 +87,24 @@
       }
     }
 
-    > .lc,
-    > .lcc,
-    > .sensor,
-    > .screen,
-    > .smartLight,
-    > .xes,
-    > .pole,
-    > .gateway{
-      margin-right: 300px;
+    // > .lc,
+    // > .lcc,
+    // > .sensor,
+    // > .screen,
+    // > .smartLight,
+    // > .xes,
+    // > .pole,
+    // > .gateway{
+    //   margin-right: 300px;
+    //   -webkit-transition: margin-right .3s;
+    //   -moz-transition: margin-right .3s;
+    //   -ms-transition: margin-right .3s;
+    //   -o-transition: margin-right .3s;
+    //   transition: margin-right .3s;
+    // }
+
+    .table-container {
+      margin-right: 320px;
       -webkit-transition: margin-right .3s;
       -moz-transition: margin-right .3s;
       -ms-transition: margin-right .3s;
@@ -103,15 +112,20 @@
       transition: margin-right .3s;
     }
 
+    // &.collapsed {
+    //   > .lc,
+    //   > .lcc,
+    //   > .sensor,
+    //   > .screen,
+    //   > .xes,
+    //   > .pole,
+    //   > .gateway{
+    //     margin-right: 60px;
+    //   }
+    // }
     &.collapsed {
-      > .lc,
-      > .lcc,
-      > .sensor,
-      > .screen,
-      > .xes,
-      > .pole,
-      > .gateway{
-        margin-right: 60px;
+      .table-container{
+        margin-right: 80px;
       }
     }
   }
