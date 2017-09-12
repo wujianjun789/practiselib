@@ -171,6 +171,11 @@ export default (
                                                                  cb(null, require('../systemConfig/container/sysConfigSmartLight').default)
                                                              }, 'starriverpro.systemconfig.sysConfigSmartLight')
                                                          } } />
+        <Route path="sysConfigScene" getComponent={ (nextState, cb) => {
+                                                             require.ensure([], require => {
+                                                                 cb(null, require('../systemConfig/container/sysConfigScene').default)
+                                                             }, 'starriverpro.systemconfig.sysConfigScene')
+                                                         } } />
       </Route>
       <Route path="deviceMonitor">
         <Route path="deviceTopology" getComponent={ (nextState, cb) => {
