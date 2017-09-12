@@ -5,7 +5,7 @@ import SearchText from '../../components/SearchText';
 import Table from '../../components/Table2';
 import Immutable from 'immutable';
 import Select from '../../components/Select.1'
-
+import {getIndexByKey2} from '../../util/algorithm'
 export default class DataOriginPopup extends Component {
     constructor(props) {
         super(props);
@@ -33,6 +33,7 @@ export default class DataOriginPopup extends Component {
         this.onConfirm = this.onConfirm.bind(this);
         this.onChange = this.onChange.bind(this);
         this.rfidDelete = this.rfidDelete.bind(this);
+        this.rfidAdd = this.rfidAdd.bind(this);
     }
 
     componentWillMount(){  
@@ -49,16 +50,36 @@ export default class DataOriginPopup extends Component {
     }
 
     onConfirm() {
+        let data = this.props.type == 'XES-200S'?getCheckedSensor():this.state.rfidList;
         this.props.overlayerHide();
-        this.props.onConfirm && this.props.onConfirm();
+        this.props.onConfirm && this.props.onConfirm(data,this.props.type);
     }
 
     onChange(e){
         this.setState({dataOrigin:this.state.dataOriList.options[e.target.selectedIndex].value})
     }
 
+    getCheckedSensor(){
+        let sensors = document.getElementsByName('sensor');
+        let checked_val = [];
+        for(let i in sensors){
+            if(sensors[i].checked)
+                checked_val.push(sensors[i].value);
+        }
+        return checked_val;
+    }
+
+    rfidAdd(id){
+        let {rfidList} = this.state;
+        rfidList.push();
+        this.setState({rfidList:rfidList});
+    }
+
     rfidDelete(id){
-        console.log(id);
+        let {rfidList} = this.state;
+        let index = getIndexByKey2(rfidList,'id',id);
+        rfidList.splice(index,1);
+        this.setState({rfidList:rfidList});        
     }
 
     render() {
@@ -77,7 +98,7 @@ export default class DataOriginPopup extends Component {
                                 {
                                     sensorTypeList.map(item=>{
                                         return <label className="checkbox-inline" key={item.value}>
-                                            <input type="checkbox" value={item.value} /> {item.title}
+                                            <input type="checkbox" name='sensor' value={item.value} /> {item.title}
                                         </label>
                                     })
                                 }
@@ -86,7 +107,7 @@ export default class DataOriginPopup extends Component {
                             <div className="rfid-label">
                                 <div className="form-group clearfix">
                                     <input type="text" className="form-control" placeholder="输入编号添加" />
-                                    <button className='btn btn-primary'>添加</button>
+                                    <button className='btn btn-primary' onClick={this.rfidAdd}>添加</button>
                                 </div>
                                 <ul className = 'label-list'>
                                     <li>标签</li>

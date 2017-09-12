@@ -1,36 +1,56 @@
 /**
- * Created by a on 2017/8/1.
+ * Created by mx on 2017/9/11.
+ * systemOperation/systemConfig/smartLightComponent;
  */
+
+// import BaseFunction/Component
 import React, { Component } from 'react';
+import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+// import styleSheet and other common-components
+import '../../../public/styles/systemOperation-sysConfig.less';
+
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select.1';
-import WhiteListPopup from '../components/WhiteListPopup';
-import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
+        // import WhiteListPopup from '../components/WhiteListPopup';
+        // import CentralizedControllerPopup from '../components/CentralizedControllerPopup';//设备编辑弹出框
 import ConfirmPopup from '../../components/ConfirmPopup';
-import Immutable from 'immutable';
-import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
-
 import Content from '../../components/Content';
 
+
+// import functions
+import { getDomainList } from '../../api/domain';
 import { TreeData, getModelData, getModelList, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
-
-import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
+import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
+import { treeViewInit } from '../../common/actions/treeView';
+import { getObjectByKey } from '../../util/index';
 
-import { requestWhiteListCountById } from '../../api/domain'
-import { getObjectByKey } from '../../util/index'
+//import netRequestAPI
+import { getSceneList } from '../../api/scene.js';   /////******* */
 
-import { treeViewInit } from '../../common/actions/treeView'
-export class LampConCenter extends Component {
+//inport childrenComponentsModel
+import SiderBarComponent from '../components/SideBarComponents.js';
+import EditPopup from '../components/EditPopup';
+
+//import initDataModel
+import { sysDataHandle } from '../model/sysDataHandle';
+import { sysInitStateModel } from '../model/sysInitStateModel';
+
+        //import { requestWhiteListCountById } from '../../api/domain';
+
+
+export class sysConfigScene extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: "gateway",
+            IsHaveMap:false,
+            model: "scene",
             collapse: false,
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -43,6 +63,8 @@ export class LampConCenter extends Component {
             }),
             selectDevice: {
                 id: "systemOperation",
+                // latlng:{lng: 121.49971691534425,
+                //     lat: 31.239658843127756},
                 position: [],
                 data: [],
                 whiteCount: 0
@@ -53,7 +75,41 @@ export class LampConCenter extends Component {
                 index: 0,
                 value: "",
                 options: [
-                    
+                    {
+                        id: 1,
+                        title: 'domain01',
+                        value: 'domain01'
+                    },
+                    {
+                        id: 2,
+                        title: 'domain02',
+                        value: 'domain02'
+                    },
+                    {
+                        id: 3,
+                        title: 'domain03',
+                        value: 'domain03'
+                    },
+                    {
+                        id: 4,
+                        title: 'domain04',
+                        value: 'domain04'
+                    },
+                    {
+                        id: 5,
+                        title: 'domain05',
+                        value: 'domain05'
+                    },
+                    {
+                        id: 6,
+                        title: 'domain06',
+                        value: 'domain06'
+                    },
+                    {
+                        id: 7,
+                        title: 'domain07',
+                        value: 'domain07'
+                    }
                 ]
             },
             modelList: {
@@ -74,6 +130,26 @@ export class LampConCenter extends Component {
                         id: 3,
                         title: 'model03',
                         value: 'model03'
+                    },
+                    {
+                        id: 4,
+                        title: 'model04',
+                        value: 'model04'
+                    },
+                    {
+                        id: 5,
+                        title: 'model05',
+                        value: 'model05'
+                    },
+                    {
+                        id: 6,
+                        title: 'model06',
+                        value: 'model06'
+                    },
+                    {
+                        id: 7,
+                        title: 'model07',
+                        value: 'model07'
                     }
                 ]
             },
@@ -159,7 +235,10 @@ export class LampConCenter extends Component {
 
     componentWillMount() {
         this.mounted = true;
-        let {model} = this.state;
+        let model = 'scene';
+        const {route} = this.props;
+        // let {model} = this.state;
+        // let model = route && route.path;
         getModelData(model, () => {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
@@ -186,30 +265,11 @@ export class LampConCenter extends Component {
         this.mounted = false;
     }
 
-    requestSearch() {
-        const {model, domainList, search, page} = this.state
-        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-        let name = search.get('value');
-        let cur = page.get('current');
-        let size = page.get('pageSize');
-        let offset = (cur - 1) * size;
-        getSearchCount(domain ? domain.id : null, model, name, data => {
-            this.mounted && this.initPageSize(data)
-        })
 
-        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-            this.mounted && this.initAssetList(data);
-            this.requestWhiteListCount();
-        })
-    }
 
-    initPageSize(data) {
-        let page = this.state.page.set('total', data.count);
-        this.setState({
-            page: page
-        });
-    }
-
+/**
+ * Declare functions
+ */
     initDomainList(data) {
         let domainList = Object.assign({}, this.state.domainList, {
             index: 0
@@ -253,6 +313,37 @@ export class LampConCenter extends Component {
             });
         }
     }
+
+
+
+
+
+    requestSearch() {
+        const {model, domainList, search, page} = this.state
+        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
+        let name = search.get('value');
+        let cur = page.get('current');
+        let size = page.get('pageSize');
+        let offset = (cur - 1) * size;
+        getSearchCount(domain ? domain.id : null, model, name, data => {
+            this.mounted && this.initPageSize(data)
+        })
+
+        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
+            this.mounted && this.initAssetList(data);
+            this.requestWhiteListCount();
+        })
+    }
+
+    initPageSize(data) {
+        let page = this.state.page.set('total', data.count);
+        this.setState({
+            page: page
+        });
+    }
+
+
+
 
     requestWhiteListCount() {
         const {selectDevice} = this.state;
@@ -409,24 +500,24 @@ export class LampConCenter extends Component {
     }
 
     render() {
-        const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
-        return <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
-                
+        const {model, collapse, page, search, selectDevice, domainList, data, IsHaveMap} = this.state;
+        return <div id ='sysConfigScene'>
+                <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '')}>
                  <div className="heading">
                    <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                    <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                    <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
                  </div>
-                 <div className='gateway'>
+                 <div className='lcc'>
                    <div className="table-container">
                      <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
                      <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
                    </div>
                  </div>
-                 <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
+                 <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler } IsHaveMap = {IsHaveMap} >
                    <div className="panel panel-default device-statics-info">
                      <div className="panel-heading">
-                       <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
+                       <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中场景
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
@@ -438,7 +529,7 @@ export class LampConCenter extends Component {
                    </div>
                    <div className="panel panel-default device-statics-info whitelist">
                      <div className="panel-heading">
-                       <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>白名单
+                       <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含设备
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ `包含：${selectDevice.whiteCount} 个设备` }</span>
@@ -449,6 +540,7 @@ export class LampConCenter extends Component {
                    </div>
                  </SideBarInfo>
                </Content>
+            </div>
     }
 }
 
@@ -465,4 +557,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LampConCenter);
+export default connect(mapStateToProps, mapDispatchToProps)(sysConfigScene);
