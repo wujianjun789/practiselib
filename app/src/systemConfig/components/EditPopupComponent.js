@@ -21,9 +21,9 @@ export default class EditPopupComponet extends Component {
               <span>选择设备:</span>
               <div className='edit_selectdevice-content clearfix'>
                 <div>
-                  <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...props.equipmentSelectList}/>
+                  <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...equipmentSelectList}/>
                   <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' />
-                  <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } {...props}/>
+                  <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } data={ this.props.allEquipmentsData } />
                 </div>
                 <div className='edit_whole-content clearfix'>
                   <ul className='edit_whole-ul'>
