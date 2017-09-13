@@ -81,7 +81,7 @@ export default class Table extends Component {
                                 {
                                     isEdit &&
                                         <td className="edit">
-                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="update">修改</span><svg><use xlinkHref={"#logo_domain"} className="logo_update" transform="scale(0.075,0.075)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg></a>
+                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="update">修改</span><svg><use xlinkHref={"#logo_update"} className="logo_update" transform="scale(0.075,0.075)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg></a>
                                         <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="del">删除</span><svg><use xlinkHref={"#logo_del"} className="logo_del" transform="scale(0.08,0.08)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg></a>
                                         </td>
                                 }
