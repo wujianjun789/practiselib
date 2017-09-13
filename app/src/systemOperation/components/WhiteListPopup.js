@@ -20,7 +20,7 @@ export default class WhiteListPopup extends Component {
         }
 
         this.columns = [
-            {field: "type", title: "型号"},
+            {field: "name", title: "名称"},
             {field: "id", title: "编号"},
         ];
 
@@ -32,8 +32,6 @@ export default class WhiteListPopup extends Component {
         this.itemDelete = this.itemDelete.bind(this);
         this.initWhiteList = this.initWhiteList.bind(this);
         this.updateWhiteList = this.updateWhiteList.bind(this);
-        this.searchSubmit = this.searchSubmit.bind(this);
-        this.itemClick = this.itemClick.bind(this);
         this.initLcsList = this.initLcsList.bind(this);
     }
 
@@ -59,7 +57,10 @@ export default class WhiteListPopup extends Component {
     }
 
     updateWhiteList(data){
-        this.setState({whiteList:data});
+        let whiteList = data.map(item=>{
+            return {id:item.id,name:item.base.name}
+        })
+        this.setState({whiteList:whiteList});
     }
 
     onAdd() {                  //向whitelist中添加需要的数据,然后更新列表视图
@@ -114,20 +115,6 @@ export default class WhiteListPopup extends Component {
         this.setState({search:newValue});
     }
 
-
-    itemClick(itemIndex){
-        // this.setState({ activeIndex:itemIndex});
-    }
-
-    searchSubmit(){
-        const {search} = this.state;
-        let value = search.value;
-        this.props.searchSubmit && this.props.searchSubmit(value);
-        let newValue = Object.assign({}, search, {value: value});
-        this.setState({search: newValue});
-    }
-
-
     render() {
         let {className='', id} = this.props;
         let {search, whiteList} = this.state;
@@ -140,14 +127,12 @@ export default class WhiteListPopup extends Component {
                 datalist.push({id:item.id, value:item.name})
             }
         }
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
-                                  btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
-                                  
+        let footer = <div className='modal-footer'><button type="button" className='btn btn-primary' onClick={this.onConfirm}>完成</button></div>
+            
         return <div className={className}>
             <Panel title='白名单' footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row search-group">
-                    <SearchText IsTip={true} datalist = {datalist} placeholder={search.placeholder}  value={search.value} 
-                        onChange={this.searchChange} itemClick={this.itemClick} submit={this.searchSubmit}/>
+                    <SearchText IsTip={true} datalist = {datalist} placeholder={search.placeholder}  value={search.value} onChange={this.searchChange}/>
                     <button className="btn btn-primary" onClick={this.onAdd}>添加</button>
                 </div>
                 <div className="table-list">

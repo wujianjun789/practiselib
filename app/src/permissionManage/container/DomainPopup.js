@@ -14,7 +14,7 @@ import {getUserDomainList} from '../../api/permission';
 import SearchText from '../../components/SearchText';
 import Node from '../../components/Node';
 import {getIndexByKey,getObjectByKey,getListKeyByKeyFuzzy,getObjectByKeyObj,getListKeyByKey} from '../../util/algorithm';
-const _ = require('lodash');
+import {makeTree} from '../../util/index'
 import {updateUserDomain} from '../../api/permission'
 export class DomainPopup extends Component{
     constructor(props){
@@ -59,22 +59,9 @@ export class DomainPopup extends Component{
             item.hidden = false;            
         })
         this.setState({nodes:Immutable.fromJS(response)});
-        let tree = this.makeTree(response);
+        let tree = makeTree(response);
         this.setState({tree:tree});
     }
-
-    makeTree(pre) {
-        const data = pre.map((v)=>{
-          if(!v.parentId) v.parentId='';
-          return v;
-        })
-        let groupedByParents = _.groupBy(data, 'parentId');
-        let keysById = _.keyBy(data, 'id');
-        _.each(_.omit(groupedByParents, ''), function(children, parentId) {
-            keysById[parentId].children = children; 
-        });
-        return groupedByParents[''];
-      }
 
     userDomainHandle(datas){
         this.setState({domainList:Immutable.fromJS(datas.domains)},

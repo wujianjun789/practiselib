@@ -527,17 +527,16 @@ export class sysConfigScene extends Component {
                        </button>
                      </div>
                    </div>
-                   <div className="panel panel-default device-statics-info whitelist">
+                   <div className="panel panel-default device-statics-info max-height">
                      <div className="panel-heading">
                        <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含设备
                      </div>
-                     <div className="panel-body domain-property">
-                       <span className="domain-name">{ `包含：${selectDevice.whiteCount} 个设备` }</span>
-                       <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>
-                         编辑
-                       </button>
-                     </div>
+
                    </div>
+                    <div className="panel-body domain-property domain-content">
+                       <div className="">灯（疏影路组）</div>
+                       <div className="">屏幕（疏影路组）</div>
+                     </div>
                  </SideBarInfo>
                </Content>
             </div>

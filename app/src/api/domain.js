@@ -121,7 +121,8 @@ export function getRelatedDomainById(id,cb){
 
 export function getWhiteListById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/lccs/${id}/whiteList`, {
+    let param = JSON.stringify({include:['base']});
+    httpRequest(`${HOST_IP}/lccs/${id}/whiteList?filter=${encodeURIComponent(param)}`, {
         headers: headers,
         method: 'GET'
     }, response=>{

@@ -1,6 +1,7 @@
 /**
  * Created by a on 2017/7/13.
  */
+const _ = require('lodash');
 let language = "";
 export function getLanguage() {
     if (!language) {
@@ -95,6 +96,8 @@ export function getClassByModel(key) {
             return 'icon_screen';
         case 'xes':
             return 'icon_collect';
+        case 'scene':
+            return 'icon_scene';
         default:
             return 'icon_led_light';
     }
@@ -194,4 +197,17 @@ export function latlngValid(str) {
 
 export function PassWordValid(password) {
     return /^[_0-9a-zA-Z]+$/.test(password);
+}
+
+export function makeTree(pre){
+    const data = pre.map((v)=>{
+      if(!v.parentId) v.parentId='';
+      return v;
+    })
+    let groupedByParents = _.groupBy(data, 'parentId');
+    let keysById = _.keyBy(data, 'id');
+    _.each(_.omit(groupedByParents, ''), function(children, parentId) {
+        keysById[parentId].children = children; 
+    });
+    return groupedByParents[''];
 }
