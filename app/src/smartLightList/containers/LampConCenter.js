@@ -188,7 +188,7 @@ export default class LampConCenter extends Component{
                         </div>
                         <div className="panel panel-default panel-2">
                             <div className="panel-heading">
-                                <span className="icon icon_device_operate"></span>设备操作
+                                <span className="icon_device_operate"></span>设备操作
                             </div>
                             <div className="panel-body">
                                 <div>
