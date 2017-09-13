@@ -2,17 +2,21 @@
  * Created by a on 2017/9/1.
  */
 import React,{Component} from 'react';
-import Content from '../../components/Content'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux'
 
+import Content from '../../components/Content'
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
+import StrategySetPopup from '../component/StrategySetPopup'
 
+import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {timeStrategy} from '../util/chart'
 import Immutable from 'immutable';
-export default class Strategy extends Component{
+export class Strategy extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -28,9 +32,9 @@ export default class Strategy extends Component{
             }),
 
             selectDevice:{
-               /* id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
+                id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
                 deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
-                strategyList:[]*/
+                strategyList:[]
             },
 
             data:Immutable.fromJS([
@@ -57,7 +61,11 @@ export default class Strategy extends Component{
     }
 
     setHandler(){
-
+        const {actions} = this.props
+        actions.overlayerShow(<StrategySetPopup title="设定设备"
+                                                onConfirm={()=>{}} onCancel={()=>{
+                                                    actions.overlayerHide();
+                                                }}/>);
     }
 
     tableClick(row){
@@ -189,3 +197,19 @@ export default class Strategy extends Component{
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+        overlayerShow: overlayerShow,
+        overlayerHide: overlayerHide
+    }, dispatch),
+})
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(Strategy);
