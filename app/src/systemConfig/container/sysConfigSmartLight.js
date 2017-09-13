@@ -34,7 +34,7 @@ import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
 import { intersection } from '../model/sysAlgorithm.js';
 //import netRequestAPI
-import { getPoleList, requestPoleAssetById } from '../../api/pole.js';
+import { getPoleList, requestPoleAssetById, getPoleAssetsListByPoleId } from '../../api/pole.js';
 
 //import childrenComponentsModel
 import SiderBarComponet from '../components/SideBarComponents.js';
@@ -162,6 +162,10 @@ export class sysConfigSmartLight extends Component {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
                 domainName = domain ? domain.name : "";
             }
+            let screen = 0;
+            let newList = getPoleAssetsListByPoleId(asset.id, data => data)
+
+            console.log(newList)
             //return a new object that contains all properties that we need;
             return {
                 ...asset,
@@ -173,6 +177,9 @@ export class sysConfigSmartLight extends Component {
                 },
                 ...{
                     typeName: getModelTypesNameById(this.state.model, asset.extend.type)
+                },
+                ...{
+                    screenCount: 3
                 }
             }
         });
@@ -317,7 +324,6 @@ export class sysConfigSmartLight extends Component {
     }
 
     showPopup() {
-        console.log('调用了');
         const {selectDevice, allEquipmentsData, allPoleEquipmentsData} = this.state;
         const {overlayerShow} = this.props.actions;
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
@@ -357,7 +363,8 @@ export class sysConfigSmartLight extends Component {
                 </header>
                 <div className="table-container">
                   <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />
-                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
+                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                  />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
                   <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />

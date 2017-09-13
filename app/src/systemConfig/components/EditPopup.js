@@ -46,7 +46,6 @@ export default class EditPopup extends Component {
             const {selectDevice} = this.state;
             const id = selectDevice.data[0].id;
             getPoleAssetById(id, (id, response) => {
-                console.log(id, response);
                 this.initEditPopup(id, response);
             });
         });
@@ -120,7 +119,9 @@ export default class EditPopup extends Component {
         let poleId = selectDevice.data[0].id;
         let assetId = item.id;
         let requestType = 'PUT';
-        requestPoleAssetById(poleId, assetId, requestType);
+        requestPoleAssetById(poleId, assetId, requestType, () => getPoleAssetById(poleId, (id, response) => {
+            this.initEditPopup(id, response);
+        }));
     }
 
     deleteClick(item) {
@@ -128,7 +129,9 @@ export default class EditPopup extends Component {
         let poleId = selectDevice.data[0].id;
         let assetId = item.id;
         let requestType = 'DELETE';
-        requestPoleAssetById(poleId, assetId, requestType);
+        requestPoleAssetById(poleId, assetId, requestType, () => getPoleAssetById(poleId, (id, response) => {
+            this.initEditPopup(id, response);
+        }));
     }
 
     render() {
