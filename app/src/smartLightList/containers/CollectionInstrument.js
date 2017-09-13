@@ -44,7 +44,7 @@ export default class CollectionInstrument extends Component{
             {field: 'faultStatus', title: '故障状态'},
         ];
 
-        this.collpseHandler = this.collpseHandler.bind(this);
+        this.collapseHandler = this.collapseHandler.bind(this);
         this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -131,7 +131,7 @@ export default class CollectionInstrument extends Component{
         this.initDeviceData(true);
     }
 
-    collpseHandler(){
+    collapseHandler(){
         this.setState({sidebarCollapse: !this.state.sidebarCollapse});
     }
 
@@ -159,7 +159,7 @@ export default class CollectionInstrument extends Component{
                         </div>
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
-                        <div className="row collapse-container" onClick={this.collpseHandler}>
+                        <div className="row collapse-container" onClick={this.collapseHandler}>
                             <span className={sidebarCollapse ? "icon_horizontal"  :"icon_verital"}></span>
                         </div>
                         <div className="panel panel-default panel-1">
@@ -167,7 +167,7 @@ export default class CollectionInstrument extends Component{
                                 <span className="icon_sys_select"></span>选中设备
                             </div>
                             <div className="panel-body">
-                                <span>{currentDevice == null ? '' : currentDevice.name}</span>
+                                <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
                             </div>
                         </div>
                     </div>
