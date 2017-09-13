@@ -31,13 +31,17 @@ export default class ServiceMonitoring extends Component{
     }
 
     componentWillMount(){
-
+        this.interval = setInterval(()=>{
+            this.initResult();
+        },1000)
     }
 
     componentDidMount(){
-        setInterval(()=>{
-            this.initResult();
-        },1000)
+
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.interval);
     }
 
     componentDidUpdate(){
@@ -45,6 +49,7 @@ export default class ServiceMonitoring extends Component{
     }
 
     initResult(){
+        console.log('%%%%%%%%%%%%%%%');
         for(let key in this.state.data)
         {
             if(this.state.data[key].list.length>=10){
