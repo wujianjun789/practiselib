@@ -167,7 +167,7 @@ export default class CollectionInstrument extends Component{
                                 <span className="icon_sys_select"></span>选中设备
                             </div>
                             <div className="panel-body">
-                                <span className="domain-name">{currentDevice == null ? '' : currentDevice.name}</span>
+                                <span>{currentDevice == null ? '' : currentDevice.name}</span>
                             </div>
                         </div>
                     </div>

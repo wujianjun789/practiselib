@@ -183,7 +183,7 @@ export default class LampConCenter extends Component{
                                 <span className="icon_sys_select"></span>选中设备
                             </div>
                             <div className="panel-body">
-                                <span className="domain-name">{currentDevice == null ? '' : currentDevice.name}</span>
+                                <span>{currentDevice == null ? '' : currentDevice.name}</span>
                             </div>
                         </div>
                         <div className="panel panel-default panel-2">
