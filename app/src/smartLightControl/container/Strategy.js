@@ -15,13 +15,15 @@ import StrategySetPopup from '../component/StrategySetPopup'
 
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {timeStrategy} from '../util/chart'
+
+import {getStrategyListByName} from '../../api/strategy'
 import Immutable from 'immutable';
 export class Strategy extends Component{
     constructor(props){
         super(props);
         this.state = {
             sort:Immutable.fromJS({list:[{id:1, value:'场景序号'},{id:2, value:'设备多少'}], index:0, value:'场景序号',placeholder:"排序"}),
-            strategy:Immutable.fromJS({list:[{id:1, value:'时间策略'},{id:2, value:'传感器策略'},{id:3, value:'经纬度策略'}],index:0, value:'时间策略',placeholder:'策略类型'}),
+            strategy:Immutable.fromJS({list:[{id:"time", value:'时间策略'},{id:"sensor", value:'传感器策略'},{id:"latlng", value:'经纬度策略'}],index:0, value:'时间策略',placeholder:'策略类型'}),
             search:Immutable.fromJS({placeholder:'输入策略名称', value:''}),
 
             collapse:false,
@@ -32,23 +34,23 @@ export class Strategy extends Component{
             }),
 
             selectDevice:{
-                id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
+                id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
                 deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
                 strategyList:[]
             },
 
             data:Immutable.fromJS([
-                {id:1, strategyName:"策略1", strategyType:'传感器策略', deviceType:'灯', setState:'已设定',
+                {id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
                     deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
                     strategyList:[]},
-                {id:2, strategyName:"策略2", strategyType:'传感器策略', deviceType:'屏幕', setState:'未设定',
+                {id:2, name:"策略2", type:'传感器策略', asset:'screen', setState:'未设定',
                     deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
                     strategyList:[]}
             ])
         }
 
-        this.columns = [{field:"strategyName", title:"策略名称"}, {field:"strategyType", title:"策略类型"},
-            {field:"deviceType", title:"设备种类"}, {field:"setState", title:"设定状态"}]
+        this.columns = [{field:"name", title:"策略名称"}, {field:"type", title:"策略类型"},
+            {field:"asset", title:"设备种类"}, {field:"setState", title:"设定状态"}]
 
         this.timeStrategy = null;
         this.renderChart = this.renderChart.bind(this);
@@ -58,11 +60,43 @@ export class Strategy extends Component{
         this.tableClick = this.tableClick.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.setHandler = this.setHandler.bind(this);
+
+        this.requestSearch = this.requestSearch.bind(this);
+        this.initData = this.initData.bind(this);
+    }
+
+    componentWillMount(){
+        this.mounted = true;
+        this.requestSearch();
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    requestSearch(){
+        const {strategy, search, page} = this.state;
+        let model = strategy.getIn(["list", strategy.get("index"), "id"]);
+        let limit = page.get("pageSize");
+        let offset = (page.get("current")-1)*limit;
+        getStrategyListByName(model, search.get("value"), offset, limit, (data)=>{
+            this.mounted && this.initData(data)
+        })
+    }
+
+    initData(data){
+        console.log(data);
+        this.setState({data:Immutable.fromJS(data)});
+
+        if(data.length){
+            this.setState({selectDevice:data[0]});
+        }
     }
 
     setHandler(){
+        const {selectDevice} = this.state;
         const {actions} = this.props
-        actions.overlayerShow(<StrategySetPopup title="设定设备"
+        actions.overlayerShow(<StrategySetPopup title="设定设备" deviceType={selectDevice.asset}
                                                 onConfirm={()=>{}} onCancel={()=>{
                                                     actions.overlayerHide();
                                                 }}/>);
