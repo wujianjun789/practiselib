@@ -106,6 +106,17 @@ export function requestPoleAssetById(poleId, assetId, requestType, callback) {
     })
 }
 
+export function getPoleAssetsListByPoleId(poleId, callback) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP + '/poles/' + poleId + '/assets', {
+        headers: headers,
+        method: 'GET'
+    }, response => {
+        //return response;
+        callback && callback(response)
+    })
+}
+
 // export function deletePoleAssetById(poleId,assetId,callback){
 
 // }
