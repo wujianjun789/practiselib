@@ -391,7 +391,7 @@ export class LampConCenter extends Component {
                 break;
             case 'sys-whitelist':
                 let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
+                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } domainId={ selectDevice.domainId } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
                                                                                                                                  this.requestWhiteListCount()
                                                                                                                              } } />)
                 break;
@@ -485,7 +485,7 @@ export class LampConCenter extends Component {
                        <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                      </div>
                      <div className="panel-body domain-property">
-                       <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
+                       <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
                        <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>编辑
                        </button>
                        <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>删除

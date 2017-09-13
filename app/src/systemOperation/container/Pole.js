@@ -374,7 +374,7 @@ export class Sensor extends Component {
                        </svg>选中设备
                      </div>
                      <div className="panel-body domain-property">
-                       <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
+                       <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
                        <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>编辑
                        </button>
                        <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>删除
