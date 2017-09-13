@@ -391,7 +391,7 @@ export class LampConCenter extends Component {
                 break;
             case 'sys-whitelist':
                 let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
+                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } domainId={ selectDevice.domainId } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
                                                                                                                                  this.requestWhiteListCount()
                                                                                                                              } } />)
                 break;
