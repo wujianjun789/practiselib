@@ -40,7 +40,6 @@ export const sysDataHandle = {
     //provide data that used to selectDomain in <Select change/>
     select(event, dataList) {
         let index = event.target.selectedIndex;
-        console.log('INDEX', index);
         console.log('dataList-value', dataList);
         return {
             index: index,

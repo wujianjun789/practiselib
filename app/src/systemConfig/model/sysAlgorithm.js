@@ -18,6 +18,6 @@ export const intersection = (arrayA, arrayB) => {
             item.added = true;
         }
     })
-    console.log('newList', arrayA);
+    //console.log('newList', arrayA);
     return arrayA;
 }

@@ -77,7 +77,6 @@ export function getPoleAssetById(id, cb) {
     }, response => {
         //return response;
         cb && cb(id, response);
-    //console.log(response)
     })
 }
 
@@ -95,6 +94,32 @@ export function getPoleListByModelDomainId(model, domainId) {
             cb && cb(response);
         })
 }
+
+//Bind asset into pole by id
+export function requestPoleAssetById(poleId, assetId, requestType, callback) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP + '/poles/' + poleId + '/assets/rel/' + assetId, {
+        headers: headers,
+        method: requestType
+    }, response => {
+        callback && callback(response)
+    })
+}
+
+export function getPoleAssetsListByPoleId(poleId, callback) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP + '/poles/' + poleId + '/assets', {
+        headers: headers,
+        method: 'GET'
+    }, response => {
+        //return response;
+        callback && callback(response)
+    })
+}
+
+// export function deletePoleAssetById(poleId,assetId,callback){
+
+// }
 
 //http://localhost:3000/api/poles/001/assets?
 // export function getPoleAssertListsById(poleId,cb){

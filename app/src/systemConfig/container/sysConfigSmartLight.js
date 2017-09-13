@@ -34,7 +34,7 @@ import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
 import { intersection } from '../model/sysAlgorithm.js';
 //import netRequestAPI
-import { getPoleList } from '../../api/pole.js';
+import { getPoleList, requestPoleAssetById, getPoleAssetsListByPoleId } from '../../api/pole.js';
 
 //import childrenComponentsModel
 import SiderBarComponet from '../components/SideBarComponents.js';
@@ -86,11 +86,7 @@ export class sysConfigSmartLight extends Component {
             //This state save all equipments --- whether they were added in pole or not.
             allEquipmentsData: [],
             //This state save all equipments that added into pole.
-            allPoleEquipmentsData: [],
-            editPopupSearch: Immutable.fromJS({
-                placeholder: '输入设备名称',
-                value: ''
-            })
+            allPoleEquipmentsData: []
         }
         //Table 数据相关
         this.columns = sysDataHandle.smartLight;
@@ -101,7 +97,6 @@ export class sysConfigSmartLight extends Component {
         this.showPopup = this.showPopup.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.onConfirmed = this.onConfirmed.bind(this);
-        this.onDeleted = this.onDeleted.bind(this);
         this.closeClick = this.closeClick.bind(this);
         this.equipmentSelect = this.equipmentSelect.bind(this);
         this.rowClick = this.rowClick.bind(this);
@@ -110,7 +105,6 @@ export class sysConfigSmartLight extends Component {
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.editButtonClick = this.editButtonClick.bind(this);
-        this.searchTextOnChange = this.searchTextOnChange.bind(this);
     }
 
 
@@ -168,6 +162,10 @@ export class sysConfigSmartLight extends Component {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
                 domainName = domain ? domain.name : "";
             }
+            let screen = 0;
+            let newList = getPoleAssetsListByPoleId(asset.id, data => data)
+
+            console.log(newList)
             //return a new object that contains all properties that we need;
             return {
                 ...asset,
@@ -179,6 +177,9 @@ export class sysConfigSmartLight extends Component {
                 },
                 ...{
                     typeName: getModelTypesNameById(this.state.model, asset.extend.type)
+                },
+                ...{
+                    screenCount: 3
                 }
             }
         });
@@ -188,7 +189,6 @@ export class sysConfigSmartLight extends Component {
     }
 
     initSelectDevice(data) {
-        // console.log('initSelectDevice', data);
         if (data.length) {
             let item = data[0];
             this.updateSelectDevice(item);
@@ -269,13 +269,10 @@ export class sysConfigSmartLight extends Component {
         let {equipmentSelectList} = this.state;
         let newDataList = this.mainSelect(event, equipmentSelectList);
         this.searchAssetsByModel(newDataList);
-        console.log('123', newDataList);
-        //console.log(intersection(this.state.equipmentSelectList, this.state.allPoleEquipmentsData));
         this.setState({
             equipmentSelectList: newDataList
         }, () => {
             this.showPopup();
-            this.requestSearch();
         })
     }
 
@@ -289,13 +286,10 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
-    searchTextOnChange(e) {
-        console.log(e.target);
-    }
-
     //This function can update the data that you choose.The data is setted in state,can be read in some Componets here.
     //Base function.
     updateSelectDevice(item) {
+        console.log('item', item);
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
         selectDevice.data.splice(0);
@@ -318,39 +312,6 @@ export class sysConfigSmartLight extends Component {
         });
     }
 
-    initEditPopup(id, response) {
-        let asset = response;
-        let {equipmentSelectList} = this.state;
-        //console.log('equipmentSelectList', equipmentSelectList);
-
-        /*  Redirect equipmentSelectList's initData.For some reason,there still exeits some logic mistake.
-         *  options: options are displayed in <Select /> componets in EditPopup,such as ['灯','显示屏','传感器']
-         *  value: value is the model that we need to search all the same assets
-         */
-        equipmentSelectList.options = sysDataHandle.equipmentSelectList.options;
-        equipmentSelectList.value = equipmentSelectList.value.length === 0 ? equipmentSelectList.options[0].value : equipmentSelectList.value;
-        this.searchAssetsByModel(equipmentSelectList);
-        this.setState({
-            allPoleEquipmentsData: asset
-        }, () => {
-            this.showPopup();
-        });
-    }
-
-    searchAssetsByModel(equipmentSelectList) {
-        let {index, options} = equipmentSelectList;
-        let assetModel = options[index].title;
-        getAssetsBaseByModel(assetModel, data => {
-            // console.log('AssetsModel', data);
-            // console.log('allPoleEquipmentsData', this.state.allPoleEquipmentsData)
-            let newList = intersection(data, this.state.allPoleEquipmentsData);
-            this.setState({
-                allEquipmentsData: newList
-            }, () => this.showPopup())
-        })
-    //console.log('assetModel', assetModel);
-    }
-
     //Declaring the Table Component Function
     rowClick(row) {
         this.updateSelectDevice(row.toJS());
@@ -359,20 +320,15 @@ export class sysConfigSmartLight extends Component {
     //EditPopup functions
     //Basic functions.Controning the EditPopup whether showing or hidden. 
     editButtonClick() {
-        const {selectDevice} = this.state;
-        const id = selectDevice.data[0].id;
-        getPoleAssetById(id, (id, response) => {
-            this.initEditPopup(id, response);
-        });
+        this.showPopup();
     }
 
     showPopup() {
         const {selectDevice, allEquipmentsData, allPoleEquipmentsData} = this.state;
         const {overlayerShow} = this.props.actions;
-        this.requestSearch();
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
-                        selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } search={ this.state.editPopupSearch } searchTextOnChange={ this.searchTextOnChange }
-                      />);
+                        selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } mainSelect={ this.mainSelect.bind(this) } selectDevice={ this.state.selectDevice }
+                        showPopup={ this.showPopup.bind(this) } />);
     }
 
     //Bind on EditPopup - Confirm_Button.
@@ -383,9 +339,6 @@ export class sysConfigSmartLight extends Component {
     closeClick() {
         this.props.actions.overlayerHide();
     }
-    onDeleted() {
-        alert('DELETE!');
-    }
 
     //Animating functions --- controling the SideBar whether showing or hidden with its styles;
     collpseHandler() {
@@ -393,6 +346,8 @@ export class sysConfigSmartLight extends Component {
             collapse: !this.state.collapse
         })
     }
+
+
 
 
     render() {
@@ -408,7 +363,8 @@ export class sysConfigSmartLight extends Component {
                 </header>
                 <div className="table-container">
                   <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />
-                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
+                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                  />
                 </div>
                 <SideBarInfo collpseHandler={ this.collpseHandler }>
                   <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />

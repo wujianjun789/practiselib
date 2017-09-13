@@ -13,21 +13,19 @@ export default class EditPopupComponet extends Component {
   render() {
     const props = this.props;
     const {equipmentSelectList, search} = props;
-    //console.log('EditPopup.props', props);
-    //equipmentSelectList.value = equipmentSelectList.value.length === 0 ? equipmentSelectList.options[0].value : equipmentSelectList.value;
-    console.log('props', equipmentSelectList);
     const footer = <PanelFooter funcNames={ [null, 'onConfirmed'] } btnTitles={ [null, '完成'] } {...props}/>;
     return (<div id='edit-popup' className='clearfix'>
               <span>选择设备:</span>
               <div className='edit_selectdevice-content clearfix'>
                 <div>
                   <Select className='edit_selectdevice-select' onChange={ this.props.onChange } {...equipmentSelectList}/>
-                  <SearchText className='edit_selectdevice-searchtext' placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.props.searchTextOnChange } />
-                  <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } data={ this.props.allEquipmentsData } />
+                  <SearchText className='edit_selectdevice-searchtext' placeholder={ search.placeholder } onChange={ this.props.searchTextOnChange } value={ this.props.value } submit={ this.props.searchAssets }
+                  />
+                  <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } data={ this.props.allEquipmentsData } itemClick={ this.props.itemClick } />
                 </div>
                 <div className='edit_whole-content clearfix'>
                   <ul className='edit_whole-ul'>
-                    <DeviceList className='edit_selectdevice-ul' showIcon={ true } data={ this.props.allPoleEquipmentsData } {...props}/>
+                    <DeviceList className='edit_selectdevice-ul' showIcon={ true } data={ this.props.allPoleEquipmentsData } iconClassName='delete' itemClick={ this.props.deleteClick } />
                   </ul>
                 </div>
               </div>

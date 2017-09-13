@@ -93,11 +93,10 @@ export function getAssetsByModel(model, cb){
     })
 }
 
-export function getAssetsBaseByModel(model, cb){
-   
+export function getAssetsBaseByModel(model, cb, domainId){
     let headers = getHttpHeader();
 
-    let paramStr = JSON.stringify({"where":getSearchParam("", model, "")})
+    let paramStr = JSON.stringify({"where":getSearchParam(domainId, model, "")})
   
     httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
         headers: headers,

@@ -38,10 +38,9 @@ export default class WhiteListPopup extends Component {
     componentWillMount(){  //需要更新data
         this.mounted = true;
         this.initWhiteList();
-        let model = "lc";
-        getAssetsBaseByModel(model, data =>{
+        getAssetsBaseByModel("lc", data =>{
             this.mounted && this.initLcsList(data)
-        });
+        },this.props.domainId);
     }
 
     componentWillUnmount(){
@@ -149,7 +148,7 @@ export default class WhiteListPopup extends Component {
                                 <li key={item.id} className="body-row clearfix">
                                 {
                                     this.columns.map((subItem, subIndex) => (
-                                        <div key={subIndex} className="tables-cell">{item[subItem.field]}</div>
+                                        <div key={subIndex} className="tables-cell" title={item[subItem.field]}>{item[subItem.field]}</div>
                                     ))
                                 }
                                     <div className="tables-cell">
