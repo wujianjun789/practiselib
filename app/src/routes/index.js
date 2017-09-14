@@ -111,10 +111,10 @@ export default (
     </Route>
     <Route path="/systemOperation" component={ SystemOperation }>
       <Route path="config">
-        <Route path="lcc" getComponent={ (nextState, cb) => {
+        <Route path="gateway" getComponent={ (nextState, cb) => {
                                              require.ensure([], (require) => {
-                                                 cb(null, require('../systemOperation/container/LampConCenter').default)
-                                             }, 'starriverpro.systemoperation.lampconcenter')
+                                                 cb(null, require('../systemOperation/container/gateway').default)
+                                             }, 'starriverpro.systemoperation.gateway')
                                          } } />
         <Route path="lc" getComponent={ (nextState, cb) => {
                                             require.ensure([], (require) => {

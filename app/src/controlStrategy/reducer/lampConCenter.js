@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 import {
     SYSTEM_OPERATION_DOMAIN_SELECT_CHANGE,
     SYSTEM_OPERATION_PAGE_CHANGE
-} from '../actionType/lampConCenter';
+} from '../actionType/gateway';
 
 const initialState = Immutable.fromJS({
     domain: {
@@ -84,7 +84,7 @@ const initialState = Immutable.fromJS({
     }
 })
 
-export default function lampConCenter(state=initialState, action) {
+export default function gateway(state=initialState, action) {
     switch(action.type) {
         case SYSTEM_OPERATION_DOMAIN_SELECT_CHANGE:
             state = state.updateIn(['domain','value'], () => action.value);

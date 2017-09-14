@@ -1,7 +1,7 @@
 import {
     SYSTEM_OPERATION_DOMAIN_SELECT_CHANGE,
     SYSTEM_OPERATION_PAGE_CHANGE
-} from '../actionType/lampConCenter';
+} from '../actionType/gateway';
 
 export function domainSelectChange(value) {
     return {

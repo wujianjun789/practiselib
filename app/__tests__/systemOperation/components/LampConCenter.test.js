@@ -1,12 +1,12 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {LampConCenter} from '../../../src/systemOperation/container/LampConCenter';
+import {Gateway} from '../../../src/systemOperation/container/Gateway';
 import Immutable from 'immutable';
 
-describe('<LampConCenter /> component', () => {
+describe('<Gateway /> component', () => {
     it('render normal', () => {
-        const cmp = shallow(<LampConCenter />);
+        const cmp = shallow(<Gateway />);
         const header = cmp.find('.heading');
         const select = header.find('Select');
         const domainList = cmp.state('domainList');
@@ -23,7 +23,7 @@ describe('<LampConCenter /> component', () => {
         const btn = header.find('#sys-add');
         expect(btn.text()).toBe('添加');
 
-        cmp.setState({model: 'lcc'});
+        cmp.setState({model: 'gateway'});
         const ins = cmp.instance();
         const table = cmp.find('Table');
         expect(table.prop('columns')).toEqual(ins.columns);
@@ -41,7 +41,7 @@ describe('<LampConCenter /> component', () => {
     });
 
     it('snapshot', () => {
-        const cmp = renderer.create(<LampConCenter />);
+        const cmp = renderer.create(<Gateway />);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

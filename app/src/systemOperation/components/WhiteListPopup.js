@@ -73,9 +73,9 @@ export default class WhiteListPopup extends Component {
         if(curItem == null){
             return;
         }
-        let lccId = this.props.id;  //灯集中控制器的id
+        let gatewayId = this.props.id;  //灯集中控制器的id
         let lcId = curItem.id;   
-        addLcToWhiteListById(lccId, lcId, ()=>{
+        addLcToWhiteListById(gatewayId, lcId, ()=>{
             this.initWhiteList()
             this.searchChange('');
         })
@@ -85,8 +85,8 @@ export default class WhiteListPopup extends Component {
 
     itemDelete(e) {   //从whiteList中删除单灯
         let lcId = e.target.id;
-        let lccId = this.props.id;
-        delLcFromWhiteListById(lccId, lcId, this.initWhiteList)
+        let gatewayId = this.props.id;
+        delLcFromWhiteListById(gatewayId, lcId, this.initWhiteList)
     }
 
     /*获取可添加到白名单的单灯列表*/

@@ -8,7 +8,7 @@ export function getLanguage() {
         language = navigator.language;
     }
 
-    if (!language) {
+    if (!language) {  
         language = navigator.browserLanguage;
     }
 
@@ -18,7 +18,7 @@ export function getLanguage() {
             language = lans[0]
         }
     }
-
+    
     return language;
 }
 
@@ -77,7 +77,7 @@ export function getElementOffwidth(str, fontSize = "14px") {
  */
 export function getClassByModel(key) {
     switch (key) {
-        case 'lcc':
+        case 'gateway':
             return 'icon_light_control';
         case 'lc':
             return 'icon_led_light';
