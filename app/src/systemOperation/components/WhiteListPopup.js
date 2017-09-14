@@ -152,7 +152,7 @@ export default class WhiteListPopup extends Component {
                                 <li key={item.id} className="body-row clearfix">
                                 {
                                     this.columns.map((subItem, subIndex) => (
-                                        <div key={subIndex} className="tables-cell" title={item[subItem.field]}>{item[subItem.field]}</div>
+                                        <div key={subIndex} className="tables-cell cell-right" title={item[subItem.field]}>{item[subItem.field]}</div>
                                     ))
                                 }
                                     <div className="tables-cell">

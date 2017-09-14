@@ -1,8 +1,28 @@
+/**
+ * D3 environment is required
+ * 
+ * @param {Object}                  obj
+ * @param {node}                    obj.wrapper             required        // 图像的容器
+ * @param {{values: Number[]}}      obj.data                required        // 绘图相关数据
+ * @param {{
+ *              left:Number,
+ *              right: 20,
+ *              top: 20,
+ *              bottom: 20
+ * }}                               obj.padding             optional        // 图像周围的空间,可传入单个属性，默认 20px 
+ * @param {Function}                obj.xAccessor           optional        // x轴数据访问器，default: d = d.x
+ * @param {Function}                obj.yAccessor           optional        // y轴数据访问器，default: d = d.y
+ * @param {Number[]}                obj.xDomain             optional        // x轴值域，default： [0,1]。                 未实现，逗你玩
+ * @param {Number[]}                obj.yDomain             optional        // y轴值域，default： [0,1]。
+ * @param {Function}                obj.tickFormat          optional        // format tick, default: d => d,
+ * @param {Function}                obj.tooltipAccessor     optional        // tooltip 数据访问器, default: d => d,
+ * @param {Function}                obj.curveFactory        optional        // default: d3.curveStepAfter
+ */
 export default class LineChart {
     constructor({
         wrapper,
         data,
-        padding={left: 20, top: 20, right: 20, bottom: 20},
+        padding: {left = 20, top = 20, right = 20, bottom = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
         xDomain=[0,1],
@@ -12,7 +32,7 @@ export default class LineChart {
         curveFactory=d3.curveStepAfter
     }) {
         this.wrapper = wrapper;
-        this.padding = padding;
+        this.padding = {left, top, right, bottom};
         this.xAccessor = xAccessor;
         this.yAccessor = yAccessor;
         this.xDomain = xDomain;

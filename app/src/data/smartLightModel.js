@@ -73,7 +73,7 @@ export const TreeData = [
             {
                 "id": "scene",
                 "name": "场景",
-                "class": "",
+                "class": "icon_plc_control",
                 "active": false,
                 "link": "/smartLight/control/scene"
             },{
