@@ -80,7 +80,6 @@ export default class Sensor extends Component {
     }
     updateDeviceData = data => {
         let currentDevice = data.length === 0 ? null : data[0];
-        console.log(currentDevice)
         this.setState({ deviceList: data, currentDevice });
     }
     updatePageSize = data => {
@@ -110,7 +109,6 @@ export default class Sensor extends Component {
         this.setState({ currentDevice })
     }
     collapse = () => {
-        console.log('dsfa')
         this.setState({ sidebarCollapse: !this.state.sidebarCollapse });
     }
     render() {
