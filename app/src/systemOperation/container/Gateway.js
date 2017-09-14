@@ -26,11 +26,11 @@ import { requestWhiteListCountById } from '../../api/domain'
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
-export class LampConCenter extends Component {
+export class Gateway extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model: "lcc",
+            model: "gateway",
             collapse: false,
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -215,9 +215,7 @@ export class LampConCenter extends Component {
 
     componentWillMount() {
         this.mounted = true;
-        const {route} = this.props;
         let {model} = this.state;
-        // let model = route && route.path;
         getModelData(model, () => {
             if (this.mounted) {
                 this.props.actions.treeViewInit(TreeData);
@@ -314,8 +312,8 @@ export class LampConCenter extends Component {
 
     requestWhiteListCount() {
         const {selectDevice} = this.state;
-        let lccId = selectDevice.data[0].id;
-        requestWhiteListCountById(lccId, (lcCount) => {
+        let gatewayId = selectDevice.data[0].id;
+        requestWhiteListCountById(gatewayId, (lcCount) => {
             this.setState({
                 selectDevice: Object.assign({}, selectDevice, {
                     whiteCount: lcCount.count
@@ -521,4 +519,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LampConCenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Gateway);
