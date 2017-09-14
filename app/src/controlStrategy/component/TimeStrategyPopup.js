@@ -196,7 +196,7 @@ export default class TimeStrategyPopup extends Component{
             let curIndex = event.target.selectedIndex;
             value = options[curIndex];
         }else if(id == "name"){
-            prompt = !Name2Valid(value);
+            prompt = Name2Valid(value);
         }else if(id == "time"){
             // prompt = Number(value);
             prompt = false;
@@ -348,7 +348,7 @@ export default class TimeStrategyPopup extends Component{
         const {name, device, startTime, endTime, workTime, time, light, strategyList, prompt} = this.state;
         const {deviceList} = this.props;
         let {titleKey, valueKey, options} = deviceList;
-        let valid = prompt.name || !options.length || prompt.workTime || prompt.time || !strategyList.length;
+        let valid = !prompt.name || !options.length || prompt.workTime || prompt.time || !strategyList.length;
 
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -362,7 +362,7 @@ export default class TimeStrategyPopup extends Component{
                             <div className="col-sm-9">
                                 <input type="text" className="form-control" id="name" placeholder="输入策略名称"
                                        maxLength={STRATEGY_NAME_LENGTH} value={name} onChange={this.onChange}/>
-                                <span className={prompt.name?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                <span className={!prompt.name?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
 
                         </div>

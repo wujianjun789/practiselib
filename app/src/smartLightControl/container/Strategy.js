@@ -16,8 +16,12 @@ import StrategySetPopup from '../component/StrategySetPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {timeStrategy} from '../util/chart'
 
-import {getStrategyListByName} from '../../api/strategy'
+import {getAssetsBaseByModel} from '../../api/asset'
+import {getStrategyListByName, getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
+import {ASSET_CONTROL_MODE_STRATEGY} from '../../common/util/index'
 import Immutable from 'immutable';
+const lodash = require('lodash');
+import {getIndexByKey} from '../../util/algorithm'
 export class Strategy extends Component{
     constructor(props){
         super(props);
@@ -34,18 +38,18 @@ export class Strategy extends Component{
             }),
 
             selectDevice:{
-                id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
+                /*id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
                 deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
-                strategyList:[]
+                strategy:[]*/
             },
 
             data:Immutable.fromJS([
-                {id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
+               /* {id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
                     deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
-                    strategyList:[]},
+                    strategy:[]},
                 {id:2, name:"策略2", type:'传感器策略', asset:'screen', setState:'未设定',
                     deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
-                    strategyList:[]}
+                    strategy:[]}*/
             ])
         }
 
@@ -63,6 +67,7 @@ export class Strategy extends Component{
 
         this.requestSearch = this.requestSearch.bind(this);
         this.initData = this.initData.bind(this);
+        this.getStrategyDevice = this.getStrategyDevice.bind(this);
     }
 
     componentWillMount(){
@@ -85,19 +90,52 @@ export class Strategy extends Component{
     }
 
     initData(data){
-        console.log(data);
-        this.setState({data:Immutable.fromJS(data)});
+        this.setState({data:Immutable.fromJS(data)}, ()=>{
+            data.map(strategy=>{
+                this.getStrategyDevice(strategy, (id)=>{
+                    if(data.length && id == data[0].id){
+                        this.tableClick(this.state.data.get(0));
+                    }
+                });
+            })
+        });
+    }
 
-        if(data.length){
-            this.setState({selectDevice:data[0]});
-        }
+    getStrategyDevice(strategy, cb){
+        getAssetsBaseByModel(strategy.asset, asset=>{
+            getDeviceByAssetControls("", ASSET_CONTROL_MODE_STRATEGY, strategy.id, (data)=>{
+                let curIndex = getIndexByKey(this.state.data, "id", strategy.id);
+                this.setState({data:this.state.data.updateIn([curIndex, "deviceList"], v=>data.map(ac=>{
+                    return lodash.find(asset, ass=>{return ass.id==ac.asset})
+                }))}, ()=>{
+                    cb && cb(strategy.id);
+                })
+                this.setState({data:this.state.data.updateIn([curIndex, "setState"], v=>this.state.data.getIn([curIndex, "deviceList"]).length?"已设定":"未设定")})
+            })
+        })
     }
 
     setHandler(){
         const {selectDevice} = this.state;
         const {actions} = this.props
-        actions.overlayerShow(<StrategySetPopup title="设定设备" deviceType={selectDevice.asset}
-                                                onConfirm={()=>{}} onCancel={()=>{
+        actions.overlayerShow(<StrategySetPopup title="设定设备" deviceType={selectDevice.asset} deviceList={selectDevice.deviceList}
+                                                onConfirm={(data)=>{
+                                                    for(let key in data.curDeviceList){
+                                                        let device = data.curDeviceList[key];
+                                                        let ac = {
+                                                            "asset": device.id,
+                                                            "prop": "",
+                                                            "mode": ASSET_CONTROL_MODE_STRATEGY,
+                                                            "value": selectDevice.id
+                                                        }
+                                                        if(lodash.find(selectDevice.deviceList, dev=>{return dev.id == device})){
+                                                            updateDeviceToStrategy(ac)
+                                                        }else{
+                                                            addDeviceToStrategy(ac)
+                                                        }
+                                                    }
+
+                                                }} onCancel={()=>{
                                                     actions.overlayerHide();
                                                 }}/>);
     }
@@ -140,19 +178,19 @@ export class Strategy extends Component{
 
         let IsStart = false;
         let IsEnd = false;
-        const {strategyList} = this.state.selectDevice;
-        if(!strategyList){
+        const {strategy} = this.state.selectDevice;
+        if(!strategy){
             return;
         }
-        let chartList = strategyList.map(strategy=>{
-            if(strategy.time.indexOf("00:00")>-1){
+        let chartList = strategy.map(stra=>{
+            if(stra.condition.time.indexOf("00:00")>-1){
                 IsStart = true;
             }
 
-            if(strategy.time.indexOf("24:00")>-1){
+            if(stra.condition.time.indexOf("24:00")>-1){
                 IsEnd = true;
             }
-            return {x:strategy.time, y:/*strategy.light=="关"||strategy.light=="开"?0:*/strategy.light}
+            return {x:stra.condition.time, y:stra.rpc.brightness}
         })
 
         if(!IsStart){
@@ -177,7 +215,6 @@ export class Strategy extends Component{
 
     render(){
         const {sort, strategy, search, selectDevice, page, collapse, data} = this.state;
-
         return (
             <Content className={collapse?'collapsed':''}>
                 <div className="heading">
@@ -199,7 +236,7 @@ export class Strategy extends Component{
                             <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                         </div>
                         <div className="panel-body strategy-property">
-                            <span className="strategy-name">{selectDevice.strategyName}</span>
+                            <span className="strategy-name">{selectDevice.name}</span>
                             <button id="sys-update" className="btn btn-primary pull-right" onClick={this.setHandler} disabled={data.size==0 ? true : false}>设定
                             </button>
                         </div>
@@ -220,7 +257,7 @@ export class Strategy extends Component{
                             <ul>
                             {
                                 selectDevice.deviceList && selectDevice.deviceList.map(device=>{
-                                    return <li key={device.id}><span>{device.name}</span>({device.groupName})</li>
+                                    return <li key={device.id}><span>{device.name}</span>{/*({device.groupName})*/}</li>
                                 })
                             }
                             </ul>

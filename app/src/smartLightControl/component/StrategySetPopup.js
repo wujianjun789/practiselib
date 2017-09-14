@@ -20,9 +20,7 @@ export default class StrategySetPopup extends Component{
             deviceTypeName:"",
             search:Immutable.fromJS({placeholder:'输入设备名称', value:''}),
 
-            curDeviceList:[/*{id:1, name:"灯"},{id:2, name:"灯2"},{id:3, name:"灯3"},
-                {id:4, name:"屏"},{id:5, name:"屏2"},{id:6, name:"屏3"},
-                {id:7, name:"灯4"},{id:8, name:"灯5"},{id:9, name:"灯6"}*/]
+            curDeviceList:props.deviceList
         }
 
         this.deviceList = [/*{id:1, name:"灯1"},{id:2, name:"灯2"},{id:3, name:"灯3"},
@@ -59,14 +57,13 @@ export default class StrategySetPopup extends Component{
     }
 
     deviceListInit(data){
-        console.log(data);
         this.deviceList = data;
         this.setState(this.deviceList);
     }
 
     onConfirm(){
         const {onConfirm} = this.props;
-        onConfirm && onConfirm();
+        onConfirm && onConfirm(this.state);
     }
 
     onCancel(){
@@ -97,7 +94,6 @@ export default class StrategySetPopup extends Component{
     render(){
         const {title} = this.props;
         const {deviceTypeName, search, curDeviceList} = this.state;
-console.log(curDeviceList, this.deviceList);
 
         let valid = false
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
@@ -116,7 +112,8 @@ console.log(curDeviceList, this.deviceList);
                         <ul className="device-all">
                             {
                                 this.deviceList.map(device=>{
-                                    return <li key={device.id}>{device.name}<span className="glyphicon glyphicon-plus" onClick={()=>this.addDevice(device)}></span></li>
+                                    let IsAdd = lodash.find(curDeviceList, dev=>{return dev.id == device.id});
+                                    return <li key={device.id}>{device.name}<span className={IsAdd?"":"glyphicon glyphicon-plus"} onClick={()=>{!IsAdd && this.addDevice(device)}}>{IsAdd?"已添加":""}</span></li>
                                 })
                             }
                         </ul>

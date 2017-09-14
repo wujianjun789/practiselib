@@ -108,14 +108,25 @@ export function delStrategy(id, cb) {
  * @param value
  */
 
-export function getDeviceByAssetControls(prop, mode, value) {
+export function getDeviceByAssetControls(prop, mode, value, cb) {
     let headers = getHttpHeader();
-    let paramStr = JSON.stringify({prop:prop, mode:mode, value:value})
-    httpRequest(HOST_IP+'/AssetControls?where='+encodeURIComponent(paramStr),{
+    let param = {};
+    if(prop){
+        param = Object.assign({}, param, {prop:prop});
+    }
+    if(mode){
+        param = Object.assign({}, param, {mode:mode});
+    }
+    if(value){
+        param = Object.assign({}, param, {value:value});
+    }
+    param ={where:param};
+    let paramStr = JSON.stringify(param);
+    httpRequest(HOST_IP+'/AssetControls?filter='+encodeURIComponent(paramStr),{
         headers:headers,
         method:"GET"
     },response=>{
-        cb && cb(response);
+        cb && cb(response, value);
     })
 }
 
@@ -123,12 +134,12 @@ export function getDeviceByAssetControls(prop, mode, value) {
  * 添加设备到策略
  * @param data
  */
-export function addDeviceToStrategy(data) {
+export function addDeviceToStrategy(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'AssetControls',{
+    httpRequest(HOST_IP+'/AssetControls',{
         headers: headers,
         method: "POST",
-        body: JSON.string(data)
+        body: JSON.stringify(data)
     }, response=>{
         cb && cb(response);
     })
@@ -138,12 +149,12 @@ export function addDeviceToStrategy(data) {
  * 更新策略绑定设备
  * @param data
  */
-export function updateDeviceToStrategy(data) {
+export function updateDeviceToStrategy(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'AssetControls',{
+    httpRequest(HOST_IP+'/AssetControls',{
         headers: headers,
         method: "PUT",
-        body: JSON.string(data)
+        body: JSON.stringify(data)
     }, response=>{
         cb && cb(response);
     })
