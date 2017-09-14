@@ -73,11 +73,13 @@ export const TreeData = [
             {
                 "id": "scene",
                 "name": "场景",
+                "class": "",
                 "active": false,
                 "link": "/smartLight/control/scene"
             },{
                 "id": "strategy",
                 "name": "策略",
+                "class": "",
                 "active": false,
                 "link": "/smartLight/control/strategy"
             }
