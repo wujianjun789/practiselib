@@ -40,7 +40,7 @@ export const sysDataHandle = {
     //provide data that used to selectDomain in <Select change/>
     select(event, dataList) {
         let index = event.target.selectedIndex;
-        console.log('dataList-value', dataList);
+        // console.log('dataList-value', dataList);
         return {
             index: index,
             value: dataList.options[index].name

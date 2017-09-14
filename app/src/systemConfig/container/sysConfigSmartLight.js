@@ -388,7 +388,6 @@ export class sysConfigSmartLight extends Component {
 
     render() {
         const {collapse, search, data, page, domainList, modelList, selectDevice} = this.state;
-        //console.log('selectDevice', selectDevice)
         let initSelectDeviceName = selectDevice.data.length ? selectDevice.data[0].name : '';
         let activeId = selectDevice.data.length && selectDevice.data[0].id;
         return (
@@ -403,7 +402,7 @@ export class sysConfigSmartLight extends Component {
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
                   />
                 </div>
-                <SideBarInfo collpseHandler={ this.collpseHandler }>
+                <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                   <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
                 </SideBarInfo>
               </Content>
