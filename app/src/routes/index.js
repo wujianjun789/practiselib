@@ -27,10 +27,10 @@ export default (
                                                 cb(null, require('../assetManage/container/SingleLamp').default)
                                             }, 'starriverpro.assetmanage.singleLamp')
                                         } } />
-        <Route path="lcc" getComponent={ (nextState, cb) => {
+        <Route path="gateway" getComponent={ (nextState, cb) => {
                                              require.ensure([], (require) => {
-                                                 cb(null, require('../assetManage/container/LampCenter').default)
-                                             }, 'starriverpro.assetmanage.lampCenter')
+                                                 cb(null, require('../assetManage/container/Gateway').default)
+                                             }, 'starriverpro.assetmanage.gateway')
                                          } } />
         <Route path="sensor" getComponent={ (nextState, cb) => {
                                                 require.ensure([], (require) => {
@@ -60,10 +60,10 @@ export default (
                                                 cb(null, require('../assetStatistics/container/SingleLamp').default)
                                             }, 'starriverpro.assetmanage.singleLamp')
                                         } } />
-        <Route path="lcc" getComponent={ (nextState, cb) => {
+        <Route path="gateway" getComponent={ (nextState, cb) => {
                                              require.ensure([], (require) => {
-                                                 cb(null, require('../assetStatistics/container/LampCenter').default)
-                                             }, 'starriverpro.assetmanage.lampCenter')
+                                                 cb(null, require('../assetStatistics/container/Gateway').default)
+                                             }, 'starriverpro.assetmanage.gateway')
                                          } } />
         <Route path="sensor" getComponent={ (nextState, cb) => {
                                                 require.ensure([], (require) => {

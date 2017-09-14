@@ -26,7 +26,7 @@ import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
-export class Sensor extends Component {
+export class Pole extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -399,4 +399,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sensor);
+export default connect(mapStateToProps, mapDispatchToProps)(Pole);

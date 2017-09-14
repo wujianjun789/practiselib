@@ -9,11 +9,11 @@ import Content from '../../components/Content'
 
 import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults} from '../../data/assetModels'
 import Immutable from 'immutable';
-export class LampCenter extends Component {
+export class Gateway extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model:"lcc",
+            model:"gateway",
             devicePro:Immutable.fromJS([
                 "软件版本",
                 "系统版本",
@@ -141,4 +141,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LampCenter);
+)(Gateway);

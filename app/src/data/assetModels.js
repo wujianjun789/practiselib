@@ -113,8 +113,8 @@ export function getModelData(cb) {
 
 function getLinkByModel(parentId, key) {
     switch(key){
-        case 'lcc':
-            return '/assetManage/'+parentId+'/lcc';
+        case 'gateway':
+            return '/assetManage/'+parentId+'/gateway';
         case 'lc':
             return '/assetManage/'+parentId+'/lc';
         case 'sensor':

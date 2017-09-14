@@ -24,11 +24,11 @@ import {getDeviceTypeByModel} from '../../util/index'
 import {getObjectByKey} from '../../util/algorithm'
 
 import Immutable from 'immutable';
-export class LampCenter extends Component {
+export class Gateway extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model:"lcc",
+            model:"gateway",
             data: Immutable.fromJS([
                /* {id:1,domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
@@ -256,4 +256,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LampCenter);
+)(Gateway);
