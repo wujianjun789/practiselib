@@ -1,6 +1,6 @@
 /**
  * Created by mx on 2017/9/11.
- * systemOperation/systemConfig/smartLightComponent;
+ * systemOperation/systemConfig/scene;
  */
 
 // import BaseFunction/Component
@@ -19,6 +19,8 @@ import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select.1';
         // import WhiteListPopup from '../components/WhiteListPopup';
         // import CentralizedControllerPopup from '../components/CentralizedControllerPopup';//设备编辑弹出框
+        // 场景添加、编辑弹出框
+        import SceneControllerPopup from '../components/SceneControllerPopup.js';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Content from '../../components/Content';
 
@@ -185,33 +187,13 @@ export class sysConfigScene extends Component {
             {
                 id: 0,
                 field: "domainName",
-                title: "域"
+                title: "场景名称"
             },
             {
                 id: 1,
                 field: "name",
-                title: "设备名称"
-            },
-            {
-                id: 2,
-                field: "typeName",
-                title: "型号"
-            },
-            {
-                id: 3,
-                field: "id",
-                title: "设备编号"
-            },
-            {
-                id: 5,
-                field: "lng",
-                title: "经度"
-            },
-            {
-                id: 6,
-                field: "lat",
-                title: "纬度"
-            },
+                title: "控制模式"
+            }
         ];
 
         this.collpseHandler = this.collpseHandler.bind(this);
@@ -388,7 +370,7 @@ export class sysConfigScene extends Component {
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={ this.state.model } data={ dataInit } domainList={ domainList }
+                overlayerShow(<SceneControllerPopup popId="add" className="centralized-popup" title="新建场景" model={ this.state.model } data={ dataInit } domainList={ domainList }
                                 modelList={ modelList } overlayerHide={ overlayerHide } onConfirm={ (data) => {
                                                                                                         postAssetsByModel(model, data, () => {
                                                                                                             this.requestSearch();
@@ -411,7 +393,7 @@ export class sysConfigScene extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器" data={ dataInit2 } domainList={ domainList } modelList={ modelList }
+                overlayerShow(<SceneControllerPopup popId="edit" className="centralized-popup" title="修改场景" data={ dataInit2 } domainList={ domainList } modelList={ modelList }
                                 overlayerHide={ overlayerHide } onConfirm={ data => {
                                                                                 updateAssetsByModel(model, data, (data) => {
                                                                                     this.requestSearch();
@@ -420,13 +402,7 @@ export class sysConfigScene extends Component {
                                                                             } } />);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
-                break;
-            case 'sys-whitelist':
-                let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
-                                                                                                                                 this.requestWhiteListCount()
-                                                                                                                             } } />)
+                overlayerShow(<ConfirmPopup tips="是否删除选中场景？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
         }
     }
@@ -521,9 +497,9 @@ export class sysConfigScene extends Component {
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
-                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>编辑
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? false : false }>编辑
                        </button>
-                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>删除
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? false : false }>删除
                        </button>
                      </div>
                    </div>
