@@ -38,7 +38,7 @@ function moduleInit(state, data) {
             case 'maintenance':
                 item.key = 'maintenance';
                 item.title = '系统运维';
-                item.link = '/systemOperation/config/lc';
+                item.link = '/systemOperation/config/gateway';
                 break;
             case 'control':
                 item.key = 'control';

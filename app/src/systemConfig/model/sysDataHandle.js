@@ -40,7 +40,7 @@ export const sysDataHandle = {
     //provide data that used to selectDomain in <Select change/>
     select(event, dataList) {
         let index = event.target.selectedIndex;
-        console.log('dataList-value', dataList);
+        // console.log('dataList-value', dataList);
         return {
             index: index,
             value: dataList.options[index].name
@@ -60,7 +60,7 @@ export const sysDataHandle = {
             title: "域"
         }, {
             id: 2,
-            field: "lightCount",
+            field: "lcCount",
             title: "灯"
         }, {
             id: 3,
@@ -72,7 +72,7 @@ export const sysDataHandle = {
             title: "显示屏"
         }, {
             id: 6,
-            field: "chargeStakeCount",
+            field: "chargePoleCount",
             title: "充电桩"
         },
     ],

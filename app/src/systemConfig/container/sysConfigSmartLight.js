@@ -33,6 +33,7 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js'
 import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
 import { intersection } from '../model/sysAlgorithm.js';
+import { addNotify } from '../../common/actions/notifyPopup';
 //import netRequestAPI
 import { getPoleList, requestPoleAssetById, getPoleAssetsListByPoleId } from '../../api/pole.js';
 
@@ -105,11 +106,13 @@ export class sysConfigSmartLight extends Component {
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.editButtonClick = this.editButtonClick.bind(this);
+        this.showMessage = this.showMessage.bind(this);
     }
 
 
     //Hook functions
     componentWillMount() {
+
         this.mounted = true;
         let model = 'pole';
         getModelData(model, () => {
@@ -135,6 +138,7 @@ export class sysConfigSmartLight extends Component {
     }
 
     componentWillUnmount() {
+
         this.mounted = false;
     }
 
@@ -154,7 +158,7 @@ export class sysConfigSmartLight extends Component {
     }
 
     initAssetList(data) {
-        let list = data.map((asset, index) => {
+        let list = data.filter(item => item.extendType === 'pole').map((asset, index) => {
             let domainName = '';
             // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
             // First, need to judge the domainList has already exeists;
@@ -162,13 +166,37 @@ export class sysConfigSmartLight extends Component {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
                 domainName = domain ? domain.name : "";
             }
-            let screen = 0;
-            let newList = getPoleAssetsListByPoleId(asset.id, data => data)
-
-            console.log(newList)
+            /* By each pole's ID,request this pole's all asset model.Counting eatch asset than setState.
+            *  There is one thing should be regonized --- this callback function is asynchronousFunction.
+            *  The countObjects will be setted after list has been setted in final.
+            */
+            getPoleAssetsListByPoleId(asset.id, data => {
+                let lcCount = 0,
+                    screenCount = 0,
+                    sensorCount = 0,
+                    cameraCount = 0,
+                    chargePoleCount = 0;
+                data.map(item => {
+                    if (item.extendType === 'lc') {
+                        lcCount++;
+                    } else if (item.extendType === 'screen') {
+                        screenCount++;
+                    } else if (item.extendType === 'sensor') {
+                        sensorCount++;
+                    } else if (item.extendType === 'camera') {
+                        cameraCount++;
+                    } else if (item.extendType === 'chargePole') {
+                        chargePoleCount++;
+                    }
+                })
+                const x = this.state.tableData.get(index).set('lcCount', lcCount).set('screenCount', screenCount).set('sensorCount', sensorCount).set('cameraCount', cameraCount).set('chargePoleCount', chargePoleCount);
+                const tableData = this.state.tableData.set(index, x);
+                this.setState({
+                    tableData: tableData
+                })
+            })
             //return a new object that contains all properties that we need;
             return {
-                ...asset,
                 ...asset,
                 ...asset.extend,
                 ...asset.geoPoint,
@@ -178,9 +206,8 @@ export class sysConfigSmartLight extends Component {
                 ...{
                     typeName: getModelTypesNameById(this.state.model, asset.extend.type)
                 },
-                ...{
-                    screenCount: 3
-                }
+                screenCount: 0,
+                sensorCount: 0
             }
         });
         this.setState({
@@ -189,8 +216,9 @@ export class sysConfigSmartLight extends Component {
     }
 
     initSelectDevice(data) {
-        if (data.length) {
-            let item = data[0];
+        let poleData = data.filter(item => item.extendType === 'pole');
+        if (poleData.length) {
+            let item = poleData[0];
             this.updateSelectDevice(item);
         } else {
             let newDevice = {
@@ -289,7 +317,7 @@ export class sysConfigSmartLight extends Component {
     //This function can update the data that you choose.The data is setted in state,can be read in some Componets here.
     //Base function.
     updateSelectDevice(item) {
-        console.log('item', item);
+        //console.log('item', item);
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
         selectDevice.data.splice(0);
@@ -314,6 +342,7 @@ export class sysConfigSmartLight extends Component {
 
     //Declaring the Table Component Function
     rowClick(row) {
+
         this.updateSelectDevice(row.toJS());
     }
 
@@ -328,15 +357,18 @@ export class sysConfigSmartLight extends Component {
         const {overlayerShow} = this.props.actions;
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
                         selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } mainSelect={ this.mainSelect.bind(this) } selectDevice={ this.state.selectDevice }
-                        showPopup={ this.showPopup.bind(this) } />);
+                        showPopup={ this.showPopup.bind(this) } showMessage={ this.showMessage } />);
     }
 
     //Bind on EditPopup - Confirm_Button.
     onConfirmed() {
         this.closeClick();
+
     }
     //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
     closeClick() {
+        this.requestSearch()
+
         this.props.actions.overlayerHide();
     }
 
@@ -345,6 +377,10 @@ export class sysConfigSmartLight extends Component {
         this.setState({
             collapse: !this.state.collapse
         })
+    }
+
+    showMessage(statusCode, meaasge) {
+        this.props.actions.addNotify(statusCode, meaasge);
     }
 
 
@@ -366,7 +402,7 @@ export class sysConfigSmartLight extends Component {
                   <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
                   />
                 </div>
-                <SideBarInfo collpseHandler={ this.collpseHandler }>
+                <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                   <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
                 </SideBarInfo>
               </Content>
@@ -383,7 +419,8 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
         treeViewInit,
         overlayerShow,
-        overlayerHide
+        overlayerHide,
+        addNotify: addNotify
     }, dispatch),
 })
 

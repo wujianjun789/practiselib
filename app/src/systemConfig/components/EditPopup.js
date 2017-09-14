@@ -10,6 +10,7 @@ import { getPoleAssetById, getPoleList, requestPoleAssetById } from '../../api/p
 import { sysDataHandle } from '../model/sysDataHandle.js';
 import { sysInitStateModel } from '../model/sysInitStateModel.js';
 import { intersection } from '../model/sysAlgorithm.js';
+import NotifyPopup from '../../common/containers/NotifyPopup.js';
 
 
 export default class EditPopup extends Component {
@@ -31,14 +32,10 @@ export default class EditPopup extends Component {
         this.equipmentSelect = this.equipmentSelect.bind(this);
         this.itemClick = this.itemClick.bind(this);
         this.deleteClick = this.deleteClick.bind(this);
-
     }
 
     componentWillMount() {
-        console.log('willmount', this.props);
-        console.log(this.props.selectDevice);
         let stateSelectDevice = this.props.selectDevice;
-        this.getPole(this.props.selectDevice);
         this.setState({
             allEquipmentsData: this.props.allEquipmentsData,
             selectDevice: stateSelectDevice
@@ -51,8 +48,6 @@ export default class EditPopup extends Component {
         });
 
     }
-
-    getPole(selectDevice) {}
 
     initEditPopup(id, response) {
         let asset = response;
@@ -77,6 +72,10 @@ export default class EditPopup extends Component {
         })
     }
 
+    /**
+     * For some reasons, the getSearchAssets API must received all arguments.But in these situation,all most arguments are useless.
+     * We searchAssets here by AssetsName -- from searchText that user has inputed.
+     */
     searchAssets(domian) {
         let {equipmentSelectList} = this.state;
         let {index} = equipmentSelectList;
@@ -87,10 +86,12 @@ export default class EditPopup extends Component {
         let model = equipmentSelectList.options[index].title;
         let name = this.state.searchText.value;
         getSearchAssets(domain, model, name, offset, size, data => {
+            let newList = intersection(data, this.state.allPoleEquipmentsData);
             this.setState({
-                allEquipmentsData: data
+                allEquipmentsData: newList
             })
         })
+        this.state.searchText.value = '';
     }
 
     equipmentSelect(event) {
@@ -114,11 +115,18 @@ export default class EditPopup extends Component {
         })
     }
 
+    /**These two functions were binded in list-item.provided adding or deleting operation.
+     * There still has one question --- the assertModel still has no property to judge a asset whether hase been added or not.
+     * So in state we set a property added to flaging.
+     * But when we request again after we search from searchText, this status will be covered by baseData.
+     * @param {*Click Item} item 
+     */
     itemClick(item) {
         const {selectDevice} = this.state;
         let poleId = selectDevice.data[0].id;
         let assetId = item.id;
         let requestType = 'PUT';
+        this.showMessage(1, '添加成功!');
         requestPoleAssetById(poleId, assetId, requestType, () => getPoleAssetById(poleId, (id, response) => {
             this.initEditPopup(id, response);
         }));
@@ -129,9 +137,14 @@ export default class EditPopup extends Component {
         let poleId = selectDevice.data[0].id;
         let assetId = item.id;
         let requestType = 'DELETE';
+        this.showMessage(1, '删除成功!');
         requestPoleAssetById(poleId, assetId, requestType, () => getPoleAssetById(poleId, (id, response) => {
             this.initEditPopup(id, response);
         }));
+    }
+
+    showMessage(statusCode, message) {
+        this.props.showMessage(statusCode, message);
     }
 
     render() {
@@ -143,6 +156,7 @@ export default class EditPopup extends Component {
                 <EditPopupComponet {...props} searchTextOnChange={ this.searchTextOnChange } search={ this.state.searchText } value={ this.state.searchText.value } searchAssets={ this.searchAssets } allEquipmentsData={ allEquipmentsData }
                   allPoleEquipmentsData={ allPoleEquipmentsData } onChange={ this.equipmentSelect } selectValue={ selectValue } equipmentSelectList={ this.state.equipmentSelectList } itemClick={ this.itemClick }
                   deleteClick={ this.deleteClick } />
+                <NotifyPopup/>
               </Panel>
             </div>
         )
