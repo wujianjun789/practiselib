@@ -7,7 +7,7 @@ import Immutable from 'immutable';
 
 import {getWhiteListById, addLcToWhiteListById, delLcFromWhiteListById} from '../../api/domain';
 
-import {getAssetsBaseByModel} from '../../api/asset'
+import {getAssetsBaseByModelWithDomain} from '../../api/asset'
 
 export default class WhiteListPopup extends Component {
     constructor(props) {
@@ -38,9 +38,9 @@ export default class WhiteListPopup extends Component {
     componentWillMount(){  //需要更新data
         this.mounted = true;
         this.initWhiteList();
-        getAssetsBaseByModel("lc", data =>{
+        getAssetsBaseByModelWithDomain("lc",this.props.domainId, data =>{
             this.mounted && this.initLcsList(data)
-        },this.props.domainId);
+        });
     }
 
     componentWillUnmount(){

@@ -7,7 +7,7 @@ import Content from '../../components/Content';
 import Select from '../../components/Select.1';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table2';
-import Page from '../../components/page';
+import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain'
 import {getSearchAssets,getSearchCount} from '../../api/asset'
 export default class ChargePole extends Component {
@@ -31,8 +31,7 @@ export default class ChargePole extends Component {
                 titleField:'name',
                 valueField:'name',
                 options:[]
-            },
-            currentSwitchStatus:''
+            }
         }
     }
     componentWillMount(){
@@ -98,7 +97,7 @@ export default class ChargePole extends Component {
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
-                                <span className="icon-sys-select"></span>选中设备
+                                <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                             </div>
                             <div className="panel-body">
                                 <span className="domain-name"></span>
