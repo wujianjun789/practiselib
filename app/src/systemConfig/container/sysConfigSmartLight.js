@@ -33,6 +33,7 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer.js'
 import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
 import { intersection } from '../model/sysAlgorithm.js';
+import { addNotify } from '../../common/actions/notifyPopup';
 //import netRequestAPI
 import { getPoleList, requestPoleAssetById, getPoleAssetsListByPoleId } from '../../api/pole.js';
 
@@ -105,11 +106,13 @@ export class sysConfigSmartLight extends Component {
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.editButtonClick = this.editButtonClick.bind(this);
+        this.showMessage = this.showMessage.bind(this);
     }
 
 
     //Hook functions
     componentWillMount() {
+
         this.mounted = true;
         let model = 'pole';
         getModelData(model, () => {
@@ -135,6 +138,7 @@ export class sysConfigSmartLight extends Component {
     }
 
     componentWillUnmount() {
+
         this.mounted = false;
     }
 
@@ -162,6 +166,10 @@ export class sysConfigSmartLight extends Component {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
                 domainName = domain ? domain.name : "";
             }
+            /* By each pole's ID,request this pole's all asset model.Counting eatch asset than setState.
+            *  There is one thing should be regonized --- this callback function is asynchronousFunction.
+            *  The countObjects will be setted after list has been setted in final.
+            */
             getPoleAssetsListByPoleId(asset.id, data => {
                 let lcCount = 0,
                     screenCount = 0,
@@ -334,6 +342,7 @@ export class sysConfigSmartLight extends Component {
 
     //Declaring the Table Component Function
     rowClick(row) {
+
         this.updateSelectDevice(row.toJS());
     }
 
@@ -348,7 +357,7 @@ export class sysConfigSmartLight extends Component {
         const {overlayerShow} = this.props.actions;
         overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
                         selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } mainSelect={ this.mainSelect.bind(this) } selectDevice={ this.state.selectDevice }
-                        showPopup={ this.showPopup.bind(this) } />);
+                        showPopup={ this.showPopup.bind(this) } showMessage={ this.showMessage } />);
     }
 
     //Bind on EditPopup - Confirm_Button.
@@ -359,6 +368,7 @@ export class sysConfigSmartLight extends Component {
     //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
     closeClick() {
         this.requestSearch()
+
         this.props.actions.overlayerHide();
     }
 
@@ -369,12 +379,16 @@ export class sysConfigSmartLight extends Component {
         })
     }
 
+    showMessage(statusCode, meaasge) {
+        this.props.actions.addNotify(statusCode, meaasge);
+    }
+
 
 
 
     render() {
         const {collapse, search, data, page, domainList, modelList, selectDevice} = this.state;
-        console.log('selectDevice', selectDevice)
+        //console.log('selectDevice', selectDevice)
         let initSelectDeviceName = selectDevice.data.length ? selectDevice.data[0].name : '';
         let activeId = selectDevice.data.length && selectDevice.data[0].id;
         return (
@@ -406,7 +420,8 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators({
         treeViewInit,
         overlayerShow,
-        overlayerHide
+        overlayerHide,
+        addNotify: addNotify
     }, dispatch),
 })
 

@@ -79,7 +79,7 @@ export const TreeData = [
             },{
                 "id": "strategy",
                 "name": "策略",
-                "class": "",
+                "class": "icon_strategy",
                 "active": false,
                 "link": "/smartLight/control/strategy"
             }
