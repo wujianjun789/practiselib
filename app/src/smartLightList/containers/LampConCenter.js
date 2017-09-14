@@ -180,7 +180,7 @@ export default class LampConCenter extends Component{
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
-                                <span className="icon_sys_select"></span>选中设备
+                                <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
                             </div>
                             <div className="panel-body">
                                 <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
@@ -188,7 +188,7 @@ export default class LampConCenter extends Component{
                         </div>
                         <div className="panel panel-default panel-2">
                             <div className="panel-heading">
-                                <span className="icon_device_operate"></span>设备操作
+                                <svg><use xlinkHref={"#icon_device_operate"} transform="scale(0.088,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>设备操作
                             </div>
                             <div className="panel-body">
                                 <div>
