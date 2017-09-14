@@ -33,15 +33,15 @@ export default class Sensor extends Component {
             deviceList: [],
             sidebarCollapse: false,
         }
-        this.model = 'sensor',
-            this.columns = [
-                { field: 'name', title: '设备名称' },
-                { field: 'fromDomain', title: '所属域' },
-                { field: 'type', title: '类别' },
-                { field: 'unit', title: '单位' },
-                { field: 'currentParam', title: '当前参数' },
-                { field: 'updateTime', title: '更新时间' }
-            ]
+        this.model = 'sensor'
+        this.columns = [
+            { field: 'name', title: '设备名称' },
+            { field: 'fromDomain', title: '所属域' },
+            { field: 'type', title: '类别' },
+            { field: 'unit', title: '单位' },
+            { field: 'currentParam', title: '当前参数' },
+            { field: 'updateTime', title: '更新时间' }
+        ]
     }
     componentWillMount() {
         this.mounted = true;
