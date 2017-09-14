@@ -93,7 +93,26 @@ export function getAssetsByModel(model, cb){
     })
 }
 
-export function getAssetsBaseByModel(model, cb, domainId){
+export function getAssetsBaseByModel(model, cb){
+    let headers = getHttpHeader();
+
+    let paramStr = JSON.stringify({"where":getSearchParam('', model, "")})
+  
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+/**
+ * 通过设备种类和域获取设备基本属性
+ * @param model
+ * @param name
+ * @param cb
+ */
+export function getAssetsBaseByModelWithDomain(model, domainId, cb){
     let headers = getHttpHeader();
 
     let paramStr = JSON.stringify({"where":getSearchParam(domainId, model, "")})
