@@ -20,7 +20,6 @@ export default function LineAreaChart(parentId, chartData) {
 
     var width = w - margin.left - margin.right,
         height = h - margin.top - margin.bottom;
-
     var x = d3.scalePoint().domain(dataset.map(item=>{
         return item.x;
     })).range([0, width]);
@@ -119,14 +118,14 @@ export default function LineAreaChart(parentId, chartData) {
         node.append("text")
             .attr("class", "first")
             .attr("x", 0)
-            .attr("y", h-margin.bottom)
+            .attr("y", height+15)
             .text(function (d) {
                 return dataset.length?dataset[0].x:""
             })
         node.append("text")
             .attr("class", "last")
-            .attr("x", w-margin.left-margin.right)
-            .attr("y", h-margin.bottom)
+            .attr("x", width)
+            .attr("y", height+15)
             .attr("text-anchor", "end")
             .text(function (d) {
                 return dataset.length?dataset[dataset.length-1].x:""
@@ -146,29 +145,6 @@ export default function LineAreaChart(parentId, chartData) {
         .datum(dataset)
         .attr("class", "path-line")
         .attr("d", line);
-
-    // lineGroup.selectAll("circle")
-    //     .data(dataset).enter()
-    //     .append("circle")
-    //     .attr("cx", function (d, i) {
-    //         return x(d.x);
-    //     })
-    //     .attr("cy", function (d) {
-    //         return y(d.y);
-    //     })
-    //     .attr("r", 2)
-    //     .append("title")
-    //     .text(function (d) {
-    //         return d.x +' '+ label +' '+ d.y;
-    //     })
-
-    // var title = line.append("title")
-    //
-    // line.on("mouseover", function () {
-    //     console.log(d3.event.layerX, d3.event.layerX-138);
-    //     var value = label;
-    //     title.text(value);
-    //     })
 
     return {
         id: id,

@@ -31,6 +31,10 @@ export function drawCur(id, chartData) {
     }
 }
 
+export function destoryChart() {
+    curChartList = [];
+}
+
 export const TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export function getCurDate(minValue) {
     let list = []

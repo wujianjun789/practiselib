@@ -203,3 +203,14 @@ export function getModelDefaultsValues(id) {
     }
     return list;
 }
+
+/**获取传感器默认值**/
+export function getSensorDefaultValues() {
+    let model = getModelById("sensor");
+    let sensor = {}
+    for(var key in model.defaults.values){
+        sensor[key] = model.defaults.values[key];
+    }
+
+    return sensor;
+}
