@@ -87,7 +87,6 @@ export default class EditPopup extends Component {
         let name = this.state.searchText.value;
         getSearchAssets(domain, model, name, offset, size, data => {
             let newList = intersection(data, this.state.allPoleEquipmentsData);
-            //console.log(intersection(newList, compareList))
             this.setState({
                 allEquipmentsData: newList
             })
