@@ -7,7 +7,7 @@ import Content from '../../components/Content';
 import Select from '../../components/Select.1';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table2';
-import Page from '../../components/page';
+import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain'
 import {getSearchAssets,getSearchCount} from '../../api/asset'
 export default class ChargePole extends Component {
@@ -31,8 +31,7 @@ export default class ChargePole extends Component {
                 titleField:'name',
                 valueField:'name',
                 options:[]
-            },
-            currentSwitchStatus:''
+            }
         }
     }
     componentWillMount(){
