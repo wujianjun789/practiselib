@@ -202,10 +202,10 @@ export default (
                                            cb(null, require('../smartLightList/containers/SingleLampCon').default);
                                        }, 'starriverpro.smartLightList.SingleLampCon');
                                    } } />
-        <Route path="lcc" getComponent={ (nextState, cb) => {
+        <Route path="gateway" getComponent={ (nextState, cb) => {
                                              require.ensure([], (require) => {
-                                                 cb(null, require('../smartLightList/containers/LampConCenter').default);
-                                             }, 'starriverpro.smartLightList.LampConCenter');
+                                                 cb(null, require('../smartLightList/containers/Gateway').default);
+                                             }, 'starriverpro.smartLightList.Gateway');
                                          } } />
         <Route path="sensor" getComponent={ (nextState, cb) => {
                                                 require.ensure([], (require) => {
@@ -224,8 +224,8 @@ export default (
                                              } } />
         <Route path="xes" getComponent={ (nextState, cb) => {
                                                  require.ensure([], (require) => {
-                                                     cb(null, require('../smartLightList/containers/CollectionInstrument').default);
-                                                 }, 'starriverpro.smartLightList.CollectionInstrument');
+                                                     cb(null, require('../smartLightList/containers/Xes').default);
+                                                 }, 'starriverpro.smartLightList.Xes');
                                              } } />
       </Route>
       <Route path="control">

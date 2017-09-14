@@ -26,11 +26,11 @@ export const TreeData = [
                 "link": "/smartLight/list"
             },
             {
-                "id": 'lcc',
-                "name": "灯集中控制器",
+                "id": 'gateway',
+                "name": "网关",
                 "class": "icon_light_control",
                 "active": false,
-                "link": "/smartLight/list/lcc"
+                "link": "/smartLight/list/gateway"
             },
             {
                 "id": 'screen',
