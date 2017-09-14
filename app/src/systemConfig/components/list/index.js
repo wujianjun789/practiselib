@@ -21,7 +21,7 @@ export default class DeviceList extends Component {
   //   this.props.onSpanClick(item);
   // }
   render() {
-    // console.log('Item-List-props', this.props);
+    //console.log('Item-List-props', this.props);
     let {className='', iconClassName='', data, showIcon=false, operations=['firstOperation', 'secondOperation']} = this.props;
     const showDiv = item => {
       let index = item.added === true ? 1 : 0;

@@ -60,7 +60,7 @@ export const sysDataHandle = {
             title: "域"
         }, {
             id: 2,
-            field: "lightCount",
+            field: "lcCount",
             title: "灯"
         }, {
             id: 3,
@@ -72,7 +72,7 @@ export const sysDataHandle = {
             title: "显示屏"
         }, {
             id: 6,
-            field: "chargeStakeCount",
+            field: "chargePoleCount",
             title: "充电桩"
         },
     ],

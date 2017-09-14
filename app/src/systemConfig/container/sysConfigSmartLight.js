@@ -154,7 +154,7 @@ export class sysConfigSmartLight extends Component {
     }
 
     initAssetList(data) {
-        let list = data.map((asset, index) => {
+        let list = data.filter(item => item.extendType === 'pole').map((asset, index) => {
             let domainName = '';
             // Data is a array.Each object(asset) has a property --- domainId.Use domain Id to find domainName.
             // First, need to judge the domainList has already exeists;
@@ -162,13 +162,33 @@ export class sysConfigSmartLight extends Component {
                 let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
                 domainName = domain ? domain.name : "";
             }
-            let screen = 0;
-            let newList = getPoleAssetsListByPoleId(asset.id, data => data)
-
-            console.log(newList)
+            getPoleAssetsListByPoleId(asset.id, data => {
+                let lcCount = 0,
+                    screenCount = 0,
+                    sensorCount = 0,
+                    cameraCount = 0,
+                    chargePoleCount = 0;
+                data.map(item => {
+                    if (item.extendType === 'lc') {
+                        lcCount++;
+                    } else if (item.extendType === 'screen') {
+                        screenCount++;
+                    } else if (item.extendType === 'sensor') {
+                        sensorCount++;
+                    } else if (item.extendType === 'camera') {
+                        cameraCount++;
+                    } else if (item.extendType === 'chargePole') {
+                        chargePoleCount++;
+                    }
+                })
+                const x = this.state.tableData.get(index).set('lcCount', lcCount).set('screenCount', screenCount).set('sensorCount', sensorCount).set('cameraCount', cameraCount).set('chargePoleCount', chargePoleCount);
+                const tableData = this.state.tableData.set(index, x);
+                this.setState({
+                    tableData: tableData
+                })
+            })
             //return a new object that contains all properties that we need;
             return {
-                ...asset,
                 ...asset,
                 ...asset.extend,
                 ...asset.geoPoint,
@@ -178,9 +198,8 @@ export class sysConfigSmartLight extends Component {
                 ...{
                     typeName: getModelTypesNameById(this.state.model, asset.extend.type)
                 },
-                ...{
-                    screenCount: 3
-                }
+                screenCount: 0,
+                sensorCount: 0
             }
         });
         this.setState({
@@ -189,8 +208,9 @@ export class sysConfigSmartLight extends Component {
     }
 
     initSelectDevice(data) {
-        if (data.length) {
-            let item = data[0];
+        let poleData = data.filter(item => item.extendType === 'pole');
+        if (poleData.length) {
+            let item = poleData[0];
             this.updateSelectDevice(item);
         } else {
             let newDevice = {
@@ -289,7 +309,7 @@ export class sysConfigSmartLight extends Component {
     //This function can update the data that you choose.The data is setted in state,can be read in some Componets here.
     //Base function.
     updateSelectDevice(item) {
-        console.log('item', item);
+        //console.log('item', item);
         let selectDevice = this.state.selectDevice;
         selectDevice.latlng = item.geoPoint;
         selectDevice.data.splice(0);
@@ -334,9 +354,11 @@ export class sysConfigSmartLight extends Component {
     //Bind on EditPopup - Confirm_Button.
     onConfirmed() {
         this.closeClick();
+
     }
     //This is the basic closePopup function.Each function will call closeClick if they need close the popup.
     closeClick() {
+        this.requestSearch()
         this.props.actions.overlayerHide();
     }
 
@@ -352,6 +374,7 @@ export class sysConfigSmartLight extends Component {
 
     render() {
         const {collapse, search, data, page, domainList, modelList, selectDevice} = this.state;
+        console.log('selectDevice', selectDevice)
         let initSelectDeviceName = selectDevice.data.length ? selectDevice.data[0].name : '';
         let activeId = selectDevice.data.length && selectDevice.data[0].id;
         return (
