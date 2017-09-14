@@ -121,8 +121,7 @@ export function getRelatedDomainById(id,cb){
 
 export function getWhiteListById(id, cb) {
     let headers = getHttpHeader();
-    let param = JSON.stringify({include:['base']});
-    httpRequest(`${HOST_IP}/lccs/${id}/whiteList?filter=${encodeURIComponent(param)}`, {
+    httpRequest(`${HOST_IP}/gateways/${id}/whiteList`, {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -132,13 +131,13 @@ export function getWhiteListById(id, cb) {
 
 /**
  * 
- * @param {Number} lccId 
+ * @param {Number} gatewayId 
  * @param {Number} lcId 
  * @param {Function} cb 
  */
-export function addLcToWhiteListById(lccId, lcId, cb) {   
+export function addLcToWhiteListById(gatewayId, lcId, cb) {   
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/lccs/${lccId}/whiteList/rel/${lcId}`,{
+    httpRequest(`${HOST_IP}/gateways/${gatewayId}/whiteList/rel/${lcId}`,{
         headers: headers,
         method: 'PUT',
     }, response=>{
@@ -148,13 +147,13 @@ export function addLcToWhiteListById(lccId, lcId, cb) {
 
 /**
  * 
- * @param {Number} lccId 
+ * @param {Number} gatewayId 
  * @param {Number} lcId 
  * @param {Function} cb 
  */
-export function delLcFromWhiteListById(lccId, lcId, cb) {
+export function delLcFromWhiteListById(gatewayId, lcId, cb) {
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/lccs/${lccId}/whiteList/rel/${lcId}`,{
+    httpRequest(`${HOST_IP}/gateways/${gatewayId}/whiteList/rel/${lcId}`,{
         headers: headers,
         method: 'DELETE',
     }, response=>{
@@ -162,9 +161,9 @@ export function delLcFromWhiteListById(lccId, lcId, cb) {
     })
 }
 
-export function requestWhiteListCountById(lccId, cb) {
+export function requestWhiteListCountById(gatewayId, cb) {
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/lccs/${lccId}/whiteList/count`, {
+    httpRequest(`${HOST_IP}/gateways/${gatewayId}/whiteList/count`, {
         headers: headers,
         method: 'GET',
     }, response=>{

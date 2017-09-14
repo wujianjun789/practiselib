@@ -77,6 +77,6 @@ export function getModelList() {
     return list;
 }
 
-export function getModelNameById(id) {
-    return 'lcc';
-}
+// export function getModelNameById(id) {
+//     return 'lcc';
+// }
