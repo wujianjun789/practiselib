@@ -15,7 +15,7 @@ export default class Scene extends Component{
         super(props);
         this.state = {
             sort:Immutable.fromJS({list:[{id:1, value:'场景序号'},{id:2, value:'设备多少'}], index:0, value:'场景序号',placeholder:"排序"}),
-            search:Immutable.fromJS({placeholder:'输入策略名称', value:''}),
+            search:Immutable.fromJS({placeholder:'输入场景名称', value:''}),
             sceneList:[
                 {id:1, name:"场景1", active:false, asset:[{id:1, name:"灯1"},{id:2, name:"屏幕"}]},
                 {id:2, name:"场景2", active:false, asset:[{id:3, name:"灯1"},{id:4, name:"屏幕"}]},

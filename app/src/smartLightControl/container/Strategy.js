@@ -154,7 +154,7 @@ export class Strategy extends Component{
                                                             "mode": ASSET_CONTROL_MODE_STRATEGY,
                                                             "value": selectDevice.id
                                                         }
-                                                        if(lodash.find(selectDevice.deviceList, dev=>{return dev.id == device})){
+                                                        if(lodash.find(selectDevice.deviceList, dev=>{return dev.id == device.id})){
                                                             updateDeviceToStrategy(ac)
                                                         }else{
                                                             addDeviceToStrategy(ac)
