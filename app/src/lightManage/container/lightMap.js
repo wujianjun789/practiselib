@@ -2,18 +2,34 @@
  * Created by a on 2017/8/24.
  */
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+
 import {findDOMNode} from 'react-dom'
 import Content from '../../components/Content'
 
 import MapView from '../../components/MapView'
 import Panel from '../component/FaultPanel'
+
 /*  新增－t  */
+import NotifyPopup from '../../common/containers/NotifyPopup';
+import {addNotify} from '../../common/actions/notifyPopup';
 import {getDomainList} from '../../api/domain'
+import {getObjectByKey} from '../../util/index'
+import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
+import {getIndexByKey} from '../../util/algorithm'
 import Immutable from 'immutable';
-export default class SmartLightMap extends Component{
+export class lightMap extends Component{
     constructor(props){
         super(props);
         this.state = {
+
+            /* 新增－20170915 */
+            model:"lamp",
+            interactive:false,
+            tableIndex: 0,
+
             deviceId:"lamp",
             IsSearch: true,
             IsSearchResult: false,
@@ -74,8 +90,8 @@ export default class SmartLightMap extends Component{
             {id:"pole", className:"icon_pole"},
             {id:"screen", className:"icon_screen"},
             {id:"camera", className:"icon_camera"},
-            {id:"lamp", className:"icon_lamp"},
-            {id:"charge", className:"icon_charge"}
+            {id:"lamp", className:"icon_led_light"},
+            {id:"charge", className:"icon_charge_pole"}
         ];
 
         this.lightList = {id:"lightValue",value:"10",options:[
@@ -108,8 +124,18 @@ export default class SmartLightMap extends Component{
         /*  新增－t  */
         this.initDomainList = this.initDomainList.bind(this);
         this.searchInputOnKeyUp=this.searchInputOnKeyUp.bind(this);
-        this.searchModeHandle = this.searchModeHandle.bind(this);
-        this.test = this.test.bind(this)
+
+        /*  新增－t－20170915  */
+        this.searchPromptList = [{id:"device", value:"设备"},{id:"domain", value:"域"}];
+        this.requestSearch = this.requestSearch.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.updateSearch = this.updateSearch.bind(this);
+        this.requestPoleAsset = this.requestPoleAsset.bind(this);
+        this.updatePoleAsset = this.updatePoleAsset.bind(this);
+        this.domainList = [];
+
+
+        this.test = this.test.bind(this);
 
     }
 
@@ -119,7 +145,10 @@ export default class SmartLightMap extends Component{
             this.mounted && this.setSize();
         }
         /*  新增－t  */
-        getDomainList(data=> {
+        getDomainList(data=>{
+            if(this.mounted){
+                this.domainList = data;
+            }
             this.mounted && this.initDomainList(data)
         })
     }
@@ -167,10 +196,89 @@ export default class SmartLightMap extends Component{
         }
     }
 
-    /*  新增－t  */
-    searchModeHandle(m){
-        if(m==="device"){m="设备"}else{m="域"}
-        this.setState({searchMode:m})
+    /*  新增－t－20170915  */
+    requestSearch(){
+        const {model, search, tableIndex} = this.state;
+        console.log(model);
+        console.log(search);
+        console.log(tableIndex);
+        let searchType = this.searchPromptList[tableIndex].id;
+        console.log(this.domainList);
+        console.log(searchType)
+        if(searchType=="domain"){
+            let curDomain = getObjectByKey(this.domainList, 'name', search.get("value"));
+            if(curDomain){
+                console.log(curDomain);
+                getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
+            }else{
+                this.props.actions.addNotify(0, "没有找到匹配域。");
+                this.setState({IsSearchResult:false});
+            }
+            return;
+        }
+        //getPoleListByModelWithName(searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
+    }
+
+    updateSearch(data){
+        console.log(data);
+        let searchList = Immutable.fromJS(data);
+        let positionList = data.map((pole)=>{
+            let latlng = pole.geoPoint;
+            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE'}, latlng)
+        });
+
+        if(data && data.length){
+            let fPole = data[0];
+            let flatlng = fPole.geoPoint;
+            this.setState({searchList:searchList, mapLatlng:flatlng,positonList:positionList}, ()=>{
+                this.requestPoleAsset(data);
+            });
+        }else{
+            this.setState({searchList:searchList, positionList:positionList}, ()=>{
+                this.requestPoleAsset(data);
+            });
+        }
+    }
+
+    requestPoleAsset(data){
+        const {model} = this.state;
+        if(model != "pole"){
+            return;
+        }
+
+        data.map(pole=>{
+            getPoleAssetById(pole.id, (id,data)=>{this.mounted && this.updatePoleAsset(id, data)});
+        })
+    }
+
+    updatePoleAsset(id, data){
+        console.log("poleAsset:",data);
+        const {searchList} = this.state;
+        let curIndex = getIndexByKey(searchList, 'id', id);
+        let asset = this.state.searchList.getIn([curIndex, "asset"]);
+        if(!asset){
+            asset = {}
+        }
+
+        data.map(ass=>{
+            if(ass.extendType == "lc"){//screen:23, charge:45, camera:56, lamp:89, collect:99
+                asset = Object.assign({}, asset, {lamp:ass});
+            }
+            if(ass.extendType == "screen"){
+                asset = Object.assign({}, asset, {screen:ass});
+            }
+            if(ass.extendType == "xes"){
+                asset = Object.assign({}, asset, {collect:ass});
+            }
+            if(ass.extendType == "camera"){
+                asset = Object.assign({}, asset, {camera:ass});
+            }
+            if(ass.extendType == "charge"){
+                asset = Object.assign({}, asset, {charge:ass});
+            }
+        })
+
+        this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))});
     }
 
     initDomainList(data) {
@@ -226,10 +334,18 @@ export default class SmartLightMap extends Component{
         return formatId;
     }
 
+    onBlur(event){
+        this.timeOut = setTimeout(()=>{this.setState({interactive:false});}, 1000)
+    }
+
     onChange(key, event){
         switch (key){
-            case "search":
-                this.setState({search:this.state.search.update("value",v=>event.target.value)});
+            case "search"://特殊处理
+                if (event.target.value){
+                    this.setState({search:this.state.search.update("value",v=>event.target.value), interactive:true,IsSearchResult:false});
+                }else{
+                    this.setState({search:this.state.search.update("value",v=>event.target.value)});
+                }
                 break;
             case "screenSwitch":
                 this.screenSwitch.value = this.screenSwitch.options[event.target.selectedIndex].value;
@@ -307,9 +423,9 @@ export default class SmartLightMap extends Component{
         });
     }
 
-    searchSubmit(e){
-        this.setState({IsSearchResult:true},()=>{
-            this.setSize();
+    searchSubmit(index){
+        this.setState({tableIndex:index},()=>{
+            this.requestSearch();
         });
     }
 
@@ -593,7 +709,7 @@ export default class SmartLightMap extends Component{
     }
 
     render(){
-        const {deviceId, search, IsSearch, IsSearchResult, curDevice, curId, searchList,deviceList,
+        const {deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList,deviceList, tableIndex,
             listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
         let IsControl = false;
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
@@ -608,23 +724,24 @@ export default class SmartLightMap extends Component{
                       <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
                       <div className="input-group-btn">
                         <button type="button" className="btn btn-default" aria-label="search" onClick={()=>this.searchInputOnKeyUp("toSearch")}><span className="glyphicon glyphicon-search"></span></button>
-                        <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{searchMode}</button>
-                        <ul className="dropdown-menu dropdown-menu-right">
-                          <li><a onClick={()=>this.searchModeHandle("device")}>设备</a></li>
-                          <li><a onClick={()=>this.searchModeHandle("domain")}>域</a></li>
-                          <li><a onClick={()=>this.test()}>test</a></li>
-                        </ul>
                       </div>
                     </div>
+                    <ul className={"list-group "+(interactive ? 'select-active':'')} >
+                            {
+                                this.searchPromptList.map((item, index)=>{
+                                    return <li className={"list-group-item "+(index==tableIndex?"active":"")} key={index} value={item.value} onClick={()=>this.searchSubmit(index)}>{item.value}<span></span> {search.get("value")}</li>
+                                })
+                            }
+                    </ul>
                     <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
                         {
                             searchList.map(pole=>{
                                 return <li key={pole.get("id")} className="list-group-item" onClick={()=>this.itemClick(pole.get("id"))}>
                                     {pole.get("name")}
-                                    {pole.get("collect") && <span className=""><svg><use xlinkHref={"#collect"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {pole.get("collect") && <span className=""><svg><use xlinkHref={"#icon_collect"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                     {pole.get("charge") && <span className=""><svg><use xlinkHref={"#icon_charge_pole"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {pole.get("camera") && <span className=""><svg><use xlinkHref={"#camera"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {pole.get("lamp") && <span className=""><svg><use xlinkHref={"#lamp"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {pole.get("camera") && <span className=""><svg><use xlinkHref={"#icon_camera"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {pole.get("lamp") && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                     {pole.get("screen") && <span className=""><svg><use xlinkHref={"#screen"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                 </li>
                             })
@@ -645,10 +762,10 @@ export default class SmartLightMap extends Component{
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
                                 {curDevice.get("screen") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("screen")}><svg><use xlinkHref={"#screen"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>}
-                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><svg><use xlinkHref={"#lamp"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
-                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"this"+(curId=="camera"?"_hover":"")}><svg><use xlinkHref={"#camera"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
+                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
+                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"this"+(curId=="camera"?"_hover":"")}><svg><use xlinkHref={"#icon_camera"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
                                 {curDevice.get("charge") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"this"+(curId=="charge"?"_hover":"")}><svg><use xlinkHref={"#icon_charge_pole"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
-                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"this"+(curId=="collect"?"_hover":"")}><svg><use xlinkHref={"#collect"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
+                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"this"+(curId=="collect"?"_hover":"")}><svg><use xlinkHref={"#icon_collect"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
                             </ul>
                             {
                                 this.renderInfo(curId,this.state[curId])
@@ -675,7 +792,7 @@ export default class SmartLightMap extends Component{
                     <ul className="btn-group">
                         {   
                             this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"")} onClick={()=>this.searchDeviceSelect(device.id)}><svg><use xlinkHref={"#"+device.id} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>
+                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"")} onClick={()=>this.searchDeviceSelect(device.id)}><svg><use xlinkHref={"#"+device.className} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>
                             })
                         }
                     </ul>
@@ -684,3 +801,18 @@ export default class SmartLightMap extends Component{
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+        addNotify:addNotify
+    }, dispatch),
+})
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(lightMap);
