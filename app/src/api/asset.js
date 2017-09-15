@@ -277,3 +277,18 @@ export function updateAssetsById(id, data, cb){
 export function updateDataOrigin(data,key){
     
 }
+
+/**
+ * 获取设备的状态
+ * @param {String} model 
+ * @param {String | Number} id
+ */
+export const getDeviceStatusByModelAndId = (model, id) => cb => {
+    if(model == 'xes') model = 'xe';
+    httpRequest(`${HOST_IP}/${model}s/${id}/status`,{
+        headers: getHttpHeader(),
+        method: 'GET',
+    }, response=>{
+        cb && cb(response);
+    })
+}

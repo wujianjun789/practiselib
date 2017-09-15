@@ -6,10 +6,12 @@ import React,{Component} from 'react';
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
-import Table from '../../components/Table2';
+import TableWithHeader from '../components/TableWithHeader';
+import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
-import {getSearchAssets, getSearchCount} from '../../api/asset';
+import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../api/asset';
+import {getMomentDate, momentDateFormat} from '../../util/time';
 
 export default class Screen extends Component {
     constructor(props) {
@@ -49,11 +51,11 @@ export default class Screen extends Component {
 
         this.columns = [
             {field: 'name', title: '设备名称'},
-            {field: 'onlineStatus', title: '在线状态'},
-            {field: 'faultStatus', title: '故障状态'},
+            {field: 'online', title: '在线状态'},
+            {field: 'fault', title: '故障状态'},
             {field: 'brightness', title: '当前亮度'},
-            {field: 'brightnessMode', title: '亮度模式'},
-            {field: 'updateTime', title: '更新时间'},
+            {field: 'briMode', title: '亮度模式'},
+            {field: 'updated', title: '更新时间'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -153,6 +155,12 @@ export default class Screen extends Component {
     tableClick(currentDevice) {
         this.setState({currentDevice});
     }
+
+    formatData(data) {
+        if(data.updated) {
+            data.updated = momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
+        }
+    }
   
     render() {
         const {
@@ -168,8 +176,13 @@ export default class Screen extends Component {
                             <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
                         </div>
                         <div className="table-container">
-                        <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
-                                activeId={currentDevice == null ? '' : currentDevice.id}/>
+                            <TableWithHeader columns={this.columns}>
+                                {
+                                    deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
+                                                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
+                                                                formatFunc={this.formatData}/>)
+                                }
+                            </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -204,3 +217,8 @@ export default class Screen extends Component {
                 </Content>
     }
 }
+
+/**
+ *   <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+                                activeId={currentDevice == null ? '' : currentDevice.id}/>
+ */
