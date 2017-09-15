@@ -82,7 +82,7 @@ export const sysDataHandle = {
         index: 0,
         options: [{
             id: 1,
-            title: 'light',
+            title: 'lc',
             value: '灯',
             name: '灯'
         }, {
