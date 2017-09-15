@@ -14,7 +14,7 @@ import SideBarInfo from '../../components/SideBarInfo';
 import StrategySetPopup from '../component/StrategySetPopup'
 
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
-import {timeStrategy, sensorStrategy} from '../util/chart'
+import {timeStrategy, sensorStrategy} from '../../common/util/chart'
 
 import {getAssetsBaseByModel} from '../../api/asset'
 import {getStrategyListByName, getStrategyCountByName, getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
@@ -104,6 +104,7 @@ export class Strategy extends Component{
         this.setState({data:Immutable.fromJS(data), page:this.state.page.update("total", v=>data.length)}, ()=>{
             data.map(strategy=>{
                 this.getStrategyDevice(strategy, (id)=>{
+                    console.log(data);
                     if(data.length && id == data[0].id){
                         this.tableClick(this.state.data.get(0));
                     }
@@ -269,7 +270,7 @@ export class Strategy extends Component{
                     </div>
                     <div className="panel panel-default strategy-param">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>策略参数
+                            <svg><use xlinkHref={"#icon_strategy"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>策略参数
                         </div>
                         <div className="panel-body strategy-chart" id="strategyChart" ref={this.renderChart}>
 
@@ -277,7 +278,7 @@ export class Strategy extends Component{
                     </div>
                     <div className="panel panel-default strategy-device">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含目标设备
+                            <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含目标设备
                         </div>
                         <div className="panel-body">
                             <ul>

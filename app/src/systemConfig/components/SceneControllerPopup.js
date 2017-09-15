@@ -14,7 +14,7 @@ import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
 
 // import LineChart from '../../common/util/LineChart';
-import {timeStrategy, sceneTimeStrategy,  sensorStrategy, sceneSensorStrategy} from '../../smartLightControl/util/chart'
+import {timeStrategy, sceneTimeStrategy,  sensorStrategy, sceneSensorStrategy} from '../../common/util/chart'
 
 import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../util/index'
 export default class SceneControllerPopup extends Component {

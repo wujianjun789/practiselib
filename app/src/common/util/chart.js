@@ -1,8 +1,8 @@
 /**
  * Created by a on 2017/8/16.
  */
-import LineAreaChart from '../../common/util/LineAreaChart';
-import LineChart from '../../common/util/LineChart';
+import LineAreaChart from './LineAreaChart';
+import LineChart from './LineChart';
 
 export function timeStrategy(id, strategy) {
     var svg_width = 1100;
