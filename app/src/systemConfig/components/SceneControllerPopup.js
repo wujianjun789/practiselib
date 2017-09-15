@@ -13,6 +13,9 @@ import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
 
+// import LineChart from '../../common/util/LineChart';
+import {timeStrategy, sceneTimeStrategy,  sensorStrategy, sceneSensorStrategy} from '../../smartLightControl/util/chart'
+
 import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../util/index'
 export default class SceneControllerPopup extends Component {
     constructor(props) {
@@ -33,61 +36,84 @@ export default class SceneControllerPopup extends Component {
                 lat: false,
                 name: false,
                 id: false
-            }
+            },
+            sensorTypeDefault:{},   //绘制图表
+            selectDevice:{          //绘制图表
+                // id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
+                // deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
+                // strategy:[]
+                asset:"lc",
+                deviceList:[],
+                id:2,
+                name:"test1",
+                type:"time",
+                strategy:[
+                    {
+                    condition:{time: "19:42"},
+                    rpc:{brightness:"50"},
+                    },
+                    {
+                    condition:{time: "23:42"},
+                    rpc:{brightness:"70"},
+                    }
+                ]
+            },
         };
-
-        this.onChange = this.onChange.bind(this);
+        
+        this.timeStrategy = null;  //绘制图表
+        this.sensorStrategy = null; //绘制图表
+        this.renderChart = this.renderChart.bind(this);
+        // this.onChange = this.onChange.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
-        this.mapDragend = this.mapDragend.bind(this);
         this.renderHtmlForModel = this.renderHtmlForModel.bind(this);
     }
 
-    onChange(e) {
-        let id = e.target.id;
-        if (id == "model") {
-            this.setState({
-                modelId: this.props.modelList.options[e.target.selectedIndex].id
-            });
-        }
+    // onChange(e) {
+    //     let id = e.target.id;
+    //     if (id == "model") {
+    //         this.setState({
+    //             modelId: this.props.modelList.options[e.target.selectedIndex].id
+    //         });
+    //     }
 
-        if (id == "domain") {
-            this.setState({
-                domainId: this.props.domainList.options[e.target.selectedIndex].id
-            });
-        }
+    //     if (id == "domain") {
+    //         this.setState({
+    //             domainId: this.props.domainList.options[e.target.selectedIndex].id
+    //         });
+    //     }
 
-        let value = e.target.value;
-        let newValue = '';
-        let prompt = false;
-        if (id == "lat") {
-            newValue = value;
-            if (!latlngValid || !latValid(newValue)) {
-                prompt = true;
-            }
-        } else if (id == "lng") {
-            newValue = value;
-            if (!latlngValid || !lngValid(newValue)) {
-                prompt = true;
-            }
-        } else if (id == "name") {
-            newValue = value; //过滤非法数据
-            prompt = !Name2Valid(newValue); //判定输入数量
-        } else if (id == "id") {
-            newValue = value;
-            prompt = !MACValid(newValue);
-        } else {
-            newValue = value;
-        }
+    //     let value = e.target.value;
+    //     let newValue = '';
+    //     let prompt = false;
+    //     if (id == "lat") {
+    //         newValue = value;
+    //         if (!latlngValid || !latValid(newValue)) {
+    //             prompt = true;
+    //         }
+    //     } else if (id == "lng") {
+    //         newValue = value;
+    //         if (!latlngValid || !lngValid(newValue)) {
+    //             prompt = true;
+    //         }
+    //     } else if (id == "name") {
+    //         newValue = value; //过滤非法数据
+    //         prompt = !Name2Valid(newValue); //判定输入数量
+    //     } else if (id == "id") {
+    //         newValue = value;
+    //         prompt = !MACValid(newValue);
+    //     } else {
+    //         newValue = value;
+    //     }
 
-        this.setState({
-            [id]: newValue,
-            prompt: Object.assign({}, this.state.prompt, {
-                [id]: prompt
-            })
-        });
+    //     this.setState({
+    //         [id]: newValue,
+    //         prompt: Object.assign({}, this.state.prompt, {
+    //             [id]: prompt
+    //         })
+    //     });
 
-    }
+    // }
 
     renderHtmlForModel() {
 
@@ -110,18 +136,40 @@ export default class SceneControllerPopup extends Component {
         this.props.onConfirm && this.props.onConfirm(this.state);
     }
 
-    mapDragend(data) {
-        for (let key in data.latlng) {
-            let value = data.latlng[key];
-            let newValue = value;
-            this.setState({
-                [key]: newValue,
-                prompt: {
-                    [key]: true
-                }
+
+    /*绘制图表参数*/
+    updateChart(){
+        const {chart, sensorTypeDefault} = this.state;
+        if(!chart) {
+            return;
+        }
+        const {type, strategy} = this.state.selectDevice;
+        if(!strategy){
+            return;
+        }
+
+        this.timeStrategy && this.timeStrategy.destory();
+        this.sensorStrategy && this.sensorStrategy.destroy();
+
+        if(type == "time"){
+
+            this.timeStrategy = sceneTimeStrategy(chart.id, strategy);
+        }else if(type=="sensor"){
+
+            this.sensorStrategy = sensorStrategy(chart, strategy, sensorTypeDefault)
+        }
+
+    }
+
+    /*绘制图表参数*/
+    renderChart(ref){
+        if(ref){
+            this.setState({chart:ref}, ()=>{
+                this.updateChart();
             });
         }
     }
+
 
     render() {
         const {className, title, domainList, modelList, popId} = this.props;
@@ -150,6 +198,19 @@ export default class SceneControllerPopup extends Component {
                          <Select id="device" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                          <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
                         </div>
+                        <div className="table-list">
+                            <div className="table-body">
+                                <ul>
+                                    <li className="body-row clearfix">
+                                        <div key={''} className="tables-cell" title=''>屏幕1</div>
+                                        <div className="tables-cell cell-right">
+                                            <span id={''} className="glyphicon glyphicon-trash" onClick={this.itemDelete}></span>
+                                            {/*<span id={''} className="icon-delete" onClick={this.itemDelete}></span>*/}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div className="col-sm-6 col-xm-6 popup-body-right">
                         <div className="selectBox">
@@ -159,6 +220,11 @@ export default class SceneControllerPopup extends Component {
                         <div className="selectBox">
                          <label htmlFor="id" className="fixed-width-left control-label">调整参数</label>
                          <Select id="controlParam" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
+                        </div>
+                        <div className="panel panel-default strategy-param">
+                            <div className="chart-heading">策略参数</div>
+                            <div className="panel-body strategy-chart" id="strategyChart" ref={this.renderChart}>
+                            </div>
                         </div>
                     </div>
                 </div> 
