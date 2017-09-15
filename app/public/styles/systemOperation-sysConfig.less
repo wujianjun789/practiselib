@@ -401,10 +401,133 @@
                             #controlModal0{
                                 float:left;
                             }
+                            .panel.panel-default{
+                                -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0);
+                                box-shadow: 0 1px 1px rgba(0,0,0,0);
+                                border: 0px;
+                                .chart-heading{
+                                    margin-left: 5px;
+                                    margin-top: 22px;
+                                }
+                                
+                                .panel-body{
+                                    padding-left: 0px;
+                                    padding-right: 0px;
+                                    &.strategy-chart {
+                                        .y.axis {
+                                        path {
+                                            display: none;
+                                        }
 
+                                        g {
+                                            line {
+                                            stroke-width: 1px;
+                                            stroke: #e6e6e6;
+                                            }
+                                        }
+                                        }
+
+                                        .node {
+                                        .last {
+                                            text-anchor: end;
+                                        }
+                                        }
+
+                                        .area-group {
+                                        .area {
+                                            fill: #ff5c68;
+                                            fill-opacity: 0.1;
+                                        }
+                                        }
+
+                                        .line-group {
+                                        .path-line {
+                                            fill: none;
+                                            stroke-width: 3px;
+                                            stroke: #ff5c68;
+                                        }
+
+                                        circle {
+                                            fill: #ff5c68;
+
+                                            title {
+                                            background: linear-gradient(#333744, #4a5064);
+                                            color: #ffffff;
+
+                                            font-size: 12px;
+                                            }
+                                        }
+                                        }
+
+                                        > svg {
+                                        .x-axis {
+                                            > path {
+                                            display: none;
+                                            }
+                                            > .tick {
+                                            > line {
+                                                display: none;
+                                            }
+                                            > text {
+                                                font-size: 12px;
+                                                color: #808080;
+                                            }
+                                            &:first-of-type {
+                                                > text {
+                                                text-anchor: start;
+                                                }
+                                            }
+                                            &:last-of-type {
+                                                > text {
+                                                text-anchor: end;
+                                                }
+                                            }
+                                            }
+                                        }
+                                        .y-axis {
+                                            > path {
+                                            display: none;
+                                            }
+                                            > .tick {
+                                            > text {
+                                                display: none;
+                                            }
+                                            > line {
+                                                stroke: #e6e6e6;
+                                                stroke-width: 1px;
+                                            }
+                                            }
+                                        }
+
+                                        .main-area {
+                                            fill: rgba(255, 92, 104, .1);
+                                        }
+                                        .main-line {
+                                            stroke: rgb(255, 92, 104);
+                                            stroke-width: 3px;
+                                            fill: none;
+                                        }
+                                        }
+                                        .tooltip {
+                                        .tooltip-arrow {
+                                            border-top-color: #3b4050;
+                                            border-top-color: #3b4050;
+                                        }
+                                        .tooltip-inner {
+                                            font-size: 12px;
+                                            color: #fff;
+                                            background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));   /*  for safari */
+                                            background-image: linear-gradient(to right, #333744, #4a5064);
+                                            white-space: pre;
+                                        }
+                                      }
+                                    }
+
+
+                                }
+                            }
                        }
-
-                }
+                    }
                 }
                 .modal-footer {
                     border-top: 0px #e2e2e2;
