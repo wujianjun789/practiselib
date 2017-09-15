@@ -15,7 +15,7 @@ export default class WhiteListPopup extends Component {
         this.state = {
             whiteList: [],     /*白名单列表*/
             search: {placeholder: '输入素材名称', value: ''},
-            lcsList: [{id: 1, name: "lamp1"}, {id: 2, name: "lamp2"}, {id: 3, name: "lamp3"}],        /*可添加的设备列表*/
+            assetsList: [],        /*可添加的设备列表*/
             activeIndex:-1,
         }
 
@@ -32,15 +32,17 @@ export default class WhiteListPopup extends Component {
         this.itemDelete = this.itemDelete.bind(this);
         this.initWhiteList = this.initWhiteList.bind(this);
         this.updateWhiteList = this.updateWhiteList.bind(this);
-        this.initLcsList = this.initLcsList.bind(this);
+        this.initAssetsList = this.initAssetsList.bind(this);
     }
 
     componentWillMount(){  //需要更新data
         this.mounted = true;
         this.initWhiteList();
-        getAssetsBaseByModelWithDomain("lc",this.props.domainId, data =>{
-            this.mounted && this.initLcsList(data)
-        });
+        ['lc','screen','xes'].forEach(key=>{
+            getAssetsBaseByModelWithDomain(key,this.props.domainId, data =>{
+                this.mounted && this.initAssetsList(data)
+            });
+        })  
     }
 
     componentWillUnmount(){
@@ -57,25 +59,25 @@ export default class WhiteListPopup extends Component {
 
     updateWhiteList(data){
         let whiteList = data.map(item=>{
-            return {id:item.id,name:item.base.name}
+            return {id:item.id,name:item.name}
         })
         this.setState({whiteList:whiteList});
     }
 
     onAdd() {                  //向whitelist中添加需要的数据,然后更新列表视图
-        const {search, lcsList} = this.state
+        const {search, assetsList} = this.state
         let curItem = null
-        for(var key in lcsList){
-            if(lcsList[key].name == search.value){
-                curItem = lcsList[key];                
+        for(var key in assetsList){
+            if(assetsList[key].name == search.value){
+                curItem = assetsList[key];                
             }
         }
         if(curItem == null){
             return;
         }
-        let lccId = this.props.id;  //灯集中控制器的id
+        let gatewayId = this.props.id;  //灯集中控制器的id
         let lcId = curItem.id;   
-        addLcToWhiteListById(lccId, lcId, ()=>{
+        addLcToWhiteListById(gatewayId, lcId, ()=>{
             this.initWhiteList()
             this.searchChange('');
         })
@@ -83,15 +85,17 @@ export default class WhiteListPopup extends Component {
     }
 
 
-    itemDelete(e) {   //从whiteList中删除单灯
+    itemDelete(e) {   //从whiteList中删除资产
         let lcId = e.target.id;
-        let lccId = this.props.id;
-        delLcFromWhiteListById(lccId, lcId, this.initWhiteList)
+        let gatewayId = this.props.id;
+        delLcFromWhiteListById(gatewayId, lcId, this.initWhiteList)
     }
 
-    /*获取可添加到白名单的单灯列表*/
-    initLcsList(data) {
-        this.setState({lcsList:data});
+    /*获取可添加到白名单的资产列表*/
+    initAssetsList(data) {
+        let {assetsList} = this.state;
+        data.forEach(item=>assetsList.push(item))
+        this.setState({assetsList:assetsList});
     }
 
     onCancel() {
@@ -117,10 +121,10 @@ export default class WhiteListPopup extends Component {
     render() {
         let {className='', id} = this.props;
         let {search, whiteList} = this.state;
-        let {lcsList} = this.state;   //可添加的单灯数据
+        let {assetsList} = this.state;   //可添加的资产数据
         let datalist = [];
-        for(var key in lcsList){
-            let item = lcsList[key];
+        for(var key in assetsList){
+            let item = assetsList[key];
             let value = search.value;
             if (!value || item.name.indexOf(value)>-1){
                 datalist.push({id:item.id, value:item.name})
@@ -148,7 +152,7 @@ export default class WhiteListPopup extends Component {
                                 <li key={item.id} className="body-row clearfix">
                                 {
                                     this.columns.map((subItem, subIndex) => (
-                                        <div key={subIndex} className="tables-cell" title={item[subItem.field]}>{item[subItem.field]}</div>
+                                        <div key={subIndex} className="tables-cell cell-right" title={item[subItem.field]}>{item[subItem.field]}</div>
                                     ))
                                 }
                                     <div className="tables-cell">

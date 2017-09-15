@@ -30,12 +30,12 @@ function treeViewInit(state, data) {
     let curNode = searchNode(data, url);
 
     let list = data;
-    if(curNode && !curNode.toggled){
-        list = update(data, 1, null, curNode);
-    }
-
     if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
         list = update(list, 1, null, curParentNode);
+    }
+
+    if(curNode && !curNode.toggled){
+        list = update(data, 1, null, curNode);
     }
     return curNode ? Object.assign({}, state, {datalist:list}):Object.assign({}, state, {datalist:data});
 }

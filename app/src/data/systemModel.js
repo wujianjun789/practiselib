@@ -198,8 +198,8 @@ export function getModelTypesNameById(modelId, typeId) {
 
 function getLinkByModel(key) {
   switch (key) {
-    case 'lcc':
-      return '/systemOperation/config/lcc';
+    case 'gateway':
+      return '/systemOperation/config/gateway';
     case 'lc':
       return '/systemOperation/config/lc';
     case 'sensor':

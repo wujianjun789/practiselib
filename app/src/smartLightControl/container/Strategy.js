@@ -14,11 +14,13 @@ import SideBarInfo from '../../components/SideBarInfo';
 import StrategySetPopup from '../component/StrategySetPopup'
 
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
-import {timeStrategy} from '../util/chart'
+import {timeStrategy, sensorStrategy} from '../util/chart'
 
 import {getAssetsBaseByModel} from '../../api/asset'
-import {getStrategyListByName, getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
+import {getStrategyListByName, getStrategyCountByName, getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
 import {ASSET_CONTROL_MODE_STRATEGY} from '../../common/util/index'
+
+import {getModelData, getSensorDefaultValues} from '../../data/assetModels'
 import Immutable from 'immutable';
 const lodash = require('lodash');
 import {getIndexByKey} from '../../util/algorithm'
@@ -50,29 +52,38 @@ export class Strategy extends Component{
                 {id:2, name:"策略2", type:'传感器策略', asset:'screen', setState:'未设定',
                     deviceList:[{id:1, name:"屏幕", groupName:"疏影路组"},{id:2, name:"屏幕", groupName:"莘北路组"}],
                     strategy:[]}*/
-            ])
+            ]),
+            sensorTypeDefault:{}
         }
 
         this.columns = [{field:"name", title:"策略名称"}, {field:"type", title:"策略类型"},
             {field:"asset", title:"设备种类"}, {field:"setState", title:"设定状态"}]
 
         this.timeStrategy = null;
+        this.sensorStrategy = null;
         this.renderChart = this.renderChart.bind(this);
         this.updateChart = this.updateChart.bind(this);
 
         this.onChange = this.onChange.bind(this);
+        this.updatePage = this.updatePage.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
         this.tableClick = this.tableClick.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.setHandler = this.setHandler.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
         this.initData = this.initData.bind(this);
+        this.initPageTotal = this.initPageTotal.bind(this);
         this.getStrategyDevice = this.getStrategyDevice.bind(this);
     }
 
     componentWillMount(){
         this.mounted = true;
-        this.requestSearch();
+        getModelData(()=>{
+            this.mounted && this.setState({sensorTypeDefault:getSensorDefaultValues()}, ()=>{
+                this.requestSearch();
+            })
+        })
     }
 
     componentWillUnmount(){
@@ -84,13 +95,13 @@ export class Strategy extends Component{
         let model = strategy.getIn(["list", strategy.get("index"), "id"]);
         let limit = page.get("pageSize");
         let offset = (page.get("current")-1)*limit;
-        getStrategyListByName(model, search.get("value"), offset, limit, (data)=>{
-            this.mounted && this.initData(data)
-        })
+        let value = search.get("value")
+        getStrategyListByName(model, value, offset, limit, (data)=>{this.mounted && this.initData(data)})
+        getStrategyCountByName(model, value, data=>{this.mounted && this.initPageTotal(data);})
     }
 
     initData(data){
-        this.setState({data:Immutable.fromJS(data)}, ()=>{
+        this.setState({data:Immutable.fromJS(data), page:this.state.page.update("total", v=>data.length)}, ()=>{
             data.map(strategy=>{
                 this.getStrategyDevice(strategy, (id)=>{
                     if(data.length && id == data[0].id){
@@ -101,18 +112,34 @@ export class Strategy extends Component{
         });
     }
 
+    initPageTotal(data){
+        let page = this.state.page.set('total', data.count);
+        this.setState({page: page});
+    }
     getStrategyDevice(strategy, cb){
         getAssetsBaseByModel(strategy.asset, asset=>{
-            getDeviceByAssetControls("", ASSET_CONTROL_MODE_STRATEGY, strategy.id, (data)=>{
-                let curIndex = getIndexByKey(this.state.data, "id", strategy.id);
-                this.setState({data:this.state.data.updateIn([curIndex, "deviceList"], v=>data.map(ac=>{
-                    return lodash.find(asset, ass=>{return ass.id==ac.asset})
-                }))}, ()=>{
-                    cb && cb(strategy.id);
+            // if(asset && asset.length){
+                getDeviceByAssetControls("", ASSET_CONTROL_MODE_STRATEGY, strategy.id, (data)=>{
+                    let curIndex = getIndexByKey(this.state.data, "id", strategy.id);
+                    this.setState({data:this.state.data.updateIn([curIndex, "deviceList"], v=>this.findAssetById(asset, data))}, ()=>{
+                        cb && cb(strategy.id);
+                    })
+                    this.setState({data:this.state.data.updateIn([curIndex, "setState"], v=>this.state.data.getIn([curIndex, "deviceList"]).length?"已设定":"未设定")})
                 })
-                this.setState({data:this.state.data.updateIn([curIndex, "setState"], v=>this.state.data.getIn([curIndex, "deviceList"]).length?"已设定":"未设定")})
-            })
+            // }
         })
+    }
+
+    findAssetById(asset, assetControl){
+        let list = []
+        assetControl.map(ac=>{
+            let findAsset = lodash.find(asset, ass=>{return ass.id==ac.asset})
+            if(findAsset){
+                list.push(findAsset);
+            }
+        })
+
+        return list;
     }
 
     setHandler(){
@@ -128,7 +155,7 @@ export class Strategy extends Component{
                                                             "mode": ASSET_CONTROL_MODE_STRATEGY,
                                                             "value": selectDevice.id
                                                         }
-                                                        if(lodash.find(selectDevice.deviceList, dev=>{return dev.id == device})){
+                                                        if(lodash.find(selectDevice.deviceList, dev=>{return dev.id == device.id})){
                                                             updateDeviceToStrategy(ac)
                                                         }else{
                                                             addDeviceToStrategy(ac)
@@ -146,24 +173,35 @@ export class Strategy extends Component{
         });
     }
 
+    searchSubmit(){
+        this.updatePage(1);
+    }
+
     onChange(key, value){
         switch(key){
             case "sort":
             case "strategy":
-                this.setState({[key]:this.state[key].update('index', v=>value)})
-                this.setState({[key]:this.state[key].update('value', v=>{
-                    return this.state[key].getIn(['list', value, 'value']);
-                })})
+                this.updatePage(1);
+                this.setState({[key]:this.state[key].update("index", v=>value)},()=>{
+                    this.requestSearch();
+                    this.setState({[key]:this.state[key].update('value', v=>{
+                        return this.state[key].getIn(['list', value, 'value']);
+                    })})
+                })
                 break;
             case "search":
                 this.setState({search:this.state.search.update("value", v=>value)});
                 break;
             case "page":
-                let page = this.state.page.set('current', value);
-                this.setState({page: page}, ()=>{
-                });
+                this.updatePage(value);
                 break;
         }
+    }
+
+    updatePage(current){
+        this.setState({page:this.state.page.update("current", v=>current)}, ()=>{
+            this.requestSearch();
+        });
     }
 
     collpseHandler(){
@@ -171,43 +209,31 @@ export class Strategy extends Component{
     }
 
     updateChart(){
-        const {chartId} = this.state;
-        if(!chartId) {
+        const {chart, sensorTypeDefault} = this.state;
+        if(!chart) {
             return;
         }
-
-        let IsStart = false;
-        let IsEnd = false;
-        const {strategy} = this.state.selectDevice;
+        const {type, strategy} = this.state.selectDevice;
         if(!strategy){
             return;
         }
-        let chartList = strategy.map(stra=>{
-            if(stra.condition.time.indexOf("00:00")>-1){
-                IsStart = true;
-            }
 
-            if(stra.condition.time.indexOf("24:00")>-1){
-                IsEnd = true;
-            }
-            return {x:stra.condition.time, y:stra.rpc.brightness}
-        })
+        this.timeStrategy && this.timeStrategy.destroy();
+        this.sensorStrategy && this.sensorStrategy.destroy();
 
-        if(!IsStart){
-            chartList.unshift({x:"00:00", y:0});
+        if(type == "time"){
+
+            this.timeStrategy = timeStrategy(chart.id, strategy);
+        }else if(type=="sensor"){
+
+            this.sensorStrategy = sensorStrategy(chart, strategy, sensorTypeDefault)
         }
-        if(!IsEnd){
-            chartList.push({x:"24:00", y:0});
-        }
-        if(chartList){
-            this.timeStrategy && this.timeStrategy.destory();
-            this.timeStrategy = timeStrategy({id:chartId, data:chartList});
-        }
+
     }
 
     renderChart(ref){
         if(ref){
-            this.setState({chartId:ref.id}, ()=>{
+            this.setState({chart:ref}, ()=>{
                 this.updateChart();
             });
         }

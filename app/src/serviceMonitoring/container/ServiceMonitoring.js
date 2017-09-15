@@ -5,7 +5,7 @@ import React,{Component} from 'react';
 import {findDOMNode} from 'react-dom';
 
 import Content from '../../components/Content'
-import {getCurDate, drawCur, TIME_FORMAT} from '../util/chart'
+import {getCurDate, drawCur, TIME_FORMAT, destroyChart} from '../util/chart'
 
 import {momentDateFormat, getMomentDate} from '../../util/time'
 export default class ServiceMonitoring extends Component{
@@ -42,6 +42,7 @@ export default class ServiceMonitoring extends Component{
 
     componentWillUnmount(){
         clearInterval(this.interval);
+        destroyChart();
     }
 
     componentDidUpdate(){
@@ -49,7 +50,6 @@ export default class ServiceMonitoring extends Component{
     }
 
     initResult(){
-        console.log('%%%%%%%%%%%%%%%');
         for(let key in this.state.data)
         {
             if(this.state.data[key].list.length>=10){
@@ -71,7 +71,6 @@ export default class ServiceMonitoring extends Component{
         if(!ref){
             return;
         }
-
         drawCur(id, Object.assign({}, {width:ref.parentNode.offsetWidth, height:ref.parentNode.offsetHeight*0.95},this.state.data[id]))
     }
 

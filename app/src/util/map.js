@@ -680,7 +680,7 @@ export default class Map{
             }
         }
     }
-    destoryMap () {
+    destroyMap () {
         this.clearMarker();
 
         this.markerPosList = []
@@ -703,9 +703,9 @@ export default class Map{
         this.IsDrawControl = false;
     }
 
-    destory () {
+    destroy () {
         clearTimeout(this.updateTime);
-        this.destoryMap();
+        this.destroyMap();
     }
 }
 

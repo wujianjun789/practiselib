@@ -11,7 +11,7 @@ import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../api/asset';
 
-export default class CollectionInstrument extends Component{
+export default class Xes extends Component{
     constructor(props) {
         super(props);
         this.state = {

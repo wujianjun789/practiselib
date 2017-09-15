@@ -23,7 +23,7 @@ import {getDeviceTypeByModel} from '../../util/index'
 import {getObjectByKey} from '../../util/algorithm'
 
 import Immutable from 'immutable';
-export class LampCenter extends Component {
+export class Pole extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -255,4 +255,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LampCenter);
+)(Pole);

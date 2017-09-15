@@ -28,6 +28,16 @@ export function getModelSummariesByModelID(modelID, cb) {
     })
 }
 
+export function getAssetList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/assets',{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
 export function getSearchAssets(domainId, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
 
@@ -106,6 +116,15 @@ export function getAssetsBaseByModel(model, cb){
     })
 }
 
+export function getAssetsBaseById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/assets/'+id,{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
 /**
  * 通过设备种类和域获取设备基本属性
  * @param model

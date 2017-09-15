@@ -14,7 +14,6 @@ export default class SensorStrategyPopup extends Component {
         super(props);
         const {data: {id, strategyName="", sensorType='', controlDevice='lc', screenSwitch='off', sensorParam='', brightness='off', sensorParamsList=[]}, controlDeviceList, brightnessList} = this.props;
         this.state = {
-            chart: null,
             data: {
                 id,
                 strategyName,
@@ -44,6 +43,8 @@ export default class SensorStrategyPopup extends Component {
                 screenSwitch: false
             }
         };
+
+        this.chart = null;
 
         this.sensorTransform = {
             SENSOR_NOISE: 'noise',
@@ -120,7 +121,7 @@ export default class SensorStrategyPopup extends Component {
     }
 
     drawLineChart(ref) {
-        let chart = new LineChart({
+        this.chart = new LineChart({
             wrapper: ref,
             data: {values: this.state.sensorParamsList},
             xAccessor: d=>d.condition[ this.sensorTransform[this.state.data.sensorType] ],
@@ -136,21 +137,20 @@ export default class SensorStrategyPopup extends Component {
             yDomain: this.state.data.controlDevice == 'lc' ? [0, 100] : [0, 1],
             curveFactory: d3.curveStepAfter,
             tickFormat: d => `${d}${this.props.sensorsProps[this.state.data.sensorType]?this.props.sensorsProps[this.state.data.sensorType].unit:''}`,
-            padding: {left: 0, top: 35, right: 0, bottom: 20},
+            padding: {left: 0, top: 35, right: 0},
             tooltipAccessor: d => d.rpc.title
         });
-        this.setState({chart: chart});
     }
 
     updateLineChart() {
         const yDomain = this.state.data.controlDevice == 'lc' ? [0, 100] : [0, 1];
         const {sensorParamsList} = this.state;
-        this.state.chart.updateChart({values: sensorParamsList}, undefined, yDomain);
+        this.chart.updateChart({values: sensorParamsList}, undefined, yDomain);
     }
 
     destroyLineChart() {
-        this.state.chart.destroy();
-        this.setState({chart: null});
+        this.chart.destroy();
+        this.chart = null;
     }
 
     addSensorParam() {

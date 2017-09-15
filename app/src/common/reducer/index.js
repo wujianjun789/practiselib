@@ -13,7 +13,7 @@ import domainManage from '../../domainManage/reducer/index'
 import treeView from './treeView';
 import permissionManage from '../../permissionManage/reducer/index'
 import sysOperation from '../../systemOperation/reducer/index';
-import lampConCenter from '../../systemOperation/reducer/lampConCenter';
+import gateway from '../../systemOperation/reducer/gateway';
 
 import notifyPopup from './notifyPopup';
 import auth from '../../authentication/reducer';
@@ -33,6 +33,6 @@ const reducer = combineReducers({
     permissionManage,
 
     sysOperation,
-    lampConCenter
+    gateway
 });
 export default reducer;

@@ -13,83 +13,96 @@ export function getSceneList(cb) {
     })
 }
 
-/**
- *  地图搜索
- * @param type
- * @param model
- * @param searchValue
- * @param cb
- */
-export function getPoleListByModelWithName(searchType, model, searchValue, cb) {
+export function getSearchScene(name, offset, limit, cb) {
     let headers = getHttpHeader();
-    if (searchType == "domain") {
-    }
-
-    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({
-            "include": ["extend"],
-            "where": getSearchParam(searchType, model, searchValue)
-        })), {
-            headers: headers,
-            method: 'GET'
-        }, response => {
-            cb && cb(response);
-        })
-}
-
-function getSearchParam(searchType, model, searchValue) {
-    let param = {};
-    if (searchType == "domain") {
-        if (model) {
-            Object.assign(param, {
-                "extendType": model
-            })
-        }
-        if (searchValue) {
-            Object.assign(param, {
-                "domainId": searchValue
-            })
-        }
-    } else {
-        if (model) {
-            Object.assign(param, {
-                "extendType": model
-            })
-        }
-        if (searchValue) {
-            Object.assign(param, {
-                "name": {
-                    "like": searchValue
-                }
-            })
-        }
-    }
-
-    return param;
-}
-/**
- * @param id(pole id)
- */
-export function getPoleAssetById(id, cb) {
-    let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/poles/' + id + '/assets', {
+    let paramStr = JSON.stringify({"where":getSearchParam(name),"offset":offset,"limit":limit})
+    httpRequest(HOST_IP+'/scenes?filter='+encodeURIComponent(paramStr),{
         headers: headers,
         method: 'GET'
-    }, response => {
-        cb && cb(id, response);
+    }, response=>{
+        cb && cb(response);
     })
 }
 
-export function getPoleListByModelDomainId(model, domainId) {
+export function getSearchSceneCount(name, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({
-            "include": ["extend"],
-            "where": {
-                domainId: domainId
-            }
-        })), {
-            headers: headers,
-            method: 'GET'
-        }, response => {
-            cb && cb(response);
-        })
+    let paramStr = JSON.stringify({"where":getSearchParam(name)})
+    httpRequest(HOST_IP+'/scenes/count?filter='+encodeURIComponent(paramStr),{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
 }
+
+export function getSearchParam(name) {
+    let param = {};
+    if(name){
+        param = Object.assign({}, {name:name});
+    }
+
+    return param
+}
+export function getSceneById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id,{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateSceneById(id, data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id,{
+        headers: headers,
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getSceneDeviceById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id+'/controls',{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function addDeviceToSceneById(id, data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id+'/controls',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getSceneDeviceByIdWidthAssetId(id, assetId, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id+'/controls/'+assetId,{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateSceneDeviceByIdWidthAssetId(id, assetId, data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id+'/controls/'+assetId,{
+        headers: headers,
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+

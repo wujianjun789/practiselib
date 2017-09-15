@@ -11,7 +11,7 @@ import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../api/asset';
 
-export default class LampConCenter extends Component{
+export default class Gateway extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -45,7 +45,7 @@ export default class LampConCenter extends Component{
             }
         };
 
-        this.model = 'lcc';
+        this.model = 'gateway';
 
         this.columns = [
             {field: 'name', title: '设备名称'},

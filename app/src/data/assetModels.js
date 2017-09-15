@@ -113,8 +113,8 @@ export function getModelData(cb) {
 
 function getLinkByModel(parentId, key) {
     switch(key){
-        case 'lcc':
-            return '/assetManage/'+parentId+'/lcc';
+        case 'gateway':
+            return '/assetManage/'+parentId+'/gateway';
         case 'lc':
             return '/assetManage/'+parentId+'/lc';
         case 'sensor':
@@ -202,4 +202,15 @@ export function getModelDefaultsValues(id) {
         list.push(Object.assign({},{type:key}, model.defaults.values[key])); 
     }
     return list;
+}
+
+/**获取传感器默认值**/
+export function getSensorDefaultValues() {
+    let model = getModelById("sensor");
+    let sensor = {}
+    for(var key in model.defaults.values){
+        sensor[key] = model.defaults.values[key];
+    }
+
+    return sensor;
 }

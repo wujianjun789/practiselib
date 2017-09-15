@@ -86,10 +86,12 @@ export default class EditPopup extends Component {
         let model = equipmentSelectList.options[index].title;
         let name = this.state.searchText.value;
         getSearchAssets(domain, model, name, offset, size, data => {
+            let newList = intersection(data, this.state.allPoleEquipmentsData);
             this.setState({
-                allEquipmentsData: data
+                allEquipmentsData: newList
             })
         })
+        this.state.searchText.value = '';
     }
 
     equipmentSelect(event) {

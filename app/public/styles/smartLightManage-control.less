@@ -180,6 +180,69 @@
                 }
               }
             }
+
+            > svg {
+              .x-axis {
+                > path {
+                  display: none;
+                }
+                > .tick {
+                  > line {
+                    display: none;
+                  }
+                  > text {
+                    font-size: 12px;
+                    color: #808080;
+                  }
+                  &:first-of-type {
+                    > text {
+                      text-anchor: start;
+                    }
+                  }
+                  &:last-of-type {
+                    > text {
+                      text-anchor: end;
+                    }
+                  }
+                }
+              }
+              .y-axis {
+                > path {
+                  display: none;
+                }
+                > .tick {
+                  > text {
+                    display: none;
+                  }
+                  > line {
+                    stroke: #e6e6e6;
+                    stroke-width: 1px;
+                  }
+                }
+              }
+
+              .main-area {
+                fill: rgba(255, 92, 104, .1);
+              }
+              .main-line {
+                stroke: rgb(255, 92, 104);
+                stroke-width: 3px;
+                fill: none;
+              }
+            }
+            .tooltip {
+              .tooltip-arrow {
+                border-top-color: #3b4050;
+                border-top-color: #3b4050;
+              }
+              .tooltip-inner {
+                font-size: 12px;
+                color: #fff;
+                background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));   /*  for safari */
+                background-image: linear-gradient(to right, #333744, #4a5064);
+                white-space: pre;
+              }
+            }
           }
         }
       }

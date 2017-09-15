@@ -4,9 +4,9 @@ import React from 'react';
 import {mount, shallow} from 'enzyme';
 import {Provider} from 'react-redux';
 import configureStore from '../../../src/store/configureStore';
-import LampConCenter from '../../../src/systemOperation/container/LampConCenter';
+import Gateway from '../../../src/systemOperation/container/Gateway';
 import Overlayer from '../../../src/common/containers/Overlayer';
-import {initialState as state} from '../../../src/systemOperation/reducer/lampConCenter';
+import {initialState as state} from '../../../src/systemOperation/reducer/Gateway';
 import '../../../public/leaflet/leaflet';
 import '../../../public/leaflet/leaflet.draw';
 import '../../../public/leaflet/leaflet.label';
@@ -14,13 +14,13 @@ import '../../../public/leaflet/leaflet.awesome-markers';
 import '../../../public/leaflet/leaflet.markercluster';
 import '../../../public/leaflet/leaflet.ChineseTmsProviders';
 
-describe('<LampConCenter /> HOC', () => {
+describe('<Gateway /> HOC', () => {
     const store = configureStore();
 
     it('simulate click', done => {
         const root = mount(<Provider store={store}>
             <div>
-                <LampConCenter />
+                <Gateway />
                 <Overlayer />
             </div>
         </Provider>);
