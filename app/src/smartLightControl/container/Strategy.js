@@ -17,7 +17,7 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {timeStrategy, sensorStrategy} from '../util/chart'
 
 import {getAssetsBaseByModel} from '../../api/asset'
-import {getStrategyListByName, getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
+import {getStrategyListByName, getStrategyCountByName, getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
 import {ASSET_CONTROL_MODE_STRATEGY} from '../../common/util/index'
 
 import {getModelData, getSensorDefaultValues} from '../../data/assetModels'
@@ -73,6 +73,7 @@ export class Strategy extends Component{
 
         this.requestSearch = this.requestSearch.bind(this);
         this.initData = this.initData.bind(this);
+        this.initPageTotal = this.initPageTotal.bind(this);
         this.getStrategyDevice = this.getStrategyDevice.bind(this);
     }
 
@@ -94,9 +95,9 @@ export class Strategy extends Component{
         let model = strategy.getIn(["list", strategy.get("index"), "id"]);
         let limit = page.get("pageSize");
         let offset = (page.get("current")-1)*limit;
-        getStrategyListByName(model, search.get("value"), offset, limit, (data)=>{
-            this.mounted && this.initData(data)
-        })
+        let value = search.get("value")
+        getStrategyListByName(model, value, offset, limit, (data)=>{this.mounted && this.initData(data)})
+        getStrategyCountByName(model, value, data=>{this.mounted && this.initPageTotal(data);})
     }
 
     initData(data){
@@ -109,12 +110,12 @@ export class Strategy extends Component{
                 });
             })
         });
-
-        if(!data.length){
-            this.setState({selectDevice:{}});
-        }
     }
 
+    initPageTotal(data){
+        let page = this.state.page.set('total', data.count);
+        this.setState({page: page});
+    }
     getStrategyDevice(strategy, cb){
         getAssetsBaseByModel(strategy.asset, asset=>{
             // if(asset && asset.length){
