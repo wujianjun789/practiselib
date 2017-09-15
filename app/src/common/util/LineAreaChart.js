@@ -148,7 +148,7 @@ export default function LineAreaChart(parentId, chartData) {
 
     return {
         id: id,
-        destory:function () {
+        destroy:function () {
             parent.select('svg').remove();
         }
     }

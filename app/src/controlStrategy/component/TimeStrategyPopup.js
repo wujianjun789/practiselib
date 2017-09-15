@@ -331,7 +331,7 @@ export default class TimeStrategyPopup extends Component{
             chartList.push({x:"24:00", y:0});
         }
         if(chartList){
-            this.timeStrategy && this.timeStrategy.destory();
+            this.timeStrategy && this.timeStrategy.destroy();
             this.timeStrategy = timeStrategy({id:chartId, data:chartList});
         }
     }

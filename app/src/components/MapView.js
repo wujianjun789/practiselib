@@ -29,7 +29,7 @@ export default class MapView extends Component {
     componentWillUnmount() {
         const {mapData}  = this.props;
         for (let key in this.state) {
-            this.state[key].destory();
+            this.state[key].destroy();
         }
     }
 

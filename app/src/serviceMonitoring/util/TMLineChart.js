@@ -183,7 +183,7 @@ export default function TMLineChart(id, chartData) {
             dataset = data.data;
             _reDraw();
         },
-        destory: function () {
+        destroy: function () {
             parent.select('svg').remove();
         }
     }

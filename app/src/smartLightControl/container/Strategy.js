@@ -117,16 +117,28 @@ export class Strategy extends Component{
 
     getStrategyDevice(strategy, cb){
         getAssetsBaseByModel(strategy.asset, asset=>{
-            getDeviceByAssetControls("", ASSET_CONTROL_MODE_STRATEGY, strategy.id, (data)=>{
-                let curIndex = getIndexByKey(this.state.data, "id", strategy.id);
-                this.setState({data:this.state.data.updateIn([curIndex, "deviceList"], v=>data.map(ac=>{
-                    return lodash.find(asset, ass=>{return ass.id==ac.asset})
-                }))}, ()=>{
-                    cb && cb(strategy.id);
+            // if(asset && asset.length){
+                getDeviceByAssetControls("", ASSET_CONTROL_MODE_STRATEGY, strategy.id, (data)=>{
+                    let curIndex = getIndexByKey(this.state.data, "id", strategy.id);
+                    this.setState({data:this.state.data.updateIn([curIndex, "deviceList"], v=>this.findAssetById(asset, data))}, ()=>{
+                        cb && cb(strategy.id);
+                    })
+                    this.setState({data:this.state.data.updateIn([curIndex, "setState"], v=>this.state.data.getIn([curIndex, "deviceList"]).length?"已设定":"未设定")})
                 })
-                this.setState({data:this.state.data.updateIn([curIndex, "setState"], v=>this.state.data.getIn([curIndex, "deviceList"]).length?"已设定":"未设定")})
-            })
+            // }
         })
+    }
+
+    findAssetById(asset, assetControl){
+        let list = []
+        assetControl.map(ac=>{
+            let findAsset = lodash.find(asset, ass=>{return ass.id==ac.asset})
+            if(findAsset){
+                list.push(findAsset);
+            }
+        })
+
+        return list;
     }
 
     setHandler(){
@@ -205,7 +217,7 @@ export class Strategy extends Component{
             return;
         }
 
-        this.timeStrategy && this.timeStrategy.destory();
+        this.timeStrategy && this.timeStrategy.destroy();
         this.sensorStrategy && this.sensorStrategy.destroy();
 
         if(type == "time"){

@@ -31,7 +31,11 @@ export function drawCur(id, chartData) {
     }
 }
 
-export function destoryChart() {
+export function destroyChart() {
+    for(let key in curChartList){
+        let curChart = curChartList[key];
+        curChart.destroy();
+    }
     curChartList = [];
 }
 

@@ -5,7 +5,7 @@ import React,{Component} from 'react';
 import {findDOMNode} from 'react-dom';
 
 import Content from '../../components/Content'
-import {getCurDate, drawCur, TIME_FORMAT, destoryChart} from '../util/chart'
+import {getCurDate, drawCur, TIME_FORMAT, destroyChart} from '../util/chart'
 
 import {momentDateFormat, getMomentDate} from '../../util/time'
 export default class ServiceMonitoring extends Component{
@@ -42,7 +42,7 @@ export default class ServiceMonitoring extends Component{
 
     componentWillUnmount(){
         clearInterval(this.interval);
-        destoryChart();
+        destroyChart();
     }
 
     componentDidUpdate(){
