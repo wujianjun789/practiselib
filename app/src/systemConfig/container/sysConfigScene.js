@@ -492,6 +492,7 @@ export class sysConfigScene extends Component {
                  </div>
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler } IsHaveMap = {IsHaveMap} >
                    <div className="panel panel-default device-statics-info">
+                       {/*<div className="panel panel-default map-position">*/}
                      <div className="panel-heading">
                        <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中场景
                      </div>
@@ -503,16 +504,15 @@ export class sysConfigScene extends Component {
                        </button>
                      </div>
                    </div>
-                   <div className="panel panel-default device-statics-info max-height">
+                   <div className="panel panel-default device-statics-info map-position max-height">
                      <div className="panel-heading">
                        <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含设备
                      </div>
-
-                   </div>
-                    <div className="panel-body domain-property domain-content">
-                       <div className="">灯（疏影路组）</div>
-                       <div className="">屏幕（疏影路组）</div>
+                     <div id='scene-device' className="panel-body domain-property domain-content">
+                        <div className="">灯（疏影路组）</div>
+                        <div className="">屏幕（疏影路组）</div>
                      </div>
+                  </div>
                  </SideBarInfo>
                </Content>
             </div>
