@@ -83,12 +83,11 @@ export default class Screen extends Component {
     
     initData() {
         getDomainList((data) =>{
-            this.mounted && this.updateDomainData(data);
-            this.mounted && this.initDeviceData();
+            this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
     }
 
-    updateDomainData(data) {
+    updateDomainData(data, cb) {
         let currentDomain,
         options = data;
         if (data.length == 0) {
@@ -96,7 +95,9 @@ export default class Screen extends Component {
         } else {
             currentDomain = data[0];
         }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, () => {
+            cb && cb();
+        });
     }
 
     initDeviceData(isSearch) {
