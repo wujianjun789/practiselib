@@ -19,7 +19,7 @@ export default class DeviceStateChart extends Component{
             data:{
                 "gateway":[{id:"fault", name:"故障/总数", cur:30, total:300}, {id:"online", name:"在线/总数", cur:120, total:300}],
                 "lc":[{id:"fault", name:"故障/总数", cur:30, total:300}, {id:"online", name:"在线/总数", cur:120, total:300},
-                    {id:"lightRate", name:"亮灯率", cur:120, total:300}],
+                    {id:"lightRate", name:"亮灯率", cur:150, total:300, IsPercent:true}],
                 "screen":[{id:"fault", name:"故障/总数", cur:30, total:300}, {id:"online", name:"在线/总数", cur:120, total:300}],
                 "collect":[{id:"fault", name:"故障/总数", cur:30, total:300}, {id:"online", name:"在线/总数", cur:120, total:300}]
             }
@@ -40,7 +40,7 @@ export default class DeviceStateChart extends Component{
                                 list.map(pro=>{
                                     return <div key={device.id+pro.id} className="progress-container">
                                         <span className="title">{pro.name}</span>
-                                        <Progress  className={pro.id} min={0} max={pro.total} cur={pro.cur}/>
+                                        <Progress  className={pro.id} min={0} max={pro.total} cur={pro.cur} IsPercent={pro.IsPercent}/>
                                     </div>
                                 })
                             }
