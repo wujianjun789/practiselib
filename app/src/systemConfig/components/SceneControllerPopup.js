@@ -95,10 +95,14 @@ export default class SceneControllerPopup extends Component {
             });
         }
         if (id == "controlModel") {
-            //控制模式
+            this.setState({
+                mode: this.props.modeList.options[e.target.selectedIndex].name
+            });
         }
-        if (id == "controlParam") {
-            //调整参数
+        if (id == "controlParam") {//调整参数
+            this.setState({
+                param: this.props.paramList.options[e.target.selectedIndex].name
+            })
         }
 
         let value = e.target.value;
@@ -178,10 +182,10 @@ export default class SceneControllerPopup extends Component {
     }
 
     render() {
-        const {sceneAssetList, assetList} = this.props; 
+        const {sceneAssetList, assetList, modeList, paramList} = this.props; 
         const {className, title, domainList, modelList, popId} = this.props;
-        const {assetName, id, name, model, domain, lng, lat, prompt} = this.state;
-        // console.log('sceneAssetListprops:', this.props.sceneAssetList);
+        const {mode, param, assetName, id, name, model, domain, lng, lat, prompt} = this.state;
+        console.log('modeList:', modeList);
         // console.log('sceneAssetListstate:', this.state.sceneAssetList);
 
         let valid = false;
@@ -230,11 +234,11 @@ export default class SceneControllerPopup extends Component {
                     <div className="col-sm-6 col-xm-6 popup-body-right">
                         <div className="selectBox">
                          <label htmlFor="id" className="fixed-width-left control-label">控制模式</label>
-                         <Select id="controlModel" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
+                         <Select id="controlModel" titleField={ modeList.valueField } valueField={ modeList.valueField } options={ modeList.options } value={ mode } onChange={ this.onChange }/>
                         </div>
-                        <div className="selectBox">
+                        <div className="selectBox" hidden={ popId == 'add' ? true : false}>
                          <label htmlFor="id" className="fixed-width-left control-label">调整参数</label>
-                         <Select id="controlParam" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
+                         <Select id="controlParam" titleField={ paramList.valueField } valueField={ paramList.valueField } options={ paramList.options } value={ param } onChange={ this.onChange }/>
                         </div>
                         <div className="panel panel-default strategy-param" hidden={ popId == 'add' ? true : false}>
                             <div className="chart-heading">策略参数</div>

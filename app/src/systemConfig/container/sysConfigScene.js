@@ -66,7 +66,27 @@ export class sysConfigScene extends Component {
                     {id: "22", name: "单灯1", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
                     {id: "23", name: "单灯2", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
                     {id: "24", name: "灯杆1", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}
+            ]},
+
+            modeList:{//控制模式
+                titleField: 'name',
+                valueField: 'name',
+                index: 0,
+                value: "",
+                options:[
+                    {id: "1", name: "MANUAL"},
+                    {id: "2", name: "STRATEGY"}
                 ]},
+            
+            paramList:{//控制参数
+                titleField: 'name',
+                valueField: 'name',
+                index: 0,
+                value: "",
+                options:[
+                    {id: "1", name: "亮度"},
+                    {id: "2", name: "开关"}
+            ]},
             //某一个场景的的设备列表
             sceneAssetList:[
                 {id: "12", name: "单灯3", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
@@ -398,7 +418,7 @@ export class sysConfigScene extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const { domainList, selectDevice, sceneList, sceneAssetList, assetList } = this.state;   
+        const { domainList, selectDevice, sceneList, sceneAssetList, assetList, modeList, paramList } = this.state;   
         const {model,/* selectDevice, domainList,*/ modelList, whitelistData} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
         let curType = modelList.options.length ? modelList.options[0] : null;
@@ -413,8 +433,6 @@ export class sysConfigScene extends Component {
                     sceneAssetList: sceneAssetList, //场景白名单
                     param: "",//调整参数
                     id:'',//场景id
-                    // assetName: assetList.length ? assetList[assetList.index].name : "",
-                    // assetName: assetList.length ? assetList[0].name : "",
                     assetName: assetList.value, //设备选择输入框初始值
 
 
@@ -434,6 +452,8 @@ export class sysConfigScene extends Component {
                                  model={ this.state.model } data={ dataInit } domainList={ domainList }
                                 modelList={ modelList } overlayerHide={ overlayerHide }
                                 assetList = { assetList }//可添加至场景的设备名单 
+                                modeList = {modeList}
+                                paramList = {paramList}
                                 onConfirm={ (data) => {
                                                         postAssetsByModel(model, data, () => {
                                                             this.requestSearch();
@@ -474,6 +494,8 @@ export class sysConfigScene extends Component {
                                 data={ dataInit2 } domainList={ domainList } modelList={ modelList }
                                 assetList = { assetList }//可添加至场景的设备名单 
                                 overlayerHide={ overlayerHide } 
+                                modeList = {modeList}
+                                paramList = {paramList}
                                 onConfirm={ data => {
                                                     updateAssetsByModel(model, data, (data) => {
                                                         this.requestSearch();
@@ -614,7 +636,7 @@ export class sysConfigScene extends Component {
                      <div id='scene-device' className="panel-body domain-property domain-content">
                          {
                              sceneAssetList.map((item,index) => (
-                                 <div className="content-size">{ item.name }</div>
+                                 <div key={item.id} className="content-size">{ item.name }</div>
                              ))
                          }
                      </div>
