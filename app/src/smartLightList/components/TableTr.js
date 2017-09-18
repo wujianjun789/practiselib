@@ -13,7 +13,7 @@ export default class TableTr extends PureComponent {
     static propTypes = {
         activeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         columns: PropTypes.arrayOf(PropTypes.shape({
-            field: PropTypes.string.isRequired,
+            accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
             title: PropTypes.string.isRequired
         }) ),
         formatFunc: PropTypes.func,
@@ -70,7 +70,13 @@ export default class TableTr extends PureComponent {
             <tr className={activeId && activeId==id ? 'active':''} onClick={this.onClick}>
             {
                 columns.map((item, index) => {
-                    return <td key={index}>{_data[item.field]}</td>
+                    if(typeof item.accessor === 'function') {
+                        return <td key={index}>{item.accessor(_data)}</td>
+                    } else if(typeof item.accessor === 'string') {
+                        return <td key={index}>{_data[item.accessor]}</td>
+                    } else {
+                        return <td key={index}></td>
+                    }
                 })
             }
             </tr>

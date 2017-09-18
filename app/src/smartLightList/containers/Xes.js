@@ -40,9 +40,9 @@ export default class Xes extends Component{
         this.model = 'xes';
 
         this.columns = [
-            {field: 'name', title: '设备名称'},
-            {field: 'online', title: '在线状态'},
-            {field: 'fault', title: '故障状态'},
+            {accessor: 'name', title: '设备名称'},
+            {accessor: 'online', title: '在线状态'},
+            {accessor: 'fault', title: '故障状态'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -70,12 +70,11 @@ export default class Xes extends Component{
     
     initData() {
         getDomainList((data) =>{
-            this.mounted && this.updateDomainData(data);
-            this.mounted && this.initDeviceData();
+            this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
     }
 
-    updateDomainData(data) {
+    updateDomainData(data, cb) {
         let currentDomain,
         options = data;
         if (data.length == 0) {
@@ -83,7 +82,9 @@ export default class Xes extends Component{
         } else {
             currentDomain = data[0];
         }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, () => {
+            cb && cb();
+        });
     }
 
     initDeviceData(isSearch) {

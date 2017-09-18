@@ -10,7 +10,7 @@ export default class TableWithHeader extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         columns: PropTypes.arrayOf(PropTypes.shape({
-            field: PropTypes.string.isRequired,
+            accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
             title: PropTypes.string.isRequired
         }) ),
         children: PropTypes.arrayOf(PropTypes.node)

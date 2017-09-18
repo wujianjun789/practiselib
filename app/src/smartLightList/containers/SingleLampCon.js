@@ -56,15 +56,15 @@ export default class SingleLampCon extends Component {
         this.model = 'lc';
 
         this.columns = [
-            {field: 'name', title: '设备名称'},
-            {field: 'online', title: '在线状态'},
-            {field: 'device', title: '灯状态'},
-            {field: 'switch', title: '开关状态'},
-            {field: 'brightness', title: '亮度'},
-            {field: 'voltage', title: '电压'},
-            {field: 'current', title: '电流'},
-            {field: 'power', title: '功率'},
-            {field: 'updated', title: '更新时间'},
+            {accessor: 'name', title: '设备名称'},
+            {accessor: 'online', title: '在线状态'},
+            {accessor: 'device', title: '灯状态'},
+            {accessor: 'switch', title: '开关状态'},
+            {accessor: 'brightness', title: '亮度'},
+            {accessor: 'voltage', title: '电压'},
+            {accessor: 'current', title: '电流'},
+            {accessor: 'power', title: '功率'},
+            {accessor: 'updated', title: '更新时间'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -93,13 +93,12 @@ export default class SingleLampCon extends Component {
     
     initData() {
         getDomainList((data) =>{
-            this.mounted && this.updateDomainData(data);
-            this.mounted && this.initDeviceData();
+            this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
         getLightLevelConfig(this.updateBrightnessList);
     }
 
-    updateDomainData(data) {
+    updateDomainData(data, cb) {
         let currentDomain,
             options = data;
         if (data.length == 0) {
@@ -107,7 +106,9 @@ export default class SingleLampCon extends Component {
         } else {
             currentDomain = data[0];
         }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, ()=>{
+            cb && cb()
+        });
     }
 
     initDeviceData(isSearch) {

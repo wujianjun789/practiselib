@@ -50,12 +50,12 @@ export default class Screen extends Component {
         this.model = 'screen';
 
         this.columns = [
-            {field: 'name', title: '设备名称'},
-            {field: 'online', title: '在线状态'},
-            {field: 'fault', title: '故障状态'},
-            {field: 'brightness', title: '当前亮度'},
-            {field: 'briMode', title: '亮度模式'},
-            {field: 'updated', title: '更新时间'},
+            {accessor: 'name', title: '设备名称'},
+            {accessor: 'online', title: '在线状态'},
+            {accessor: 'fault', title: '故障状态'},
+            {accessor: 'brightness', title: '当前亮度'},
+            {accessor: 'briMode', title: '亮度模式'},
+            {accessor: 'updated', title: '更新时间'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -83,12 +83,11 @@ export default class Screen extends Component {
     
     initData() {
         getDomainList((data) =>{
-            this.mounted && this.updateDomainData(data);
-            this.mounted && this.initDeviceData();
+            this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
     }
 
-    updateDomainData(data) {
+    updateDomainData(data, cb) {
         let currentDomain,
         options = data;
         if (data.length == 0) {
@@ -96,7 +95,9 @@ export default class Screen extends Component {
         } else {
             currentDomain = data[0];
         }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, () => {
+            cb && cb();
+        });
     }
 
     initDeviceData(isSearch) {
