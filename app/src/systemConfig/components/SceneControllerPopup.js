@@ -63,65 +63,57 @@ export default class SceneControllerPopup extends Component {
         this.timeStrategy = null;  //绘制图表
         this.sensorStrategy = null; //绘制图表
         this.renderChart = this.renderChart.bind(this);
-        // this.onChange = this.onChange.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.renderHtmlForModel = this.renderHtmlForModel.bind(this);
     }
 
-    // onChange(e) {
-    //     let id = e.target.id;
-    //     if (id == "model") {
-    //         this.setState({
-    //             modelId: this.props.modelList.options[e.target.selectedIndex].id
-    //         });
-    //     }
+    onChange(e) {
+        let id = e.target.id;
+        if(id == "domain") {//域
+            this.setState({
+                domainId: this.props.domainList.options[e.target.selectedIndex].id
+            });
+        } 
+        if (id = "assetName") {
+            //可添加的设备名字
+        }
+        if (id = "mode") {
+            //控制模式
+        }
+        if (id = "param") {
+            //调整参数
+        }
 
-    //     if (id == "domain") {
-    //         this.setState({
-    //             domainId: this.props.domainList.options[e.target.selectedIndex].id
-    //         });
-    //     }
+        let value = e.target.value;
+        let newValue = '';
+        let prompt = false;
 
-    //     let value = e.target.value;
-    //     let newValue = '';
-    //     let prompt = false;
-    //     if (id == "lat") {
-    //         newValue = value;
-    //         if (!latlngValid || !latValid(newValue)) {
-    //             prompt = true;
-    //         }
-    //     } else if (id == "lng") {
-    //         newValue = value;
-    //         if (!latlngValid || !lngValid(newValue)) {
-    //             prompt = true;
-    //         }
-    //     } else if (id == "name") {
-    //         newValue = value; //过滤非法数据
-    //         prompt = !Name2Valid(newValue); //判定输入数量
-    //     } else if (id == "id") {
-    //         newValue = value;
-    //         prompt = !MACValid(newValue);
-    //     } else {
-    //         newValue = value;
-    //     }
+       if (id == "name") {
+            newValue = value; //过滤非法数据
+            prompt = !Name2Valid(newValue); //判定输入数量
+       } else {
+            newValue = value;
+       }
 
-    //     this.setState({
-    //         [id]: newValue,
-    //         prompt: Object.assign({}, this.state.prompt, {
-    //             [id]: prompt
-    //         })
-    //     });
+       this.setState({
+            [id]: newValue,
+            prompt: Object.assign({}, this.state.prompt, {
+                [id]: prompt
+            })
+        });
+    }
 
-    // }
 
     renderHtmlForModel() {
-
         return <div className="form-group clearfix">
                  <label htmlFor="model" className="fixed-width-left control-label">型号：</label>
                  <div className="fixed-width-right">
-                   <Select id="model" className="form-control" titleField={ this.props.modelList.titleField } valueField={ this.props.modelList.valueField } options={ this.props.modelList.options } value={ this.state.model }
-                     onChange={ this.onChange } disabled={this.props.model === "xes"&&this.props.popId=='edit'?true:false}/>
+                   <Select id="model" className="form-control" titleField={ this.props.modelList.titleField } 
+                        valueField={ this.props.modelList.valueField } options={ this.props.modelList.options } 
+                        value={ this.state.model } onChange={ this.onChange }
+                        disabled={this.props.model === "xes" && this.props.popId=='edit'?true:false}/>
                  </div>
                </div>
 
@@ -170,8 +162,8 @@ export default class SceneControllerPopup extends Component {
         }
     }
 
-
     render() {
+        const {sceneAssetlist} = this.props; 
         const {className, title, domainList, modelList, popId} = this.props;
         const {id, name, model, domain, lng, lat, prompt} = this.state;
         // let valid = '';
@@ -185,9 +177,9 @@ export default class SceneControllerPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="id" className="fixed-width-left control-label">场景名称：</label>
                         <div className="fixed-width-right">
-                            <input type="text" className="form-control" id="id" placeholder="场景1" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
+                            <input type="text" className="form-control" id="name" placeholder="输入新建场景名称" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
                             />
-                        <span className={"prompt"}>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
+                        <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
                         </div>
                     </div>
                 </div>
@@ -205,7 +197,6 @@ export default class SceneControllerPopup extends Component {
                                         <div key={''} className="tables-cell" title=''>屏幕1</div>
                                         <div className="tables-cell cell-right">
                                             <span id={''} className="glyphicon glyphicon-trash" onClick={this.itemDelete}></span>
-                                            {/*<span id={''} className="icon-delete" onClick={this.itemDelete}></span>*/}
                                         </div>
                                     </li>
                                 </ul>
