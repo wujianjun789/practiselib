@@ -56,7 +56,7 @@ export class sysConfigScene extends Component {
                 {id:2, name:"场景2", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e46", asset: "string", prop: "string", mode: "MANUAL", value: "70"}], mode: "MANUAL"},
                 {id:3, name:"场景3", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e47", asset: "string", prop: "string", mode: "STRATEGY", value: "80"}], mode: "STRATEGY"},
             ],
-            //从API获取的设备列表getAssetList
+            //从API获取的可添加到场景的设备列表assetList
             assetList:{
                 titleField: 'name',
                 valueField: 'name',
@@ -434,10 +434,9 @@ export class sysConfigScene extends Component {
                 };
 
                 overlayerShow(<SceneControllerPopup popId="add" className="centralized-popup" 
-                                title="新建场景" sceneAssetList = {this.state.sceneAssetList}
+                                title="新建场景" sceneAssetList = {this.state.sceneAssetList}//场景白名单
                                  model={ this.state.model } data={ dataInit } domainList={ domainList }
                                 modelList={ modelList } overlayerHide={ overlayerHide }
-                                sceneAssetList = { sceneAssetList }//场景白名单
                                 assetList = { assetList }//可添加至场景的设备名单 
                                 onConfirm={ (data) => {
                                                         postAssetsByModel(model, data, () => {

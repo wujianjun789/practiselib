@@ -69,6 +69,9 @@ export default class SceneControllerPopup extends Component {
                 ]
             },
         };
+        this.columns = [
+            {field: "name"}
+        ]
         
         this.timeStrategy = null;  //绘制图表
         this.sensorStrategy = null; //绘制图表
@@ -175,10 +178,11 @@ export default class SceneControllerPopup extends Component {
     }
 
     render() {
-        const {sceneAssetlist, assetList} = this.props; 
+        const {sceneAssetList, assetList} = this.props; 
         const {className, title, domainList, modelList, popId} = this.props;
         const {assetName, id, name, model, domain, lng, lat, prompt} = this.state;
-        // console.log('domain:', domain);
+        // console.log('sceneAssetListprops:', this.props.sceneAssetList);
+        // console.log('sceneAssetListstate:', this.state.sceneAssetList);
 
         let valid = false;
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={ ['取消', '确认'] } btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
@@ -205,13 +209,20 @@ export default class SceneControllerPopup extends Component {
                         </div>
                         <div className="table-list">
                             <div className="table-body">
-                                <ul>
-                                    <li className="body-row clearfix">
-                                        <div key={''} className="tables-cell" title=''>屏幕1</div>
-                                        <div className="tables-cell cell-right">
-                                            <span id={''} className="glyphicon glyphicon-trash" onClick={this.itemDelete}></span>
-                                        </div>
-                                    </li>
+                                <ul>{
+                                        sceneAssetList.map((item, index) => (
+                                            <li key = {item.id} className = "body-row clearfix">
+                                                {
+                                                    this.columns.map((subItem, subIndex) => (
+                                                        <div key={subIndex} className="tables-cell" title={item[subItem.field]}>{item[subItem.field]}</div>
+                                                    ))
+                                                }
+                                                    <div className="tables-cell cell-right">
+                                                        <span id = {item.id} className = "glyphicon glyphicon-trash" onClick={this.itemDelete}></span>
+                                                    </div>
+                                             </li>
+                                        ))
+                                    }
                                 </ul>
                             </div>
                         </div>
