@@ -95,17 +95,18 @@ export const TreeData = [
     "level": 1,
     "children": [
       {
-        "id": 'deviceTopology',
-        "name": "设备拓扑图",
-        "class": '',
-        "active": false,
-        "link": "/systemOperation/deviceMonitor/deviceTopology"
-      }, {
         "id": 'deviceState',
         "name": "设备状态图",
         "class": '',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceState"
+      },
+      {
+        "id": 'deviceTopology',
+        "name": "设备拓扑图",
+        "class": '',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceTopology"
       }
     ]
   }
