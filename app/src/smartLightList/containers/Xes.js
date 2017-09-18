@@ -40,9 +40,9 @@ export default class Xes extends Component{
         this.model = 'xes';
 
         this.columns = [
-            {field: 'name', title: '设备名称'},
-            {field: 'online', title: '在线状态'},
-            {field: 'fault', title: '故障状态'},
+            {accessor: 'name', title: '设备名称'},
+            {accessor: 'online', title: '在线状态'},
+            {accessor: 'fault', title: '故障状态'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
