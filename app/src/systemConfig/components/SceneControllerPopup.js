@@ -20,14 +20,24 @@ import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../uti
 export default class SceneControllerPopup extends Component {
     constructor(props) {
         super(props);
-        const {id="", name="", modelId="", model="", domainId="", domain="", lng=0, lat=0} = props.data;
+        const {assetName="",domain="", domainId="",id="", name="", mode="", sceneAssetList="", param="",  modelId="", model="",  lng=0, lat=0} = props.data;
         this.state = {
+            domain: domain,
+            domainId: domainId,     
             id: id,
             name: name,
+            mode: mode, //控制模式
+            sceneAssetList: sceneAssetList, //场景白名单
+            param: param, //调整参数
+            assetName: assetName,
+
+
+            
+            // id: id,
+            // name: name,
             model: model,
             modelId: modelId,
-            domain: domain,
-            domainId: domainId,
+
             lng: lng,
             lat: lat,
             prompt: {
@@ -76,13 +86,15 @@ export default class SceneControllerPopup extends Component {
                 domainId: this.props.domainList.options[e.target.selectedIndex].id
             });
         } 
-        if (id = "assetName") {
-            //可添加的设备名字
+        if (id == "device") {
+            this.setState({
+                assetName: this.props.assetList.options[e.target.selectedIndex].name
+            });
         }
-        if (id = "mode") {
+        if (id == "controlModel") {
             //控制模式
         }
-        if (id = "param") {
+        if (id == "controlParam") {
             //调整参数
         }
 
@@ -163,10 +175,11 @@ export default class SceneControllerPopup extends Component {
     }
 
     render() {
-        const {sceneAssetlist} = this.props; 
+        const {sceneAssetlist, assetList} = this.props; 
         const {className, title, domainList, modelList, popId} = this.props;
-        const {id, name, model, domain, lng, lat, prompt} = this.state;
-        // let valid = '';
+        const {assetName, id, name, model, domain, lng, lat, prompt} = this.state;
+        // console.log('domain:', domain);
+
         let valid = false;
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={ ['取消', '确认'] } btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
                          onConfirm={ this.onConfirm } />;
@@ -177,7 +190,7 @@ export default class SceneControllerPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="id" className="fixed-width-left control-label">场景名称：</label>
                         <div className="fixed-width-right">
-                            <input type="text" className="form-control" id="name" placeholder="输入新建场景名称" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
+                            <input type="text" className="form-control" id="name" placeholder="输入新建场景名称" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
                             />
                         <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
                         </div>
@@ -185,9 +198,9 @@ export default class SceneControllerPopup extends Component {
                 </div>
                 <div className="popup-body"> 
                     <div className="col-sm-6 col-xm-6 popup-body-left">
-                         <Select id="road" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
+                         <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domain } onChange={ this.onChange }/>
                         <div>
-                         <Select id="device" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
+                         <Select id="device" titleField={ assetList.valueField } valueField={ assetList.valueField } options={ assetList.options } value={ assetName } onChange={ this.onChange }/>
                          <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
                         </div>
                         <div className="table-list">
@@ -206,7 +219,7 @@ export default class SceneControllerPopup extends Component {
                     <div className="col-sm-6 col-xm-6 popup-body-right">
                         <div className="selectBox">
                          <label htmlFor="id" className="fixed-width-left control-label">控制模式</label>
-                         <Select id="controlModal" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
+                         <Select id="controlModel" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                         </div>
                         <div className="selectBox">
                          <label htmlFor="id" className="fixed-width-left control-label">调整参数</label>

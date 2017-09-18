@@ -57,11 +57,16 @@ export class sysConfigScene extends Component {
                 {id:3, name:"场景3", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e47", asset: "string", prop: "string", mode: "STRATEGY", value: "80"}], mode: "STRATEGY"},
             ],
             //从API获取的设备列表getAssetList
-            assetList:[
+            assetList:{
+                titleField: 'name',
+                valueField: 'name',
+                index: 0,
+                value: "",
+            options:[
                 {id: "22", name: "单灯1", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
                 {id: "23", name: "单灯2", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
                 {id: "24", name: "灯杆1", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}
-            ],
+            ]},
             //某一个场景的的设备列表
             sceneAssetList:[
                 {id: "12", name: "单灯3", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
@@ -405,17 +410,21 @@ export class sysConfigScene extends Component {
             case 'sys-add':
                 const dataInit = {
                     //存放创建新场景需要更新的数据
-                    domain: domainList.value,
+                    domain: domainList.value,//场景所在区域
                     domainid: domainList.options.length ? domainList.options[domainList.index].id : "",
-                    name: "",
-                    mode: "",
-                    sceneAssetList: sceneAssetList, 
-                    param: "",
+                    name: "",//场景名
+                    mode: "",//控制模式
+                    sceneAssetList: sceneAssetList, //场景白名单
+                    param: "",//调整参数
+                    id:'',//场景id
+                    // assetName: assetList.length ? assetList[assetList.index].name : "",
+                    // assetName: assetList.length ? assetList[0].name : "",
+                    assetName: assetList.value, //设备选择输入框初始值
 
 
 
-                    id: '',
-                    name: '',
+                    // id: '',
+                    // name: '',
                     model: curType ? curType.title : "",
                     modelId: curType ? curType.id : "",
                     domain: domainList.value,
