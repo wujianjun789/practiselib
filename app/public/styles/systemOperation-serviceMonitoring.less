@@ -1,92 +1,95 @@
 .systemOperation-serviceMonitor{
-  .content{
-    padding: 60px;
-    .col-sm-6{
-      height: 50%;
-      .heading{
-        color: #4d4d4d;
-        font-size: 14px;
-        span{
-          &.name{
-            margin-right: 15px;
-            font-size: 24px;
-          }
+  &.serviceMonitor-systemRunningState{
+    .content{
+      padding: 60px;
+      .col-sm-6{
+        height: 50%;
+        .heading{
+          color: #4d4d4d;
+          font-size: 14px;
+          span{
+            &.name{
+              margin-right: 15px;
+              font-size: 24px;
+            }
 
-          &.right{
-            margin-top: 10px;
+            &.right{
+              margin-top: 10px;
 
-            float: right;
-          }
-        }
-      }
-
-      .chart{
-        .axis.x, .axis.y{
-          path{
-            //display: none;
-            stroke: #4a5064;
-            stroke-width: 1px;
-            font-weight: bold;
-          }
-
-          g{
-            line{
-              stroke: #4a5064;
-              stroke-width: 1px;
-              font-weight: bold;
+              float: right;
             }
           }
         }
 
-        &.cpu{
-          .line{
-            fill: none;
-            stroke-width: 3px;
-            stroke: #00bcff;
-            font-weight: bold;
+        .chart{
+          .axis.x, .axis.y{
+            path{
+              //display: none;
+              stroke: #4a5064;
+              stroke-width: 1px;
+              font-weight: bold;
+            }
+
+            g{
+              line{
+                stroke: #4a5064;
+                stroke-width: 1px;
+                font-weight: bold;
+              }
+            }
           }
 
-          .area{
-            fill: #00bcff;
-            fill-opacity: 0.1;
-          }
-        } &.memory{
-          .line{
-            fill: none;
-            stroke-width: 3px;
-            stroke: #ff5c68;
-            font-weight: bold;
-          }
-          .area{
-            fill: #ff5c68;
-            fill-opacity: 0.1;
-          }
-        } &.disk{
-          .line{
-            fill: none;
-            stroke-width: 3px;
-            stroke: #43d480;
-            font-weight: bold;
-          }
-          .area{
-            fill: #43d480;
-            fill-opacity: 0.1;
-          }
-        } &.network{
-          .line{
-            fill: none;
-            stroke-width: 3px;
-            stroke: #4a5064;
-            font-weight: bold;
-          }
-          .area{
-            fill: #4a5064;
-            fill-opacity: 0.1;
-          }
+          &.cpu{
+            .line{
+              fill: none;
+              stroke-width: 3px;
+              stroke: #00bcff;
+              font-weight: bold;
+            }
+
+            .area{
+              fill: #00bcff;
+              fill-opacity: 0.1;
+            }
+          } &.memory{
+              .line{
+                fill: none;
+                stroke-width: 3px;
+                stroke: #ff5c68;
+                font-weight: bold;
+              }
+              .area{
+                fill: #ff5c68;
+                fill-opacity: 0.1;
+              }
+            } &.disk{
+                .line{
+                  fill: none;
+                  stroke-width: 3px;
+                  stroke: #43d480;
+                  font-weight: bold;
+                }
+                .area{
+                  fill: #43d480;
+                  fill-opacity: 0.1;
+                }
+              } &.network{
+                  .line{
+                    fill: none;
+                    stroke-width: 3px;
+                    stroke: #4a5064;
+                    font-weight: bold;
+                  }
+                  .area{
+                    fill: #4a5064;
+                    fill-opacity: 0.1;
+                  }
+                }
         }
       }
     }
   }
+
 }
 
 .time-strategy-chart{

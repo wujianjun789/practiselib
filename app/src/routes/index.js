@@ -159,11 +159,17 @@ export default (
                                                 }, 'starriverpro.controlstrategy.latlngtrategy')
                                             } } />
       </Route>
-      <Route path="serviceMonitor" getComponent={(nextState, cb)=>{
+      <Route path="serviceMonitor">
+        <Route path="systemRunningState" getComponent={(nextState, cb)=>{
                                               require.ensure([], require=>{
-                                                  cb(null, require('../serviceMonitoring/container/ServiceMonitoring').default)
-                                              }, 'starriverpro.serviceMonitoring.serviceMonitoring')
-      }}>
+                                                  cb(null, require('../serviceMonitoring/container/SystemRunningState').default)
+                                              }, 'starriverpro.serviceMonitoring.systemRunningState')
+                                          }}/>
+        <Route path="serviceState" getComponent={(nextState, cb)=>{
+                                              require.ensure([], require=>{
+                                                  cb(null, require('../serviceMonitoring/container/ServiceState').default)
+                                              }, 'starriverpro.serviceMonitoring.serviceState')
+                                          }}/>
       </Route>
       <Route path="systemConfig">
         <Route path="sysConfigSmartLight" getComponent={ (nextState, cb) => {

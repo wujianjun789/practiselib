@@ -38,9 +38,9 @@ export default class DeviceStateChart extends Component{
                         <div className="body statistics-container">
                             {
                                 list.map(pro=>{
-                                    return <div className="progress-container">
+                                    return <div key={device.id+pro.id} className="progress-container">
                                         <span className="title">{pro.name}</span>
-                                        <Progress key={device.id+pro.id} className={pro.id} min={0} max={pro.total} cur={pro.cur}/>
+                                        <Progress  className={pro.id} min={0} max={pro.total} cur={pro.cur}/>
                                     </div>
                                 })
                             }
