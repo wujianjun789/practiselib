@@ -236,7 +236,7 @@ export default class SceneControllerPopup extends Component {
                          <label htmlFor="id" className="fixed-width-left control-label">调整参数</label>
                          <Select id="controlParam" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                         </div>
-                        <div className="panel panel-default strategy-param">
+                        <div className="panel panel-default strategy-param" hidden={ popId == 'add' ? true : false}>
                             <div className="chart-heading">策略参数</div>
                             <div className="panel-body strategy-chart" id="strategyChart" ref={this.renderChart}>
                             </div>

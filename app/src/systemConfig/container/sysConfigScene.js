@@ -62,11 +62,11 @@ export class sysConfigScene extends Component {
                 valueField: 'name',
                 index: 0,
                 value: "",
-            options:[
-                {id: "22", name: "单灯1", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
-                {id: "23", name: "单灯2", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
-                {id: "24", name: "灯杆1", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}
-            ]},
+                options:[
+                    {id: "22", name: "单灯1", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
+                    {id: "23", name: "单灯2", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
+                    {id: "24", name: "灯杆1", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}
+                ]},
             //某一个场景的的设备列表
             sceneAssetList:[
                 {id: "12", name: "单灯3", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
@@ -203,6 +203,7 @@ export class sysConfigScene extends Component {
         this.sortChange = this.sortChange.bind(this);
         this.initPageSize = this.initPageSize.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
+        this.requestSceneAssetList = this.requestSceneAssetList.bind(this);
         
 
         this.collpseHandler = this.collpseHandler.bind(this);
@@ -322,14 +323,9 @@ export class sysConfigScene extends Component {
         })})
     }
 
-
-
-
-
     componentWillUnmount() {
         this.mounted = false;
     }
-
 
     initDomainList(data) {   //获取域信息列表
         let domainList = Object.assign({}, this.state.domainList, {
@@ -451,22 +447,39 @@ export class sysConfigScene extends Component {
                 }
                 let data = selectDevice.data.length ? selectDevice.data[0] : null;
                 const dataInit2 = {
+
+                    //存放创建新场景需要更新的数据
+                    domain: domainList.value,//场景所在区域
+                    domainid: domainList.options.length ? domainList.options[domainList.index].id : "",
+                    name: "",//场景名
+                    mode: "",//控制模式
+                    sceneAssetList: sceneAssetList, //场景白名单
+                    param: "",//调整参数
+                    id:'',//场景id
+                    // assetName: assetList.length ? assetList[assetList.index].name : "",
+                    // assetName: assetList.length ? assetList[0].name : "",
+                    assetName: assetList.value, //设备选择输入框初始值
+
                     id: data ? data.id : null,
                     name: data ? data.name : null,
-                    model: data ? getModelTypesNameById(model, data.type) : "",
+                    // model: data ? getModelTypesNameById(model, data.type) : "",
                     modelId: data ? data.type : null,
                     domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<SceneControllerPopup popId="edit" className="centralized-popup" title="修改场景" data={ dataInit2 } domainList={ domainList } modelList={ modelList }
-                                overlayerHide={ overlayerHide } onConfirm={ data => {
-                                                                                updateAssetsByModel(model, data, (data) => {
-                                                                                    this.requestSearch();
-                                                                                    overlayerHide();
-                                                                                })
-                                                                            } } />);
+                overlayerShow(<SceneControllerPopup popId="edit" className="centralized-popup" 
+                                title="修改场景" sceneAssetList = {this.state.sceneAssetList}//场景白名单
+                                data={ dataInit2 } domainList={ domainList } modelList={ modelList }
+                                assetList = { assetList }//可添加至场景的设备名单 
+                                overlayerHide={ overlayerHide } 
+                                onConfirm={ data => {
+                                                    updateAssetsByModel(model, data, (data) => {
+                                                        this.requestSearch();
+                                                        overlayerHide();
+                                                    })
+                                                } } />);
                 break;
             case 'sys-delete':
                 overlayerShow(<ConfirmPopup tips="是否删除选中场景？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
@@ -525,6 +538,10 @@ export class sysConfigScene extends Component {
         this.requestSceneAssetList(); //点击列表后更新被选中场景的设备列表
     }
 
+    requestSceneAssetList(){
+        //更新被选中场景的设备列表
+    }
+
     searchSubmit() {
         let page = this.state.page.set('current', 1);
         this.setState({page:page},()=>{
@@ -559,7 +576,7 @@ export class sysConfigScene extends Component {
     // }
 
     render() {
-        const { sort, search, sceneList,page} = this.state; //暂时单独存放的state
+        const { sort, search, sceneList, sceneAssetList, page} = this.state; //暂时单独存放的state
         const {model, collapse,/* page, search,*/ selectDevice, domainList, data, IsHaveMap} = this.state;
         return <div id ='sysConfigScene'>
                 <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '')}>
@@ -595,10 +612,11 @@ export class sysConfigScene extends Component {
                        <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含设备
                      </div>
                      <div id='scene-device' className="panel-body domain-property domain-content">
-                        {/*展示被激活场景的设备列表*/}
-                        {/*sceneAssetList.map(item,index){获取被激活场景中设备的名字，和该设备所在的域列表}*/}
-                        <div className="">灯（疏影路组）</div>
-                        <div className="">屏幕（疏影路组）</div>
+                         {
+                             sceneAssetList.map((item,index) => (
+                                 <div className="content-size">{ item.name }</div>
+                             ))
+                         }
                      </div>
                   </div>
                  </SideBarInfo>
