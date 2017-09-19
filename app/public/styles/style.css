@@ -98,11 +98,8 @@ input.form-control:-ms-input-placeholder { color: #b3b3b3; }
     /*margin-left: -15px;*/
     /*margin-right: -15px;*/
     background: linear-gradient(to right, #333744, #4a5064);
-}
-
-.head {
     color: #00d8ff;
-    z-index: 3;
+    z-index: 4;
 }
 
 .head .home {

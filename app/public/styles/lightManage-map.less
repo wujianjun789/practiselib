@@ -40,7 +40,7 @@
 
     .list-group{
       margin-bottom: 0;
-      color: #4d4d4d;
+      color: #999;
       overflow-x: hidden;
       font-size: 14px;
       li:last-child{border-bottom:0px;padding-bottom:32px;}
@@ -53,7 +53,7 @@
           svg{
             width:16px; 
             height:16px;
-            fill:#666;
+            fill:#888;
           }
           display: inline-block;
           width: 24px;
@@ -61,6 +61,11 @@
           padding:1px 5px;
           float: right;
         }
+      }
+      .list-group-item:hover,.list-group-item.active{
+        border-color:#ccc;
+        color:#999;
+        background:#eee;
       }
     }
 
@@ -435,6 +440,7 @@
       background-color:#fff;
       border-radius:4px;
       .btn{margin-left:0px; width:44px;}
+      .no-select:hover{background:#eee;}
       .btn-primary{
           svg{
             fill:#fff;

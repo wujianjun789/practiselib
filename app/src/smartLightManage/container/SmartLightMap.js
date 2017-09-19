@@ -789,6 +789,7 @@ console.log("searchList:",searchList.toJS());
                         }
                     </ul>
                 </div>
+                <NotifyPopup />
             </Content>
         )
     }
