@@ -32,7 +32,6 @@ export class HeadBar extends Component{
             <span className="title">{moduleName}</span>
             <UserCenter />
             <LanguageSwitch />
-            <NotifyPopup />
         </div>
     }
 }
