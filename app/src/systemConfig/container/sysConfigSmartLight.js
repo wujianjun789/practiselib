@@ -112,9 +112,9 @@ export class sysConfigSmartLight extends Component {
 
     //Hook functions
     componentWillMount() {
-
         this.mounted = true;
         let model = 'pole';
+        //getModelData(model, data => console.log('DATA', data))
         getModelData(model, () => {
             this.props.actions.treeViewInit(TreeData);
             this.setState({
@@ -138,14 +138,13 @@ export class sysConfigSmartLight extends Component {
     }
 
     componentWillUnmount() {
-
         this.mounted = false;
     }
 
     /* Declare functions
-    * Init functions --- all componets init functions are here.
-    * when componenetWillMount,we call this function to provide DomainList to be choosen.
-    */
+     * Init functions --- all componets init functions are here.
+     * when componenetWillMount,we call this function to provide DomainList to be choosen.
+     */
     initDomainList(data) {
         let newObject = sysDataHandle.init(data);
         let domainList = {
@@ -167,9 +166,9 @@ export class sysConfigSmartLight extends Component {
                 domainName = domain ? domain.name : "";
             }
             /* By each pole's ID,request this pole's all asset model.Counting eatch asset than setState.
-            *  There is one thing should be regonized --- this callback function is asynchronousFunction.
-            *  The countObjects will be setted after list has been setted in final.
-            */
+             *  There is one thing should be regonized --- this callback function is asynchronousFunction.
+             *  The countObjects will be setted after list has been setted in final.
+             */
             getPoleAssetsListByPoleId(asset.id, data => {
                 let lcCount = 0,
                     screenCount = 0,
@@ -246,15 +245,24 @@ export class sysConfigSmartLight extends Component {
     requestSearch() {
         // console.log('成功调用requestSearch!');
         const {model, domainList, search, page} = this.state;
-        let domain = domainList.options.length ? domainList.options[domainList.index] : null;
+        let domain = domainList.options.length ? domainList.options[domainList.index].id : null;
         let name = search.get('value');
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1) * size;
-        getSearchCount(domain ? domain.id : null, model, name, data => {
+        // let searchModel = {
+        //     domain: domainList.options.length ? domainList.options[domainList.index].id : null,
+        //     name: search.get('value'),
+        //     cur: page.get('current'),
+        //     size: page.get('pageSize')
+        // };
+        // searchModel.offset = (searchModel.cur - 1) * searchModel.size;
+        // console.log('searchModel', searchModel)
+
+        getSearchCount(domain, model, name, data => {
             this.mounted && this.initPageSize(data)
         })
-        getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
+        getSearchAssets(domain, model, name, offset, size, data => {
             this.initAssetList(data);
         })
     }
@@ -342,7 +350,6 @@ export class sysConfigSmartLight extends Component {
 
     //Declaring the Table Component Function
     rowClick(row) {
-
         this.updateSelectDevice(row.toJS());
     }
 
@@ -352,10 +359,13 @@ export class sysConfigSmartLight extends Component {
         this.showPopup();
     }
 
+    /*This function will show the EditPopup,provide this componet all properties if they were needed.
+     *However,this componet is not the childComponent for sysConfigSmartLightComponet,for its all state are in redux,not local componet.
+     */
     showPopup() {
         const {selectDevice, allEquipmentsData, allPoleEquipmentsData} = this.state;
         const {overlayerShow} = this.props.actions;
-        overlayerShow(<EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
+        overlayerShow(< EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
                         selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } mainSelect={ this.mainSelect.bind(this) } selectDevice={ this.state.selectDevice }
                         showPopup={ this.showPopup.bind(this) } showMessage={ this.showMessage } />);
     }
@@ -379,34 +389,31 @@ export class sysConfigSmartLight extends Component {
         })
     }
 
+    //This function provide notifyMessage(green block in center if you completed some correct operations successfully)
     showMessage(statusCode, meaasge) {
         this.props.actions.addNotify(statusCode, meaasge);
     }
-
-
-
 
     render() {
         const {collapse, search, data, page, domainList, modelList, selectDevice} = this.state;
         let initSelectDeviceName = selectDevice.data.length ? selectDevice.data[0].name : '';
         let activeId = selectDevice.data.length && selectDevice.data[0].id;
-        return (
-            <div id='sysConfigSmartLight'>
-              <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
-                <header>
-                  <Select id="domain" {...domainList} onChange={ this.domainSelect } />
-                  <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
-                </header>
-                <div className="table-container">
-                  <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />
-                  <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
-                  />
-                </div>
-                <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
-                  <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
-                </SideBarInfo>
-              </Content>
-            </div>
+        return ( <div id='sysConfigSmartLight'>
+                   <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
+                     <header>
+                       <Select id="domain" { ...domainList } onChange={ this.domainSelect } />
+                       <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
+                     </header>
+                     <div className="table-container">
+                       <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />
+                       <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }
+                       />
+                     </div>
+                     <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
+                       <SiderBarComponet onClick={ this.editButtonClick } disabled={ initSelectDeviceName ? false : true } name={ initSelectDeviceName } />
+                     </SideBarInfo>
+                   </Content>
+                 </div>
         )
     }
 }

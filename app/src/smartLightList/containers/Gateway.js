@@ -6,10 +6,12 @@ import React,{Component} from 'react';
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
-import Table from '../../components/Table2';
+import TableWithHeader from '../components/TableWithHeader';
+import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
-import {getSearchAssets, getSearchCount} from '../../api/asset';
+import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../api/asset';
+import {getMomentDate, momentDateFormat} from '../../util/time';
 
 export default class Gateway extends Component{
     constructor(props) {
@@ -48,11 +50,11 @@ export default class Gateway extends Component{
         this.model = 'gateway';
 
         this.columns = [
-            {field: 'name', title: '设备名称'},
-            {field: 'commStatus', title: '通信状态'},
-            {field: 'deviceStatus', title: '设备状态'},
-            {field: 'DimmingMode', title: '调光模式'},
-            {field: 'updateTime', title: '更新时间'},
+            {accessor: 'name', title: '设备名称'},
+            {accessor: 'comm', title: '通信状态'},
+            {accessor: 'device', title: '设备状态'},
+            {accessor: 'mode', title: '调光模式'},
+            {accessor: 'updated', title: '更新时间'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -80,12 +82,11 @@ export default class Gateway extends Component{
     
     initData() {
         getDomainList((data) =>{
-            this.mounted && this.updateDomainData(data);
-            this.mounted && this.initDeviceData();
+            this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
     }
 
-    updateDomainData(data) {
+    updateDomainData(data, cb) {
         let currentDomain,
         options = data;
         if (data.length == 0) {
@@ -93,7 +94,9 @@ export default class Gateway extends Component{
         } else {
             currentDomain = data[0];
         }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, () => {
+            cb && cb();
+        });
     }
 
     initDeviceData(isSearch) {
@@ -152,6 +155,12 @@ export default class Gateway extends Component{
     tableClick(currentDevice) {
         this.setState({currentDevice});
     }
+
+    formatData(data) {
+        if(data.updated) {
+            data.updated = momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
+        }
+    }
   
     render() {
         const {
@@ -168,8 +177,13 @@ export default class Gateway extends Component{
                             <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
                         </div>
                         <div className="table-container">
-                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
-                                activeId={currentDevice == null ? '' : currentDevice.id}/>
+                            <TableWithHeader columns={this.columns}>
+                            {
+                                deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
+                                                            rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
+                                                            formatFunc={this.formatData}/>)
+                            }
+                            </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -208,3 +222,8 @@ export default class Gateway extends Component{
                 </Content>
     }
 }
+
+/**
+ *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+                                activeId={currentDevice == null ? '' : currentDevice.id}/>
+ */

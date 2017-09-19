@@ -6,10 +6,11 @@ import React,{Component} from 'react';
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
-import Table from '../../components/Table2';
+import TableWithHeader from '../components/TableWithHeader';
+import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
-import {getSearchAssets, getSearchCount} from '../../api/asset';
+import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../api/asset';
 
 export default class Xes extends Component{
     constructor(props) {
@@ -39,9 +40,9 @@ export default class Xes extends Component{
         this.model = 'xes';
 
         this.columns = [
-            {field: 'name', title: '设备名称'},
-            {field: 'onlineStatus', title: '在线状态'},
-            {field: 'faultStatus', title: '故障状态'},
+            {accessor: 'name', title: '设备名称'},
+            {accessor: 'online', title: '在线状态'},
+            {accessor: 'fault', title: '故障状态'},
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -69,12 +70,11 @@ export default class Xes extends Component{
     
     initData() {
         getDomainList((data) =>{
-            this.mounted && this.updateDomainData(data);
-            this.mounted && this.initDeviceData();
+            this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
     }
 
-    updateDomainData(data) {
+    updateDomainData(data, cb) {
         let currentDomain,
         options = data;
         if (data.length == 0) {
@@ -82,7 +82,9 @@ export default class Xes extends Component{
         } else {
             currentDomain = data[0];
         }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain });
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, () => {
+            cb && cb();
+        });
     }
 
     initDeviceData(isSearch) {
@@ -153,7 +155,13 @@ export default class Xes extends Component{
                             <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
                         </div>
                         <div className="table-container">
-                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice == null ? '' : currentDevice.id}/>
+                            <TableWithHeader columns={this.columns}>
+                                {
+                                    deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
+                                                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
+                                                                formatFunc={this.formatData}/>)
+                                }
+                            </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
                                 current={current} total={total} onChange={this.pageChange}/>
                         </div>
@@ -174,3 +182,8 @@ export default class Xes extends Component{
                 </Content>
     }
 }
+
+/**
+                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice == null ? '' : currentDevice.id}/>
+ * 
+ */

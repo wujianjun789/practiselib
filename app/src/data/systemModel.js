@@ -62,7 +62,23 @@ export const TreeData = [
     "toggled": false,
     "active": true,
     "link": "/systemOperation/serviceMonitor",
-    "level": 1
+    "level": 1,
+    "children":[
+      {
+        "id": 'systemRunningState',
+        "name": '系统运行状态',
+        "class": '',
+        "active": true,
+        "link": "/systemOperation/serviceMonitor/systemRunningState"
+      },
+      {
+        "id": 'serviceState',
+        "name": '后天服务状态',
+        "class": '',
+        "active": true,
+        "link": "/systemOperation/serviceMonitor/serviceState"
+      }
+    ]
   }, {
     "id": "systemConfig",
     "name": "系统配置",
@@ -95,17 +111,18 @@ export const TreeData = [
     "level": 1,
     "children": [
       {
-        "id": 'deviceTopology',
-        "name": "设备拓扑图",
-        "class": '',
-        "active": false,
-        "link": "/systemOperation/deviceMonitor/deviceTopology"
-      }, {
         "id": 'deviceState',
         "name": "设备状态图",
         "class": '',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceState"
+      },
+      {
+        "id": 'deviceTopology',
+        "name": "设备拓扑图",
+        "class": 'icon_domain_topology',
+        "active": false,
+        "link": "/systemOperation/deviceMonitor/deviceTopology"
       }
     ]
   }

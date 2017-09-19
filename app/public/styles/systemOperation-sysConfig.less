@@ -79,7 +79,7 @@
              margin-top: 5px;
              cursor: default;
          }
-         .domain-content{
+         .domain-content {
              height: 100%;
              width: 100%;
              border: 0px;
@@ -286,254 +286,256 @@
      //      }
      //  }
  }
-
+ /******** 场景-SideBarInfor 样式定制 ********/
+ #scene-device {
+     .content-size{
+        margin: 5px;
+     }
+ }
+ .sidebar-info.sidebar-collapse {
+     >.panel.panel-default.map-position {
+         top: 70px;
+     }
+     #scene-device {
+         display: none;
+     }
+ }
  /*SceneControllerPopup样式定制*/
-    .scene-centralized-popup{
-            // height:520px;
-            width: 700px;
-            font-size: 14px;
-            .fixed-width-left {
-                float: left;
-                margin-top: 7px;
-            }
-            .modal-content {
-                .modal-header {
-                    font-size: 18px;
-                }
-                .modal-body {
-                    padding: 20px;
-                    padding-bottom: 0px;
-                    .popup-top{
-                        font-size: 14px;
-                        // .fixed-width-left {
-                        //     float: left;
-                        //     margin-top: 9px;
-                        // }
-                        .fixed-width-right {
-                            margin-left: 78px;
-                            .form-control{
-                                height: 40px;
-                                border-radius: 0px;
-                                border:solid 1px #e2e2e2;
-                            }
-                        }
-                        .prompt {
-                            position: absolute;
-                            color: #ff5c68;
-                            font-size: 10px;
-                            margin-top: 5px;
 
-                        }
-                        .control-label{
-                            
-                        }
-
-                    }
-                    .popup-body{
-                        height:300px;
-                        margin-top: 30px;
-                        margin-left: 78px;
-                        color:#808080;
-                        // padding-bottom: 0px;
-                        .select {
-                            height:31px;
-                        }
-                        .col-sm-6 {
-                            border:solid 1px #e2e2e2;
-                            height:100%;
-                        }
-                        .popup-body-left {
-                            .form-control {
-                                border-radius: 0px;
-                                margin:20px 4px 0px 4px;
-                                width:96%;
-                            } 
-
-
-                            #road {
-
-                            }
-                            #device {
-                                width:170px;
-                            }
-                            .btn.btn-primary {
-                                margin-left: 13px;
-                                margin-bottom: 3px;
-                            }
-                            .table-list {
-                                margin-top: 20px;
-                                .table-body {
-                                    .body-row {
-                                        height:30px;
-                                        font-size: 14px;
-                                        // padding-top: 2px;
-                                        .tables-cell {
-                                            float:left;
-                                            margin-left: 9px;
-                                            
-                                        }
-                                        .cell-right {
-                                            float:right;
-                                            margin-right:6px;
-                                            // .icon-delete {
-                                            //     background: url(/svg/icon_delete_scene.svg) no-repeat center top;
-                                            // }
-                                        }
-
-                                    }
-
-                                }
-                            }
-
-                        }
-                        .popup-body-right {
-                            border-left: 0px;
-                            .select {
-                                display: block;
-                                width:184px;
-                                margin-left:68px;
-                            }
-                            .selectBox {
-                                margin-top: 20px;
-                                margin-left: 4px;
-                                margin-right: 4px;
-                            }
-                            #controlModal0{
-                                float:left;
-                            }
-                            .panel.panel-default{
-                                -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0);
-                                box-shadow: 0 1px 1px rgba(0,0,0,0);
-                                border: 0px;
-                                .chart-heading{
-                                    margin-left: 5px;
-                                    margin-top: 22px;
-                                }
-                                
-                                .panel-body{
-                                    padding-left: 0px;
-                                    padding-right: 0px;
-                                    &.strategy-chart {
-                                        .y.axis {
-                                        path {
-                                            display: none;
-                                        }
-
-                                        g {
-                                            line {
-                                            stroke-width: 1px;
-                                            stroke: #e6e6e6;
-                                            }
-                                        }
-                                        }
-
-                                        .node {
-                                        .last {
-                                            text-anchor: end;
-                                        }
-                                        }
-
-                                        .area-group {
-                                        .area {
-                                            fill: #ff5c68;
-                                            fill-opacity: 0.1;
-                                        }
-                                        }
-
-                                        .line-group {
-                                        .path-line {
-                                            fill: none;
-                                            stroke-width: 3px;
-                                            stroke: #ff5c68;
-                                        }
-
-                                        circle {
-                                            fill: #ff5c68;
-
-                                            title {
-                                            background: linear-gradient(#333744, #4a5064);
-                                            color: #ffffff;
-
-                                            font-size: 12px;
-                                            }
-                                        }
-                                        }
-
-                                        > svg {
-                                        .x-axis {
-                                            > path {
-                                            display: none;
-                                            }
-                                            > .tick {
-                                            > line {
-                                                display: none;
-                                            }
-                                            > text {
-                                                font-size: 12px;
-                                                color: #808080;
-                                            }
-                                            &:first-of-type {
-                                                > text {
-                                                text-anchor: start;
-                                                }
-                                            }
-                                            &:last-of-type {
-                                                > text {
-                                                text-anchor: end;
-                                                }
-                                            }
-                                            }
-                                        }
-                                        .y-axis {
-                                            > path {
-                                            display: none;
-                                            }
-                                            > .tick {
-                                            > text {
-                                                display: none;
-                                            }
-                                            > line {
-                                                stroke: #e6e6e6;
-                                                stroke-width: 1px;
-                                            }
-                                            }
-                                        }
-
-                                        .main-area {
-                                            fill: rgba(255, 92, 104, .1);
-                                        }
-                                        .main-line {
-                                            stroke: rgb(255, 92, 104);
-                                            stroke-width: 3px;
-                                            fill: none;
-                                        }
-                                        }
-                                        .tooltip {
-                                        .tooltip-arrow {
-                                            border-top-color: #3b4050;
-                                            border-top-color: #3b4050;
-                                        }
-                                        .tooltip-inner {
-                                            font-size: 12px;
-                                            color: #fff;
-                                            background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));   /*  for safari */
-                                            background-image: linear-gradient(to right, #333744, #4a5064);
-                                            white-space: pre;
-                                        }
-                                      }
-                                    }
-
-
-                                }
-                            }
-                       }
-                    }
-                }
-                .modal-footer {
-                    border-top: 0px #e2e2e2;
-                    height: 75px;
-                    padding: 20px;
-                    margin-right: 30px;
-                }
-            }
-    }
+ .scene-centralized-popup {
+     // height:520px;
+     width: 700px;
+     font-size: 14px;
+     .fixed-width-left {
+         float: left;
+         margin-top: 7px;
+     }
+     .modal-content {
+         .modal-header {
+             font-size: 18px;
+         }
+         .modal-body {
+             padding: 20px;
+             padding-bottom: 0px;
+             .popup-top {
+                 font-size: 14px; // .fixed-width-left {
+                 //     float: left;
+                 //     margin-top: 9px;
+                 // }
+                 .fixed-width-right {
+                     margin-left: 78px;
+                     .form-control {
+                         height: 40px;
+                         border-radius: 0px;
+                         border: solid 1px #e2e2e2;
+                     }
+                 }
+                 .prompt {
+                     position: absolute;
+                     color: #ff5c68;
+                     font-size: 10px;
+                     margin-top: 5px;
+                 }
+                 .control-label {}
+             }
+             .popup-body {
+                 height: 300px;
+                 margin-top: 30px;
+                 margin-left: 78px;
+                 color: #808080; // padding-bottom: 0px;
+                 .select {
+                     height: 31px;
+                 }
+                 .col-sm-6 {
+                     border: solid 1px #e2e2e2;
+                     height: 100%;
+                 }
+                 .popup-body-left {
+                     .form-control {
+                         border-radius: 0px;
+                         margin: 20px 4px 0px 4px;
+                         width: 96%;
+                     }
+                     #road {}
+                     #device {
+                         width: 170px;
+                     }
+                     .btn.btn-primary {
+                         margin-left: 13px;
+                         margin-bottom: 3px;
+                     }
+                     .table-list {
+                         margin-top: 20px;
+                         .table-body {
+                             .body-row {
+                                 height: 30px;
+                                 font-size: 14px; // padding-top: 2px;
+                                 .tables-cell {
+                                     float: left;
+                                     margin-left: 9px;
+                                     &:last-child {
+                                         float: right; // margin-left:164px;
+                                         text-align: right;
+                                         width: 40px;
+                                         padding-right: 9px;
+                                         padding-top: 2px;
+                                         color: #f00;
+                                     }
+                                 } //    .tables-cell:last-child {
+                                 //         text-align: right;
+                                 //         width: 40px;
+                                 //         padding-right: 9px;
+                                 //         color: #f00;
+                                 //         float: right;
+                                 //    }
+                                 // .cell-right {
+                                 //     float:right;
+                                 //     margin-right:6px;
+                                 // .icon-delete {
+                                 //     background: url(/svg/icon_delete_scene.svg) no-repeat center top;
+                                 // }
+                                 // }
+                             }
+                         }
+                     }
+                 }
+                 .popup-body-right {
+                     border-left: 0px;
+                     .select {
+                         display: block;
+                         width: 184px;
+                         margin-left: 68px;
+                     }
+                     .selectBox {
+                         margin-top: 20px;
+                         margin-left: 4px;
+                         margin-right: 4px;
+                     }
+                     #controlModal0 {
+                         float: left;
+                     }
+                     .panel.panel-default {
+                         -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+                         box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+                         border: 0px;
+                         .chart-heading {
+                             margin-left: 5px;
+                             margin-top: 22px;
+                         }
+                         .panel-body {
+                             padding-left: 0px;
+                             padding-right: 0px;
+                             &.strategy-chart {
+                                 .y.axis {
+                                     path {
+                                         display: none;
+                                     }
+                                     g {
+                                         line {
+                                             stroke-width: 1px;
+                                             stroke: #e6e6e6;
+                                         }
+                                     }
+                                 }
+                                 .node {
+                                     .last {
+                                         text-anchor: end;
+                                     }
+                                 }
+                                 .area-group {
+                                     .area {
+                                         fill: #ff5c68;
+                                         fill-opacity: 0.1;
+                                     }
+                                 }
+                                 .line-group {
+                                     .path-line {
+                                         fill: none;
+                                         stroke-width: 3px;
+                                         stroke: #ff5c68;
+                                     }
+                                     circle {
+                                         fill: #ff5c68;
+                                         title {
+                                             background: linear-gradient(#333744, #4a5064);
+                                             color: #ffffff;
+                                             font-size: 12px;
+                                         }
+                                     }
+                                 }
+                                 >svg {
+                                     .x-axis {
+                                         >path {
+                                             display: none;
+                                         }
+                                         >.tick {
+                                             >line {
+                                                 display: none;
+                                             }
+                                             >text {
+                                                 font-size: 12px;
+                                                 color: #808080;
+                                             }
+                                             &:first-of-type {
+                                                 >text {
+                                                     text-anchor: start;
+                                                 }
+                                             }
+                                             &:last-of-type {
+                                                 >text {
+                                                     text-anchor: end;
+                                                 }
+                                             }
+                                         }
+                                     }
+                                     .y-axis {
+                                         >path {
+                                             display: none;
+                                         }
+                                         >.tick {
+                                             >text {
+                                                 display: none;
+                                             }
+                                             >line {
+                                                 stroke: #e6e6e6;
+                                                 stroke-width: 1px;
+                                             }
+                                         }
+                                     }
+                                     .main-area {
+                                         fill: rgba(255, 92, 104, .1);
+                                     }
+                                     .main-line {
+                                         stroke: rgb(255, 92, 104);
+                                         stroke-width: 3px;
+                                         fill: none;
+                                     }
+                                 }
+                                 .tooltip {
+                                     .tooltip-arrow {
+                                         border-top-color: #3b4050;
+                                         border-top-color: #3b4050;
+                                     }
+                                     .tooltip-inner {
+                                         font-size: 12px;
+                                         color: #fff;
+                                         background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));
+                                         /*  for safari */
+                                         background-image: linear-gradient(to right, #333744, #4a5064);
+                                         white-space: pre;
+                                     }
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+         .modal-footer {
+             border-top: 0px #e2e2e2;
+             height: 75px;
+             padding: 20px;
+             margin-right: 30px;
+         }
+     }
+ }
