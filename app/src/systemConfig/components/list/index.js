@@ -1,7 +1,7 @@
 /** Created By ChrisWen
  *  17/09/06
  *  This Componet is a DeviceList.
- * For this componet, showIcon control whether the second <div /> shows Icon or not.The first div provide two operationWords for two situation.
+ *  For this componet, showIcon control whether the second <div /> shows Icon or not.The first div provide two operationWords for two situation.
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
