@@ -14,7 +14,7 @@ import Overlayer from '../../common/containers/Overlayer'
 import {TreeData} from '.././../data/lightModel'
 import {treeViewInit} from '../../common/actions/treeView'
 // import {sideBarToggled} from '../action/index'
-class SystemOperationIndex extends Component{
+class lightManageIndex extends Component{
     constructor(props){
         super(props);
         this.initTreeData = this.initTreeData.bind(this);
@@ -56,6 +56,7 @@ class SystemOperationIndex extends Component{
         }
         return <div className={"container light-"+parentPath+" "+parentPath+"-"+childPath}>
                     <HeadBar moduleName={"智能照明"} router={this.props.router}/>
+                    
                     <SideBar onToggle={this.onToggle}/>
                     {this.props.children}
                     <Overlayer />
@@ -80,4 +81,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(SystemOperationIndex);
+)(lightManageIndex);

@@ -26,9 +26,10 @@ export class lightMap extends Component{
         this.state = {
 
             /* 新增－20170915 */
-            model:"lamp",
+            model:"pole",
             interactive:false,
             tableIndex: 0,
+            mapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
 
             deviceId:"lamp",
             IsSearch: true,
@@ -56,14 +57,14 @@ export class lightMap extends Component{
 
             /*  新增－t  */
             searchMode:"域",
-            resDevice:Immutable.fromJS([{id:1, name:"疏影路灯杆1号", lamp:[]},{id:2, name:"疏影路灯杆2号", screen:23, charge:45, camera:56, lamp:89, collect:99},{id:3, name:"疏影路灯杆3号", screen:23, charge:45, camera:56, lamp:89, collect:99}]),
-            resPosition:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239758843127766},{"device_id": 2,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756},{"device_id": 3,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239558843127756}],
+            resDevice:Immutable.fromJS([{id:1, name:"疏影路灯杆1号", lamp:[]},{id:2, name:"疏影路灯杆2号", screen:23, charge:45, camera:56, lamp:89, collect:99}]),
+            resPosition:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239758843127766},{"device_id": 2,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}],
             resDomain:[{}],
-            curPosition:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239758843127766},{"device_id": 2,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756},{"device_id": 3,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239558843127756}],
+            curPosition:[],
             curDevice:Immutable.fromJS([]),
             positionList:[],
             searchList:Immutable.fromJS([]),
-            deviceList:Immutable.fromJS([{id:1, name:"疏影路灯杆1号", lamp:[]},{id:2, name:"疏影路灯杆2号", screen:23, charge:45, camera:56, lamp:89, collect:99},{id:3, name:"疏影路灯杆3号", screen:23, charge:45, camera:56, lamp:89, collect:99}]),
+            deviceList:[],
             domainList: {
                 titleField: 'name',
                 valueField: 'name',
@@ -199,19 +200,13 @@ export class lightMap extends Component{
     /*  新增－t－20170915  */
     requestSearch(){
         const {model, search, tableIndex} = this.state;
-        console.log(model);
-        console.log(search);
-        console.log(tableIndex);
         let searchType = this.searchPromptList[tableIndex].id;
-        console.log(this.domainList);
-        console.log(searchType)
         if(searchType=="domain"){
             let curDomain = getObjectByKey(this.domainList, 'name', search.get("value"));
             if(curDomain){
-                console.log(curDomain);
                 getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
             }else{
-                this.props.actions.addNotify(0, "没有找到匹配域。");
+                this.props.actions.addNotify(0, "没有找到匹配域");
                 this.setState({IsSearchResult:false});
             }
             return;
@@ -220,21 +215,24 @@ export class lightMap extends Component{
     }
 
     updateSearch(data){
-        console.log(data);
+        if(data[0]){}else{
+            this.props.actions.addNotify(0, "该域内没有照明设备");
+        }
         let searchList = Immutable.fromJS(data);
+        let deviceList=[];
         let positionList = data.map((pole)=>{
-            let latlng = pole.geoPoint;
-            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE'}, latlng)
+            let latlng = pole.geoPoint; 
+            deviceList.push({"id": pole.id,"name": pole.name});
+            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE'}, latlng);
         });
-
         if(data && data.length){
-            let fPole = data[0];
-            let flatlng = fPole.geoPoint;
-            this.setState({searchList:searchList, mapLatlng:flatlng,positonList:positionList}, ()=>{
+            let fLamp = data[0];
+            let flatlng = fLamp.geoPoint;
+            this.setState({searchList:searchList, mapLatlng:flatlng, positionList:positionList, deviceList:deviceList}, ()=>{
                 this.requestPoleAsset(data);
             });
         }else{
-            this.setState({searchList:searchList, positionList:positionList}, ()=>{
+            this.setState({searchList:searchList, positionList:positionList, deviceList:deviceList}, ()=>{
                 this.requestPoleAsset(data);
             });
         }
@@ -252,33 +250,30 @@ export class lightMap extends Component{
     }
 
     updatePoleAsset(id, data){
-        console.log("poleAsset:",data);
+        console.log("poleAsset:",data); 
         const {searchList} = this.state;
         let curIndex = getIndexByKey(searchList, 'id', id);
-        let asset = this.state.searchList.getIn([curIndex, "asset"]);
-        if(!asset){
+        let orig_asset = this.state.searchList.getIn([curIndex, "asset"]);
+        let asset = {};
+
+        if(!orig_asset){
             asset = {}
+        }else{asset = orig_asset}
+
+        if(!data[0]){
+            this.setState({positionList:this.state.positionList.filter(item => {if (item.device_id != id) { return item }}),deviceList: deviceList.filter(item => {if (item.id == id) {return item}})},()=>{})
         }
 
-        data.map(ass=>{
-            if(ass.extendType == "lc"){//screen:23, charge:45, camera:56, lamp:89, collect:99
+        data[0]&&data.map(ass=>{
+            if(ass.extendType == "screen"||ass.extendType == "xes"||ass.extendType == "camera"||ass.extendType == "charge"){
+                let positionList = this.state.positionList;
+                this.setState({positionList: positionList.filter(item => {if (item.device_id == id) {return item }}),deviceList: deviceList.filter(item => {if (item.id == id) {return item}})},()=>{})
+            }else if(ass.extendType == "lc"){//screen:23, charge:45, camera:56, lamp:89, collect:99
                 asset = Object.assign({}, asset, {lamp:ass});
-            }
-            if(ass.extendType == "screen"){
-                asset = Object.assign({}, asset, {screen:ass});
-            }
-            if(ass.extendType == "xes"){
-                asset = Object.assign({}, asset, {collect:ass});
-            }
-            if(ass.extendType == "camera"){
-                asset = Object.assign({}, asset, {camera:ass});
-            }
-            if(ass.extendType == "charge"){
-                asset = Object.assign({}, asset, {charge:ass});
-            }
+            }else{}
         })
-
-        this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))});
+        this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset)),curPosition:this.state.positionList,curDevice:Immutable.fromJS(this.state.deviceList)},()=>{
+        });
     }
 
     initDomainList(data) {
@@ -289,8 +284,6 @@ export class lightMap extends Component{
 
     /*  新增－t  */
     test(){
-        console.log(this.state.resDevice.toJS())
-        console.log(this.state.resPosition)
     }
 
     setSize(){
@@ -424,7 +417,7 @@ export class lightMap extends Component{
     }
 
     searchSubmit(index){
-        this.setState({tableIndex:index},()=>{
+        this.setState({interactive:false, tableIndex:index},()=>{
             this.requestSearch();
         });
     }
@@ -710,15 +703,14 @@ export class lightMap extends Component{
 
     render(){
         const {deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList,deviceList, tableIndex,
-            listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
-        let IsControl = false;
+            listStyle, infoStyle, controlStyle, positionList, IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
+        let IsControl = false;  
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
-
         return (
             <Content>
-                <MapView mapData={{id:"lightMap", position:curPosition, data:deviceList.toJS()}}/>
+                <MapView mapData={{id:"lightMap", position:curPosition, data:curDevice.toJS()}}/>
                 <div className="search-container">
                     <div className="input-group searchBlock">
                       <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
@@ -726,7 +718,7 @@ export class lightMap extends Component{
                         <button type="button" className="btn btn-default" aria-label="search" onClick={()=>this.searchInputOnKeyUp("toSearch")}><span className="glyphicon glyphicon-search"></span></button>
                       </div>
                     </div>
-                    <ul className={"list-group "+(interactive ? 'select-active':'')} >
+                    <ul className={"list-group mode-select "+(interactive?'select-active':'')} >
                             {
                                 this.searchPromptList.map((item, index)=>{
                                     return <li className={"list-group-item "+(index==tableIndex?"active":"")} key={index} value={item.value} onClick={()=>this.searchSubmit(index)}>{item.value}<span></span> {search.get("value")}</li>
@@ -795,8 +787,10 @@ export class lightMap extends Component{
                                 return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"")} onClick={()=>this.searchDeviceSelect(device.id)}><svg><use xlinkHref={"#"+device.className} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>
                             })
                         }
+                        <li className="btn" onClick={()=>this.test()}><span className={"icon icon_collect"}>tst</span></li>
                     </ul>
                 </div>
+
             </Content>
         )
     }
