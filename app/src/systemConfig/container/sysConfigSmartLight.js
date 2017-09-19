@@ -45,6 +45,9 @@ import EditPopup from '../components/EditPopup.js';
 import { sysDataHandle } from '../model/sysDataHandle.js';
 import { sysInitStateModel } from '../model/sysInitStateModel.js';
 
+//import algorithmModel
+const promiseQueue = require('../model/algorithmModel/promiseQueue.js');
+
 export class sysConfigSmartLight extends Component {
     constructor(props) {
         super(props);
@@ -204,14 +207,13 @@ export class sysConfigSmartLight extends Component {
                 },
                 ...{
                     typeName: getModelTypesNameById(this.state.model, asset.extend.type)
-                },
-                screenCount: 0,
-                sensorCount: 0
+                }
             }
         });
         this.setState({
             tableData: Immutable.fromJS(list)
         }, () => this.initSelectDevice(data));
+
     }
 
     initSelectDevice(data) {
