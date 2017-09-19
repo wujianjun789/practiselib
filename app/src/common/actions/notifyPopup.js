@@ -5,7 +5,8 @@ import {
     NOTIFY_ADD,
     NOTIFY_ANIMATION,
     NOTIFY_DELETE,
-    NOTIFY_REMOVE
+    NOTIFY_REMOVE,
+    NOTIFY_ALL_REMOVE
 } from '../actionTypes/notifyPopup'
 
 import {getRandom} from '../../util/algorithm'
@@ -55,6 +56,12 @@ export function removeNotify(id) {
                 dispatch({type:NOTIFY_DELETE, id:id})
             }, 35)
         })
+    }
+}
+
+export function removeAllNotify() {
+    return dispatch=>{
+        dispatch({type:NOTIFY_ALL_REMOVE})
     }
 }
 

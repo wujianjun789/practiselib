@@ -15,7 +15,7 @@ import Page from '../../components/Page'
 import DomainPopup from '../component/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
-import {addNotify} from '../../common/actions/notifyPopup'
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 
 import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
@@ -92,6 +92,8 @@ export class DomainEditList extends Component {
         window.onresize = event=>{
             this.setSize();
         }
+
+        this.props.actions.removeAllNotify();
     }
 
     setSize(){
@@ -183,7 +185,7 @@ export class DomainEditList extends Component {
                                                             this.requestDomain();
                                                             this.requestSearch();
                                                         });
-                                                   }} onCancel={()=>{actions.overlayerHide()}}/>);
+                                                   }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify()}}/>);
                 break;
             case 'update':
                 let lat="", lng="",updateId="",name="",parentId="";
@@ -215,7 +217,7 @@ export class DomainEditList extends Component {
                                                                         this.requestDomain();
                                                                         this.requestSearch();
                                                                     });
-                                                              }} onCancel={()=>{actions.overlayerHide()}}/>);
+                                                              }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify();}}/>);
                 break;
             case 'delete':
                 let curId="";
@@ -324,7 +326,8 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators({
             overlayerShow: overlayerShow,
             overlayerHide: overlayerHide,
-            addNotify: addNotify
+            addNotify: addNotify,
+            removeAllNotify: removeAllNotify
         }, dispatch)
     }
 }

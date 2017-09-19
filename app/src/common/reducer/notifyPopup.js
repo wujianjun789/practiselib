@@ -5,7 +5,8 @@ import {
     NOTIFY_ADD,
     NOTIFY_ANIMATION,
     NOTIFY_REMOVE,
-    NOTIFY_DELETE
+    NOTIFY_DELETE,
+    NOTIFY_ALL_REMOVE
 } from '../actionTypes/notifyPopup'
 
 import Immutable from 'immutable';
@@ -41,6 +42,8 @@ export default function treeView(state=Immutable.fromJS(initialState), action) {
                 return state;
             }
             return state.update('notifyList', v=>v.splice(delIndex, 1));
+        case NOTIFY_ALL_REMOVE:
+            return state.update('notifyList', v=>v.splice(0));
         default:
             return state;
     }
