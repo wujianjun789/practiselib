@@ -29,6 +29,12 @@ function treeViewInit(state, data) {
     let curParentNode = searchNode(data, urlParent);
     let curNode = searchNode(data, url);
 
+    let href = data[0] ? data[0].link:null;
+    if(href && href.indexOf(path)>-1 && href != path && path.length < href.length){
+        location.href = "http://"+location.host+href;//默认路径设置
+        return;
+    }
+
     let list = data;
     if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
         list = update(list, 1, null, curParentNode);

@@ -28,7 +28,7 @@ function moduleInit(state, data) {
             case 'asset':
                 item.key = 'asset';
                 item.title = '资产管理';
-                item.link = '/assetManage/model/gateway';
+                item.link = '/assetManage/model';
                 break;
             case 'permission':
                 item.key = 'permission';
@@ -38,7 +38,7 @@ function moduleInit(state, data) {
             case 'maintenance':
                 item.key = 'maintenance';
                 item.title = '系统运维';
-                item.link = '/systemOperation/config/gateway';
+                item.link = '/systemOperation/config';
                 break;
             case 'control':
                 item.key = 'control';

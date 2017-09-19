@@ -12,7 +12,7 @@ export const TreeData=[
     {
         "id": "model",
         "name":"资产模型",
-        "toggled": true,
+        "toggled": false,
         "active": true,
         "link": "/assetManage/model",
         "level":1,

@@ -67,14 +67,14 @@ export const TreeData = [
       {
         "id": 'systemRunningState',
         "name": '系统运行状态',
-        "class": '',
+        "class": 'icon_state',
         "active": true,
         "link": "/systemOperation/serviceMonitor/systemRunningState"
       },
       {
         "id": 'serviceState',
         "name": '后天服务状态',
-        "class": '',
+        "class": 'icon_system_state',
         "active": true,
         "link": "/systemOperation/serviceMonitor/serviceState"
       }
@@ -113,7 +113,7 @@ export const TreeData = [
       {
         "id": 'deviceState',
         "name": "设备状态图",
-        "class": '',
+        "class": 'icon_state',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceState"
       },
