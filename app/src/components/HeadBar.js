@@ -1,11 +1,15 @@
 /**
  * Created by a on 2017/7/4.
  */
-import React, { Component } from 'react'
+import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import UserCenter from '../common/containers/UserCenter'
 import LanguageSwitch from '../common/containers/LanguageSwitch';
+import NotifyPopup from '../common/containers/NotifyPopup';
+import {addNotify} from '../common/actions/notifyPopup';
 
-export default class HeadBar extends Component{
+export class HeadBar extends Component{
     constructor(props){
         super(props);
         this.onClick = this.onClick.bind(this);
@@ -28,10 +32,25 @@ export default class HeadBar extends Component{
             <span className="title">{moduleName}</span>
             <UserCenter />
             <LanguageSwitch />
+            <NotifyPopup />
         </div>
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+        addNotify:addNotify
+    }, dispatch),
+})
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(HeadBar);
 
 // <div className="avatar">
 //     <span className="icon"></span>
