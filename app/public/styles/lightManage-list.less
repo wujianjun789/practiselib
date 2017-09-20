@@ -98,7 +98,7 @@
             }
 
             > .panel-heading {
-                background: #d2d9dc;
+                .addAnimation();
                 border-radius: unset;
                 > span {
                     float: left;
@@ -140,9 +140,14 @@
                 }
 
                 > .panel-heading {
+                    background:#eee;
                     > span {
                         margin: 2.5px 23px 7.5px 7.5px;
                     }
+                }
+
+                > .panel-heading:hover {
+                    background:#ddd;
                 }
                 
             }
@@ -168,4 +173,13 @@
             }
         }
     }
+}
+
+.addAnimation {
+  @time: .3s;
+  -webkit-transition: all @time;
+  -moz-transition: all @time;
+  -ms-transition: all @time;
+  -o-transition: all @time;
+  transition: all @time;
 }
