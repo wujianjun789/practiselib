@@ -218,9 +218,9 @@ export default class SensorStrategyPopup extends Component {
             strategy: sensorParamsList
         };
         updateStrategy(_data, ()=>{
-            this.props.overlayerHide && this.props.overlayerHide();
             this.props.updateSensorStrategyList();
         });
+        this.props.overlayerHide && this.props.overlayerHide();
     }
 
     addStrategy() {
@@ -237,9 +237,9 @@ export default class SensorStrategyPopup extends Component {
             strategy: sensorParamsList
         };
         addStrategy(_data, ()=>{
-            this.props.overlayerHide && this.props.overlayerHide();
             this.props.updateSensorStrategyList();
         });
+        this.props.overlayerHide && this.props.overlayerHide();
     }
 
     componentWillUnmount() {
