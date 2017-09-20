@@ -1,67 +1,66 @@
-.notify-popup{
-  position: absolute;
-
-  top: 0px;
-
-  width: 100%;
-  .list-group-item{
-    //position: absolute;
-    top: -55px;
-
-    width: 370px;
-    height: 40px;
-
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 5px;
-    padding: 10px 15px;
-
-    border: 0;
-    border-radius: 3px;
-
-    user-select: none;
-    &.success{
-      background: #43d480;
-    }
-
-    &.fail{
-      background: #ff5c68;
-    }
-
-    color: #ffffff;
-    text-align: center;
-
-    span{
-      float: right;
-
-      margin-top: -8px;
-      margin-right: -5px;
-
-      color: #fff;
-
-      font-size: 24px;
-      font-weight: normal;
-
-      cursor: pointer;
-    }
-
+.notify-popup {
+    position: absolute;
+    top: 40px;
+    height:40px;
+    opacity: 1;
+    width: 100%;
     -webkit-transition: opacity 0.3s, top 0.3s linear;
     -moz-transition: opacity 0.3s, top 0.3s linear;
     -ms-transition: opacity 0.3s, top 0.3s linear;
     -o-transition: opacity 0.3s, top 0.3s linear;
     transition: opacity 0.3s, top 0.3s linear;
-  }
-
-  .count(@count) when (@count =< 9){
-    .notify-@{count}{
-      &.active{
-        top: @count*0+0px;
-        opacity: 1;
-      }
+    .list-group-item {
+        position: relative;
+        top:-25px;
+        opacity:0;
+        width: 370px;
+        height: 40px;
+        margin: auto;
+        padding: 10px 15px;
+        border: 0;
+        margin-bottom:10px;
+        border-radius: 3px;
+        user-select: none;
+        &.success {
+            background: #43d480;
+        }
+        &.fail {
+            background: #ff5c68;
+        }
+        color: #ffffff;
+        text-align: center;
+        .notify-content{
+          display:inline-block;
+        }
+        span {
+            display:inline-block;
+            float: right;
+            color: #fff;
+            font-weight: normal;
+            height:20px;
+            line-height:20px;
+            font-size:12px;
+            cursor: pointer;
+        }
+        -webkit-transition: opacity 0.3s,
+        top 0.3s linear;
+        -moz-transition: opacity 0.3s,
+        top 0.3s linear;
+        -ms-transition: opacity 0.3s,
+        top 0.3s linear;
+        -o-transition: opacity 0.3s,
+        top 0.3s linear;
+        transition: opacity 0.3s,
+        top 0.3s linear;
     }
-
-    .count(@count+1);
-  }
-
-  .count(0);
+    .count(@count) when (@count =< 9) {
+        .notify-@{count} {
+            &.active {
+                top: @count*0+0px;
+                opacity: 1;
+            }
+        }
+        .count(@count+1);
+    }
+    .count(0);
 }

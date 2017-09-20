@@ -15,8 +15,7 @@ export default class EditPopupComponet extends Component {
                 <div>
                   <Select className='edit_selectdevice-select' onChange={ onChange } {...equipmentSelectList}/>
                   { /* We use {...props} to replace itemClick={itemClick}.*/ }
-                  <SearchText className='edit_selectdevice-searchtext' placeholder={ search.placeholder } onChange={ searchTextOnChange } value={ value } submit={ searchAssets }
-                  />
+                  <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' onChange={ searchTextOnChange } value={ value } submit={ searchAssets } />
                   <DeviceList className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } data={ allEquipmentsData } {...props}/>
                 </div>
                 <div className='edit_whole-content clearfix'>

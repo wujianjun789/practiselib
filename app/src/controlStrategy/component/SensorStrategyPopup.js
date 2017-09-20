@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import {NameValid, numbersValid} from '../../util/index';
 import {IsExistInArray1} from '../../util/algorithm';
 import {addStrategy, updateStrategy} from '../../api/strategy';
-import {getModelSummariesByModelID} from '../../api/asset'
+import {getModelSummariesByModelID} from '../../api/asset';
+import NotifyPopup from '../../common/containers/NotifyPopup';
 
 export default class SensorStrategyPopup extends Component {
     constructor(props) {
@@ -181,6 +182,20 @@ export default class SensorStrategyPopup extends Component {
     }
 
     onConfirm() {
+        const {data: {strategyName}, sensorParamsList} = this.state;
+        const {addNotify} = this.props;
+        const notifyText = {
+            strategyName: '请添加策略名称',
+            sensorParamsList: '请设置参数'
+        }
+        if(strategyName === '') {
+            addNotify(0, notifyText.strategyName);
+            return ;
+        }
+        if(sensorParamsList.length == 0) {
+            addNotify(0, notifyText.sensorParamsList);
+            return ;
+        }
         if(this.props.popupId == 'add') {
             this.addStrategy();
         } else {
@@ -203,9 +218,9 @@ export default class SensorStrategyPopup extends Component {
             strategy: sensorParamsList
         };
         updateStrategy(_data, ()=>{
-            this.props.overlayerHide && this.props.overlayerHide();
             this.props.updateSensorStrategyList();
         });
+        this.props.overlayerHide && this.props.overlayerHide();
     }
 
     addStrategy() {
@@ -222,9 +237,9 @@ export default class SensorStrategyPopup extends Component {
             strategy: sensorParamsList
         };
         addStrategy(_data, ()=>{
-            this.props.overlayerHide && this.props.overlayerHide();
             this.props.updateSensorStrategyList();
         });
+        this.props.overlayerHide && this.props.overlayerHide();
     }
 
     componentWillUnmount() {
@@ -235,9 +250,8 @@ export default class SensorStrategyPopup extends Component {
         const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data: {strategyName, sensorType, controlDevice, screenSwitch, sensorParam, brightness}, checkStatus} = this.state;
         const {sensorTypeList, sensorsProps, popupId} = this.props;
         const {className, title} = this.props;
-        const disabled = (strategyName === '' || sensorParamsList.length == 0) ? true : false;
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
-                                  btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, disabled]}
+                                  btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
                                   onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title={title} footer={footer} closeBtn={true} closeClick={this.onCancel}>
@@ -299,6 +313,7 @@ export default class SensorStrategyPopup extends Component {
                         </div>
                     </div>
                 </div>
+                <NotifyPopup />
             </Panel>
         )
     }

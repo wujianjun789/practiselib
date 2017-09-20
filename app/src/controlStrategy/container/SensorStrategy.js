@@ -17,6 +17,7 @@ import {getStrategyListByName, getStrategyCountByName, delStrategy} from '../../
 import {getModelSummariesByModelID} from '../../api/asset'
 import {getLightLevelConfig, getStrategyDeviceConfig} from '../../util/network';
 import {getObjectByKeyObj} from '../../util/algorithm';
+import {addNotify} from '../../common/actions/notifyPopup';
 
 export class SensorStrategy extends Component{
     constructor(props){
@@ -192,7 +193,8 @@ export class SensorStrategy extends Component{
         this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='edit' title="修改策略" data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
             controlDeviceList={this.state.controlDeviceList} brightnessList={this.state.brightnessList}
-            overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}/>);
+            overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}
+            addNotify={this.props.actions.addNotify} />);
     }
 
     tableRowDelete(id) {
@@ -222,7 +224,8 @@ export class SensorStrategy extends Component{
         id=='add-sensor' && this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='add' title="新建策略" data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
             controlDeviceList={this.state.controlDeviceList} brightnessList={this.state.brightnessList}
-            overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}/>);
+            overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}
+            addNotify={this.props.actions.addNotify} />);
     }
 
     initData(isSearch) {
@@ -270,6 +273,7 @@ export class SensorStrategy extends Component{
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         actions: bindActionCreators({
+            addNotify,
             overlayerHide,
             overlayerShow
         }, dispatch)

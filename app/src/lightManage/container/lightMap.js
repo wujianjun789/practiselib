@@ -134,6 +134,7 @@ export class lightMap extends Component{
         this.requestPoleAsset = this.requestPoleAsset.bind(this);
         this.updatePoleAsset = this.updatePoleAsset.bind(this);
         this.domainList = [];
+        this.stopProp = this.stopProp.bind(this);
 
 
         this.test = this.test.bind(this);
@@ -351,7 +352,12 @@ export class lightMap extends Component{
     }
 
     onBlur(event){
-        this.timeOut = setTimeout(()=>{this.setState({interactive:false});}, 1000)
+        this.setState({interactive:false,IsSearchResult:false});
+        //this.timeOut = setTimeout(()=>{this.setState({interactive:false,IsSearchResult:false});}, 1000)
+    }
+
+    stopProp(event){
+        event.nativeEvent.stopPropagation();
     }
 
     onChange(key, event){
