@@ -28,11 +28,6 @@ export class NotifyPopup extends Component {
                        let id = item.get("id");
                        let ani = item.get("animation");
                    
-                       {
-                           /* ChrisWen Noticed：when this componet show over1.5s,it will be closed by itself*/
-                       }
-                       setTimeout(() => this.onClick(id), 1500);
-                   
                        return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
                                 { item.get("text") }
                                 <span onClick={ () => this.onClick(id) }>×</span>
