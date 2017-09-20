@@ -122,14 +122,19 @@ export default class EditPopup extends Component {
      * @param {*Click Item} item 
      */
     itemClick(item) {
-        const {selectDevice} = this.state;
-        let poleId = selectDevice.data[0].id;
-        let assetId = item.id;
-        let requestType = 'PUT';
-        this.showMessage(1, '添加成功!');
-        requestPoleAssetById(poleId, assetId, requestType, () => getPoleAssetById(poleId, (id, response) => {
-            this.initEditPopup(id, response);
-        }));
+        if (item.added === true) {
+            this.showMessage(0, '请不要重复添加！')
+        } else {
+            const {selectDevice} = this.state;
+            let poleId = selectDevice.data[0].id;
+            let assetId = item.id;
+            let requestType = 'PUT';
+            this.showMessage(1, '添加成功!');
+            requestPoleAssetById(poleId, assetId, requestType, () => getPoleAssetById(poleId, (id, response) => {
+                this.initEditPopup(id, response);
+            }));
+        }
+
     }
 
     deleteClick(item) {
