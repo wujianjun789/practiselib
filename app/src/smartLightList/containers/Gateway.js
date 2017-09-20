@@ -54,7 +54,12 @@ export default class Gateway extends Component{
             {accessor: 'comm', title: '通信状态'},
             {accessor: 'device', title: '设备状态'},
             {accessor: 'mode', title: '调光模式'},
-            {accessor: 'updated', title: '更新时间'},
+            {
+                accessor(data) {
+                    return data.updated?momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm'):'';
+                },
+                title: '更新时间'
+            }
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -155,12 +160,6 @@ export default class Gateway extends Component{
     tableClick(currentDevice) {
         this.setState({currentDevice});
     }
-
-    formatData(data) {
-        if(data.updated) {
-            data.updated = momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
-        }
-    }
   
     render() {
         const {
@@ -180,8 +179,7 @@ export default class Gateway extends Component{
                             <TableWithHeader columns={this.columns}>
                             {
                                 deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
-                                                            rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                                                            formatFunc={this.formatData}/>)
+                                                            rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]} />)
                             }
                             </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
