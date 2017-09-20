@@ -29,8 +29,8 @@ export class NotifyPopup extends Component {
                        let ani = item.get("animation");
                    
                        return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
-                                { item.get("text") }
-                                <span onClick={ () => this.onClick(id) }>×</span>
+                                <div className="notify-content">{ item.get("text") }</div>
+                                <span className="glyphicon glyphicon-remove" onClick={ () => this.onClick(id) }></span>
                               </li>
                    }) }
                </ul>
