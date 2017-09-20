@@ -2,8 +2,8 @@
  * Created by a on 2017/8/24.
  */
 import React,{Component} from 'react';
-import Content from '../../components/Content'
 
+import Content from '../../components/Content'
 import Select from '../../components/Select'
 import SearchText from '../../components/SearchText'
 import Page from '../../components/Page';
@@ -133,7 +133,7 @@ export default class Scene extends Component{
         const {sort, search, sceneList,page} = this.state;
         console.log(sceneList);
         return (
-            <Content className="list-lcc">
+            <Content>
                 <div className="heading">
                     <Select className="sort" data={sort} onChange={(selectIndex)=>this.sortChange(selectIndex)}/>
                     <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}

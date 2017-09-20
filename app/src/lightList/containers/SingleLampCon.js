@@ -1,7 +1,7 @@
 /**
  * Created by Azrael on 2017/9/1.
  */
-import '../../../public/styles/smartLightManage-list.less';
+import '../../../public/styles/lightManage-list.less';
 import React, {Component} from 'react';
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
