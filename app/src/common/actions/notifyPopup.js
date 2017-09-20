@@ -54,7 +54,7 @@ export function removeNotify(id) {
         dispatch(dispatch=>{
             setTimeout(()=>{
                 dispatch({type:NOTIFY_DELETE, id:id})
-            }, 35)
+            }, 300)
         })
     }
 }
