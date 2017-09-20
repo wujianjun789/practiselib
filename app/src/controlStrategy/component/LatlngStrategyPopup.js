@@ -7,7 +7,7 @@ import {overlayerHide} from '../../common/actions/overlayer';
 import Select from '../../components/Select.1';
 import Immutable from 'immutable';
 import {NameValid,numbersValid} from '../../util/index';
-
+import NotifyPopup from '../../common/containers/NotifyPopup'
 
 let options = (function generateLampLightnessList() {
     let opt = [];
@@ -20,7 +20,7 @@ let options = (function generateLampLightnessList() {
     return opt;
 })();
 
-export class LatlngStrategyPopup extends Component{
+export default class LatlngStrategyPopup extends Component{
     constructor(props){
         super(props);
         const {data={},isEdit=false} = this.props;      
@@ -81,7 +81,7 @@ export class LatlngStrategyPopup extends Component{
     }
 
     onCancel(){
-        this.props.action.overlayerHide();
+        this.props.onCancel() && this.props.onCancel();        
     }
 
     onConfirm(){
@@ -112,7 +112,6 @@ export class LatlngStrategyPopup extends Component{
             ]
         }
         this.props.onConfirm(Object.assign(datas,this.props.isEdit?{id:this.props.data.id}:{}),this.props.isEdit);
-        this.props.action.overlayerHide();
     }
 
     onChange(event){
@@ -136,6 +135,8 @@ export class LatlngStrategyPopup extends Component{
                 case'sunsetTime': 
                     if(value&&!numbersValid(value))
                         prompt={hidden:false,text:'仅能输入数字'};
+                    if(value&&value>1440)
+                        prompt={hidden:false,text:'超过最大支持范围'};
                     break;
             }
             this.setState({[id]:event.target.value,prompt:Object.assign(this.state.prompt,{[id]:prompt})});
@@ -152,7 +153,7 @@ export class LatlngStrategyPopup extends Component{
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className="form-group">
                     <label htmlFor="name" className="control-label">策略名称：</label>
-                    <div className="input-group">
+                    <div className="form-group-input">
                         <input type="text" className="form-control" id="name" placeholder="请输入策略名" value={name} maxLength = {16}
                                 onChange={this.onChange}/>
                         <span className={prompt.name.hidden?"prompt hidden":"prompt"}>{prompt.name.text}</span>
@@ -160,7 +161,7 @@ export class LatlngStrategyPopup extends Component{
                 </div>
                 <div className="form-group">
                     <label htmlFor="device" className="control-label">控制设备：</label>
-                    <div className="input-group">
+                    <div className="form-group-input">
                         <Select id="device" onChange={this.onChange} titleField={deviceList.titleField}
                                 valueField={deviceList.valueField} options={deviceList.options} value={device}/>
                         <span className={prompt.device.hidden?"prompt hidden":"prompt"}>{prompt.device.text}</span>
@@ -168,7 +169,7 @@ export class LatlngStrategyPopup extends Component{
                 </div>
                 <div className="form-group">
                     <label htmlFor="sunrise" className="control-label">日出：</label>
-                    <div className="input-group">
+                    <div className="form-group-input">
                         {
                             device == 'lc' ?
                             <Select id="sunrise" onChange={this.onChange} titleField={brightnessList.titleField}
@@ -182,7 +183,7 @@ export class LatlngStrategyPopup extends Component{
                 </div>
                 <div className="form-group">
                     <label htmlFor="sunriseTime" className="control-label">日出时间差：</label>
-                    <div className="input-group">
+                    <div className="form-group-input">
                         <input type="text" className="form-control" id="sunriseTime" placeholder="输入分钟数（日出后为正数）" value={sunriseTime} maxLength = {16}
                                 onChange={this.onChange}/>
                         <span className={prompt.sunriseTime.hidden?"prompt hidden":"prompt"}>{prompt.sunriseTime.text}</span>
@@ -190,7 +191,7 @@ export class LatlngStrategyPopup extends Component{
                 </div>
                 <div className="form-group">
                     <label htmlFor="sunset" className="control-label">日落：</label>
-                    <div className="input-group">
+                    <div className="form-group-input">
                         {
                             device == 'lc' ?
                             <Select id="sunset" onChange={this.onChange} titleField={brightnessList.titleField}
@@ -204,29 +205,14 @@ export class LatlngStrategyPopup extends Component{
                 </div>
                 <div className="form-group">
                     <label htmlFor="sunsetTime" className="control-label">日落时间差：</label>
-                    <div className="input-group">
+                    <div className="form-group-input">
                         <input type="text" className="form-control" id="sunsetTime" placeholder="输入分钟数（日落后为正数）" value={sunsetTime} maxLength = {16}
                                 onChange={this.onChange}/>
                         <span className={prompt.sunsetTime.hidden?"prompt hidden":"prompt"}>{prompt.sunsetTime.text}</span>
                     </div>
                 </div>
+                <NotifyPopup />
             </Panel>
         )
     }
 }
-
-const mapStateToprops = (state, ownProps) => {
-    return{
-
-    }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) =>{
-    return {
-        action: bindActionCreators({
-            overlayerHide:overlayerHide,
-        }, dispatch)
-    }
-}
-
-export default connect(mapStateToprops, mapDispatchToProps)(LatlngStrategyPopup) 

@@ -16,6 +16,7 @@ import LatlngStrategyPopup from '../component/LatlngStrategyPopup';
 import {getObjectByKey} from '../../util/algorithm'
 import {getAssetModelList} from '../../api/asset'
 import {getStrategyListByName,getStrategyCountByName,updateStrategy,addStrategy,delStrategy} from '../../api/strategy'
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 
 export class Latlngtrategy extends Component{
     constructor(props){
@@ -78,6 +79,7 @@ export class Latlngtrategy extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+        this.props.actions.removeAllNotify();        
     }
 
     // initDeviceList(data){
@@ -119,12 +121,14 @@ export class Latlngtrategy extends Component{
     }
 
     onClick(){
-        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" deviceList={this.state.deviceList} orderList={this.state.orderList} onConfirm={this.confirmClick}/>);
+        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" deviceList={this.state.deviceList} orderList={this.state.orderList} 
+        onConfirm={this.confirmClick} onCancel={()=>{this.props.actions.overlayerHide();this.props.actions.removeAllNotify()}}/>);
     }
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} orderList={this.state.orderList} onConfirm={this.confirmClick}/>);
+        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} orderList={this.state.orderList} 
+        onConfirm={this.confirmClick} onCancel={()=>{this.props.actions.overlayerHide();this.props.actions.removeAllNotify()}}/>);
     }
 
     rowDelete(id){
@@ -142,11 +146,18 @@ export class Latlngtrategy extends Component{
 
     confirmClick(datas,isEdit){
         if(isEdit){
-            updateStrategy(datas,()=>this.requestData());
+            updateStrategy(datas,()=>{
+                this.props.actions.addNotify(1, "编辑域成功");
+                this.requestData();
+            })
         }
         else{
-            this.setState({page:Object.assign({}, this.state.page, {current: 1})},addStrategy(datas,()=>this.requestData()))
+            this.setState({page:Object.assign({}, this.state.page, {current: 1})},addStrategy(datas,()=>{
+                this.props.actions.addNotify(1, "添加域成功");            
+                this.requestData();
+            }))
         }
+        // this.props.actions.overlayerHide();        
     }
 
     render(){
@@ -176,6 +187,8 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
         actions: bindActionCreators({
             overlayerShow:overlayerShow,
             overlayerHide:overlayerHide,
+            addNotify: addNotify,
+            removeAllNotify: removeAllNotify
         }, dispatch)
     }
 }
