@@ -191,8 +191,8 @@ export class sysConfigSmartLight extends Component {
                         chargePoleCount++;
                     }
                 })
-                const x = this.state.tableData.get(index).set('lcCount', lcCount).set('screenCount', screenCount).set('sensorCount', sensorCount).set('cameraCount', cameraCount).set('chargePoleCount', chargePoleCount);
-                const tableData = this.state.tableData.set(index, x);
+                const equipmentsCount = this.state.tableData.get(index).set('lcCount', lcCount).set('screenCount', screenCount).set('sensorCount', sensorCount).set('cameraCount', cameraCount).set('chargePoleCount', chargePoleCount);
+                const tableData = this.state.tableData.set(index, equipmentsCount);
                 this.setState({
                     tableData: tableData
                 })
