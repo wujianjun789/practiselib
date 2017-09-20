@@ -5,6 +5,7 @@
   }
   .search-container{
     position: absolute;
+    z-index:1;
     top: 40px;
     left: 40px;
     width: 300px;
@@ -12,12 +13,24 @@
 
     .addAnimation();
     .searchBlock{
+      width:300px;
       input[type=search]{
         height: 40px;
         border: 0;
         color: #808080;
         border-radius:0px;
       }
+      .form-control-feedback{
+        width:40px;
+        height:40px;
+      }
+      .form-control-feedback:before{
+          position:absolute;
+          height:40px;
+          width:40px;
+          right:0px;
+          padding-top:3px;
+        }
       .input-group-btn{
         z-index:3;
         button{
@@ -432,6 +445,7 @@
 
   .filter-container{
     position: absolute;
+    z-index:1;
     top: 40px;
     right: 40px;
     .btn-group{

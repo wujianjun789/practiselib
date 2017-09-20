@@ -25,7 +25,6 @@ export default class SingleLampCon extends Component {
             search: {
                 value: '',
                 placeholder: '请输入设备名称',
-
             },
             sidebarCollapse: false,
             currentDevice: null,
@@ -50,7 +49,7 @@ export default class SingleLampCon extends Component {
                 titleField: 'title',
                 valueField: 'value',
                 options: []
-            }
+            },
         };
 
         this.model = 'lc';
@@ -105,23 +104,24 @@ export default class SingleLampCon extends Component {
             currentDomain = null;
         } else {
             currentDomain = data[0];
-        }
-        this.setState({domainList: {...this.state.domainList, options}, currentDomain }, ()=>{
+        };
+        this.setState({domainList: {...this.state.domainList, options}, currentDomain}, ()=>{
             cb && cb()
         });
     }
 
     initDeviceData(isSearch) {
+
         const {search: {value}, page, currentDomain} = this.state;
         if(isSearch){
             page.current = 1;
             this.setState({page:page});
         }
-
         const {limit, current} = this.state.page;
         const offset = limit * ( current - 1 );
         getSearchAssets(currentDomain?currentDomain.id:null, this.model, value, offset, limit, this.mounted&&this.updateDeviceData);
         getSearchCount(currentDomain?currentDomain.id:null, this.model, value, this.mounted&&this.updatePageSize);
+
     }
 
     updateDeviceData(data) {
@@ -140,7 +140,6 @@ export default class SingleLampCon extends Component {
         data.forEach(value => {
             let val = value;
             let title = `亮度${val}`;
-
             opt.push({value: val, title});
         });
         this.setState({brightnessList: Object.assign({}, this.state.brightnessList, {options: opt})});

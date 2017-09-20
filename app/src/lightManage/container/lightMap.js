@@ -270,6 +270,7 @@ export class lightMap extends Component{
             deviceList = deviceList.filter(item => {if (item.id == id) {return item }})
             return;
         }
+        console.log(id)
 
         data.map(ass=>{
             if(ass.extendType == "screen"||ass.extendType == "xes"||ass.extendType == "camera"||ass.extendType == "charge"){
@@ -278,10 +279,10 @@ export class lightMap extends Component{
                 deviceList = deviceList.filter(item => {if (item.id == id) {return item }})
                 return;
             }else if(ass.extendType == "lc"){
+                deviceList.map((o,i)=>{ if(o.id==id){deviceList[i]["lamp"]=ass.id} })
                 asset = Object.assign({}, asset, {lamp:ass});
             }else{}
         })
-
         /* 列出搜索项 */
         this.setState({IsSearchResult:true, deviceList:deviceList, positionList:positionList, searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))},()=>{console.log(this.state.searchList);});
         // this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset)),curPosition:this.state.positionList,curDevice:Immutable.fromJS(this.state.deviceList)},()=>{
@@ -439,8 +440,10 @@ export class lightMap extends Component{
     }
 
     searchDeviceSelect(id){
-        if(this.state.curDevice.get(id)==undefined){/* has not device */ console.log("has not "+id);
-        return}
+        var device = this.state.curDevice.toJS()
+        device=device[0];
+        if(!device[id]){/* has not device */ console.log("has not "+id)
+        return}else{console.log("lcId: "+device[id])}
         this.setState({deviceId:id});
     }
 
@@ -748,9 +751,8 @@ export class lightMap extends Component{
                 <div className="search-container">
                     <div className="input-group searchBlock">
                       <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
-                      <div className="input-group-btn">
-                        <button type="button" className="btn btn-default" aria-label="search" onClick={()=>this.searchInputOnKeyUp("toSearch")}><span className="glyphicon glyphicon-search"></span></button>
-                      </div>
+                      <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+
                     </div>
                     <ul className={"list-group mode-select "+(interactive?'select-active':'')} >
                             {
