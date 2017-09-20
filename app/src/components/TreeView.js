@@ -49,7 +49,7 @@ export class TreeView extends Component{
                                     <Link to={node.link}>
                                     <div onClick={()=>this.onToggle(node)} title={node.name}><span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')}></span>
                                         {value}</div></Link>
-                                    {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
+                                    {this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }
                 })

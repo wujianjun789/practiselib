@@ -812,7 +812,7 @@ export class lightMap extends Component{
                     <ul className="btn-group">
                         {   
                             this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"no-select")} onClick={()=>this.searchDeviceSelect(device.id)}><svg><use xlinkHref={"#"+device.className} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>
+                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"btn-default")} onClick={()=>this.searchDeviceSelect(device.id)}><svg><use xlinkHref={"#"+device.className} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>
                             })
                         }
                     </ul>

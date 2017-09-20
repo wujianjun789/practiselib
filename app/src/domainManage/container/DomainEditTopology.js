@@ -300,8 +300,8 @@ class DomainEditTopology extends Component{
     }
 
     renderChild(list, depth, parentLen){
-        return <div className='row'>
-        <ul key={depth} className={(depth==0?"topology-0 ":("topology-x "))+(list && list.length?'children':'')+" topology-list"} style={{minWidth:parentLen*154+"px"}}>
+        return <div key={depth} className='row'>
+        <ul className={(depth==0?"topology-0 ":("topology-x "))+(list && list.length?'children':'')+" topology-list"} style={{minWidth:parentLen*154+"px"}}>
             {
                 list.map(item=>{
 
