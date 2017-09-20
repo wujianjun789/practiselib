@@ -46,11 +46,15 @@ export default class Sensor extends Component {
                     // console.log(this.sensorProps[data.extend.type].unit);
                     if (this.sensorProps) {
                         return this.sensorProps[data.extend.type].unit;
-                    } 
+                    }
                 }, title: '单位'
             },
             { accessor: 'value', title: '当前参数' },
-            { accessor: 'updated', title: '更新时间' }
+            {
+                accessor(data) {
+                    return data.updated ? momentDateFormat(getMomentDate(data.updated, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm') : '';
+                }, title: '更新时间'
+            }
         ]
 
     }
@@ -129,11 +133,11 @@ export default class Sensor extends Component {
     collapse = () => {
         this.setState({ sidebarCollapse: !this.state.sidebarCollapse });
     }
-    formatData(data) {
-        if (data.updated) {
-            data.updated = momentDateFormat(getMomentDate(data.updated, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
-        }
-    }
+    // formatData(data) {
+    //     if (data.updated) {
+    //         data.updated = momentDateFormat(getMomentDate(data.updated, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
+    //     }
+    // }
     render() {
         const { page: { total, current, limit }, sidebarCollapse, currentDevice, deviceList,
             search: { value, placeholder }, currentDomain, domainList } = this.state;
@@ -153,7 +157,7 @@ export default class Sensor extends Component {
                         {
                             deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
                                 rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                                formatFunc={this.formatData} />)
+                             />)
                         }
                     </TableWithHeader>
                     <Page className={`page ${total === 0 ? 'hidden' : ''}`} pageSize={limit}
