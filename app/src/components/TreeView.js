@@ -45,11 +45,11 @@ export class TreeView extends Component{
                                     {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }else{
-                        return <li key={index} className={'node '+(node.active ? 'active':'')}>
+                        return <li key={index} className={'node '+(node.active ? 'active':'')+(node.toggled ? ' bottom':'')}>
                                     <Link to={node.link}>
                                     <div onClick={()=>this.onToggle(node)} title={node.name}><span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')}></span>
                                         {value}</div></Link>
-                                    {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
+                                    {this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }
                 })

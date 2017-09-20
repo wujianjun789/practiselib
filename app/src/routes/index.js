@@ -248,11 +248,35 @@ export default (
       </Route>
     </Route>
     <Route path="/light" component={LightManage}>
-                <Route path="map" getComponent={(nextState, cb)=>{
+      <Route path="map" getComponent={(nextState, cb)=>{
                       require.ensure([], (require) => {
                             cb(null, require('../lightManage/container/lightMap').default)
                         }, 'starriverpro.lightManage.lightMap')
                 }}/>
+      <Route path="list">
+        <IndexRoute getComponent={ (nextState, cb) => {
+                                       require.ensure([], (require) => {
+                                           cb(null, require('../lightList/containers/SingleLampCon').default);
+                                       }, 'starriverpro.lightList.SingleLampCon');
+                                   } } />
+        <Route path="gateway" getComponent={ (nextState, cb) => {
+                                             require.ensure([], (require) => {
+                                                 cb(null, require('../lightList/containers/Gateway').default);
+                                             }, 'starriverpro.lightList.Gateway');
+                                         } } />
+      </Route>
+      <Route path="control">
+        <Route path="scene" getComponent={ (nextState, cb) => {
+                                               require.ensure([], (require) => {
+                                                   cb(null, require('../lightControl/container/Scene').default)
+                                               }, 'starriverpro.lightControl.scene')
+                                           } } />
+        <Route path="strategy" getComponent={ (nextState, cb) => {
+                                                  require.ensure([], (require) => {
+                                                      cb(null, require('../lightControl/container/Strategy').default)
+                                                  }, 'starriverpro.lightControl.strategy')
+                                              } } />
+      </Route>
     </Route>
   </Route>
   <Route path="*" getComponent={ (nextState, cb) => {
