@@ -4,7 +4,9 @@
   },
 
   "client":{
-    "HOST_IP":"http://localhost:3000/api",
+    "HOST": "localhost",
+    "PORT": 3000,
+    "PATH": "/api",
     "module":[
       {"key": "asset", "title": "资产管理", "link": "/assetManage/manage"},
       {"key": "permission", "title": "权限管理", "link": "/permissionManage"},
