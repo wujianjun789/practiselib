@@ -20,16 +20,16 @@ export function getDefaultIntl(cb) {
 }
 
 export function getIntlEn(cb) {
-    require.ensure && require.ensure(['./en'], () => {
+    require.ensure(['./en'], () => {
         const en = require('./en').default;
-        cb(getIntl(en));
-    }, 'intl.en')
+            cb(getIntl(en));
+        }, 'intl.en')
 }
 export function getIntlZh(cb) {
-    require.ensure && require.ensure(['./zh'], () => {
-        const zh = require('./zh').default;
-        cb(getIntl(zh));
-    }, 'intl.zh')
+    require.ensure(['./zh'], () => {
+            const zh = require('./zh').default;
+            cb(getIntl(zh));
+        }, 'intl.zh')
 }
 
 export function getTargetIntl(locale, cb) {

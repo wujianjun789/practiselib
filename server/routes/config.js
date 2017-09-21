@@ -43,17 +43,17 @@ router.get('/module', function (req, res, next) {
             let modules = JSON.parse(body).modules;
             if(!modules){
                 res.json(client.module);
+            }else{
+                let moduList = [];
+                modules.forEach(mod=>{
+                    let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
+                    if(curMod){
+                        moduList.push(curMod);
+                    }
+                })
+
+                res.json(moduList);
             }
-
-            let moduList = [];
-            modules.forEach(mod=>{
-                let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
-                if(curMod){
-                    moduList.push(curMod);
-                }
-            })
-
-            res.json(moduList);
         })
     })
 
