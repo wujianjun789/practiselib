@@ -17,3 +17,6 @@ yarn*
 npm-debug.log
 
 package-lock.json
+
+#editorconfig
+.editorconfig
