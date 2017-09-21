@@ -65,7 +65,9 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <li
           aria-disabled={true}
@@ -74,7 +76,9 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <div
           className="rc-pagination-options" />
@@ -98,8 +102,16 @@ exports[`test DomainEdit renders 1`] = `
       className="panel panel-default device-statics-info">
       <div
         className="panel-heading">
-        <span
-          className="icon_domain_property" />
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.08,0.08)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_domain_property"
+            y="0" />
+        </svg>
         域属性
       </div>
       <div
@@ -126,8 +138,16 @@ exports[`test DomainEdit renders 1`] = `
       className="panel panel-default map-position">
       <div
         className="panel-heading">
-        <span
-          className="icon_map_position" />
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.086,0.086)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_map_position"
+            y="0" />
+        </svg>
         地图位置
       </div>
       <div

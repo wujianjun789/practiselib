@@ -1,4 +1,4 @@
-exports[`<LampConCenter /> component snapshot 1`] = `
+exports[`<Gateway /> component snapshot 1`] = `
 <div
   className="content offset-right ">
   <div
@@ -48,71 +48,72 @@ exports[`<LampConCenter /> component snapshot 1`] = `
     </button>
   </div>
   <div
-    className="lcc">
+    className="table-container">
     <div
-      className="table-container">
-      <div
-        className="table-responsive ">
-        <table
-          className="table table-hover">
-          <thead>
-            <tr>
-              <th
-                className="hidden">
-                <input
-                  checked={undefined}
-                  onChange={[Function]}
-                  type="checkbox" />
-              </th>
-              <th>
-                域
-              </th>
-              <th>
-                设备名称
-              </th>
-              <th>
-                型号
-              </th>
-              <th>
-                设备编号
-              </th>
-              <th>
-                经度
-              </th>
-              <th>
-                纬度
-              </th>
-            </tr>
-          </thead>
-          <tbody />
-        </table>
-      </div>
-      <ul
-        className="rc-pagination page hidden"
-        style={Object {}}
-        unselectable="unselectable">
-        <li
-          aria-disabled={true}
-          className="rc-pagination-disabled rc-pagination-prev"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title="上一页">
-          <a />
-        </li>
-        <li
-          aria-disabled={true}
-          className="rc-pagination-disabled rc-pagination-next"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title="下一页">
-          <a />
-        </li>
-        <div
-          className="rc-pagination-options" />
-      </ul>
+      className="table-responsive ">
+      <table
+        className="table table-hover">
+        <thead>
+          <tr>
+            <th
+              className="hidden">
+              <input
+                checked={undefined}
+                onChange={[Function]}
+                type="checkbox" />
+            </th>
+            <th>
+              域
+            </th>
+            <th>
+              设备名称
+            </th>
+            <th>
+              型号
+            </th>
+            <th>
+              设备编号
+            </th>
+            <th>
+              经度
+            </th>
+            <th>
+              纬度
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+      </table>
     </div>
+    <ul
+      className="rc-pagination page hidden"
+      style={Object {}}
+      unselectable="unselectable">
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-prev"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="上一页">
+        <a>
+          
+        </a>
+      </li>
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-next"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="下一页">
+        <a>
+          
+        </a>
+      </li>
+      <div
+        className="rc-pagination-options" />
+    </ul>
   </div>
   <div
     className="container-fluid sidebar-info "
@@ -127,14 +128,23 @@ exports[`<LampConCenter /> component snapshot 1`] = `
       className="panel panel-default device-statics-info">
       <div
         className="panel-heading">
-        <span
-          className="icon_sys_select" />
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.075,0.075)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_sys_select"
+            y="0" />
+        </svg>
         选中设备
       </div>
       <div
         className="panel-body domain-property">
         <span
-          className="domain-name">
+          className="domain-name"
+          title="">
           
         </span>
         <button
@@ -157,8 +167,16 @@ exports[`<LampConCenter /> component snapshot 1`] = `
       className="panel panel-default device-statics-info whitelist">
       <div
         className="panel-heading">
-        <span
-          className="icon_sys_whitelist" />
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.082,0.082)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_sys_whitelist"
+            y="0" />
+        </svg>
         白名单
       </div>
       <div
@@ -180,8 +198,16 @@ exports[`<LampConCenter /> component snapshot 1`] = `
       className="panel panel-default map-position">
       <div
         className="panel-heading">
-        <span
-          className="icon_map_position" />
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.086,0.086)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_map_position"
+            y="0" />
+        </svg>
         地图位置
       </div>
       <div
