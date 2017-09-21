@@ -3,7 +3,8 @@
  */
 const express = require('express');
 const router = express.Router();
-const client = require('../config').client;
+
+const client =  require('../models/config').client;
 
 /* GET config listing. */
 router.get('/', function (req, res, next) {

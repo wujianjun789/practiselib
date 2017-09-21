@@ -8,7 +8,7 @@ install package: npm install
 test: npm run test
 
 develop:
-build package: npm run dev
+start app: npm run dev
 
 product:
 build package: npm run build
