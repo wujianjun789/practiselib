@@ -21,14 +21,20 @@ describe('<DomainPopup',()=>{
         expect(panel.length).toBe(1);
         expect(panel.prop('title')).toBe(title);
         
-        const domainAdd = panel.find('.col-sm-6 .domain-add');
-        expect(domainAdd.length).toBe(1);
+        const domainPer = panel.find('.domain-per');
+        expect(domainPer.length).toBe(1);
 
-        const searchText = domainAdd.find('SearchText');
-        expect(searchText.length).toBe(1);
+        const domainContent = panel.find('.domain-content');
+        expect(domainContent.length).toBe(1);
 
-        const domainList = panel.find('.col-sm-6 .domain-list');
+        const domainTree = panel.find('.domain-tree');
+        expect(domainTree.length).toBe(1);
+
+        const domainList = panel.find('.domain-list');
         expect(domainList.length).toBe(1);
+        
+        const searchText = domainTree.find('SearchText');
+        expect(searchText.length).toBe(1);
 
         const deleteSpan = domainList.find('icon-table-delete');
         deleteSpan[0]&&deleteSpan[0].simulate('click');

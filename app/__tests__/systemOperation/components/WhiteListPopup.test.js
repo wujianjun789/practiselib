@@ -6,10 +6,8 @@ import WhiteListPopup from '../../../src/systemOperation/components/WhiteListPop
  describe('<WhiteListPopup />', () => {
     let className="white-popup";
     let data = [
-            {id: '00158D0000CABAD5'},
-            {id: '00158D0000CABAD5'},
-            {id: '00158D0000CABAD5'},
-            {id: '00158D0000CABAD5'}
+            {id: '00158D0000CABAD5',name:'xxx1'},
+            {id: '00158D0000CABAD5',name:'xxx2'},
         ]
     it('render normal', () => {
         const cmp = shallow(<WhiteListPopup className={className}/>);
@@ -20,15 +18,15 @@ import WhiteListPopup from '../../../src/systemOperation/components/WhiteListPop
         let tHead = cmp.find('.table-header');
         let headCell = tHead.find('.tables-cell');
         expect(headCell.length).toBe(3);
+        expect(headCell.at(0).text()).toBe('名称');
         expect(headCell.at(1).text()).toBe('编号');
-        expect(headCell.at(2).text()).toBe('');
 
         let tBody = cmp.find('.table-body');
         let items = tBody.find('.body-row');
         expect(items.length).toBe(data.length);
         
-        let item3 = items.at(2);
-        let cells = item3.find('.tables-cell');
+        let item0 = items.at(0);
+        let cells = item0.find('.tables-cell');
         expect(cells.length).toBe(3);
         expect(cells.at(0).text()).toBe(data[0][columns[0].field]);
         expect(cells.at(1).text()).toBe(data[0][columns[1].field]);
