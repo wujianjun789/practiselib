@@ -4,49 +4,50 @@
  */
 
 import React, { Component } from 'react';
-// import Panel from '../../components/Panel';
 import Panel from '../../components/Panel';
-// import PanelFooter from '../../components/PanelFooter';
 import PanelFooter from '../../components/PanelFooter';
-// import Select from '../../components/Select.1';
 import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
 
-// import LineChart from '../../common/util/LineChart';
 import {timeStrategy,  sensorStrategy} from '../../common/util/chart'
-
-import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../util/index'
+import { Name2Valid, MACValid } from '../../util/index'
 export default class SceneControllerPopup extends Component {
     constructor(props) {
         super(props);
-        const {assetName="",domain="", domainId="",id="", name="", mode="", sceneAssetList="", param="",  modelId="", model="",  lng=0, lat=0} = props.data;
+        const {assetName="", domainId="",id="", name="", sceneAssetList="", param=""} = props.data;
         this.state = {
-            domain: domain,
+            modeList:{
+                titleField: 'name',
+                valueField: 'name',
+                index: 0,
+                value: "",
+                options:[
+                    {id: "1", name: "MANUAL"},
+                    {id: "2", name: "STRATEGY"}
+            ]},
+            paramList:{
+                titleField: 'name',
+                valueField: 'name',
+                index: 0,
+                value: "",
+                options:[
+                    {id: "1", name: "亮度"},
+                    {id: "2", name: "开关"}
+            ]},
+            modeValue:"STRATEGY",
             domainId: domainId,     
             id: id,
             name: name,
-            mode: mode, //控制模式
-            sceneAssetList: sceneAssetList, //场景白名单
+            sceneAssetList: sceneAssetList, //场景设备名单
             param: param, //调整参数
             assetName: assetName,
-
-
-            
-            // id: id,
-            // name: name,
-            model: model,
-            modelId: modelId,
-
-            lng: lng,
-            lat: lat,
             prompt: {
                 // domainName:false,
-                lng: false,
-                lat: false,
                 name: false,
                 id: false
             },
+
             sensorTypeDefault:{},   //绘制图表
             selectDevice:{          //绘制图表
                 // id:1, name:"策略1", type:'传感器策略', asset:'lc', setState:'已设定',
@@ -68,7 +69,8 @@ export default class SceneControllerPopup extends Component {
                     }
                 ]
             },
-        };
+
+        }
         this.columns = [
             {field: "name"}
         ]
@@ -79,7 +81,6 @@ export default class SceneControllerPopup extends Component {
         this.onChange = this.onChange.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
-        this.renderHtmlForModel = this.renderHtmlForModel.bind(this);
     }
 
     onChange(e) {
@@ -94,9 +95,9 @@ export default class SceneControllerPopup extends Component {
                 assetName: this.props.assetList.options[e.target.selectedIndex].name
             });
         }
-        if (id == "controlModel") {
+        if (id == "controlModel") {//控制模式
             this.setState({
-                mode: this.props.modeList.options[e.target.selectedIndex].name
+                modeValue: this.state.modeList.options[e.target.selectedIndex].name
             });
         }
         if (id == "controlParam") {//调整参数
@@ -110,8 +111,8 @@ export default class SceneControllerPopup extends Component {
         let prompt = false;
 
        if (id == "name") {
-            newValue = value; //过滤非法数据
-            prompt = !Name2Valid(newValue); //判定输入数量
+            newValue = value; 
+            prompt = !Name2Valid(newValue); 
        } else {
             newValue = value;
        }
@@ -124,19 +125,6 @@ export default class SceneControllerPopup extends Component {
         });
     }
 
-
-    renderHtmlForModel() {
-        return <div className="form-group clearfix">
-                 <label htmlFor="model" className="fixed-width-left control-label">型号：</label>
-                 <div className="fixed-width-right">
-                   <Select id="model" className="form-control" titleField={ this.props.modelList.titleField } 
-                        valueField={ this.props.modelList.valueField } options={ this.props.modelList.options } 
-                        value={ this.state.model } onChange={ this.onChange }
-                        disabled={this.props.model === "xes" && this.props.popId=='edit'?true:false}/>
-                 </div>
-               </div>
-
-    }
 
     onCancel() {
         this.props.overlayerHide();
@@ -182,11 +170,9 @@ export default class SceneControllerPopup extends Component {
     }
 
     render() {
-        const {sceneAssetList, assetList, modeList, paramList} = this.props; 
-        const {className, title, domainList, modelList, popId} = this.props;
-        const {mode, param, assetName, id, name, model, domain, lng, lat, prompt} = this.state;
-        console.log('modeList:', modeList);
-        // console.log('sceneAssetListstate:', this.state.sceneAssetList);
+        const { assetList, className, title, domainList, popId} = this.props; 
+        const {paramList, modeList, modeValue, sceneAssetList, param, assetName, id, name,  domainId, prompt} = this.state;
+        console.log('sceneAssetList:', sceneAssetList);
 
         let valid = false;
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={ ['取消', '确认'] } btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
@@ -198,7 +184,7 @@ export default class SceneControllerPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="id" className="fixed-width-left control-label">场景名称：</label>
                         <div className="fixed-width-right">
-                            <input type="text" className="form-control" id="name" placeholder="输入新建场景名称" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
+                            <input type="text" className="form-control" id="name" placeholder="请输入场景" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
                             />
                         <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
                         </div>
@@ -206,7 +192,7 @@ export default class SceneControllerPopup extends Component {
                 </div>
                 <div className="popup-body"> 
                     <div className="col-sm-6 col-xm-6 popup-body-left">
-                         <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domain } onChange={ this.onChange }/>
+                         <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainId } onChange={ this.onChange }/>
                         <div>
                          <Select id="device" titleField={ assetList.valueField } valueField={ assetList.valueField } options={ assetList.options } value={ assetName } onChange={ this.onChange }/>
                          <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
@@ -234,7 +220,7 @@ export default class SceneControllerPopup extends Component {
                     <div className="col-sm-6 col-xm-6 popup-body-right">
                         <div className="selectBox">
                          <label htmlFor="id" className="fixed-width-left control-label">控制模式</label>
-                         <Select id="controlModel" titleField={ modeList.valueField } valueField={ modeList.valueField } options={ modeList.options } value={ mode } onChange={ this.onChange }/>
+                         <Select id="controlModel" titleField={ modeList.valueField } valueField={ modeList.valueField } options={ modeList.options } value={ modeValue } onChange={ this.onChange }/>
                         </div>
                         <div className="selectBox" hidden={ popId == 'add' ? true : false}>
                          <label htmlFor="id" className="fixed-width-left control-label">调整参数</label>
