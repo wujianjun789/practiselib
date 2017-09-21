@@ -66,14 +66,18 @@ export function deleteCookie(key){
  */
 export function setLocalStorage(key, value) {
     try {
-        localStorage.setItem(key, JSON.stringify(value));
+        localStorage && localStorage.setItem(key, JSON.stringify(value));
     }catch (err){
         console.log('存localStorage错误:'+key);
     }
 }
 
 export function getLocalStorage(key) {
-    let data = localStorage.getItem(key);
+    let data
+    if(localStorage && localStorage.getItem){
+        localStorage.getItem(key);
+    }
+
     if(!!data){
         return JSON.parse(data);
     }
@@ -82,5 +86,5 @@ export function getLocalStorage(key) {
 }
 
 export function removeLocalStorage(key) {
-    localStorage.removeItem(key);
+    localStorage && localStorage.removeItem(key);
 }

@@ -8,12 +8,14 @@ import configureStore from '../store/configureStore'
 import routes from '../routes';
 import {getDefaultIntl, getTargetIntl} from '../intl'
 
+import {setLocalStorage} from '../util/cache'
 import {getConfig} from '../util/network'
+
 getConfig(()=>{
     getDefaultIntl((intl)=>{
         const store = configureStore({intl});
         window.setLanguage = function (language) {
-            localStorage.appLanguage = language;
+            setLocalStorage("appLanguage", language);
             getTargetIntl(language, locale=>{
                 store.dispatch(updateIntl(locale));
             })
