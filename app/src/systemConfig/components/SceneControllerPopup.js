@@ -87,7 +87,7 @@ export default class SceneControllerPopup extends Component {
         let id = e.target.id;
         if(id == "domain") {//域
             this.setState({
-                domainId: this.props.domainList.options[e.target.selectedIndex].id
+                domainId: this.props.domainList.options[e.target.selectedIndex].name
             });
         } 
         if (id == "device") {
@@ -125,7 +125,6 @@ export default class SceneControllerPopup extends Component {
         });
     }
 
-
     onCancel() {
         this.props.overlayerHide();
     }
@@ -134,7 +133,6 @@ export default class SceneControllerPopup extends Component {
         this.props.overlayerHide();
         this.props.onConfirm && this.props.onConfirm(this.state);
     }
-
 
     /*绘制图表参数*/
     updateChart(){
@@ -151,13 +149,10 @@ export default class SceneControllerPopup extends Component {
         this.sensorStrategy && this.sensorStrategy.destroy();
 
         if(type == "time"){
-
             this.timeStrategy = timeStrategy(chart.id, strategy, 115);
         }else if(type=="sensor"){
-
             this.sensorStrategy = sensorStrategy(chart, strategy, sensorTypeDefault)
         }
-
     }
 
     /*绘制图表参数*/
@@ -170,10 +165,9 @@ export default class SceneControllerPopup extends Component {
     }
 
     render() {
-        const { assetList, className, title, domainList, popId} = this.props; 
-        const {paramList, modeList, modeValue, sceneAssetList, param, assetName, id, name,  domainId, prompt} = this.state;
+        const { assetList, domainList, popId, title} = this.props; 
+        const { paramList, modeList, modeValue, sceneAssetList, param, assetName, id, name, domainId, prompt } = this.state;
         console.log('sceneAssetList:', sceneAssetList);
-
         let valid = false;
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={ ['取消', '确认'] } btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
                          onConfirm={ this.onConfirm } />;
@@ -186,7 +180,7 @@ export default class SceneControllerPopup extends Component {
                         <div className="fixed-width-right">
                             <input type="text" className="form-control" id="name" placeholder="请输入场景" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
                             />
-                        <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
+                        <span id = "name" onChange={ this.onChange } className={ prompt.name ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
                         </div>
                     </div>
                 </div>
@@ -200,7 +194,7 @@ export default class SceneControllerPopup extends Component {
                         <div className="table-list">
                             <div className="table-body">
                                 <ul>{
-                                        sceneAssetList.map((item, index) => (
+                                        sceneAssetList[0].id && sceneAssetList.map((item, index) => (
                                             <li key = {item.id} className = "body-row clearfix">
                                                 {
                                                     this.columns.map((subItem, subIndex) => (

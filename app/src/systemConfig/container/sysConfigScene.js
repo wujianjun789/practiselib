@@ -41,15 +41,12 @@ export class sysConfigScene extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sort:Immutable.fromJS({list:[{id:1, value:'场景序号'},{id:2, value:'设备多少'}], index:0, value:'场景序号',placeholder:"排序"}),
-
-            //场景列表
+            sort:Immutable.fromJS({list:[{id:1, value:'场景序号'}, {id:2, value:'设备多少'}], index:0, value:'场景序号', placeholder:"排序"}),
             sceneList:  [
                 // {id:1, name:"场景1", active:false,presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e45", asset: "string", prop: "string", mode: "MANUAL", value: "60"}], mode: "MANUAL"},
                 // {id:2, name:"场景2", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e46", asset: "string", prop: "string", mode: "MANUAL", value: "70"}], mode: "MANUAL"},
                 // {id:3, name:"场景3", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e47", asset: "string", prop: "string", mode: "STRATEGY", value: "80"}], mode: "STRATEGY"},
             ],
-            //从API获取的可添加到场景的设备列表assetList
             assetList:{
                 titleField: 'name',
                 valueField: 'name',
@@ -61,10 +58,7 @@ export class sysConfigScene extends Component {
                     {id: "24", name: "灯杆1", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}
             ]},
 
-            
-            
             search: Immutable.fromJS({placeholder: '输入场景名称',value: ''}),
-
             page: Immutable.fromJS({
                 pageSize:12,
                 current: 1,
@@ -85,8 +79,7 @@ export class sysConfigScene extends Component {
                     name:"",
                     prop:"",
                     value:""
-                }],               
-                data: [{name:''}],
+                }]           
             },                   
             domainList: {
                 titleField: 'name',
@@ -141,6 +134,7 @@ export class sysConfigScene extends Component {
         this.popupConfirm = this.popupConfirm.bind(this);
 
         this.initDomainList = this.initDomainList.bind(this);
+        this.getAssetName = this.getAssetName.bind(this);
     }
 
     componentWillMount() {
@@ -152,14 +146,17 @@ export class sysConfigScene extends Component {
   
         getAssetList(data=>{
             if(this.mounted){
-                this.assetList=data;
-                this.setState(this.assetList, ()=>{this.requestSearch();});
-            }});
+                // this.assetList=data;
+                this.setState({assetList:{...this.state.assetList, options: data}});
+                // this.setState({assetList: Object.assign({}, this.state.assetList, {options: data})});
+            }
+        });
+
+        this.requestSearch();
     }
 
     requestSearch(){
         const {search, page} = this.state;
-
         let limit = page.get("pageSize");
         let offset = (page.get("current")-1)*limit;
         let value = search.get("value");
@@ -198,11 +195,9 @@ export class sysConfigScene extends Component {
                 let newAsset = lodash.find(this.assetList, (asset)=>{
                     return asset.id==pre.asset;
                 })
-
                 return Object.assign({}, pre, {name:newAsset?newAsset.name:""},{domainId:newAsset?newAsset.domainId:null});
             })
             this.setState({sceneList:this.state.sceneList},()=>{
-                console.log("asset:");
                 cb && cb(curIndex);
             })
         }
@@ -225,7 +220,7 @@ export class sysConfigScene extends Component {
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
-        delAssetsByModel(model, selectDevice.data.length && selectDevice.data[0].id, () => {  //selectDevice.data错误（应该是assets）----通过model和id来删除场景
+        delAssetsByModel(model, selectDevice.presets.length && selectDevice.presets[0].id, () => {  //通过model和id来删除场景
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
@@ -234,7 +229,7 @@ export class sysConfigScene extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const { model, domainList, selectDevice, sceneList, assetList, modeList } = this.state;   
+        const { model, domainList, selectDevice, sceneList, assetList } = this.state;   
         const {overlayerShow, overlayerHide} = this.props.actions;
 
         switch (id) {
@@ -275,7 +270,6 @@ export class sysConfigScene extends Component {
                                 data={ dataInit2 } domainList={ domainList }
                                 assetList = { assetList }
                                 overlayerHide={ overlayerHide } 
-                                modeList = {modeList}
                                 onConfirm={ data => {
                                                     updateAssetsByModel(model, data, (data) => {
                                                         this.requestSearch();
