@@ -180,10 +180,11 @@ export class DomainEditList extends Component {
                                                         domain.parentId = data.prevDomain;
 
                                                         addDomain(domain, ()=>{
-                                                            actions.addNotify(1, "添加域成功");
-                                                            // actions.overlayerHide();
+                                                            actions.overlayerHide();
                                                             this.requestDomain();
                                                             this.requestSearch();
+                                                        }, error=>{
+                                                            actions.addNotify(0, error);
                                                         });
                                                    }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify()}}/>);
                 break;

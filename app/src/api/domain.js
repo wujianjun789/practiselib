@@ -57,7 +57,7 @@ export function getDomainCountByName(domainName, cb) {
     })
 }
 
-export function addDomain(domain, cb) {
+export function addDomain(domain, cb, err) {
     if(!domain.parentId){
         domain.parentId = null;
     }
@@ -69,6 +69,8 @@ export function addDomain(domain, cb) {
         body: JSON.stringify(domain)
     }, response=>{
         cb && cb(response)
+    }, null, error=>{
+        err && err(error);
     })
 }
 
