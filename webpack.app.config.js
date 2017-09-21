@@ -22,7 +22,7 @@ module.exports = {
         }),
         new webpack.optimize.UglifyJsPlugin({
             output: {
-                comments: false,  // remove all comments
+                comments: false, // remove all comments
             },
             compress: {
                 warnings: false
@@ -44,7 +44,8 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/, loader: "babel-loader?presets[]=es2015&presets[]=react",
+                test: /\.jsx?$/,
+                loader: "babel-loader?presets[]=es2015&presets[]=react&presets[]=stage-0",
                 exclude: /node_modules/
             },
             {
@@ -52,7 +53,8 @@ module.exports = {
                 loader: "style-loader!css-loader"
             },
             {
-                test: /\.less$/, loader: "style-loader!css-loader!less-loader"
+                test: /\.less$/,
+                loader: "style-loader!css-loader!less-loader"
             }
         ]
 

@@ -190,7 +190,8 @@ export class sysConfigSmartLight extends Component {
                     } else if (item.extendType === 'chargePole') {
                         chargePoleCount++;
                     }
-                })
+                });
+
                 const equipmentsCount = this.state.tableData.get(index).set('lcCount', lcCount).set('screenCount', screenCount).set('sensorCount', sensorCount).set('cameraCount', cameraCount).set('chargePoleCount', chargePoleCount);
                 const tableData = this.state.tableData.set(index, equipmentsCount);
                 this.setState({
