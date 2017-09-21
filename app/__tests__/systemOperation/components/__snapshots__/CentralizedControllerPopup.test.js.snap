@@ -83,6 +83,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             className="fixed-width-right">
             <select
               className="form-control select form-control"
+              disabled={false}
               id="model"
               onChange={[Function]}
               value="model01">
@@ -324,6 +325,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             className="fixed-width-right">
             <select
               className="form-control select form-control"
+              disabled={false}
               id="model"
               onChange={[Function]}
               value="model01">

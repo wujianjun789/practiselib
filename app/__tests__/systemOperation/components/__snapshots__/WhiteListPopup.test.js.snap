@@ -37,26 +37,7 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
             type="search"
             value="" />
           <ul
-            className="">
-            <li
-              className=""
-              onClick={[Function]}
-              value="lamp1">
-              lamp1
-            </li>
-            <li
-              className=""
-              onClick={[Function]}
-              value="lamp2">
-              lamp2
-            </li>
-            <li
-              className=""
-              onClick={[Function]}
-              value="lamp3">
-              lamp3
-            </li>
-          </ul>
+            className="" />
           <span
             className="glyphicon glyphicon-search"
             onClick={[Function]} />
@@ -91,18 +72,10 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
     <div
       className="modal-footer">
       <button
-        className="btn btn-default"
-        disabled={false}
-        onClick={[Function]}
-        type="button">
-        取消
-      </button>
-      <button
         className="btn btn-primary"
-        disabled={false}
         onClick={[Function]}
         type="button">
-        确认
+        完成
       </button>
     </div>
   </div>
