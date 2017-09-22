@@ -220,7 +220,7 @@ export class sysConfigScene extends Component {
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
-        delAssetsByModel(model, selectDevice.presets.length && selectDevice.presets[0].id, () => {  //通过model和id来删除场景
+        delAssetsByModel(model, selectDevice && selectDevice.id, () => {
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
