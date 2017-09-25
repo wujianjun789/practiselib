@@ -160,9 +160,10 @@ export class Xes extends Component {
 
     domainChange(selectIndex){
         this.setState({domain:this.state.domain.update('index', v=>selectIndex)})
+        this.state.domain = this.state.domain.update('index', v=>selectIndex);        
         this.setState({domain:this.state.domain.update('value', v=>{
             return this.state.domain.getIn(['list', selectIndex, 'value']);
-        })})
+        })}, ()=>{this.requestSearch()})
     }
 
     deviceChange(selectIndex){
