@@ -28,7 +28,7 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
 
-import { getSceneList } from '../../api/scene.js';
+import { getSceneList, addScene, updateSceneById } from '../../api/scene.js';
 
 import SiderBarComponent from '../components/SideBarComponents.js';
 import EditPopup from '../components/EditPopup';
@@ -224,7 +224,6 @@ export class sysConfigScene extends Component {
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
-
     }
 
     domainHandler(e) {
@@ -249,8 +248,9 @@ export class sysConfigScene extends Component {
                                 overlayerHide={ overlayerHide }
                                 assetList = { assetList }
                                 onConfirm={ (data) => {
-                                                        postAssetsByModel(model, data, () => {
+                                                        addScene(data, () => {
                                                             this.requestSearch();
+                                                            overlayerHide();
                                                         });
                                                       } } />);
                 break;
@@ -271,7 +271,7 @@ export class sysConfigScene extends Component {
                                 assetList = { assetList }
                                 overlayerHide={ overlayerHide } 
                                 onConfirm={ data => {
-                                                    updateAssetsByModel(model, data, (data) => {
+                                                    updateSceneById(id, data, (data) => {
                                                         this.requestSearch();
                                                         overlayerHide();
                                                     })
