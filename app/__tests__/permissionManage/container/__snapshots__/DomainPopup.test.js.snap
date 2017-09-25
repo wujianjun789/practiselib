@@ -24,36 +24,35 @@ exports[`<DomainPopup snapshot 1`] = `
     <div
       className="form-group row domain-per">
       <label
-        className="col-sm-2 control-label">
+        className="control-label">
         域权限:
       </label>
       <div
-        className="col-sm-10">
+        className="domain-content">
         <div
-          className="col-sm-6 domain-add">
+          className="domain-tree">
           <div
-            className="domain-tree">
-            <div
-              className="searchText search"
-              onBlur={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}>
-              <input
-                className="form-control"
-                onChange={[Function]}
-                placeholder="输入域名称"
-                type="search"
-                value="" />
-              <ul
-                className="" />
-              <span
-                className="glyphicon glyphicon-search"
-                onClick={[Function]} />
-            </div>
+            className="searchText search"
+            onBlur={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}>
+            <input
+              className="form-control"
+              onChange={[Function]}
+              placeholder="输入域名称"
+              type="search"
+              value="" />
+            <ul
+              className="" />
+            <span
+              className="glyphicon glyphicon-search"
+              onClick={[Function]} />
           </div>
+          <div
+            className="domain-tree-list" />
         </div>
         <div
-          className="col-sm-6 domain-list">
+          className="domain-list">
           <ul />
         </div>
       </div>

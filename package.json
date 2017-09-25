@@ -75,7 +75,12 @@
   "jest": {
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy"
-    }
+	},
+	"globals": {
+		"localStorage": {
+			"appLanguage": "zh"
+		}
+	}
   },
   "scripts": {
     "test": "jest",

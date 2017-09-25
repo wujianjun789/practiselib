@@ -3,11 +3,14 @@
  */
 const express = require('express');
 const router = express.Router();
-const client = require('../config').client;
+const http = require('http');
+const lodash = require('lodash');
+
+const client =  require('../models/config').client;
 
 /* GET config listing. */
 router.get('/', function (req, res, next) {
-    res.json(client.HOST_IP);
+    res.json("http://"+client.HOST+":"+client.PORT+client.PATH);
 });
 
 router.get('/map', function (req, res, next) {
@@ -15,7 +18,50 @@ router.get('/map', function (req, res, next) {
 });
 
 router.get('/module', function (req, res, next) {
-    res.json(client.module);
+    let user = JSON.parse(req.query.user);
+    console.log(user, user.id, user.role, user.userId, "%%%%%%%");
+
+    let options = {
+        host: client.HOST,
+        port: client.PORT,
+        path: client.PATH+"/users/"+user.userId,
+        method: 'GET',
+        headers: {
+            // "Accept": "application/json",
+            'Content-Type': 'application/json'
+        }
+    }
+
+    let httpReq = http.request(options, response=>{
+        let body = '';
+        response.on('data', data=>{
+            body += data;
+        })
+
+        response.on('end', ()=>{
+            console.log('body:', body, JSON.parse(body).roleId);
+            let modules = JSON.parse(body).modules;
+            if(!modules){
+                res.json(client.module);
+            }else{
+                let moduList = [];
+                modules.forEach(mod=>{
+                    let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
+                    if(curMod){
+                        moduList.push(curMod);
+                    }
+                })
+
+                res.json(moduList);
+            }
+        })
+    })
+
+    httpReq.on('error', e=>{
+        console.log("message:",e.message);
+    })
+
+    httpReq.end();
 });
 
 router.get('/strategyDevice', function (req, res, next) {

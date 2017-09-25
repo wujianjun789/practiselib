@@ -16,7 +16,6 @@ export default class TableTr extends PureComponent {
             accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
             title: PropTypes.string.isRequired
         }) ),
-        formatFunc: PropTypes.func,
         willMountFuncs: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.func),
             PropTypes.func

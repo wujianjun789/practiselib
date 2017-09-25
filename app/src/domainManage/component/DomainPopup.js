@@ -33,9 +33,9 @@ export default class DomainPopup extends PureComponent {
             lat: lat,
             prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:""),
             prompt:{
-                domainName:false,
-                lng: false,
-                lat: false
+                domainName:!Boolean(domainName),
+                lng: !Boolean(lng),
+                lat: !Boolean(lat)
             }
         }
         this.onConfirm = this.onConfirm.bind(this);
@@ -89,10 +89,6 @@ export default class DomainPopup extends PureComponent {
             newValue = value;
         }
 
-        if(newValue==""){
-            prompt = false;
-        }
-
         this.setState({[id]: newValue, prompt:Object.assign({}, this.state.prompt, {[id]:prompt})});
     }
 
@@ -100,7 +96,8 @@ export default class DomainPopup extends PureComponent {
         for(let key in data.latlng){
             let value = data.latlng[key];
             let newValue = value;
-            this.setState({[key]:newValue, prompt:{[key]:true}});
+            let prompt = Object.assign({}, this.state.prompt, {[key]:false});
+            this.setState({[key]:newValue, prompt:prompt});
         }
     }
 
@@ -110,7 +107,7 @@ export default class DomainPopup extends PureComponent {
 
         let valid = prompt.domainName || prompt.lng || prompt.lat;
 
-         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']} 
+         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
             btnClassName={['btn-default', 'btn-primary']} 
             btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         let curDomain = null;

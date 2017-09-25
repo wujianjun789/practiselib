@@ -16,13 +16,10 @@ import Table from '../../components/Table3';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select'
-// 场景添加、编辑弹出框
 import SceneControllerPopup from '../components/SceneControllerPopup.js';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Content from '../../components/Content';
 
-
-// import functions
 import { getDomainList } from '../../api/domain';
 import { getSearchScene, getSearchSceneCount } from '../../api/scene'
 import { TreeData, getModelData, getModelList, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
@@ -31,32 +28,25 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { treeViewInit } from '../../common/actions/treeView';
 import { getObjectByKey } from '../../util/index';
 
-//import netRequestAPI
-import { getSceneList } from '../../api/scene.js';
+import { getSceneList, addScene, updateSceneById } from '../../api/scene.js';
 
-//inport childrenComponentsModel
 import SiderBarComponent from '../components/SideBarComponents.js';
 import EditPopup from '../components/EditPopup';
 
-//import initDataModel
 import { sysDataHandle } from '../model/sysDataHandle';
 import { sysInitStateModel } from '../model/sysInitStateModel';
 
-
-
+const lodash = require("lodash");
 export class sysConfigScene extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sort:Immutable.fromJS({list:[{id:1, value:'场景序号'},{id:2, value:'设备多少'}], index:0, value:'场景序号',placeholder:"排序"}),
-
-            //场景列表
+            sort:Immutable.fromJS({list:[{id:1, value:'场景序号'}, {id:2, value:'设备多少'}], index:0, value:'场景序号', placeholder:"排序"}),
             sceneList:  [
-                {id:1, name:"场景1", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e45", asset: "string", prop: "string", mode: "MANUAL", value: "60"}], mode: "MANUAL"},
-                {id:2, name:"场景2", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e46", asset: "string", prop: "string", mode: "MANUAL", value: "70"}], mode: "MANUAL"},
-                {id:3, name:"场景3", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e47", asset: "string", prop: "string", mode: "STRATEGY", value: "80"}], mode: "STRATEGY"},
+                // {id:1, name:"场景1", active:false,presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e45", asset: "string", prop: "string", mode: "MANUAL", value: "60"}], mode: "MANUAL"},
+                // {id:2, name:"场景2", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e46", asset: "string", prop: "string", mode: "MANUAL", value: "70"}], mode: "MANUAL"},
+                // {id:3, name:"场景3", active:false, presets:[{id: "447d34f0-99eb-11e7-abcf-f55dc53b4e47", asset: "string", prop: "string", mode: "STRATEGY", value: "80"}], mode: "STRATEGY"},
             ],
-            //从API获取的可添加到场景的设备列表assetList
             assetList:{
                 titleField: 'name',
                 valueField: 'name',
@@ -68,33 +58,7 @@ export class sysConfigScene extends Component {
                     {id: "24", name: "灯杆1", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}
             ]},
 
-            modeList:{//控制模式
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options:[
-                    {id: "1", name: "MANUAL"},
-                    {id: "2", name: "STRATEGY"}
-                ]},
-            
-            paramList:{//控制参数
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options:[
-                    {id: "1", name: "亮度"},
-                    {id: "2", name: "开关"}
-            ]},
-            //某一个场景的的设备列表
-            sceneAssetList:[
-                {id: "12", name: "单灯3", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
-                {id: "13", name: "单灯4", geoPoint: {lat: 0, lng: 0}, extendType: "lc", domainId: 1},
-                {id: "14", name: "灯杆2", geoPoint: {lat: 0, lng: 0}, extendType: "pole", domainId: 1}],
-
             search: Immutable.fromJS({placeholder: '输入场景名称',value: ''}),
-
             page: Immutable.fromJS({
                 pageSize:12,
                 current: 1,
@@ -104,24 +68,8 @@ export class sysConfigScene extends Component {
             model: "scene",
             collapse: false,
 
-
-            selectScene: {  //被选中的场景信息
-                id:"",
-                name:"", 
-                active:false, 
-                presets:[{
-                    asset:"",
-                    id:"", 
-                    mode:"",
-                    name:"",
-                    prop:"",
-                    value:""
-                }]
-                
-            },
-
             selectDevice: {
-                //scene
+                id: "",
                 name:"", 
                 active:false, 
                 presets:[{
@@ -131,17 +79,7 @@ export class sysConfigScene extends Component {
                     name:"",
                     prop:"",
                     value:""
-                }],               
-
-                id: "",//gong
-
-                //device
-                latlng:{lng: 121.49971691534425,
-                        lat: 31.239658843127756},
-                position: [],
-                data: [{name:'被选中场景'}],
-                
-                whiteCount: 0
+                }]           
             },                   
             domainList: {
                 titleField: 'name',
@@ -161,48 +99,6 @@ export class sysConfigScene extends Component {
                     }
                 ]
             },
-            modelList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: [
-                    {
-                        id: 1,
-                        title: 'model01',
-                        value: 'model01'
-                    },
-                    {
-                        id: 2,
-                        title: 'model02',
-                        value: 'model02'
-                    }
-                ]
-            },
-            whitelistData: [
-                {
-                    id: 1,
-                    name: '灯集中控制器',
-                    number: '00158D0000CABAD5',
-                    model: 8080,
-                    lng: '000.000.000.000',
-                    lat: '000.000.000.000'
-                },
-                {
-                    id: 2,
-                    name: '灯集中控制器',
-                    number: '00158D0000CABAD5',
-                    model: 8080,
-                    lng: '000.000.000.000',
-                    lat: '000.000.000.000'
-                }
-            ],
-            data: Immutable.fromJS([ /*{
-                id: 0,
-                name: '设备1',
-                model: 'model01',
-                domain: 'domain01',
-                lng: 121.49971691534425,
-                lat: 31.239658843127756
-            }*/ ])
         }
 
         this.columns = [
@@ -223,8 +119,8 @@ export class sysConfigScene extends Component {
         this.sortChange = this.sortChange.bind(this);
         this.initPageSize = this.initPageSize.bind(this);
         this.requestSearch = this.requestSearch.bind(this);
-        this.requestSceneAssetList = this.requestSceneAssetList.bind(this);
-        
+        this.updateSceneAssetList = this.updateSceneAssetList.bind(this);
+        this.initResult = this.initResult.bind(this);
 
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -233,94 +129,65 @@ export class sysConfigScene extends Component {
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
-        // this.domainSelect = this.domainSelect.bind(this);
 
         this.popupCancel = this.popupCancel.bind(this);
         this.popupConfirm = this.popupConfirm.bind(this);
 
         this.initDomainList = this.initDomainList.bind(this);
-        this.initAssetList = this.initAssetList.bind(this);
-        // this.requestWhiteListCount = this.requestWhiteListCount.bind(this);
+        this.getAssetName = this.getAssetName.bind(this);
     }
 
     componentWillMount() {
         this.mounted = true;
-        let model = 'scene';
-        const {route} = this.props;
-        //获取模块数据
-        getModelData(model, () => {
-            if (this.mounted) {
-                this.props.actions.treeViewInit(TreeData);
-                this.setState({
-                    model: model,
-                    modelList: Object.assign({}, this.state.modelList, {
-                        options: getModelTypesById(model).map((type) => {
-                            return {
-                                id: type.id,
-                                title: type.title,
-                                value: type.title
-                            }
-                        })
-                    })
-                });
-                getDomainList(data => {
-                    this.mounted && this.initDomainList(data)
-                })
-            }
-        });
-        //获取设备数据
+       
+        getDomainList(data => {
+            this.mounted && this.initDomainList(data)
+        })
+  
         getAssetList(data=>{
             if(this.mounted){
-                this.assetList=data;
-                this.setState(this.assetList, ()=>{this.requestSearch();});
-            }});
+                // this.assetList=data;
+                this.setState({assetList:{...this.state.assetList, options: data}});
+                // this.setState({assetList: Object.assign({}, this.state.assetList, {options: data})});
+            }
+        });
+
+        this.requestSearch();
     }
 
-
-    
     requestSearch(){
         const {search, page} = this.state;
-        // console.log("statescene:",this.state);
-
         let limit = page.get("pageSize");
         let offset = (page.get("current")-1)*limit;
         let value = search.get("value");
-        //getSceneList()
         getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
         getSearchSceneCount(value, data=>{ this.mounted && this.initPageSize(data)})
     }
-    //从搜索框请求过滤后的数据
-    // requestSearch() {
-    //     const {model, domainList, search, page} = this.state
-    //     console.log("domainList:", domainList)
-    //     let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-    //     let name = search.get('value');
-    //     let cur = page.get('current');
-    //     let size = page.get('pageSize');
-    //     let offset = (cur - 1) * size;
-    //     getSearchCount(domain ? domain.id : null, model, name, data => {
-    //         this.mounted && this.initPageSize(data)
-    //     })
-    //     getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
-    //         this.mounted && this.initAssetList(data);
-    //         this.requestWhiteListCount();
-    //     })
-    // }
 
     initPageSize(data){
         let page = this.state.page.set('total', data.count);
         this.setState({page: page});
     }
 
+    initDomainList(data) {
+        let domainList = Object.assign({}, this.state.domainList, {index: 0},{value: data.length ? data[0].name : ""}, {options: data});
+        this.setState({domainList: domainList});
+    }
+
     initResult(data){
         this.setState({sceneList:data},()=>{
             data.map(scene=>{
-                this.getAssetName(scene);
+                this.getAssetName(scene, curIndex=>{
+                    console.log("curIndex:",curIndex);
+                    if(curIndex==0){
+                        this.updateSelectDevice(this.state.sceneList[0]);
+                    }
+                });
             })
         });
     }
 
-    getAssetName(scene){
+    getAssetName(scene, cb){
         if(scene.presets)
         {
             let curIndex = lodash.findIndex(this.state.sceneList, sc=>{return sc.id == scene.id})
@@ -328,13 +195,13 @@ export class sysConfigScene extends Component {
                 let newAsset = lodash.find(this.assetList, (asset)=>{
                     return asset.id==pre.asset;
                 })
-
-                return Object.assign({}, pre, {name:newAsset?newAsset.name:""});
+                return Object.assign({}, pre, {name:newAsset?newAsset.name:""},{domainId:newAsset?newAsset.domainId:null});
             })
-            this.setState({sceneList:this.state.sceneList})
+            this.setState({sceneList:this.state.sceneList},()=>{
+                cb && cb(curIndex);
+            })
         }
     }
-
 
     sortChange(selectIndex){
         this.setState({sort:this.state.sort.update('index', v=>selectIndex)})
@@ -347,157 +214,64 @@ export class sysConfigScene extends Component {
         this.mounted = false;
     }
 
-    initDomainList(data) {   //获取域信息列表
-        let domainList = Object.assign({}, this.state.domainList, {
-            index: 0
-        }, {
-            value: data.length ? data[0].name : ""
-        }, {
-            options: data
-        });
-        this.setState({
-            domainList: domainList
-        });
-        this.requestSearch();
-    }
-
-    initAssetList(data) {   
-        let list = data.map((asset, index) => {
-            let domainName = "";
-            if (this.state.domainList.options.length && asset.domainId) {
-                let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId)
-                domainName = domain ? domain.name : "";
-            }
-            return Object.assign({}, asset, asset.extend, asset.geoPoint, {
-                domainName: domainName
-            },
-                {
-                    typeName: getModelTypesNameById(this.state.model, asset.extend.type)
-                });
-        })
-
-        this.setState({
-            data: Immutable.fromJS(list)
-        });
-        if (list.length) {
-            let item = list[0]
-            this.updateSelectDevice(item);
-        } else {
-            this.setState({
-                selectDevice: Object.assign({}, this.state.selectDevice, {
-                    data: []
-                })
-            });
-        }
-    }
-
-    // requestWhiteListCount() {
-    //     const {selectDevice} = this.state;
-    //     let lccId = selectDevice.data[0].id;
-    //     requestWhiteListCountById(lccId, (lcCount) => {
-    //         this.setState({
-    //             selectDevice: Object.assign({}, selectDevice, {
-    //                 whiteCount: lcCount.count
-    //             })
-    //         });
-    //     })
-    // }
-
     popupCancel() {
         this.props.actions.overlayerHide();
     }
 
     popupConfirm() {
         const {model, selectDevice} = this.state;
-        delAssetsByModel(model, selectDevice.data.length && selectDevice.data[0].id, () => {
+        delAssetsByModel(model, selectDevice && selectDevice.id, () => {
             this.requestSearch();
             this.props.actions.overlayerHide();
         })
-
     }
 
     domainHandler(e) {
         let id = e.target.id;
-        const { domainList, selectDevice, sceneList, sceneAssetList, assetList, modeList, paramList } = this.state;   
-        const {model,/* selectDevice, domainList,*/ modelList, whitelistData} = this.state;
+        const { model, domainList, selectDevice, sceneList, assetList } = this.state;   
         const {overlayerShow, overlayerHide} = this.props.actions;
-        let curType = modelList.options.length ? modelList.options[0] : null;
+
         switch (id) {
             case 'sys-add':
                 const dataInit = {
-                    //存放创建新场景需要更新的数据
-                    domain: domainList.value,//场景所在区域
-                    domainid: domainList.options.length ? domainList.options[domainList.index].id : "",
-                    name: "",//场景名
-                    mode: "",//控制模式
-                    sceneAssetList: sceneAssetList, //场景白名单
-                    param: "",//调整参数
-                    id:'',//场景id
-                    assetName: assetList.value, //设备选择输入框初始值
-
-
-
-                    // id: '',
-                    // name: '',
-                    model: curType ? curType.title : "",
-                    modelId: curType ? curType.id : "",
-                    domain: domainList.value,
                     domainId: domainList.options.length ? domainList.options[domainList.index].id : "",
-                    lng: "",
-                    lat: ""
+                    name: "",
+                    sceneAssetList: selectDevice.presets,
+                    param: "",
+                    id:'',
+                    assetName: assetList.value,
                 };
 
                 overlayerShow(<SceneControllerPopup popId="add" className="centralized-popup" 
-                                title="新建场景" sceneAssetList = {this.state.sceneAssetList}//场景白名单
-                                 model={ this.state.model } data={ dataInit } domainList={ domainList }
-                                modelList={ modelList } overlayerHide={ overlayerHide }
-                                assetList = { assetList }//可添加至场景的设备名单 
-                                modeList = {modeList}
-                                paramList = {paramList}
+                                title="新建场景" 
+                                data={ dataInit } domainList={ domainList }
+                                overlayerHide={ overlayerHide }
+                                assetList = { assetList }
                                 onConfirm={ (data) => {
-                                                        postAssetsByModel(model, data, () => {
+                                                        addScene(data, () => {
                                                             this.requestSearch();
+                                                            overlayerHide();
                                                         });
                                                       } } />);
                 break;
             case 'sys-update':
-                let latlng = selectDevice.position.length ? selectDevice.position[0] : {
-                    lat: "",
-                    lng: ""
-                }
-                let data = selectDevice.data.length ? selectDevice.data[0] : null;
+                let data = selectDevice.presets.length ? selectDevice.presets[0] : null;
                 const dataInit2 = {
-
-                    //存放创建新场景需要更新的数据
-                    domain: domainList.value,//场景所在区域
-                    domainid: domainList.options.length ? domainList.options[domainList.index].id : "",
-                    name: "",//场景名
-                    mode: "",//控制模式
-                    sceneAssetList: sceneAssetList, //场景白名单
-                    param: "",//调整参数
-                    id:'',//场景id
-                    // assetName: assetList.length ? assetList[assetList.index].name : "",
-                    // assetName: assetList.length ? assetList[0].name : "",
-                    assetName: assetList.value, //设备选择输入框初始值
-
-                    id: data ? data.id : null,
-                    name: data ? data.name : null,
-                    // model: data ? getModelTypesNameById(model, data.type) : "",
-                    modelId: data ? data.type : null,
-                    domain: selectDevice.domainName,
                     domainId: selectDevice.domainId,
-                    lng: latlng.lng,
-                    lat: latlng.lat
+                    name: "",
+                    sceneAssetList: selectDevice.presets,
+                    param: "",
+                    id:'',
+                    assetName: assetList.value 
                 }
+
                 overlayerShow(<SceneControllerPopup popId="edit" className="centralized-popup" 
-                                title="修改场景" sceneAssetList = {this.state.sceneAssetList}//场景白名单
-                                data={ dataInit2 } domainList={ domainList } modelList={ modelList }
-                                assetList = { assetList }//可添加至场景的设备名单 
+                                title="修改场景"
+                                data={ dataInit2 } domainList={ domainList }
+                                assetList = { assetList }
                                 overlayerHide={ overlayerHide } 
-                                modeList = {modeList}
-                                paramList = {paramList}
                                 onConfirm={ data => {
-                                                    updateAssetsByModel(model, data, (data) => {
+                                                    updateSceneById(id, data, (data) => {
                                                         this.requestSearch();
                                                         overlayerHide();
                                                     })
@@ -519,48 +293,16 @@ export class sysConfigScene extends Component {
     }
 
     tableClick(row) {
-        // this.updateSelectDevice(row.toJS());
         this.updateSelectDevice(row);
     }
 
     updateSelectDevice(item) {
-        let selectDevice = this.state.selectDevice;
-        // console.log("sceneselectDevice:", selectDevice)
-        selectDevice.id = item.id;
-        selectDevice.name = item.name;
-        selectDevice.presets.splice(0);
-        selectDevice.presets.push({
-            id: item.id,
-            asset: item.asset,
-            prop: item.prop,
-            mode: item.mode,
-            value: item.vlaue,
-        });
-
-
-        selectDevice.latlng = item.geoPoint;
-        selectDevice.data.splice(0);
-        selectDevice.data.push({
-            id: item.id,
-            // type: item.extend.type,
-            name: item.name
-        });
-        selectDevice.domainId = item.domainId;
-        selectDevice.domainName = item.domainName;
-        selectDevice.position.splice(0);
-        selectDevice.position.push(Object.assign({}, {
-            "device_id": item.id,
-            "device_type": 'DEVICE'
-        }, item.geoPoint));
         this.setState({
-            selectDevice: selectDevice
-        });
-        // this.requestWhiteListCount(); //点击列表行后更新项目数量
-
-        this.requestSceneAssetList(); //点击列表后更新被选中场景的设备列表
+            selectDevice: item
+        }, ()=>this.updateSceneAssetList());
     }
 
-    requestSceneAssetList(){
+    updateSceneAssetList(){
         //更新被选中场景的设备列表
     }
 
@@ -583,49 +325,32 @@ export class sysConfigScene extends Component {
         })
     }
 
-
-    // domainSelect(event) {
-    //     // this.props.actions.domainSelectChange(index);
-    //     let index = event.target.selectedIndex;
-    //     let {domainList} = this.state;
-    //     domainList.index = index;
-    //     domainList.value = domainList.options[index].name;
-    //     this.setState({
-    //         domainList: domainList
-    //     }, () => {
-    //         this.requestSearch();
-    //     })
-    // }
-
     render() {
-        const { sort, search, sceneList, sceneAssetList, page} = this.state; //暂时单独存放的state
-        const {model, collapse,/* page, search,*/ selectDevice, domainList, data, IsHaveMap} = this.state;
+        const { sort, search, sceneList,assetList, page, model, collapse, selectDevice, domainList, IsHaveMap} = this.state; 
         return <div id ='sysConfigScene'>
                 <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '')}>
                  <div className="heading">
                    <Select className="sort" data={sort} onChange={(selectIndex)=>this.sortChange(selectIndex)}/>
-                   {/*<Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>*/}
                    <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } 
                                 onChange={ this.searchChange } submit={ this.searchSubmit } />
                    <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
                  </div>
                  <div className='scene'>
                    <div className="table-container">
-                     <Table columns={ this.columns } data={ sceneList } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
+                     <Table columns={ this.columns } data={ sceneList } activeId={ selectDevice.id } rowClick={ this.tableClick } />
                      <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
                    </div>
                  </div>
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler } IsHaveMap = {IsHaveMap} >
                    <div className="panel panel-default device-statics-info">
-                       {/*<div className="panel panel-default map-position">*/}
                      <div className="panel-heading">
                        <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中场景
                      </div>
                      <div className="panel-body domain-property">
-                       <span className="domain-name">{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
-                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? false : false }>编辑
+                       <span className="domain-name">{ selectDevice.name }</span>
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } >编辑
                        </button>
-                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? false : false }>删除
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } >删除
                        </button>
                      </div>
                    </div>
@@ -635,7 +360,7 @@ export class sysConfigScene extends Component {
                      </div>
                      <div id='scene-device' className="panel-body domain-property domain-content">
                          {
-                             sceneAssetList.map((item,index) => (
+                             selectDevice.presets.map((item,index) => (
                                  <div key={item.id} className="content-size">{ item.name }</div>
                              ))
                          }

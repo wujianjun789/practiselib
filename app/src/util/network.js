@@ -162,8 +162,8 @@ export function getMapConfig(responseFun, errorFun) {
     })
 }
 
-export function getModuleConfig(responseFun, errFun) {
-    httpRequest('/config/module',{
+export function getModuleConfig(user, responseFun, errFun) {
+    httpRequest('/config/module?user='+encodeURIComponent(JSON.stringify(user)),{
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {

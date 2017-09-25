@@ -6,7 +6,11 @@ import {shallow} from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import {SingleLamp} from '../../../src/assetManage/container/SingleLamp';
-
+import {Gateway} from '../../../src/assetManage/container/Gateway';
+import {Pole} from '../../../src/assetManage/container/Pole';
+import {Screen} from '../../../src/assetManage/container/Screen';
+import {Sensor} from '../../../src/assetManage/container/Sensor';
+import {Xes} from '../../../src/assetManage/container/Xes';
 
 test('AssetManage renders', ()=>{
     const component = renderer.create(

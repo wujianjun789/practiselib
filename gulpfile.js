@@ -41,8 +41,9 @@ var dest_server = path.join(__dirname, './dist/server');
 var config_server = require('./webpack.server.config');
 
 gulp.task('server.config', function () {
-    return gulp.src('server/config.js')
-        .pipe(gulp.dest(dest_server));
+    // return gulp.src('server/config.js')
+    return gulp.src('config.json')
+        .pipe(gulp.dest(path.resolve(dest_server, '..')));
 })
 gulp.task('server.package', function () {
     return gulp.src('server/package.json')
