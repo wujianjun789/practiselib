@@ -18,7 +18,6 @@ export default class DataOriginPopup extends Component {
                     { value: 'sensor',title: "传感器"}
                 ]
             },
-            dataOrigin:'rfid',
             rfidList:[
                 {id:1,name:'00158D0000CABAD5'},
                 {id:2,name:'00158D0000CABAD5'},
@@ -31,7 +30,6 @@ export default class DataOriginPopup extends Component {
 
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.rfidDelete = this.rfidDelete.bind(this);
         this.rfidAdd = this.rfidAdd.bind(this);
     }
@@ -53,10 +51,6 @@ export default class DataOriginPopup extends Component {
         let data = this.props.type == 'XES-200S'?getCheckedSensor():this.state.rfidList;
         this.props.overlayerHide();
         this.props.onConfirm && this.props.onConfirm(data,this.props.type);
-    }
-
-    onChange(e){
-        this.setState({dataOrigin:this.state.dataOriList.options[e.target.selectedIndex].value})
     }
 
     getCheckedSensor(){
@@ -84,14 +78,14 @@ export default class DataOriginPopup extends Component {
 
     render() {
         let {className='',sensorTypeList,type} = this.props;
-        const {dataOriList,dataOrigin,rfidList} = this.state;
+        const {dataOriList,rfidList} = this.state;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
         return <div className={className}>
             <Panel title='数据源' footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="selectItem">
-                        <label className="control-label">{dataOrigin == 'sensor'?'选择传感器：':'修改标签：'}</label>
+                        <label className="control-label">{type == 'XES-200S'?'选择传感器：':'修改标签：'}</label>
                         {
                             type == 'XES-200S'?
                             <div className = 'select-Sensor'>
