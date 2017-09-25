@@ -64,6 +64,18 @@ export function updateSceneById(id, data, cb) {
     })
 }
 
+export function addScene(data, cb) {
+    let headers = getHttpHeader();
+    let dat = {name: data.name, presets:"" }
+    httpRequest(HOST_IP+'/scenes',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
 export function getSceneDeviceById(id, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/scenes/'+id+'/controls',{
