@@ -11,7 +11,7 @@ export function getModule() {
 
     return dispatch=>{
         let user = getCookie("user");
-       getModuleConfig(user, response=>{
+       getModuleConfig(user.role=='admin'?'':user, response=>{
             dispatch({type:MODULE_INIT, data:response})
        }, err=>{
            throw (err);
