@@ -54,7 +54,7 @@ export default class TimeStrategyPopup extends Component{
             }),
             strategyList:[],
             prompt:{
-                name:false,
+                name:Boolean(data.name),
                 workTime: false,
                 time: false
             }
