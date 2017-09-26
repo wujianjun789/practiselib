@@ -15,6 +15,9 @@ import ConfirmPopup from '../../components/ConfirmPopup';
 import {getObjectByKeyObj,getListByKeyObj} from '../../util/algorithm';
 import {requestUserData,requestUserMount,deleteUser,addUser,editUser} from '../../api/permission';
 import {getMomentDate,momentDateFormat} from '../../util/time'
+import ModulePopup from './ModulePopup';
+import {getModule} from '../../app/action'
+
 export class PermissionManage extends Component{
     constructor(props){
         super(props);
@@ -45,12 +48,13 @@ export class PermissionManage extends Component{
         this.rowEdit = this.rowEdit.bind(this);
         this.rowDelete = this.rowDelete.bind(this);
         this.rowDomainEdit = this.rowDomainEdit.bind(this);
-        
+        this.rowModuleEdit = this.rowModuleEdit.bind(this);
     }
 
     componentWillMount(){        
-       
         this.mounted = true;
+        const {action} = this.props;
+        action && action.getModule();
         this.requestData();
     }
 
@@ -62,7 +66,7 @@ export class PermissionManage extends Component{
     }
 
     onClick(){
-        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick}/>);
+        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
     }
 
     searchChange(value){
@@ -139,7 +143,7 @@ export class PermissionManage extends Component{
             default:
                 popupInfo.roleId = {index:0, value:'访客'};
         }
-        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupInfo} isEdit onConfirm={this.confirmClick}/>))
+        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupInfo} isEdit onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>))
         
     }
 
@@ -152,7 +156,12 @@ export class PermissionManage extends Component{
     }
 
     rowDomainEdit(id){
-        this.props.action.overlayerShow(<DomainPopup className='user-domain-edit-popup' title='用户域管理' id={id} onConfirm={this.confirmClick}/>)
+        this.props.action.overlayerShow(<DomainPopup className='user-domain-edit-popup' title='用户域管理' id={id}/>)
+    }
+
+    rowModuleEdit(id){
+        let row = getObjectByKeyObj(this.state.datas,'id',id);
+        this.props.action.overlayerShow(<ModulePopup className='user-module-edit-popup' title='模块权限管理' id={id} modules={this.props.modules} data = {row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>)
     }
 
     confirmClick(datas,isEdit){
@@ -165,7 +174,7 @@ export class PermissionManage extends Component{
     }
 
     render() {
-        const {datas,search, page} = this.state;        
+        const {datas,search, page} = this.state;
         return(
             <div className='container permission-manage'>
                 <HeadBar moduleName='权限管理' router={this.props.router}/>
@@ -175,7 +184,7 @@ export class PermissionManage extends Component{
                         <button className='btn btn-primary' onClick={this.onClick}>添加</button>
                     </div>
                     <div className="table-container">
-                        <Table2 columns={this.columns} data = {this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit}/>
+                        <Table2 columns={this.columns} data = {this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit} rowModuleEdit={this.rowModuleEdit}/>
                         <Page className={"page "+(page.total==0?"hidden":'')} showSizeChanger pageSize={page.pageSize}
                             current={page.current} total={page.total} onChange={this.onChange} />
                     </div>
@@ -188,15 +197,17 @@ export class PermissionManage extends Component{
 
 const mapStateToprops = (state, ownProps) => {
     return{
-        userCenter:state.userCenter
+        userCenter:state.userCenter,
+        modules:state.app.items
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) =>{
     return {
         action: bindActionCreators({
-            overlayerShow:overlayerShow,
-            overlayerHide:overlayerHide,
+            overlayerShow,
+            overlayerHide,
+            getModule            
         }, dispatch)
     }
 }
