@@ -57,8 +57,8 @@ export default class TableTr extends PureComponent {
     }
 
     render() {
-        const {data, data:{id}, activeId} = this.state;
-        const {columns} = this.props;
+        const {data, data:{id}} = this.state;
+		const {activeId, columns} = this.props;
         return (
             <tr className={(activeId || (typeof activeId == 'number' && activeId == 0) ) && activeId==id ? 'active':''} onClick={this.onClick}>
             {
