@@ -200,6 +200,10 @@ console.log("%%%%%%%")
 
     updateSearch(data){
         console.log(data);
+        if(!data || data.length){
+            this.props.actions.addNotify(0, "没有找到结果。");
+        }
+
         let searchList = Immutable.fromJS(data);
         let positionList = data.map((pole)=>{
             let latlng = pole.geoPoint;
