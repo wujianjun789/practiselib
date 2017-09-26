@@ -12,7 +12,7 @@ import MapView from '../../components/MapView'
 import Panel from '../component/FaultPanel'
 import NotifyPopup from '../../common/containers/NotifyPopup';
 
-import {addNotify} from '../../common/actions/notifyPopup';
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 
 import Immutable from 'immutable';
 
@@ -154,6 +154,8 @@ export class SmartLightMap extends Component{
         window.onresize = event=>{
             this.setSize();
         }
+
+        this.props.actions.removeAllNotify();
     }
 
     setSize(){
@@ -396,7 +398,7 @@ console.log("%%%%%%%")
     }
 
     onBlur(event){
-        this.timeOut = setTimeout(()=>{this.setState({interactive:false});}, 1000)
+        this.timeOut = setTimeout(()=>{this.mounted && this.setState({interactive:false});}, 1000)
     }
 
     onkeydown(event){
@@ -809,7 +811,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
-        addNotify:addNotify
+        addNotify: addNotify,
+        removeAllNotify: removeAllNotify
     }, dispatch),
 })
 
