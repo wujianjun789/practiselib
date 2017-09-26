@@ -94,7 +94,7 @@ export default class StrategySetPopup extends Component{
     render(){
         const {title} = this.props;
         const {deviceTypeName, search, curDeviceList} = this.state;
-
+console.log(curDeviceList);
         let valid = false
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -121,7 +121,7 @@ export default class StrategySetPopup extends Component{
                     <div className="col-sm-5 device-cur-container">
                         <ul className="device-cur">
                             {
-                                curDeviceList.map(device=>{
+                                curDeviceList && curDeviceList.map(device=>{
                                     return <li key={device.id}>{device.name}<span className="icon-table-delete" onClick={()=>this.delDevice(device)}></span></li>
                                 })
                             }
