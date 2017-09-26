@@ -9,7 +9,7 @@ import {
 export function treeViewInit(data) {
     return {
         type:TREEVIEW_INIT,
-        data: data
+        data: data,
     }
 }
 

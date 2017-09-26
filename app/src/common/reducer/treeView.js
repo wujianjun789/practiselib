@@ -21,19 +21,13 @@ export default function treeView(state=initialState, action) {
     }
 }
 
-function treeViewInit(state, data) {
+function treeViewInit(state, data, router) {
     let path = location.pathname;
-    let paths = path.split("/")
+    let paths = path.split("/");
     let url = paths.pop();
     let urlParent = paths.pop();
     let curParentNode = searchNode(data, urlParent);
     let curNode = searchNode(data, url);
-
-    let href = data[0] ? data[0].link:null;
-    if(href && href.indexOf(path)>-1 && href != path && path.length < href.length){
-        location.href = "http://"+location.host+href;//默认路径设置
-        return;
-    }
 
     let list = data;
     if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
@@ -43,6 +37,11 @@ function treeViewInit(state, data) {
     if(curNode && !curNode.toggled){
         list = update(data, 1, null, curNode);
     }
+
+    if(curNode && curNode.children && curNode.children.length){
+        list = update(data, 1, null, curNode.children[0]);
+    }
+
     return curNode ? Object.assign({}, state, {datalist:list}):Object.assign({}, state, {datalist:data});
 }
 

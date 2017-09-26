@@ -18,6 +18,7 @@ import {getModelData, TreeData} from '../../data/assetModels'
 import {treeViewInit} from '../../common/actions/treeView'
 
 import {sideBarToggled} from '../action/index'
+import {treeViewNavigator} from '../../common/util/index'
 class AssetManageIndex extends Component{
     constructor(props){
         super(props);
@@ -39,7 +40,8 @@ class AssetManageIndex extends Component{
     }
 
     initTreeData(){
-        this.props.actions.treeViewInit(TreeData)
+        this.props.actions.treeViewInit(TreeData);
+        treeViewNavigator(TreeData, this.props.router);
     }
 
     onToggle(node){

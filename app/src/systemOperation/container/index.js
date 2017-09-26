@@ -20,6 +20,7 @@ import { treeViewInit } from '../../common/actions/treeView'
 import { sideBarToggled } from '../action/index'
 import { intlFormat, getClassByModel } from '../../util/index'
 
+import {treeViewNavigator} from '../../common/util/index'
 class SystemOperationIndex extends Component {
     constructor(props) {
         super(props);
@@ -42,6 +43,7 @@ class SystemOperationIndex extends Component {
 
     initTreeData() {
         this.props.actions.treeViewInit(TreeData);
+        treeViewNavigator(TreeData, this.props.router);
     }
 
     onToggle(node) {
