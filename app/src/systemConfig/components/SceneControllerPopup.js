@@ -178,8 +178,7 @@ export default class SceneControllerPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="id" className="fixed-width-left control-label">场景名称：</label>
                         <div className="fixed-width-right">
-                            <input type="text" className="form-control" id="name" placeholder="请输入场景" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }
-                            />
+                            <input type="text" className="form-control" id="name" placeholder="请输入场景" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }/>
                         <span id = "name" onChange={ this.onChange } className={ prompt.name ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
                         </div>
                     </div>

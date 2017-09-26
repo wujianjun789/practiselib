@@ -31,7 +31,7 @@ export class lightMap extends Component{
             tableIndex: 0,
             mapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
 
-            deviceId:"lamp",
+            deviceId:"",
             IsSearch: true,
             IsSearchResult: false,
             
@@ -61,6 +61,7 @@ export class lightMap extends Component{
             resPosition:[{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239758843127766},{"device_id": 2,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}],
             resDomain:[{}],
             curPosition:[],
+            poleList:[],
             curDevice:Immutable.fromJS([]),
             positionList:[],
             searchList:Immutable.fromJS([]),
@@ -216,9 +217,14 @@ export class lightMap extends Component{
     }
 
     updateSearch(data){
-
+        const {tableIndex} = this.state;
+        let searchType = this.searchPromptList[tableIndex].id;
         if(data[0]){}else{
-            this.props.actions.addNotify(0, "未找到设备");
+            if(searchType=="domain"){
+                this.props.actions.addNotify(0, "域内无绑定设备");
+            }else{
+                this.props.actions.addNotify(0, "未找到设备");
+            }   
             return;
         }
         let searchList = Immutable.fromJS(data);
@@ -270,7 +276,6 @@ export class lightMap extends Component{
             deviceList = deviceList.filter(item => {if (item.id == id) {return item }})
             return;
         }
-        console.log(id)
 
         data.map(ass=>{
             if(ass.extendType == "screen"||ass.extendType == "xes"||ass.extendType == "camera"||ass.extendType == "charge"){
@@ -283,8 +288,9 @@ export class lightMap extends Component{
                 asset = Object.assign({}, asset, {lamp:ass});
             }else{}
         })
+
         /* 列出搜索项 */
-        this.setState({IsSearchResult:true, deviceList:deviceList, positionList:positionList, searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))},()=>{console.log(this.state.searchList);});
+        this.setState({IsSearchResult:true, deviceList:deviceList, positionList:positionList, searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))},()=>{});
         // this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset)),curPosition:this.state.positionList,curDevice:Immutable.fromJS(this.state.deviceList)},()=>{
         // });
 
@@ -301,7 +307,6 @@ export class lightMap extends Component{
 
         
         let aaaa = this.state.searchList
-        console.log(aaaa);
         aaaa.map((item,index)=>{
             if(index==1){
                 console.log(item.get("asset"))
@@ -406,10 +411,7 @@ export class lightMap extends Component{
     }
 
     itemClick(id){
-        console.log("aaaaaa");
         this.setState({IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
-            console.log(this.state.positionList);
-            console.log(this.state.deviceList);
             /* 根据id将设备position项塞进curPosition */
             this.state.positionList.map((item,index)=>{
                 if(item.device_id===id){
@@ -440,11 +442,12 @@ export class lightMap extends Component{
     }
 
     searchDeviceSelect(id){
-        var device = this.state.curDevice.toJS()
+        var device = this.state.curDevice.toJS();
         device=device[0];
-        if(!device[id]){/* has not device */ console.log("has not "+id)
-        return}else{console.log("lcId: "+device[id])}
-        this.setState({deviceId:id});
+        if(!device[id]&&id!="pole"){console.log("has not "+id); return
+        }else if(id=="pole"){console.log(this.state.searchList.toJS());this.setState({deviceId:id, IsSearch:true, IsSearchResult:false, IsOpenFault:false});
+        }else{console.log("lcId: "+device[id]);this.setState({deviceId:id, IsSearch:true, IsSearchResult:false, IsOpenFault:false});
+        }
     }
 
     infoDeviceSelect(id){
@@ -745,6 +748,7 @@ export class lightMap extends Component{
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
+
         return (
             <Content>
                 <MapView mapData={{id:"lightMap", latlng:mapLatlng, position:curPosition, data:curDevice.toJS()}}/>

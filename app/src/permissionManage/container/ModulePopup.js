@@ -5,7 +5,6 @@ import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
 import '../../../public/styles/permissionManage.less';
 import {IsExitInArray} from '../../util/algorithm';
-import {getModule} from '../../app/action'
 
 export default class ModulePopup extends PureComponent{
     constructor(props){
