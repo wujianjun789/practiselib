@@ -132,7 +132,7 @@ export default class DomainPopup extends PureComponent {
 
                         </div>
                         <div className="form-group row">
-                            <label className="fixed-width-left control-label " htmlFor="lng">经度：</label>
+                            <label className="fixed-width-left control-label " htmlFor="lng">经　度：</label>
                             <div className="fixed-width-right">
                                 <input type="email" className="form-control" id="lng" placeholder="输入GPS坐标" value={lng}
                                         onChange={this.onChange}/>
@@ -140,7 +140,7 @@ export default class DomainPopup extends PureComponent {
                             </div>
                         </div> 
                         <div className="form-group row">   
-                            <label className="fixed-width-left control-label" htmlFor="lat">纬度：</label>
+                            <label className="fixed-width-left control-label" htmlFor="lat">纬　度：</label>
                             <div className="fixed-width-right">
                                 <input type="email" className="form-control" id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
                                 <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>

@@ -22,8 +22,7 @@ export function getPoleList(cb) {
  */
 export function getPoleListByModelWithName(searchType, model, searchValue, cb) {
     let headers = getHttpHeader();
-    if (searchType == "domain") {
-    }
+    if (searchType == "domain") {}
 
     httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({
             "include": ["extend"],
