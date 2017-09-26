@@ -200,7 +200,7 @@ console.log("%%%%%%%")
 
     updateSearch(data){
         console.log(data);
-        if(!data || data.length){
+        if(!data || data.length==0){
             this.props.actions.addNotify(0, "没有找到结果。");
         }
 
@@ -383,7 +383,8 @@ console.log("%%%%%%%")
     }
 
     searchSubmit(index){
-        this.setState({IsSearch:true, IsSearchResult:true, tableIndex:index},()=>{
+        this.setState({IsSearch:true, IsSearchResult:true, tableIndex:index,
+            searchList:this.state.searchList.splice(0)},()=>{
             this.setSize();
             this.requestSearch();
         });
@@ -391,6 +392,7 @@ console.log("%%%%%%%")
 
     onFocus(event){
         // this.setState({interactive:true});
+        this.setState({IsSearch:true});
     }
 
     onBlur(event){
