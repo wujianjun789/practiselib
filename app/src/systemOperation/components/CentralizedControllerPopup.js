@@ -110,9 +110,9 @@ export default class CentralizedControllerPopup extends Component {
             let newValue = value;
             this.setState({
                 [key]: newValue,
-                prompt: {
-                    [key]: true
-                }
+                prompt: Object.assign({}, this.state.prompt, {
+                    [key]: false
+                })
             });
         }
     }

@@ -2,6 +2,7 @@
  * create by Azrael on 2017/7/4
  */
 @card-radius: 9px;
+@card-margin-top: 70px;
 @header-height: 60px;
 @min-width: 1144px;
 @bg-color: #f2f2f2;
@@ -145,7 +146,7 @@
                 height: 1em;
                 margin-top: -0.5em;
             }
-            
+
             > .tit {
                 color: #00d8ff;
                 padding-left: 14px;
@@ -170,7 +171,7 @@
             line-height: @header-height;
             padding-left: 10px;
             padding-right: 10px;
-            
+
             > span {
                 float: right;
             }
@@ -195,7 +196,7 @@
             display: inline-block;
             > li {
                 float: left;
-                margin: 70px 24px 0;
+                margin: @card-margin-top 24px 0;
             }
         }
     }
@@ -215,6 +216,7 @@
 
 @media screen and (max-width: 1430px) {
     .app > .cont > ul {
-        width: @min-width;
+		width: @min-width;
+		margin-bottom: @card-margin-top;
     }
 }
