@@ -1,0 +1,80 @@
+exports[`<TableWithHeader /> default render snapshot 1`] = `
+<div
+  className="table-responsive undefined">
+  <table
+    className="table table-hover">
+    <thead>
+      <tr>
+        <th>
+          设备名称
+        </th>
+        <th>
+          value*10
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+</div>
+`;
+
+exports[`<TableWithHeader /> render with children snapshot 1`] = `
+<div
+  className="table-responsive undefined">
+  <table
+    className="table table-hover">
+    <thead>
+      <tr>
+        <th>
+          设备名称
+        </th>
+        <th>
+          value*10
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className=""
+        onClick={[Function]}>
+        <td>
+          test
+        </td>
+        <td>
+          100
+        </td>
+      </tr>
+      <tr
+        className=""
+        onClick={[Function]}>
+        <td>
+          test
+        </td>
+        <td>
+          100
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`<TableWithHeader /> render with className="test" snapshot 1`] = `
+<div
+  className="table-responsive test">
+  <table
+    className="table table-hover">
+    <thead>
+      <tr>
+        <th>
+          设备名称
+        </th>
+        <th>
+          value*10
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+</div>
+`;
