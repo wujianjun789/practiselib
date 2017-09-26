@@ -35,7 +35,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               disabled={false}
               id="id"
               maxLength={16}
@@ -54,12 +54,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="name">
-            名称：
+            名　称：
           </label>
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               id="name"
               maxLength={16}
               onChange={[Function]}
@@ -77,7 +77,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="model">
-            型号：
+            型　号：
           </label>
           <div
             className="fixed-width-right">
@@ -172,12 +172,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lng">
-            经度：
+            经　度：
           </label>
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               id="lng"
               onChange={[Function]}
               placeholder="lng"
@@ -194,12 +194,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lat">
-            纬度：
+            纬　度：
           </label>
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               id="lat"
               onChange={[Function]}
               placeholder="lat"
@@ -277,7 +277,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               disabled={true}
               id="id"
               maxLength={16}
@@ -296,12 +296,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="name">
-            名称：
+            名　称：
           </label>
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               id="name"
               maxLength={16}
               onChange={[Function]}
@@ -319,7 +319,7 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="model">
-            型号：
+            型　号：
           </label>
           <div
             className="fixed-width-right">
@@ -414,12 +414,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lng">
-            经度：
+            经　度：
           </label>
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               id="lng"
               onChange={[Function]}
               placeholder="lng"
@@ -436,12 +436,12 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lat">
-            纬度：
+            纬　度：
           </label>
           <div
             className="fixed-width-right">
             <input
-              className="form-control"
+              className="form-control "
               id="lat"
               onChange={[Function]}
               placeholder="lat"
