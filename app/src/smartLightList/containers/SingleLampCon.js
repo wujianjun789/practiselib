@@ -95,7 +95,7 @@ export default class SingleLampCon extends Component {
     componentWillUnmount() {
         this.mounted = false;
     }
-    
+
     initData() {
         getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
@@ -155,13 +155,13 @@ export default class SingleLampCon extends Component {
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
-            case 'deviceSwitch': 
+            case 'deviceSwitch':
                 this.setState({currentSwitchStatus: value});
                 break;
-            case 'dimming': 
+            case 'dimming':
                 this.setState({currentBrightness: value});
                 break;
         }
@@ -188,7 +188,7 @@ export default class SingleLampCon extends Component {
     tableClick(currentDevice) {
         this.setState({currentDevice});
     }
-  
+
     render() {
         const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
                 search: {value, placeholder}, currentDomain, domainList, deviceSwitchList,
