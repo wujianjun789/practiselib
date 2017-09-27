@@ -351,9 +351,9 @@ export class sysConfigScene extends Component {
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ selectDevice.name }</span>
-                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } >编辑
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={sceneList.length==0?true:false}>编辑
                        </button>
-                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } >删除
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={sceneList.length==0?true:false}>删除
                        </button>
                      </div>
                    </div>
