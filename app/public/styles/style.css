@@ -173,6 +173,8 @@ input{ border-radius: 0px!important;}
 
     width: 180px;
     background: #e6e6e6;
+
+    z-index: 1;
 }
 
 .content {
@@ -184,6 +186,8 @@ input{ border-radius: 0px!important;}
     min-width: 1025px;
     overflow-x: hidden;    
     background: #f2f2f4;
+
+    z-index: 0;
 }
 
 .content.offset-right{
