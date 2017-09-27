@@ -1,7 +1,7 @@
 /**
  * Created by a on 2017/7/26.
  */
-import {HOST_IP, getHttpHeader, httpRequest} from '../util/network'
+import {HOST_IP, getHttpHeader, httpRequest} from '../../util/network'
 export function getDomainList(cb) {
 	const domainList = [
 		{"name":"域一","geoType":0,"geoPoint":{"lat":23,"lng":23},"id":1,"parentId":null},

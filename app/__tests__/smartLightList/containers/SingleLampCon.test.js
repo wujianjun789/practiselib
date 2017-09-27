@@ -1,10 +1,12 @@
 /**
  * Created by Azrael on 2017/9/27
  */
+jest.mock('../../../src/util/network.js');
+jest.mock('../../../src/api/asset.js');
+jest.mock('../../../src/api/domain.js');
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import nock from 'nock';
 import Content from '../../../src/components/Content';
 import SearchText from '../../../src/components/SearchText';
 import Select from '../../../src/components/Select.1';
@@ -18,21 +20,6 @@ import {getLightLevelConfig} from '../../../src/util/network';
 import {getMomentDate, momentDateFormat} from '../../../src/util/time';
 
 describe('<SingleLampCon />', () => {
-	// beforeEach(() => {
-	// 	nock('')
-	// 	.get('/users/1')
-	// 	.reply(200, {
-	// 	  _id: '123ABC',
-	// 	  _rev: '946B7D1C',
-	// 	  username: 'pgte',
-	// 	  email: 'pedro.teixeira@gmail.com'
-	// 	 });
-	// });
-
-	// afterEach(()=>{
-	// 	nock.cleanAll();
-	// });
-
 	it('default render', () => {
 		const cmp = shallow(<SingleLampCon />);
 

@@ -9,7 +9,16 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
         className="form-control select "
         id="domain"
         onChange={[Function]}
-        value="" />
+        value="域一">
+        <option
+          value="域一">
+          域一
+        </option>
+        <option
+          value="域一">
+          域一
+        </option>
+      </select>
       <div
         className="searchText "
         onBlur={[Function]}
@@ -181,7 +190,52 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
             disabled={true}
             id="dimming"
             onChange={[Function]}
-            value="" />
+            value="">
+            <option
+              value={0}>
+              亮度0
+            </option>
+            <option
+              value={10}>
+              亮度10
+            </option>
+            <option
+              value={20}>
+              亮度20
+            </option>
+            <option
+              value={30}>
+              亮度30
+            </option>
+            <option
+              value={40}>
+              亮度40
+            </option>
+            <option
+              value={50}>
+              亮度50
+            </option>
+            <option
+              value={60}>
+              亮度60
+            </option>
+            <option
+              value={70}>
+              亮度70
+            </option>
+            <option
+              value={80}>
+              亮度80
+            </option>
+            <option
+              value={90}>
+              亮度90
+            </option>
+            <option
+              value={100}>
+              亮度100
+            </option>
+          </select>
           <button
             className="btn btn-primary"
             disabled={true}>

@@ -1,3 +1,4 @@
+jest.mock('../../../src/util/cache.js');
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
