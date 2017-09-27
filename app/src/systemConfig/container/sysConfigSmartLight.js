@@ -368,7 +368,7 @@ export class sysConfigSmartLight extends Component {
     showPopup() {
         const {selectDevice, allEquipmentsData, allPoleEquipmentsData} = this.state;
         const {overlayerShow} = this.props.actions;
-        overlayerShow(< EditPopup title='新建/修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
+        overlayerShow(< EditPopup title='新建／修改智慧路灯' onConfirmed={ this.onConfirmed } onDeleted={ this.onDeleted } closeClick={ this.closeClick } onChange={ this.equipmentSelect } equipmentSelectList={ this.state.equipmentSelectList }
                         selectValue={ this.state.selectValue } allEquipmentsData={ allEquipmentsData } allPoleEquipmentsData={ allPoleEquipmentsData } mainSelect={ this.mainSelect.bind(this) } selectDevice={ this.state.selectDevice }
                         showPopup={ this.showPopup.bind(this) } showMessage={ this.showMessage } />);
     }

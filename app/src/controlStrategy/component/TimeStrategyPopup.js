@@ -400,7 +400,7 @@ export default class TimeStrategyPopup extends Component{
                             <span className={prompt.time?"prompt date ":"prompt date hidden"}>{"日期错误"}</span>
                         </div>
                     </div>
-                    <div className="col-sm-6 date-range">
+                    <div className="col-sm-6">
                         <div className="form-group row">
                             <label className="col-sm-3 control-label" htmlFor="startTime">至：</label>
                             <div className="col-sm-9">

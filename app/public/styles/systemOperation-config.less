@@ -222,6 +222,9 @@
       > .table-body {
         max-height: 155px;
         overflow-y: scroll;
+        .tables-cell{
+          color:#999;
+        }
         .body-row {
           height: 40px;
           overflow: hidden;
@@ -241,20 +244,23 @@
         .tables-cell {
           float: left;
           height: 40px;
+          padding-left:5px;
           line-height: 40px;
           text-overflow:ellipsis;
           overflow: hidden;
           white-space: nowrap;        
           &:first-child {
-            width: 213px;
+            width: 180px;
           }
           &:nth-child(2) {
-            width: 145px;
+            width: 178px;
           }
           &:last-child {
             width: 60px;
             >span{
-              cursor: pointer;              
+              cursor: pointer;     
+              top:2px;
+              color:#ff5c67;       
             }
           }
         }
@@ -263,7 +269,6 @@
         .tables-cell:last-child {
           text-align: right;
           width: 40px;
-          padding-right: 10px;
           color: #f00;
         }
       }

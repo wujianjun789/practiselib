@@ -17,10 +17,12 @@ button{
     outline: none!important;
 }
 
+
+
 .btn.btn-primary,
 .btn.btn-default,
 .btn.btn-danger {
-    width:60px;
+    min-width:60px;
     height:30px;
     padding: 0;
 }
@@ -67,10 +69,11 @@ input::-ms-clear {
     height: 100%;
 }
 
-input.form-control::-webkit-input-placeholder { color: #b3b3b3; }
+input.form-control::-webkit-input-placeholder { color: #b3b3b3;}
 input.form-control::-moz-placeholder { color: #b3b3b3; }
 input.form-control:-moz-placeholder { color: #b3b3b3; }
-input.form-control:-ms-input-placeholder { color: #b3b3b3; }
+input.form-control:-ms-input-placeholder { color: #b3b3b3;}
+input{ border-radius: 0px!important;}
 
 .padding-left{
     padding-left: 15px
@@ -575,7 +578,7 @@ ul {
 .searchText .glyphicon-search {
     position: absolute;
     top: 50%;
-    right: 5px;
+    right: 10px;
 
     margin-top: -7px;
 
