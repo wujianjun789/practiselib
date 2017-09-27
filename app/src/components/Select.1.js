@@ -6,7 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 /**
  *
- * @param {{id: string, className: string, titleField: string, valueField: string, options: [{}], value: string, onChange: function, ...otherProps: any}} props
+ * @param {{id: string, className: string, titleField: string, valueField: string, options: [{}], value: any, onChange: function, ...otherProps: any}} props
  * @param {*} context
  */
 
@@ -23,10 +23,10 @@ const Select = (props, context) => {
 
 Select.propTypes = {
 	className: PropTypes.string,
-	titleField: PropTypes.string.isRequired,
-	valueField: PropTypes.string.isRequired,
-	options: PropTypes.arrayOf(PropTypes.object).isRequired,
-	value: PropTypes.string,
+	titleField: PropTypes.string,
+	valueField: PropTypes.string,
+	options: PropTypes.arrayOf(PropTypes.object),
+	value: PropTypes.any,
 	onChange: PropTypes.func
 }
 

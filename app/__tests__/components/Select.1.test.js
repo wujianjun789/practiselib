@@ -42,11 +42,13 @@ describe('<Select.1 />>', () => {
     });
 
     it('onChange', () => {
-        let onChange = jest.fn();
+		let onChange = jest.fn();
+		const event = {target: {id: 1, value: 1}};
         const cmp = shallow(<Select onChange={onChange}/>);
 
-        cmp.find('select').simulate('change');
+        cmp.find('select').simulate('change', event);
         expect(onChange).toHaveBeenCalledTimes(1);
+        expect(onChange).toHaveBeenCalledWith(event);
     });
 
     it('snapshot', () => {
