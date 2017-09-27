@@ -63,7 +63,12 @@ export default class SingleLampCon extends Component {
             {accessor: 'voltage', title: '电压'},
             {accessor: 'current', title: '电流'},
             {accessor: 'power', title: '功率'},
-            {accessor: 'updated', title: '更新时间'},
+            {
+                accessor(data) {
+                    return data.updated?momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm'):'';
+                },
+                title: '更新时间'
+            }
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -89,7 +94,7 @@ export default class SingleLampCon extends Component {
     componentWillUnmount() {
         this.mounted = false;
     }
-    
+
     initData() {
         getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
@@ -149,13 +154,13 @@ export default class SingleLampCon extends Component {
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
-            case 'deviceSwitch': 
+            case 'deviceSwitch':
                 this.setState({currentSwitchStatus: value});
                 break;
-            case 'dimming': 
+            case 'dimming':
                 this.setState({currentBrightness: value});
                 break;
         }
@@ -183,12 +188,6 @@ export default class SingleLampCon extends Component {
         this.setState({currentDevice});
     }
 
-    formatData(data) {
-        if(data.updated) {
-            data.updated = momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
-        }
-    }
-  
     render() {
         const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
                 search: {value, placeholder}, currentDomain, domainList, deviceSwitchList,
@@ -208,7 +207,7 @@ export default class SingleLampCon extends Component {
                                 {
                                     deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
                                                                 rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                                                                formatFunc={this.formatData}/>)
+                                                                />)
                                 }
                             </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}

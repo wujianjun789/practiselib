@@ -170,6 +170,8 @@ export class sysConfigScene extends Component {
     }
 
     initDomainList(data) {
+        // console.log("data:", data);
+        // data.length==0&&data.unshift({name:'请添加域'});
         let domainList = Object.assign({}, this.state.domainList, {index: 0},{value: data.length ? data[0].name : ""}, {options: data});
         this.setState({domainList: domainList});
     }
@@ -349,9 +351,9 @@ export class sysConfigScene extends Component {
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ selectDevice.name }</span>
-                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } >编辑
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={sceneList.length==0?true:false}>编辑
                        </button>
-                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } >删除
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={sceneList.length==0?true:false}>删除
                        </button>
                      </div>
                    </div>
