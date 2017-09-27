@@ -16,7 +16,6 @@ export default class TableTr extends PureComponent {
             accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
             title: PropTypes.string.isRequired
         }) ),
-        formatFunc: PropTypes.func,
         willMountFuncs: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.func),
             PropTypes.func
@@ -28,7 +27,6 @@ export default class TableTr extends PureComponent {
         super(props);
         this.state = {
             data: {...props.data},
-            activeId: props.activeId
         };
 
         this.onClick = this.onClick.bind(this);
@@ -59,15 +57,10 @@ export default class TableTr extends PureComponent {
 
     render() {
         const {data, data:{id}} = this.state;
-        const {activeId, columns, formatFunc} = this.props;
-
-        let _data = {...data};
-        if(typeof formatFunc == 'function') {
-            formatFunc(_data);
-         }
+        const {activeId, columns} = this.props;
 
         return (
-            <tr className={activeId && activeId==id ? 'active':''} onClick={this.onClick}>
+            <tr className={(activeId || (typeof activeId == 'number' && activeId == 0) ) && activeId==id ? 'active':''} onClick={this.onClick}>
             {
                 columns.map((item, index) => {
                     if(typeof item.accessor === 'function') {

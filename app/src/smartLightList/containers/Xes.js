@@ -67,7 +67,7 @@ export default class Xes extends Component{
     componentWillUnmount() {
         this.mounted = false;
     }
-    
+
     initData() {
         getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
@@ -113,7 +113,7 @@ export default class Xes extends Component{
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
         }
@@ -140,7 +140,7 @@ export default class Xes extends Component{
     tableClick(currentDevice) {
         this.setState({currentDevice});
     }
-  
+
     render() {
         const {
             page: {total, current, limit}, sidebarCollapse, currentDevice,
@@ -159,7 +159,7 @@ export default class Xes extends Component{
                                 {
                                     deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
                                                                 rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                                                                formatFunc={this.formatData}/>)
+                                                                />)
                                 }
                             </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
@@ -185,5 +185,5 @@ export default class Xes extends Component{
 
 /**
                             <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice == null ? '' : currentDevice.id}/>
- * 
+ *
  */
