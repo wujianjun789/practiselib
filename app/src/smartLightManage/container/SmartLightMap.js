@@ -142,7 +142,7 @@ export class SmartLightMap extends Component{
             this.mounted && this.setSize();
         }
 
-        this.requestSearch();
+        this.requestSearch(false);
     }
 
     componentDidMount(){
@@ -181,7 +181,7 @@ export class SmartLightMap extends Component{
         }
     }
 
-    requestSearch(){
+    requestSearch(IsSearch=true){
         const {model, search, tableIndex} = this.state;
 console.log(tableIndex);
         let searchType = this.searchPromptList[tableIndex].id;
@@ -189,7 +189,7 @@ console.log(tableIndex);
         if(searchType=="domain"){
             let curDomain = getObjectByKey(this.domainList, 'name', search.get("value"));
             if(curDomain){
-                getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
+                getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
             }else{
                 this.props.actions.addNotify(0, "没有找到匹配域。");
                 this.setState({IsSearchResult:false});
@@ -197,12 +197,12 @@ console.log(tableIndex);
             return;
         }
 console.log("%%%%%%%")
-        getPoleListByModelWithName(searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
+        getPoleListByModelWithName(searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
     }
 
-    updateSearch(data){
+    updateSearch(data, IsSearch){
         console.log(data);
-        if(!data || data.length==0){
+        if(IsSearch && (!data || data.length==0)){
             this.props.actions.addNotify(0, "没有找到结果。");
         }
 
