@@ -125,7 +125,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="fixed-width-left control-label" htmlFor="domainName">域名称：</label>
                             <div className="fixed-width-right">
-                                <input type="text" className="form-control" id="domainName" placeholder="输入域名称" maxLength="16" value={domainName}
+                                <input type="text" className={ "form-control " + (prompt.domainName ? "error" : "") } id="domainName" placeholder="输入域名称" maxLength="16" value={domainName}
                                        onChange={this.onChange}/>
                                 <span className={prompt.domainName?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
@@ -134,7 +134,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="fixed-width-left control-label " htmlFor="lng">经　度：</label>
                             <div className="fixed-width-right">
-                                <input type="email" className="form-control" id="lng" placeholder="输入GPS坐标" value={lng}
+                                <input type="email" className={ "form-control " + (prompt.lng ? "error" : "") } id="lng" placeholder="输入GPS坐标" value={lng}
                                         onChange={this.onChange}/>
                                 <span className={prompt.lng?"prompt ":"prompt hidden"}>{"经度数不合法"}</span>
                             </div>
@@ -142,7 +142,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">   
                             <label className="fixed-width-left control-label" htmlFor="lat">纬　度：</label>
                             <div className="fixed-width-right">
-                                <input type="email" className="form-control" id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
+                                <input type="email" className={ "form-control " + (prompt.lat ? "error" : "") } id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
                                 <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
                             </div>
                         </div>

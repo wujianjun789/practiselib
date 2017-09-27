@@ -54,7 +54,12 @@ export default class Gateway extends Component{
             {accessor: 'comm', title: '通信状态'},
             {accessor: 'device', title: '设备状态'},
             {accessor: 'mode', title: '调光模式'},
-            {accessor: 'updated', title: '更新时间'},
+            {
+                accessor(data) {
+                    return data.updated?momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm'):'';
+                },
+                title: '更新时间'
+            }
         ];
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -79,7 +84,7 @@ export default class Gateway extends Component{
     componentWillUnmount() {
         this.mounted = false;
     }
-    
+
     initData() {
         getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
@@ -125,7 +130,7 @@ export default class Gateway extends Component{
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
             case 'controlMode':
@@ -156,12 +161,6 @@ export default class Gateway extends Component{
         this.setState({currentDevice});
     }
 
-    formatData(data) {
-        if(data.updated) {
-            data.updated = momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm');
-        }
-    }
-  
     render() {
         const {
             page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
@@ -181,7 +180,7 @@ export default class Gateway extends Component{
                             {
                                 deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
                                                             rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                                                            formatFunc={this.formatData}/>)
+                                                            />)
                             }
                             </TableWithHeader>
                             <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}

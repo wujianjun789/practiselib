@@ -26,8 +26,7 @@ export default class TableTr extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            data: {...props.data},
-            activeId: props.activeId
+            data: {...props.data}
         };
 
         this.onClick = this.onClick.bind(this);

@@ -23,7 +23,7 @@ export default class DeviceList extends Component {
     const showDiv = item => {
       /*item.add will control the firstDiv's status.You can use this property to control the operations(array)'s value such as index below */
       let index = item.added === true ? 1 : 0;
-      return showIcon === true ? <span className={ iconClassName }></span> : operations[index];
+      return showIcon === true ? <svg className={ iconClassName }><use xlinkHref={"#logo_del"} className={ "logo_del " } transform="scale(0.081,0.081)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg> : operations[index];
     }
 
     const deviceList = data.length === 0 ? null : data.map((item, index) => {

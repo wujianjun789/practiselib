@@ -136,12 +136,13 @@
          .step-init;
          .delete {
              position: absolute;
-             top: 0px;
+             top: 8px;
+             fill:#ff5c6b;
              right: 0px;
-             width: 15px;
-             height: 16px;
+             width: 20px;
+             height: 20px;
              padding: 0;
-             background-image: url('/images/icon_delete.png');
+             padding-top:2px;
              cursor: pointer;
          }
          span {
@@ -178,10 +179,10 @@
                      overflow-y: auto;
                      li {
                          margin: 20px 0px;
-                         margin-left: 20px;
+                         margin-left: 23px;
                          font-size: 14px;
                          line-height: 14px;
-                         width: 225px;
+                         width: 228px;
                          cursor: default;
                          div {
                              width: auto;
@@ -211,10 +212,12 @@
              }
              ul>li {
                  position: relative;
-                 margin: 20px 10px 20px 30px;
+                 margin: 0px 20px 0px 25px;
+                 padding-top:8px;
+                 padding-bottom:8px;
              }
-             li:first-child {
-                 margin-top: 10px;
+             .edit_whole-ul{
+                padding-top:10px;
              }
          }
      }
@@ -342,7 +345,6 @@
                      font-size: 10px;
                      margin-top: 5px;
                  }
-                 .control-label {}
              }
              .popup-body {
                  height: 300px;
@@ -362,9 +364,33 @@
                          margin: 20px 4px 0px 4px;
                          width: 96%;
                      }
-                     #road {}
+                     .prompt{
+                         color: #ff5c68;
+                         font-size: 10px;
+                         margin-top: 5px;
+                         margin-left: 3px;
+                     }
+                     #domainTip{
+                         position: absolute;
+                         top:46px;
+                         left:16px;
+                     }
+                     #deviceTip{
+                         position: absolute;
+                         top:100px;
+                         left:16px;
+                     }
+                     #device-box{
+                        top: 14px;
+                        position: relative;
+                        .prompt{
+                            position:absolute;
+                            top:10px;
+                        }
+                     }
                      #device {
                          width: 170px;
+                         margin-top: 6px;
                      }
                      .btn.btn-primary {
                          margin-left: 13px;
@@ -387,20 +413,7 @@
                                          padding-top: 2px;
                                          color: #f00;
                                      }
-                                 } //    .tables-cell:last-child {
-                                 //         text-align: right;
-                                 //         width: 40px;
-                                 //         padding-right: 9px;
-                                 //         color: #f00;
-                                 //         float: right;
-                                 //    }
-                                 // .cell-right {
-                                 //     float:right;
-                                 //     margin-right:6px;
-                                 // .icon-delete {
-                                 //     background: url(/svg/icon_delete_scene.svg) no-repeat center top;
-                                 // }
-                                 // }
+                                 } 
                              }
                          }
                      }

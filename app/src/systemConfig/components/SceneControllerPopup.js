@@ -102,7 +102,7 @@ export default class SceneControllerPopup extends Component {
         }
         if (id == "controlParam") {//调整参数
             this.setState({
-                param: this.props.paramList.options[e.target.selectedIndex].name
+                param: this.state.paramList.options[e.target.selectedIndex].name
             })
         }
 
@@ -167,7 +167,7 @@ export default class SceneControllerPopup extends Component {
     render() {
         const { assetList, domainList, popId, title} = this.props; 
         const { paramList, modeList, modeValue, sceneAssetList, param, assetName, id, name, domainId, prompt } = this.state;
-        console.log('sceneAssetList:', sceneAssetList);
+        // console.log('sceneAssetList:', sceneAssetList);
         let valid = false;
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={ ['取消', '确认'] } btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
                          onConfirm={ this.onConfirm } />;
@@ -179,18 +179,20 @@ export default class SceneControllerPopup extends Component {
                         <label htmlFor="id" className="fixed-width-left control-label">场景名称：</label>
                         <div className="fixed-width-right">
                             <input type="text" className="form-control" id="name" placeholder="请输入场景" value={ name } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }/>
-                        <span id = "name" onChange={ this.onChange } className={ prompt.name ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
+                        <span id = "nameTip" onChange={ this.onChange } className={ prompt.name ? "prompt " : "prompt hidden" }>{ "场景名已使用/仅能使用字母、数字、或者下划线" }</span>
                         </div>
                     </div>
                 </div>
                 <div className="popup-body"> 
                     <div className="col-sm-6 col-xm-6 popup-body-left">
-                         <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainId } onChange={ this.onChange }/>
-                        <div>
+                         <Select id="domain" titleField={ domainList.valueField } placeholder='请输入域' valueField={ domainList.valueField } options={ domainList.options } value={ domainId } onChange={ this.onChange }/>
+                         <span id = "domainTip" onChange={ this.onChange } className={ domainList.options.length==0 ? "prompt " : "prompt hidden" }>{ "请添加域" }</span>                         
+                      <div id="device-box">
                          <Select id="device" titleField={ assetList.valueField } valueField={ assetList.valueField } options={ assetList.options } value={ assetName } onChange={ this.onChange }/>
                          <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
-                        </div>
-                        <div className="table-list">
+                      </div>
+                         <span id = "deviceTip" onChange={ this.onChange } className={ assetList.options.length==0 ? "prompt " : "prompt hidden" }>{ "请添场景设备" }</span>
+                      <div className="table-list">
                             <div className="table-body">
                                 <ul>{
                                         sceneAssetList[0].id && sceneAssetList.map((item, index) => (
@@ -208,7 +210,7 @@ export default class SceneControllerPopup extends Component {
                                     }
                                 </ul>
                             </div>
-                        </div>
+                      </div>
                     </div>
                     <div className="col-sm-6 col-xm-6 popup-body-right">
                         <div className="selectBox">
