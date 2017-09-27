@@ -170,6 +170,8 @@ export class sysConfigScene extends Component {
     }
 
     initDomainList(data) {
+        // console.log("data:", data);
+        // data.length==0&&data.unshift({name:'请添加域'});
         let domainList = Object.assign({}, this.state.domainList, {index: 0},{value: data.length ? data[0].name : ""}, {options: data});
         this.setState({domainList: domainList});
     }

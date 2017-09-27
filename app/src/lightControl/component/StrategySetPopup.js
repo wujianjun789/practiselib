@@ -53,10 +53,13 @@ export default class StrategySetPopup extends Component{
     requestSearch(){
         const {deviceType} = this.props;
         const {search} = this.state;
+        console.log(search);
+        console.log(deviceType);
         getAssetsBaseByModelWithName(deviceType, search.get("value"), data=>{ this.mounted && this.deviceListInit(data)})
     }
 
     deviceListInit(data){
+        console.log(data);
         this.deviceList = data;
         this.setState(this.deviceList);
     }
@@ -94,7 +97,9 @@ export default class StrategySetPopup extends Component{
     render(){
         const {title} = this.props;
         const {deviceTypeName, search, curDeviceList} = this.state;
-
+        console.log("bbb");
+        console.log(curDeviceList);
+        console.log(this.deviceList);
         let valid = false
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -110,7 +115,7 @@ export default class StrategySetPopup extends Component{
                     <div className="col-sm-5">
                         <SearchText placeholder={search.get("placeholder")} value={search.get("value")} onChange={this.onChange} submit={this.submitSearch}/>
                         <ul className="device-all">
-                            {
+                            {   
                                 this.deviceList.map(device=>{
                                     let IsAdd = lodash.find(curDeviceList, dev=>{return dev.id == device.id});
                                     return <li key={device.id}>{device.name}<span className={IsAdd?"":"glyphicon glyphicon-plus"} onClick={()=>{!IsAdd && this.addDevice(device)}}>{IsAdd?"已添加":""}</span></li>
@@ -120,8 +125,8 @@ export default class StrategySetPopup extends Component{
                     </div>
                     <div className="col-sm-5 device-cur-container">
                         <ul className="device-cur">
-                            {
-                                curDeviceList.map(device=>{
+                            {   
+                                curDeviceList && curDeviceList.map(device=>{
                                     return <li key={device.id}>{device.name}<span className="icon-table-delete" onClick={()=>this.delDevice(device)}></span></li>
                                 })
                             }

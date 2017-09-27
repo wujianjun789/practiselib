@@ -146,6 +146,7 @@ export class Strategy extends Component{
     setHandler(){
         const {selectDevice} = this.state;
         const {actions} = this.props
+        console.log(selectDevice)
         actions.overlayerShow(<StrategySetPopup title="设定设备" deviceType={selectDevice.asset} deviceList={selectDevice.deviceList}
                                                 onConfirm={(data)=>{
                                                     for(let key in data.curDeviceList){
@@ -243,7 +244,7 @@ export class Strategy extends Component{
     render(){
         const {sort, strategy, search, selectDevice, page, collapse, data} = this.state;
         return (
-            <Content className={collapse ? 'collapse' : ''}>
+            <Content className={collapse?'collapsed':''}>
                 <div className="heading">
                     <Select className="sort" data={sort}
                             onChange={(selectIndex)=>this.onChange("sort", selectIndex)}/>
