@@ -20,7 +20,7 @@ export default class StrategySetPopup extends Component{
             deviceTypeName:"",
             search:Immutable.fromJS({placeholder:'输入设备名称', value:''}),
 
-            curDeviceList:props.deviceList
+            curDeviceList:props.deviceList?props.deviceList:[]
         }
 
         this.deviceList = [/*{id:1, name:"灯1"},{id:2, name:"灯2"},{id:3, name:"灯3"},

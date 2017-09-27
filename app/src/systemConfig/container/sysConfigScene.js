@@ -248,10 +248,11 @@ export class sysConfigScene extends Component {
                                 overlayerHide={ overlayerHide }
                                 assetList = { assetList }
                                 onConfirm={ (data) => {
-                                                        addScene(data, () => {
+                                                        {/*addScene(data, () => {
                                                             this.requestSearch();
                                                             overlayerHide();
-                                                        });
+                                                        });*/}
+                                                        console.log("添加场景")
                                                       } } />);
                 break;
             case 'sys-update':

@@ -1,0 +1,38 @@
+exports[` default render snapshot 1`] = `
+<tr
+  className=""
+  onClick={[Function]}>
+  <td>
+    test
+  </td>
+  <td>
+    100
+  </td>
+</tr>
+`;
+
+exports[` render with activeId snapshot 1`] = `
+<tr
+  className="active"
+  onClick={[Function]}>
+  <td>
+    test
+  </td>
+  <td>
+    100
+  </td>
+</tr>
+`;
+
+exports[` simulate click snapshot 1`] = `
+<tr
+  className="active"
+  onClick={[Function]}>
+  <td>
+    test
+  </td>
+  <td>
+    100
+  </td>
+</tr>
+`;

@@ -96,8 +96,12 @@ export class Strategy extends Component{
         let limit = page.get("pageSize");
         let offset = (page.get("current")-1)*limit;
         let value = search.get("value")
-        getStrategyListByName(model, value, offset, limit, (data)=>{this.mounted && this.initData(data)})
-        getStrategyCountByName(model, value, data=>{this.mounted && this.initPageTotal(data);})
+
+        this.setState({selectDevice:{}}, ()=>{
+            getStrategyListByName(model, value, offset, limit, (data)=>{this.mounted && this.initData(data)})
+            getStrategyCountByName(model, value, data=>{this.mounted && this.initPageTotal(data);})
+        })
+
     }
 
     initData(data){

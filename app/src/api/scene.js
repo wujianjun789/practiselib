@@ -38,7 +38,7 @@ export function getSearchSceneCount(name, cb) {
 export function getSearchParam(name) {
     let param = {};
     if(name){
-        param = Object.assign({}, {name:name});
+        param = Object.assign({}, {name:{"like":name}});
     }
 
     return param
