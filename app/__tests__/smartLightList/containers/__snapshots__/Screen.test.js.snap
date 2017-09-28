@@ -1,0 +1,178 @@
+exports[`<Screen /> default render snapshot 1`] = `
+<div
+  className="content list-screen ">
+  <div
+    className="content-left">
+    <div
+      className="heading">
+      <select
+        className="form-control select "
+        id="domain"
+        onChange={[Function]}
+        value="域一">
+        <option
+          value="域一">
+          域一
+        </option>
+        <option
+          value="域一">
+          域一
+        </option>
+      </select>
+      <div
+        className="searchText "
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}>
+        <input
+          className="form-control"
+          onChange={[Function]}
+          placeholder="请输入设备名称"
+          type="search"
+          value="" />
+        <ul
+          className="" />
+        <span
+          className="glyphicon glyphicon-search"
+          onClick={[Function]} />
+      </div>
+    </div>
+    <div
+      className="table-container">
+      <div
+        className="table-responsive undefined">
+        <table
+          className="table table-hover">
+          <thead>
+            <tr>
+              <th>
+                设备名称
+              </th>
+              <th>
+                在线状态
+              </th>
+              <th>
+                故障状态
+              </th>
+              <th>
+                当前亮度
+              </th>
+              <th>
+                亮度模式
+              </th>
+              <th>
+                更新时间
+              </th>
+            </tr>
+          </thead>
+          <tbody />
+        </table>
+      </div>
+      <ul
+        className="rc-pagination page hidden"
+        style={Object {}}
+        unselectable="unselectable">
+        <li
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-prev"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="上一页">
+          <a />
+        </li>
+        <li
+          aria-disabled={true}
+          className="rc-pagination-disabled rc-pagination-next"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          tabIndex="0"
+          title="下一页">
+          <a />
+        </li>
+        <div
+          className="rc-pagination-options" />
+      </ul>
+    </div>
+  </div>
+  <div
+    className="container-fluid sidebar-info ">
+    <div
+      className="row collapse-container"
+      onClick={[Function]}>
+      <span
+        className="icon_verital" />
+    </div>
+    <div
+      className="panel panel-default panel-1">
+      <div
+        className="panel-heading">
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.08,0.08)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_sys_select"
+            y="0" />
+        </svg>
+        选中设备
+      </div>
+      <div
+        className="panel-body">
+        <span
+          title="">
+          
+        </span>
+      </div>
+    </div>
+    <div
+      className="panel panel-default panel-2">
+      <div
+        className="panel-heading">
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.088,0.086)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_device_operate"
+            y="0" />
+        </svg>
+        设备操作
+      </div>
+      <div
+        className="panel-body">
+        <div>
+          <span
+            className="tit">
+            设备开关：
+          </span>
+          <select
+            className="form-control select "
+            disabled={true}
+            id="deviceSwitch"
+            onChange={[Function]}
+            value="">
+            <option
+              value="on">
+              开启
+            </option>
+            <option
+              value="off">
+              关闭
+            </option>
+          </select>
+          <button
+            className="btn btn-primary"
+            disabled={true}>
+            应用
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {UserPopup} from '../../../src/permissionManage/container/UserPopup';
+import UserPopup from '../../../src/permissionManage/container/UserPopup';
 // import {Provider} from 'react-redux';
 import Immutable from 'immutable';
 // import configureStore from '../../../src/store/configureStore';

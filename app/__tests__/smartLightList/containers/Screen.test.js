@@ -13,15 +13,14 @@ import Select from '../../../src/components/Select.1';
 import TableWithHeader from '../../../src/smartLightList/components/TableWithHeader';
 import TableTr from '../../../src/smartLightList/components/TableTr';
 import Page from '../../../src/components/Page';
-import SingleLampCon from '../../../src/smartLightList/containers/SingleLampCon';
+import Screen from '../../../src/smartLightList/containers/Screen';
 import {getDomainList} from '../../../src/api/domain';
 import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../../src/api/asset';
-import {getLightLevelConfig} from '../../../src/util/network';
 import {getMomentDate, momentDateFormat} from '../../../src/util/time';
 
-describe('<SingleLampCon />', () => {
+describe('<Screen />', () => {
 	it('default render', () => {
-		const cmp = shallow(<SingleLampCon />);
+		const cmp = shallow(<Screen />);
 
 		const content = cmp.find('Content');
 		expect(!content.hasClass('collapse')).toBeTruthy();
@@ -77,7 +76,7 @@ describe('<SingleLampCon />', () => {
 		const panel2 = sidebarInfo.find('.panel-2');
 		expect(panel2.find('.panel-heading').text()).toBe('设备操作');
 		const panelBody = panel2.find('.panel-body');
-		expect(panelBody.children('div').length).toBe(2);
+		expect(panelBody.children('div').length).toBe(1);
 
 		expect(panelBody.childAt(0).find('.tit').text()).toBe('设备开关：');
 		const deviceSwitchList_state = cmp.state('deviceSwitchList');
@@ -89,21 +88,10 @@ describe('<SingleLampCon />', () => {
 		expect(panelBody.childAt(0).find('Select').prop('disabled')).toBe(deviceList_state.length == 0 ? true : false);
 		expect(panelBody.childAt(0).find('button').text()).toBe('应用');
 		expect(panelBody.childAt(0).find('button').prop('disabled')).toBe(deviceList_state.length == 0 ? true : false);
-
-		expect(panelBody.childAt(1).find('.tit').text()).toBe('调光：');
-		const brightnessList_state = cmp.state('brightnessList');
-		Object.keys(brightnessList_state).forEach(item => {
-			expect(panelBody.childAt(1).find('Select').prop(item)).toEqual(brightnessList_state[item]);
-		});
-		const currentBrightness_state = cmp.state('currentBrightness');
-		expect(panelBody.childAt(1).find('Select').prop('value')).toBe(currentBrightness_state);
-		expect(panelBody.childAt(1).find('Select').prop('disabled')).toBe(deviceList_state.length == 0 ? true : false);
-		expect(panelBody.childAt(1).find('button').text()).toBe('应用');
-		expect(panelBody.childAt(1).find('button').prop('disabled')).toBe(deviceList_state.length == 0 ? true : false);
 	});
 
 	it('simulate click', () => {
-		const cmp = mount(<SingleLampCon />);
+		const cmp = mount(<Screen />);
 		let content = cmp.find('Content');
 		expect(!content.hasClass('collapse')).toBeTruthy();
 		content.find('.sidebar-info .collapse-container').simulate('click');
@@ -145,18 +133,10 @@ describe('<SingleLampCon />', () => {
 		deviceSwitch.find('select').simulate('change', event);
 		deviceSwitch = cmp.find('#deviceSwitch');
 		expect(deviceSwitch.prop('value')).toBe(event.target.value);
-
-		let dimming = cmp.find('#dimming');
-		event = {target: { id: 'dimming', value: '30'}};
-		dimming.find('select').simulate('change', event);
-		dimming = cmp.find('#dimming');
-		expect(dimming.prop('value')).toBe(event.target.value);
-
-
 	});
 
 	it('default render snapshot', () => {
-		const cmp = renderer.create(<SingleLampCon />);
+		const cmp = renderer.create(<Screen />);
 		expect(cmp.toJSON()).toMatchSnapshot();
 	})
 })
