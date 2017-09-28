@@ -89,7 +89,7 @@ export class SensorStrategy extends Component{
         this.generateSensorTypesData = this.generateSensorTypesData.bind(this);
 
         this.getSensorTypeFromStrategy = this.getSensorTypeFromStrategy.bind(this);
-        
+
     }
 
     componentWillMount() {
@@ -118,13 +118,13 @@ export class SensorStrategy extends Component{
             let sensorsProps = Object.assign({}, defaults.values);
             this.setState({sensorsProps});
         }
-        
+
     }
 
     updateControlDeviceList(data) {
         // ["lc", "screen"]
         let opt = [];
-        dat.forEach(value => {
+        data.forEach(value => {
             let title = '';
             if(value == 'lc') {
                 title = '灯';
