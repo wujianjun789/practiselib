@@ -64,9 +64,9 @@ export default class TableTr extends PureComponent {
             {
                 columns.map((item, index) => {
                     if(typeof item.accessor === 'function') {
-                        return <td key={index}>{item.accessor(_data)}</td>
+                        return <td key={index}>{item.accessor(data)}</td>
                     } else if(typeof item.accessor === 'string') {
-                        return <td key={index}>{_data[item.accessor]}</td>
+                        return <td key={index}>{data[item.accessor]}</td>
                     } else {
                         return <td key={index}></td>
                     }
