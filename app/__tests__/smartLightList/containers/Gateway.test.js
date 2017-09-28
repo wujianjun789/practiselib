@@ -7,16 +7,7 @@ jest.mock('../../../src/api/domain.js');
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import Content from '../../../src/components/Content';
-import SearchText from '../../../src/components/SearchText';
-import Select from '../../../src/components/Select.1';
-import TableWithHeader from '../../../src/smartLightList/components/TableWithHeader';
-import TableTr from '../../../src/smartLightList/components/TableTr';
-import Page from '../../../src/components/Page';
 import Gateway from '../../../src/smartLightList/containers/Gateway';
-import {getDomainList} from '../../../src/api/domain';
-import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../../src/api/asset';
-import {getMomentDate, momentDateFormat} from '../../../src/util/time';
 
 describe('<Gateway />', () => {
 	it('default render', () => {
@@ -95,7 +86,7 @@ describe('<Gateway />', () => {
 		expect(panelBody.childAt(1).find('button').prop('disabled')).toBe(deviceList_state.length == 0 ? true : false);
 	});
 
-	it('simulate click', () => {
+	it('simulate event', () => {
 		const cmp = mount(<Gateway />);
 		let content = cmp.find('Content');
 		expect(!content.hasClass('collapse')).toBeTruthy();

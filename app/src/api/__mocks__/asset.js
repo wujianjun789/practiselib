@@ -20,12 +20,14 @@ export function getAssetModelList(cb) {
  * @return {Object}
  */
 export function getModelSummariesByModelID(modelID, cb) {
-    httpRequest(`${HOST_IP}/model-summaries/${modelID}`,{
-        headers: getHttpHeader(),
-        method: 'GET'
-    }, response => {
-        cb && cb(response);
-    })
+	let response;
+	const sensorList = [];
+	switch(modelID) {
+		case 'sensor':
+			response = sensorList;
+	}
+
+	cb && cb(response);
 }
 
 export function getAssetList(cb) {
