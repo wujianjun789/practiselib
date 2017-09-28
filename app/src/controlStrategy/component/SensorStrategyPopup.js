@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
-import LineChart from '../../common/util/LineChart';
+import LineChart from './LineChart';
 import PropTypes from 'prop-types';
 import {NameValid, numbersValid} from '../../util/index';
 import {IsExistInArray1} from '../../util/algorithm';
@@ -45,8 +45,6 @@ export default class SensorStrategyPopup extends Component {
             }
         };
 
-        this.chart = null;
-
         this.sensorTransform = {
             SENSOR_NOISE: 'noise',
             SENSOR_PM25: 'PM25',
@@ -65,10 +63,7 @@ export default class SensorStrategyPopup extends Component {
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.sensorParamDelete = this.sensorParamDelete.bind(this);
-        this.drawLineChart = this.drawLineChart.bind(this);
         this.addSensorParam = this.addSensorParam.bind(this);
-        this.updateLineChart = this.updateLineChart.bind(this);
-        this.destroyLineChart = this.destroyLineChart.bind(this);
 
         this.addStrategy = this.addStrategy.bind(this);
         this.updateStrategy = this.updateStrategy.bind(this);
@@ -92,7 +87,7 @@ export default class SensorStrategyPopup extends Component {
             case 'sensorType':
             case 'controlDevice':
                 this.setState({data: Object.assign({}, this.state.data, {[id]: value, sensorParam: '' })});
-                popupId == 'add' && this.setState({sensorParamsList: []}, this.updateLineChart );
+                popupId == 'add' && this.setState({sensorParamsList: []});
                 break;
             case 'sensorParam':
                 let val = value;
@@ -116,42 +111,7 @@ export default class SensorStrategyPopup extends Component {
         const index = e.target.id;
         let sensorParamsList = Object.assign([], this.state.sensorParamsList);
         sensorParamsList.splice(index,1);
-        this.setState({sensorParamsList}, ()=>{
-            this.updateLineChart();
-        });
-    }
-
-    drawLineChart(ref) {
-        this.chart = new LineChart({
-            wrapper: ref,
-            data: {values: this.state.sensorParamsList},
-            xAccessor: d=>d.condition[ this.sensorTransform[this.state.data.sensorType] ],
-            yAccessor: d => {
-                if (d.rpc.value=='off') {
-                    return 0;
-                } else if (d.rpc.value=='on') {
-                    return 1;
-                } else {
-                    return d.rpc.value;
-                }
-            },
-            yDomain: this.state.data.controlDevice == 'lc' ? [0, 100] : [0, 1],
-            curveFactory: d3.curveStepAfter,
-            tickFormat: d => `${d}${this.props.sensorsProps[this.state.data.sensorType]?this.props.sensorsProps[this.state.data.sensorType].unit:''}`,
-            padding: {left: 0, top: 35, right: 0},
-            tooltipAccessor: d => d.rpc.title
-        });
-    }
-
-    updateLineChart() {
-        const yDomain = this.state.data.controlDevice == 'lc' ? [0, 100] : [0, 1];
-        const {sensorParamsList} = this.state;
-        this.chart.updateChart({values: sensorParamsList}, undefined, yDomain);
-    }
-
-    destroyLineChart() {
-        this.chart.destroy();
-        this.chart = null;
+        this.setState({sensorParamsList});
     }
 
     addSensorParam() {
@@ -172,9 +132,7 @@ export default class SensorStrategyPopup extends Component {
         const data = {value: value, title: title};
         let sensorParamsList = Object.assign([], this.state.sensorParamsList);
         sensorParamsList.push({condition: {[ this.sensorTransform[sensorType] ]: sensorParam}, rpc: data});
-        this.setState({sensorParamsList, data: Object.assign({}, this.state.data, {sensorParam: ''}), checkStatus: Object.assign({}, this.state.checkStatus, {sensorParam: true})}, () => {
-            this.updateLineChart();
-        });
+        this.setState({sensorParamsList, data: Object.assign({}, this.state.data, {sensorParam: ''}), checkStatus: Object.assign({}, this.state.checkStatus, {sensorParam: true})});
     }
 
     onCancel() {
@@ -242,12 +200,8 @@ export default class SensorStrategyPopup extends Component {
         this.props.overlayerHide && this.props.overlayerHide();
     }
 
-    componentWillUnmount() {
-        this.destroyLineChart();
-    }
-
     render() {
-        const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data: {strategyName, sensorType, controlDevice, screenSwitch, sensorParam, brightness}, checkStatus} = this.state;
+        const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data, data: {strategyName, sensorType, controlDevice, screenSwitch, sensorParam, brightness}, checkStatus} = this.state;
         const {sensorTypeList, sensorsProps, popupId} = this.props;
         const {className, title} = this.props;
         const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
@@ -285,7 +239,7 @@ export default class SensorStrategyPopup extends Component {
                 </div>
                 <div className="form-group chart">
                     <label className="control-label">图表：</label>
-                    <div className="form-group-right" ref={this.drawLineChart}></div>
+                    <LineChart sensorParamsList={sensorParamsList} data={data} sensorsProps={sensorsProps} sensorTransform={this.sensorTransform}/>
                 </div>
                 <div className="form-group">
                     <label className="control-label">设置参数：</label>
