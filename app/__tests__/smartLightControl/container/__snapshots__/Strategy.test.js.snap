@@ -1,0 +1,201 @@
+exports[`test renders Strategy 1`] = `
+<div
+  className="content ">
+  <div
+    className="heading">
+    <select
+      className="select sort form-control"
+      id=""
+      onChange={[Function]}
+      placeholder="排序"
+      value="场景序号">
+      <option
+        value="场景序号">
+        场景序号
+      </option>
+      <option
+        value="设备多少">
+        设备多少
+      </option>
+    </select>
+    <select
+      className="select strategy form-control"
+      id=""
+      onChange={[Function]}
+      placeholder="策略类型"
+      value="时间策略">
+      <option
+        value="时间策略">
+        时间策略
+      </option>
+      <option
+        value="传感器策略">
+        传感器策略
+      </option>
+      <option
+        value="经纬度策略">
+        经纬度策略
+      </option>
+    </select>
+    <div
+      className="searchText search"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}>
+      <input
+        className="form-control"
+        onChange={[Function]}
+        placeholder="输入策略名称"
+        type="search"
+        value="" />
+      <ul
+        className="" />
+      <span
+        className="glyphicon glyphicon-search"
+        onClick={[Function]} />
+    </div>
+  </div>
+  <div
+    className="table-container">
+    <div
+      className="table-responsive ">
+      <table
+        className="table table-hover">
+        <thead>
+          <tr>
+            <th
+              className="hidden">
+              <input
+                checked={undefined}
+                onChange={[Function]}
+                type="checkbox" />
+            </th>
+            <th>
+              策略名称
+            </th>
+            <th>
+              策略类型
+            </th>
+            <th>
+              设备种类
+            </th>
+            <th>
+              设定状态
+            </th>
+          </tr>
+        </thead>
+        <tbody />
+      </table>
+    </div>
+    <ul
+      className="rc-pagination page hidden"
+      style={Object {}}
+      unselectable="unselectable">
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-prev"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="上一页">
+        <a>
+          
+        </a>
+      </li>
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-next"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="下一页">
+        <a>
+          
+        </a>
+      </li>
+      <div
+        className="rc-pagination-options" />
+    </ul>
+  </div>
+  <div
+    className="container-fluid sidebar-info "
+    style={undefined}>
+    <div
+      className="row collapse-container"
+      onClick={[Function]}>
+      <span
+        className="icon_verital" />
+    </div>
+    <div
+      className="panel panel-default strategy-info">
+      <div
+        className="panel-heading">
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.075,0.075)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_sys_select"
+            y="0" />
+        </svg>
+        选中设备
+      </div>
+      <div
+        className="panel-body strategy-property">
+        <span
+          className="strategy-name" />
+        <button
+          className="btn btn-primary pull-right"
+          disabled={true}
+          id="sys-update"
+          onClick={[Function]}>
+          设定
+        </button>
+      </div>
+    </div>
+    <div
+      className="panel panel-default strategy-param">
+      <div
+        className="panel-heading">
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.075,0.075)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_strategy"
+            y="0" />
+        </svg>
+        策略参数
+      </div>
+      <div
+        className="panel-body strategy-chart"
+        id="strategyChart" />
+    </div>
+    <div
+      className="panel panel-default strategy-device">
+      <div
+        className="panel-heading">
+        <svg>
+          <use
+            height="200"
+            transform="scale(0.075,0.075)"
+            viewBox="0 0 20 20"
+            width="200"
+            x="0"
+            xlinkHref="#icon_sys_whitelist"
+            y="0" />
+        </svg>
+        包含目标设备
+      </div>
+      <div
+        className="panel-body">
+        <ul />
+      </div>
+    </div>
+  </div>
+</div>
+`;

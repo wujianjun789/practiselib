@@ -7,7 +7,7 @@ import renderer from 'react-test-renderer';
 
 import StrategySetPopup from '../../../src/smartLightControl/component/StrategySetPopup';
 
-test('renders SceneItem', ()=>{
+test('renders StrategySetPopup', ()=>{
     const component = renderer.create(
         <StrategySetPopup />
     ).toJSON();
@@ -15,7 +15,7 @@ test('renders SceneItem', ()=>{
     expect(component).toMatchSnapshot();
 });
 
-test('renders SceneItem class', ()=>{
+test('renders StrategySetPopup class', ()=>{
     const component = shallow(<StrategySetPopup />)
     expect(component.find('.strategy-set-popup').length).toEqual(1);
 })
