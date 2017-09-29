@@ -66,7 +66,7 @@ export function updateSceneById(id, data, cb) {
 
 export function addScene(data, cb) {
     let headers = getHttpHeader();
-    let dat = {name: data.name, presets:"" }
+    // let dat = {name: data.name, presets: [{asset: data.assetName, id: data.domainId, mode: data.modeValue}] }
     httpRequest(HOST_IP+'/scenes',{
         headers: headers,
         method: 'POST',
