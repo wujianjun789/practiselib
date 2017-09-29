@@ -20,18 +20,8 @@ describe('<UserPopup',()=>{
         roleId:{index: 3, value: "系统管理员"},
         username:"admin"
     }
-    const modules = [
-        {key: 'asset', title: '资产管理', link: '/assetManage/manage'},
-        {key: 'permission', title: '权限管理', link: '/permissionManage'},
-        {key: 'maintenance', title: '系统运维', link: '/systemOperation/gateway'},
-        {key: 'control', title: '系统控制', link: '/'},
-        {key: 'report', title: '报表管理', link: '/'},
-        {key: 'publish', title: '媒体发布', link: '/'},
-        {key: 'visual', title: '可视化', link: '/'},
-        {key: 'domain', title: '域管理', link: '/domainManage/domainEdit'}
-    ]
     it('render normal add',()=>{
-        const cmp = shallow(<UserPopup className={classNameAdd} title={titleAdd} modules={modules}/>);
+        const cmp = shallow(<UserPopup className={classNameAdd} title={titleAdd}/>);
         const container = cmp.find(`.${classNameAdd}`);
         expect(container.length).toBe(1);
 
@@ -44,19 +34,16 @@ describe('<UserPopup',()=>{
 
         const select = cmp.find('Select');
         expect(select.length).toBe(1);
-
-        const checkbox = cmp.find('.checkbox-inline');
-        expect(checkbox.length).toBe(modules.length);
     })
 
     it('add snapshot', () => {
-        const cmp = renderer.create(<UserPopup className={classNameAdd} title={titleAdd} modules={modules}/>);
+        const cmp = renderer.create(<UserPopup className={classNameAdd} title={titleAdd}/>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     it('edit snapshot', () => {
-        const cmp = renderer.create(<UserPopup className={classNameEdit} title={titleEdit} modules={modules} data={data}/>);
+        const cmp = renderer.create(<UserPopup className={classNameEdit} title={titleEdit} data={data}/>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });
