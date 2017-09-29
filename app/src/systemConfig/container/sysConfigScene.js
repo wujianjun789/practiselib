@@ -60,7 +60,7 @@ export class sysConfigScene extends Component {
 
             search: Immutable.fromJS({placeholder: '输入场景名称',value: ''}),
             page: Immutable.fromJS({
-                pageSize:12,
+                pageSize:8,
                 current: 1,
                 total: 0
             }),
@@ -83,17 +83,19 @@ export class sysConfigScene extends Component {
             },                   
             domainList: {
                 titleField: 'name',
-                valueField: 'name',
+                valueField: 'id',
                 index: 0,
                 value: "",
                 options: [
                     {
                         id: 1,
+                        name: '',
                         title: 'domain01',
                         value: 'domain01'
                     },
                     {
                         id: 2,
+                        name: '',
                         title: 'domain02',
                         value: 'domain02'
                     }
@@ -145,33 +147,48 @@ export class sysConfigScene extends Component {
         })
   
         getAssetList(data=>{
+            // console.log("data:", data);
             if(this.mounted){
-                // this.assetList=data;
                 this.setState({assetList:{...this.state.assetList, options: data}});
-                // this.setState({assetList: Object.assign({}, this.state.assetList, {options: data})});
             }
         });
 
         this.requestSearch();
     }
 
+    // requestSearch(){
+    //     const {search, page} = this.state;
+    //     let limit = page.get("pageSize");
+    //     let offset = (page.get("current")-1)*limit;
+    //     let value = search.get("value");
+    //     getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
+    //     getSearchSceneCount(value, data=>{ this.mounted && this.initPageSize(data)})
+    // }
+
+    // initPageSize(data){
+    //     let page = this.state.page.set('total', data.count);
+    //     this.setState({page: page});
+    // }
+
     requestSearch(){
-        const {search, page} = this.state;
-        let limit = page.get("pageSize");
-        let offset = (page.get("current")-1)*limit;
-        let value = search.get("value");
-        getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
+        let value = this.state.search.get("value");
         getSearchSceneCount(value, data=>{ this.mounted && this.initPageSize(data)})
     }
 
     initPageSize(data){
-        let page = this.state.page.set('total', data.count);
+        let value = this.state.search.get("value");
+        let {search, page} = this.state;
+        let limit = page.get("pageSize");
+        let size = data.count/limit + (data.count%limit>0?1:0);
+        let current = page.get('current');
+        current = current > size ? size : current; 
+        let offset = (current-1)*limit;
+        getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
+        page = this.state.page.update('total', () => data.count);
         this.setState({page: page});
     }
 
     initDomainList(data) {
-        // console.log("data:", data);
-        // data.length==0&&data.unshift({name:'请添加域'});
         let domainList = Object.assign({}, this.state.domainList, {index: 0},{value: data.length ? data[0].name : ""}, {options: data});
         this.setState({domainList: domainList});
     }
@@ -180,7 +197,6 @@ export class sysConfigScene extends Component {
         this.setState({sceneList:data},()=>{
             data.map(scene=>{
                 this.getAssetName(scene, curIndex=>{
-                    console.log("curIndex:",curIndex);
                     if(curIndex==0){
                         this.updateSelectDevice(this.state.sceneList[0]);
                     }
@@ -241,7 +257,7 @@ export class sysConfigScene extends Component {
                     sceneAssetList: selectDevice.presets,
                     param: "",
                     id:'',
-                    assetName: assetList.value,
+                    assetName: assetList.options[0].name,
                 };
 
                 overlayerShow(<SceneControllerPopup popId="add" className="centralized-popup" 
@@ -250,11 +266,10 @@ export class sysConfigScene extends Component {
                                 overlayerHide={ overlayerHide }
                                 assetList = { assetList }
                                 onConfirm={ (data) => {
-                                                        {/*addScene(data, () => {
+                                                        addScene(data, () => {
                                                             this.requestSearch();
                                                             overlayerHide();
-                                                        });*/}
-                                                        console.log("添加场景")
+                                                        });
                                                       } } />);
                 break;
             case 'sys-update':
@@ -265,7 +280,7 @@ export class sysConfigScene extends Component {
                     sceneAssetList: selectDevice.presets,
                     param: "",
                     id:'',
-                    assetName: assetList.value 
+                    assetName: assetList.options[0].name,
                 }
 
                 overlayerShow(<SceneControllerPopup popId="edit" className="centralized-popup" 
