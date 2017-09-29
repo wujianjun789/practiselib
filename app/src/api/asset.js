@@ -107,7 +107,7 @@ export function getAssetsBaseByModel(model, cb){
     let headers = getHttpHeader();
 
     let paramStr = JSON.stringify({"where":getSearchParam('', model, "")})
-  
+
     httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
@@ -135,7 +135,7 @@ export function getAssetsBaseByModelWithDomain(model, domainId, cb){
     let headers = getHttpHeader();
 
     let paramStr = JSON.stringify({"where":getSearchParam(domainId, model, "")})
-  
+
     httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
@@ -175,7 +175,7 @@ export function getAssetsBaseByModelWithName(model, name, cb) {
 }
 /**
  * param data({modelId:设备型号})
- * 
+ *
  */
 export function postAssetsByModel(model, data, cb){
     let headers = getHttpHeader();
@@ -191,7 +191,7 @@ export function postAssetsByModel(model, data, cb){
 
 /**
  * param data({modelId:设备型号})
- * 
+ *
  */
 export function postXes(model, data, cb){
     let headers = getHttpHeader();
@@ -207,7 +207,7 @@ export function postXes(model, data, cb){
 
 /**
  * param data({modelId:设备型号})
- * 
+ *
  */
 export function updateAssetsByModel(model, data, cb) {
     let headers = getHttpHeader();
@@ -221,16 +221,16 @@ export function updateAssetsByModel(model, data, cb) {
     })
 }
 
-export function updateXes(model,data, cb){ 
+export function updateXes(model,data, cb){
     let headers = getHttpHeader();
     let dat = {
         "geoType":0,
-        name:data.name, 
+        name:data.name,
         geoPoint:{
-            lat:data.lat, 
+            lat:data.lat,
             lng:data.lng
-        }, 
-        extendType:model, 
+        },
+        extendType:model,
         domainId:data.domainId
     };
     httpRequest(HOST_IP+'/assets/'+data.id,{
@@ -275,12 +275,12 @@ export function updateAssetsById(id, data, cb){
 }
 
 export function updateDataOrigin(data,key){
-    
+
 }
 
 /**
  * 获取设备的状态
- * @param {String} model 
+ * @param {String} model
  * @param {String | Number} id
  */
 export const getDeviceStatusByModelAndId = (model, id) => cb => {
@@ -288,6 +288,22 @@ export const getDeviceStatusByModelAndId = (model, id) => cb => {
     httpRequest(`${HOST_IP}/${model}s/${id}/status`,{
         headers: getHttpHeader(),
         method: 'GET',
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+/**
+ * 设备操作
+ * @param {number | string } id
+ * @param {object} data
+ * @param {function} cb
+ */
+export const updateAssetsRpcById = (id, data, cb) => {
+	httpRequest(`${HOST_IP}/assets/${id}/rpc`,{
+        headers: getHttpHeader(),
+		method: 'POST',
+		body: JSON.stringify(data)
     }, response=>{
         cb && cb(response);
     })
