@@ -148,6 +148,9 @@
          span {
              .front-init;
              font-weight: 700;
+             height:auto;
+             line-height:normal;
+             top:50%!important;
          }
          .edit_selectdevice-content {
              float: right;
@@ -160,7 +163,10 @@
              }
              div:first-child {
                  width: 270px;
-                 border-right: 1px solid #dddddd;
+                 .edit_selectdevice-main {
+                    width:270px;
+                    overflow:hidden;
+                 }
                  .edit_selectdevice-select,
                  .edit_selectdevice-searchtext {
                      margin: 20px;
@@ -174,11 +180,11 @@
                  }
                  .edit_selectdevice-ul {
                      float: left;
-                     width: 270px;
-                     height: 120px;
-                     overflow-y: auto;
+                     width: 285px;
+                     height: 125px;
+                     overflow-y: scroll;
                      li {
-                         margin: 20px 0px;
+                         margin: 0px 0px 20px 23px;
                          margin-left: 23px;
                          font-size: 14px;
                          line-height: 14px;
@@ -190,6 +196,7 @@
                          }
                          div:first-child {
                              float: left;
+                             color:#666;
                          }
                          div:nth-child(2) {
                              float: right;
@@ -204,20 +211,32 @@
              }
          }
          .edit_whole-content {
+             position:relative;
+             border-left:1px solid #ddd;
              width: 270px;
+             .edit_selectdevice-ul{
+                width:285px;
+                overflow-y: scroll;
+             }
              ul {
-                 height: 250px;
+                 height: 248px;
                  overflow-x: hidden;
                  overflow-y: auto;
+             }
+             ul>li:first-child {
+                 margin-top:10px;
              }
              ul>li {
                  position: relative;
                  margin: 0px 20px 0px 25px;
                  padding-top:8px;
                  padding-bottom:8px;
+                 div:first-child{
+                    width:auto!important;
+                    color:#666;
+                 }
              }
              .edit_whole-ul{
-                padding-top:10px;
              }
          }
      }

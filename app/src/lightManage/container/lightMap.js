@@ -80,7 +80,8 @@ export class lightMap extends Component{
                     {id: 6, title: 'domain06', value: 'domain06'},
                     {id: 7, title: 'domain07', value: 'domain07'}
                 ]
-            }
+            },
+            isMouseEnter:false
         }
 
         this.screen = Immutable.fromJS({})
@@ -136,6 +137,7 @@ export class lightMap extends Component{
         this.updatePoleAsset = this.updatePoleAsset.bind(this);
         this.domainList = [];
         this.stopProp = this.stopProp.bind(this);
+        this.isMouseEnterSet = this.isMouseEnterSet.bind(this);
 
 
         this.test = this.test.bind(this);
@@ -154,6 +156,7 @@ export class lightMap extends Component{
             }
             this.mounted && this.initDomainList(data)
         })
+        
     }
 
     componentDidMount(){
@@ -304,16 +307,25 @@ export class lightMap extends Component{
 
     /*  新增－t  */
     test(){
-
+        this.setState({isMouseEnter:false},()=>{});
+        setTimeout(()=>{
+                if(this.state.isMouseEnter==true){return}else if(this.state.IsSearchResult==true||this.state.interactive==true){
+                    this.setState({IsSearchResult:false,interactive:false});
+                }
+        }, 2000)
         
-        let aaaa = this.state.searchList
-        aaaa.map((item,index)=>{
-            if(index==1){
-                console.log(item.get("asset"))
-                console.log(item.get(["asset","lamp"]))
-            }
-        })
+        // let aaaa = this.state.searchList
+        // aaaa.map((item,index)=>{
+        //     if(index==1){
+        //         console.log(item.get("asset"))
+        //         console.log(item.get(["asset","lamp"]))
+        //     }
+        // })
 
+    }
+
+    isMouseEnterSet(){
+        this.setState({isMouseEnter:true},()=>{});
     }
 
     setSize(){
@@ -435,8 +447,7 @@ export class lightMap extends Component{
     }
 
     backHandler(){
-        this.setState({IsSearch:true}, ()=>{
-            this.setState({searchList:Immutable.fromJS([])});
+        this.setState({IsSearch:true,IsSearchResult:true}, ()=>{
             this.setSize();
         });
     }
@@ -750,9 +761,9 @@ export class lightMap extends Component{
         }
 
         return (
-            <Content>
+            <Content onClick={()=>{}}>
                 <MapView mapData={{id:"lightMap", latlng:mapLatlng, position:curPosition, data:curDevice.toJS()}}/>
-                <div className="search-container">
+                <div className="search-container" onMouseLeave={()=>{this.test()}} onMouseEnter={()=>{this.isMouseEnterSet()}}>
                     <div className="input-group searchBlock">
                       <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
                       <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>

@@ -10,12 +10,75 @@ export default class DeviceList extends Component {
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
+    this.test = this.test.bind(this);
   }
 
   onClick(item) {
     this.props.itemClick(item);
   }
 
+  test(){
+  } 
+
+  
+
+  componentDidMount() {
+
+            var scale = function(dragBtn, scaleBar, showMes, deScroll) {
+                this.dragBtn = document.getElementById(dragBtn);
+                this.scaleBar = document.getElementById(scaleBar);
+                this.showMes = document.getElementById(showMes);
+                this.step = this.scaleBar.getElementsByTagName("div")[0];
+                //this.scrollDiv = document.getElementById(scrollDiv);
+                this.deScroll = document.getElementById(deScroll);
+                this.init();
+            };
+
+            scale.prototype = {
+
+                init: function() {
+
+                    var f = this,
+                        g = document,
+                        b = window,
+                        m = Math;
+
+                    f.deScroll.addEventListener('scroll',function(e){
+                        var clientHeight = e.target.clientHeight,
+                        scrollHeight = e.target.scrollHeight - e.target.clientHeight;
+                        f.dragBtn.style.top = e.target.scrollTop/scrollHeight*(clientHeight-50) + 'px';
+                    },false);
+                    f.dragBtn.onmousedown = function(e) {
+                        var y = (e || b.event).clientY;
+                        var l = this.offsetTop;
+                        var max = f.scaleBar.offsetHeight - this.offsetHeight;
+                        g.onmousemove = function(e) {
+                            var thisY = (e || b.event).clientY;
+                            var to = m.min(max, m.max(0, l + (thisY - y)));
+                            f.dragBtn.style.top = to + 'px';
+                            f.ondrag(m.round(m.max(0, to / max) * 100), to);
+                            b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
+                        };
+                        g.onmouseup = new Function('this.onmousemove=null');
+                    };
+
+                },
+                ondrag: function(pos, y) {
+                    
+                    this.step.style.height = Math.max(0, y) + 'px';
+                    this.showMes.innerHTML = pos;
+                    var scrollHeight = this.deScroll.scrollHeight;
+                    this.deScroll.scrollTop=pos/100*(scrollHeight-this.deScroll.clientHeight);
+                    
+                }
+                
+            }
+            let dragBtn='dragBtn'+this.props.idName,scaleBar='scaleBar'+this.props.idName,showMes='showMes'+this.props.idName,deScroll=this.props.idName;
+            new scale(dragBtn, scaleBar, showMes, deScroll);
+
+  }
+
+  
 
   render() {
     /**In realityEnv, sometimes we received more property than we need in this componet.We user ...otherProps to filter other useless property for this component */
@@ -37,8 +100,16 @@ export default class DeviceList extends Component {
               </li>)
     });
 
-    return (<ul className={ className }>
+    return (<ul className={ className } id={ this.props.idName }>
               { deviceList }
+              <div className="scale_panel">
+                      <div className="scaleBar" id={ "scaleBar"+this.props.idName }>
+                          <div></div>
+                          <div className="dragBtn" id={ "dragBtn"+this.props.idName }>
+                              <span id={ "showMes"+this.props.idName } onClick={()=>this.test()}>0</span>
+                          </div>
+                      </div>
+                </div>
             </ul>)
   }
 }

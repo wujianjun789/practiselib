@@ -405,7 +405,7 @@ export class sysConfigSmartLight extends Component {
                    <Content className={ 'offset-right ' + (collapse ? 'collapsed' : '') }>
                      <header>
                        <Select id="domain" { ...domainList } onChange={ this.domainSelect } />
-                       <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
+                       <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChsange } submit={ this.searchSubmit } />
                      </header>
                      <div className="table-container">
                        <Table className="dataTable" columns={ this.columns } data={ this.state.tableData } rowClick={ this.rowClick } activeId={ activeId } />

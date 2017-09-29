@@ -38,6 +38,7 @@ export default class StrategySetPopup extends Component{
     }
 
     componentWillMount(){
+        console.log(this.props);
         this.mounted = true;
         const {deviceType} = this.props;
         getModelData(()=>{
@@ -76,6 +77,7 @@ export default class StrategySetPopup extends Component{
 
     addDevice(data){
         this.state.curDeviceList.push(data);
+        console.log(this.state.curDeviceList)
         this.setState({curDeviceList:this.state.curDeviceList})
     }
 
@@ -115,9 +117,11 @@ export default class StrategySetPopup extends Component{
                     <div className="col-sm-5">
                         <SearchText placeholder={search.get("placeholder")} value={search.get("value")} onChange={this.onChange} submit={this.submitSearch}/>
                         <ul className="device-all">
-                            {   
+                            {
                                 this.deviceList.map(device=>{
+                                    console.log(device)
                                     let IsAdd = lodash.find(curDeviceList, dev=>{return dev.id == device.id});
+                                    console.log(IsAdd)
                                     return <li key={device.id}>{device.name}<span className={IsAdd?"":"glyphicon glyphicon-plus"} onClick={()=>{!IsAdd && this.addDevice(device)}}>{IsAdd?"已添加":""}</span></li>
                                 })
                             }

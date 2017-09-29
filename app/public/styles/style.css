@@ -18,6 +18,59 @@ button{
 }
 
 
+.scale_panel {
+    width: 10px!important;
+    height:100%;
+    position: absolute;
+    right:0px;
+    top: 0px;
+}
+
+.scaleBar .dragBtn {
+    position: absolute;
+    height: 50px;
+    width: 10px;
+    background-color: #d3d8dc;
+    cursor: pointer;
+}
+
+.dragBtn span {
+    font-size: 16px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    display:none;
+}
+
+.scaleBar {
+    background-repeat: repeat-x;
+    background-position: 100% 0;
+    background-color: #eaeef1;
+    width: 10px!important;
+    height:100%;
+    position: relative;
+    font-size: 0px;
+}
+
+.scaleBar div {
+    background-repeat: repeat-x;
+    background-color: #eaeef1;
+    width: 10px!important;
+    position: absolute;
+    height:0px;
+    left: 0;
+    top: 0;
+
+}
+
+.pRelative{
+    position:relative;
+}
+
+.h100p{
+    height:100%;
+}
+
 
 .btn.btn-primary,
 .btn.btn-default,

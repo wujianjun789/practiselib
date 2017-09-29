@@ -131,14 +131,14 @@ export default class CentralizedControllerPopup extends Component {
                   <div className="form-group clearfix">
                     <label htmlFor="id" className="fixed-width-left control-label">设备编号：</label>
                     <div className="fixed-width-right">
-                      <input type="text" className={ "form-control " + (prompt.id ? "error" : "") } id="id" placeholder="id" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }/>
+                      <input type="text" className={ "form-control " } id="id" placeholder="id" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }/>
                       <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
                     <label htmlFor="name" className="fixed-width-left control-label">名称：</label>
                     <div className="fixed-width-right">
-                      <input type="text" className={ "form-control " + (prompt.name ? "error" : "") } id="name" placeholder="name" value={ name } maxLength={ 16 } onChange={ this.onChange }/>
+                      <input type="text" className={ "form-control " } id="name" placeholder="name" value={ name } maxLength={ 16 } onChange={ this.onChange }/>
                       <span className={ prompt.name ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
@@ -154,14 +154,14 @@ export default class CentralizedControllerPopup extends Component {
                   <div className="form-group clearfix">
                     <label htmlFor="lng" className="fixed-width-left control-label">经度：</label>
                     <div className="fixed-width-right">
-                      <input type="text" className={ "form-control " + (prompt.lng ? "error" : "") } id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
+                      <input type="text" className={ "form-control " } id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
                       <span className={ prompt.lng ? "prompt " : "prompt hidden" }>{ "经度数不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
                     <label htmlFor="lat" className="fixed-width-left control-label">纬度：</label>
                     <div className="fixed-width-right">
-                      <input type="text" className={ "form-control " + (prompt.lat ? "error" : "") } id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
+                      <input type="text" className={ "form-control " } id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
                       <span className={ prompt.lat ? "prompt " : "prompt hidden" }>{ "纬度数不合法" }</span>
                     </div>
                   </div>
