@@ -1,0 +1,620 @@
+exports[`<SensorStrategyPopup /> snapshot add 1`] = `
+<div
+  className="modal-content test">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      添加策略
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="form-group">
+      <label
+        className="control-label"
+        htmlFor="strategyName">
+        策略名称：
+      </label>
+      <div
+        className="form-group-right">
+        <input
+          className="form-control"
+          id="strategyName"
+          onChange={[Function]}
+          placeholder="传感器使用策略"
+          type="text"
+          value="" />
+        <span
+          style={
+            Object {
+              "visibility": "hidden",
+            }
+          }>
+          仅能使用数字、字母、下划线，必须以字母或下划线开头
+        </span>
+      </div>
+    </div>
+    <div
+      className="inline-group">
+      <div
+        className="form-group">
+        <label
+          className="control-label"
+          htmlFor="sensorType">
+          传感器类型：
+        </label>
+        <div
+          className="form-group-right">
+          <select
+            className="form-control select form-control"
+            disabled={false}
+            id="sensorType"
+            onChange={[Function]}
+            value="SENSOR_NOISE">
+            <option
+              value="SENSOR_NOISE">
+              噪声传感器
+            </option>
+            <option
+              value="SENSOR_PM25">
+              PM2.5 传感器
+            </option>
+            <option
+              value="SENSOR_PA">
+              大气压传感器
+            </option>
+            <option
+              value="SENSOR_HUMIS">
+              湿度传感器
+            </option>
+            <option
+              value="SENSOR_TEMPS">
+              温度传感器
+            </option>
+            <option
+              value="SENSOR_WINDS">
+              风速传感器
+            </option>
+            <option
+              value="SENSOR_WINDDIR">
+              风向传感器
+            </option>
+            <option
+              value="SENSOR_CO">
+              一氧化碳传感器
+            </option>
+            <option
+              value="SENSOR_O2">
+              氧气传感器
+            </option>
+            <option
+              value="SENSOR_CH4">
+              甲烷传感器
+            </option>
+            <option
+              value="SENSOR_CH2O">
+              甲醛传感器
+            </option>
+            <option
+              value="SENSOR_LX">
+              照度传感器
+            </option>
+          </select>
+          <span
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }>
+            请选择传感器
+          </span>
+        </div>
+      </div>
+      <div
+        className="form-group">
+        <label
+          className="control-label"
+          htmlFor="controlDevice">
+          控制设备：
+        </label>
+        <div
+          className="form-group-right">
+          <select
+            className="form-control select form-control"
+            disabled={false}
+            id="controlDevice"
+            onChange={[Function]}
+            value="lc">
+            <option
+              value="lc">
+              灯
+            </option>
+            <option
+              value="screen">
+              屏幕
+            </option>
+          </select>
+          <span
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }>
+            请选择设备
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="form-group chart">
+      <label
+        className="control-label">
+        图表：
+      </label>
+      <div
+        className="form-group-right" />
+    </div>
+    <div
+      className="form-group">
+      <label
+        className="control-label">
+        设置参数：
+      </label>
+      <div
+        className="form-group-right lightness">
+        <button
+          className="btn btn-primary"
+          disabled={true}
+          onClick={[Function]}>
+          添加节点
+        </button>
+        <div
+          className="lightness-right">
+          <div>
+            <input
+              className="form-control"
+              id="sensorParam"
+              onChange={[Function]}
+              placeholder="输入传感器参数"
+              type="text"
+              value="" />
+            <select
+              className="form-control select form-control"
+              id="brightness"
+              onChange={[Function]}
+              value="off">
+              <option
+                value="off">
+                关
+              </option>
+              <option
+                value={0}>
+                亮度0
+              </option>
+              <option
+                value={10}>
+                亮度10
+              </option>
+              <option
+                value={20}>
+                亮度20
+              </option>
+              <option
+                value={30}>
+                亮度30
+              </option>
+              <option
+                value={40}>
+                亮度40
+              </option>
+              <option
+                value={50}>
+                亮度50
+              </option>
+              <option
+                value={60}>
+                亮度60
+              </option>
+              <option
+                value={70}>
+                亮度70
+              </option>
+              <option
+                value={80}>
+                亮度80
+              </option>
+              <option
+                value={90}>
+                亮度90
+              </option>
+              <option
+                value={100}>
+                亮度100
+              </option>
+            </select>
+          </div>
+          <ul />
+        </div>
+      </div>
+    </div>
+    <ul
+      className="list-group notify-popup" />
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      确认
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<SensorStrategyPopup /> snapshot edit 1`] = `
+<div
+  className="modal-content test">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      添加策略
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="form-group">
+      <label
+        className="control-label"
+        htmlFor="strategyName">
+        策略名称：
+      </label>
+      <div
+        className="form-group-right">
+        <input
+          className="form-control"
+          id="strategyName"
+          onChange={[Function]}
+          placeholder="传感器使用策略"
+          type="text"
+          value="风速传感器1" />
+        <span
+          style={
+            Object {
+              "visibility": "hidden",
+            }
+          }>
+          仅能使用数字、字母、下划线，必须以字母或下划线开头
+        </span>
+      </div>
+    </div>
+    <div
+      className="inline-group">
+      <div
+        className="form-group">
+        <label
+          className="control-label"
+          htmlFor="sensorType">
+          传感器类型：
+        </label>
+        <div
+          className="form-group-right">
+          <select
+            className="form-control select form-control"
+            disabled={true}
+            id="sensorType"
+            onChange={[Function]}
+            value="SENSOR_WINDS">
+            <option
+              value="SENSOR_NOISE">
+              噪声传感器
+            </option>
+            <option
+              value="SENSOR_PM25">
+              PM2.5 传感器
+            </option>
+            <option
+              value="SENSOR_PA">
+              大气压传感器
+            </option>
+            <option
+              value="SENSOR_HUMIS">
+              湿度传感器
+            </option>
+            <option
+              value="SENSOR_TEMPS">
+              温度传感器
+            </option>
+            <option
+              value="SENSOR_WINDS">
+              风速传感器
+            </option>
+            <option
+              value="SENSOR_WINDDIR">
+              风向传感器
+            </option>
+            <option
+              value="SENSOR_CO">
+              一氧化碳传感器
+            </option>
+            <option
+              value="SENSOR_O2">
+              氧气传感器
+            </option>
+            <option
+              value="SENSOR_CH4">
+              甲烷传感器
+            </option>
+            <option
+              value="SENSOR_CH2O">
+              甲醛传感器
+            </option>
+            <option
+              value="SENSOR_LX">
+              照度传感器
+            </option>
+          </select>
+          <span
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }>
+            请选择传感器
+          </span>
+        </div>
+      </div>
+      <div
+        className="form-group">
+        <label
+          className="control-label"
+          htmlFor="controlDevice">
+          控制设备：
+        </label>
+        <div
+          className="form-group-right">
+          <select
+            className="form-control select form-control"
+            disabled={true}
+            id="controlDevice"
+            onChange={[Function]}
+            value="lc">
+            <option
+              value="lc">
+              灯
+            </option>
+            <option
+              value="screen">
+              屏幕
+            </option>
+          </select>
+          <span
+            style={
+              Object {
+                "visibility": "hidden",
+              }
+            }>
+            请选择设备
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="form-group chart">
+      <label
+        className="control-label">
+        图表：
+      </label>
+      <div
+        className="form-group-right" />
+    </div>
+    <div
+      className="form-group">
+      <label
+        className="control-label">
+        设置参数：
+      </label>
+      <div
+        className="form-group-right lightness">
+        <button
+          className="btn btn-primary"
+          disabled={true}
+          onClick={[Function]}>
+          添加节点
+        </button>
+        <div
+          className="lightness-right">
+          <div>
+            <input
+              className="form-control"
+              id="sensorParam"
+              onChange={[Function]}
+              placeholder="输入传感器参数"
+              type="text"
+              value="" />
+            <select
+              className="form-control select form-control"
+              id="brightness"
+              onChange={[Function]}
+              value="off">
+              <option
+                value="off">
+                关
+              </option>
+              <option
+                value={0}>
+                亮度0
+              </option>
+              <option
+                value={10}>
+                亮度10
+              </option>
+              <option
+                value={20}>
+                亮度20
+              </option>
+              <option
+                value={30}>
+                亮度30
+              </option>
+              <option
+                value={40}>
+                亮度40
+              </option>
+              <option
+                value={50}>
+                亮度50
+              </option>
+              <option
+                value={60}>
+                亮度60
+              </option>
+              <option
+                value={70}>
+                亮度70
+              </option>
+              <option
+                value={80}>
+                亮度80
+              </option>
+              <option
+                value={90}>
+                亮度90
+              </option>
+              <option
+                value={100}>
+                亮度100
+              </option>
+            </select>
+          </div>
+          <ul>
+            <li>
+              <span
+                className="sensor-param">
+                1 m/s
+              </span>
+              <span
+                className="sensor-other">
+                亮度0
+              </span>
+              <span
+                className="glyphicon glyphicon-trash"
+                id={0}
+                onClick={[Function]} />
+            </li>
+            <li>
+              <span
+                className="sensor-param">
+                2 m/s
+              </span>
+              <span
+                className="sensor-other">
+                亮度20
+              </span>
+              <span
+                className="glyphicon glyphicon-trash"
+                id={1}
+                onClick={[Function]} />
+            </li>
+            <li>
+              <span
+                className="sensor-param">
+                3 m/s
+              </span>
+              <span
+                className="sensor-other">
+                亮度70
+              </span>
+              <span
+                className="glyphicon glyphicon-trash"
+                id={2}
+                onClick={[Function]} />
+            </li>
+            <li>
+              <span
+                className="sensor-param">
+                4 m/s
+              </span>
+              <span
+                className="sensor-other">
+                亮度30
+              </span>
+              <span
+                className="glyphicon glyphicon-trash"
+                id={3}
+                onClick={[Function]} />
+            </li>
+            <li>
+              <span
+                className="sensor-param">
+                5 m/s
+              </span>
+              <span
+                className="sensor-other">
+                亮度70
+              </span>
+              <span
+                className="glyphicon glyphicon-trash"
+                id={4}
+                onClick={[Function]} />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ul
+      className="list-group notify-popup" />
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      确认
+    </button>
+  </div>
+</div>
+`;
