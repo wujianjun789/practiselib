@@ -1,0 +1,90 @@
+exports[`test renders SceneItem 1`] = `
+<div
+  className="modal-content strategy-set-popup">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="row form-group">
+      <label
+        className="col-sm-2">
+        设备种类:
+      </label>
+      <input
+        className="col-sm-10"
+        disabled="disabled"
+        placeholder="设备种类"
+        type="text"
+        value="" />
+    </div>
+    <div
+      className="row form-group">
+      <label
+        className="col-sm-2">
+        所属域:
+      </label>
+      <div
+        className="col-sm-5">
+        <div
+          className="searchText "
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}>
+          <input
+            className="form-control"
+            onChange={[Function]}
+            placeholder="输入设备名称"
+            type="search"
+            value="" />
+          <ul
+            className="" />
+          <span
+            className="glyphicon glyphicon-search"
+            onClick={[Function]} />
+        </div>
+        <ul
+          className="device-all" />
+      </div>
+      <div
+        className="col-sm-5 device-cur-container">
+        <ul
+          className="device-cur" />
+      </div>
+    </div>
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      保存
+    </button>
+  </div>
+</div>
+`;

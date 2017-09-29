@@ -19,7 +19,7 @@ export default class SceneItem extends Component{
         const {className, name, active, asset} = this.props;
 
         let assetName = "";
-        asset.map((ass,index)=>{
+        asset && asset.map((ass,index)=>{
             assetName += ass.name+(index<asset.length-1?"，":"");
         })
        return <div className={"panel panel-default scene-item "+className}>
