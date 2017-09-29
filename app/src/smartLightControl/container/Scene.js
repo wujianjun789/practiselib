@@ -131,7 +131,7 @@ export default class Scene extends Component{
 
     render(){
         const {sort, search, sceneList,page} = this.state;
-        console.log(sceneList);
+    
         return (
             <Content>
                 <div className="heading">

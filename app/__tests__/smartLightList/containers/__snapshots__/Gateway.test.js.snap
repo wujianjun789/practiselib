@@ -156,7 +156,7 @@ exports[`<Gateway /> default render snapshot 1`] = `
             disabled={true}
             id="controlMode"
             onChange={[Function]}
-            value="">
+            value="remote">
             <option
               value="remote">
               远程
@@ -168,7 +168,9 @@ exports[`<Gateway /> default render snapshot 1`] = `
           </select>
           <button
             className="btn btn-primary"
-            disabled={true}>
+            disabled={true}
+            id="controlMode_btn"
+            onClick={[Function]}>
             应用
           </button>
         </div>
@@ -183,7 +185,9 @@ exports[`<Gateway /> default render snapshot 1`] = `
           </span>
           <button
             className="btn btn-primary"
-            disabled={true}>
+            disabled={true}
+            id=" timing"
+            onClick={[Function]}>
             校时
           </button>
         </div>

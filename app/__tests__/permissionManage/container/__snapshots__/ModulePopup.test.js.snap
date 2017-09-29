@@ -1,0 +1,132 @@
+exports[`<ModulePopup snapshot 1`] = `
+<div
+  className="modal-content user-module-edit-popup">
+  <div
+    className="modal-header">
+    <button
+      aria-label="Close"
+      className="close"
+      data-dismiss="modal"
+      onClick={[Function]}
+      type="button">
+      <span
+        aria-hidden="true">
+        ×
+      </span>
+    </button>
+    <h4
+      className="modal-title">
+      模块权限管理
+    </h4>
+  </div>
+  <div
+    className="modal-body">
+    <div
+      className="form-group row module-per">
+      <label
+        className="control-label">
+        模块权限:
+      </label>
+      <div>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={false}
+            name="module"
+            type="checkbox"
+            value="asset" />
+           
+          资产管理
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={true}
+            name="module"
+            type="checkbox"
+            value="permission" />
+           
+          权限管理
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={true}
+            name="module"
+            type="checkbox"
+            value="maintenance" />
+           
+          系统运维
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={false}
+            name="module"
+            type="checkbox"
+            value="control" />
+           
+          系统控制
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={false}
+            name="module"
+            type="checkbox"
+            value="report" />
+           
+          报表管理
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={false}
+            name="module"
+            type="checkbox"
+            value="publish" />
+           
+          媒体发布
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={false}
+            name="module"
+            type="checkbox"
+            value="visual" />
+           
+          可视化
+        </label>
+        <label
+          className="checkbox-inline">
+          <input
+            defaultChecked={false}
+            name="module"
+            type="checkbox"
+            value="domain" />
+           
+          域管理
+        </label>
+      </div>
+    </div>
+  </div>
+  <div
+    className="modal-footer">
+    <button
+      className="btn btn-default"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      取消
+    </button>
+    <button
+      className="btn btn-primary"
+      disabled={false}
+      onClick={[Function]}
+      type="button">
+      确认
+    </button>
+  </div>
+</div>
+`;

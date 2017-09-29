@@ -168,7 +168,7 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
             disabled={true}
             id="deviceSwitch"
             onChange={[Function]}
-            value="">
+            value="on">
             <option
               value="on">
               开启
@@ -180,7 +180,9 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
           </select>
           <button
             className="btn btn-primary"
-            disabled={true}>
+            disabled={true}
+            id="deviceSwitch_btn"
+            onClick={[Function]}>
             应用
           </button>
         </div>
@@ -194,7 +196,7 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
             disabled={true}
             id="dimming"
             onChange={[Function]}
-            value="">
+            value={0}>
             <option
               value={0}>
               亮度0
@@ -242,7 +244,9 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
           </select>
           <button
             className="btn btn-primary"
-            disabled={true}>
+            disabled={true}
+            id="dimming_btn"
+            onClick={[Function]}>
             应用
           </button>
         </div>

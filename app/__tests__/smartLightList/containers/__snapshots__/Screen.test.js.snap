@@ -159,7 +159,7 @@ exports[`<Screen /> default render snapshot 1`] = `
             disabled={true}
             id="deviceSwitch"
             onChange={[Function]}
-            value="">
+            value="on">
             <option
               value="on">
               开启
@@ -171,7 +171,9 @@ exports[`<Screen /> default render snapshot 1`] = `
           </select>
           <button
             className="btn btn-primary"
-            disabled={true}>
+            disabled={true}
+            id="deviceSwitch_btn"
+            onClick={[Function]}>
             应用
           </button>
         </div>
