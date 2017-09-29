@@ -10,7 +10,7 @@ import TableWithHeader from '../components/TableWithHeader';
 import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
-import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../api/asset';
+import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById} from '../../api/asset';
 import {getLightLevelConfig} from '../../util/network';
 import {getMomentDate, momentDateFormat} from '../../util/time';
 export default class SingleLampCon extends Component {
@@ -36,7 +36,7 @@ export default class SingleLampCon extends Component {
                 valueField: 'name',
                 options: []
             },
-            currentSwitchStatus: '',
+            currentSwitchStatus: 'on',
             deviceSwitchList: {
                 titleField: 'title',
                 valueField: 'value',
@@ -77,7 +77,8 @@ export default class SingleLampCon extends Component {
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-        this.tableClick = this.tableClick.bind(this);
+		this.tableClick = this.tableClick.bind(this);
+		this.onClick = this.onClick.bind(this);
 
         this.initData = this.initData.bind(this);
         this.updateDomainData = this.updateDomainData.bind(this);
@@ -148,7 +149,7 @@ export default class SingleLampCon extends Component {
 
             opt.push({value: val, title});
         });
-        this.setState({brightnessList: Object.assign({}, this.state.brightnessList, {options: opt})});
+        this.setState({brightnessList: Object.assign({}, this.state.brightnessList, {options: opt}), currentBrightness: opt[0].value});
     }
 
     onChange(e) {
@@ -187,7 +188,23 @@ export default class SingleLampCon extends Component {
 
     tableClick(currentDevice) {
         this.setState({currentDevice});
-    }
+	}
+
+	onClick(e) {
+		const {id} = e.target;
+		const deviceId = this.state.currentDevice.id;
+		const {currentSwitchStatus, currentBrightness} = this.state;
+		let data;
+		switch(id) {
+			case 'deviceSwitch_btn':
+				data = {"switch": currentSwitchStatus};
+				break;
+			case 'dimming_btn':
+				data = {"brightness": currentBrightness};
+				break;
+		}
+		updateAssetsRpcById(deviceId, data);
+	}
 
     render() {
         const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
@@ -235,13 +252,13 @@ export default class SingleLampCon extends Component {
                                     <span className="tit">设备开关：</span>
                                     <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField}
                                         options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
-                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                    <button id="deviceSwitch_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>应用</button>
                                 </div>
                                 <div>
                                     <span className="tit">调光：</span>
                                     <Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField}
                                         options={brightnessList.options}  value={currentBrightness} onChange={this.onChange} disabled={disabled} />
-                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                    <button id="dimming_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>应用</button>
                                 </div>
                             </div>
                         </div>

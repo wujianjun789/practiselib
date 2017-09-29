@@ -10,7 +10,7 @@ import TableWithHeader from '../components/TableWithHeader';
 import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
-import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../api/asset';
+import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById} from '../../api/asset';
 import {getMomentDate, momentDateFormat} from '../../util/time';
 
 export default class Gateway extends Component{
@@ -36,7 +36,7 @@ export default class Gateway extends Component{
                 valueField: 'name',
                 options: []
             },
-            currentControlMode: '',
+            currentControlMode: 'remote',
             controlModeList: {
                 titleField: 'title',
                 valueField: 'value',
@@ -67,7 +67,8 @@ export default class Gateway extends Component{
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-        this.tableClick = this.tableClick.bind(this);
+		this.tableClick = this.tableClick.bind(this);
+		this.onClick = this.onClick.bind(this);
 
         this.initData = this.initData.bind(this);
         this.updateDomainData = this.updateDomainData.bind(this);
@@ -84,7 +85,7 @@ export default class Gateway extends Component{
     componentWillUnmount() {
         this.mounted = false;
     }
-    
+
     initData() {
         getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
@@ -130,7 +131,7 @@ export default class Gateway extends Component{
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];  
+                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain}, this.initDeviceData);
                 break;
             case 'controlMode':
@@ -159,8 +160,23 @@ export default class Gateway extends Component{
 
     tableClick(currentDevice) {
         this.setState({currentDevice});
-    }
-  
+	}
+
+	onClick(e) {
+		const id = e.target.id;
+		const deviceId = this.state.currentDevice.id;
+		let body;
+		switch(id) {
+			case 'controlMode_btn':
+				body = {'mode': this.state.currentControlMode};
+				break;
+			case 'timing':
+				body = {};
+				break;
+		}
+		updateAssetsRpcById(deviceId, body);
+	}
+
     render() {
         const {
             page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
@@ -207,12 +223,12 @@ export default class Gateway extends Component{
                                     <span className="tit">控制模式：</span>
                                     <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField}
                                         options={controlModeList.options}  value={currentControlMode} onChange={this.onChange} disabled={disabled}/>
-                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                    <button id="controlMode_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>应用</button>
                                 </div>
                                 <div>
                                     <span className="tit">校时：</span>
                                     <span className="note">(点击以校准时间)</span>
-                                    <button className="btn btn-primary" disabled={disabled}>校时</button>
+                                    <button id=" timing" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>校时</button>
                                 </div>
                             </div>
                         </div>
