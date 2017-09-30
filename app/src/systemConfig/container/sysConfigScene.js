@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import '../../../public/styles/systemOperation-sysConfig.less';
 
 import SearchText from '../../components/SearchText';
-import Table from '../../components/Table3';
+import Table from '../../components/Table2';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select'

@@ -87,7 +87,11 @@ export default class Table2 extends Component {
                                 </td>
                                 {
                                     columns.map(function (item, index) {
-                                        return <td key={index}>{row[item.field]}</td>
+                                        if(typeof item.field === 'function' ) {
+                                            return <td key={index}>{item.field(row)}</td>
+                                        } else {
+                                            return <td key={index}>{row[item.field]}</td>
+                                        }
                                     })
                                 }
                                 {
