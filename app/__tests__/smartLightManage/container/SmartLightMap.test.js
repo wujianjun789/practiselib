@@ -30,6 +30,15 @@ test('renders smartLightMap data', ()=>{
             <SmartLightMap />
         </Provider>
     );
-console.log(wrapper.find('SmartLightMap').find('.search-container').length);
+
     expect(wrapper.find('.search-container').length).toEqual(1);
+    expect(wrapper.find('.search-container').find('.pole-info').length).toEqual(1);
+    expect(wrapper.find('.filter-container').length).toEqual(1);
+
+    expect(wrapper.find('.select-active').length).toEqual(0);
+    // wrapper.setState({interactive:true});
+    // wrapper.update();
+    // expect(wrapper.find('.select-active').length).toEqual(1);
+    wrapper.find('.filter-container').find('ul').childAt(0).simulate('click');
+    expect(wrapper.find('.filter-container').find('ul').childAt(0).hasClass('active')).toBeTruthy();
 })
