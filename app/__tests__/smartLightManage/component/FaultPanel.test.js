@@ -16,5 +16,10 @@ test('renders Scene', ()=>{
 });
 
 test('renders Scene data', ()=>{
-    const component = shallow(<FaultPanel />);
+    const closeClick = jest.fn();
+    const component = shallow(<FaultPanel closeBtn={true} closeClick={closeClick}/>);
+    expect(component.find('.panel').length).toEqual(1);
+
+    component.find('button').simulate('click');
+    expect(closeClick).toHaveBeenCalledTimes(1);
 })
