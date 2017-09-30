@@ -1,0 +1,387 @@
+exports[`test renders smartLightMap 1`] = `
+<div
+  className="content ">
+  <div
+    className="map-view "
+    id="smartLightMap" />
+  <div
+    className="search-container">
+    <div
+      className="searchText smartLight-map"
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}>
+      <input
+        className="form-control"
+        onChange={[Function]}
+        placeholder="搜索名称或域"
+        type="search"
+        value="" />
+      <ul
+        className="">
+        <li
+          className="active"
+          onClick={[Function]}
+          value="设备">
+          <span>
+            设备
+          </span>
+          
+        </li>
+        <li
+          className=""
+          onClick={[Function]}
+          value="域">
+          <span>
+            域
+          </span>
+          
+        </li>
+      </ul>
+      <span
+        className="glyphicon glyphicon-search hidden" />
+    </div>
+    <ul
+      className="list-group hidden"
+      style={
+        Object {
+          "maxHeight": "623px",
+        }
+      }>
+      <li
+        className="list-group-item"
+        onClick={[Function]}>
+        疏影路灯杆1号
+        <span
+          className="icon icon_collect" />
+        <span
+          className="icon icon_charge" />
+        <span
+          className="icon icon_camera" />
+        <span
+          className="icon icon_lamp" />
+        <span
+          className="icon icon_screen" />
+      </li>
+      <li
+        className="list-group-item"
+        onClick={[Function]}>
+        疏影路灯杆2号
+        <span
+          className="icon icon_collect" />
+        <span
+          className="icon icon_camera" />
+        <span
+          className="icon icon_lamp" />
+        <span
+          className="icon icon_screen" />
+      </li>
+      <li
+        className="list-group-item"
+        onClick={[Function]}>
+        疏影路灯杆3号
+        <span
+          className="icon icon_collect" />
+        <span
+          className="icon icon_lamp" />
+        <span
+          className="icon icon_screen" />
+      </li>
+      <li
+        className="list-group-item"
+        onClick={[Function]}>
+        疏影路灯杆4号
+        <span
+          className="icon icon_collect" />
+        <span
+          className="icon icon_lamp" />
+      </li>
+    </ul>
+    <div
+      className="margin-top margin-bottom search-back hidden"
+      onClick={[Function]}
+      style={
+        Object {
+          "marginBottom": "15px",
+        }
+      }>
+      <span
+        className="glyphicon glyphicon-menu-left padding-left padding-right" />
+      <span
+        className="name">
+        返回搜索结果
+      </span>
+    </div>
+    <div
+      className="panel panel-info pole-info hidden"
+      id="poleInfo"
+      style={
+        Object {
+          "maxHeight": "352px",
+        }
+      }>
+      <div
+        className="panel-heading "
+        style={
+          Object {
+            "maxHeight": "38px",
+          }
+        }>
+        <h3
+          className="panel-title ">
+          疏影路灯杆1号
+        </h3>
+      </div>
+      <div
+        className="panel-body "
+        style={
+          Object {
+            "maxHeight": "312px",
+          }
+        }>
+        <ul
+          className="btn-group ">
+          <li
+            className=" active"
+            onClick={[Function]}>
+            <span
+              className="icon icon_screen_hover" />
+          </li>
+          <li
+            className=" "
+            onClick={[Function]}>
+            <span
+              className="icon icon_lamp" />
+          </li>
+          <li
+            className=" "
+            onClick={[Function]}>
+            <span
+              className="icon icon_camera" />
+          </li>
+          <li
+            className=" "
+            onClick={[Function]}>
+            <span
+              className="icon icon_charge" />
+          </li>
+          <li
+            className=" "
+            onClick={[Function]}>
+            <span
+              className="icon icon_collect" />
+          </li>
+        </ul>
+        <div
+          className="row state-info screen">
+          <div
+            className="col-sm-8 prop">
+            <div
+              className="pro">
+              <span>
+                width
+                :
+              </span>
+              192
+              x
+              576
+            </div>
+            <div
+              className="pro">
+              <span>
+                online
+                :
+              </span>
+              在线
+            </div>
+            <div
+              className="pro">
+              <span>
+                brightness_mode
+                :
+              </span>
+              manual
+            </div>
+            <div
+              className="pro">
+              <span>
+                brightness
+                :
+              </span>
+              100
+            </div>
+            <div
+              className="fault-container">
+              <span
+                className="name">
+                fault
+                :
+              </span>
+              <span
+                className="fault"
+                onClick={[Function]} />
+            </div>
+            <div
+              className="panel faultPanel panel-primary hidden"
+              style={
+                Object {
+                  "top": "280px",
+                }
+              }>
+              <div
+                className="panel-heading">
+                <h3
+                  className="panel-title">
+                  fault_info
+                </h3>
+                <button
+                  className="close"
+                  onClick={[Function]}
+                  type="button">
+                  <span>
+                    ×
+                  </span>
+                </button>
+              </div>
+              <div
+                className="panel-body">
+                <div>
+                  sys_fault
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-sm-4 img-container">
+            <img
+              src="http://localhost:8080/images/smartLight/screen_test.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="panel panel-info pole-control hidden"
+      style={
+        Object {
+          "maxHeight": "180px",
+        }
+      }>
+      <div
+        className="panel-heading "
+        style={
+          Object {
+            "borderBottom": "1px",
+            "maxHeight": "38px",
+            "paddingBottom": "10px",
+            "paddingTop": "10px",
+          }
+        }>
+        <h3
+          className="panel-title ">
+          设备控制
+        </h3>
+        <span
+          className="glyphicon glyphicon-triangle-bottom "
+          onClick={[Function]} />
+      </div>
+      <div
+        className="panel-body "
+        style={
+          Object {
+            "maxHeight": "140px",
+            "paddingBottom": "15px",
+            "paddingTop": "15px",
+          }
+        }>
+        <div
+          className="row state-control screen">
+          <div
+            className="col-sm-12 form-group switch">
+            <label
+              className="col-sm-4">
+              显示屏开关:
+            </label>
+            <select
+              className="col-sm-4"
+              onChange={[Function]}
+              value="关">
+              <option>
+                关
+              </option>
+              <option>
+                开
+              </option>
+            </select>
+            <button
+              className="col-sm-3 btn btn-primary padding-left"
+              onClick={[Function]}>
+              应用
+            </button>
+          </div>
+          <div
+            className="col-sm-12 form-group time-table">
+            <label
+              className="col-sm-4">
+              时间表1
+            </label>
+            <select
+              className="col-sm-4"
+              onChange={[Function]}
+              value="time1">
+              <option>
+                time1
+              </option>
+              <option>
+                time2
+              </option>
+            </select>
+            <button
+              className="col-sm-3 btn btn-primary"
+              onClick={[Function]}>
+              应用
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="filter-container">
+    <ul
+      className="btn-group">
+      <li
+        className="btn active"
+        onClick={[Function]}>
+        <span
+          className="icon icon_pole_hover" />
+      </li>
+      <li
+        className="btn "
+        onClick={[Function]}>
+        <span
+          className="icon icon_screen" />
+      </li>
+      <li
+        className="btn "
+        onClick={[Function]}>
+        <span
+          className="icon icon_camera" />
+      </li>
+      <li
+        className="btn "
+        onClick={[Function]}>
+        <span
+          className="icon icon_lamp" />
+      </li>
+      <li
+        className="btn "
+        onClick={[Function]}>
+        <span
+          className="icon icon_charge" />
+      </li>
+    </ul>
+  </div>
+  <ul
+    className="list-group notify-popup" />
+</div>
+`;

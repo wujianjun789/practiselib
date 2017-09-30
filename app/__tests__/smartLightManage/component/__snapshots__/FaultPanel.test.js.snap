@@ -1,0 +1,20 @@
+exports[`test renders Scene 1`] = `
+<div
+  className="panel panel-primary"
+  style={null}>
+  <div
+    className="panel-heading">
+    <h3
+      className="panel-title">
+      　
+    </h3>
+  </div>
+  <div
+    className="panel-body">
+    <div
+      className="row pull-center">
+      No data
+    </div>
+  </div>
+</div>
+`;
