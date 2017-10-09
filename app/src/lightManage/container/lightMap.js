@@ -14,7 +14,7 @@ import Panel from '../component/FaultPanel'
 
 /*  新增－t  */
 import NotifyPopup from '../../common/containers/NotifyPopup';
-import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
+import {addNotify, removeAllNotify, removeNotify} from '../../common/actions/notifyPopup';
 import {getDomainList} from '../../api/domain'
 import {getObjectByKey} from '../../util/index'
 import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
@@ -189,12 +189,12 @@ export class lightMap extends Component{
             })
             /*  如没有找到则根据input值执行api获取数据  */
             /*  根据返回数据添加到searchList变量中  */
-            //this.setState({searchList:this.state.resDevice},()=>{});
+            //  this.setState({searchList:this.state.resDevice},()=>{});
             this.setState({IsSearchResult:true},()=>{
                 this.setState({search:this.state.search.update("value",v=>'')});
                 this.setSize();
             });
-            // this.state.curDevice._tail.array.map(item=>{
+            //  this.state.curDevice._tail.array.map(item=>{
             //     if(item.name.indexOf(e.target.value)!=-1){
             //         this.setState({searchList:this.state.searchList.push(item)},()=>{console.log(this.state.searchList)});
             //     }
