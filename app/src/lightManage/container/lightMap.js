@@ -14,7 +14,7 @@ import Panel from '../component/FaultPanel'
 
 /*  新增－t  */
 import NotifyPopup from '../../common/containers/NotifyPopup';
-import {addNotify} from '../../common/actions/notifyPopup';
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 import {getDomainList} from '../../api/domain'
 import {getObjectByKey} from '../../util/index'
 import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
@@ -168,6 +168,8 @@ export class lightMap extends Component{
         window.onresize = event=>{
             this.setSize();
         }
+        
+        this.props.actions.removeAllNotify();
     }
     /*  新增－t  */
     searchInputOnKeyUp(e){
@@ -853,7 +855,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
-        addNotify:addNotify
+        addNotify: addNotify,
+        removeAllNotify: removeAllNotify
     }, dispatch),
 })
 

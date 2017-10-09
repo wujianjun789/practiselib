@@ -116,19 +116,59 @@
 }
 
 .user-module-edit-popup{
+    .modal-body{
+        margin-right:0px;
+    }
     .module-per{
-        >div{
-            width:580px;
+        >.control-label{
+            text-align: right;
+            line-height: 20px;
             float: left;
-            padding-left: 15px;
-            .checkbox-inline{
-                min-width: 106px;
-                padding-right: 30px;
-                color: #808080;
-                font-size: 14px;
-                margin: 6px 0 14px 0;
+            width: 105px;
+        }
+        >.module-content{
+            width: 545px;
+            margin-left: 15px;
+            float: left;
+        }
+        .all-module-list,.module-list{
+            float: left;
+            width: 50%;  
+            height:230px;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            >ul{
+                padding: 10px 17px 0 20px;
+                >li{
+                    color: #808080;
+                    font-size: 14px;
+                    line-height: 30px;
+                    height: 30px;
+                    &:hover{
+                        background-color: #e5e5e5;
+                    }
+                    >span{
+                        float: right;
+                        display: block;
+                    }
+                    >.icon-table-delete{
+                        background-image: url(/images/icon_delete.png);
+                        background-size: 100% 100%;
+                        width: 15px;
+                        height: 15px;
+                        margin-top: 7px;
+                        cursor: pointer;
+                    }
+                    >.glyphicon{
+                        margin-top: 7px;
+                        cursor: pointer;
+                    }
+                    >.list-node-add{
+                        color: #00bcff;
+                    }
+                }
             }
-        }  
+        }
     }
 }
 

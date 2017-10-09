@@ -22,7 +22,7 @@ export default class EditPopupComponet extends Component {
                   <SearchText className='edit_selectdevice-searchtext' placeholder='输入设备名称' onChange={ searchTextOnChange } value={ value } submit={ searchAssets } />
                   <div className="edit_selectdevice-main pRelative"><DeviceList idName='selectdevice' className='edit_selectdevice-ul' operations={ ['添加', '已添加'] } data={ allEquipmentsData } {...props}/></div>
                 </div>
-                <div className='edit_whole-content clearfix'>
+                <div className='edit_whole-content h100p clearfix'>
                   <ul className='edit_whole-ul pRelative'>
                     <DeviceList idName='whole' className='edit_selectdevice-ul' showIcon={ true } iconClassName='delete' data={ allPoleEquipmentsData } itemClick={ deleteClick } />
                   </ul>
