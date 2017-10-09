@@ -33,7 +33,7 @@ export default class DeviceStateChart extends Component{
             {
                 monitorList.map(device=>{
                     let list = data[device.id]
-                    return <div key={device.id} className="col-sm-6">
+                    return <div key={device.id} className="col-sm-6 monitor">
                         <div className="heading">{device.name}</div>
                         <div className="body statistics-container">
                             {
