@@ -79,7 +79,7 @@ export default class ServiceMonitoring extends Component{
         return <Content>
             {
                 monitorList.map(mon=>{
-                    return <div key={mon.id} className="col-sm-6">
+                    return <div key={mon.id} className="col-sm-6 monitor">
                         <div className="heading"><span className="name">{mon.name}</span>{mon.detail}<span className="right">100%</span></div>
                         <div className={"chart "+mon.id} id={mon.id} ref={ref=>this.renderChart(ref, mon.id)}></div>
                     </div>

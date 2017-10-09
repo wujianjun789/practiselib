@@ -1,0 +1,77 @@
+exports[`test renders Scene 1`] = `
+<div
+  className="content ">
+  <div
+    className="col-sm-6 monitor">
+    <div
+      className="heading">
+      <span
+        className="name">
+        CPU
+      </span>
+      INTEL(R) XEON(R) CPU E5-1620 V3
+      <span
+        className="right">
+        100%
+      </span>
+    </div>
+    <div
+      className="chart cpu"
+      id="cpu" />
+  </div>
+  <div
+    className="col-sm-6 monitor">
+    <div
+      className="heading">
+      <span
+        className="name">
+        内存
+      </span>
+      16.0GB
+      <span
+        className="right">
+        100%
+      </span>
+    </div>
+    <div
+      className="chart memory"
+      id="memory" />
+  </div>
+  <div
+    className="col-sm-6 monitor">
+    <div
+      className="heading">
+      <span
+        className="name">
+        磁盘
+      </span>
+      500G
+      <span
+        className="right">
+        100%
+      </span>
+    </div>
+    <div
+      className="chart disk"
+      id="disk" />
+  </div>
+  <div
+    className="col-sm-6 monitor">
+    <div
+      className="heading">
+      <span
+        className="name">
+        网络
+      </span>
+      INTEL(R) ETHER CONNECTION L217-LM
+      <span
+        className="right">
+        100%
+      </span>
+    </div>
+    <div
+      className="chart network"
+      id="network" />
+  </div>
+</div>
+`;
