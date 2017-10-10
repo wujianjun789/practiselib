@@ -8,7 +8,6 @@ import PanelFooter from '../../components/PanelFooter';
 import SearchText from '../../components/SearchText';
 
 import {getAssetsBaseByModelWithName} from '../../api/asset';
-import {getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
 import {getModelData,getModelNameById} from '../../data/assetModels';
 
 import Immutable from 'immutable';
