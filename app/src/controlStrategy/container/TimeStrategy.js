@@ -321,7 +321,7 @@ class TimeStrategy extends Component{
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button id="sys-add" className="btn btn-primary add-domain" onClick={this.addHandler}>添加</button>
+                <button  className="btn btn-primary add-strategy" onClick={this.addHandler}>添加</button>
             </div>
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={data} activeId={selectDevice && selectDevice.id}
