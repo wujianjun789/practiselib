@@ -26,8 +26,15 @@ describe('<ModulePopup',()=>{
         const container = cmp.find(`.${className}`);
         expect(container.length).toBe(1);
 
-        const checkbox = cmp.find('.checkbox-inline');
-        expect(checkbox.length).toBe(modules.length);
+        const allModule = container.find('.all-module-list');
+        expect(allModule.length).toBe(1);
+        const allModuleLi = allModule.find('li');
+        expect(allModuleLi.length).toBe(modules.length);
+
+        const moduleList = container.find('.module-list');
+        expect(moduleList.length).toBe(1);
+        const moduleLi = moduleList.find('li');
+        expect(moduleLi.length).toBe(rowModules.length);
     })
 
     it('snapshot', () => {
