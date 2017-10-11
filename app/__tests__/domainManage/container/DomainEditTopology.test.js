@@ -9,7 +9,7 @@ import Overlayer from '../../../src/common/containers/Overlayer';
 import DomainEditTopology from '../../../src/domainManage/container/DomainEditTopology';
 global.d3 = require('../../../public/js/d3.min');
 
-it('TimeStrategy mount', () => {
+it('DomainEditTopology mount', () => {
     const store = configureStore();
 
     it('simulate add-domain btn click', () => {
