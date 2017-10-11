@@ -156,20 +156,6 @@ export class sysConfigScene extends Component {
         this.requestSearch();
     }
 
-    // requestSearch(){
-    //     const {search, page} = this.state;
-    //     let limit = page.get("pageSize");
-    //     let offset = (page.get("current")-1)*limit;
-    //     let value = search.get("value");
-    //     getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
-    //     getSearchSceneCount(value, data=>{ this.mounted && this.initPageSize(data)})
-    // }
-
-    // initPageSize(data){
-    //     let page = this.state.page.set('total', data.count);
-    //     this.setState({page: page});
-    // }
-
     requestSearch(){
         let value = this.state.search.get("value");
         getSearchSceneCount(value, data=>{ this.mounted && this.initPageSize(data)})
@@ -180,14 +166,13 @@ export class sysConfigScene extends Component {
         let {search, page} = this.state;
         let limit = page.get("pageSize");
         let size = Number.parseInt(data.count/limit) + (data.count%limit>0?1:0);
+        size = size === 0 ? 1 : size;
         let current = page.get('current');
-        if(current>size) {
+        if(current>size) { 
             current = size;
-            this.setState({page: page.update('current', (v)=> size )})
-            // this.setState({page: page.update(v=> v.update('current', () => size) )}, () => {console.log(this.state.page.get('current'))})
+            this.setState({page: page.update('current', (v)=> size )});
         }
         let offset = (current-1)*limit;
-        offset=offset<0?0:offset;
         getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
         page = this.state.page.update('total', () => data.count);
         this.setState({page: page});
@@ -200,7 +185,7 @@ export class sysConfigScene extends Component {
 
     initResult(data){
         this.setState({sceneList:data},()=>{
-            data.map(scene=>{
+            data.forEach(scene=>{
                 this.getAssetName(scene, curIndex=>{
                     if(curIndex==0){
                         this.updateSelectDevice(this.state.sceneList[0]);
