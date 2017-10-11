@@ -13,10 +13,10 @@ const initData = { title: "",
     domainList:{titleKey:'name', valueKey:'name', options:[]}
 }
 
-it('DomainEditTopology mount', () => {
+it('DomainPopup mount', () => {
     const store = configureStore();
 
-    it('simulate add-domain btn click', () => {
+    it('DomainPopup render', () => {
         const root = mount(
             <Provider store={store}>
                 <DomainPopup title={initData.title} data={initData.data} domainList={initData.domainList}/>
