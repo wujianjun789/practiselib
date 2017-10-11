@@ -122,7 +122,7 @@ export function getDeviceByAssetControls(prop, mode, value, cb) {
     }
     param ={where:param};
     let paramStr = JSON.stringify(param);
-    httpRequest(HOST_IP+'/AssetControls?filter='+encodeURIComponent(paramStr),{
+    httpRequest(HOST_IP+'/?filter='+encodeURIComponent(paramStr),{
         headers:headers,
         method:"GET"
     },response=>{
@@ -136,7 +136,7 @@ export function getDeviceByAssetControls(prop, mode, value, cb) {
  */
 export function addDeviceToStrategy(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/AssetControls',{
+    httpRequest(HOST_IP+'/',{
         headers: headers,
         method: "POST",
         body: JSON.stringify(data)
@@ -151,7 +151,7 @@ export function addDeviceToStrategy(data, cb) {
  */
 export function updateDeviceToStrategy(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/AssetControls',{
+    httpRequest(HOST_IP+'/',{
         headers: headers,
         method: "PUT",
         body: JSON.stringify(data)

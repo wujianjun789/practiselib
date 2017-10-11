@@ -152,7 +152,7 @@ export class Strategy extends Component{
         const {actions} = this.props
         actions.overlayerShow(<StrategySetPopup title="设定设备" deviceType={selectDevice.asset} deviceList={selectDevice.deviceList}
                                                 onConfirm={(data)=>{
-                                                    for(let key in data.curDeviceList){
+                                                   /* for(let key in data.curDeviceList){
                                                         let device = data.curDeviceList[key];
                                                         let ac = {
                                                             "asset": device.id,
@@ -165,7 +165,8 @@ export class Strategy extends Component{
                                                         }else{
                                                             addDeviceToStrategy(ac)
                                                         }
-                                                    }
+                                                    }*/
+                                                    actions.overlayerHide();
 
                                                 }} onCancel={()=>{
                                                     actions.overlayerHide();

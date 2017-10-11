@@ -60,7 +60,7 @@ export class sysConfigScene extends Component {
 
             search: Immutable.fromJS({placeholder: '输入场景名称',value: ''}),
             page: Immutable.fromJS({
-                pageSize:8,
+                pageSize:4,
                 current: 1,
                 total: 0
             }),
@@ -179,10 +179,15 @@ export class sysConfigScene extends Component {
         let value = this.state.search.get("value");
         let {search, page} = this.state;
         let limit = page.get("pageSize");
-        let size = data.count/limit + (data.count%limit>0?1:0);
+        let size = Number.parseInt(data.count/limit) + (data.count%limit>0?1:0);
         let current = page.get('current');
-        current = current > size ? size : current; 
+        if(current>size) {
+            current = size;
+            this.setState({page: page.update('current', (v)=> size )})
+            // this.setState({page: page.update(v=> v.update('current', () => size) )}, () => {console.log(this.state.page.get('current'))})
+        }
         let offset = (current-1)*limit;
+        offset=offset<0?0:offset;
         getSearchScene(value, offset, limit, data=>{ this.mounted && this.initResult(data)}) //动态渲染table
         page = this.state.page.update('total', () => data.count);
         this.setState({page: page});
@@ -257,7 +262,7 @@ export class sysConfigScene extends Component {
                     sceneAssetList: selectDevice.presets,
                     param: "",
                     id:'',
-                    assetName: assetList.options[0].name,
+                    assetName: assetList.options.length==0?"":assetList.options[0].name,
                 };
 
                 overlayerShow(<SceneControllerPopup popId="add" className="centralized-popup" 
@@ -280,7 +285,7 @@ export class sysConfigScene extends Component {
                     sceneAssetList: selectDevice.presets,
                     param: "",
                     id:'',
-                    assetName: assetList.options[0].name,
+                    assetName: assetList.options.length==0?"":assetList.options[0].name,
                 }
 
                 overlayerShow(<SceneControllerPopup popId="edit" className="centralized-popup" 
