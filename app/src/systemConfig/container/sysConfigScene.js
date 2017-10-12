@@ -274,7 +274,7 @@ export class sysConfigScene extends Component {
                 let data = selectDevice.presets.length ? selectDevice.presets[0] : null;
                 const dataInit2 = {
                     domainId: selectDevice.domainId,
-                    name: "",
+                    name: selectDevice.name,
                     sceneAssetList: selectDevice.presets,
                     param: "",
                     id: '',
