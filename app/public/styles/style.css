@@ -608,6 +608,7 @@ ul {
 .select {
     display: inline-block;
     border: solid 1px #ddd;
+    border-radius: 0px;
     padding-top: 0px; padding-bottom: 0px;
     padding-right: 14px;
     padding-left: 14px;
