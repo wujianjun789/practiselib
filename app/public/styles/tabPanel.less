@@ -1,0 +1,30 @@
+.tab-panel{
+  min-width: 520px;
+  .tab-header{
+    li{
+      display: inline-block;
+      padding: 8px 15px;
+
+      background-color: #ccc;
+      border: solid 1px #ddd;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+
+      color: #fff;
+      &.active{
+        background-color: #fff;
+        color: #000;
+        //margin-bottom: -10px;
+        border-bottom: 0;
+      }
+    }
+  }
+
+  .tab-content{
+    background-color: #fff;
+    border: solid 1px #ddd;
+
+    margin-top: -2px;
+    padding: 15px;
+  }
+}

@@ -22,6 +22,8 @@ import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, upd
 import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 
+import TabPanel from '../../components/TabPanel';
+
 export class DomainEditList extends Component {
     constructor(props) {
         super(props);
@@ -297,6 +299,9 @@ export class DomainEditList extends Component {
                         <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
                               current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
+                    <TabPanel data={[{id:1, title:"文字"}, {id:2, title:"图片"}, {id:3, title:"视频"}]} activeId={1}>
+                        素材名称
+                    </TabPanel>
                 </div>
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}>
                     <div className="panel panel-default device-statics-info">
