@@ -194,12 +194,11 @@ export class sysConfigScene extends Component {
 
 
     sortChange(selectIndex) {
-        this.setState({ sort: this.state.sort.update('index', v => selectIndex) })
-        this.setState({
-            sort: this.state.sort.update('value', v => {
-                return this.state.sort.getIn(['list', selectIndex, 'value']);
-            })
+        let sort = this.state.sort.update('index', v=> selectIndex);
+        sort = sort.update('value', v => {
+            return this.state.sort.getIn(['list', selectIndex, 'value']);
         })
+        this.setState({ sort: sort})
     }
 
     componentWillUnmount() {
