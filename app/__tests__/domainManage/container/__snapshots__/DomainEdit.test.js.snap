@@ -65,7 +65,9 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="上一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <li
           aria-disabled={true}
@@ -74,7 +76,9 @@ exports[`test DomainEdit renders 1`] = `
           onKeyPress={[Function]}
           tabIndex="0"
           title="下一页">
-          <a />
+          <a>
+            
+          </a>
         </li>
         <div
           className="rc-pagination-options" />

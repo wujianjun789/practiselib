@@ -30,7 +30,7 @@ export default class TabPanel extends Component{
             <ul className="tab-header">
                 {
                     data && data.map((item, index)=>{
-                        return <li className={item.id==activeId?"active":""} onClick={()=>{this.tabClick(item.id, index)}}>{item.title}</li>
+                        return <li key={item.id} className={item.id==activeId?"active":""} onClick={()=>{this.tabClick(item.id, index)}}>{item.title}</li>
                     })
                 }
             </ul>

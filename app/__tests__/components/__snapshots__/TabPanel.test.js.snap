@@ -1,0 +1,25 @@
+exports[`test tabPanel renders 1`] = `
+<div
+  className="tab-panel ">
+  <ul
+    className="tab-header">
+    <li
+      className="active"
+      onClick={[Function]}>
+      shanghai
+    </li>
+    <li
+      className=""
+      onClick={[Function]}>
+      beijing
+    </li>
+    <li
+      className=""
+      onClick={[Function]}>
+      guangzhou
+    </li>
+  </ul>
+  <div
+    className="tab-content" />
+</div>
+`;
