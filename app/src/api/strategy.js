@@ -135,6 +135,7 @@ export function getDeviceByAssetControls(prop, mode, value, cb) {
  * @param data
  */
 export function addDeviceToStrategy(data, cb) {
+    console.log(data);
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/',{
         headers: headers,
@@ -150,6 +151,7 @@ export function addDeviceToStrategy(data, cb) {
  * @param data
  */
 export function updateDeviceToStrategy(data, cb) {
+    console.log(data);
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/',{
         headers: headers,
