@@ -15,5 +15,5 @@ test('test app reducer', () => {
 
 test('test moduleInit function', () => {
 	const data1 = [{key: 'default'}];
-	expect(moduleInit({}, data1)).toEqual({items: [{key: '', title: '', link: ''}]});
+	expect(moduleInit({}, data1)).toEqual({items: [{key: '', title: '', link: '/'}]});
 })
