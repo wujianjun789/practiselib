@@ -8,6 +8,7 @@ import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
 import SmartLightManage from '../smartLightManage/container/index'
 import LightManage from '../lightManage/container/index'
+import ReporterManage from '../reporterManage';
 import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
@@ -41,7 +42,7 @@ export default (
                                                 require.ensure([], (require) => {
                                                     cb(null, require('../assetManage/container/Screen').default)
                                                 }, 'starriverpro.assetmanage.screen')
-                                            
+
                                             } } />
         <Route path="pole" getComponent={ (nextState, cb) => {
                                               require.ensure([], (require) => {
@@ -140,7 +141,7 @@ export default (
                                                 require.ensure([], (require) => {
                                                     cb(null, require('../systemOperation/container/Pole').default)
                                                 }, 'starriverpro.systemoperation.pole')
-                                            } }/> 
+                                            } }/>
       </Route>
       <Route path="strategy">
         <Route path="timeTable" getComponent={ (nextState, cb) => {
@@ -277,7 +278,16 @@ export default (
                                                   }, 'starriverpro.lightControl.strategy')
                                               } } />
       </Route>
-    </Route>
+	</Route>
+	<Route path="/reporterManage" component={ReporterManage}>
+		<Route path="device">
+			<IndexRoute getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Brightness').default);
+				}, 'starriverpro.reporterManage.device.brightness');
+			}} />
+		</Route>
+	</Route>
   </Route>
   <Route path="*" getComponent={ (nextState, cb) => {
                                      require.ensure([], (require) => {
