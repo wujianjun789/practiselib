@@ -36,7 +36,6 @@ import EditPopup from '../components/EditPopup';
 import { sysDataHandle } from '../model/sysDataHandle';
 import { sysInitStateModel } from '../model/sysInitStateModel';
 
-const lodash = require("lodash");
 export class sysConfigScene extends Component {
     constructor(props) {
         super(props);
@@ -137,7 +136,6 @@ export class sysConfigScene extends Component {
         this.popupConfirm = this.popupConfirm.bind(this);
 
         this.initDomainList = this.initDomainList.bind(this);
-        this.getAssetName = this.getAssetName.bind(this);
     }
 
     componentWillMount() {
@@ -184,38 +182,16 @@ export class sysConfigScene extends Component {
     }
 
     initResult(data) {
-        this.setState({ sceneList: data }, () => {
-            let selectDevice;
-            if (data.length == 0) {
-                selectDevice = { id: "", name: "", active: false, presets: [{ asset: "", id: "", mode: "", name: "", prop: "", value: "" }] };
-                this.updateSelectDevice(selectDevice);
-            } else {
-                data.forEach(scene => {
-                    this.getAssetName(scene, curIndex => {
-                        if (curIndex == 0) {
-                            selectDevice = this.state.sceneList[0];
-                            this.updateSelectDevice(selectDevice);
-                        }
-                    });
-                })
-            }
-        });
+        let selectDevice;
+        if (data.length == 0) {
+            selectDevice = { id: "", name: "", active: false, presets: [{ asset: "", id: "", mode: "", name: "", prop: "", value: "" }] };
+        } else {
+            selectDevice = data[0];
+        }
+        this.updateSelectDevice(selectDevice);
+        this.setState({ sceneList: data });
     }
 
-    getAssetName(scene, cb) {
-        if (scene.presets) {
-            let curIndex = lodash.findIndex(this.state.sceneList, sc => { return sc.id == scene.id })
-            this.state.sceneList[curIndex].presets = scene.presets.map(pre => {
-                let newAsset = lodash.find(this.assetList, (asset) => {
-                    return asset.id == pre.asset;
-                })
-                return Object.assign({}, pre, { name: newAsset ? newAsset.name : "" }, { domainId: newAsset ? newAsset.domainId : null });
-            })
-            this.setState({ sceneList: this.state.sceneList }, () => {
-                cb && cb(curIndex);
-            })
-        }
-    }
 
     sortChange(selectIndex) {
         this.setState({ sort: this.state.sort.update('index', v => selectIndex) })

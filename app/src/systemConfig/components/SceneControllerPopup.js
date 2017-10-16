@@ -196,7 +196,7 @@ export default class SceneControllerPopup extends Component {
                 </div>
                 <div className="popup-body"> 
                     <div className="col-sm-6 col-xs-6 popup-body-left">
-                         <Select id="domain" titleField={ domainList.titleField } placeholder='请输入域' valueField={ domainList.valueField } options={ domainList.options } value={ domainId } onChange={ this.onChange }/>
+                         <Select id="domain" titleField={ domainList.titleField } valueField={ domainList.valueField } options={ domainList.options } value={ domainId } onChange={ this.onChange }/>
                          <span id = "domainTip" onChange={ this.onChange } className={ domainList.options.length==0 ? "prompt " : "prompt hidden" }>{ "请添加域" }</span>                         
                       <div id="device-box">
                          <Select id="device" titleField={ assetList.valueField } valueField={ assetList.valueField } options={ assetList.options } value={ assetName } onChange={ this.onChange }/>
