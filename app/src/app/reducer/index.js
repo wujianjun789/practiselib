@@ -13,7 +13,7 @@ export const moduleInfo = {
 	control: {key: 'control', title: '智慧路灯', link: '/smartLight/map'},
 	light: {key: 'light', title: '智能照明', link: '/light/map'},
 	report: {key: 'report', title: '报表管理', link: '/reporterManage/device'},
-	publish: {key: 'publish', title: '媒体发布', link: '/'},
+	publish: {key: 'publish', title: '媒体发布', link: '/mediaPublish/playerList'},
 	visual: {key: 'visual', title: '可视化', link: '/'},
 	domain: {key: 'domain', title: '域管理', link: '/domainManage/domainEdit/list'}
 };

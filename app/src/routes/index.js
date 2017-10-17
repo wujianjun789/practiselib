@@ -9,6 +9,8 @@ import SystemOperation from '../systemOperation/container/index'
 import SmartLightManage from '../smartLightManage/container/index'
 import LightManage from '../lightManage/container/index'
 import ReporterManage from '../reporterManage';
+import MediaPublish from '../mediaPublish/container/index';
+
 import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
@@ -285,6 +287,15 @@ export default (
 				require.ensure([], require => {
 					cb(null, require('../reporterManage/device/containers/Brightness').default);
 				}, 'starriverpro.reporterManage.device.brightness');
+			}} />
+		</Route>
+	</Route>
+    <Route path="/mediaPublish" component={MediaPublish}>
+		<Route path="playerList">
+			<IndexRoute getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../mediaPublish/container/PlayerList').default);
+				}, 'starriverpro.mediaPublish.container.PlayerList');
 			}} />
 		</Route>
 	</Route>
