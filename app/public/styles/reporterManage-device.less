@@ -1,9 +1,16 @@
 @import url(./sideBarInfo.less);
+
+@color1: #4A5064;
+@color2: #5478F0;
+@color3: #00BCFF;
+@color4: #43D480;
+@color5: #FF5C68;
+
 .device-brightness {
     > .content-left {
 		margin-right: 300px;
 		> .wrap {
-			margin: 20px;
+			margin: 30px;
 			padding: 20px;
 			background-color: #fff;
 			text-align: center;
@@ -12,25 +19,83 @@
 				flex-direction: row;
 				justify-content: flex-start;
 				align-items: center;
+				height: 20px;
+				margin-left: 40px;
 				> li {
 					margin-right: 15px;
 					border-radius: 3px;
-					padding: 0 10px;
+					padding: 0 15px;
 					color: #fff;
 					&.color-1 {
-						background-color: #4a5164;
+						background-color: @color1;
 					}
 					&.color-2 {
-						background-color: #5478f0;
+						background-color: @color2;
 					}
 					&.color-3 {
-						background-color: #00bbfe;
+						background-color: @color3;
 					}
 					&.color-4 {
-						background-color: #42d481;
+						background-color: @color4;
 					}
 					&.color-5 {
-						background-color: #ff5b69;
+						background-color: @color5;
+					}
+				}
+			}
+			> .chart-container {
+				height: 800px;
+				.x-axis {
+					> .tick{
+						line {
+							stroke: #ccc;
+						}
+						text {
+							font-size: 14px;
+						}
+						&:first-of-type,
+						&:last-of-type {
+							line {
+								stroke: #000;
+							}
+						}
+					}
+				}
+				.y-axis {
+					> .tick {
+						line {
+							stroke: #ccc;
+						}
+						text {
+							font-size: 14px;
+						}
+						&:first-of-type,
+						&:last-of-type {
+							line {
+								stroke: #000;
+							}
+						}
+					}
+				}
+				.line-group {
+					> .line {
+						fill: none;
+						stroke-width: 3px;
+						&.line-0 {
+							stroke: @color1;
+						}
+						&.line-1 {
+							stroke: @color2;
+						}
+						&.line-2 {
+							stroke: @color3;
+						}
+						&.line-3 {
+							stroke: @color4;
+						}
+						&.line-4 {
+							stroke: @color5;
+						}
 					}
 				}
 			}
@@ -91,17 +156,21 @@
             &.panel-2 {
                 .panel-body > div {
 					&.device-filter {
-						margin-bottom: 10px;
+						margin-bottom: 2px;
+						.select {
+							width: 125px;
+							min-width: 125px;
+							height: 34px;
+							margin-bottom: 20px;
+							&:first-child {
+								margin-right: 20px;
+							}
+						}
+
 						.searchText {
-							width: 49%;
+							width: 100%;
 							min-width: 49%;
 							height: 34px;
-						}
-						.select {
-							width: 45%;
-							min-width: 45%;
-							height: 34px;
-							margin-right: 16px;
 						}
 					}
 
@@ -125,7 +194,7 @@
 						padding-top: 20px;
 						border-top: 1px solid #d6dbdf;
 						.btn {
-							margin-left: 15px;
+							margin-left: 10px;
 						}
 					}
 

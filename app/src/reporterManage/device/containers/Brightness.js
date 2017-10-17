@@ -8,9 +8,18 @@ import Select from '../../../components/Select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
+import MultiLineChart from '../components/MultiLineChart';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 
+const selectDevices = [
+	{ id: 1, name: '灯集中控制器1', values: [{x: 1, y: 85},{x: 2, y: 75},{x: 3, y: 65},{x: 4, y: 55},{x: 5, y: 45},{x: 6, y: 35},{x: 7, y: 35},{x: 8, y: 35},{x: 9, y: 35},{x: 10, y: 35},{x: 11, y: 35}, {x: 12, y: 95}, {x: 13, y: 95}]},
+	{ id: 2, name: '灯集中控制器2', values: [{x: 1, y: 86},{x: 2, y: 56},{x: 3, y: 16},{x: 4, y: 66},{x: 5, y: 26},{x: 6, y: 56},{x: 7, y: 25},{x: 8, y: 45},{x: 9, y: 85},{x: 10, y: 25},{x: 11, y: 35}, {x: 12, y: 36}, {x: 13, y: 36}]},
+	{ id: 3, name: '灯集中控制器3', values: [{x: 1, y: 12},{x: 2, y: 21},{x: 3, y: 33},{x: 4, y: 36},{x: 5, y: 45},{x: 6, y: 54},{x: 7, y: 23},{x: 8, y: 54},{x: 9, y: 85},{x: 10, y: 75},{x: 11, y: 57}, {x: 12, y: 63}, {x: 13, y: 63}]},
+	{ id: 4, name: '灯集中控制器4', values: [{x: 1, y: 21},{x: 2, y: 32},{x: 3, y: 43},{x: 4, y: 54},{x: 5, y: 16},{x: 6, y: 26},{x: 7, y: 46},{x: 8, y: 65},{x: 9, y: 75},{x: 10, y: 55},{x: 11, y: 35}, {x: 12, y: 86}, {x: 13, y: 86}]},
+	{ id: 5, name: '灯集中控制器5', values: [{x: 1, y: 31},{x: 2, y: 42},{x: 3, y: 53},{x: 4, y: 64},{x: 5, y: 26},{x: 6, y: 36},{x: 7, y: 56},{x: 8, y: 55},{x: 9, y: 65},{x: 10, y: 65},{x: 11, y: 25}, {x: 12, y: 56}, {x: 13, y: 56}]},
+	{ id: 6, name: '灯集中控制器6', values: [{x: 1, y: 41},{x: 2, y: 52},{x: 3, y: 63},{x: 4, y: 74},{x: 5, y: 36},{x: 6, y: 46},{x: 7, y: 65},{x: 8, y: 45},{x: 9, y: 55},{x: 10, y: 75},{x: 11, y: 15}, {x: 12, y: 76}, {x: 13, y: 76}]}
+];
 export default class Brightness extends PureComponent {
     constructor(props) {
         super(props);
@@ -22,7 +31,7 @@ export default class Brightness extends PureComponent {
             },
             search: {
                 value: '',
-                placeholder: '请输入设备名称',
+                placeholder: '输入编号或名称',
 
             },
 			sidebarCollapse: false,
@@ -33,7 +42,7 @@ export default class Brightness extends PureComponent {
                 options: []
 			},
 			deviceList: [],
-			selectDevice: []
+			selectDevices: /* [] */selectDevices
 		};
 
 		this.columns = [
@@ -41,6 +50,8 @@ export default class Brightness extends PureComponent {
 			{accessor: 'domain', title: '域'},
 			{accessor: 'id', title: '设备编号'},
 		];
+
+		this.maxNumofSelectDevices = 5;
 
         this.collapseHandler = this.collapseHandler.bind(this);
         this.pageChange = this.pageChange.bind(this);
@@ -89,11 +100,13 @@ export default class Brightness extends PureComponent {
 
 	updateDomainData(data, cb) {
         let currentDomain,
-            options = data;
+            options;
         if (data.length == 0) {
-            currentDomain = null;
+			currentDomain = null;
+			options = [{name: '选择域'}];
         } else {
-            currentDomain = data[0];
+			currentDomain = data[0];
+			options = data;
         }
         this.setState({domainList: {...this.state.domainList, options}, currentDomain }, ()=>{
             cb && cb()
@@ -134,21 +147,19 @@ export default class Brightness extends PureComponent {
 
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
-                search: {value, placeholder}, currentDomain, domainList, deviceList } = this.state;
+				search: {value, placeholder}, currentDomain, domainList, deviceList, selectDevices } = this.state;
+		const _selectDevices = selectDevices.slice(0, this.maxNumofSelectDevices);
 
         return <Content className={`device-brightness ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
 						<div className="wrap">
 							<ul className="select-device-list">
-								<li className="color-1">灯集中控制器1</li>
-								<li className="color-2">灯集中控制器2</li>
-								<li className="color-3">灯集中控制器3</li>
-								<li className="color-4">灯集中控制器4</li>
-								<li className="color-5">灯集中控制器5</li>
+							{
+								_selectDevices
+									.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
+							}
 							</ul>
-							<div>
-								chart chart
-							</div>
+							<MultiLineChart data={_selectDevices} />
 						</div>
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
@@ -173,8 +184,11 @@ export default class Brightness extends PureComponent {
 								<div className="device-filter">
 									<Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
                                 		value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-                            		<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+									<Select id='sensor' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+										value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+									<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
 								</div>
+
 								<Table columns={this.columns} data={deviceList} allChecked={false} />
 								<div className="page-center">
 									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
