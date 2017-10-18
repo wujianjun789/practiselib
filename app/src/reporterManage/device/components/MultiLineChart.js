@@ -4,9 +4,7 @@ import Chart from '../../utils/multiLineChart';
 export default class MultiLineChart extends PureComponent {
 	constructor(props) {
 		super(props);
-
 		this.chart = null;
-
 		this.monthIntl = {
 			1: 'JAN',
 			2: 'FEB',
@@ -41,7 +39,7 @@ export default class MultiLineChart extends PureComponent {
             data: this.props.data,
             xAccessor: d=>d.x,
 			yAccessor: d => d.y,
-			xDomain: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+			xDomain: [1, 13],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
             xTickFormat: d => {if(d == 13) return ''; return this.monthIntl[d];},

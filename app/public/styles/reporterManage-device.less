@@ -45,7 +45,7 @@
 			}
 			> .chart-container {
 				height: 800px;
-				.x-axis {
+				.axis {
 					> .tick{
 						line {
 							stroke: #ccc;
@@ -61,23 +61,8 @@
 						}
 					}
 				}
-				.y-axis {
-					> .tick {
-						line {
-							stroke: #ccc;
-						}
-						text {
-							font-size: 14px;
-						}
-						&:first-of-type,
-						&:last-of-type {
-							line {
-								stroke: #000;
-							}
-						}
-					}
-				}
-				.line-group {
+				.line-group,
+				.line-group2 {
 					> .line {
 						fill: none;
 						stroke-width: 3px;
@@ -97,6 +82,14 @@
 							stroke: @color5;
 						}
 					}
+				}
+				.brush-bg {
+					fill: #ececec;
+				}
+				.zoom {
+					cursor: move;
+					fill: none;
+					pointer-events: all;
 				}
 			}
 		}

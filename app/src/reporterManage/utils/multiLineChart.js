@@ -22,7 +22,8 @@ export default class MultiLineChart {
     constructor({
         wrapper,
         data,
-        padding: {left = 20, top = 20, right = 20, bottom = 20} = {},
+		padding: {top = 20, right = 20, bottom = 120, left = 20} = {},
+		padding2: {top2 = 40, right2 = 20, bottom2 = 20, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
         xDomain=[0,1],
@@ -33,7 +34,8 @@ export default class MultiLineChart {
         curveFactory=d3.curveStepAfter
     }) {
         this.wrapper = wrapper;
-        this.padding = {left, top, right, bottom};
+		this.padding = {top, right, bottom, left};
+		this.padding2 = {top2, right2, bottom2, left2};
         this.xAccessor = xAccessor;
         this.yAccessor = yAccessor;
         this.xDomain = xDomain;
@@ -46,57 +48,58 @@ export default class MultiLineChart {
         this.initChart = this.initChart.bind(this);
         this.getAxis = this.getAxis.bind(this);
         this.getMainChart = this.getMainChart.bind(this);
-        this.draw = this.draw.bind(this);
-        // this.sortByXAxisValue = this.sortByXAxisValue.bind(this);
-        // this.bubbleSort = this.bubbleSort.bind(this);
+		this.draw = this.draw.bind(this);
+		this.brushed = this.brushed.bind(this);
+		this.zoomed = this.zoomed.bind(this);
 
-        this.data = data/* this.sortByXAxisValue(data, this.xAccessor); */
+		this.data = data;
 
         this.initChart();
-    }
-
-    // sortByXAxisValue(data, accessor) {
-    //     let _data = Object.assign({}, data);
-    //     let arr = Object.assign([], _data.values);
-    //     arr = this.bubbleSort(arr, accessor);
-    //     return Object.assign(_data, {values: arr});
-    // }
-
-    // bubbleSort(arr, accessor){
-    //     let _arr = Object.assign([], arr);
-    //     for(let i=0, len=_arr.length; i<len-1; i++){
-    //         for(let j=i+1; j<len; j++){
-    //             if( accessor(_arr[j]) - accessor(_arr[i]) < 0 ){
-    //                 let tmp = _arr[j];
-    //                 _arr[j] = _arr[i];
-    //                 _arr[i] = tmp;
-    //             }
-    //         }
-    //     }
-    //     return _arr;
-    // }
+	}
 
     initChart() {
         let width = this.wrapper && this.wrapper.offsetWidth,
             height = this.wrapper && this.wrapper.offsetHeight;
-        this.w = width - this.padding.left - this.padding.right;
-        this.h = height - this.padding.top - this.padding.bottom;
+        this.width = width - this.padding.left - this.padding.right;
+		this.height = height - this.padding.top - this.padding.bottom;
+		this.height2 = height - this.padding.top - this.height - this.padding2.bottom2;
+
+		this.brush = d3.brushX()
+			.extent([[0,0], [this.width, this.height2]])
+			.on('brush end', this.brushed);
+
+		this.zoom = d3.zoom()
+			.scaleExtent([1, Infinity])
+			.translateExtent([[0, 0], [width, height]])
+			.extent([[0, 0], [width, height]])
+			.on("zoom", this.zoomed);
 
         this.svg = d3.select(this.wrapper)
             .append('svg')
             .attr('width', width)
-            .attr('height', height);
-        this.group = this.svg.append('g')
-            .attr('transform', `translate(${this.padding.left}, ${this.padding.top})`);
-        this.x_axis = this.group
-            .append('g')
-            .attr('class', 'x-axis')
-            .attr('transform', `translate(0, ${this.h})`);
-        this.y_axis = this.group
-            .append('g')
-            .attr('class', 'y-axis');
+			.attr('height', height);
 
-        this.line_group = this.group
+		this.defs = this.svg
+			.append('defs')
+			.append('clipPath')
+			.attr('id', 'clip')
+			.append('rect')
+			.attr('width', this.width)
+			.attr('height', this.height);
+
+		this.focus = this.svg
+			.append('g')
+			.attr('class', 'focus')
+            .attr('transform', `translate(${this.padding.left}, ${this.padding.top})`);
+        this.x_axis = this.focus
+            .append('g')
+            .attr('class', 'axis axis-x')
+            .attr('transform', `translate(0, ${this.height})`);
+        this.y_axis = this.focus
+            .append('g')
+            .attr('class', 'axis axis-y');
+
+        this.line_group = this.focus
             .append('g')
 			.attr('class', 'line-group');
 
@@ -105,89 +108,100 @@ export default class MultiLineChart {
 			.data(this.data)
 			.append('path');
 
-        let wrapper = d3.select(this.wrapper);
-        wrapper.style('position', 'relative');
+		this.context = this.svg
+			.append('g')
+			.attr('class', 'context')
+			.attr('transform', `translate(${this.padding.left}, ${this.padding.top + this.height + this.padding2.top2})`);
 
-        this.tooltips = wrapper.append('div')
-            .attr('class', 'tooltip top')
-            .style('position', 'absolute')
-            .style('top', '30px')
-            .style('left', '20px')
-            .style('z-index', 1000)
-            .style('opacity', 1)
-            .style('display', 'none');
-        this.tooltips.append('div')
-            .attr('class', 'tooltip-arrow');
-        this.tooltipInner = this.tooltips.append('div')
-            .attr('class', 'tooltip-inner')
-            .text('this is a tooltips.');
+		this.context
+			.append('rect')
+			.attr('class', 'brush-bg')
+			.attr('width', this.width)
+			.attr('height', this.height2);
 
-        this.svg.on('mouseenter', ()=>{
-            this.data.values.length!=0 && this.tooltips.style('display', 'block');
-        }, false);
-        this.svg.on('mousemove', (data, index) => {
-            let len = this.data.values.length;
-            if (len != 0) {
-                let _index = Math.floor(d3.event.offsetX / this.xScale.step());
-                if (_index <= -1) {
-                    _index = 0;
-                } else if (_index >= len ) {
-                    _index = len - 1;
-                }
-                let val = this.data.values[_index];
-                this.tooltipInner.text(`${this.tooltipAccessor(val)}`);
-                let _offsetLeft = Math.floor(document.getElementsByClassName('tooltip')[0].offsetWidth/2);
-                this.tooltips.style('left', `${d3.event.offsetX-_offsetLeft}px`).style('top',`${this.yScale(this.yAccessor(val))}px`);
-            }
-        }, false);
-        this.svg.on('mouseleave', ()=>{
-            this.data.values.length!=0 && this.tooltips.style('display', 'none');
-        }, false);
+		this.line_group2 = this.context
+			.append('g')
+			.attr('class', 'line-group2');
+
+		this.line_group2
+			.selectAll('path')
+			.data(this.data)
+			.append('path');
+
+		this.context.append('g')
+			.attr('class', 'brush')
+			.call(this.brush);
+
+		this.svg.append('rect')
+			.attr('class', 'zoom')
+			.attr('width', this.width)
+			.attr('height', this.height)
+			.attr('transform', `translate(${this.padding.left, this.padding.top})`)
+			.call(this.zoom);
 
         this.draw();
     }
 
     getAxis() {
-        this.xScale = d3.scalePoint()
-			.range([0, this.w]);
+        this.xScale = d3.scaleLinear()
+			.range([0, this.width]);
+		this.xScale2 = d3.scaleLinear()
+			.range([0, this.width]);
         this.yScale = d3.scaleLinear()
-			.range([this.h, 0]);
+			.range([this.height, 0]);
+        this.yScale2 = d3.scaleLinear()
+			.range([this.height2, 0]);
+
         this.xScale.domain(this.xDomain);
-        // this.yScale.domain(d3.extent(this.data.values, this.yAccessor));
-        // let max = this.yAccessor(this.bubbleSort(this.data.values, this.yAccessor)[this.data.values.length-1]);
-        // this.yScale.domain([0, max]);
         this.yScale.domain(this.yDomain);
-		// console.log(this.h);
-        let xAxis = d3.axisBottom()
+        this.xScale2.domain(this.xDomain);
+		this.yScale2.domain(this.yDomain);
+
+        this.xAxis = d3.axisBottom()
 			.scale(this.xScale)
-			.tickSizeInner(-this.h)
+			.tickSizeInner(-this.height)
 			.tickSizeOuter(0)
 			.tickPadding(10)
-			.tickFormat(this.xTickFormat);
-		xAxis.ticks(12);
+			.tickFormat(this.xTickFormat)
+			.ticks(12);
 
-        this.x_axis.call(xAxis);
+		this.x_axis.call(this.xAxis);
+
+		this.xAxis2 = d3.axisBottom()
+			.scale(this.xScale2);
 
         let yAxis = d3.axisLeft()
             .scale(this.yScale)
-			.tickSizeInner(-this.w)
+			.tickSizeInner(-this.width)
 			.tickSizeOuter(0)
 			.tickFormat(this.yTickFormat);
 
-        this.y_axis.call(yAxis);
+		this.y_axis.call(yAxis);
+
+		this.context
+			.select('brush')
+			.call(this.brush.move, this.xScale.range());
     }
 
     getMainChart() {
-        let line = d3.line()
+        this.line = d3.line()
             .x((d) => {
-				// console.log(this.xAccessor(d));
-				// console.log(this.xScale(2));
                 return this.xScale(this.xAccessor(d));
             })
             .y((d) => {
                 return this.yScale(this.yAccessor(d));
             })
-            .curve(this.curveFactory);
+			.curve(this.curveFactory);
+
+		let line2 = d3.line()
+			.x((d) => {
+				return this.xScale2(this.xAccessor(d));
+			})
+			.y((d) => {
+				return this.yScale2(this.yAccessor(d));
+			})
+			.curve(this.curveFactory);
+
 		let update = this.line_group
 			.selectAll('path')
 			.data(this.data)
@@ -197,14 +211,30 @@ export default class MultiLineChart {
             .attr('d', (d) => {
                 if (d.values.length == 1) {
                     let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1}L${this.w},${_y1}`;
+                    return `M${0},${_y1}L${this.width},${_y1}`;
                 } else {
-                    return line(d.values);
+                    return this.line(d.values);
                 }
             });
 
 		update.exit().remove();
 
+		let update2 = this.line_group2
+			.selectAll('path')
+			.data(this.data)
+			.enter()
+			.append('path')
+			.attr('class', (d, i) => `line line-${i}`)
+			.attr('d', (d) => {
+				if (d.values.length == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    return `M${0},${_y1}L${this.width},${_y1}`;
+                } else {
+                    return line2(d.values);
+                }
+			});
+
+		update2.exit().remove();
     }
 
     draw() {
@@ -223,7 +253,7 @@ export default class MultiLineChart {
             this.yDomain = yDomain;
         }
 
-        this.data = data/* this.sortByXAxisValue(Object.assign({}, this.data, data), this.xAccessor); */
+        this.data = data;
         if (this.data.length==0) {
             this.destroy();
             this.initChart();
@@ -238,5 +268,51 @@ export default class MultiLineChart {
         this.svg.on('mouseleave', null);
         this.svg.remove();
         this.tooltips.remove();
-    }
+	}
+
+	brushed() {
+		if(d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")  // ignore brush-by-zoom
+			return ;
+		let s = d3.event.selection || this.xScale2.range();
+		this.xScale
+			.domain(s.map(this.xScale2.invert, this.xScale2));
+		this.x_axis
+			.call(this.xAxis.scale(this.xScale));
+		this.line_group
+			.selectAll(".line")
+			.attr('d', (d) => {
+                if (d.values.length == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    return `M${0},${_y1}L${this.width},${_y1}`;
+                } else {
+                    return this.line(d.values);
+                }
+            });
+		this.svg
+			.select(".zoom")
+			.call(this.zoom.transform, d3.zoomIdentity
+											.scale(this.width / (s[1] - s[0]))
+											.translate(-s[0], 0) );
+	}
+
+	zoomed() {
+		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") // ignore zoom-by-brush
+			return ;
+		let t = d3.event.transform;
+		this.xScale.domain(t.rescaleX(this.xScale2).domain());
+		this.line_group
+			.selectAll(".line")
+			.attr('d', (d) => {
+                if (d.values.length == 1) {
+                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    return `M${0},${_y1}L${this.width},${_y1}`;
+                } else {
+                    return this.line(d.values);
+                }
+            });
+		this.x_axis.call(this.xAxis.scale(this.xScale));
+		this.context
+			.select(".brush")
+			.call(this.brush.move, this.xScale.range().map(t.invertX, t));
+	}
 }
