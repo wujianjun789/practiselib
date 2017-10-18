@@ -8,6 +8,14 @@ export const TreeData=[
         "toggled": false,
         "active": true,
         "link": "/mediaPublish/playerList",
-        "level":1
+        "level": 1
+    },
+    {
+        "id": "publish",
+        "name": "发布管理",
+        "toggled": false,
+        "active": true,
+        "link": "mediaPublish/publish",
+        "level": 1
     }
 ]
