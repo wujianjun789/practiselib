@@ -8,7 +8,6 @@ import PanelFooter from '../../components/PanelFooter';
 import SearchText from '../../components/SearchText';
 
 import {getAssetsBaseByModelWithName} from '../../api/asset';
-import {getDeviceByAssetControls, addDeviceToStrategy, updateDeviceToStrategy} from '../../api/strategy'
 import {getModelData,getModelNameById} from '../../data/assetModels';
 
 import Immutable from 'immutable';
@@ -20,7 +19,7 @@ export default class StrategySetPopup extends Component{
             deviceTypeName:"",
             search:Immutable.fromJS({placeholder:'输入设备名称', value:''}),
 
-            curDeviceList:props.deviceList
+            curDeviceList:props.deviceList?props.deviceList:[]
         }
 
         this.deviceList = [/*{id:1, name:"灯1"},{id:2, name:"灯2"},{id:3, name:"灯3"},
@@ -38,7 +37,6 @@ export default class StrategySetPopup extends Component{
     }
 
     componentWillMount(){
-        console.log(this.props);
         this.mounted = true;
         const {deviceType} = this.props;
         getModelData(()=>{
@@ -54,13 +52,10 @@ export default class StrategySetPopup extends Component{
     requestSearch(){
         const {deviceType} = this.props;
         const {search} = this.state;
-        console.log(search);
-        console.log(deviceType);
         getAssetsBaseByModelWithName(deviceType, search.get("value"), data=>{ this.mounted && this.deviceListInit(data)})
     }
 
     deviceListInit(data){
-        console.log(data);
         this.deviceList = data;
         this.setState(this.deviceList);
     }
@@ -77,7 +72,6 @@ export default class StrategySetPopup extends Component{
 
     addDevice(data){
         this.state.curDeviceList.push(data);
-        console.log(this.state.curDeviceList)
         this.setState({curDeviceList:this.state.curDeviceList})
     }
 
@@ -99,9 +93,7 @@ export default class StrategySetPopup extends Component{
     render(){
         const {title} = this.props;
         const {deviceTypeName, search, curDeviceList} = this.state;
-        console.log("bbb");
-        console.log(curDeviceList);
-        console.log(this.deviceList);
+console.log(curDeviceList);
         let valid = false
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -119,9 +111,7 @@ export default class StrategySetPopup extends Component{
                         <ul className="device-all">
                             {
                                 this.deviceList.map(device=>{
-                                    console.log(device)
                                     let IsAdd = lodash.find(curDeviceList, dev=>{return dev.id == device.id});
-                                    console.log(IsAdd)
                                     return <li key={device.id}>{device.name}<span className={IsAdd?"":"glyphicon glyphicon-plus"} onClick={()=>{!IsAdd && this.addDevice(device)}}>{IsAdd?"已添加":""}</span></li>
                                 })
                             }
@@ -129,7 +119,7 @@ export default class StrategySetPopup extends Component{
                     </div>
                     <div className="col-sm-5 device-cur-container">
                         <ul className="device-cur">
-                            {   
+                            {
                                 curDeviceList && curDeviceList.map(device=>{
                                     return <li key={device.id}>{device.name}<span className="icon-table-delete" onClick={()=>this.delDevice(device)}></span></li>
                                 })

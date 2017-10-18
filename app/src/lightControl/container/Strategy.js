@@ -149,6 +149,7 @@ export class Strategy extends Component{
         console.log(selectDevice)
         actions.overlayerShow(<StrategySetPopup title="设定设备" deviceType={selectDevice.asset} deviceList={selectDevice.deviceList}
                                                 onConfirm={(data)=>{
+                                                    console.log(data);
                                                     for(let key in data.curDeviceList){
                                                         let device = data.curDeviceList[key];
                                                         let ac = {
@@ -163,7 +164,7 @@ export class Strategy extends Component{
                                                             addDeviceToStrategy(ac)
                                                         }
                                                     }
-
+                                                    actions.overlayerHide();
                                                 }} onCancel={()=>{
                                                     actions.overlayerHide();
                                                 }}/>);
@@ -261,11 +262,11 @@ export class Strategy extends Component{
                 <SideBarInfo IsHaveMap={false} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default strategy-info">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
+                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中策略
                         </div>
                         <div className="panel-body strategy-property">
                             <span className="strategy-name">{selectDevice.name}</span>
-                            <button id="sys-update" className="btn btn-primary pull-right" onClick={this.setHandler} disabled={data.size==0 ? true : false}>设定
+                            <button id="sys-update" className="btn btn-primary pull-right" onClick={()=>{if(selectDevice.name){this.setHandler()}else{console.log("请先选择策略！！！")}}} disabled={data.size==0 ? true : false}>设定
                             </button>
                         </div>
                     </div>

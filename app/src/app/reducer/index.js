@@ -6,6 +6,18 @@ import {
     MODULE_INIT
 } from '../actionType/index';
 
+export const moduleInfo = {
+	asset: {key: 'asset', title: '资产管理', link: '/assetManage/model'},
+	permission: {key: 'permission', title: '权限管理', link: '/permissionManage'},
+	maintenance: {key: 'maintenance', title: '系统运维', link: '/systemOperation/config'},
+	control: {key: 'control', title: '智慧路灯', link: '/smartLight/map'},
+	light: {key: 'light', title: '智能照明', link: '/light/map'},
+	report: {key: 'report', title: '报表管理', link: '/reporterManage/device'},
+	publish: {key: 'publish', title: '媒体发布', link: '/mediaPublish/playerList'},
+	visual: {key: 'visual', title: '可视化', link: '/'},
+	domain: {key: 'domain', title: '域管理', link: '/domainManage/domainEdit/list'}
+};
+
 export const initialState = {
     title: "StarRiver",
     name: "智慧路灯管理系统",
@@ -21,57 +33,13 @@ export default function app(state=initialState, action) {
     }
 }
 
-function moduleInit(state, data) {
+export function moduleInit(state, data) {
     let items = data.map(val => {
-        let item = {};
-        switch(val.key) {
-            case 'asset':
-                item.key = 'asset';
-                item.title = '资产管理';
-                item.link = '/assetManage/model';
-                break;
-            case 'permission':
-                item.key = 'permission';
-                item.title = '权限管理';
-                item.link = '/permissionManage';
-                break;
-            case 'maintenance':
-                item.key = 'maintenance';
-                item.title = '系统运维';
-                item.link = '/systemOperation/config';
-                break;
-            case 'control':
-                item.key = 'control';
-                item.title = '智慧路灯';
-                item.link = '/smartLight/map';
-                break;
-            case 'light':
-                item.key = 'light';
-                item.title = '智能照明';
-                item.link = '/light/map';
-                break;
-            case 'report':
-                item.key = 'report';
-                item.title = '报表管理';
-                item.link = '/';
-                break;
-            case 'publish':
-                item.key = 'publish';
-                item.title = '媒体发布';
-                item.link = '/';
-                break;
-            case 'visual':
-                item.key = 'visual';
-                item.title = '可视化';
-                item.link = '/';
-                break;
-            case 'domain':
-                item.key = 'domain';
-                item.title = '域管理';
-                item.link = '/domainManage/domainEdit/list';
-                break;
-        }
-        return item;
+		if(moduleInfo[val.key]) {
+			return moduleInfo[val.key];
+		} else {
+			return {key: '', title: '', link: '/'};
+		}
     });
-    return Object.assign({}, state, {items: items});
+    return Object.assign({...state, items: items});
 }
