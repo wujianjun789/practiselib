@@ -5,7 +5,7 @@ import React from 'react';
 import {shallow} from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import PlayerList from '../../../src/mediaPublish/container/PlayerList';
+import {PlayerList} from '../../../src/mediaPublish/container/PlayerList';
 
 
 test('DomainEdit renders', ()=>{
