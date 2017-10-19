@@ -22,7 +22,7 @@ export default class MultiLineChart {
     constructor({
         wrapper,
         data,
-		padding: {top = 20, right = 20, bottom = 120, left = 20} = {},
+		padding: {top = 20, right = 20, bottom = 60, left = 20} = {},
 		padding2: {top2 = 40, right2 = 20, bottom2 = 20, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
@@ -101,7 +101,8 @@ export default class MultiLineChart {
 
         this.line_group = this.focus
             .append('g')
-			.attr('class', 'line-group');
+			.attr('class', 'line-group')
+			.attr('clip-path', 'url(#clip)');
 
 		this.line_group
 			.selectAll('path')
@@ -113,21 +114,6 @@ export default class MultiLineChart {
 			.attr('class', 'context')
 			.attr('transform', `translate(${this.padding.left}, ${this.padding.top + this.height + this.padding2.top2})`);
 
-		this.context
-			.append('rect')
-			.attr('class', 'brush-bg')
-			.attr('width', this.width)
-			.attr('height', this.height2);
-
-		this.line_group2 = this.context
-			.append('g')
-			.attr('class', 'line-group2');
-
-		this.line_group2
-			.selectAll('path')
-			.data(this.data)
-			.append('path');
-
 		this.context.append('g')
 			.attr('class', 'brush')
 			.call(this.brush);
@@ -136,7 +122,7 @@ export default class MultiLineChart {
 			.attr('class', 'zoom')
 			.attr('width', this.width)
 			.attr('height', this.height)
-			.attr('transform', `translate(${this.padding.left, this.padding.top})`)
+			.attr('transform', `translate(${this.padding.left}, ${this.padding.top})`)
 			.call(this.zoom);
 
         this.draw();
@@ -145,17 +131,13 @@ export default class MultiLineChart {
     getAxis() {
         this.xScale = d3.scaleLinear()
 			.range([0, this.width]);
-		this.xScale2 = d3.scaleLinear()
-			.range([0, this.width]);
+		this.xScale2 = this.xScale.copy();
         this.yScale = d3.scaleLinear()
 			.range([this.height, 0]);
-        this.yScale2 = d3.scaleLinear()
-			.range([this.height2, 0]);
 
         this.xScale.domain(this.xDomain);
         this.yScale.domain(this.yDomain);
         this.xScale2.domain(this.xDomain);
-		this.yScale2.domain(this.yDomain);
 
         this.xAxis = d3.axisBottom()
 			.scale(this.xScale)
@@ -193,15 +175,6 @@ export default class MultiLineChart {
             })
 			.curve(this.curveFactory);
 
-		let line2 = d3.line()
-			.x((d) => {
-				return this.xScale2(this.xAccessor(d));
-			})
-			.y((d) => {
-				return this.yScale2(this.yAccessor(d));
-			})
-			.curve(this.curveFactory);
-
 		let update = this.line_group
 			.selectAll('path')
 			.data(this.data)
@@ -218,30 +191,13 @@ export default class MultiLineChart {
             });
 
 		update.exit().remove();
-
-		let update2 = this.line_group2
-			.selectAll('path')
-			.data(this.data)
-			.enter()
-			.append('path')
-			.attr('class', (d, i) => `line line-${i}`)
-			.attr('d', (d) => {
-				if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1}L${this.width},${_y1}`;
-                } else {
-                    return line2(d.values);
-                }
-			});
-
-		update2.exit().remove();
     }
 
     draw() {
         this.getAxis();
-        if (this.data.length!=0) {
+        // if (this.data.length!=0) {
             this.getMainChart();
-        }
+        // }
     }
 
     updateChart(data, xDomain, yDomain) {
@@ -254,26 +210,22 @@ export default class MultiLineChart {
         }
 
         this.data = data;
-        if (this.data.length==0) {
-            this.destroy();
-            this.initChart();
-        } else {
+        // if (this.data.length==0) {
+        //     this.destroy();
+        //     this.initChart();
+        // } else {
             this.draw();
-        }
+        // }
     }
 
     destroy() {
-        this.svg.on('mouseenter', null)
-        this.svg.on('mousemove', null);
-        this.svg.on('mouseleave', null);
         this.svg.remove();
-        this.tooltips.remove();
 	}
 
 	brushed() {
 		if(d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")  // ignore brush-by-zoom
 			return ;
-		let s = d3.event.selection || this.xScale2.range();
+		let s = d3.event.selection || this.xScale.range();
 		this.xScale
 			.domain(s.map(this.xScale2.invert, this.xScale2));
 		this.x_axis
@@ -299,7 +251,14 @@ export default class MultiLineChart {
 		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") // ignore zoom-by-brush
 			return ;
 		let t = d3.event.transform;
-		this.xScale.domain(t.rescaleX(this.xScale2).domain());
+
+		let domain = t.rescaleX(this.xScale2).domain();
+		// 修正domain偏差
+		if(domain[1] > this.xDomain[1]) {
+			domain[1] = this.xDomain[1];
+		}
+
+		this.xScale.domain(domain);
 		this.line_group
 			.selectAll(".line")
 			.attr('d', (d) => {
@@ -313,6 +272,13 @@ export default class MultiLineChart {
 		this.x_axis.call(this.xAxis.scale(this.xScale));
 		this.context
 			.select(".brush")
-			.call(this.brush.move, this.xScale.range().map(t.invertX, t));
+			.call(this.brush.move, () => {
+				let range = this.xScale.range().map(t.invertX, t);
+				// 修正range偏差
+				if(range[1] > this.width) {
+					range[1] = this.width;
+				}
+				return range;
+			});
 	}
 }
