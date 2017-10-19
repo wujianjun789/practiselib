@@ -298,6 +298,11 @@ export default (
 				}, 'starriverpro.mediaPublish.container.PlayerList');
 			}} />
 		</Route>
+        <Route path="publish" getComponent={(nextState, cb)=>{
+            require.ensure([], require => {
+					cb(null, require('../mediaPublishManage/container/PublishManage').default);
+				}, 'starriverpro.mediaPublishManage.container.PublishManage');
+          }}/>
 	</Route>
   </Route>
   <Route path="*" getComponent={ (nextState, cb) => {

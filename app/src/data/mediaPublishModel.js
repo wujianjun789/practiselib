@@ -15,7 +15,7 @@ export const TreeData=[
         "name": "发布管理",
         "toggled": false,
         "active": true,
-        "link": "mediaPublish/publish",
+        "link": "/mediaPublish/publish",
         "level": 1
     }
 ]
