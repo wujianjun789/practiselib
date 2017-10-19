@@ -59,6 +59,6 @@ export default class MultiLineChart extends PureComponent {
 	}
 
 	render() {
-		return <div className="chart-container" ref={this.drawLineChart}></div>
+		return <div className={this.props.className} ref={this.drawLineChart}></div>
 	}
 }

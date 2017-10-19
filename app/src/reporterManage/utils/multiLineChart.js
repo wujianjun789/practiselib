@@ -22,8 +22,8 @@ export default class MultiLineChart {
     constructor({
         wrapper,
         data,
-		padding: {top = 20, right = 20, bottom = 60, left = 20} = {},
-		padding2: {top2 = 40, right2 = 20, bottom2 = 20, left2 = 20} = {},
+		padding: {top = 20, right = 20, bottom = 70, left = 20} = {},
+		padding2: {top2 = 50, right2 = 20, bottom2 = 0, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
         xDomain=[0,1],
@@ -62,17 +62,7 @@ export default class MultiLineChart {
             height = this.wrapper && this.wrapper.offsetHeight;
         this.width = width - this.padding.left - this.padding.right;
 		this.height = height - this.padding.top - this.padding.bottom;
-		this.height2 = height - this.padding.top - this.height - this.padding2.bottom2;
-		this.brush = d3.brushX()
-			.extent([[0,0], [this.width, this.height2]])
-			.handleSize(20)
-			.on('brush end', this.brushed);
-
-		this.zoom = d3.zoom()
-			.scaleExtent([1, Infinity])
-			.translateExtent([[0, 0], [width, height]])
-			.extent([[0, 0], [width, height]])
-			.on("zoom", this.zoomed);
+		this.height2 = height - this.padding.top - this.height - this.padding2.bottom2 - this.padding2.top2;
 
         this.svg = d3.select(this.wrapper)
             .append('svg')
@@ -111,6 +101,7 @@ export default class MultiLineChart {
 			.append('polygon')
 			.attr('points', handle_data.points)
 			.attr('fill', '#B6B9C2');
+
 		handle_data.path.forEach((d) => {
 			handle
 				.append('path')
@@ -136,7 +127,7 @@ export default class MultiLineChart {
 			.attr('clip-path', 'url(#clip)');
 
 		this.line_group
-			.selectAll('path')
+			.selectAll('.line')
 			.data(this.data)
 			.append('path');
 
@@ -145,11 +136,20 @@ export default class MultiLineChart {
 			.attr('class', 'context')
 			.attr('transform', `translate(${this.padding.left}, ${this.padding.top + this.height + this.padding2.top2})`);
 
-		this.context.append('g')
-			.attr('class', 'brush')
-			.call(this.brush)
-			.selectAll('.handle')
-			.attr('fill', 'url(#brush-handle)');
+		this.brush = d3.brushX()
+			.extent([[0,0], [this.width, this.height2]])
+			.handleSize(20)
+			.on('brush end', this.brushed);
+
+		this.zoom = d3.zoom()
+			.scaleExtent([1, Infinity])
+			.translateExtent([[0, 0], [width, height]])
+			.extent([[0, 0], [width, height]])
+			.on("zoom", this.zoomed);
+
+		this.context
+			.append('g')
+			.attr('class', 'brush');
 
 		this.svg.append('rect')
 			.attr('class', 'zoom')
@@ -192,10 +192,6 @@ export default class MultiLineChart {
 			.tickFormat(this.yTickFormat);
 
 		this.y_axis.call(yAxis);
-
-		this.context
-			.select('brush')
-			.call(this.brush.move, this.xScale.range());
     }
 
     getMainChart() {
@@ -224,6 +220,13 @@ export default class MultiLineChart {
             });
 
 		update.exit().remove();
+		// 初始化brush
+		this.context
+			.select('.brush')
+			.call(this.brush)
+			.call(this.brush.move, this.xScale.range())
+			.selectAll('.handle')
+			.attr('fill', 'url(#brush-handle)');
     }
 
     draw() {
@@ -232,28 +235,6 @@ export default class MultiLineChart {
             this.getMainChart();
         // }
     }
-
-    updateChart(data, xDomain, yDomain) {
-        if(xDomain) {
-            this.xDomain = xDomain;
-        }
-
-        if(yDomain) {
-            this.yDomain = yDomain;
-        }
-
-        this.data = data;
-        // if (this.data.length==0) {
-        //     this.destroy();
-        //     this.initChart();
-        // } else {
-            this.draw();
-        // }
-    }
-
-    destroy() {
-        this.svg.remove();
-	}
 
 	brushed() {
 		if(d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")  // ignore brush-by-zoom
@@ -286,10 +267,11 @@ export default class MultiLineChart {
 		let t = d3.event.transform;
 
 		let domain = t.rescaleX(this.xScale2).domain();
-		// 修正domain偏差
-		// if(domain[1] > this.xDomain[1]) {
-		// 	domain[1] = this.xDomain[1];
-		// }
+		// fixed domain offset
+		if(domain[1] > this.xDomain[1]) {
+			domain[0] += this.xDomain[1] - domain[1];
+			domain[1] = this.xDomain[1];
+		}
 
 		this.xScale.domain(domain);
 		this.line_group
@@ -302,16 +284,39 @@ export default class MultiLineChart {
                     return this.line(d.values);
                 }
             });
-		this.x_axis.call(this.xAxis.scale(this.xScale));
+		this.x_axis.call(this.xAxis);
 		this.context
 			.select(".brush")
 			.call(this.brush.move, () => {
 				let range = this.xScale.range().map(t.invertX, t);
-				// 修正range偏差
-				// if(range[1] > this.width) {
-				// 	range[1] = this.width;
-				// }
+				// fixed range offset
+				if(range[1] > this.width) {
+					range[0] += this.width - range[1];
+					range[1] = this.width;
+				}
 				return range;
 			});
+	}
+
+	updateChart(data, xDomain, yDomain) {
+        if(xDomain) {
+            this.xDomain = xDomain;
+        }
+
+        if(yDomain) {
+            this.yDomain = yDomain;
+        }
+
+        this.data = data;
+        // if (this.data.length==0) {
+        //     this.destroy();
+        //     this.initChart();
+        // } else {
+            this.draw();
+        // }
+    }
+
+    destroy() {
+        this.svg.remove();
 	}
 }

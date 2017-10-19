@@ -8,93 +8,98 @@
 
 .device-brightness {
     > .content-left {
-		margin-right: 300px;
-		> .wrap {
-			margin: 30px;
-			padding: 20px;
-			background-color: #fff;
-			text-align: center;
-			> .select-device-list {
-				display: flex;
-				flex-direction: row;
-				justify-content: flex-start;
-				align-items: center;
-				height: 20px;
-				margin-left: 40px;
-				> li {
-					margin-right: 15px;
-					border-radius: 3px;
-					padding: 0 15px;
-					color: #fff;
-					&.color-1 {
-						background-color: @color1;
+		position: absolute;
+		top: 30px;
+		right: 330px;
+		bottom: 30px;
+		left: 30px;
+		padding: 20px;
+		background-color: #fff;
+		text-align: center;
+		> .select-device-list {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			height: 20px;
+			// margin-left: 40px;
+			> li {
+				margin-right: 15px;
+				border-radius: 3px;
+				padding: 0 15px;
+				color: #fff;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				&.color-1 {
+					background-color: @color1;
+				}
+				&.color-2 {
+					background-color: @color2;
+				}
+				&.color-3 {
+					background-color: @color3;
+				}
+				&.color-4 {
+					background-color: @color4;
+				}
+				&.color-5 {
+					background-color: @color5;
+				}
+			}
+		}
+		> .chart-container {
+			height: calc( ~"100% - 20px" );
+			shape-rendering: crispEdges;
+			.axis {
+				> .tick{
+					line {
+						stroke: #ccc;
 					}
-					&.color-2 {
-						background-color: @color2;
+					text {
+						fill: #808080;
+						font-size: 14px;
 					}
-					&.color-3 {
-						background-color: @color3;
+				}
+				> .domain {
+					display: none;
+				}
+			}
+			.line-group {
+				> .line {
+					fill: none;
+					stroke-width: 3px;
+
+					&.line-0 {
+						stroke: @color1;
 					}
-					&.color-4 {
-						background-color: @color4;
+					&.line-1 {
+						stroke: @color2;
 					}
-					&.color-5 {
-						background-color: @color5;
+					&.line-2 {
+						stroke: @color3;
+					}
+					&.line-3 {
+						stroke: @color4;
+					}
+					&.line-4 {
+						stroke: @color5;
 					}
 				}
 			}
-			> .chart-container {
-				height: 800px;
-				shape-rendering: crispEdges;
-				.axis {
-					> .tick{
-						line {
-							stroke: #ccc;
-						}
-						text {
-							font-size: 14px;
-						}
-					}
-					> .domain {
-						display: none;
-					}
-				}
-				.line-group {
-					> .line {
-						fill: none;
-						stroke-width: 3px;
 
-						&.line-0 {
-							stroke: @color1;
-						}
-						&.line-1 {
-							stroke: @color2;
-						}
-						&.line-2 {
-							stroke: @color3;
-						}
-						&.line-3 {
-							stroke: @color4;
-						}
-						&.line-4 {
-							stroke: @color5;
-						}
-					}
-				}
-
-				.brush .overlay {
-					fill: #f7f7f7;
-				}
-				.brush .selection {
-					fill: #eaedf1;
-				}
-				.zoom {
-					cursor: move;
-					stroke: #000;
-					stroke-width: 2px;
-					fill: none;
-					pointer-events: all;
-				}
+			.brush .overlay {
+				fill: #f7f7f7;
+			}
+			.brush .selection {
+				fill: #eaedf1;
+			}
+			.zoom {
+				cursor: move;
+				stroke: #000;
+				stroke-width: 2px;
+				fill: none;
+				pointer-events: all;
 			}
 		}
     }
@@ -194,26 +199,6 @@
 							margin-left: 10px;
 						}
 					}
-
-                    // .tit,
-                    // .note,
-                    // .select,
-                    // .btn {
-                    //     display: inline-block;
-                    //     height: 30px;
-                    //     line-height: 30px;
-                    //     vertical-align: middle;
-                    // }
-                    // .tit {
-                    //     width: 70px;
-                    //     text-align: right;
-                    // }
-                    // .note,
-                    // .select {
-                    //     width: 110px;
-                    //     margin-right: 20px;
-                    //     margin-left: 5px;
-                    // }
                 }
             }
 
@@ -242,7 +227,7 @@
     &.collapse {
         display: block;
         > .content-left {
-            margin-right: 60px;
+            right: 90px;
         }
         > .sidebar-info.sidebar-collapse {
             width: 60px;

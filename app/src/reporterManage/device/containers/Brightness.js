@@ -152,15 +152,13 @@ export default class Brightness extends PureComponent {
 
         return <Content className={`device-brightness ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
-						<div className="wrap">
-							<ul className="select-device-list">
-							{
-								_selectDevices
-									.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
-							}
-							</ul>
-							<MultiLineChart data={_selectDevices} />
-						</div>
+						<ul className="select-device-list">
+						{
+							_selectDevices
+								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
+						}
+						</ul>
+						<MultiLineChart className='chart-container' data={_selectDevices} />
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>
