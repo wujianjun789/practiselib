@@ -114,12 +114,6 @@ export default class MultiLineChart {
 			.attr('class', 'context')
 			.attr('transform', `translate(${this.padding.left}, ${this.padding.top + this.height + this.padding2.top2})`);
 
-		this.context
-			.append('rect')
-			.attr('class', 'brush-bg')
-			.attr('width', this.width)
-			.attr('height', this.height2);
-
 		this.context.append('g')
 			.attr('class', 'brush')
 			.call(this.brush);
