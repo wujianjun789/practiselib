@@ -2,6 +2,8 @@
  * Created by a on 2017/10/17.
  */
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import Content from '../../components/Content';
 import Select from '../../components/Select';
@@ -9,9 +11,11 @@ import SearchText from '../../components/SearchText';
 import Page from '../../components/Page'
 
 import PlayerListItem from '../component/PlayerListItem';
+import ConfirmPopup from '../../components/ConfirmPopup';
 
+import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import Immutable from 'immutable';
-export default class PlayerList extends Component{
+export class PlayerList extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -89,7 +93,10 @@ export default class PlayerList extends Component{
     }
 
     removeHandler(id){
-
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中播放列表？"}
+                                                       cancel={()=>{actions.overlayerHide()}} confirm={()=>{
+                                                }}/>);
     }
 
     render(){
@@ -118,3 +125,22 @@ export default class PlayerList extends Component{
         </Content>
     }
 }
+
+const mapStateToProps=state=> {
+    return {
+        sidebarNode: state.mediaPublish.get('sidebarNode')
+    }
+}
+
+const mapDispatchToProps=(dispatch)=> {
+    return {
+        actions: bindActionCreators({
+            overlayerShow: overlayerShow,
+            overlayerHide: overlayerHide,
+        }, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PlayerList);
