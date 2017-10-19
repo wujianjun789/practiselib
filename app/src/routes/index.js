@@ -198,6 +198,18 @@ export default (
                                                      }, 'starriverpro.deviceMonitor.deviceStateChart')
                                                  } } />
       </Route>
+      <Route path="deviceMaintenance">
+        <Route path="deviceReplace" getComponent={ (nextState, cb) => {
+                                             require.ensure([], (require) => {
+                                                 cb(null, require('../deviceMaintenance/container/DeviceReplace').default)
+                                             }, 'starriverpro.deviceMaintenance.deviceReplace')
+                                         } } />
+        <Route path="deviceUpdate" getComponent={ (nextState, cb) => {
+                                            require.ensure([], (require) => {
+                                                cb(null, require('../deviceMaintenance/container/DeviceUpdate').default)
+                                            }, 'starriverpro.deviceMaintenance.deviceUpdate')
+                                        } } />
+      </Route>
     </Route>
     <Route path="/smartLight" component={ SmartLightManage }>
       <Route path="map" getComponent={ (nextState, cb) => {

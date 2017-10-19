@@ -1,0 +1,117 @@
+#sysDeviceMaintenanceReplace,
+#sysDeviceMaintenanceUpdate {
+    //初始化button
+    .button-init(@color: white) {
+        padding: 4px 12px;
+        height: 30px;
+        color: @color;
+    } //初始化区域
+    .block-init {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 70px;
+        background-color: #fff;
+    }
+    &.content {
+        min-width: 1188px;
+    }
+    &.offset-right {
+        /******** header 样式定制 **************/
+        header,
+        .heading {
+            .block-init;
+            min-height: 70px;
+            .checkbox{
+                color: #808080;
+                margin-left: 40px;
+                font-size: 14px;
+
+                font-weight: normal;
+                .checkbox-span{
+                    margin-right: 10px;                    
+                    .checkbox-inner{
+                        width: 15px;
+                        height: 15px;
+                        margin-bottom: 1px;
+                    }
+                }
+            }
+            .select {
+                width: 160px;
+                height: 30px;
+                margin-left: 25px;
+            } 
+            .searchText {
+                height: 30px;
+                margin-left: 25px;
+                >input[type='search'] {
+                    padding-right: 16px;
+                    padding-left: 15px;
+                }
+            }
+            >.btn.btn-primary {
+                .button-init;
+                margin-left: 25px;
+            }
+        }
+        /******** Table 样式定制 ****************/
+        .table-container {
+            margin: 20px 320px 20px 20px;
+            padding: 20px;
+            background: #fff;
+            border: solid 1px #e6e6e6;
+            transition: margin-right .3s;
+            .page {
+                text-align: center;
+            }
+            .page li {
+                display: inline-block
+            }
+        }
+        /******** SideBarInfor 样式定制 ********/
+        .sidebar-info .map-position {
+            top: 130px;
+        }
+        .sidebar-info {
+            background: #e4e6ea;
+            .panel {
+                .panel-heading {
+                    border: 0px;
+                    border-radius: 0;
+                    color: #222;
+                    background: #d3d8dd;
+                }
+            }
+        }
+        Button {
+            .button-init;
+            margin-left: 15px;
+        }
+        .domain-name {
+            position: absolute;
+            margin-top: 5px;
+            cursor: default;
+        }
+        .domain-content {
+            height: calc(~"100% - 40px");
+            width: 100%;
+            border: 0px;
+        }
+        .sidebar-info.sidebar-collapse {
+            >.panel.panel-default.map-position {
+                top: 70px;
+            }
+        }
+        .domain-property {
+            background-color: #e4e6ea;
+        }
+        &.collapsed {
+            .table-container {
+                margin-right: 80px;
+            }
+        }
+    }
+}
+
+

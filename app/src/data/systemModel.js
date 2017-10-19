@@ -125,13 +125,39 @@ export const TreeData = [
         "link": "/systemOperation/deviceMonitor/deviceTopology"
       }
     ]
+  }, {
+    "id": "deviceMaintenance",
+    "name": "设备维护",
+    "toggled": false,
+    "active": true,
+    "link": "/systemOperation/deviceMaintenance/deviceReplace",
+    "level": 1,
+    "children": [
+      {
+        "id": 'deviceReplace',
+        "name": "设备更换",
+        "class": 'icon_device_replace',
+        "active": false,
+        "link": "/systemOperation/deviceMaintenance/deviceReplace"
+      },
+      {
+        "id": 'deviceUpdate',
+        "name": "设备升级",
+        "class": 'icon_device_update',
+        "active": false,
+        "link": "/systemOperation/deviceMaintenance/deviceUpdate"
+      }
+    ]
   }
 ]
 
 
 export function getModelData(model, cb) {
+  // console.log(model);
+  
   // if(models && models.length>0){     cb && cb();     return }
   getAssetModelList(response => {
+    // console.log(response);
     models = response;
     TreeData.map(item => {
       if (item.id == "config") {

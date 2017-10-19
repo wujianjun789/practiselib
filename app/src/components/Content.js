@@ -9,8 +9,8 @@ export default class Content extends Component{
     }
 
     render(){
-        const {className=""} = this.props;
-        return <div className={"content "+className}>
+        const {className="", ...props} = this.props;
+        return <div className={"content "+className} {...props}>
             {this.props.children}
         </div>
     }
