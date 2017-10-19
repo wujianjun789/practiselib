@@ -63,9 +63,9 @@ export default class MultiLineChart {
         this.width = width - this.padding.left - this.padding.right;
 		this.height = height - this.padding.top - this.padding.bottom;
 		this.height2 = height - this.padding.top - this.height - this.padding2.bottom2;
-
 		this.brush = d3.brushX()
 			.extent([[0,0], [this.width, this.height2]])
+			.handleSize(20)
 			.on('brush end', this.brushed);
 
 		this.zoom = d3.zoom()
@@ -79,13 +79,44 @@ export default class MultiLineChart {
             .attr('width', width)
 			.attr('height', height);
 
-		this.defs = this.svg
-			.append('defs')
+		const defs = this.svg
+			.append('defs');
+
+		defs
 			.append('clipPath')
 			.attr('id', 'clip')
 			.append('rect')
 			.attr('width', this.width)
 			.attr('height', this.height);
+
+		// 自定义brush handle style
+		let handle_data = {
+			points: "20,20 10,30 0,20 0,0 20,0",
+			path: [
+				"M15,15.5H5c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h10c0.3,0,0.5,0.2,0.5,0.5S15.3,15.5,15,15.5z",
+				"M15,10.5H5c-0.3,0-0.5-0.2-0.5-0.5S4.7,9.5,5,9.5h10c0.3,0,0.5,0.2,0.5,0.5S15.3,10.5,15,10.5z",
+				"M15,5.5H5C4.7,5.5,4.5,5.3,4.5,5S4.7,4.5,5,4.5h10c0.3,0,0.5,0.2,0.5,0.5S15.3,5.5,15,5.5z"
+			]
+		}
+		let handle = defs
+			.append('pattern')
+			.attr('id', 'brush-handle')
+			.attr('x', 0)
+			.attr('y', 0)
+			.attr('width', 1)
+			.attr('height', 1);
+			// .attr('patternUnits', 'objextBoundingBox');
+
+		handle
+			.append('polygon')
+			.attr('points', handle_data.points)
+			.attr('fill', '#B6B9C2');
+		handle_data.path.forEach((d) => {
+			handle
+				.append('path')
+				.attr('d', d)
+				.attr('fill', '#fff');
+		});
 
 		this.focus = this.svg
 			.append('g')
@@ -116,7 +147,9 @@ export default class MultiLineChart {
 
 		this.context.append('g')
 			.attr('class', 'brush')
-			.call(this.brush);
+			.call(this.brush)
+			.selectAll('.handle')
+			.attr('fill', 'url(#brush-handle)');
 
 		this.svg.append('rect')
 			.attr('class', 'zoom')
@@ -184,7 +217,7 @@ export default class MultiLineChart {
             .attr('d', (d) => {
                 if (d.values.length == 1) {
                     let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1}L${this.width},${_y1}`;
+                    return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
                 }
@@ -225,7 +258,7 @@ export default class MultiLineChart {
 	brushed() {
 		if(d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom")  // ignore brush-by-zoom
 			return ;
-		let s = d3.event.selection || this.xScale.range();
+		let s = d3.event.selection || this.xScale2.range();
 		this.xScale
 			.domain(s.map(this.xScale2.invert, this.xScale2));
 		this.x_axis
@@ -235,7 +268,7 @@ export default class MultiLineChart {
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
                     let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1}L${this.width},${_y1}`;
+                    return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
                 }
@@ -254,9 +287,9 @@ export default class MultiLineChart {
 
 		let domain = t.rescaleX(this.xScale2).domain();
 		// 修正domain偏差
-		if(domain[1] > this.xDomain[1]) {
-			domain[1] = this.xDomain[1];
-		}
+		// if(domain[1] > this.xDomain[1]) {
+		// 	domain[1] = this.xDomain[1];
+		// }
 
 		this.xScale.domain(domain);
 		this.line_group
@@ -264,7 +297,7 @@ export default class MultiLineChart {
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
                     let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1}L${this.width},${_y1}`;
+                    return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
                 }
@@ -275,9 +308,9 @@ export default class MultiLineChart {
 			.call(this.brush.move, () => {
 				let range = this.xScale.range().map(t.invertX, t);
 				// 修正range偏差
-				if(range[1] > this.width) {
-					range[1] = this.width;
-				}
+				// if(range[1] > this.width) {
+				// 	range[1] = this.width;
+				// }
 				return range;
 			});
 	}

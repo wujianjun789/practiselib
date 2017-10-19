@@ -45,6 +45,7 @@
 			}
 			> .chart-container {
 				height: 800px;
+				shape-rendering: crispEdges;
 				.axis {
 					> .tick{
 						line {
@@ -55,14 +56,14 @@
 						}
 					}
 					> .domain {
-						stroke: #ccc;
+						display: none;
 					}
 				}
-				.line-group,
-				.line-group2 {
+				.line-group {
 					> .line {
 						fill: none;
 						stroke-width: 3px;
+
 						&.line-0 {
 							stroke: @color1;
 						}
@@ -80,15 +81,17 @@
 						}
 					}
 				}
-				.brush-bg {
-					fill: #ececec;
-				}
+
 				.brush .overlay {
-					fill: #ececec;
+					fill: #f7f7f7;
+				}
+				.brush .selection {
+					fill: #eaedf1;
 				}
 				.zoom {
 					cursor: move;
 					stroke: #000;
+					stroke-width: 2px;
 					fill: none;
 					pointer-events: all;
 				}
