@@ -6,6 +6,7 @@ import React,{Component} from 'react';
 import Content from '../../components/Content';
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
+import Page from '../../components/Page'
 
 import PlayerListItem from '../component/PlayerListItem';
 
@@ -16,6 +17,11 @@ export default class PlayerList extends Component{
         this.state = {
             type:Immutable.fromJS({list:[{id:1, value:'播放类型1'},{id:2, value:'播放类型2'}], index:0, value:'播放类型1'}),
             search: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
+            page: Immutable.fromJS({
+                pageSize: 10,
+                current: 1,
+                total: 2
+            }),
             data: /*Immutable.fromJS(*/[
                 {id:1, icon:"", name:"播放列表1", detail:""},
                 {id:2, icon:"", name:"播放列表2", detail:""}
@@ -24,18 +30,49 @@ export default class PlayerList extends Component{
 
         this.typeChange = this.typeChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.pageChange = this.pageChange.bind(this);
+        this.updatePage = this.updatePage.bind(this);
 
+        this.addHandler = this.addHandler.bind(this);
         this.publishHandler = this.publishHandler.bind(this);
         this.funHandler = this.funHandler.bind(this);
         this.editHandler = this.editHandler.bind(this);
         this.removeHandler = this.removeHandler.bind(this);
+
+        this.requestSearch = this.requestSearch.bind(this);
+    }
+
+    requestSearch(){
+
     }
 
     typeChange(selectIndex){
-
+        this.state.type = this.state.type.update("index", v=>selectIndex);
+        this.setState({type:this.state.type.update("value", v=>this.state.type.getIn(["list", selectIndex, "value"]))},()=>{
+            this.requestSearch();
+        });
     }
 
-    searchChange(){
+    searchChange(value){
+        this.setState({search:this.state.search.update("value", v=>value)});
+    }
+
+    searchSubmit(){
+        this.updatePage(1);
+    }
+
+    pageChange(current, pageSize) {
+        this.updatePage(current);
+    }
+
+    updatePage(current){
+        this.setState({page: this.state.page.update("current", v=>current)}, ()=>{
+            this.requestSearch();
+        });
+    }
+
+    addHandler(){
 
     }
 
@@ -56,14 +93,14 @@ export default class PlayerList extends Component{
     }
 
     render(){
-        const {type, search, data} = this.state;
+        const {type, search, page, data} = this.state;
         return <Content>
             <div className="heading">
                 <Select className="type" data={type}
                         onChange={(selectIndex)=>this.typeChange(selectIndex)}/>
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button className="btn btn-primary add-playerList" onClick={()=>this.domainHandler('add')}>添加</button>
+                <button className="btn btn-primary add-playerList" onClick={()=>this.addHandler()}>添加</button>
             </div>
             <div className="playerList-container">
                 <ul className="list-group">
@@ -76,14 +113,8 @@ export default class PlayerList extends Component{
                     }
                 </ul>
             </div>
+            <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
+                  current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
         </Content>
     }
 }
-
-/*
-<div className="table-container">
-    <Table columns={this.columns} data={data} activeId={selectDomain.data.length?selectDomain.data[0].id:""}
-           rowClick={this.tableClick}/>
-    <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
-          current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
-</div>*/
