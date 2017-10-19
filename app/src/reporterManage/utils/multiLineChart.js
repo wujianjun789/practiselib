@@ -225,9 +225,6 @@ export default class MultiLineChart {
     }
 
     destroy() {
-        // this.svg.on('mouseenter', null)
-        // this.svg.on('mousemove', null);
-        // this.svg.on('mouseleave', null);
         this.svg.remove();
 	}
 
@@ -260,7 +257,13 @@ export default class MultiLineChart {
 		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") // ignore zoom-by-brush
 			return ;
 		let t = d3.event.transform;
+
 		let domain = t.rescaleX(this.xScale2).domain();
+		// 修正domain偏差
+		if(domain[1] > this.xDomain[1]) {
+			domain[1] = this.xDomain[1];
+		}
+
 		this.xScale.domain(domain);
 		this.line_group
 			.selectAll(".line")
@@ -275,6 +278,13 @@ export default class MultiLineChart {
 		this.x_axis.call(this.xAxis.scale(this.xScale));
 		this.context
 			.select(".brush")
-			.call(this.brush.move, this.xScale.range().map(t.invertX, t));
+			.call(this.brush.move, () => {
+				let range = this.xScale.range().map(t.invertX, t);
+				// 修正range偏差
+				if(range[1] > this.width) {
+					range[1] = this.width;
+				}
+				return range;
+			});
 	}
 }
