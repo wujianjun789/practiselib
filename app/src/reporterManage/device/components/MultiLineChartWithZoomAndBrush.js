@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
-import Chart from '../../utils/multiLineChart';
+import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 
-export default class MultiLineChart extends PureComponent {
+export default class MultiLineChartWithZoomAndBrush extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.chart = null;
@@ -42,9 +42,14 @@ export default class MultiLineChart extends PureComponent {
 			xDomain: [1, 13],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            xTickFormat: d => {if(d == 13) return ''; return this.monthIntl[d];},
+            xTickFormat: d => {
+				let _d = +(+d).toFixed(6).trim();
+				if(this.monthIntl[_d] == 'undefined') {
+					return '';
+				}
+				return this.monthIntl[_d];
+			},
             yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
-            padding: {left: 40, top: 10, right: 10},
             tooltipAccessor: d => d.y
         });
 	}

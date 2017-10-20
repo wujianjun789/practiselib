@@ -8,7 +8,7 @@ import Select from '../../../components/Select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import MultiLineChart from '../components/MultiLineChart';
+import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 
@@ -158,7 +158,7 @@ export default class Brightness extends PureComponent {
 								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
 						}
 						</ul>
-						<MultiLineChart className='chart-container' data={_selectDevices} />
+						<MultiLineChartWithZoomAndBrush className='chart-container' data={_selectDevices} />
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>

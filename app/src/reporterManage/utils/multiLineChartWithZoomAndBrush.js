@@ -1,28 +1,34 @@
 /**
  * D3 environment is required
- *
  * @param {Object}                  obj
  * @param {node}                    obj.wrapper             required        // 图像的容器
  * @param {{values: Number[]}}      obj.data                required        // 绘图相关数据
  * @param {{
  *              left:Number,
- *              right: 20,
- *              top: 20,
- *              bottom: 20
- * }}                               obj.padding             optional        // 图像周围的空间,可传入单个属性，默认 20px
+ *              right: Number,
+ *              top: Number,
+ *              bottom: Number
+ * }}                               obj.padding             optional        // 图像周围的空间,可传入单个属性, default: top = 10, right = 20, bottom = 70, left = 40
+ * @param {{
+ *              left2:Number,
+ *              right2: Number,
+ *              top2: Number,
+ *              bottom2: Number
+ * }}                               obj.padding2            optional        // Brush周围的空间,可传入单个属性, default: top2 = 50, right2 = 20, bottom2 = 0, left2 = 20
  * @param {Function}                obj.xAccessor           optional        // x轴数据访问器，default: d = d.x
  * @param {Function}                obj.yAccessor           optional        // y轴数据访问器，default: d = d.y
- * @param {Number[]}                obj.xDomain             optional        // x轴值域，default： [0,1]。                 未实现，逗你玩
- * @param {Number[]}                obj.yDomain             optional        // y轴值域，default： [0,1]。
- * @param {Function}                obj.tickFormat          optional        // format tick, default: d => d,
+ * @param {Number[]}                obj.xDomain             optional        // x轴定义域，default： [0,1]。                 未实现，逗你玩
+ * @param {Number[]}                obj.yDomain             optional        // y轴定义域，default： [0,1]。
+ * @param {Function}                obj.xTickFormat         optional        // format y axis tick, default: d => d,
+ * @param {Function}                obj.yTickFormat         optional        // format x axis tick, default: d => d,
  * @param {Function}                obj.tooltipAccessor     optional        // tooltip 数据访问器, default: d => d,
  * @param {Function}                obj.curveFactory        optional        // default: d3.curveStepAfter
  */
-export default class MultiLineChart {
+export default class MultiLineChartWithZoomAndBrush {
     constructor({
         wrapper,
         data,
-		padding: {top = 20, right = 20, bottom = 70, left = 20} = {},
+		padding: {top = 10, right = 20, bottom = 70, left = 40} = {},
 		padding2: {top2 = 50, right2 = 20, bottom2 = 0, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
