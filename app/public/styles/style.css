@@ -6,7 +6,7 @@ body {
     font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft Yahei','WenQuanYi Micro Hei',sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x:hidden;
-    
+
 }
 
 body {
@@ -74,7 +74,8 @@ button{
 
 .btn.btn-primary,
 .btn.btn-default,
-.btn.btn-danger {
+.btn.btn-danger,
+.btn.btn-reset {
     min-width:60px;
     height:30px;
     padding: 0;
@@ -82,12 +83,18 @@ button{
 
 .btn.btn-danger {
     background-color: #ff5c68;
-    border-color: #ff5c68; 
+    border-color: #ff5c68;
 }
 
 .btn.btn-primary {
     background-color: #00bcff;
     border-color: #00bcff;
+}
+
+.btn.btn-reset {
+	color: #fff;
+	background-color: #495264;
+    border-color: #495264;
 }
 
 .btn.btn-primary:hover,
@@ -101,6 +108,8 @@ button{
     background-color: #ff4d5a;
     border-color: #FF4D59;
 }
+
+/* .btn.btn */
 
 /* .btn[disabled],
 .btn[disabled]:hover {
@@ -236,7 +245,7 @@ input{ border-radius: 0px!important;}
     bottom: 0;
     left: 180px;
     min-width: 1025px;
-    overflow-x: hidden;    
+    overflow-x: hidden;
     background: #f2f2f4;
 
     z-index: 0;
@@ -1256,7 +1265,7 @@ width:24px;
     color: #808080;
 }
 
-.modal-footer .btn.btn-default:hover, 
+.modal-footer .btn.btn-default:hover,
 .btn-toolbar .btn-group .btn.btn-default:hover {
     color: #808080;
     background-color: #f7f7f7;
@@ -1273,13 +1282,13 @@ width:24px;
     position:relative;
     font-size: 16px;
     color: #808080;
-    border-bottom-color:#919191;    
+    border-bottom-color:#919191;
 }
 
 .alter-pw-popup .modal-body {
     padding: 35px 45px 0 0;
     font-size: 14px;
-} 
+}
 
 .alter-pw-popup .modal-body .inputCheck .col-sm-8 {
     width: auto;
@@ -1324,7 +1333,7 @@ width:24px;
     border-radius: 9px;
     background-color: #fff;
     text-align: center;
-    padding: 28px 42px 25px 42px; 
+    padding: 28px 42px 25px 42px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
 }
 
@@ -1390,7 +1399,7 @@ width:24px;
     display: inline-block;
     width: 15px;
     height: 15px;
-    
+
     background: url("/images/icon_delete.png");
     background-size: 100% 100%;
 

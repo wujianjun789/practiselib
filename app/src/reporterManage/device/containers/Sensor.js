@@ -8,10 +8,8 @@ import Select from '../../../components/Select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
-import DatePicker from 'antd/lib/date-picker';  // 加载 JS
-import 'antd/lib/date-picker/style/css';        // 加载 CSS
 import Immutable from 'immutable';
+import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getMomentDate, momentDateFormat} from '../../../util/time';
@@ -24,12 +22,12 @@ const selectDevices = [
 	{ id: 5, name: '灯集中控制器5', values: [{x: 1, y: 31},{x: 2, y: 42},{x: 3, y: 53},{x: 4, y: 64},{x: 5, y: 26},{x: 6, y: 36},{x: 7, y: 56},{x: 8, y: 55},{x: 9, y: 65},{x: 10, y: 65},{x: 11, y: 25}, {x: 12, y: 56}, {x: 13, y: 56}]},
 	{ id: 6, name: '灯集中控制器6', values: [{x: 1, y: 41},{x: 2, y: 52},{x: 3, y: 63},{x: 4, y: 74},{x: 5, y: 36},{x: 6, y: 46},{x: 7, y: 65},{x: 8, y: 45},{x: 9, y: 55},{x: 10, y: 75},{x: 11, y: 15}, {x: 12, y: 76}, {x: 13, y: 76}]}
 ];
-export default class Brightness extends PureComponent {
+export default class Sensor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-			startDate: getMomentDate(),
-			endDate: getMomentDate(),
+			startDate: null,
+			endDate: null,
             page: {
                 total: 0,
                 current: 1,
@@ -48,13 +46,12 @@ export default class Brightness extends PureComponent {
                 options: []
 			},
 			deviceList: [],
-			selectDevices: [],/* selectDevices */
-			chartData: selectDevices
+			selectDevices: /* [] */selectDevices
 		};
 
 		this.columns = [
-			{field: 'name', title: '设备名称'},
-			{field: 'id', title: '设备编号'},
+			{accessor: 'name', title: '设备名称'},
+			{accessor: 'id', title: '设备编号'},
 		];
 
 		this.maxNumofSelectDevices = 5;
@@ -64,9 +61,6 @@ export default class Brightness extends PureComponent {
         this.searchChange = this.searchChange.bind(this);
 		this.searchSubmit = this.searchSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
-		this.startDateChange = this.startDateChange.bind(this);
-		this.endDateChange = this.endDateChange.bind(this);
-		this.tableRowCheckChange = this.tableRowCheckChange.bind(this);
 
 		this.initData = this.initData.bind(this);
 		this.initDeviceData = this.initDeviceData.bind(this);
@@ -155,41 +149,25 @@ export default class Brightness extends PureComponent {
 
     collapseHandler() {
         this.setState({sidebarCollapse: !this.state.sidebarCollapse});
-	}
-
-	startDateChange(date, dateStr) {
-		this.setState({startDate: date});
-	}
-
-	endDateChange(date, dateStr) {
-		this.setState({endDate: date});
-	}
-
-	tableRowCheckChange(rowId, checked) {
-		let {selectDevices, deviceList} = this.state;
-		if(checked) {
-			this.setState({selectDevices: [...selectDevices, ...deviceList.filter((item)=>item.id == rowId)]});
-		} else {
-			let _selectDevices = [...selectDevices];
-			_selectDevices.splice(_selectDevices.findIndex((item) => item.id == rowId), 1);
-			this.setState({selectDevices: _selectDevices });
-		}
-	}
+    }
 
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
 				search: {value, placeholder}, currentDomain, domainList,
-				deviceList, selectDevices, startDate, endDate, chartData } = this.state;
+				deviceList, selectDevices, startDate, endDate } = this.state;
+		const _selectDevices = selectDevices.slice(0, this.maxNumofSelectDevices);
+		const _startDate = startDate == null ? '' : momentDateFormat(getMomentDate(startDate));
+		const _endDate = endDate == null ? '' : momentDateFormat(getMomentDate(endDate));
 
-        return <Content className={`device-brightness ${sidebarCollapse ? 'collapse' : ''}`}>
+        return <Content className={`device-sensor ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
 						<ul className="select-device-list">
 						{
-							selectDevices.slice(0, 5)
+							_selectDevices
 								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
 						}
 						</ul>
-						<MultiLineChartWithZoomAndBrush className='chart-container' data={chartData} />
+						<MultiLineChartWithZoomAndBrush className='chart-container' data={_selectDevices} />
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>
@@ -200,9 +178,9 @@ export default class Brightness extends PureComponent {
 								<svg><use xlinkHref={"#icon_device_operate"} transform="scale(0.088,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选择时间
                             </div>
 							<div className="panel-body">
-								<DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
+								<input type="text" id="startDate" className="form-control start-date" placeholder="选择起始日期" value={_startDate} onChange={this.onChange}/>
 								<span>至</span>
-								<DatePicker className="start-date" placeholder="选择结束日期" value={endDate} allowClear={false} onChange={this.endDateChange}/>
+								<input type="text" id="endDate" className="form-control end-date" placeholder="选择结束日期" value={_endDate} onChange={this.onChange}/>
                             </div>
                         </div>
                         <div className="panel panel-default panel-2">
@@ -213,10 +191,12 @@ export default class Brightness extends PureComponent {
 								<div className="device-filter">
 									<Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
                                 		value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+									<Select id='sensor' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+										value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
 									<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
 								</div>
 
-								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} rowCheckChange={this.tableRowCheckChange}/>
+								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} />
 								<div className="page-center">
 									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
 											current={current} total={total} onChange={this.pageChange}/>

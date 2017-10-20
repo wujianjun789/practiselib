@@ -300,6 +300,11 @@ export default (
 					cb(null, require('../reporterManage/device/containers/Brightness').default);
 				}, 'starriverpro.reporterManage.device.brightness');
 			}} />
+			<Route path="sensor" getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Sensor').default);
+				}, 'starriverpro.reporterManage.device.sensor');
+			}} />
 		</Route>
 	</Route>
     <Route path="/mediaPublish" component={MediaPublish}>

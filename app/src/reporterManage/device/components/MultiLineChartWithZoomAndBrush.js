@@ -43,7 +43,7 @@ export default class MultiLineChartWithZoomAndBrush extends PureComponent {
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
             xTickFormat: d => {
-				let _d = +(+d).toFixed(6).trim();
+				let _d = +(+d).toFixed(10).trim();
 				if(this.monthIntl[_d] == 'undefined') {
 					return '';
 				}
