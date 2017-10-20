@@ -51,7 +51,7 @@ class MediaPublishIndex extends Component{
         if(routes.length>4){
             childPath = routes[4].path;
         }
-        return <div className={"container "+"domain-"+parentPath+" "+parentPath+"-"+childPath}>
+        return <div className={"container "+"mediaPublish-"+parentPath+" "+parentPath+"-"+childPath}>
             <HeadBar moduleName="媒体发布" router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}

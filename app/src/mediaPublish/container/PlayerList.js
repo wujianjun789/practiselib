@@ -101,27 +101,27 @@ export class PlayerList extends Component{
 
     render(){
         const {type, search, page, data} = this.state;
-        return <Content>
-            <div className="heading">
-                <Select className="type" data={type}
-                        onChange={(selectIndex)=>this.typeChange(selectIndex)}/>
-                <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
-                            onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button className="btn btn-primary add-playerList" onClick={()=>this.addHandler()}>添加</button>
-            </div>
-            <div className="playerList-container">
-                <ul className="list-group">
-                    {
-                        data.map(item=>{
-                            return <li key={item.id} className="list-group-item">
-                                <PlayerListItem data={item} publishHandler={this.publishHandler} funHandler={this.funHandler} editHandler={this.editHandler} removeHandler={this.removeHandler}/>
-                            </li>
-                        })
-                    }
-                </ul>
-            </div>
-            <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
-                  current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
+        return <Content className="player-list">
+                <div className="heading">
+                    <Select className="type" data={type}
+                            onChange={(selectIndex)=>this.typeChange(selectIndex)}/>
+                    <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
+                                onChange={this.searchChange} submit={this.searchSubmit}/>
+                    <button className="btn btn-primary add-playerList" onClick={()=>this.addHandler()}>添加</button>
+                </div>
+                <div className="playerList-container">
+                    <ul className="list-group">
+                        {
+                            data.map(item=>{
+                                return <li key={item.id} className="list-group-item">
+                                    <PlayerListItem data={item} publishHandler={this.publishHandler} funHandler={this.funHandler} editHandler={this.editHandler} removeHandler={this.removeHandler}/>
+                                </li>
+                            })
+                        }
+                    </ul>
+                </div>
+                <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
+                      current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
         </Content>
     }
 }
