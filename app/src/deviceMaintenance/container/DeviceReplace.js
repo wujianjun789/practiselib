@@ -15,7 +15,8 @@ import Select from '../../components/Select.1';
 import Immutable from 'immutable';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
-import Checkbox from '../../components/Checkbox'
+import Checkbox from '../../components/Checkbox';
+import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
 
 import Content from '../../components/Content';
 
@@ -84,7 +85,7 @@ export class DeviceReplace extends Component {
         // this.updateSelectDevice = this.updateSelectDevice.bind(this);
         // this.searchSubmit = this.searchSubmit.bind(this);
         // this.pageChange = this.pageChange.bind(this);
-        // this.domainHandler = this.domainHandler.bind(this);
+        this.domainHandler = this.domainHandler.bind(this);
         // this.domainSelect = this.domainSelect.bind(this);
 
         // this.popupCancel = this.popupCancel.bind(this);
@@ -178,10 +179,25 @@ export class DeviceReplace extends Component {
     }
 
     domainHandler(e) {
+        console.log(e)
         let id = e.target.id;
         const {} = this.state
         const {overlayerHide, overlayerShow} = this.props.actions;
         switch (id) {
+            case "device_replace_batch": 
+
+            break;
+            case "device_num_modify":
+                const dataInit = {
+                    title: "修改设备编号",
+                    selectDeviceName: "被选中设备的名称",
+                    selectDeviceNumber: "别选中的设备编号",
+                };
+                overlayerShow(<DeviceNumberModifyPopup className="device_num_modify_popup" data={dataInit}
+                    overlayerHide={overlayerHide} onConfirm={()=>{
+                        console.log("更新设备编号")
+                    }}/>);
+            break;
 
         }
     }
@@ -231,7 +247,7 @@ export class DeviceReplace extends Component {
                             options={categoryList.options} value={categoryList.value} onChange={this.domainSelect}/>
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                         onChange={this.searchChange} submit={this.searchSubmit} />
-                    <button id="device_replace" className="btn btn-primary add-domain">批量更换</button>
+                    <button id="device_replace_batch" className="btn btn-primary add-domain" onClick = {this.domainHandler}>批量更换</button>
                 </div>
                 <div className="body">
                     <div className="table-container">
@@ -249,7 +265,7 @@ export class DeviceReplace extends Component {
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{selectDevice.data.length?selectDevice.data[0].name:''}</span>
-                            <button className="btn btn-primary pull-right">修改</button>
+                            <button id="device_num_modify" className="btn btn-primary pull-right" onClick = {this.domainHandler}>修改</button>
                         </div>
                     </div>
                 </SideBarInfo>
