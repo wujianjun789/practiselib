@@ -17,12 +17,14 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Checkbox from '../../components/Checkbox';
 import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
+import ImportFilePopup from '../component/ImportFilePopup';
+import {addNotify} from '../../common/actions/notifyPopup';
 
 import Content from '../../components/Content';
 
 import {TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
 
-import { treeViewInit } from '../../common/actions/treeView'
+import { treeViewInit } from '../../common/actions/treeView';
 
 export class DeviceReplace extends Component {
     constructor(props) {
@@ -41,7 +43,7 @@ export class DeviceReplace extends Component {
                 placeholder: '请输入设备编号',
             }),
             selectDevice: {
-                id: '',
+                id: 'systemOperation',
                 position: [],
                 data: []
             },
@@ -182,9 +184,21 @@ export class DeviceReplace extends Component {
         console.log(e)
         let id = e.target.id;
         const {} = this.state
-        const {overlayerHide, overlayerShow} = this.props.actions;
+        const {overlayerHide, overlayerShow, addNotify} = this.props.actions;
         switch (id) {
             case "device_replace_batch": 
+                const dataInit2 = {
+                    title: "批量更换",
+                    placeholder: "选择列表文件路径",
+                    success: "更换成功",
+                    fail: "更换失败",
+                };
+                console.log(this.props.actions);
+                overlayerShow(<ImportFilePopup className="" data={dataInit2} overlayerHide={overlayerHide} 
+                addNotify={this.props.actions.addNotify}
+                onConfirm={()=>{
+                    console.log("批量更换设备");
+                }}  />);
 
             break;
             case "device_num_modify":
@@ -193,7 +207,9 @@ export class DeviceReplace extends Component {
                     selectDeviceName: "被选中设备的名称",
                     selectDeviceNumber: "别选中的设备编号",
                 };
-                overlayerShow(<DeviceNumberModifyPopup className="device_num_modify_popup" data={dataInit}
+                
+                overlayerShow(<DeviceNumberModifyPopup className="device-num-modify-popup" data={dataInit}
+                    /* addNotify={this.props.actions.addNotify} */
                     overlayerHide={overlayerHide} onConfirm={()=>{
                         console.log("更新设备编号")
                     }}/>);
@@ -280,10 +296,11 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
         actions: bindActionCreators({
+            addNotify,
             treeViewInit,
             overlayerShow,
             overlayerHide
-        },dispatch),
+        }, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeviceReplace);

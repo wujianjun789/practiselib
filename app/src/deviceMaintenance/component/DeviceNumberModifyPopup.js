@@ -1,3 +1,6 @@
+/**
+ * Created by m on 2017/10/18.
+ */
 import React, { Component } from 'react';
 import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
@@ -6,7 +9,7 @@ import PropTypes from 'prop-types';
 export default class DeviceNumberModifyPopup extends Component {
     constructor(props) {
         super(props);
-        const { selectDeviceName="", selectDeviceNumber="", title=""} =props.data;
+        const { selectDeviceName="", selectDeviceNumber="", title=""} = props.data;
         this.state = {
             title: title,
             name: selectDeviceName,

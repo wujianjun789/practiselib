@@ -15,7 +15,10 @@ import Select from '../../components/Select.1';
 import Immutable from 'immutable';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
-import Checkbox from '../../components/Checkbox'
+import Checkbox from '../../components/Checkbox';
+// import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
+import ImportFilePopup from '../component/ImportFilePopup';
+import {addNotify} from '../../common/actions/notifyPopup'
 
 import Content from '../../components/Content';
 
@@ -23,7 +26,7 @@ import {TreeData, getModelData, getModelNameById, getModelTypesById, getModelTyp
 
 import { treeViewInit } from '../../common/actions/treeView'
 
-export class DeviceReplace extends Component {
+export class DeviceUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,7 +43,7 @@ export class DeviceReplace extends Component {
                 placeholder: '请输入设备编号',
             }),
             selectDevice: {
-                id: '',
+                id: 'systemOperation',
                 position: [],
                 data: []
             },
@@ -84,7 +87,7 @@ export class DeviceReplace extends Component {
         // this.updateSelectDevice = this.updateSelectDevice.bind(this);
         // this.searchSubmit = this.searchSubmit.bind(this);
         // this.pageChange = this.pageChange.bind(this);
-        // this.domainHandler = this.domainHandler.bind(this);
+        this.domainHandler = this.domainHandler.bind(this);
         // this.domainSelect = this.domainSelect.bind(this);
 
         // this.popupCancel = this.popupCancel.bind(this);
@@ -179,11 +182,33 @@ export class DeviceReplace extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {} = this.state
-        const {overlayerHide, overlayerShow} = this.props.actions;
+        const {} = this.state;
+        const {overlayerHide, overlayerShow, addNotify} = this.props.actions;
         switch (id) {
-
+            case "device_update_batch":
+                const dataInit = {
+                    title: "批量升级", 
+                    placeholder: "选择列表文件路径",
+                    success: "升级成功",
+                    fail: "升级失败",
+                };
+                overlayerShow(<ImportFilePopup calssName="device_update_batch" data={dataInit} overlayerHide = {overlayerHide}
+                    addNotify={this.props.actions.addNotify}
+                    onConfirm={ ()=>{console.log("批量升级设备")} } />);
+                break;
+            case "device_update_one":
+                const dataInit2 = {
+                    title: "升级",
+                    placeholder: "选择列表文件路径",
+                    success: "升级成功",
+                    fail: "升级失败",
+                };
+                overlayerShow(<ImportFilePopup calssName="device_update_one" data={dataInit2} overlayerHide = {overlayerHide}
+                    addNotify={this.props.actions.addNotify}
+                    onConfirm={ ()=>{console.log("升级设备")} } />);
+                break;
         }
+
     }
 
     pageChange(current, pageSize) {
@@ -231,7 +256,7 @@ export class DeviceReplace extends Component {
                             options={categoryList.options} value={categoryList.value} onChange={this.domainSelect}/>
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                         onChange={this.searchChange} submit={this.searchSubmit} />
-                    <button id="device_replace" className="btn btn-primary add-domain">批量升级</button>
+                    <button id="device_update_batch" className="btn btn-primary add-domain" onClick= {this.domainHandler} >批量升级</button>
                 </div>
                 <div className="body">
                     <div className="table-container">
@@ -249,7 +274,7 @@ export class DeviceReplace extends Component {
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{selectDevice.data.length?selectDevice.data[0].name:''}</span>
-                            <button className="btn btn-primary pull-right">升级</button>
+                            <button id="device_update_one" className="btn btn-primary pull-right" onClick= { this.domainHandler } >升级</button>
                         </div>
                     </div>
                 </SideBarInfo>
@@ -264,11 +289,12 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
         actions: bindActionCreators({
+            addNotify,
             treeViewInit,
             overlayerShow,
             overlayerHide
         },dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeviceReplace);
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceUpdate);
 
