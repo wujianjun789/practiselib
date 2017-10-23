@@ -77,7 +77,7 @@ export class PlayerList extends Component{
     }
 
     addHandler(){
-
+        this.props.router.push("/mediaPublish/playerArea");
     }
 
     publishHandler(id){

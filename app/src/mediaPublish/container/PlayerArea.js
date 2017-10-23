@@ -35,9 +35,38 @@ export default class PlayerArea extends Component{
         this.onChange = this.onChange.bind(this);
         this.addHandler = this.addHandler.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
+        this.playHandler = this.playHandler.bind(this);
+        this.saveHandler = this.saveHandler.bind(this);
+        this.savePlanHandler = this.savePlanHandler.bind(this);
+        this.quitHandler = this.quitHandler.bind(this);
     }
 
-    onChange(id, selectIndex){
+    onChange(id, value){
+        if(id=="playerList" || id == "sceneList" || id == "assetType" || id == "assetSort"){
+            this.state[id] = this.state[id].update('index', v=>value);
+            this.setState({[id]:this.state[id].update('value', v=>this.state[id].getIn(["list", value, "value"]))});
+        }
+        else if(id == "assetSearch"){
+            this.setState({assetSearch:this.state.assetSearch.update('value', v=>value)});
+        }else{
+            const val = value.target.value;
+            this.setState({property:Object.assign({}, this.state.property, {[id]:Object.assign({}, this.state.property[id], {value:val})})})
+        }
+    }
+
+    playHandler(){
+
+    }
+
+    saveHandler(){
+
+    }
+
+    savePlanHandler(){
+
+    }
+
+    quitHandler(){
 
     }
 
@@ -54,11 +83,11 @@ export default class PlayerArea extends Component{
         return <Content className="player-area">
             <div className="left col-sm-3">
                 <Select className="player-list" data={playerList} onChange={(selectIndex)=>this.onChange("playerList", selectIndex)}/>
-                <Select className="scene" data={sceneList} onChange={(selectIndex)=>this.onChange("scene", selectIndex)}></Select>
+                <Select className="scene" data={sceneList} onChange={(selectIndex)=>this.onChange("sceneList", selectIndex)}></Select>
                 <ul>
                     {
                         areaList && areaList.get("list").map(item=>{
-                            return <li>{item.get("value")}</li>
+                            return <li key={item.get("id")}>{item.get("value")}</li>
                         })
                     }
                 </ul>
@@ -69,10 +98,10 @@ export default class PlayerArea extends Component{
                     <img src=""/>
                 </div>
                 <div className="col-sm-4 pro-container">
-                    <button className="btn btn-primary play" onClick={()=>this.addHandler()}>播放</button>
-                    <button className="btn btn-primary save" onClick={()=>this.addHandler()}>存为模板</button>
-                    <button className="btn btn-primary save-plan" onClick={()=>this.addHandler()}>保存计划</button>
-                    <button className="btn btn-primary quit" onClick={()=>this.addHandler()}>退出</button>
+                    <button className="btn btn-primary play" onClick={()=>this.playHandler()}>播放</button>
+                    <button className="btn btn-primary save" onClick={()=>this.saveHandler()}>存为模板</button>
+                    <button className="btn btn-primary save-plan" onClick={()=>this.savePlanHandler()}>保存计划</button>
+                    <button className="btn btn-primary quit" onClick={()=>this.quitHandler()}>退出</button>
                 </div>
             </div>
             <div className="right col-sm-6">
@@ -82,7 +111,7 @@ export default class PlayerArea extends Component{
                         <label className="col-sm-3 control-label" htmlFor={property.areaName.key}>{property.areaName.title}</label>
                         <div className="col-sm-9">
                             <input type="text" className={ "form-control" }  placeholder={property.areaName.placeholder} maxLength="16" value={property.areaName.value}
-                                   onChange={this.onChange}/>
+                                   onChange={event=>this.onChange("areaName", event)}/>
                             <span className={prompt.area?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                         </div>
                     </div>
@@ -91,7 +120,7 @@ export default class PlayerArea extends Component{
                             <label className="col-sm-3 control-label" htmlFor={property.width.key}>{property.width.title}</label>
                             <div className="col-sm-9">
                                 <input type="text" className={ "form-control " }  placeholder={property.width.placeholder} maxLength="8" value={property.width.value}
-                                       onChange={this.onChange}/>
+                                       onChange={event=>this.onChange("width", event)}/>
                                 <span className={prompt.width?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
                         </div>
@@ -99,7 +128,7 @@ export default class PlayerArea extends Component{
                             <label className="col-sm-3 control-label" htmlFor={property.height.key}>{property.height.title}</label>
                             <div className="col-sm-9">
                                 <input type="text" className={ "form-control " }  placeholder={property.height.placeholder} maxLength="8" value={property.height.value}
-                                       onChange={this.onChange}/>
+                                       onChange={event=>this.onChange("height", event)}/>
                                 <span className={prompt.height?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
                         </div>
@@ -109,7 +138,7 @@ export default class PlayerArea extends Component{
                             <label className="col-sm-3 control-label" htmlFor={property.axisX.key}>{property.axisX.title}</label>
                             <div className="col-sm-9">
                                 <input type="text" className={ "form-control " }  placeholder={property.axisX.placeholder} maxLength="8" value={property.axisX.value}
-                                       onChange={this.onChange}/>
+                                       onChange={event=>this.onChange("axisX", event)}/>
                                 <span className={prompt.axisX?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
                         </div>
@@ -117,7 +146,7 @@ export default class PlayerArea extends Component{
                             <label className="col-sm-3 control-label" htmlFor={property.axisY.key}>{property.axisY.title}</label>
                             <div className="col-sm-9">
                                 <input type="text" className={ "form-control " }  placeholder={property.axisY.placeholder} maxLength="8" value={property.axisY.value}
-                                       onChange={this.onChange}/>
+                                       onChange={event=>this.onChange("axisY", event)}/>
                                 <span className={prompt.axisY?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                             </div>
                         </div>
