@@ -562,6 +562,7 @@ ul {
 }
 
 .tree-list .tree-2 > li > a > div {
+    opacity:0.8;
     height:40px;
     padding-left:12px;
     /*background: #d3d8dd;*/
@@ -588,7 +589,8 @@ ul {
 }
 
 .tree-list .tree-2 > li > a > div:hover {
-    background: #cce7ed;
+    background: #f2f1ed;
+    opacity:1;
 }
 
 .tree-list .tree-2 .active > a > div {
@@ -620,6 +622,7 @@ ul {
     padding-top: 0px; padding-bottom: 0px;
     padding-right: 14px;
     padding-left: 14px;
+    webkit-appearance：button;
 }
 
 .searchText {
