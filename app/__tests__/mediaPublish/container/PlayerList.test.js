@@ -8,7 +8,7 @@ import renderer from 'react-test-renderer'
 import {PlayerList} from '../../../src/mediaPublish/container/PlayerList';
 
 
-test('DomainEdit renders', ()=>{
+test('PlayerList renders', ()=>{
     const component = renderer.create(
         <PlayerList />
     )
@@ -17,7 +17,7 @@ test('DomainEdit renders', ()=>{
     expect(playerList).toMatchSnapshot();
 })
 
-test('DomainEdit div click', ()=>{
+test('PlayerList div click', ()=>{
     const component = shallow(<PlayerList />)
     expect(component.find('.heading').length).toEqual(1);
     expect(component.find('.playerList-container').length).toEqual(1);
