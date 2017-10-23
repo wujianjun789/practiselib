@@ -8,6 +8,9 @@ import PermissionManage from '../permissionManage/container/index'
 import SystemOperation from '../systemOperation/container/index'
 import SmartLightManage from '../smartLightManage/container/index'
 import LightManage from '../lightManage/container/index'
+import ReporterManage from '../reporterManage';
+import MediaPublish from '../mediaPublish/container/index';
+
 import { isAuthenticated, isAdmined, isLogged } from '../authentication/authWrapper'
 const Authenticated = isAuthenticated(props => props.children);
 const Admined = isAdmined(props => props.children);
@@ -41,7 +44,7 @@ export default (
                                                 require.ensure([], (require) => {
                                                     cb(null, require('../assetManage/container/Screen').default)
                                                 }, 'starriverpro.assetmanage.screen')
-                                            
+
                                             } } />
         <Route path="pole" getComponent={ (nextState, cb) => {
                                               require.ensure([], (require) => {
@@ -140,7 +143,7 @@ export default (
                                                 require.ensure([], (require) => {
                                                     cb(null, require('../systemOperation/container/Pole').default)
                                                 }, 'starriverpro.systemoperation.pole')
-                                            } }/> 
+                                            } }/>
       </Route>
       <Route path="strategy">
         <Route path="timeTable" getComponent={ (nextState, cb) => {
@@ -194,6 +197,18 @@ export default (
                                                          cb(null, require('../deviceMonitor/container/DeviceStateChart').default)
                                                      }, 'starriverpro.deviceMonitor.deviceStateChart')
                                                  } } />
+      </Route>
+      <Route path="deviceMaintenance">
+        <Route path="deviceReplace" getComponent={ (nextState, cb) => {
+                                             require.ensure([], (require) => {
+                                                 cb(null, require('../deviceMaintenance/container/DeviceReplace').default)
+                                             }, 'starriverpro.deviceMaintenance.deviceReplace')
+                                         } } />
+        <Route path="deviceUpdate" getComponent={ (nextState, cb) => {
+                                            require.ensure([], (require) => {
+                                                cb(null, require('../deviceMaintenance/container/DeviceUpdate').default)
+                                            }, 'starriverpro.deviceMaintenance.deviceUpdate')
+                                        } } />
       </Route>
     </Route>
     <Route path="/smartLight" component={ SmartLightManage }>
@@ -277,7 +292,41 @@ export default (
                                                   }, 'starriverpro.lightControl.strategy')
                                               } } />
       </Route>
-    </Route>
+	</Route>
+	<Route path="/reporterManage" component={ReporterManage}>
+		<Route path="device">
+			<IndexRoute getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Brightness').default);
+				}, 'starriverpro.reporterManage.device.brightness');
+			}} />
+			<Route path="sensor" getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Sensor').default);
+				}, 'starriverpro.reporterManage.device.sensor');
+			}} />
+		</Route>
+	</Route>
+    <Route path="/mediaPublish" component={MediaPublish}>
+		<Route path="playerList">
+			<IndexRoute getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../mediaPublish/container/PlayerList').default);
+				}, 'starriverpro.mediaPublish.container.PlayerList');
+			}} />
+		</Route>
+        <Route path="playerArea" getComponent={(nextState, cb)=>{
+            require.ensure([], require=>{
+                cb(null, require('../mediaPublish/container/PlayerArea').default);
+            }, 'starriverpro.mediaPublish.container.PlayerArea');
+        }}/>
+
+        <Route path="publish" getComponent={(nextState, cb)=>{
+            require.ensure([], require => {
+					cb(null, require('../mediaPublishManage/container/PublishManage').default);
+				}, 'starriverpro.mediaPublishManage.container.PublishManage');
+          }}/>
+	</Route>
   </Route>
   <Route path="*" getComponent={ (nextState, cb) => {
                                      require.ensure([], (require) => {

@@ -5,7 +5,7 @@ export const TreeData=[
     {
         "id": "domainEdit",
         "name":"域编辑",
-        "toggled": true,
+        "toggled": false,
         "active": true,
         "link": "/domainManage/domainEdit/list",
         "level":1,

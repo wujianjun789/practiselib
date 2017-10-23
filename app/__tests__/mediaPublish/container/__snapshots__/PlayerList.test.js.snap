@@ -1,0 +1,166 @@
+exports[`test DomainEdit renders 1`] = `
+<div
+  className="content ">
+  <div
+    className="heading">
+    <select
+      className="select type form-control"
+      id=""
+      onChange={[Function]}
+      placeholder={undefined}
+      value="播放类型1">
+      <option
+        value="播放类型1">
+        播放类型1
+      </option>
+      <option
+        value="播放类型2">
+        播放类型2
+      </option>
+    </select>
+    <div
+      className="searchText "
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}>
+      <input
+        className="form-control"
+        onChange={[Function]}
+        placeholder="输入素材名称"
+        type="search"
+        value="" />
+      <ul
+        className="" />
+      <span
+        className="glyphicon glyphicon-search"
+        onClick={[Function]} />
+    </div>
+    <button
+      className="btn btn-primary add-playerList"
+      onClick={[Function]}>
+      添加
+    </button>
+  </div>
+  <div
+    className="playerList-container">
+    <ul
+      className="list-group">
+      <li
+        className="list-group-item">
+        <div
+          className="playerList-item">
+          <div
+            className="static-group">
+            <span
+              className="icon" />
+            <span
+              className="name">
+              播放列表1
+            </span>
+          </div>
+          <div
+            className="edit-group">
+            <button
+              className="btn btn-primary publish"
+              onClick={[Function]}>
+              发布
+            </button>
+            <button
+              className="btn btn-primary fun"
+              onClick={[Function]}>
+              功能
+            </button>
+            <button
+              className="btn btn-primary edit"
+              onClick={[Function]}>
+              编辑
+            </button>
+            <button
+              className="btn btn-primary remove"
+              onClick={[Function]}>
+              删除
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        className="list-group-item">
+        <div
+          className="playerList-item">
+          <div
+            className="static-group">
+            <span
+              className="icon" />
+            <span
+              className="name">
+              播放列表2
+            </span>
+          </div>
+          <div
+            className="edit-group">
+            <button
+              className="btn btn-primary publish"
+              onClick={[Function]}>
+              发布
+            </button>
+            <button
+              className="btn btn-primary fun"
+              onClick={[Function]}>
+              功能
+            </button>
+            <button
+              className="btn btn-primary edit"
+              onClick={[Function]}>
+              编辑
+            </button>
+            <button
+              className="btn btn-primary remove"
+              onClick={[Function]}>
+              删除
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <ul
+    className="rc-pagination page "
+    style={Object {}}
+    unselectable="unselectable">
+    <li
+      aria-disabled={true}
+      className="rc-pagination-disabled rc-pagination-prev"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+      title="上一页">
+      <a>
+        
+      </a>
+    </li>
+    <li
+      className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+      title={1}>
+      <a>
+        1
+      </a>
+    </li>
+    <li
+      aria-disabled={true}
+      className="rc-pagination-disabled rc-pagination-next"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      tabIndex="0"
+      title="下一页">
+      <a>
+        
+      </a>
+    </li>
+    <div
+      className="rc-pagination-options" />
+  </ul>
+</div>
+`;
