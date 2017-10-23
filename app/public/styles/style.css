@@ -556,6 +556,7 @@ ul {
 }
 
 .tree-list .tree-1 > li span {
+    top:2px;
     margin-right: 12px;
 }
 
