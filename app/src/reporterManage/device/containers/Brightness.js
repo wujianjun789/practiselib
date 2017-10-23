@@ -8,28 +8,22 @@ import Select from '../../../components/Select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
+import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 import DatePicker from 'antd/lib/date-picker';  // 加载 JS
 import 'antd/lib/date-picker/style/css';        // 加载 CSS
 import Immutable from 'immutable';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
-import {getMomentDate, momentDateFormat} from '../../../util/time';
+import {getHistoriesDataByAssetId} from '../../../api/reporter';
+import {getToday, getYesterday} from '../../../util/time';
+import moment from 'moment';
 
-const selectDevices = [
-	{ id: 1, name: '灯集中控制器1', values: [{x: 1, y: 85},{x: 2, y: 75},{x: 3, y: 65},{x: 4, y: 55},{x: 5, y: 45},{x: 6, y: 35},{x: 7, y: 35},{x: 8, y: 35},{x: 9, y: 35},{x: 10, y: 35},{x: 11, y: 35}, {x: 12, y: 95}, {x: 13, y: 95}]},
-	{ id: 2, name: '灯集中控制器2', values: [{x: 1, y: 86},{x: 2, y: 56},{x: 3, y: 16},{x: 4, y: 66},{x: 5, y: 26},{x: 6, y: 56},{x: 7, y: 25},{x: 8, y: 45},{x: 9, y: 85},{x: 10, y: 25},{x: 11, y: 35}, {x: 12, y: 36}, {x: 13, y: 36}]},
-	{ id: 3, name: '灯集中控制器3', values: [{x: 1, y: 12},{x: 2, y: 21},{x: 3, y: 33},{x: 4, y: 36},{x: 5, y: 45},{x: 6, y: 54},{x: 7, y: 23},{x: 8, y: 54},{x: 9, y: 85},{x: 10, y: 75},{x: 11, y: 57}, {x: 12, y: 63}, {x: 13, y: 63}]},
-	{ id: 4, name: '灯集中控制器4', values: [{x: 1, y: 21},{x: 2, y: 32},{x: 3, y: 43},{x: 4, y: 54},{x: 5, y: 16},{x: 6, y: 26},{x: 7, y: 46},{x: 8, y: 65},{x: 9, y: 75},{x: 10, y: 55},{x: 11, y: 35}, {x: 12, y: 86}, {x: 13, y: 86}]},
-	{ id: 5, name: '灯集中控制器5', values: [{x: 1, y: 31},{x: 2, y: 42},{x: 3, y: 53},{x: 4, y: 64},{x: 5, y: 26},{x: 6, y: 36},{x: 7, y: 56},{x: 8, y: 55},{x: 9, y: 65},{x: 10, y: 65},{x: 11, y: 25}, {x: 12, y: 56}, {x: 13, y: 56}]},
-	{ id: 6, name: '灯集中控制器6', values: [{x: 1, y: 41},{x: 2, y: 52},{x: 3, y: 63},{x: 4, y: 74},{x: 5, y: 36},{x: 6, y: 46},{x: 7, y: 65},{x: 8, y: 45},{x: 9, y: 55},{x: 10, y: 75},{x: 11, y: 15}, {x: 12, y: 76}, {x: 13, y: 76}]}
-];
 export default class Brightness extends PureComponent {
     constructor(props) {
-        super(props);
+		super(props);
         this.state = {
-			startDate: getMomentDate(),
-			endDate: getMomentDate(),
+			startDate: getYesterday(),
+			endDate: getToday(),
             page: {
                 total: 0,
                 current: 1,
@@ -49,14 +43,14 @@ export default class Brightness extends PureComponent {
 			},
 			deviceList: [],
 			selectDevices: [],/* selectDevices */
-			chartData: selectDevices
+			chartData: []/* selectDevices */
 		};
 
+		this.chart = null;
 		this.columns = [
 			{field: 'name', title: '设备名称'},
 			{field: 'id', title: '设备编号'},
 		];
-
 		this.maxNumofSelectDevices = 5;
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -67,12 +61,18 @@ export default class Brightness extends PureComponent {
 		this.startDateChange = this.startDateChange.bind(this);
 		this.endDateChange = this.endDateChange.bind(this);
 		this.tableRowCheckChange = this.tableRowCheckChange.bind(this);
+		this.onClick = this.onClick.bind(this);
+
+		this.drawLineChart = this.drawLineChart.bind(this);
+		this.updateLineChart = this.updateLineChart.bind(this);
+		this.destroyLineChart = this.destroyLineChart.bind(this);
 
 		this.initData = this.initData.bind(this);
 		this.initDeviceData = this.initDeviceData.bind(this);
 		this.updateDeviceData = this.updateDeviceData.bind(this);
 		this.updateDomainData = this.updateDomainData.bind(this);
-        this.updatePageSize = this.updatePageSize.bind(this);
+		this.updatePageSize = this.updatePageSize.bind(this);
+		this.getChartData = this.getChartData.bind(this);
     }
 
     componentWillMount() {
@@ -137,9 +137,6 @@ export default class Brightness extends PureComponent {
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain}, this.initDeviceData);
 				break;
-			case 'startDate':
-			case 'endDate':
-
         }
     }
 
@@ -176,6 +173,92 @@ export default class Brightness extends PureComponent {
 		}
 	}
 
+	getChartData(cb) {
+		const {deviceList, selectDevices, startDate, endDate} = this.state;
+		console.log('get chart data');
+		if(selectDevices.length == 0) {
+			this.setState({chartData: []});
+			cb && cb();
+			return ;
+		}
+		let arr = []
+		selectDevices
+		.slice(0, this.maxNumofSelectDevices)
+		.forEach(item => {
+			arr.push(getHistoriesDataByAssetId({
+				where: {
+					asset: item.id,
+					prop: 'brightness',
+					timestamp: {
+						between: [startDate, endDate]
+					}
+				}
+			}))
+		})
+		Promise.all(arr)
+			.then(ret => {
+				let chartData = ret.map(item => {
+					return {values: item};
+				})
+				this.setState({chartData}, cb && cb);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	onClick(e) {
+		const {id} = e.target;
+		const {search, domainList, currentDomain} = this.state;
+		switch(id) {
+			case 'apply':
+				this.getChartData(this.updateLineChart);
+				break;
+			case 'reset':
+				this.setState({
+					selectDevices: [],
+					chartData: [],
+					startDate: getYesterday(),
+					endDate: getToday(),
+					search: {...search, value: ''},
+					currentDomain: domainList.options[0]
+				}, () => {
+					this.initDeviceData();
+					this.updateLineChart();
+				});
+				break;
+		}
+	}
+
+	componentWillUnmount() {
+		this.destroyLineChart();
+	}
+
+	drawLineChart(ref) {
+		const {chartData, startDate, endDate} = this.state;
+        this.chart = new Chart({
+            wrapper: ref,
+            data: chartData,
+            xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
+			yAccessor: d => d.value,
+			xDomain: [startDate, endDate],
+			yDomain: [0, 100],
+            curveFactory: d3.curveStepAfter,
+            yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
+            tooltipAccessor: d => d.y
+        });
+	}
+
+	updateLineChart() {
+		const {chartData, startDate, endDate} = this.state;
+        this.chart.updateChart(chartData, [startDate, endDate]);
+	}
+
+	destroyLineChart() {
+        this.chart.destroy();
+        this.chart = null;
+	}
+
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
 				search: {value, placeholder}, currentDomain, domainList,
@@ -185,11 +268,11 @@ export default class Brightness extends PureComponent {
 					<div className="content-left">
 						<ul className="select-device-list">
 						{
-							selectDevices.slice(0, 5)
+							selectDevices.slice(0, this.maxNumofSelectDevices)
 								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
 						}
 						</ul>
-						<MultiLineChartWithZoomAndBrush className='chart-container' data={chartData} />
+						<div className='chart-container' ref={this.drawLineChart}></div>
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>
@@ -222,8 +305,8 @@ export default class Brightness extends PureComponent {
 											current={current} total={total} onChange={this.pageChange}/>
 								</div>
 								<div className="btn-group-right">
-									<button id="reset" className="btn btn-reset">重置</button>
-									<button id="apply" className="btn btn-primary">应用</button>
+									<button id="reset" className="btn btn-reset" onClick={this.onClick}>重置</button>
+									<button id="apply" className="btn btn-primary" onClick={this.onClick}>应用</button>
 								</div>
                             </div>
                         </div>

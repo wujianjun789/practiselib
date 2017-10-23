@@ -46,8 +46,8 @@ export function getMomentDate(date, formatStr) {
 
 /**
  * 日期格式化
- * @param date 
- * @param formatStr 
+ * @param date
+ * @param formatStr
  */
 export function momentDateFormat(moment, formatStr='YYYY-MM-DDTHH:mm:ss Z') {
     return moment.format(formatStr);
@@ -100,4 +100,12 @@ export function getDaysByYearMonth(year, month) {
     let d = getDateByYear(year+"-"+(parseInt(month)+1));
     d.setDate(0);
     return d.getDate();
+}
+
+export function getToday() {
+	return moment().hour(0).minute(0).second(0).millisecond(0);
+}
+
+export function getYesterday() {
+	return moment().hour(0).minute(0).second(0).millisecond(0).subtract(1, 'days');
 }
