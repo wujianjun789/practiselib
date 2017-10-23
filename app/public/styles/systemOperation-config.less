@@ -27,6 +27,9 @@
           margin-left: 25px;
           border: 0;
           color: #fff;
+          &:last-child{
+            background-color: #495264;
+          }
       }
 
       button{
@@ -443,5 +446,65 @@
   .modal-footer {
     padding:25px 20px 20px 20px;
     border-top: none;
+  }
+}
+
+.import-popup {
+  width: 600px;
+  .modal-body{
+    padding-bottom: 0;
+    .row{
+      margin: 5px 15px;
+      font-size: 14px;
+      color: #808080;
+      .import-select{
+        width: 413px;
+        height: 32px;
+        border: 1px solid #e6e6e6;
+        background-color: #f2f2f2;
+        color: #808080;
+        padding-left: 15px;
+        float: left;
+        line-height: 32px;
+        position: relative;  
+        overflow: hidden;
+        >label{
+          float: right;
+          width: 30px;
+          height: 30px;
+          padding: 7px;
+          cursor: pointer;         
+        }
+        input[type="file"]{
+          display: none;
+        }
+      }
+      >input[type="checkbox"]{
+        margin:0 10px 0 20px;
+        vertical-align:middle;
+        height: 32px;
+        line-height: 32px;
+      }
+    } 
+    .table-container{
+      margin: 15px;
+      border: 1px solid #e6e6e6;
+      padding: 20px;
+      .table-responsive{
+        min-width: 358px;
+        >table{
+          min-width: 358px;
+        }
+      }
+      .page{
+        text-align:center;
+      }
+    }
+  }
+  
+  .modal-footer{
+    border: none;
+    padding: 20px;
+    padding-right: 30px;
   }
 }

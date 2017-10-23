@@ -5,12 +5,36 @@
     <title></title>
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../styles/wijmo.css" />
     <script src="/js/jquery-3.1.1.min.js"></script>    
     <script src="../bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="../js/xlsx.core.min.js"></script>
+
+    <script src="../js/wijmo/wijmo.min.js"></script>
+    <script src="../js/wijmo/wijmo.grid.min.js"></script>
+    <script src="../js/wijmo/wijmo.grid.detail.min.js"></script>
+    <script src="../js/wijmo/wijmo.grid.xlsx.min.js"></script>
+    <script src="../js/wijmo/wijmo.xlsx.min.js"></script>
+    <script src="../js/wijmo.chart.min.js"></script>
     <style>
-        .container{
-            padding-top: 20px;
+        #target {
+            height: 400px;
+            width: 700px;
+            background-color: #f8f8f8;
+            margin: 200px auto;
+            overflow:hidden;
+            border-radius:5px;
+            box-shadow:2px 2px 5px #888;
+        }    
+        .hover::before {
+            content: '请将excel文件拖到这里';
+            width: 100%;
+            height: 100%;
+            display: block;
+            text-align: center;
+            line-height: 400px;
+            font-size: 24px;
+            font-family: '微软雅黑';
         }
     </style>
 </head>
@@ -79,6 +103,7 @@
                 var fromTo = '';
                 // 遍历每张表读取
                 for (var sheet in workbook.Sheets) {
+                    debugger
                     if (workbook.Sheets.hasOwnProperty(sheet)) {
                         fromTo = workbook.Sheets[sheet]['!ref'];
                         console.log(fromTo);
@@ -88,17 +113,98 @@
                 }
 
                 // console.log(persons);
-                var headStr = '姓名,性别,年龄,学校';
-                for (var i = 0; i < persons.length; i++) {
-                    if (Object.keys(persons[i]).join(',') !== headStr) {
-                        persons.splice(i, 1);
-                    }
-                }
+                // var headStr = '姓名,性别,年龄,学校';
+                // for (var i = 0; i < persons.length; i++) {
+                //     if (Object.keys(persons[i]).join(',') !== headStr) {
+                //         persons.splice(i, 1);
+                //     }
+                // }
 
                 console.log(persons);
             };
             
         });
+        
     </script>
+
+    <!-- <div id="target" class="hover"></div>
+    <script>
+        (function () {
+            var dataGrid = null,
+                gridDiv = null,
+                workbook = null;
+            window.addEventListener('load', function () {
+                gridDiv = document.createElement('div');
+                gridDiv.classList.add('grid');
+                dataGrid = new wijmo.grid.FlexGrid(gridDiv);
+                var target = document.querySelector('#target');
+
+                target.addEventListener('dragenter', function (e) {//被拖动的元素或文本选区移入有效释放目标区
+                    e.preventDefault();
+                    this.classList.remove('hover');
+
+                });
+                target.addEventListener('dragleave', function (e) {//被拖动的元素或文本选区移出有效释放目标区
+                    e.preventDefault();
+                    this.classList.add('hover');
+                });
+                target.addEventListener('dragover', function (e) {//被拖动的元素或文本选区正在有效释放目标上被拖动 （在此过程中持续触发，每350ms触发一次）
+                    e.preventDefault();
+                    this.classList.remove('hover');
+                });
+
+                target.addEventListener('drop', function (e) {//元素在有效释放目标区上释放
+                    e.preventDefault();
+                    handleDrop(e.dataTransfer.files[0]);
+                    // 将这个表单添加到页面上
+                    this.appendChild(gridDiv);
+                });
+            });
+
+            var handleDrop = function (file) {
+                var reader;
+                var workbook;
+
+                if (file) {
+                    reader = new FileReader;
+                    reader.onload = function (e) {
+                        workbook = new wijmo.xlsx.Workbook();
+                        workbook.load(reader.result);
+                        var collectionView = new wijmo.collections.CollectionView(getCollectionView(workbook));
+                        dataGrid.itemsSource = collectionView;
+                        // console.log(dataGrid.collectionView);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            var getCollectionView = function (workbook) {
+                var collectionView = [];
+                if (workbook) {
+                    var sheet = workbook.sheets[0];
+                    var header = [];
+
+                    for (var i = 0, length = sheet.rows.length; i < length; i++) {
+                        var row = sheet.rows[i];
+                        var rowArray = {};
+
+                        for (var j = 0, jLength = row.cells.length; j < jLength; j++) {
+                            var cell = row.cells[j];
+                            if (i === 0) {
+                                header.push(cell.value);
+                            }
+                            else {
+                                rowArray[header[j]] = cell.value;
+                            }
+                        }
+                        if (i !== 0) {
+                            collectionView.push(rowArray);
+                        }
+                    }
+                }
+                return collectionView;//得到table所需数据
+            }
+        })(window);
+    </script> -->
 </body>
 </html>
