@@ -28,7 +28,7 @@ export default class MultiLineChartWithZoomAndBrush {
     constructor({
         wrapper,
         data,
-		padding: {top = 30, right = 20, bottom = 70, left = 40} = {},
+		padding: {top = 10, right = 20, bottom = 70, left = 40} = {},
 		padding2: {top2 = 50, right2 = 20, bottom2 = 0, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
@@ -70,7 +70,7 @@ export default class MultiLineChartWithZoomAndBrush {
         this.width = width - this.padding.left - this.padding.right;
 		this.height = height - this.padding.top - this.padding.bottom;
 		this.height2 = height - this.padding.top - this.height - this.padding2.bottom2 - this.padding2.top2;
-		this.flags = d3.select(this.wrapper)
+		d3.select(this.wrapper)
 			.append('ul')
 			.attr('class', 'select-device-list');
 
@@ -204,7 +204,7 @@ export default class MultiLineChartWithZoomAndBrush {
 	}
 
 	getFlags() {
-		let update = this.flags
+		let update = d3.select('.select-device-list')
 			.selectAll('li')
 			.data(this.data);
 		update
@@ -355,6 +355,6 @@ export default class MultiLineChartWithZoomAndBrush {
 
     destroy() {
 		this.svg.remove();
-		this.flags.remove();
+		d3.select('.select-device-list').remove();
 	}
 }
