@@ -231,7 +231,7 @@ input{ border-radius: 0px!important;}
     top: 60px;
     left: 0;
     bottom: 0;
-
+    border-right:1px solid #e0e0e0;
     width: 180px;
     background: #e6e6e6;
 
@@ -794,12 +794,12 @@ ul {
 }
 
 .sidebar-info .icon_verital {
-    background: url("../images/icon_verital.png");
+    background: url("../svg/icon_verital.svg");
     background-size: 100% 100%;
 }
 
 .sidebar-info .icon_horizontal {
-    background: url("../images/icon_horizontal.png");
+    background: url("../svg/icon_horizontal.svg");
     background-size: 100% 100%;
 }
 
