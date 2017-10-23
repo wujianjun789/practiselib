@@ -28,7 +28,7 @@ export default class MultiLineChartWithZoomAndBrush {
     constructor({
         wrapper,
         data,
-		padding: {top = 10, right = 20, bottom = 70, left = 40} = {},
+		padding: {top = 30, right = 20, bottom = 70, left = 40} = {},
 		padding2: {top2 = 50, right2 = 20, bottom2 = 0, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
@@ -53,7 +53,8 @@ export default class MultiLineChartWithZoomAndBrush {
 
         this.initChart = this.initChart.bind(this);
         this.getAxis = this.getAxis.bind(this);
-        this.getMainChart = this.getMainChart.bind(this);
+		this.getMainChart = this.getMainChart.bind(this);
+		this.getFlags = this.getFlags.bind(this);
 		this.draw = this.draw.bind(this);
 		this.brushed = this.brushed.bind(this);
 		this.zoomed = this.zoomed.bind(this);
@@ -69,6 +70,9 @@ export default class MultiLineChartWithZoomAndBrush {
         this.width = width - this.padding.left - this.padding.right;
 		this.height = height - this.padding.top - this.padding.bottom;
 		this.height2 = height - this.padding.top - this.height - this.padding2.bottom2 - this.padding2.top2;
+		this.flags = d3.select(this.wrapper)
+			.append('ul')
+			.attr('class', 'select-device-list');
 
         this.svg = d3.select(this.wrapper)
             .append('svg')
@@ -164,7 +168,9 @@ export default class MultiLineChartWithZoomAndBrush {
 			.call(this.zoom);
 
         this.draw();
-    }
+	}
+
+
 
     getAxis() {
         this.xScale = d3.scaleTime()
@@ -195,7 +201,24 @@ export default class MultiLineChartWithZoomAndBrush {
 			.tickFormat(this.yTickFormat);
 
 		this.y_axis.call(yAxis);
-    }
+	}
+
+	getFlags() {
+		let update = this.flags
+			.selectAll('li')
+			.data(this.data);
+		update
+			.enter()
+			.append('li')
+			.attr('class', (d, i) => `color-${i+1}`)
+			.text(d => d.name);
+
+		update
+			.attr('class', (d, i) => `color-${i+1}`)
+			.text(d => d.name);
+		update.exit().remove();
+
+	}
 
     getMainChart() {
         this.line = d3.line()
@@ -241,13 +264,14 @@ export default class MultiLineChartWithZoomAndBrush {
 			.call(this.brush.move, this.xScale.range())
 			.selectAll('.handle')
 			.attr('fill', 'url(#brush-handle)');
-    }
+	}
 
     draw() {
         this.getAxis();
         // if (this.data.length!=0) {
             this.getMainChart();
-        // }
+		// }
+		this.getFlags();
     }
 
 	brushed() {
@@ -330,6 +354,7 @@ export default class MultiLineChartWithZoomAndBrush {
     }
 
     destroy() {
-        this.svg.remove();
+		this.svg.remove();
+		this.flags.remove();
 	}
 }

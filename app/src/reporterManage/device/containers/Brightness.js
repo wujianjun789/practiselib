@@ -42,8 +42,8 @@ export default class Brightness extends PureComponent {
                 options: []
 			},
 			deviceList: [],
-			selectDevices: [],/* selectDevices */
-			chartData: []/* selectDevices */
+			selectDeviceIds: [],
+			selectDevices: {},
 		};
 
 		this.chart = null;
@@ -135,7 +135,7 @@ export default class Brightness extends PureComponent {
         switch(id) {
             case 'domain':
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({currentDomain}, this.initDeviceData);
+                this.setState({currentDomain, selectDeviceIds: [], selectDevices: []}, this.initDeviceData);
 				break;
         }
     }
@@ -163,44 +163,46 @@ export default class Brightness extends PureComponent {
 	}
 
 	tableRowCheckChange(rowId, checked) {
-		let {selectDevices, deviceList} = this.state;
+		let {selectDevices, deviceList, selectDeviceIds} = this.state;
 		if(checked) {
-			this.setState({selectDevices: [...selectDevices, ...deviceList.filter((item)=>item.id == rowId)]});
+			this.setState({selectDeviceIds: [...selectDeviceIds, rowId], selectDevices: {...selectDevices, [rowId]: deviceList.find((item)=>item.id == rowId)} });
 		} else {
-			let _selectDevices = [...selectDevices];
-			_selectDevices.splice(_selectDevices.findIndex((item) => item.id == rowId), 1);
-			this.setState({selectDevices: _selectDevices });
+			let _selectDevices = {...selectDevices};
+			let _selectDeviceIds = [...selectDeviceIds];
+			delete _selectDevices[rowId];
+			_selectDeviceIds.splice(_selectDeviceIds.findIndex((item) => item == rowId), 1);
+			this.setState({selectDevices: _selectDevices, selectDeviceIds: _selectDeviceIds });
 		}
 	}
 
 	getChartData(cb) {
-		const {deviceList, selectDevices, startDate, endDate} = this.state;
-		console.log('get chart data');
-		if(selectDevices.length == 0) {
-			this.setState({chartData: []});
+		const {deviceList, selectDeviceIds, startDate, endDate} = this.state;
+		if(selectDeviceIds.length == 0) {
+			this.setState({selectDevices: {}});
 			cb && cb();
 			return ;
 		}
 		let arr = []
-		selectDevices
-		.slice(0, this.maxNumofSelectDevices)
-		.forEach(item => {
-			arr.push(getHistoriesDataByAssetId({
-				where: {
-					asset: item.id,
-					prop: 'brightness',
-					timestamp: {
-						between: [startDate, endDate]
+		selectDeviceIds
+			.slice(0, this.maxNumofSelectDevices)
+			.forEach(id => {
+				arr.push(getHistoriesDataByAssetId({
+					where: {
+						asset: id,
+						prop: 'brightness',
+						timestamp: {
+							between: [startDate, endDate]
+						}
 					}
-				}
-			}))
-		})
+				}))
+			});
 		Promise.all(arr)
 			.then(ret => {
-				let chartData = ret.map(item => {
-					return {values: item};
+				let selectDevices = ret.map(item => {
+					let curDevice = deviceList.find(dev => dev.id == item[0].asset);
+					return {...curDevice, values: item};
 				})
-				this.setState({chartData}, cb && cb);
+				this.setState({selectDevices, selectDevices}, cb && cb);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -216,8 +218,8 @@ export default class Brightness extends PureComponent {
 				break;
 			case 'reset':
 				this.setState({
-					selectDevices: [],
-					chartData: [],
+					selectDevices: {},
+					selectDeviceIds: [],
 					startDate: getYesterday(),
 					endDate: getToday(),
 					search: {...search, value: ''},
@@ -235,10 +237,10 @@ export default class Brightness extends PureComponent {
 	}
 
 	drawLineChart(ref) {
-		const {chartData, startDate, endDate} = this.state;
+		const {selectDevices, startDate, endDate} = this.state;
         this.chart = new Chart({
             wrapper: ref,
-            data: chartData,
+            data: selectDevices,
             xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
 			yAccessor: d => d.value,
 			xDomain: [startDate, endDate],
@@ -250,8 +252,8 @@ export default class Brightness extends PureComponent {
 	}
 
 	updateLineChart() {
-		const {chartData, startDate, endDate} = this.state;
-        this.chart.updateChart(chartData, [startDate, endDate]);
+		const {selectDevices, startDate, endDate} = this.state;
+        this.chart.updateChart(Object.values(selectDevices).slice(0, this.maxNumofSelectDevices), [startDate, endDate]);
 	}
 
 	destroyLineChart() {
@@ -262,16 +264,10 @@ export default class Brightness extends PureComponent {
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
 				search: {value, placeholder}, currentDomain, domainList,
-				deviceList, selectDevices, startDate, endDate, chartData } = this.state;
-
+				deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
+		console.log(selectDeviceIds);
         return <Content className={`device-brightness ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
-						<ul className="select-device-list">
-						{
-							selectDevices.slice(0, this.maxNumofSelectDevices)
-								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
-						}
-						</ul>
 						<div className='chart-container' ref={this.drawLineChart}></div>
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
@@ -299,7 +295,7 @@ export default class Brightness extends PureComponent {
 									<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
 								</div>
 
-								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} rowCheckChange={this.tableRowCheckChange}/>
+								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
 								<div className="page-center">
 									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
 											current={current} total={total} onChange={this.pageChange}/>

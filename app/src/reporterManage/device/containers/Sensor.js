@@ -9,7 +9,7 @@ import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Immutable from 'immutable';
-import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
+// import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getMomentDate, momentDateFormat} from '../../../util/time';
@@ -167,7 +167,7 @@ export default class Sensor extends PureComponent {
 								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
 						}
 						</ul>
-						<MultiLineChartWithZoomAndBrush className='chart-container' data={_selectDevices} />
+						{/* <MultiLineChartWithZoomAndBrush className='chart-container' data={_selectDevices} /> */}
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>
