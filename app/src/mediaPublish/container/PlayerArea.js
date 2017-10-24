@@ -6,6 +6,7 @@ import React,{Component} from 'react';
 import Content from '../../components/Content';
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
+import Material from '../component/material'
 
 import Immutable from 'immutable';
 export default class PlayerArea extends Component{
@@ -30,6 +31,7 @@ export default class PlayerArea extends Component{
             assetType:Immutable.fromJS({list:[{id:1, value:'类别1'},{id:2, value:'类别2'}], index:0, value:'类别1'}),
             assetSort:Immutable.fromJS({list:[{id:1, value:'素材文字'},{id:2, value:'素材图片'}], index:0, value:'素材文字'}),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
+            showModal:false
         }
 
         this.onChange = this.onChange.bind(this);
@@ -77,7 +79,17 @@ export default class PlayerArea extends Component{
     searchSubmit(){
 
     }
-
+    showModal(){
+        this.setState({
+            showModal:true
+        })
+        // console.log(this.state.showModal)
+    }
+    hideModal(){
+        this.setState({
+            showModal:false
+        })
+    }
     render(){
         const {playerList, sceneList, areaList, property, prompt, assetType, assetSort, assetSearch} = this.state;
         return <Content className="player-area">
@@ -159,12 +171,15 @@ export default class PlayerArea extends Component{
                         <Select className="asset-sort" data={assetSort} onChange={selectedIndex=>this.onChange("assetSort", selectedIndex)}></Select>
                         <SearchText className="asset-search" placeholder={assetSearch.get('placeholder')} value={assetSearch.get('value')}
                                     onChange={value=>this.onChange("assetSearch", value)} submit={this.searchSubmit}></SearchText>
+                        <button className="btn btn-primary" onClick={this.showModal.bind(this)}>添加</button>
                     </div>
                     <div>
 
                     </div>
                 </div>
+                {this.state.showModal?<Material showModal={this.state.showModal} hideModal={this.hideModal.bind(this)}/>:null}
             </div>
+
         </Content>
     }
 }
