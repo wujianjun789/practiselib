@@ -31,7 +31,7 @@ export class TreeView extends Component{
         }
         let curIndex = index;
         let nextIndex = index + 1;
-        let style = {"height":index>1 ? (toggled ? datalist.length*40+'px':'0'):'auto'};
+        let style = {"height":index>1 ? (toggled ? (datalist.length*40+20)+'px':'0'):'auto'};
         return <ul className={"tree-"+curIndex} style={style}>
             {
                 datalist.map((node, index)=> {
