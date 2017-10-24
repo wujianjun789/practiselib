@@ -23,7 +23,7 @@ exports[`test table renders 1`] = `
         <td
           className="hidden">
           <input
-            checked={undefined}
+            checked={false}
             onChange={[Function]}
             type="checkbox" />
         </td>
@@ -40,7 +40,7 @@ exports[`test table renders 1`] = `
         <td
           className="hidden">
           <input
-            checked={undefined}
+            checked={false}
             onChange={[Function]}
             type="checkbox" />
         </td>

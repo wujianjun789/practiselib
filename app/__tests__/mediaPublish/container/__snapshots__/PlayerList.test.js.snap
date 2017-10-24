@@ -43,124 +43,187 @@ exports[`test PlayerList renders 1`] = `
   </div>
   <div
     className="playerList-container">
-    <ul
-      className="list-group">
-      <li
-        className="list-group-item">
-        <div
-          className="playerList-item">
-          <div
-            className="static-group">
-            <span
-              className="icon" />
-            <span
-              className="name">
+    <div
+      className="table-responsive ">
+      <table
+        className="table table-hover">
+        <thead>
+          <tr>
+            <th
+              className="hidden">
+              <input
+                checked={undefined}
+                onChange={[Function]}
+                type="checkbox" />
+            </th>
+            <th>
+              方案名称
+            </th>
+            <th>
+              分辨率
+            </th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className=""
+            onClick={[Function]}>
+            <td
+              className="hidden">
+              <input
+                checked={false}
+                onChange={[Function]}
+                type="checkbox" />
+            </td>
+            <td>
               播放列表1
-            </span>
-          </div>
-          <div
-            className="edit-group">
-            <button
-              className="btn btn-primary publish"
-              onClick={[Function]}>
-              发布
-            </button>
-            <button
-              className="btn btn-primary fun"
-              onClick={[Function]}>
-              功能
-            </button>
-            <button
-              className="btn btn-primary edit"
-              onClick={[Function]}>
-              编辑
-            </button>
-            <button
-              className="btn btn-primary remove"
-              onClick={[Function]}>
-              删除
-            </button>
-          </div>
-        </div>
+            </td>
+            <td>
+              1920X1080
+            </td>
+            <td
+              className="edit">
+              <a
+                className="btn"
+                onClick={[Function]}>
+                <svg>
+                  <use
+                    className="logo_update"
+                    height="200"
+                    transform="scale(0.075,0.075)"
+                    viewBox="1 -2 20 20"
+                    width="200"
+                    x="0"
+                    xlinkHref="#logo_update"
+                    y="0" />
+                </svg>
+                <span
+                  className="update">
+                  修改
+                </span>
+              </a>
+              <a
+                className="btn"
+                onClick={[Function]}>
+                <svg>
+                  <use
+                    className="logo_del"
+                    height="200"
+                    transform="scale(0.08,0.08)"
+                    viewBox="1 -2 20 20"
+                    width="200"
+                    x="0"
+                    xlinkHref="#logo_del"
+                    y="0" />
+                </svg>
+                <span
+                  className="del">
+                  删除
+                </span>
+              </a>
+            </td>
+          </tr>
+          <tr
+            className=""
+            onClick={[Function]}>
+            <td
+              className="hidden">
+              <input
+                checked={false}
+                onChange={[Function]}
+                type="checkbox" />
+            </td>
+            <td>
+              播放列表2
+            </td>
+            <td>
+              1920X1080
+            </td>
+            <td
+              className="edit">
+              <a
+                className="btn"
+                onClick={[Function]}>
+                <svg>
+                  <use
+                    className="logo_update"
+                    height="200"
+                    transform="scale(0.075,0.075)"
+                    viewBox="1 -2 20 20"
+                    width="200"
+                    x="0"
+                    xlinkHref="#logo_update"
+                    y="0" />
+                </svg>
+                <span
+                  className="update">
+                  修改
+                </span>
+              </a>
+              <a
+                className="btn"
+                onClick={[Function]}>
+                <svg>
+                  <use
+                    className="logo_del"
+                    height="200"
+                    transform="scale(0.08,0.08)"
+                    viewBox="1 -2 20 20"
+                    width="200"
+                    x="0"
+                    xlinkHref="#logo_del"
+                    y="0" />
+                </svg>
+                <span
+                  className="del">
+                  删除
+                </span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul
+      className="rc-pagination page "
+      style={Object {}}
+      unselectable="unselectable">
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-prev"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="上一页">
+        <a>
+          
+        </a>
       </li>
       <li
-        className="list-group-item">
-        <div
-          className="playerList-item">
-          <div
-            className="static-group">
-            <span
-              className="icon" />
-            <span
-              className="name">
-              播放列表2
-            </span>
-          </div>
-          <div
-            className="edit-group">
-            <button
-              className="btn btn-primary publish"
-              onClick={[Function]}>
-              发布
-            </button>
-            <button
-              className="btn btn-primary fun"
-              onClick={[Function]}>
-              功能
-            </button>
-            <button
-              className="btn btn-primary edit"
-              onClick={[Function]}>
-              编辑
-            </button>
-            <button
-              className="btn btn-primary remove"
-              onClick={[Function]}>
-              删除
-            </button>
-          </div>
-        </div>
+        className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title={1}>
+        <a>
+          1
+        </a>
       </li>
+      <li
+        aria-disabled={true}
+        className="rc-pagination-disabled rc-pagination-next"
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        tabIndex="0"
+        title="下一页">
+        <a>
+          
+        </a>
+      </li>
+      <div
+        className="rc-pagination-options" />
     </ul>
   </div>
-  <ul
-    className="rc-pagination page "
-    style={Object {}}
-    unselectable="unselectable">
-    <li
-      aria-disabled={true}
-      className="rc-pagination-disabled rc-pagination-prev"
-      onClick={[Function]}
-      onKeyPress={[Function]}
-      tabIndex="0"
-      title="上一页">
-      <a>
-        
-      </a>
-    </li>
-    <li
-      className="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active"
-      onClick={[Function]}
-      onKeyPress={[Function]}
-      tabIndex="0"
-      title={1}>
-      <a>
-        1
-      </a>
-    </li>
-    <li
-      aria-disabled={true}
-      className="rc-pagination-disabled rc-pagination-next"
-      onClick={[Function]}
-      onKeyPress={[Function]}
-      tabIndex="0"
-      title="下一页">
-      <a>
-        
-      </a>
-    </li>
-    <div
-      className="rc-pagination-options" />
-  </ul>
 </div>
 `;

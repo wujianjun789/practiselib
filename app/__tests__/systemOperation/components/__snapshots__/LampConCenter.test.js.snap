@@ -46,6 +46,12 @@ exports[`<Gateway /> component snapshot 1`] = `
       onClick={[Function]}>
       添加
     </button>
+    <button
+      className="btn btn-primary import-excel"
+      id="sys-import"
+      onClick={[Function]}>
+      导入
+    </button>
   </div>
   <div
     className="table-container">

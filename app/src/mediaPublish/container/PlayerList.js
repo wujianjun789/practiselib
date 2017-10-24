@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import Content from '../../components/Content';
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
+import Table from '../../components/Table';
 import Page from '../../components/Page'
 
 import PlayerListItem from '../component/PlayerListItem';
@@ -26,11 +27,13 @@ export class PlayerList extends Component{
                 current: 1,
                 total: 2
             }),
-            data: /*Immutable.fromJS(*/[
-                {id:1, icon:"", name:"播放列表1", detail:""},
-                {id:2, icon:"", name:"播放列表2", detail:""}
-            ]/*)*/
+            data: Immutable.fromJS([
+                {id:1, icon:"", name:"播放列表1", resolution:"1920X1080"},
+                {id:2, icon:"", name:"播放列表2", resolution:"1920X1080"}
+            ])
         }
+        
+        this.columns = [{id:1, field:"name", title:"方案名称"},{id:2, field:"resolution", title:"分辨率"}];
 
         this.typeChange = this.typeChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -89,7 +92,7 @@ export class PlayerList extends Component{
     }
 
     editHandler(id){
-
+        console.log("edit:", id);
     }
 
     removeHandler(id){
@@ -110,18 +113,11 @@ export class PlayerList extends Component{
                     <button className="btn btn-primary add-playerList" onClick={()=>this.addHandler()}>添加</button>
                 </div>
                 <div className="playerList-container">
-                    <ul className="list-group">
-                        {
-                            data.map(item=>{
-                                return <li key={item.id} className="list-group-item">
-                                    <PlayerListItem data={item} publishHandler={this.publishHandler} funHandler={this.funHandler} editHandler={this.editHandler} removeHandler={this.removeHandler}/>
-                                </li>
-                            })
-                        }
-                    </ul>
+                    <Table columns={this.columns} data={data} isEdit={true} rowEdit={this.editHandler} rowDelete={this.removeHandler}/>
+                    <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
+                          current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                 </div>
-                <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
-                      current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
+
         </Content>
     }
 }

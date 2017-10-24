@@ -58,7 +58,7 @@ exports[`<SensorStrategy /> default render snapshot 1`] = `
             <td
               className="hidden">
               <input
-                checked={undefined}
+                checked={false}
                 onChange={[Function]}
                 type="checkbox" />
             </td>
@@ -116,7 +116,7 @@ exports[`<SensorStrategy /> default render snapshot 1`] = `
             <td
               className="hidden">
               <input
-                checked={undefined}
+                checked={false}
                 onChange={[Function]}
                 type="checkbox" />
             </td>
