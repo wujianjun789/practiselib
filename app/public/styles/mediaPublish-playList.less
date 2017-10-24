@@ -1,10 +1,10 @@
-.mediaPublish-playerList{
-  .content{
-    .heading{
+.mediaPublish-playerList {
+  .content {
+    .heading {
       height: 70px;
       background: #fff;
 
-      .type{
+      .type {
         width: 160px;
         height: 30px;
 
@@ -14,13 +14,13 @@
         margin-left: 20px;
       }
 
-      .searchText{
+      .searchText {
 
         height: 30px;
         margin: 20px 0px 20px 20px;
       }
 
-      button{
+      button {
 
         margin: 20px;
         height: 30px;
@@ -31,7 +31,7 @@
       }
     }
 
-    .playerList-container{
+    .playerList-container {
       margin: 20px;
       padding: 20px;
 
@@ -55,68 +55,95 @@
       }*/
     }
 
-    .page{
+    .page {
       text-align: center;
     }
   }
 }
 
-.mediaPublish-playerArea{
-  .content{
-      select{
-        width: 160px;
-        height: 30px;
+.mediaPublish-playerArea {
+  .sidebar {
+    .title {
+      height: 50px;
+
+      padding-left: 35px;
+
+      background-color: #d3d8dd;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .edit-container {
+      height: 70px;
+
+      background-color: #e6e6e6;
+
+      button:first-child {
         margin-top: 20px;
-        margin-right: 5px;
+        margin-right: 10px;
+        margin-left: 20px;
+      }
+
+      button:last-child {
+        margin-top: 20px;
+        margin-right: 15px;
+        margin-left: 10px;
+
+        background-color: #000;
+        border: 0;
+      }
+    }
+  }
+
+  .content {
+    .left {
+      padding: 0;
+      .control-container-top {
+        height: 50px;
+        > div {
+          display: inline-block;
+          margin-left: 20px;
+
+          margin-top: 15px;
+        }
+      }
+      .img-container {
+        height: 300px;
+
+        margin-right: 20px;
         margin-bottom: 20px;
+        margin-left: 20px;
+
+        background-color: #00ffff;
       }
-
-      .left{
-        padding-bottom: 20px;
-        ul{
-          margin-left: 25px;
-          li{
-            height: 35px;
-
-            list-style-type: disc;
-          }
-        }
-
-        button{
-          display: block;
-          margin-right: auto;
-          margin-left: auto;
-
-          padding: 5px 15px;
+      .control-container-bottom {
+        > div {
+          display: inline-block;
+          margin-left: 20px;
         }
       }
-      .center{
-        margin-top: 20px;
-        .img-container{
-         height: 300px;
-          background-color: #00ffff;
-        }
-        .pro-container{
-          button{
-            margin-top: 15px;
-            margin-bottom: 15px;
-          }
-        }
-      }
-    .right{
-      margin-top: 20px;
-      .pro-title{
-        margin-bottom: 15px;
+    }
+    .right {
+      padding: 0;
+      .pro-title {
+        padding-left: 20px;
+
+        height: 50px;
+        line-height: 50px;
+        background-color: #d3d8dd;
+
+        font-size: 14px;
+        color: #333744;
       }
 
-      .pro-container{
+      .pro-container {
         margin-bottom: 15px;
         padding: 15px;
 
-        background-color: #fff;
+        background-color: #e6e6e6;
 
-        .form-group{
-          label{
+        .form-group {
+          label {
             text-align: right;
 
             width: 80px;
@@ -125,24 +152,164 @@
             padding-left: 10px;
           }
 
-          &.area-name{
-            label{
+          &.area-name {
+            label {
               width: 95px;
             }
           }
         }
       }
 
-      .asset-lib{
-        margin-bottom: 15px;
+      .asset-lib {
+        padding-left: 20px;
+
+        height: 50px;
+        line-height: 50px;
+        background-color: #d3d8dd;
+
+        font-size: 14px;
+        color: #333744;
       }
 
-      .asset-container{
-        //margin-right: 15px;
-        margin-left: 15px;
-        padding: 15px;
+      .asset-container {
+        padding: 20px;
+        background-color: #e6e6e6;
+        .top {
+          select {
+            width: 145px;
+            height: 30px;
+            margin-right: 20px;
+          }
+          .searchText {
+            width: 150px;
 
-        background-color: #fff;
+            margin-right: 20px;
+          }
+
+          button {
+            &.add {
+              margin-right: 20px;
+            }
+          }
+
+          padding-bottom: 10px;
+          border-bottom: 1px solid #e6e6e6
+        }
+
+        .bottom {
+          ul.asset-list {
+            li {
+              position: relative;
+
+              display: inline-block;
+
+              padding-top: 10px;
+              padding-right: 10px;
+              padding-left: 10px;
+
+              margin-right: 20px;
+              margin-bottom: 20px;
+
+              .background {
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                width: 112px;
+                height: 115px;
+
+                background-color: #00d8ff;
+                opacity: .1;
+              }
+              .icon {
+                display: block;
+                width: 92px;
+                height: 65px;
+
+                background-color: #fff;
+              }
+
+              .name {
+                display: block;
+
+                padding-top: 10px;
+                text-align: center;
+              }
+            }
+          }
+
+          .page {
+            //display: inline-block;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  .mediaPublish-footer {
+    position: fixed;
+    right: 680px;
+    left: 0;
+    bottom: 0;
+
+    z-index: 5;
+
+    height: 94px;
+    background-color: #e6e6e6;
+
+    .title {
+      display: inline-block;
+      font-size: 14px;
+
+      height: 94px;
+      line-height: 15px;
+      vertical-align: middle;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    ul {
+      display: inline-block;
+
+      > li {
+        display: inline-block;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        .icon {
+          display: block;
+          width: 56px;
+          height: 50px;
+
+          margin-bottom: 10px;
+          background-color: #fff;
+        }
+
+        .name {
+          margin-left: 8px;
+          text-align: center;
+        }
+      }
+    }
+    .control-container {
+      display: inline-block;
+      margin-right: 10px;
+      margin-left: 20px;
+      > button {
+        display: block;
+      }
+
+      > button:first-child {
+        margin-top: 10px;
+        margin-bottom: 14px;
+      }
+
+      > button:last-child {
+        margin-bottom: 10px;
+
+        background-color: #000;
+        border: 0;
       }
     }
   }
