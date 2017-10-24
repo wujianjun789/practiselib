@@ -8,26 +8,22 @@ import Select from '../../../components/Select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
+import Chart from '../../utils/multiLineChartWithZoomAndBrush';
+import DatePicker from 'antd/lib/date-picker';  // 加载 JS
+import 'antd/lib/date-picker/style/css';        // 加载 CSS
 import Immutable from 'immutable';
-// import MultiLineChartWithZoomAndBrush from '../components/MultiLineChartWithZoomAndBrush';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
-import {getMomentDate, momentDateFormat} from '../../../util/time';
+import {getHistoriesDataByAssetId} from '../../../api/reporter';
+import {getModelSummariesByModelID} from '../../../api/asset';
+import {getToday, getYesterday} from '../../../util/time';
 
-const selectDevices = [
-	{ id: 1, name: '灯集中控制器1', values: [{x: 1, y: 85},{x: 2, y: 75},{x: 3, y: 65},{x: 4, y: 55},{x: 5, y: 45},{x: 6, y: 35},{x: 7, y: 35},{x: 8, y: 35},{x: 9, y: 35},{x: 10, y: 35},{x: 11, y: 35}, {x: 12, y: 95}, {x: 13, y: 95}]},
-	{ id: 2, name: '灯集中控制器2', values: [{x: 1, y: 86},{x: 2, y: 56},{x: 3, y: 16},{x: 4, y: 66},{x: 5, y: 26},{x: 6, y: 56},{x: 7, y: 25},{x: 8, y: 45},{x: 9, y: 85},{x: 10, y: 25},{x: 11, y: 35}, {x: 12, y: 36}, {x: 13, y: 36}]},
-	{ id: 3, name: '灯集中控制器3', values: [{x: 1, y: 12},{x: 2, y: 21},{x: 3, y: 33},{x: 4, y: 36},{x: 5, y: 45},{x: 6, y: 54},{x: 7, y: 23},{x: 8, y: 54},{x: 9, y: 85},{x: 10, y: 75},{x: 11, y: 57}, {x: 12, y: 63}, {x: 13, y: 63}]},
-	{ id: 4, name: '灯集中控制器4', values: [{x: 1, y: 21},{x: 2, y: 32},{x: 3, y: 43},{x: 4, y: 54},{x: 5, y: 16},{x: 6, y: 26},{x: 7, y: 46},{x: 8, y: 65},{x: 9, y: 75},{x: 10, y: 55},{x: 11, y: 35}, {x: 12, y: 86}, {x: 13, y: 86}]},
-	{ id: 5, name: '灯集中控制器5', values: [{x: 1, y: 31},{x: 2, y: 42},{x: 3, y: 53},{x: 4, y: 64},{x: 5, y: 26},{x: 6, y: 36},{x: 7, y: 56},{x: 8, y: 55},{x: 9, y: 65},{x: 10, y: 65},{x: 11, y: 25}, {x: 12, y: 56}, {x: 13, y: 56}]},
-	{ id: 6, name: '灯集中控制器6', values: [{x: 1, y: 41},{x: 2, y: 52},{x: 3, y: 63},{x: 4, y: 74},{x: 5, y: 36},{x: 6, y: 46},{x: 7, y: 65},{x: 8, y: 45},{x: 9, y: 55},{x: 10, y: 75},{x: 11, y: 15}, {x: 12, y: 76}, {x: 13, y: 76}]}
-];
 export default class Sensor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-			startDate: null,
-			endDate: null,
+			startDate: getYesterday(),
+			endDate: getToday(),
             page: {
                 total: 0,
                 current: 1,
@@ -45,15 +41,38 @@ export default class Sensor extends PureComponent {
                 valueField: 'name',
                 options: []
 			},
+			currentSensorType: null,
+            sensorTypeList: {
+                titleField: 'title',
+                valueField: 'value',
+                options: []
+			},
+			sensorsProps: {},
 			deviceList: [],
-			selectDevices: /* [] */selectDevices
+			selectDeviceIds: [],
+			selectDevices: {},
 		};
 
+		this.chart = null;
+		this.model = 'sensor';
+		this.prop = 'brightness';
 		this.columns = [
-			{accessor: 'name', title: '设备名称'},
-			{accessor: 'id', title: '设备编号'},
+			{field: 'name', title: '设备名称'},
+			{field: 'id', title: '设备编号'},
 		];
-
+		this.sensorTransform = {
+            noise: 'SENSOR_NOISE',
+            PM25: 'SENSOR_PM25',
+            pa: 'SENSOR_PA',
+            humis: "SENSOR_HUMIS",
+            temps: 'SENSOR_TEMPS',
+            windSpeed: 'SENSOR_WINDS',
+            windDir: 'SENSOR_WINDDIR',
+            co: 'SENSOR_CO',
+            o2: 'SENSOR_O2',
+            ch4: 'SENSOR_CH4',
+            ch2o: 'SENSOR_CH2O'
+        }
 		this.maxNumofSelectDevices = 5;
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -61,27 +80,73 @@ export default class Sensor extends PureComponent {
         this.searchChange = this.searchChange.bind(this);
 		this.searchSubmit = this.searchSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.startDateChange = this.startDateChange.bind(this);
+		this.endDateChange = this.endDateChange.bind(this);
+		this.tableRowCheckChange = this.tableRowCheckChange.bind(this);
+		this.onClick = this.onClick.bind(this);
 
-		this.initData = this.initData.bind(this);
+		this.drawLineChart = this.drawLineChart.bind(this);
+		this.updateLineChart = this.updateLineChart.bind(this);
+		this.destroyLineChart = this.destroyLineChart.bind(this);
+
+		this.initDomainData = this.initDomainData.bind(this);
 		this.initDeviceData = this.initDeviceData.bind(this);
+		this.initSensorType = this.initSensorType.bind(this);
 		this.updateDeviceData = this.updateDeviceData.bind(this);
 		this.updateDomainData = this.updateDomainData.bind(this);
-        this.updatePageSize = this.updatePageSize.bind(this);
+		this.updatePageSize = this.updatePageSize.bind(this);
+		this.getChartData = this.getChartData.bind(this);
+		this.updateSensorTypeList = this.updateSensorTypeList.bind(this);
     }
 
     componentWillMount() {
 		this.mounted = true;
-		this.initData();
+		this.initSensorType();
     }
 
     componentWillUnmount() {
         this.mounted = false;
 	}
 
-	initData() {
-        getDomainList((data) =>{
+	initDomainData() {
+        getDomainList((data) => {
             this.mounted && this.updateDomainData(data, this.initDeviceData);
-        });
+		});
+	}
+
+	initSensorType() {
+		getModelSummariesByModelID('sensor', this.updateSensorTypeList);
+	}
+
+	updateSensorTypeList(data) {
+		let generateSensorTypesData = (types) => {
+			let list = [];
+			const sensorTitles = {
+				SENSOR_NOISE: '噪声传感器',
+				SENSOR_PM25: 'PM2.5 传感器',
+				SENSOR_PA: '大气压传感器',
+				SENSOR_HUMIS: '湿度传感器',
+				SENSOR_TEMPS: '温度传感器',
+				SENSOR_WINDS: '风速传感器',
+				SENSOR_WINDDIR: '风向传感器',
+				SENSOR_CO: '一氧化碳传感器',
+				SENSOR_O2: '氧气传感器',
+				SENSOR_CH4: '甲烷传感器',
+				SENSOR_CH2O: '甲醛传感器',
+				SENSOR_LX: '照度传感器'
+			}
+			types.forEach(val => {
+				list.push({value: val, title: sensorTitles[val]});
+			});
+			return list;
+		}
+
+        if('types' in data) {
+            const {types, defaults} = data;
+			const options = generateSensorTypesData(types);
+			let currentSensorType = options.length == 0 ? null : options[0];
+            this.mounted && this.setState({currentSensorType, sensorsProps: {...defaults.values}, sensorTypeList: Object.assign({}, this.state.sensorTypeList, {options: options})}, this.initDomainData);
+        }
 	}
 
 	initDeviceData(isSearch) {
@@ -124,16 +189,18 @@ export default class Sensor extends PureComponent {
         this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
 	}
 
+
 	onChange(e) {
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({currentDomain}, this.initDeviceData);
+                this.setState({currentDomain, selectDeviceIds: [], selectDevices: {}}, this.initDeviceData);
 				break;
-			case 'startDate':
-			case 'endDate':
-
+			case 'sensor':
+				let currentSensorType = this.state.sensorTypeList.options[e.target.selectedIndex];
+				this.setState({currentSensorType, selectDeviceIds: [], selectDevices: {}}, this.initDeviceData);
+				break;
         }
     }
 
@@ -149,25 +216,123 @@ export default class Sensor extends PureComponent {
 
     collapseHandler() {
         this.setState({sidebarCollapse: !this.state.sidebarCollapse});
-    }
+	}
+
+	startDateChange(date, dateStr) {
+		this.setState({startDate: date});
+	}
+
+	endDateChange(date, dateStr) {
+		this.setState({endDate: date});
+	}
+
+	tableRowCheckChange(rowId, checked) {
+		let {selectDevices, deviceList, selectDeviceIds} = this.state;
+		if(checked) {
+			if(selectDeviceIds.length < this.maxNumofSelectDevices) {
+				this.setState({selectDeviceIds: [...selectDeviceIds, rowId], selectDevices: {...selectDevices, [rowId]: deviceList.find(item=>item.id == rowId)} });
+			}
+		} else {
+			let _selectDevices = {...selectDevices};
+			let _selectDeviceIds = [...selectDeviceIds];
+			delete _selectDevices[rowId];
+			_selectDeviceIds.splice(_selectDeviceIds.findIndex(item => item == rowId), 1);
+			this.setState({selectDevices: _selectDevices, selectDeviceIds: _selectDeviceIds });
+		}
+	}
+
+	getChartData(cb) {
+		const {selectDeviceIds, selectDevices, startDate, endDate} = this.state;
+		if(selectDeviceIds.length == 0) {
+			this.setState({selectDevices: {}});
+			cb && cb();
+			return ;
+		}
+		let arr = [];
+		selectDeviceIds
+			.forEach(id => {
+				arr.push(getHistoriesDataByAssetId({
+					where: {
+						asset: id,
+						prop: this.prop,
+						timestamp: {
+							between: [startDate, endDate]
+						}
+					}
+				}))
+			});
+		Promise.all(arr)
+			.then(ret => {
+				let _selectDevices = {...selectDevices};
+				selectDeviceIds.forEach((id, index) => {
+					_selectDevices[id].values = ret[index];
+				});
+				this.setState({selectDevices: _selectDevices}, cb);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	onClick(e) {
+		const {id} = e.target;
+		const {search, domainList, currentDomain} = this.state;
+		switch(id) {
+			case 'apply':
+				this.getChartData(this.updateLineChart);
+				return ;
+			case 'reset':
+				this.setState({
+					selectDevices: {},
+					selectDeviceIds: [],
+					startDate: getYesterday(),
+					endDate: getToday(),
+					search: {...search, value: ''},
+					currentDomain: domainList.options[0]
+				}, () => {
+					this.initDeviceData();
+					this.updateLineChart();
+				});
+				return ;
+		}
+	}
+
+	componentWillUnmount() {
+		this.destroyLineChart();
+	}
+
+	drawLineChart(ref) {
+		const {selectDevices, startDate, endDate} = this.state;
+        this.chart = new Chart({
+            wrapper: ref,
+            data: selectDevices,
+            xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
+			yAccessor: d => d.value,
+			xDomain: [startDate, endDate],
+			yDomain: [0, 100],
+            curveFactory: d3.curveStepAfter,
+            yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
+            tooltipAccessor: d => d.y
+        });
+	}
+
+	updateLineChart() {
+		const {selectDevices, startDate, endDate} = this.state;
+        this.chart.updateChart(Object.values(selectDevices), [startDate, endDate]);
+	}
+
+	destroyLineChart() {
+        this.chart.destroy();
+        this.chart = null;
+	}
 
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
-				search: {value, placeholder}, currentDomain, domainList,
-				deviceList, selectDevices, startDate, endDate } = this.state;
-		const _selectDevices = selectDevices.slice(0, this.maxNumofSelectDevices);
-		const _startDate = startDate == null ? '' : momentDateFormat(getMomentDate(startDate));
-		const _endDate = endDate == null ? '' : momentDateFormat(getMomentDate(endDate));
-
+		search: {value, placeholder}, currentDomain, domainList, currentSensorType, sensorTypeList,
+		deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
         return <Content className={`device-sensor ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
-						<ul className="select-device-list">
-						{
-							_selectDevices
-								.map((device, index) => <li key={device.id} className={`color-${index+1}`}>{device.name}</li>)
-						}
-						</ul>
-						{/* <MultiLineChartWithZoomAndBrush className='chart-container' data={_selectDevices} /> */}
+						<div className='chart-container' ref={this.drawLineChart}></div>
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>
@@ -178,9 +343,9 @@ export default class Sensor extends PureComponent {
 								<svg><use xlinkHref={"#icon_device_operate"} transform="scale(0.088,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选择时间
                             </div>
 							<div className="panel-body">
-								<input type="text" id="startDate" className="form-control start-date" placeholder="选择起始日期" value={_startDate} onChange={this.onChange}/>
-								<span>至</span>
-								<input type="text" id="endDate" className="form-control end-date" placeholder="选择结束日期" value={_endDate} onChange={this.onChange}/>
+							<DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
+							<span>至</span>
+							<DatePicker className="start-date" placeholder="选择结束日期" value={endDate} allowClear={false} onChange={this.endDateChange}/>
                             </div>
                         </div>
                         <div className="panel panel-default panel-2">
@@ -191,19 +356,19 @@ export default class Sensor extends PureComponent {
 								<div className="device-filter">
 									<Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
                                 		value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-									<Select id='sensor' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
-										value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+									<Select id='sensor' titleField={sensorTypeList.titleField} valueField={sensorTypeList.valueField} options={sensorTypeList.options}
+										value={currentSensorType == null ? '' : currentSensorType[this.state.sensorTypeList.valueField]} onChange={this.onChange} />
 									<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
 								</div>
 
-								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} />
+								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
 								<div className="page-center">
 									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
 											current={current} total={total} onChange={this.pageChange}/>
 								</div>
 								<div className="btn-group-right">
-									<button id="reset" className="btn btn-reset">重置</button>
-									<button id="apply" className="btn btn-primary">应用</button>
+								<button id="reset" className="btn btn-reset" onClick={this.onClick}>重置</button>
+								<button id="apply" className="btn btn-primary" onClick={this.onClick}>应用</button>
 								</div>
                             </div>
                         </div>

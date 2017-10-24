@@ -26,6 +26,10 @@ import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
+import ExcelPopup from '../components/ExcelPopup'
+import {addNotify} from '../../common/actions/notifyPopup';
+import {bacthImport} from '../../api/import';
+
 export class Pole extends Component {
     constructor(props) {
         super(props);
@@ -112,6 +116,7 @@ export class Pole extends Component {
         this.initPageSize = this.initPageSize.bind(this);
         this.initDomainList = this.initDomainList.bind(this);
         this.initAssetList = this.initAssetList.bind(this);
+        this.importHandler = this.importHandler.bind(this);    
     }
 
     componentWillMount() {
@@ -231,7 +236,7 @@ export class Pole extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, modelList, whitelistData} = this.state
+        const {model, selectDevice, domainList, modelList, whitelistData} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
         let curType = modelList.options.length ? modelList.options[0] : null;
         switch (id) {
@@ -351,6 +356,16 @@ export class Pole extends Component {
             this.requestSearch();
         })
     }
+    
+    importHandler(){
+        const {overlayerShow,overlayerHide,addNotify} = this.props.actions;
+        
+        overlayerShow(<ExcelPopup className='import-popup' columns={this.columns} model={this.state.model} domainList = {this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide} onConfirm={ (datas,isUpdate) => {
+            bacthImport(`${this.state.model}s`, datas,isUpdate, () => {
+                this.requestSearch();
+            });
+        } } />)
+    }
 
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
@@ -360,6 +375,7 @@ export class Pole extends Component {
                    />
                    <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                    <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
+                   <button id="sys-import" className="btn btn-primary import-excel" onClick={ this.importHandler }>导入</button>
                  </div>
                 <div className="table-container">
                     <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
@@ -395,7 +411,8 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
         treeViewInit,
         overlayerShow,
-        overlayerHide
+        overlayerHide,
+        addNotify
     }, dispatch),
 })
 
