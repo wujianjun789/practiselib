@@ -10,7 +10,7 @@ import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select.1';
-import CentralizedControllerPopup from '../components/CentralizedControllerPopup'
+import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
 import DataOriginPopup from '../components/DataOriginPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Immutable from 'immutable';
@@ -18,15 +18,19 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Content from '../../components/Content';
 
-import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel'
+import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel';
 
-import {getDomainList} from '../../api/domain'
-import {getSearchAssets, getSearchCount, postXes, updateXes, delXes,updateDataOrigin} from '../../api/asset'
+import {getDomainList} from '../../api/domain';
+import {getSearchAssets, getSearchCount, postXes, updateXes, delXes,updateDataOrigin} from '../../api/asset';
 
-import {getObjectByKey} from '../../util/index'
+import {getObjectByKey} from '../../util/index';
 
-import {treeViewInit} from '../../common/actions/treeView'
-import {getModelSummariesByModelID} from '../../api/asset'
+import {treeViewInit} from '../../common/actions/treeView';
+import {getModelSummariesByModelID} from '../../api/asset';
+import ExcelPopup from '../components/ExcelPopup';
+import {addNotify} from '../../common/actions/notifyPopup';
+import {bacthImport} from '../../api/import';
+
 export class Xes extends Component {
     constructor(props) {
         super(props);
@@ -85,6 +89,7 @@ export class Xes extends Component {
         this.initPageSize = this.initPageSize.bind(this);
         this.initDomainList = this.initDomainList.bind(this);
         this.initAssetList = this.initAssetList.bind(this);
+        this.importHandler = this.importHandler.bind(this);            
     }
 
     componentWillMount() {
@@ -198,7 +203,7 @@ export class Xes extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {model, selectDevice, domainList, modelList,sensorTypeList} = this.state
+        const {model, selectDevice, domainList, modelList,sensorTypeList} = this.state;
         const {overlayerShow, overlayerHide} = this.props.actions;
         let curType = modelList.options.length?modelList.options[0]:null;
         let latlng = selectDevice.position.length?selectDevice.position[0]:{lat:"",lng:""}            
@@ -303,6 +308,16 @@ export class Xes extends Component {
         })
     }
 
+    importHandler(){
+        const {overlayerShow,overlayerHide,addNotify} = this.props.actions;
+        
+        overlayerShow(<ExcelPopup className='import-popup' columns={this.columns} model={this.state.model} domainList = {this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide} onConfirm={ (datas,isUpdate) => {
+            bacthImport(this.state.model, datas,isUpdate, () => {
+                this.requestSearch();
+            });
+        } } />)
+    }
+
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data} = this.state;
         return <Content className={'offset-right '+(collapse?'collapsed':'')}>
@@ -312,6 +327,7 @@ export class Xes extends Component {
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>添加</button>
+                <button id="sys-import" className="btn btn-primary import-excel" onClick={ this.importHandler }>导入</button>
             </div>
             <div className="table-container">
                 <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
@@ -357,7 +373,8 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({
         treeViewInit,
         overlayerShow,
-        overlayerHide
+        overlayerHide,
+        addNotify
     }, dispatch),
 })
 
