@@ -14,7 +14,7 @@ import ConfirmPopup from '../../components/ConfirmPopup';
 import Page from '../../components/Page';
 import Immutable from 'immutable';
 import {getStrategyListByName, getStrategyCountByName, delStrategy} from '../../api/strategy';
-import {getModelSummariesByModelID} from '../../api/asset'
+import {getModelSummariesByModelID} from '../../api/asset';
 import {getLightLevelConfig, getStrategyDeviceConfig} from '../../util/network';
 import {getObjectByKeyObj} from '../../util/algorithm';
 import {addNotify} from '../../common/actions/notifyPopup';

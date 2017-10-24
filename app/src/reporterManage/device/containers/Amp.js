@@ -17,7 +17,7 @@ import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getHistoriesDataByAssetId} from '../../../api/reporter';
 import {getToday, getYesterday} from '../../../util/time';
 
-export default class Brightness extends PureComponent {
+export default class Amp extends PureComponent {
     constructor(props) {
 		super(props);
         this.state = {
@@ -47,7 +47,7 @@ export default class Brightness extends PureComponent {
 
 		this.chart = null;
 		this.model = 'lc';
-		this.prop = 'brightness';
+		this.prop = 'amp';
 		this.columns = [
 			{field: 'name', title: '设备名称'},
 			{field: 'id', title: '设备编号'},
@@ -245,10 +245,11 @@ export default class Brightness extends PureComponent {
             data: selectDevices,
             xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
 			yAccessor: d => d.value,
+			padding: {left: 55},
 			xDomain: [startDate, endDate],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => {if(d == 0) return ''; return d},
+            yTickFormat: d => {if(d == 0) return ''; return `${d}amp`},
             tooltipAccessor: d => d.y
         });
 	}
@@ -267,7 +268,7 @@ export default class Brightness extends PureComponent {
         const {page: {total, current, limit}, sidebarCollapse,
 				search: {value, placeholder}, currentDomain, domainList,
 				deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
-        return <Content className={`device-brightness ${sidebarCollapse ? 'collapse' : ''}`}>
+        return <Content className={`device-amp ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
 						<div className='chart-container' ref={this.drawLineChart}></div>
                     </div>

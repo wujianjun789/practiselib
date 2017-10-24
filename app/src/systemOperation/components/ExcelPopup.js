@@ -8,9 +8,8 @@ import {excelImport} from '../../util/excel'
 import Immutable from 'immutable';
 import NotifyPopup from '../../common/containers/NotifyPopup';
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
-import {bacthImport} from '../../api/import';
 import {getModelTypesNameById } from '../../data/systemModel';
-import {getObjectByKey} from '../../util/algorithm'
+import {getObjectByKeyObj} from '../../util/algorithm'
 
 export default class ExcelPopup extends Component {
     constructor(props) {
@@ -31,9 +30,9 @@ export default class ExcelPopup extends Component {
     }
 
     onChange(e){
-        const {addNotify,columns} = this.props;
+        const {addNotify,columns,model} = this.props;
         var target = e.target;        
-        excelImport(e,'gateway',columns).then(([data, filename]) => {
+        excelImport(e,model,columns).then(([data, filename]) => {
             if(data.length==0){
                 addNotify(0, '导入Excel格式有误');
                 target.value = '';
@@ -58,12 +57,13 @@ export default class ExcelPopup extends Component {
         let datas = this.state.data.map(item=>{
             item.type=item.typeName;
             delete item.typeName;
-            if(item.domainName) 
-                item.domainId=getObjectByKey(this.props.domainList.options, 'value', item.domainName);
-            return item;
-        }
-    )
-        bacthImport('gateways',datas, isUpdate);
+            if(item.domainName){
+                item.domainId=getObjectByKeyObj(this.props.domainList.options, 'name', item.domainName).id;
+                delete item.domainName;            
+            }
+            return item;}
+        )
+        this.props.onConfirm && this.props.onConfirm(datas, isUpdate);        
     }
 
     onCancel() {

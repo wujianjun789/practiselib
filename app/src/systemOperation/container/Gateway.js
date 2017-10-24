@@ -28,6 +28,7 @@ import { getObjectByKey } from '../../util/index'
 import { treeViewInit } from '../../common/actions/treeView'
 import ExcelPopup from '../components/ExcelPopup'
 import {addNotify} from '../../common/actions/notifyPopup';
+import {bacthImport} from '../../api/import';
 
 export class Gateway extends Component {
     constructor(props) {
@@ -57,43 +58,7 @@ export class Gateway extends Component {
                 valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {
-                        id: 1,
-                        title: 'domain01',
-                        value: 'domain01'
-                    },
-                    {
-                        id: 2,
-                        title: 'domain02',
-                        value: 'domain02'
-                    },
-                    {
-                        id: 3,
-                        title: 'domain03',
-                        value: 'domain03'
-                    },
-                    {
-                        id: 4,
-                        title: 'domain04',
-                        value: 'domain04'
-                    },
-                    {
-                        id: 5,
-                        title: 'domain05',
-                        value: 'domain05'
-                    },
-                    {
-                        id: 6,
-                        title: 'domain06',
-                        value: 'domain06'
-                    },
-                    {
-                        id: 7,
-                        title: 'domain07',
-                        value: 'domain07'
-                    }
-                ]
+                options: []
             },
             modelList: {
                 titleField: 'title',
@@ -471,7 +436,11 @@ export class Gateway extends Component {
     importHandler(){
         const {overlayerShow,overlayerHide,addNotify} = this.props.actions;
         
-        overlayerShow(<ExcelPopup className='import-popup' columns={this.columns} model={this.state.model} domainList = {this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide}/>)
+        overlayerShow(<ExcelPopup className='import-popup' columns={this.columns} model={this.state.model} domainList = {this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide} onConfirm={ (datas,isUpdate) => {
+            bacthImport(`${this.state.model}s`, datas,isUpdate, () => {
+                this.requestSearch();
+            });
+        } } />)
     }
 
     render() {
