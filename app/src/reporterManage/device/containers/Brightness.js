@@ -16,7 +16,6 @@ import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getHistoriesDataByAssetId} from '../../../api/reporter';
 import {getToday, getYesterday} from '../../../util/time';
-import moment from 'moment';
 
 export default class Brightness extends PureComponent {
     constructor(props) {
@@ -47,6 +46,8 @@ export default class Brightness extends PureComponent {
 		};
 
 		this.chart = null;
+		this.model = 'lc';
+		this.prop = 'brightness';
 		this.columns = [
 			{field: 'name', title: '设备名称'},
 			{field: 'id', title: '设备编号'},
@@ -190,7 +191,7 @@ export default class Brightness extends PureComponent {
 				arr.push(getHistoriesDataByAssetId({
 					where: {
 						asset: id,
-						prop: 'brightness',
+						prop: this.prop,
 						timestamp: {
 							between: [startDate, endDate]
 						}
@@ -247,7 +248,7 @@ export default class Brightness extends PureComponent {
 			xDomain: [startDate, endDate],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
+            yTickFormat: d => {if(d == 0) return ''; return d},
             tooltipAccessor: d => d.y
         });
 	}
@@ -296,8 +297,8 @@ export default class Brightness extends PureComponent {
 								</div>
 
 								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
-								<div className="page-center">
-									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
+								<div className={`page-center ${total==0?"hidden":''}`}>
+									<Page className='page' showSizeChanger pageSize={limit}
 											current={current} total={total} onChange={this.pageChange}/>
 								</div>
 								<div className="btn-group-right">

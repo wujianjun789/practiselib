@@ -28,8 +28,8 @@ export default class MultiLineChartWithZoomAndBrush {
     constructor({
         wrapper,
         data,
-		padding: {top = 10, right = 20, bottom = 70, left = 40} = {},
-		padding2: {top2 = 50, right2 = 20, bottom2 = 0, left2 = 20} = {},
+		padding: {top = 10, right = 25, bottom = 70, left = 40} = {},
+		padding2: {top2 = 50, right2 = 25, bottom2 = 0, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
         xDomain=[new Date(), new Date()],
@@ -118,19 +118,19 @@ export default class MultiLineChartWithZoomAndBrush {
 				.attr('fill', '#fff');
 		});
 
-		this.focus = this.svg
+		let focus = this.svg
 			.append('g')
 			.attr('class', 'focus')
             .attr('transform', `translate(${this.padding.left}, ${this.padding.top})`);
-        this.x_axis = this.focus
+        this.x_axis = focus
             .append('g')
             .attr('class', 'axis axis-x')
             .attr('transform', `translate(0, ${this.height})`);
-        this.y_axis = this.focus
+        this.y_axis = focus
             .append('g')
             .attr('class', 'axis axis-y');
 
-        this.line_group = this.focus
+        this.line_group = focus
             .append('g')
 			.attr('class', 'line-group')
 			.attr('clip-path', 'url(#clip)');
@@ -233,28 +233,28 @@ export default class MultiLineChartWithZoomAndBrush {
 		let update = this.line_group
 			.selectAll('path')
 			.data(this.data)
-		let enter = update
-			.enter()
-			.append('path')
-			.attr('class', (d, i)=>`line line-${i}`)
-            .attr('d', (d) => {
-                if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1} L${this.width},${_y1}`;
-                } else {
-                    return this.line(d.values);
-                }
-            });
-
-		update
 			.attr('d', (d) => {
 				if (d.values.length == 1) {
-					let _y1 = this.yScale(this.yAccessor(d[0]));
+					let _y1 = this.yScale(this.yAccessor(d.values[0]));
 					return `M${0},${_y1} L${this.width},${_y1}`;
 				} else {
 					return this.line(d.values);
 				}
-			});
+			})
+		let enter = update.enter();
+		if(enter.size() != 0) {
+			enter
+				.append('path')
+				.attr('class', (d, i)=>`line line-${i}`)
+				.attr('d', (d) => {
+					if (d.values.length == 1) {
+						let _y1 = this.yScale(this.yAccessor(d.values[0]));
+						return `M${0},${_y1} L${this.width},${_y1}`;
+					} else {
+						return this.line(d.values);
+					}
+				});
+		}
 
 		update.exit().remove();
 		// 初始化brush
@@ -286,7 +286,7 @@ export default class MultiLineChartWithZoomAndBrush {
 			.selectAll(".line")
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    let _y1 = this.yScale(this.yAccessor(d.values[0]));
                     return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
@@ -305,17 +305,17 @@ export default class MultiLineChartWithZoomAndBrush {
 		let t = d3.event.transform;
 		let domain = t.rescaleX(this.xScale2).domain();
 		// fixed domain offset
-		// if(domain[1] > this.xDomain[1]) {
-		// 	domain[0] += this.xDomain[1] - domain[1];
-		// 	domain[1] = this.xDomain[1];
-		// }
+		if(domain[1] > this.xDomain[1]) {
+			domain[0] = new Date(domain[0].getTime() + (this.xDomain[1] - domain[1]));
+			domain[1] = this.xDomain[1];
+		}
 
 		this.xScale.domain(domain);
 		this.line_group
 			.selectAll(".line")
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    let _y1 = this.yScale(this.yAccessor(d.values[0]));
                     return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
@@ -327,10 +327,10 @@ export default class MultiLineChartWithZoomAndBrush {
 			.call(this.brush.move, () => {
 				let range = this.xScale.range().map(t.invertX, t);
 				// fixed range offset
-				// if(range[1] > this.width) {
-				// 	range[0] += this.width - range[1];
-				// 	range[1] = this.width;
-				// }
+				if(range[1] > this.width) {
+					range[0] += this.width - range[1];
+					range[1] = this.width;
+				}
 				return range;
 			});
 	}

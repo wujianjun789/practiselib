@@ -15,12 +15,11 @@ import Immutable from 'immutable';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getHistoriesDataByAssetId} from '../../../api/reporter';
-import {getModelSummariesByModelID} from '../../../api/asset';
 import {getToday, getYesterday} from '../../../util/time';
 
-export default class Sensor extends PureComponent {
+export default class Power extends PureComponent {
     constructor(props) {
-        super(props);
+		super(props);
         this.state = {
 			startDate: getYesterday(),
 			endDate: getToday(),
@@ -41,38 +40,18 @@ export default class Sensor extends PureComponent {
                 valueField: 'name',
                 options: []
 			},
-			currentSensorType: null,
-            sensorTypeList: {
-                titleField: 'title',
-                valueField: 'value',
-                options: []
-			},
-			sensorsProps: {},
 			deviceList: [],
 			selectDeviceIds: [],
 			selectDevices: {},
 		};
 
 		this.chart = null;
-		this.model = 'sensor';
-		this.prop = 'brightness';
+		this.model = 'lc';
+		this.prop = 'power';
 		this.columns = [
 			{field: 'name', title: '设备名称'},
 			{field: 'id', title: '设备编号'},
 		];
-		this.sensorTransform = {
-            noise: 'SENSOR_NOISE',
-            PM25: 'SENSOR_PM25',
-            pa: 'SENSOR_PA',
-            humis: "SENSOR_HUMIS",
-            temps: 'SENSOR_TEMPS',
-            windSpeed: 'SENSOR_WINDS',
-            windDir: 'SENSOR_WINDDIR',
-            co: 'SENSOR_CO',
-            o2: 'SENSOR_O2',
-            ch4: 'SENSOR_CH4',
-            ch2o: 'SENSOR_CH2O'
-        }
 		this.maxNumofSelectDevices = 5;
 
         this.collapseHandler = this.collapseHandler.bind(this);
@@ -89,64 +68,27 @@ export default class Sensor extends PureComponent {
 		this.updateLineChart = this.updateLineChart.bind(this);
 		this.destroyLineChart = this.destroyLineChart.bind(this);
 
-		this.initDomainData = this.initDomainData.bind(this);
+		this.initData = this.initData.bind(this);
 		this.initDeviceData = this.initDeviceData.bind(this);
-		this.initSensorType = this.initSensorType.bind(this);
 		this.updateDeviceData = this.updateDeviceData.bind(this);
 		this.updateDomainData = this.updateDomainData.bind(this);
 		this.updatePageSize = this.updatePageSize.bind(this);
 		this.getChartData = this.getChartData.bind(this);
-		this.updateSensorTypeList = this.updateSensorTypeList.bind(this);
     }
 
     componentWillMount() {
 		this.mounted = true;
-		this.initSensorType();
+		this.initData();
     }
 
     componentWillUnmount() {
         this.mounted = false;
 	}
 
-	initDomainData() {
-        getDomainList((data) => {
+	initData() {
+        getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
-		});
-	}
-
-	initSensorType() {
-		getModelSummariesByModelID('sensor', this.updateSensorTypeList);
-	}
-
-	updateSensorTypeList(data) {
-		let generateSensorTypesData = (types) => {
-			let list = [];
-			const sensorTitles = {
-				SENSOR_NOISE: '噪声传感器',
-				SENSOR_PM25: 'PM2.5 传感器',
-				SENSOR_PA: '大气压传感器',
-				SENSOR_HUMIS: '湿度传感器',
-				SENSOR_TEMPS: '温度传感器',
-				SENSOR_WINDS: '风速传感器',
-				SENSOR_WINDDIR: '风向传感器',
-				SENSOR_CO: '一氧化碳传感器',
-				SENSOR_O2: '氧气传感器',
-				SENSOR_CH4: '甲烷传感器',
-				SENSOR_CH2O: '甲醛传感器',
-				SENSOR_LX: '照度传感器'
-			}
-			types.forEach(val => {
-				list.push({value: val, title: sensorTitles[val]});
-			});
-			return list;
-		}
-
-        if('types' in data) {
-            const {types, defaults} = data;
-			const options = generateSensorTypesData(types);
-			let currentSensorType = options.length == 0 ? null : options[0];
-            this.mounted && this.setState({currentSensorType, sensorsProps: {...defaults.values}, sensorTypeList: Object.assign({}, this.state.sensorTypeList, {options: options})}, this.initDomainData);
-        }
+        });
 	}
 
 	initDeviceData(isSearch) {
@@ -189,17 +131,12 @@ export default class Sensor extends PureComponent {
         this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
 	}
 
-
 	onChange(e) {
         const {id, value} = e.target;
         switch(id) {
             case 'domain':
                 let currentDomain = this.state.domainList.options[e.target.selectedIndex];
                 this.setState({currentDomain, selectDeviceIds: [], selectDevices: {}}, this.initDeviceData);
-				break;
-			case 'sensor':
-				let currentSensorType = this.state.sensorTypeList.options[e.target.selectedIndex];
-				this.setState({currentSensorType, selectDeviceIds: [], selectDevices: {}}, this.initDeviceData);
 				break;
         }
     }
@@ -311,7 +248,7 @@ export default class Sensor extends PureComponent {
 			xDomain: [startDate, endDate],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
+            yTickFormat: d => {if(d == 0) return ''; return `${d}W`},
             tooltipAccessor: d => d.y
         });
 	}
@@ -328,9 +265,9 @@ export default class Sensor extends PureComponent {
 
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
-		search: {value, placeholder}, currentDomain, domainList, currentSensorType, sensorTypeList,
-		deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
-        return <Content className={`device-sensor ${sidebarCollapse ? 'collapse' : ''}`}>
+				search: {value, placeholder}, currentDomain, domainList,
+				deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
+        return <Content className={`device-amp ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
 						<div className='chart-container' ref={this.drawLineChart}></div>
                     </div>
@@ -343,9 +280,9 @@ export default class Sensor extends PureComponent {
 								<svg><use xlinkHref={"#icon_device_operate"} transform="scale(0.088,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选择时间
                             </div>
 							<div className="panel-body">
-							<DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
-							<span>至</span>
-							<DatePicker className="start-date" placeholder="选择结束日期" value={endDate} allowClear={false} onChange={this.endDateChange}/>
+								<DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
+								<span>至</span>
+								<DatePicker className="start-date" placeholder="选择结束日期" value={endDate} allowClear={false} onChange={this.endDateChange}/>
                             </div>
                         </div>
                         <div className="panel panel-default panel-2">
@@ -356,8 +293,6 @@ export default class Sensor extends PureComponent {
 								<div className="device-filter">
 									<Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
                                 		value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-									<Select id='sensor' titleField={sensorTypeList.titleField} valueField={sensorTypeList.valueField} options={sensorTypeList.options}
-										value={currentSensorType == null ? '' : currentSensorType[this.state.sensorTypeList.valueField]} onChange={this.onChange} />
 									<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
 								</div>
 
@@ -367,8 +302,8 @@ export default class Sensor extends PureComponent {
 											current={current} total={total} onChange={this.pageChange}/>
 								</div>
 								<div className="btn-group-right">
-								<button id="reset" className="btn btn-reset" onClick={this.onClick}>重置</button>
-								<button id="apply" className="btn btn-primary" onClick={this.onClick}>应用</button>
+									<button id="reset" className="btn btn-reset" onClick={this.onClick}>重置</button>
+									<button id="apply" className="btn btn-primary" onClick={this.onClick}>应用</button>
 								</div>
                             </div>
                         </div>

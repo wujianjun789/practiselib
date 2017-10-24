@@ -300,6 +300,21 @@ export default (
 					cb(null, require('../reporterManage/device/containers/Brightness').default);
 				}, 'starriverpro.reporterManage.device.brightness');
 			}} />
+			<Route path="amp" getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Amp').default);
+				}, 'starriverpro.reporterManage.device.amp');
+			}} />
+			<Route path="voltage" getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Voltage').default);
+				}, 'starriverpro.reporterManage.device.voltage');
+			}} />
+			<Route path="power" getComponent={(nextState, cb) => {
+				require.ensure([], require => {
+					cb(null, require('../reporterManage/device/containers/Power').default);
+				}, 'starriverpro.reporterManage.device.power');
+			}} />
 			<Route path="sensor" getComponent={(nextState, cb) => {
 				require.ensure([], require => {
 					cb(null, require('../reporterManage/device/containers/Sensor').default);

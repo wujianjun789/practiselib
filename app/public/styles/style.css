@@ -560,6 +560,10 @@ ul {
     margin-right: 12px;
 }
 
+.tree-list .tree-1 > li span.glyphicon{
+    color:#646771;
+}
+
 .tree-list .tree-2{
     overflow: hidden;
 }
@@ -577,7 +581,7 @@ ul {
     display: inline-block;
     float:left;
     padding:12px 12px;
-    fill:#666;
+    fill:#3e455a;
 }
 
 .tree-list .tree-2 > li > a > div span{

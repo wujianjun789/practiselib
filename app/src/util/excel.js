@@ -38,7 +38,7 @@ export function excelImport(e,key,columns,cb){
     
             (function(){
                 //表头数量
-                if (fromTo[0] === 'A' && fromTo[3] ===( key=='xes'?'C':'F')) {
+                if (fromTo[0] === 'A' && fromTo[3] ==='F') {
                     //表头内容
                     for(let i=0; i < columns.length; i++) {
                         if(!IsExitInArray(header, columns[i].field)) {
@@ -61,7 +61,7 @@ export function excelImport(e,key,columns,cb){
                     items=[];
                 }
             })();
-            resolve([items, files[0].name]);      
+            resolve([items, files[0].name]); 
         }
           
     })
