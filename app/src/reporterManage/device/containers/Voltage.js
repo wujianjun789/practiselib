@@ -10,7 +10,6 @@ import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 import DatePicker from 'antd/lib/date-picker';  // 加载 JS
-import 'antd/lib/date-picker/style/css';        // 加载 CSS
 import Immutable from 'immutable';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
