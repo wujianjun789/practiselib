@@ -16,7 +16,6 @@ import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getHistoriesDataByAssetId} from '../../../api/reporter';
 import {getToday, getYesterday} from '../../../util/time';
-import moment from 'moment';
 
 export default class Amp extends PureComponent {
     constructor(props) {
@@ -47,6 +46,7 @@ export default class Amp extends PureComponent {
 		};
 
 		this.chart = null;
+		this.model = 'lc';
 		this.prop = 'amp';
 		this.columns = [
 			{field: 'name', title: '设备名称'},
@@ -245,10 +245,11 @@ export default class Amp extends PureComponent {
             data: selectDevices,
             xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
 			yAccessor: d => d.value,
+			padding: {left: 55},
 			xDomain: [startDate, endDate],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
+            yTickFormat: d => {if(d == 0) return ''; return `${d}amp`},
             tooltipAccessor: d => d.y
         });
 	}

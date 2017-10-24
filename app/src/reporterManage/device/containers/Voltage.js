@@ -16,7 +16,6 @@ import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
 import {getHistoriesDataByAssetId} from '../../../api/reporter';
 import {getToday, getYesterday} from '../../../util/time';
-import moment from 'moment';
 
 export default class Voltage extends PureComponent {
     constructor(props) {
@@ -47,6 +46,7 @@ export default class Voltage extends PureComponent {
 		};
 
 		this.chart = null;
+		this.model = 'lc';
 		this.prop = 'amp';
 		this.columns = [
 			{field: 'name', title: '设备名称'},
@@ -248,7 +248,7 @@ export default class Voltage extends PureComponent {
 			xDomain: [startDate, endDate],
 			yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => {if(d == 0) return ''; return `${d}%`},
+            yTickFormat: d => {if(d == 0) return ''; return `${d}V`},
             tooltipAccessor: d => d.y
         });
 	}
