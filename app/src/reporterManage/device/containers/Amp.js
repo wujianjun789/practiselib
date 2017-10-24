@@ -18,7 +18,7 @@ import {getHistoriesDataByAssetId} from '../../../api/reporter';
 import {getToday, getYesterday} from '../../../util/time';
 import moment from 'moment';
 
-export default class Brightness extends PureComponent {
+export default class Amp extends PureComponent {
     constructor(props) {
 		super(props);
         this.state = {
@@ -47,7 +47,7 @@ export default class Brightness extends PureComponent {
 		};
 
 		this.chart = null;
-		this.prop = 'brightness';
+		this.prop = 'amp';
 		this.columns = [
 			{field: 'name', title: '设备名称'},
 			{field: 'id', title: '设备编号'},
@@ -267,7 +267,7 @@ export default class Brightness extends PureComponent {
         const {page: {total, current, limit}, sidebarCollapse,
 				search: {value, placeholder}, currentDomain, domainList,
 				deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
-        return <Content className={`device-brightness ${sidebarCollapse ? 'collapse' : ''}`}>
+        return <Content className={`device-amp ${sidebarCollapse ? 'collapse' : ''}`}>
 					<div className="content-left">
 						<div className='chart-container' ref={this.drawLineChart}></div>
                     </div>

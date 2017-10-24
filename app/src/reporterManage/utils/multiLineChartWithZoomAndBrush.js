@@ -28,8 +28,8 @@ export default class MultiLineChartWithZoomAndBrush {
     constructor({
         wrapper,
         data,
-		padding: {top = 10, right = 20, bottom = 70, left = 40} = {},
-		padding2: {top2 = 50, right2 = 20, bottom2 = 0, left2 = 20} = {},
+		padding: {top = 10, right = 25, bottom = 70, left = 40} = {},
+		padding2: {top2 = 50, right2 = 25, bottom2 = 0, left2 = 20} = {},
         xAccessor=d=>d.x,
         yAccessor=d=>d.y,
         xDomain=[new Date(), new Date()],
@@ -305,10 +305,10 @@ export default class MultiLineChartWithZoomAndBrush {
 		let t = d3.event.transform;
 		let domain = t.rescaleX(this.xScale2).domain();
 		// fixed domain offset
-		// if(domain[1] > this.xDomain[1]) {
-		// 	domain[0] += this.xDomain[1] - domain[1];
-		// 	domain[1] = this.xDomain[1];
-		// }
+		if(domain[1] > this.xDomain[1]) {
+			domain[0] = new Date(domain[0].getTime() + (this.xDomain[1] - domain[1]));
+			domain[1] = this.xDomain[1];
+		}
 
 		this.xScale.domain(domain);
 		this.line_group
@@ -327,10 +327,10 @@ export default class MultiLineChartWithZoomAndBrush {
 			.call(this.brush.move, () => {
 				let range = this.xScale.range().map(t.invertX, t);
 				// fixed range offset
-				// if(range[1] > this.width) {
-				// 	range[0] += this.width - range[1];
-				// 	range[1] = this.width;
-				// }
+				if(range[1] > this.width) {
+					range[0] += this.width - range[1];
+					range[1] = this.width;
+				}
 				return range;
 			});
 	}
