@@ -23,3 +23,6 @@ package-lock.json
 
 #coverage
 coverage
+
+#tern-project
+.tern-project

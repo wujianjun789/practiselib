@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Text from './materialText'
+import Media from './materialMedia'
 
-import { Modal, Button ,Tabs} from 'antd';
+import { Modal ,Tabs} from 'antd';
 
 import '../../../public/styles/mediaPublish-modal.css'
 
@@ -29,15 +30,14 @@ export default class Material extends Component {
             <div>
                 <Modal title="添加素材" visible={this.state.visible}
                     onOk={this.handleOk} onCancel={this.handleCancel}>
-                    <Tabs  defaultActiveKey="1">
+                    <Tabs  defaultActiveKey="2">
                         <TabPane tab="插件" key="1">
-                            插件
                         </TabPane>
                         <TabPane tab="文字" key="2">
                             <Text/>
                         </TabPane>
                         <TabPane tab="图片/视频" key="3">
-                            图片/视频
+                            <Media/>
                         </TabPane>
                     </Tabs>
                 </Modal>

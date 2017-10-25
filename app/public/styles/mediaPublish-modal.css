@@ -240,7 +240,7 @@
     color: #00a854;
 }
 
-/* tabs */
+/* tabs样式 */
 /* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
 /* stylelint-disable declaration-bang-space-before */
 /* stylelint-disable declaration-bang-space-before */
@@ -783,4 +783,28 @@
   .ant-tabs-vertical > .ant-tabs-content > .ant-tabs-tabpane-inactive {
     display: none;
   }
-  
+  /* button 样式*/
+  .ant-btn{
+    width:90px;
+    height:32px;
+    border-radius:4px;
+    padding:0 15px;
+    font-size:14px;
+    display:inline-block;
+    text-align:center;
+    cursor:pointer;
+    border:1px solid #ccc;
+    background-color: #fff;
+  }
+  .ant-btn:hover{
+    border-color:#0e77ca;
+    color:#0e77ca;
+  }
+  .ant-btn-primary{
+    color:#fff;
+    background-color: #0e77ca;
+  }
+  .ant-btn-primary:hover{
+    color:#fff;
+    background-color: #108ee9;
+  }
