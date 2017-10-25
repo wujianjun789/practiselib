@@ -5,7 +5,7 @@ import React from 'react';
 import {shallow} from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import PlayerArea from '../../../src/mediaPublish/container/PlayerArea';
+import {PlayerArea} from '../../../src/mediaPublish/container/PlayerArea';
 
 
 test('PlayerArea renders', ()=>{

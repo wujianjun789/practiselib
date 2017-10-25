@@ -1,4 +1,5 @@
 @import url(./sideBarInfo.less);
+@import url(./date-picker.css);
 
 @color1: #4A5064;
 @color2: #5478F0;
@@ -118,8 +119,8 @@
 			> .panel.panel-default {
 				width: 300px;
 				border: none;
-				border-radius: unset;
-				box-shadow: unset;
+				border-radius: 0;
+				box-shadow: none;
 				margin-bottom: 0;
 				background-color: #eaeef2;
 				overflow: hidden;
@@ -188,16 +189,23 @@
 					.panel-body > div {
 						&.device-filter {
 							margin-bottom: 2px;
+							overflow: hidden;
+							> * {
+								display: block;
+								float: left;
+							}
 							.select,
 							.searchText {
 								width: 125px;
 								min-width: 125px;
 								height: 34px;
-								margin-bottom: 20px;
 								&:first-child {
 									margin-right: 20px;
 								}
 							}
+							> :nth-child(3) {
+								 margin-top: 20px;
+							 }
 						}
 
 						&.table-responsive {
@@ -205,7 +213,7 @@
 							margin-bottom: 0;
 							> .table {
 								min-width: 100%;
-								margin-bottom: 0;
+								margin-bottom: 1px;
 								th:first-child input{
 									visibility: hidden;
 								}
@@ -215,11 +223,11 @@
 							text-align: center;
 							padding-top: 10px;
 							padding-bottom: 10px;
+							border-bottom: 1px solid #d6dbdf;
 						}
 						&.btn-group-right {
 							text-align: right;
 							padding-top: 20px;
-							border-top: 1px solid #d6dbdf;
 							.btn {
 								margin-left: 10px;
 							}
@@ -229,7 +237,7 @@
 
 				> .panel-heading {
 					background: #d3d8dd;
-					border-radius: unset;
+					border-radius: 0;
 					> span {
 						float: left;
 						width: 15px;

@@ -34,7 +34,7 @@ export default class PlayerListItem extends Component{
     removeHandler(id){
         this.props.removeHandler && this.props.removeHandler(id);
     }
-
+    
     render(){
         const {id, icon, name} = this.state;
         return <div className="playerList-item">
