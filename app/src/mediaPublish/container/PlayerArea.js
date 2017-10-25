@@ -18,6 +18,9 @@ import Page from '../../components/Page';
 
 import {treeViewInit} from '../../common/actions/treeView'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
+
+import Material from '../component/material'
+
 import Immutable from 'immutable';
 export class PlayerArea extends Component {
     constructor(props) {
@@ -106,6 +109,7 @@ export class PlayerArea extends Component {
                 value: '素材文字'
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
+            showModal:false
         }
 
         this.onChange = this.onChange.bind(this);
@@ -117,6 +121,8 @@ export class PlayerArea extends Component {
         this.quitHandler = this.quitHandler.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
+        this.showModal=this.showModal.bind(this);
+        this.hideModal=this.hideModal.bind(this);
     }
 
     componentWillMount() {
@@ -164,7 +170,16 @@ export class PlayerArea extends Component {
     searchSubmit() {
 
     }
-
+    showModal(){
+        this.setState({
+            showModal:true
+        })
+    }
+    hideModal(){
+        this.setState({
+            showModal:false
+        })
+    }
     render() {
         const {playerData, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page} = this.state;
 
@@ -265,8 +280,9 @@ export class PlayerArea extends Component {
                                         value={assetSearch.get('value')}
                                         onChange={value=>this.onChange("assetSearch", value)}
                                         submit={this.searchSubmit}></SearchText>
-                            <button className="btn btn-primary add">添加</button>
+                            <button className="btn btn-primary add" onClick={this.showModal}>添加</button>
                             <button className="btn btn-primary">编辑</button>
+                            {this.state.showModal?<Material showModal={this.state.showModal} hideModal={this.hideModal}/>:null}
                         </div>
                         <div className="bottom">
                             <ul className="asset-list">
