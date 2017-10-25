@@ -297,8 +297,8 @@ export default class Amp extends PureComponent {
 								</div>
 
 								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
-								<div className="page-center">
-									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
+								<div className={`page-center ${total==0?"hidden":''}`}>
+									<Page className='page' showSizeChanger pageSize={limit}
 											current={current} total={total} onChange={this.pageChange}/>
 								</div>
 								<div className="btn-group-right">
