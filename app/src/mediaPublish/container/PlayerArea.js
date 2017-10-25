@@ -74,18 +74,20 @@ export class PlayerArea extends Component {
                 }
             ],
             playerListAsset: Immutable.fromJS({
-                list: [{id: 1, name: '素材1'}, {id: 2, name: '素材2'}],
-                index: 0,
-                name: '素材1'
+                list: [{id: 1, name: '素材1', active:true}, {id: 2, name: '素材2'},{id: 3, name: '素材3'}, {id: 4, name: '素材4'},
+                    {id: 5, name: '素材5'}, {id: 6, name: '素材6'}], index: 0, name: '素材1'
             }),
-            assetList: Immutable.fromJS({list: [{id: 1, name: '素材1'}, {id: 2, name: '素材2'}], index: 0, name: '素材1'}),
+            assetList: Immutable.fromJS({list: [{id: 1, name: '素材1', active:true}, {id: 2, name: '素材2'},{id:3, name:'素材3'},
+                {id:4, name:'素材4'}/*,{id:5, name:'素材5'},{id:6, name:'素材6'}*/], index: 0, name: '素材1'}),
 
             property: {
-                areaName: {key: "areaName", title: "动作", placeholder: "输入区域名称", value: ""},
-                width: {key: "width", title: "宽度：", placeholder: "输入宽度", value: ""},
-                height: {key: "height", title: "高度：", placeholder: "输入高度", value: ""},
-                axisX: {key: "axisX", title: "X轴：", placeholder: "输入X轴", value: ""},
-                axisY: {key: "axisY", title: "Y轴：", placeholder: "输入Y轴", value: ""}
+                areaName: {key: "areaName", title: "动作", list:[{id:1, name:'动作1'},{id:2, name:'动作2'}], index:0, name: ""},
+                axisX: {key: "axisX", title: "X轴", placeholder: "输入X轴", value: ""},
+                axisY: {key: "axisY", title: "Y轴", placeholder: "输入Y轴", value: ""},
+                speed: {key: "speed", title: "速度", placeholder: "fps(1-100)", value: ""},
+                repeat: {key: "repeat", title: "重复次数", placeholder: "1-255", value: ""},
+                resTime: {key: "resTime", title: "停留时间", placeholder: "ms", value: ""},
+                flicker: {key: "flicker", title: "闪烁次数", placeholder: "1-255", value: ""},
             },
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -93,9 +95,11 @@ export class PlayerArea extends Component {
                 total: 2
             }),
             prompt: {
-                area: false,
-                width: false,
-                height: false,
+                areaName: false,
+                speed: false,
+                repeat: false,
+                resTime: false,
+                flicker: false,
                 axisX: false,
                 axisY: false,
             },
@@ -172,7 +176,7 @@ export class PlayerArea extends Component {
             <HeadBar moduleName="媒体发布" router={this.props.router}/>
             <SideBar data={playerData} onToggle={this.onToggle}/>
             <Content className="player-area">
-                <div className="left col-sm-5">
+                <div className="left">
                     <div className="control-container-top">
                         <div className="play-container" onClick={()=>this.playHandler()}><span
                             className="play"></span><span>播放</span></div>
@@ -191,65 +195,93 @@ export class PlayerArea extends Component {
                             className="save-plan"></span><span>保存计划</span></div>
                     </div>
                 </div>
-                <div className="right col-sm-7">
+                <div className="right">
                     <div className="pro-title">属性</div>
                     <div className="pro-container">
-                        <div className="form-group row area-name">
-                            <label className="col-sm-3 control-label"
-                                   htmlFor={property.areaName.key}>{property.areaName.title}</label>
-                            <div className="col-sm-9">
-                                <input type="text" className={ "form-control" }
-                                       placeholder={property.areaName.placeholder} maxLength="16"
-                                       value={property.areaName.value}
-                                       onChange={event=>this.onChange("areaName", event)}/>
-                                <span className={prompt.area?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
-                            </div>
-                        </div>
                         <div className="row">
-                            <div className="form-group col-sm-6">
-                                <label className="col-sm-3 control-label"
-                                       htmlFor={property.width.key}>{property.width.title}</label>
-                                <div className="col-sm-9">
-                                    <input type="text" className={ "form-control " }
-                                           placeholder={property.width.placeholder} maxLength="8"
-                                           value={property.width.value}
-                                           onChange={event=>this.onChange("width", event)}/>
-                                    <span className={prompt.width?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group col-sm-6">
-                                <label className="col-sm-3 control-label"
-                                       htmlFor={property.height.key}>{property.height.title}</label>
-                                <div className="col-sm-9">
-                                    <input type="text" className={ "form-control " }
-                                           placeholder={property.height.placeholder} maxLength="8"
-                                           value={property.height.value}
-                                           onChange={event=>this.onChange("height", event)}/>
-                                    <span className={prompt.height?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                            <div className="form-group  area-name">
+                                <label className="control-label" htmlFor={property.areaName.key}>{property.areaName.title}</label>
+                                <div className="input-container">
+                                    <select className={ "form-control" }  value={ property.areaName.value } onChange={ event=>this.onChange("areaName", event) }>
+                                        {
+                                            property.areaName.list.map((option, index) => {
+                                            let value = option.name;
+                                            return <option key={ index } value={ value }>
+                                                { value }
+                                            </option>
+                                        }) }
+                                    </select>
+                                    <span className={prompt.area?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="form-group col-sm-6">
-                                <label className="col-sm-3 control-label"
+                            <div className="form-group axis-X">
+                                <label className="control-label"
                                        htmlFor={property.axisX.key}>{property.axisX.title}</label>
-                                <div className="col-sm-9">
+                                <div className="input-container">
                                     <input type="text" className={ "form-control " }
                                            placeholder={property.axisX.placeholder} maxLength="8"
                                            value={property.axisX.value}
-                                           onChange={event=>this.onChange("axisX", event)}/>
+                                           onChange={event=>this.onChange("width", event)}/>
                                     <span className={prompt.axisX?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                                 </div>
                             </div>
-                            <div className="form-group col-sm-6">
+                            <div className="form-group speed">
+                                <label className="control-label"
+                                       htmlFor={property.speed.key}>{property.speed.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                           placeholder={property.speed.placeholder} maxLength="8"
+                                           value={property.speed.value}
+                                           onChange={event=>this.onChange("speed", event)}/>
+                                    <span className={prompt.speed?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group repeat">
+                                <label className="control-label"
+                                       htmlFor={property.repeat.key}>{property.repeat.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                           placeholder={property.repeat.placeholder} maxLength="8"
+                                           value={property.repeat.value}
+                                           onChange={event=>this.onChange("repeat", event)}/>
+                                    <span className={prompt.repeat?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="form-group axisY">
                                 <label className="col-sm-3 control-label"
                                        htmlFor={property.axisY.key}>{property.axisY.title}</label>
-                                <div className="col-sm-9">
+                                <div className="input-container">
                                     <input type="text" className={ "form-control " }
                                            placeholder={property.axisY.placeholder} maxLength="8"
                                            value={property.axisY.value}
                                            onChange={event=>this.onChange("axisY", event)}/>
                                     <span className={prompt.axisY?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group resTime">
+                                <label className="control-label"
+                                       htmlFor={property.resTime.key}>{property.resTime.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                           placeholder={property.resTime.placeholder} maxLength="8"
+                                           value={property.resTime.value}
+                                           onChange={event=>this.onChange("resTime", event)}/>
+                                    <span className={prompt.resTime?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group flicker">
+                                <label className="control-label"
+                                       htmlFor={property.flicker.key}>{property.flicker.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                           placeholder={property.flicker.placeholder} maxLength="8"
+                                           value={property.flicker.value}
+                                           onChange={event=>this.onChange("flicker", event)}/>
+                                    <span className={prompt.flicker?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
                                 </div>
                             </div>
                         </div>
@@ -271,18 +303,19 @@ export class PlayerArea extends Component {
                         <div className="bottom">
                             <ul className="asset-list">
                                 {
-                                    assetList.get('list').map(item=> {
-                                        return <li key={item.id}>
-                                            <div className="background"></div>
+                                    assetList.get('list').map((item,index)=> {
+                                        return <li key={item.get('id')}  className={index>0&&index%4==0?"margin-right":""}>
+                                            <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                             <span className="icon"></span>
                                             <span className="name">{item.get('name')}</span>
                                         </li>
                                     })
                                 }
                             </ul>
-
-                            <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
+                            <div className="page-container">
+                                <Page className={"page "+(page.get('total')==0?"hidden":"")} showSizeChanger pageSize={page.get('pageSize')}
                                   current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,6 +327,7 @@ export class PlayerArea extends Component {
                         playerListAsset.get('list').map(item=> {
                             console.log(item.get("name"));
                             return <li key={item.get("id")} className="player-list-asset">
+                                <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
                             </li>

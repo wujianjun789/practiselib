@@ -1,3 +1,6 @@
+.container{
+  background-color: #f2f2f4;
+}
 .mediaPublish-playerList {
   .content {
     .heading {
@@ -63,6 +66,7 @@
 
 .mediaPublish-playerArea {
   .sidebar {
+    bottom: 115px;
     .title {
       height: 50px;
 
@@ -97,6 +101,12 @@
 
   .content {
     .left {
+      position: absolute;
+      top: 0;
+      right: 700px;
+      bottom: 95px;
+      left: 0px;
+
       padding: 0;
       .control-container-top {
         height: 50px;
@@ -108,15 +118,20 @@
         }
       }
       .img-container {
-        height: 300px;
-
-        margin-right: 20px;
-        margin-bottom: 20px;
-        margin-left: 20px;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 60px;
+        left: 20px;
 
         background-color: #00ffff;
+
+        overflow-y: scroll;
       }
       .control-container-bottom {
+        position: absolute;
+        right: 0;
+        bottom: 20px;
         > div {
           display: inline-block;
           margin-left: 20px;
@@ -124,6 +139,9 @@
       }
     }
     .right {
+      position: absolute;
+      right: 0;
+      width: 680px;
       padding: 0;
       .pro-title {
         padding-left: 20px;
@@ -137,25 +155,59 @@
       }
 
       .pro-container {
-        margin-bottom: 15px;
-        padding: 15px;
+        padding-top: 20px;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        padding-left: 30px;
 
         background-color: #e6e6e6;
 
+        .row{
+          margin: 0;
+        }
         .form-group {
+          display: inline-block;
+          margin-right: 20px;
           label {
             text-align: right;
+            width: 30px;
+            line-height: 40px;
+            margin-right: 10px;
+            padding: 0;
+            float: left;
+          }
 
-            width: 80px;
-
-            padding-right: 10px;
-            padding-left: 10px;
+          .input-container{
+            display: inline-block;
+            width: 135px;
+            .form-control{
+              height: 40px;
+            }
           }
 
           &.area-name {
             label {
-              width: 95px;
+              width: 30px;
+              height: 40px;
+
+              line-height: 40px;
+              margin-right: 10px;
+              float: left;
             }
+
+            .input-container{
+              width: 360px;
+            }
+          }
+
+          &.speed,&.repeat,&.resTime,&.flicker{
+            label{
+              width: 60px;
+            }
+          }
+
+          &.repeat,&.flicker{
+            margin-right: 0;
           }
         }
       }
@@ -193,11 +245,14 @@
           }
 
           padding-bottom: 10px;
-          border-bottom: 1px solid #e6e6e6
+          border-bottom: 1px solid #ffffff
         }
 
         .bottom {
+          height: 309px;
+          padding-top: 10px;
           ul.asset-list {
+            padding-bottom: 10px;
             li {
               position: relative;
 
@@ -209,6 +264,10 @@
 
               margin-right: 20px;
               margin-bottom: 20px;
+
+              &.margin-right{
+                margin-right: 0px;
+              }
 
               .background {
                 position: absolute;
@@ -238,8 +297,15 @@
             }
           }
 
-          .page {
-            //display: inline-block;
+          .page-container {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-top: 1px solid #ffffff;
+
             text-align: center;
           }
         }
@@ -249,7 +315,7 @@
 
   .mediaPublish-footer {
     position: fixed;
-    right: 680px;
+    right: 700px;
     left: 0;
     bottom: 0;
 
@@ -263,7 +329,7 @@
       font-size: 14px;
 
       height: 94px;
-      line-height: 15px;
+      line-height: 25px;
       vertical-align: middle;
       padding-right: 20px;
       padding-left: 20px;
@@ -273,10 +339,25 @@
       display: inline-block;
 
       > li {
+        position: relative;
+
         display: inline-block;
         padding-top: 10px;
         padding-right: 10px;
         padding-left: 10px;
+        margin-right: 10px;
+        .background{
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          width: 76px;
+          height: 94px;
+
+          background-color: #00d8ff;
+          opacity: .1;
+        }
+
         .icon {
           display: block;
           width: 56px;
