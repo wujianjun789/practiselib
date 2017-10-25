@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Text from './materialText'
+import Media from './materialMedia'
 
-import { Modal, Button ,Tabs} from 'antd';
+import { Modal ,Tabs} from 'antd';
 
 import '../../../public/styles/mediaPublish-modal.css'
 
@@ -36,7 +37,7 @@ export default class Material extends Component {
                             <Text/>
                         </TabPane>
                         <TabPane tab="图片/视频" key="3">
-                            图片/视频
+                            <Media/>
                         </TabPane>
                     </Tabs>
                 </Modal>
