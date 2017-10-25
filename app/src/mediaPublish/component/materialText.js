@@ -12,19 +12,28 @@ export default class Text extends Component {
     render() {
         return (
             <div className='material-text'>
-                <div><span>素材名称</span><input/></div>
-                <div>
-                    <span>文本内容</span><textarea />
+                <div className='left'>
+                    <div><span>素材名称</span><input /></div>
+                    <div className='material-content'>
+                        <span>文本内容</span><textarea />
+                    </div>
+                    <div>
+                        <span>选择字体</span>
+                        <Select className='font-select' />
+                    </div>
+                    <div className='material-color'>
+                        <span>字体颜色</span>
+                        <div className='font-color'></div>
+                        <span>背景颜色</span>
+                        <div className='bg-color'></div>
+                    </div>
+                    <div className='material-bg'>
+                        <span>背景透明</span>
+                        <input type='checkbox'/>
+                    </div>
                 </div>
-                <div>
-                    <span>选择字体</span>
-                    <Select className='font-select'/>
-                </div>
-                <div>
-                    <span>字体颜色</span>
-                    <div style={{width:'30px',height:'30px',backgroundColor:'#33e'}}></div>
-                    <span>背景颜色</span>
-                    <div style={{width:'30px',height:'30px',backgroundColor:'#33e'}}></div>
+                <div className='right'>
+                    <img/>
                 </div>
             </div>
         )
