@@ -16,11 +16,15 @@ import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
 import Page from '../../components/Page';
 
-import {treeViewInit} from '../../common/actions/treeView'
-import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
+import {treeViewInit} from '../../common/actions/treeView';
+import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
-import Material from '../component/material'
+import PlayerScenePopup from '../component/PlayerScenePopup';
+import PlayerPlanPopup from '../component/PlayerPlanPopup';
+import PlayerAreaPopup from '../component/PlayerAreaPopup';
+import Material from '../component/material';
 
+import moment from 'moment'
 import Immutable from 'immutable';
 export class PlayerArea extends Component {
     constructor(props) {
@@ -113,8 +117,12 @@ export class PlayerArea extends Component {
                 value: '素材文字'
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
-            showModal:false
+            showModal:false,
+
+
         }
+
+        this.typeList = [{id:1, name:'播放计划'},{id:2, name:'场景'},{id:3, name:"区域"}]
 
         this.onChange = this.onChange.bind(this);
         this.addHandler = this.addHandler.bind(this);
@@ -123,6 +131,7 @@ export class PlayerArea extends Component {
         this.saveHandler = this.saveHandler.bind(this);
         this.savePlanHandler = this.savePlanHandler.bind(this);
         this.quitHandler = this.quitHandler.bind(this);
+        this.areaClick = this.areaClick.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal=this.showModal.bind(this);
@@ -148,6 +157,40 @@ export class PlayerArea extends Component {
         } else {
             const val = value.target.value;
             this.setState({property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {value: val})})})
+        }
+    }
+
+    areaClick(id){
+        const {actions} = this.props;
+        let data = {}
+        if(id == "add"){
+            data.typeList = this.typeList;
+            data.sceneName = '';
+            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
+
+            console.log(state);
+            const type = state.typeList.get('index');
+            if(type == 0){
+                data.sceneName = '';
+            data.width = 1920;
+            data.height = 1080;
+            data.axisX = 10;
+            data.axisY = 10;
+                actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+                }}/>)
+            }else if(type == 2){
+                 data.sceneName = '';
+                data.startDate = moment();
+                data.endDate = moment();
+                data.startTime = moment();
+                data.endTime = moment();
+                data.week = [1,0,1,0,0,0,0];
+                actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+                }}/>)
+            }
+            }}/>)
+        }else{
+
         }
     }
 
@@ -189,7 +232,7 @@ export class PlayerArea extends Component {
 
         return <div className={"container "+"mediaPublish-playerArea"}>
             <HeadBar moduleName="媒体发布" router={this.props.router}/>
-            <SideBar data={playerData} onToggle={this.onToggle}/>
+            <SideBar data={playerData} onClick={this.areaClick} onToggle={this.onToggle}/>
             <Content className="player-area">
                 <div className="left">
                     <div className="control-container-top">
