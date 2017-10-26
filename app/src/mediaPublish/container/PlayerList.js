@@ -12,10 +12,12 @@ import Table from '../../components/Table';
 import Page from '../../components/Page'
 
 import PlayerListItem from '../component/PlayerListItem';
+import PlayerListPopup from '../component/PlayerListPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import Immutable from 'immutable';
+import {getObjectByKey} from '../../util/algorithm'
 export class PlayerList extends Component{
     constructor(props){
         super(props);
@@ -28,8 +30,8 @@ export class PlayerList extends Component{
                 total: 2
             }),
             data: Immutable.fromJS([
-                {id:1, icon:"", name:"播放列表1", resolution:"1920X1080"},
-                {id:2, icon:"", name:"播放列表2", resolution:"1920X1080"}
+                {id:1, icon:"", name:"播放列表1", resolution:"1920X1080", width:1920, height:1080},
+                {id:2, icon:"", name:"播放列表2", resolution:"1920X1080", width:1920, height:1080}
             ])
         }
         
@@ -80,7 +82,19 @@ export class PlayerList extends Component{
     }
 
     addHandler(){
-        this.props.router.push("/mediaPublish/playerArea");
+        const {actions} = this.props;
+        const data = {
+            playerId:'',
+            playerName:'',
+            width:1920,
+            height:1080
+        }
+        actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
+           onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+             actions.overlayerHide();
+            this.props.router.push("/mediaPublish/playerArea");
+        }}/>)
+
     }
 
     publishHandler(id){
@@ -93,6 +107,21 @@ export class PlayerList extends Component{
 
     editHandler(id){
         console.log("edit:", id);
+        const {actions} = this.props;
+        const row = getObjectByKey(this.state.data, 'id', id);
+        const obj = row ? row.toJS() : {};
+        const data = {
+            playerId: obj.id,
+            playerName: obj.name,
+            width: obj.width,
+            height: obj.height
+        }
+
+        actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
+                                               onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+             actions.overlayerHide();
+            this.props.router.push("/mediaPublish/playerArea");
+        }}/>)
     }
 
     removeHandler(id){

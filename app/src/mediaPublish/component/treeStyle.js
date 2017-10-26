@@ -10,7 +10,7 @@ export default {
             backgroundColor: '#e6e6e6',
             margin: 0,
             padding: 0,
-            color: '#9DA5AB',
+            color: '#fff',
             fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
             fontSize: '14px',
             // border: "1px solid #000",
@@ -30,7 +30,7 @@ export default {
                 // background: '#d3d8dd'
             },
             activeLink: {
-                background: '#d3d8dd'
+                background: 'linear-gradient(to right, #00bcff, #00d8ff)'
             },
             toggle: {
                 base: {
