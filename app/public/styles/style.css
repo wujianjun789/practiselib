@@ -571,7 +571,7 @@ ul {
 .tree-list .tree-2 > li > a > div {
     opacity:0.8;
     height:40px;
-    padding-left:12px;
+    padding-left:28px;
     /*background: #d3d8dd;*/
 }
 
@@ -592,12 +592,16 @@ ul {
     line-height: 40px;
 }
 
+.tree-list .tree-2 > li > a > div span:first-child{
+    font-size:16px;
+}
+
 .tree-list .tree-2 > li span {
 }
 
 .tree-list .tree-2 > li > a > div:hover {
     opacity: 1;
-    background: #f2f1ed;
+    background: #f2f2f4;
 }
 
 .tree-list .tree-2 .active > a > div {
@@ -710,6 +714,7 @@ ul {
     text-align: center;
 }
 
+/*
 .tree-list .icon_light_control {
     background: url("../images/icon_light_control.png");
 }
@@ -802,6 +807,8 @@ ul {
 .tree-list .icon_latlng_strategy_hover {
     background: url("../images/icon_latlng_strategy_hover.png");
 }
+*/
+.sidebar-info{border-left:1px solid #e6e6e6;}
 
 .sidebar-info .icon_verital {
     background: url("../svg/icon_verital.svg");
@@ -843,43 +850,55 @@ ul {
     background-size: 100% 100%;
 }
 
+.icon.icon_pole_hover{
+    color:#fff;
+}
+
+.icon.icon_screen_hover{
+    color:#fff;
+}
+
+.icon.icon_camera_hover{
+    color:#fff;
+}
+
+.icon.icon_lc_hover{
+    color:#fff;
+}
+
+.icon.icon_charge_pole_hover{
+    color:#fff;
+}
+
+.icon.icon_collect_hover{
+    color:#fff;
+}
+/*
 .icon.icon_pole{
     background: url("../images/smartLight/icon_pole.png");
 }
-.icon.icon_pole_hover{
-    background: url("../images/smartLight/icon_pole_hover.png");
-}
+
 .icon.icon_screen{
     background: url("../images/smartLight/icon_screen.png");
 }
-.icon.icon_screen_hover{
-    background: url("../images/smartLight/icon_screen_hover.png");
-}
+
 .icon.icon_camera{
     background: url("../images/smartLight/icon_camera.png");
 }
-.icon.icon_camera_hover{
-    background: url("../images/smartLight/icon_camera_hover.png");
-}
+
 .icon.icon_lamp{
     background: url("../images/smartLight/icon_lamp.png");
 }
-.icon.icon_lamp_hover{
-    background: url("../images/smartLight/icon_lamp_hover.png");
-}
+
 .icon.icon_charge{
     background: url("../images/smartLight/icon_charge.png");
 }
-.icon.icon_charge_hover{
-    background: url("../images/smartLight/icon_charge_hover.png");
-}
+
 .icon.icon_collect{
     background: url("../images/smartLight/icon_collect.png");
 }
-.icon.icon_collect_hover{
-    background: url("../images/smartLight/icon_collect_hover.png");
-}
 
+*/
 /********************lanauage switch styles*********************/
 .language-switch{
     float: right;
@@ -892,10 +911,17 @@ ul {
 .language-switch .lanauage-icon{
     padding: 20px 20px 19px 20px;
     height:60px;
+    width:60px;
 }
 
-.language-switch .lanauage-icon svg{
-    fill:#fff;
+.language-switch .lanauage-icon span{
+    font-size: 36px;
+    width:36px;
+    height:36px;
+    top:12px;
+    left:12px;
+    position:absolute;
+    color:#fff;
 }
 
 .language-switch .list-group svg{
@@ -962,6 +988,14 @@ ul {
 .language-switch ul li:first-child{
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+.language-switch ul li span:first-child{
+    font-size:24px;
+    width:45px;
+    height:39px;
+    padding-top:1px;
+    text-align: center;
+    color:#999;
 }
 
 .language-switch ul li:hover{
@@ -1060,12 +1094,24 @@ width:24px;
     float:left;
 }
 
+.user-center > ul.user-list > li > span:first-child{
+    width:40px;
+    text-align: center;
+    font-size:16px;
+    padding-top: 12px;
+    color:#8a8a8a;
+}
+
 .user-center > ul.user-list > li:hover{
     background-color: #e6e6e6;
 }
 
 .user-center > ul.user-list > li:last-child {
     border-bottom: none;
+}
+
+.user-center > ul.user-list > li:last-child > span:first-child{
+    color:#ff5c68;
 }
 
 .user-center > ul.user-list > li > .icon {

@@ -335,7 +335,7 @@ export class sysConfigScene extends Component {
                 <SideBarInfo collpseHandler={this.collpseHandler} IsHaveMap={IsHaveMap} >
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200" /></svg>选中场景
+                            <span className="icon_select"></span>选中场景
                      </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDevice.name}</span>
@@ -347,7 +347,7 @@ export class sysConfigScene extends Component {
                     </div>
                     <div className="panel panel-default device-statics-info map-position max-height">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200" /></svg>包含设备
+                            <span className="icon_device_list"></span>包含设备
                      </div>
                         <div id='scene-device' className="panel-body domain-property domain-content">
                             {

@@ -21,14 +21,14 @@ export const TreeData = [
             {
                 "id": 'lc',
                 "name": "单灯控制器",
-                "class": "icon_led_light",
+                "class": "icon_lc",
                 "active": false,
                 "link": "/smartLight/list"
             },
             {
                 "id": 'gateway',
                 "name": "网关",
-                "class": "icon_light_control",
+                "class": "icon_control",
                 "active": false,
                 "link": "/smartLight/list/gateway"
             },
@@ -56,7 +56,7 @@ export const TreeData = [
             {
                 "id": 'sensor',
                 "name": "传感器",
-                "class": "icon_sensor_strategy",
+                "class": "icon_sensor",
                 "active": false,
                 "link": "/smartLight/list/sensor"
             }
@@ -79,7 +79,7 @@ export const TreeData = [
             },{
                 "id": "strategy",
                 "name": "策略",
-                "class": "icon_plc_control",
+                "class": "icon_control",
                 "active": false,
                 "link": "/smartLight/control/strategy"
             }

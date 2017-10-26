@@ -40,7 +40,7 @@ export class TreeView extends Component{
                     if(curIndex > 1){
                         return <li key={index} className={'node '+(node.active ? 'active':'')}>
                                     <Link to={node.link}>
-                                    <div onClick={()=>this.onToggle(node)} title={node.name}><svg><use xlinkHref={"#"+(node.class)} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>
+                                    <div onClick={()=>this.onToggle(node)} title={node.name}><span className={node.class}></span>
                                         <span>{value}</span></div></Link>
                                     {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>

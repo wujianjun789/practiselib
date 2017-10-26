@@ -17,8 +17,8 @@ export class UserCenter extends Component{
         super(props);
         this.state = {
             list: [
-                {name: '修改密码', key: 'alter', path:'#alter'},
-                {name: '退出管理系统', key: 'exit', path:'#exit'}
+                {name: '修改密码', key: 'alter', path:'icon_password'},
+                {name: '退出管理系统', key: 'exit', path:'icon_exit'}
             ]
         }
         this.itemClick = this.itemClick.bind(this);
@@ -55,7 +55,7 @@ export class UserCenter extends Component{
                 <div className="user-icon clearfix"><span className="glyphicon glyphicon-user" aria-hidden="true"></span></div>
                 <ul className='user-list'>
                 {
-                    list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><svg><use xlinkHref={item.path} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg><span>{item.name}</span></li>)
+                    list.map(item => <li key={item.key} onClick={()=>this.itemClick(item.key)}><span className={item.path}></span><span>{item.name}</span></li>)
                 }
                 </ul>
             </div>

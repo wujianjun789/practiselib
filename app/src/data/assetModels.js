@@ -20,18 +20,18 @@ export const TreeData=[
             {
                 "id": 11,
                 "name":"灯集中控制器",
-                "class":"icon_light_control",
+                "class":"icon_gateway",
                 "active":true
             },
             {
                 "id": 12,
                 "name":"LED灯",
-                "class":"icon_led_light",
+                "class":"icon_lc",
                 "active":false
             },{
                 "id": 13,
                 "name":"PLC回路控制器",
-                "class":"icon_plc_control",
+                "class":"icon_control",
                 "active":false
             },
             {
@@ -71,13 +71,13 @@ export const TreeData=[
             {
                 "id": 11,
                 "name":"灯集中控制器",
-                "class":"icon_light_control",
+                "class":"icon_gateway",
                 "active":true
             },
             {
                 "id": 12,
                 "name":"LED灯",
-                "class":"icon_led_light",
+                "class":"icon_lc",
                 "active":false
             }
 

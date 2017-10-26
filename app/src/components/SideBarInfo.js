@@ -41,7 +41,7 @@ export default class SideBarInfo extends Component {
                 {IsHaveMap &&
                  <div className="panel panel-default map-position">
                    <div className="panel-heading">
-                     <svg><use xlinkHref={"#icon_map_position"} transform="scale(0.086,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>地图位置
+                     <span className="icon_map"></span>地图位置
                    </div>
                    <div className="map-container panel-body">
                      <MapView option={ { mapZoom: false } } mapData={ mapDevice } />

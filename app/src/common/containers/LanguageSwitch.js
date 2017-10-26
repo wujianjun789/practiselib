@@ -8,10 +8,10 @@ export default class LanguageSwitch extends Component{
     constructor(props){
         super(props);
         this.state = {
-            curLan:{id:"zh",name:"简体中文", path:"#zh"},
+            curLan:{id:"zh",name:"简体中文", path:"icon_chinese"},
             list:[
-                {id:"zh", name:"简体中文", path:"#zh"},
-                {id:"en", name:"ENGLISH", path:"#en"}
+                {id:"zh", name:"简体中文", path:"icon_chinese"},
+                {id:"en", name:"ENGLISH", path:"icon_english"}
             ]
         }
 
@@ -35,13 +35,13 @@ export default class LanguageSwitch extends Component{
         const {curLan, list} = this.state;
         return <div className={"language-switch "+className}>
                 <div className="lanauage-icon">
-                    <svg><use xlinkHref={curLan.path} transform="scale(0.1957,0.195)" x="-8" y="-45" viewBox="0 0 36 20" height="200" width="200"></use></svg>
+                    <span className={curLan.path}></span>
                 </div>
                 <ul className="list-group">
                     {
                         list.map(item=>{
                             return <li key={item.id} className="list-group-item" onClick={()=>this.onClick(item)}>
-                                <svg><use xlinkHref={item.path} transform="scale(0.13,0.13)" x="-8" y="-45" viewBox="0 0 28 17" width="200" height="200"/></svg>
+                                <span className={item.path}></span>
                                 <span>{item.name}</span>
                             </li>
                         })

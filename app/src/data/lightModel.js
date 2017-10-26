@@ -21,14 +21,14 @@ export const TreeData=[
             {
                 "id": 'lc',
                 "name": "单灯控制器",
-                "class": "icon_led_light",
+                "class": "icon_lc",
                 "active": false,
                 "link": "/light/list"
             },
             {
                 "id": 'gateway',
                 "name": "网关",
-                "class": "icon_light_control",
+                "class": "icon_gateway",
                 "active": false,
                 "link": "/light/list/gateway"
             }
@@ -51,7 +51,7 @@ export const TreeData=[
             },{
                 "id": "strategy",
                 "name": "策略",
-                "class": "icon_plc_control",
+                "class": "icon_control",
                 "active": false,
                 "link": "/light/control/strategy"
             }
