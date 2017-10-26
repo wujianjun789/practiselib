@@ -44,7 +44,7 @@ export class DeviceReplace extends Component {
             }),
             search: Immutable.fromJS({
                 value: '',
-                placeholder: '请输入设备编号',
+                placeholder: '请输入设备名称',
             }),
             selectDevice: {
                 id: 'systemOperation',
@@ -77,10 +77,10 @@ export class DeviceReplace extends Component {
             {id: 3, field: "id", title: "设备编号"}
         ];
         this.collpseHandler = this.collpseHandler.bind(this);
-        // this.searchChange = this.searchChange.bind(this);
+        this.searchChange = this.searchChange.bind(this);
         // this.tableClick = this.tableClick.bind(this);
         this.updateSelectDevice = this.updateSelectDevice.bind(this);
-        // this.searchSubmit = this.searchSubmit.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
         this.domainSelect = this.domainSelect.bind(this);
@@ -147,7 +147,9 @@ export class DeviceReplace extends Component {
     }
 
     initDomainList(data) {
-        let domainList = Object.assign({}, this.state.domainList, {index: 0, value: data.length?data[0].name: "", options: data});
+        // console.log("data:", data)
+        let domainList = Object.assign({}, this.state.domainList, {index: 0, 
+            value: data.length?data[0].name: "", options: data.length? data : [{name: '请添加域'}]});
         this.setState({domainList: domainList});
     }
 
@@ -156,6 +158,8 @@ export class DeviceReplace extends Component {
             item.intlName = item.intl.name.zh;
             return item;
         });
+
+        // options.unshift({name:"请选择设备类别", value:"请选择设备类别", intlName:"请选择设备类别"});
         let assetCategoryList = Object.assign({}, this.state.assetCategoryList, 
             {index: 0}, {value: options.length?data[0].intlName: ""}, {options: options});
         this.setState({assetCategoryList: assetCategoryList}, this.requestSearch);
@@ -280,6 +284,17 @@ export class DeviceReplace extends Component {
 
     }
 
+    searchChange(value) {
+        this.setState({search: this.state.search.update('value', () =>value)});
+    }
+
+    searchSubmit() {
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page}, ()=>{
+            this.requestSearch();
+        });
+    }
+
     tableClick(row) {
         this.updateSelectDevice(row.toJS());
     }
@@ -330,8 +345,7 @@ export class DeviceReplace extends Component {
                 <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20 " 
-                                width="200" height="200"/></svg>选中设备
+                            <span className="icon_select"></span>选中设备
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{selectDevice.data.length?selectDevice.data[0].name:''}</span>

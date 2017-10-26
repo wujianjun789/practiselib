@@ -97,10 +97,10 @@ export default class Table2 extends Component {
                                 {
                                     isEdit &&
                                         <td className = 'button-icon'>
-                                            <a className="btn" onClick={()=>keyField && this.rowModuleEdit(row[keyField])}><svg><use xlinkHref={"#logo_module"} className="logo_module" transform="scale(0.075,0.075)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg><span className="module">模块权限</span></a>                                            
-                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><svg><use xlinkHref={"#logo_domain"} className="logo_domain" transform="scale(0.075,0.075)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg><span className="domain">域管理</span></a>
-                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><svg><use xlinkHref={"#logo_update"} className="logo_update" transform="scale(0.075,0.075)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg><span className="update">修改</span></a>
-                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><svg><use xlinkHref={"#logo_del"} className="logo_del" transform="scale(0.08,0.08)" x="0" y="0" viewBox="1 -2 20 20" width="200" height="200"/></svg><span className="del">删除</span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowModuleEdit(row[keyField])}><span className="icon_module"></span><span className="module">模块权限</span></a>                                            
+                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="icon_domain"></span><span className="domain">域管理</span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon_edit"></span><span className="update">修改</span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon_delete"></span><span className="del">删除</span></a>
                                         </td>
                                 }
 

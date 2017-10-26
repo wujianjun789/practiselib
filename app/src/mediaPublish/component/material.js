@@ -5,6 +5,7 @@ import Media from './materialMedia'
 import { Modal ,Tabs} from 'antd';
 
 import '../../../public/styles/mediaPublish-modal.css'
+// import 'antd/lib/style/index.css'
 
 const TabPane=Tabs.TabPane;
 

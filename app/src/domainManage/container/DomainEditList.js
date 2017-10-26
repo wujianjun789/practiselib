@@ -301,7 +301,7 @@ export class DomainEditList extends Component {
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_domain_property"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>域属性
+                            <span className="icon_info"></span>域属性
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>

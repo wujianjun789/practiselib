@@ -77,8 +77,8 @@ export class SmartLightMap extends Component{
             {id:"pole", className:"icon_pole"},
             {id:"screen", className:"icon_screen"},
             {id:"camera", className:"icon_camera"},
-            {id:"lc", className:"icon_lamp"},
-            {id:"charge", className:"icon_charge"}
+            {id:"lc", className:"icon_lc"},
+            {id:"charge", className:"icon_charge_pole"}
         ];
 
         this.lightList = {id:"lightValue",value:"10",options:[
@@ -762,9 +762,9 @@ console.log("searchList:",searchList.toJS());
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className={"btn-group "+(model=="pole"?"":"hidden")}>
                                 {curDevice.getIn(["asset","screen"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
-                                {curDevice.getIn(["asset","lamp"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lamp"+(curId=="lamp"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","lamp"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lc"+(curId=="lamp"?"_hover":"")}></span></li>}
                                 {curDevice.getIn(["asset","camera"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
-                                {curDevice.getIn(["asset","charge"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge"+(curId=="charge"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","charge"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge_pole"+(curId=="charge"?"_hover":"")}></span></li>}
                                 {curDevice.getIn(["asset","collect"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
                             </ul>
                             {
@@ -792,7 +792,7 @@ console.log("searchList:",searchList.toJS());
                     <ul className="btn-group">
                         {
                             this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(model==device.id?"active":"")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={"icon "+device.className+(model==device.id?"_hover":"")}></span></li>
+                                return <li key={device.id} className={"btn "+(model==device.id?"active":"")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={"icon "+(model==device.id?device.className+"_hover":"")}><span className={device.className}></span></span></li>
                             })
                         }
                     </ul>

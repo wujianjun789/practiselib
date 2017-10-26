@@ -262,7 +262,7 @@ export class Strategy extends Component{
                 <SideBarInfo IsHaveMap={false} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default strategy-info">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中策略
+                            <span className="icon_select"></span>选中策略
                         </div>
                         <div className="panel-body strategy-property">
                             <span className="strategy-name">{selectDevice.name}</span>
@@ -272,7 +272,7 @@ export class Strategy extends Component{
                     </div>
                     <div className="panel panel-default strategy-param">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_strategy"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>策略参数
+                            <span className="icon_list"></span>策略参数
                         </div>
                         <div className="panel-body strategy-chart" id="strategyChart" ref={this.renderChart}>
 
@@ -280,7 +280,7 @@ export class Strategy extends Component{
                     </div>
                     <div className="panel panel-default strategy-device">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>包含目标设备
+                            <span className="icon_device_list"></span>包含目标设备
                         </div>
                         <div className="panel-body">
                             <ul>

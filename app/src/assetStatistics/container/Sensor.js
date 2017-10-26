@@ -222,7 +222,7 @@ export class Sensor extends Component {
                 <SideBarInfo  mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <svg><use xlinkHref={"#icon_statistics"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>设备统计信息
+                            <span className="icon_chart"></span>设备统计信息
                         </div>
                         <div className="panel-body view">
                             <div className="circle1">
