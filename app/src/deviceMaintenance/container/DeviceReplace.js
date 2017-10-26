@@ -19,7 +19,11 @@ import Checkbox from '../../components/Checkbox';
 import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
 import ImportFilePopup from '../component/ImportFilePopup';
 import {addNotify} from '../../common/actions/notifyPopup';
-
+import {getDomainList} from '../../api/domain';
+import {getAssetModelList} from '../../api/asset';
+import {getSearchAssets} from '../../api/asset';
+import {getSearchCount} from '../../api/asset';
+import {getObjectByKey} from '../../util/index';
 import Content from '../../components/Content';
 
 import {TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
@@ -31,12 +35,12 @@ export class DeviceReplace extends Component {
         super(props);
         this.state = {
             allChecked: false,
-            model: "devicereplace",
+            model: "gateway",
             collapse: false,
             page: Immutable.fromJS({
-                total: 15,
-                curent: 1,
-                limit: 10
+                total: 10,
+                current: 1,
+                pageSize: 10
             }),
             search: Immutable.fromJS({
                 value: '',
@@ -49,55 +53,49 @@ export class DeviceReplace extends Component {
             },
             domainList: {
                 titleField: 'name',
-                valueField: 'value',
+                valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {id: 1, title: 'domain01', value: 'domain01'},
-                    {id: 1, title: 'domain02', value: 'domain02'}
-                ]
+                options: []
             },
-            categoryList: {
-                titleField: 'name',
-                valueField: 'value',
+            assetCategoryList: { //设备类别列表
+                titleField: 'intlName',
+                valueField: 'intlName',
                 index: 0,
                 value: '',
-                options: [
-                    {id: 1, title: 'category01', value: 'category01'}, 
-                    {id: 2, title: 'category02', value: 'category02'}
-                ]
+                model:'',
+                options: []
             },
-            // modelList: {
-            //     titleField: 'title',
-            //     valueField: 'value',
-            //     options: [
-            //         {id: 1, title: 'model01', value: 'model01'}
-            //     ]
-            // }
+            data: Immutable.fromJS([
+
+            ])
         }
         this.columns = [
-            {id: 0, field: "deviceName", title: "设备名称"},
-            {id: 1, field: "deviceCategory", title: "设备类别"},
+            {id: 0, field: "name", title: "设备名称"},
+            {id: 1, field: "assetCategoryName", title: "设备类别"},
             {id: 2, field: "domainName", title: "域"},
-            {id: 3, field: "deviceNumber", title: "设备编号"}
+            {id: 3, field: "id", title: "设备编号"}
         ];
         this.collpseHandler = this.collpseHandler.bind(this);
         // this.searchChange = this.searchChange.bind(this);
         // this.tableClick = this.tableClick.bind(this);
-        // this.updateSelectDevice = this.updateSelectDevice.bind(this);
+        this.updateSelectDevice = this.updateSelectDevice.bind(this);
         // this.searchSubmit = this.searchSubmit.bind(this);
-        // this.pageChange = this.pageChange.bind(this);
+        this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
-        // this.domainSelect = this.domainSelect.bind(this);
+        this.domainSelect = this.domainSelect.bind(this);
+        this.assetCategorySelect = this.assetCategorySelect.bind(this);
 
         // this.popupCancel = this.popupCancel.bind(this);
         // this.popupConfirm = this.popupConfirm.bind(this);
 
-        // this.requestSearch = this.requestSearch.bind(this);
-        // this.initPageSize = this.initPageSize.bind(this);
+        this.requestSearch = this.requestSearch.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
         // this.initDomainList = this.initDomainList.bind(this);
-        // this.initAssetList = this.initAssetList.bind(this);
+        this.initAssetList = this.initAssetList.bind(this);
         this.onChange = this.onChange.bind(this);
+
+        this.initAssetCategoryList = this.initAssetCategoryList.bind(this);
     }
 
     componentWillMount() {
@@ -109,12 +107,14 @@ export class DeviceReplace extends Component {
                 this.props.actions.treeViewInit(TreeData);
                 this.setState({
                     model: model
-                    // modelList: Object.assgin({}, this.state.modelList, {})
                 });
-                getDomainList(data=> {
-                    this.mounted && this.initDomainList(data)
-                })
             }
+        });
+        getDomainList(data=> {
+            this.mounted && this.initDomainList(data);
+            getAssetModelList((data) => {
+                this.mounted && this.initAssetCategoryList(data);
+            })
         })
     }
     componentWillUnmount() {
@@ -126,17 +126,17 @@ export class DeviceReplace extends Component {
     }
 
     requestSearch(){
-        const { model, domainList, search, page } = this.state
+        const { model, domainList, search, page, assetCategoryList } = this.state;
         let domain = domainList.options.length?domainList.options[domainList.index]:null;
         let name = search.get('value');
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur - 1)*size;
-        getSearchCount(domain?domain.id:null, model, name, data=> {
+        getSearchCount(domain?domain.id:null, model, name, data=> {        
             this.mounted && this.initPageSize(data)
         })
 
-        getSearchAsset(domain?domain.id:null, model, name, offset, size, data=> {
+        getSearchAssets(domain?domain.id:null, model, name, offset, size, data=> {
             this.mounted && this.initAssetList(data)
         })
     }
@@ -147,21 +147,47 @@ export class DeviceReplace extends Component {
     }
 
     initDomainList(data) {
-        let domainList = Object.assgin({}, this.state.domainList, {index: 0}, {value: data.length?data[0].name: ""}, {options: data});
+        let domainList = Object.assign({}, this.state.domainList, {index: 0, value: data.length?data[0].name: "", options: data});
         this.setState({domainList: domainList});
-        this.requestSearch();
     }
 
-    initCategoryList(data) {
-        let categoryList = Object.assgin({}, this.state.categoryList, {index: 0}, {value: data.length?data[0].name: ""}, {options: data});
-        this.setState({categoryList: categoryList});
-        this.requestSearch();
+    initAssetCategoryList(data) {
+        let options = data.map((item,index) => {
+            item.intlName = item.intl.name.zh;
+            return item;
+        });
+        let assetCategoryList = Object.assign({}, this.state.assetCategoryList, 
+            {index: 0}, {value: options.length?data[0].intlName: ""}, {options: options});
+        this.setState({assetCategoryList: assetCategoryList}, this.requestSearch);
     }
 
 
 
     initAssetList(data) {
+        let list = data.map((asset, index)=> {
+            let domainName = "";
+            if(this.state.domainList.options.length && asset.domainId) {
+                let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
+                domainName = domain?domain.name:"";
+            }
 
+            let assetCategoryName = "";
+            if(this.state.assetCategoryList.options.length && asset.extendType) {
+                let assetCategory = getObjectByKey(this.state.assetCategoryList.options, 'key', asset.extendType);
+                assetCategoryName = assetCategory?assetCategory.intl.name.zh:"";
+            }
+            return Object.assign({}, asset, {domainName: domainName}, {assetCategoryName:assetCategoryName})
+        })
+        
+        this.setState({data: Immutable.fromJS(list)});
+        
+        
+        if (list.length) {
+            let item = list[0];
+            this.updateSelectDevice(item);
+        } else {
+            this.setSate({selectDevice: Object.assign({}, this.state.selectDevice, {data: [] })});
+        }
     }
 
     popupReplacCancel() {
@@ -181,7 +207,7 @@ export class DeviceReplace extends Component {
     }
 
     domainHandler(e) {
-        console.log(e)
+        // console.log(e)
         let id = e.target.id;
         const {} = this.state
         const {overlayerHide, overlayerShow, addNotify} = this.props.actions;
@@ -193,11 +219,11 @@ export class DeviceReplace extends Component {
                     success: "更换成功",
                     fail: "更换失败",
                 };
-                console.log(this.props.actions);
+                // console.log(this.props.actions);
                 overlayerShow(<ImportFilePopup className="" data={dataInit2} overlayerHide={overlayerHide} 
                 addNotify={this.props.actions.addNotify}
                 onConfirm={()=>{
-                    console.log("批量更换设备");
+                    // console.log("批量更换设备");
                 }}  />);
 
             break;
@@ -205,13 +231,13 @@ export class DeviceReplace extends Component {
                 const dataInit = {
                     title: "修改设备编号",
                     selectDeviceName: "被选中设备的名称",
-                    selectDeviceNumber: "别选中的设备编号",
+                    selectDeviceNumber: "被选中的设备编号",
                 };
                 
                 overlayerShow(<DeviceNumberModifyPopup className="device-num-modify-popup" data={dataInit}
                     /* addNotify={this.props.actions.addNotify} */
                     overlayerHide={overlayerHide} onConfirm={()=>{
-                        console.log("更新设备编号")
+                        // console.log("更新设备编号")
                     }}/>);
             break;
 
@@ -225,12 +251,41 @@ export class DeviceReplace extends Component {
         })
     }
 
+    domainSelect(e) {
+        let index = e.target.selectedIndex;
+        let {domainList} = this.state;
+        // domainList.index = index;
+        // domainList.value = domainList.options[index].name;
+        // console.log('%%%%%%%%%%%%')
+        // console.log({...domainList})
+        // console.log({...domainList, index: index, value: domainList.options[index].name})
+        this.setState({domainList: {...domainList, index: index, value: domainList.options[index].name}}, ()=>{
+            this.requestSearch();
+            // console.log(this.state.domainList);
+        })
+    }
+
+    assetCategorySelect(e) {
+        let index = e.target.selectedIndex;
+        // console.log(index)
+        let {assetCategoryList} = this.state;
+        assetCategoryList.index = index;
+        assetCategoryList.value = assetCategoryList.options[index].intlName;
+        assetCategoryList.key = assetCategoryList.options[index].key;
+        // console.log("assetCategoryList.key:", assetCategoryList.key)
+        
+        this.setState({assetCategoryList: assetCategoryList, model: assetCategoryList.key}, ()=>{
+            this.requestSearch();
+        })
+
+    }
+
     tableClick(row) {
         this.updateSelectDevice(row.toJS());
     }
 
     updateSelectDevice(item) {
-        let selectdevice = this.state.selectDevice;
+        let selectDevice = this.state.selectDevice;
 
     }
 
@@ -244,23 +299,22 @@ export class DeviceReplace extends Component {
     }
 
     collpseHandler() {
-        console.log("调用cool")
         this.setState({
             collapse: !this.state.collapse
         })
     }
 
     render() {
-        const {model, collapse, page, search, selectDevice, domainList, data, categoryList, allChecked} = this.state;
+        const {model, collapse, page, search, selectDevice, domainList, data, assetCategoryList, allChecked} = this.state;
         return <Content className={'offset-right' + (collapse?' collapsed':' ')} id = 'sysDeviceMaintenanceReplace'>
                 <div className="heading">
                     {/* {<Checkbox onChange={onChange}>Checkbox</Checkbox>} */}
-                    {<Checkbox onChange = {this.onChange} allChecked = {allChecked} id='checkbox'></Checkbox>}
+                    {/* <Checkbox onChange = {this.onChange} allChecked = {allChecked} id='checkbox'></Checkbox> */}
                     {/* <input type="checkbox" className="" ></input> */}
-                    <Select id="domain"  titleField={domainList.valueField} valueField={domainList.valueField}
+                    <Select id="domain"  titleField={domainList.titleField} valueField={domainList.valueField}
                             options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
-                    <Select id="category"  titleField={categoryList.valueField} valueField={categoryList.valueField} 
-                            options={categoryList.options} value={categoryList.value} onChange={this.domainSelect}/>
+                    <Select id="assetCategory"  titleField={assetCategoryList.titleField} valueField={assetCategoryList.valueField} 
+                            options={assetCategoryList.options} value={assetCategoryList.value} onChange={this.assetCategorySelect}/>
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                         onChange={this.searchChange} submit={this.searchSubmit} />
                     <button id="device_replace_batch" className="btn btn-primary add-domain" onClick = {this.domainHandler}>批量更换</button>
@@ -269,7 +323,7 @@ export class DeviceReplace extends Component {
                     <div className="table-container">
                         <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                             rowClick={this.tableClick}/>
-                        <Page className={"page"+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
+                        <Page className={"page"+(page.get('total')==0?" hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
                             current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>
