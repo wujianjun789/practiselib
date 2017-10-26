@@ -166,24 +166,28 @@ export class PlayerArea extends Component {
         if(id == "add"){
             data.typeList = this.typeList;
             data.sceneName = '';
-            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={()=>{
-            // data.sceneName = '';
-            // data.width = 1920;
-            // data.height = 1080;
-            // data.axisX = 10;
-            // data.axisY = 10;
-            //     actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-            //
-            //     }}/>)
+            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
+
+            console.log(state);
+            const type = state.typeList.get('index');
+            if(type == 0){
                 data.sceneName = '';
+            data.width = 1920;
+            data.height = 1080;
+            data.axisX = 10;
+            data.axisY = 10;
+                actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+                }}/>)
+            }else if(type == 2){
+                 data.sceneName = '';
                 data.startDate = moment();
                 data.endDate = moment();
                 data.startTime = moment();
                 data.endTime = moment();
                 data.week = [1,0,1,0,0,0,0];
                 actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-
                 }}/>)
+            }
             }}/>)
         }else{
 
