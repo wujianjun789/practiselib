@@ -1,6 +1,6 @@
 /**
  * D3 environment is required
- * 
+ *
  * @param {Object}                  obj
  * @param {node}                    obj.wrapper             required        // 图像的容器
  * @param {{values: Number[]}}      obj.data                required        // 绘图相关数据
@@ -9,7 +9,7 @@
  *              right: 20,
  *              top: 20,
  *              bottom: 20
- * }}                               obj.padding             optional        // 图像周围的空间,可传入单个属性，默认 20px 
+ * }}                               obj.padding             optional        // 图像周围的空间,可传入单个属性，默认 20px
  * @param {Function}                obj.xAccessor           optional        // x轴数据访问器，default: d = d.x
  * @param {Function}                obj.yAccessor           optional        // y轴数据访问器，default: d = d.y
  * @param {Number[]}                obj.xDomain             optional        // x轴值域，default： [0,1]。                 未实现，逗你玩
@@ -110,12 +110,15 @@ export default class LineChart {
             .style('top', '30px')
             .style('left', '20px')
             .style('z-index', 1000)
-            .style('opacity', 1)
+			.style('opacity', 1)
+			.style('pointer-events', 'none')
             .style('display', 'none');
         this.tooltips.append('div')
-            .attr('class', 'tooltip-arrow');
+			.attr('class', 'tooltip-arrow')
+			.style('pointer-events', 'none');
         this.tooltipInner = this.tooltips.append('div')
-            .attr('class', 'tooltip-inner')
+			.attr('class', 'tooltip-inner')
+			.style('pointer-events', 'none')
             .text('this is a tooltips.');
 
         this.svg.on('mouseenter', ()=>{
@@ -233,7 +236,7 @@ export default class LineChart {
         if(xDomain) {
             this.xDomain = xDomain;
         }
-        
+
         if(yDomain) {
             this.yDomain = yDomain;
         }

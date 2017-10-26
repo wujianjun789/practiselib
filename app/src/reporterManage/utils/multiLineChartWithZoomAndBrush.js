@@ -128,7 +128,47 @@ export default class MultiLineChartWithZoomAndBrush {
             .attr('transform', `translate(0, ${this.height})`);
         this.y_axis = focus
             .append('g')
-            .attr('class', 'axis axis-y');
+			.attr('class', 'axis axis-y');
+
+		this.zoom = d3.zoom()
+			.scaleExtent([1, Infinity])
+			.translateExtent([[0, 0], [width, height]])
+			.extent([[0, 0], [width, height]])
+			.on("zoom", this.zoomed);
+
+		focus.append('rect')
+			.attr('class', 'zoom')
+			.attr('width', this.width)
+			.attr('height', this.height)
+			.call(this.zoom)
+			.on('mouseenter', () => {
+				if(this.data.length > 0) {
+					d3.select('.tooltip-line').style('display', 'block');
+					this.tooltips.style('display', 'block');
+				}
+			},false)
+			.on('mousemove', () => {
+				if(this.data.length > 0) {
+					let offsetX = d3.event.offsetX - this.padding.left;
+					d3.select('.tooltip-line').attr('transform', `translate(${offsetX}, 0)`);
+
+					let curX = this.xScale.invert(offsetX);
+					this.tooltips.select('.tooltip-inner').html(`<p>${d3.timeFormat('%Y-%m-%d %H:%M:%S')(curX)}<p>`);
+				}
+			},false)
+			.on('mouseleave', () => {
+				d3.select('.tooltip-line').style('display', 'none');
+				this.tooltips.style('display', 'none');
+			}, false);
+
+		focus.append('path')
+			.attr('class', 'tooltip-line')
+			.attr('d', () => {
+				return `M${0},${0} L${0},${this.height}`;
+			})
+			.attr('stroke-dasharray', '5, 5')
+			.attr('pointer-events', 'none')
+			.style('display', 'none');
 
         this.line_group = focus
             .append('g')
@@ -150,22 +190,26 @@ export default class MultiLineChartWithZoomAndBrush {
 			.handleSize(20)
 			.on('brush end', this.brushed);
 
-		this.zoom = d3.zoom()
-			.scaleExtent([1, Infinity])
-			.translateExtent([[0, 0], [width, height]])
-			.extent([[0, 0], [width, height]])
-			.on("zoom", this.zoomed);
-
 		this.context
 			.append('g')
 			.attr('class', 'brush');
 
-		this.svg.append('rect')
-			.attr('class', 'zoom')
-			.attr('width', this.width)
-			.attr('height', this.height)
-			.attr('transform', `translate(${this.padding.left}, ${this.padding.top})`)
-			.call(this.zoom);
+		let wrapper = d3.select(this.wrapper);
+		wrapper.style('position', 'relative');
+
+		this.tooltips = wrapper.append('div')
+			.attr('class', 'tooltip top')
+			.style('position', 'absolute')
+			.style('top', `30px`)
+			.style('left', `${this.padding.left + 10}px`)
+			.style('z-index', 1000)
+			.style('opacity', .5)
+			.style('pointer-events', 'none')
+			.style('display', 'none');
+		this.tooltips.append('div')
+			.attr('class', 'tooltip-inner')
+			.style('pointer-events', 'none')
+			.text('this is a tooltips.');
 
         this.draw();
 	}
@@ -241,6 +285,7 @@ export default class MultiLineChartWithZoomAndBrush {
 					return this.line(d.values);
 				}
 			})
+			.attr('pointer-events', 'none');
 		let enter = update.enter();
 		if(enter.size() != 0) {
 			enter
@@ -253,7 +298,8 @@ export default class MultiLineChartWithZoomAndBrush {
 					} else {
 						return this.line(d.values);
 					}
-				});
+				})
+				.attr('pointer-events', 'none');
 		}
 
 		update.exit().remove();
