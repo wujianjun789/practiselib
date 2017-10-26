@@ -172,7 +172,7 @@ export default class Xes extends Component{
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
-                                <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
+                                <span className="icon_select"></span>选中设备
                             </div>
                             <div className="panel-body">
                                 <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>

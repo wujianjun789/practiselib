@@ -18,12 +18,12 @@ export const TreeData = [
       {
         "id": 'lcc',
         "name": "灯集中控制器",
-        "class": "icon_light_control",
+        "class": "icon_control",
         "active": true
       }, {
         "id": 'lc',
         "name": "单灯控制器",
-        "class": "icon_led_light",
+        "class": "icon_light",
         "active": false
       }
     ]
@@ -38,19 +38,19 @@ export const TreeData = [
       {
         "id": 'timeTable',
         "name": "时间表",
-        "class": "icon_time_strategy",
+        "class": "icon_calendar",
         "active": false,
         "link": "/systemOperation/strategy/timeTable"
       }, {
         "id": 'sensor',
         "name": "传感器",
-        "class": "icon_sensor_strategy",
+        "class": "icon_sensor",
         "active": false,
         "link": "/systemOperation/strategy/sensor"
       }, {
         "id": 'latlng',
         "name": "经纬度",
-        "class": "icon_latlng_strategy",
+        "class": "icon_latlng",
         "active": false,
         "link": "/systemOperation/strategy/latlng"
       }
@@ -67,14 +67,14 @@ export const TreeData = [
       {
         "id": 'systemRunningState',
         "name": '系统运行状态',
-        "class": 'icon_state',
+        "class": 'icon_status',
         "active": true,
         "link": "/systemOperation/serviceMonitor/systemRunningState"
       },
       {
         "id": 'serviceState',
         "name": '后天服务状态',
-        "class": 'icon_system_state',
+        "class": 'icon_sys_status',
         "active": true,
         "link": "/systemOperation/serviceMonitor/serviceState"
       }
@@ -113,14 +113,14 @@ export const TreeData = [
       {
         "id": 'deviceState',
         "name": "设备状态图",
-        "class": 'icon_state',
+        "class": 'icon_status',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceState"
       },
       {
         "id": 'deviceTopology',
         "name": "设备拓扑图",
-        "class": 'icon_domain_topology',
+        "class": 'icon_branch',
         "active": false,
         "link": "/systemOperation/deviceMonitor/deviceTopology"
       }
@@ -136,14 +136,14 @@ export const TreeData = [
       {
         "id": 'deviceReplace',
         "name": "设备更换",
-        "class": 'icon_device_replace',
+        "class": 'icon_update',
         "active": false,
         "link": "/systemOperation/deviceMaintenance/deviceReplace"
       },
       {
         "id": 'deviceUpdate',
         "name": "设备升级",
-        "class": 'icon_device_update',
+        "class": 'icon_upgrade',
         "active": false,
         "link": "/systemOperation/deviceMaintenance/deviceUpdate"
       }
@@ -248,7 +248,7 @@ function getLinkByModel(key) {
     case 'sensor':
       return '/systemOperation/config/sensor';
     case 'plc':
-      return 'icon_plc_control';
+      return 'icon_control';
     case 'ammeter':
       return 'icon_ammeter';
     case 'pole':
@@ -258,6 +258,6 @@ function getLinkByModel(key) {
     case 'xes':
       return '/systemOperation/config/xes';
     default:
-      return 'icon_led_light';
+      return 'icon_lc';
   }
 }

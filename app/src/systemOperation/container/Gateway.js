@@ -460,7 +460,7 @@ export class Gateway extends Component {
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                    <div className="panel panel-default device-statics-info">
                      <div className="panel-heading">
-                       <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
+                       <span className="icon_select"></span>选中设备
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
@@ -472,7 +472,7 @@ export class Gateway extends Component {
                    </div>
                    <div className="panel panel-default device-statics-info whitelist">
                      <div className="panel-heading">
-                       <svg><use xlinkHref={"#icon_sys_whitelist"} transform="scale(0.082,0.082)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>白名单
+                       <span className="icon_device_list"></span>白名单
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name">{ `包含：${selectDevice.whiteCount} 个设备` }</span>

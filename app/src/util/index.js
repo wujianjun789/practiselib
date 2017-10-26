@@ -78,11 +78,11 @@ export function getElementOffwidth(str, fontSize = "14px") {
 export function getClassByModel(key) {
     switch (key) {
         case 'gateway':
-            return 'icon_light_control';
+            return 'icon_gateway';
         case 'lc':
-            return 'icon_led_light';
+            return 'icon_lc';
         case 'sensor':
-            return 'icon_plc_control';
+            return 'icon_control';
             //智慧路灯 icon
         case 'smartlight':
             return 'icon_smart_light';
@@ -99,7 +99,7 @@ export function getClassByModel(key) {
         case 'scene':
             return 'icon_scene';
         default:
-            return 'icon_led_light';
+            return 'icon_lc';
     }
 }
 

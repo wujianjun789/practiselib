@@ -1,7 +1,7 @@
 .table{
   font-size: 14px;
   thead{
-    color: #333744;
+    color: #666;
     tr{
       height: 38px;
       th{
@@ -37,11 +37,25 @@
           .logo_del{
             fill:#fa6262;
           }
+          .icon_domain,.icon_edit,.icon_module{
+            color:#8a8a8a;
+            display:inline-block;
+            float:right;
+            padding:3px 4px 0px 4px;
+            font-size:14px;
+          }
+          .icon_delete{
+            color:#fa6262;
+            display:inline-block;
+            float:right;
+            padding:2px 4px 0px 3px;
+            font-size:16px;
+          }
           }
           .btn:hover .update{color:#4a5064;}
-          .btn:hover .logo_update{fill:#4a5064;}
+          .btn:hover .icon_edit{color:#4a5064;}
           .btn:hover .del{color:red;}
-          .btn:hover .logo_del{fill:red;}
+          .btn:hover .icon_delete{color:red;}
         }
       }
     }
@@ -102,12 +116,28 @@
           .logo_del{
             fill:#fa6262;
           }
+          .icon_domain,.icon_edit,.icon_module{
+            color:#8a8a8a;
+            display:inline-block;
+            float:right;
+            padding:3px 4px 0px 4px;
+            font-size:14px;
+          }
+          .icon_delete{
+            color:#fa6262;
+            display:inline-block;
+            float:right;
+            padding:2px 4px 0px 3px;
+            font-size:16px;
+          }
       }
 
       .btn:hover .domain,.btn:hover .update,.btn:hover .module{color:#4a5064;}
       .btn:hover .logo_domain,.btn:hover .logo_update,.btn:hover .logo_module{fill:#4a5064;}
       .btn:hover .del{color:red;}
       .btn:hover .logo_del{fill:red;}
+      .btn:hover .icon_edit,.btn:hover .icon_domain,.btn:hover .icon_module{color:#4a5064;}
+      .btn:hover .icon_delete{color:red;}
     }
     tr:last-child{
       //td{

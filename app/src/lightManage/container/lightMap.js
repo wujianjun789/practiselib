@@ -93,7 +93,7 @@ export class lightMap extends Component{
             {id:"pole", className:"icon_pole"},
             {id:"screen", className:"icon_screen"},
             {id:"camera", className:"icon_camera"},
-            {id:"lamp", className:"icon_led_light"},
+            {id:"lamp", className:"icon_lc"},
             {id:"charge", className:"icon_charge_pole"}
         ];
 
@@ -769,7 +769,6 @@ export class lightMap extends Component{
                     <div className="input-group searchBlock">
                       <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
                       <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-
                     </div>
                     <ul className={"list-group mode-select "+(interactive?'select-active':'')} >
                             {
@@ -806,11 +805,11 @@ export class lightMap extends Component{
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
-                                {curDevice.get("screen") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("screen")}><svg><use xlinkHref={"#screen"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>}
-                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
-                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"this"+(curId=="camera"?"_hover":"")}><svg><use xlinkHref={"#icon_camera"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
-                                {curDevice.get("charge") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"this"+(curId=="charge"?"_hover":"")}><svg><use xlinkHref={"#icon_charge_pole"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
-                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"this"+(curId=="collect"?"_hover":"")}><svg><use xlinkHref={"#icon_collect"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span></li>}
+                                {curDevice.get("screen") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className="icon_screen"></span></li>}
+                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>}
+                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"this"+(curId=="camera"?"_hover":"")}><span className="icon_camera"></span></span></li>}
+                                {curDevice.get("charge") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"this"+(curId=="charge"?"_hover":"")}><span className="icon_charge_pole"></span></span></li>}
+                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"this"+(curId=="collect"?"_hover":"")}><span className="icon_collect"></span></span></li>}
                             </ul>
                             {
                                 this.renderInfo(curId,this.state[curId])
@@ -837,7 +836,7 @@ export class lightMap extends Component{
                     <ul className="btn-group">
                         {   
                             this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"btn-default")} onClick={()=>this.searchDeviceSelect(device.id)}><svg><use xlinkHref={"#"+device.className} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></li>
+                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"btn-default")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={device.className}></span></li>
                             })
                         }
                     </ul>

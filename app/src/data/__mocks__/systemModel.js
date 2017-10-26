@@ -20,13 +20,13 @@ export const TreeData=[
             {
                 "id": 'lampConCenter',
                 "name":"灯集中控制器",
-                "class":"icon_light_control",
+                "class":"icon_gateway",
                 "active":true
             },
             {
                 "id": 'singleLampCon',
                 "name":"单灯控制器",
-                "class":"icon_led_light",
+                "class":"icon_lc",
                 "active":false
             }
         ]

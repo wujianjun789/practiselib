@@ -338,7 +338,7 @@ export class Xes extends Component {
             <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                 <div className="panel panel-default device-statics-info">
                     <div className="panel-heading">
-                        <svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选中设备
+                        <span className="icon_select"></span>选中设备
                     </div>
                     <div className="panel-body domain-property">
                         <span className="domain-name" title={selectDevice.data.length?selectDevice.data[0].name:''}>{selectDevice.data.length?selectDevice.data[0].name:''}</span>
@@ -350,7 +350,7 @@ export class Xes extends Component {
                 </div>
                 <div className="panel panel-default device-statics-info dataOrigin">
                     <div className="panel-heading">
-                        <svg><use xlinkHref={"#icon_sys_xes"} transform="scale(0.075,0.075)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>数据源
+                        <span className="icon_db"></span>数据源
                     </div>
                     <div className="panel-body domain-property">
                         <span className="domain-name">{`包含：${selectDevice.data.length} 个数据源`}</span>

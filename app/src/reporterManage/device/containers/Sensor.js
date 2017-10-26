@@ -339,7 +339,7 @@ export default class Sensor extends PureComponent {
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
-								<svg><use xlinkHref={"#icon_device_operate"} transform="scale(0.088,0.086)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选择时间
+								<span className="icon_touch"></span>选择时间
                             </div>
 							<div className="panel-body">
 							<DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
@@ -349,7 +349,7 @@ export default class Sensor extends PureComponent {
                         </div>
                         <div className="panel panel-default panel-2">
 							<div className="panel-heading">
-								<svg><use xlinkHref={"#icon_sys_select"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg>选择设备
+								<span className="icon_select"></span>选择设备
                             </div>
 							<div className="panel-body">
 								<div className="device-filter">
