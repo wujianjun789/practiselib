@@ -1,10 +1,13 @@
-.mediaPublish-playerList{
-  .content{
-    .heading{
+.container{
+  background-color: #f2f2f4;
+}
+.mediaPublish-playerList {
+  .content {
+    .heading {
       height: 70px;
       background: #fff;
 
-      .type{
+      .type {
         width: 160px;
         height: 30px;
 
@@ -14,13 +17,13 @@
         margin-left: 20px;
       }
 
-      .searchText{
+      .searchText {
 
         height: 30px;
         margin: 20px 0px 20px 20px;
       }
 
-      button{
+      button {
 
         margin: 20px;
         height: 30px;
@@ -31,7 +34,7 @@
       }
     }
 
-    .playerList-container{
+    .playerList-container {
       margin: 20px;
       padding: 20px;
 
@@ -55,94 +58,448 @@
       }*/
     }
 
-    .page{
+    .page {
       text-align: center;
     }
   }
 }
 
-.mediaPublish-playerArea{
-  .content{
-      select{
-        width: 160px;
-        height: 30px;
+.playerList-popup{
+  width: 420px;
+  .form-group{
+    margin-right: 0;
+    margin-left: 0;
+    label{
+      width: 90px;
+      padding-right: 0;
+
+      height: 40px;
+      line-height: 40px;
+
+      text-align: right;
+    }
+
+    .col-sm-9{
+      width: 325px;
+    }
+    .form-control{
+      height: 40px;
+    }
+
+    .col-sm-4{
+      width: 145px;
+    }
+    .col-sm-1{
+      padding-left: 10px;
+
+      font-size: 24px;
+    }
+
+    .prompt{
+      position: absolute;
+      font-size: 12px;
+      top: 44px;
+      line-height: 12px;
+      color: #ff5c68;
+    }
+  }
+}
+.mediaPublish-playerArea {
+  .sidebar {
+    bottom: 115px;
+    .title {
+      height: 50px;
+
+      padding-left: 35px;
+
+      background-color: #d3d8dd;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .edit-container {
+      height: 70px;
+
+      background-color: #e6e6e6;
+
+      button:first-child {
         margin-top: 20px;
-        margin-right: 5px;
-        margin-bottom: 20px;
+        margin-right: 10px;
+        margin-left: 20px;
       }
 
-      .left{
-        padding-bottom: 20px;
-        ul{
-          margin-left: 25px;
-          li{
-            height: 35px;
-
-            list-style-type: disc;
-          }
-        }
-
-        button{
-          display: block;
-          margin-right: auto;
-          margin-left: auto;
-
-          padding: 5px 15px;
-        }
-      }
-      .center{
+      button:last-child {
         margin-top: 20px;
-        .img-container{
-         height: 300px;
-          background-color: #00ffff;
-        }
-        .pro-container{
-          button{
-            margin-top: 15px;
-            margin-bottom: 15px;
-          }
+        margin-right: 15px;
+        margin-left: 10px;
+
+        background-color: #000;
+        border: 0;
+      }
+    }
+  }
+
+  .content {
+    .left {
+      position: absolute;
+      top: 0;
+      right: 700px;
+      bottom: 95px;
+      left: 0px;
+
+      padding: 0;
+
+      min-height: 500px;
+
+      .control-container-top {
+        height: 50px;
+        > div {
+          display: inline-block;
+          margin-left: 20px;
+
+          margin-top: 15px;
         }
       }
-    .right{
-      margin-top: 20px;
-      .pro-title{
-        margin-bottom: 15px;
+      .img-container {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 60px;
+        left: 20px;
+
+        background-color: #00ffff;
+
+        overflow-y: scroll;
+      }
+      .control-container-bottom {
+        position: absolute;
+        right: 0;
+        bottom: 20px;
+        > div {
+          display: inline-block;
+          margin-left: 20px;
+        }
+      }
+    }
+    .right {
+      position: absolute;
+      right: 0;
+      width: 680px;
+      padding: 0;
+      .pro-title {
+        padding-left: 20px;
+
+        height: 50px;
+        line-height: 50px;
+        background-color: #d3d8dd;
+
+        font-size: 14px;
+        color: #333744;
       }
 
-      .pro-container{
-        margin-bottom: 15px;
-        padding: 15px;
+      .pro-container {
+        padding-top: 20px;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        padding-left: 30px;
 
-        background-color: #fff;
+        background-color: #e6e6e6;
 
-        .form-group{
-          label{
+        .row{
+          margin: 0;
+        }
+        .form-group {
+          display: inline-block;
+          margin-right: 20px;
+          label {
             text-align: right;
-
-            width: 80px;
-
-            padding-right: 10px;
-            padding-left: 10px;
+            width: 30px;
+            line-height: 40px;
+            margin-right: 10px;
+            padding: 0;
+            float: left;
           }
 
-          &.area-name{
-            label{
-              width: 95px;
+          .input-container{
+            display: inline-block;
+            width: 135px;
+            .form-control{
+              height: 40px;
             }
           }
+
+          &.area-name {
+            label {
+              width: 30px;
+              height: 40px;
+
+              line-height: 40px;
+              margin-right: 10px;
+              float: left;
+            }
+
+            .input-container{
+              width: 360px;
+            }
+          }
+
+          &.speed,&.repeat,&.resTime,&.flicker{
+            label{
+              width: 60px;
+            }
+          }
+
+          &.repeat,&.flicker{
+            margin-right: 0;
+          }
         }
       }
 
-      .asset-lib{
-        margin-bottom: 15px;
+      .asset-lib {
+        padding-left: 20px;
+
+        height: 50px;
+        line-height: 50px;
+        background-color: #d3d8dd;
+
+        font-size: 14px;
+        color: #333744;
       }
 
-      .asset-container{
-        //margin-right: 15px;
-        margin-left: 15px;
-        padding: 15px;
+      .asset-container {
+        padding: 20px;
+        background-color: #e6e6e6;
+        .top {
+          select {
+            width: 145px;
+            height: 30px;
+            margin-right: 20px;
+          }
+          .searchText {
+            width: 150px;
 
-        background-color: #fff;
+            margin-right: 20px;
+          }
+
+          button {
+            &.add {
+              margin-right: 20px;
+            }
+          }
+
+          padding-bottom: 10px;
+          border-bottom: 1px solid #ffffff
+        }
+
+        .bottom {
+          height: 309px;
+          padding-top: 10px;
+          ul.asset-list {
+            padding-bottom: 10px;
+            li {
+              position: relative;
+
+              display: inline-block;
+
+              padding-top: 10px;
+              padding-right: 10px;
+              padding-left: 10px;
+
+              margin-right: 20px;
+              margin-bottom: 20px;
+
+              &.margin-right{
+                margin-right: 0px;
+              }
+
+              .background {
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                width: 112px;
+                height: 115px;
+
+                background-color: #00d8ff;
+                opacity: .1;
+              }
+              .icon {
+                display: block;
+                width: 92px;
+                height: 65px;
+
+                background-color: #fff;
+              }
+
+              .name {
+                display: block;
+
+                padding-top: 10px;
+                text-align: center;
+              }
+            }
+          }
+
+          .page-container {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-top: 1px solid #ffffff;
+
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  .mediaPublish-footer {
+    position: fixed;
+    right: 700px;
+    left: 0;
+    bottom: 0;
+
+    z-index: 5;
+
+    height: 94px;
+    background-color: #e6e6e6;
+
+    .title {
+      display: inline-block;
+      font-size: 14px;
+
+      height: 94px;
+      line-height: 25px;
+      vertical-align: middle;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    ul {
+      display: inline-block;
+
+      > li {
+        position: relative;
+
+        display: inline-block;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        margin-right: 10px;
+        .background{
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          width: 76px;
+          height: 94px;
+
+          background-color: #00d8ff;
+          opacity: .1;
+        }
+
+        .icon {
+          display: block;
+          width: 56px;
+          height: 50px;
+
+          margin-bottom: 10px;
+          background-color: #fff;
+        }
+
+        .name {
+          margin-left: 8px;
+          text-align: center;
+        }
+      }
+    }
+    .control-container {
+      display: inline-block;
+      margin-right: 10px;
+      margin-left: 20px;
+      > button {
+        display: block;
+      }
+
+      > button:first-child {
+        margin-top: 10px;
+        margin-bottom: 14px;
+      }
+
+      > button:last-child {
+        margin-bottom: 10px;
+
+        background-color: #000;
+        border: 0;
+      }
+    }
+  }
+
+  .playerScene-popup{
+    width: 420px;
+    //margin: 0;
+    .form-group{
+      margin-right: 0;
+      margin-left: 0;
+      label{
+        padding-right: 0;
+        padding-left: 0;
+
+        height: 40px;
+        line-height: 40px;
+
+        text-align: right;
+      }
+
+      .form-control{
+        height: 40px;
+      }
+
+      .col-sm-1{
+        padding-left: 10px;
+
+        font-size: 24px;
+      }
+
+      .prompt{
+        position: absolute;
+        font-size: 12px;
+        top: 44px;
+        line-height: 12px;
+        color: #ff5c68;
+      }
+    }
+  }
+
+  .playerPlan-popup{
+    width: 420px;
+    //margin: 0;
+    .form-group{
+      margin-right: 0;
+      margin-left: 0;
+      label{
+        padding-right: 0;
+        padding-left: 0;
+
+        height: 40px;
+        line-height: 40px;
+
+        text-align: right;
+      }
+
+      .form-control{
+        height: 40px;
+      }
+
+      .prompt{
+        position: absolute;
+        font-size: 12px;
+        top: 44px;
+        line-height: 12px;
+        color: #ff5c68;
       }
     }
   }

@@ -571,6 +571,7 @@ ul {
 .tree-list .tree-2 > li > a > div {
     opacity:0.8;
     height:40px;
+
     padding-left:28px;
     /*background: #d3d8dd;*/
 }
@@ -633,7 +634,7 @@ ul {
     padding-top: 0px; padding-bottom: 0px;
     padding-right: 14px;
     padding-left: 14px;
-    webkit-appearance：button;
+    -webkit-appearance:button;
 }
 
 .searchText {
@@ -641,7 +642,7 @@ ul {
 
     position: relative;
 
-    min-width: 200px;
+    min-width: 120px;
     min-height: 26px;
 }
 

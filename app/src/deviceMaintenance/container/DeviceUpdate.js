@@ -245,7 +245,7 @@ export class DeviceUpdate extends Component {
 
     render() {
         const {model, collapse, page, search, selectDevice, domainList, data, categoryList, allChecked} = this.state;
-        return <Content className={'offset-right' + (collapse?' collapsed':' ')} id = 'sysDeviceMaintenanceReplace'>
+        return <Content className={'offset-right' + (collapse?' collapsed':' ')} id = 'sysDeviceMaintenanceUpdate'>
                 <div className="heading">
                     {/* {<Checkbox onChange={onChange}>Checkbox</Checkbox>} */}
                     {<Checkbox onChange = {this.onChange} allChecked = {allChecked} id='checkbox'></Checkbox>}
@@ -262,7 +262,7 @@ export class DeviceUpdate extends Component {
                     <div className="table-container">
                         <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
                             rowClick={this.tableClick}/>
-                        <Page className={"page"+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
+                        <Page className={"page"+(page.get('total')==0?" hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
                             current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>

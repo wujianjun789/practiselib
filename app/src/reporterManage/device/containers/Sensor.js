@@ -10,7 +10,6 @@ import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 import DatePicker from 'antd/lib/date-picker';  // 加载 JS
-import 'antd/lib/date-picker/style/css';        // 加载 CSS
 import Immutable from 'immutable';
 import {getDomainList} from '../../../api/domain';
 import {getSearchAssets, getSearchCount} from '../../../api/asset';
@@ -362,8 +361,8 @@ export default class Sensor extends PureComponent {
 								</div>
 
 								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
-								<div className="page-center">
-									<Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
+								<div className={`page-center ${total==0?"hidden":''}`}>
+									<Page className='page' showSizeChanger pageSize={limit}
 											current={current} total={total} onChange={this.pageChange}/>
 								</div>
 								<div className="btn-group-right">

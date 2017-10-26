@@ -118,19 +118,19 @@ export default class MultiLineChartWithZoomAndBrush {
 				.attr('fill', '#fff');
 		});
 
-		this.focus = this.svg
+		let focus = this.svg
 			.append('g')
 			.attr('class', 'focus')
             .attr('transform', `translate(${this.padding.left}, ${this.padding.top})`);
-        this.x_axis = this.focus
+        this.x_axis = focus
             .append('g')
             .attr('class', 'axis axis-x')
             .attr('transform', `translate(0, ${this.height})`);
-        this.y_axis = this.focus
+        this.y_axis = focus
             .append('g')
             .attr('class', 'axis axis-y');
 
-        this.line_group = this.focus
+        this.line_group = focus
             .append('g')
 			.attr('class', 'line-group')
 			.attr('clip-path', 'url(#clip)');
@@ -233,28 +233,28 @@ export default class MultiLineChartWithZoomAndBrush {
 		let update = this.line_group
 			.selectAll('path')
 			.data(this.data)
-		let enter = update
-			.enter()
-			.append('path')
-			.attr('class', (d, i)=>`line line-${i}`)
-            .attr('d', (d) => {
-                if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
-                    return `M${0},${_y1} L${this.width},${_y1}`;
-                } else {
-                    return this.line(d.values);
-                }
-            });
-
-		update
 			.attr('d', (d) => {
 				if (d.values.length == 1) {
-					let _y1 = this.yScale(this.yAccessor(d[0]));
+					let _y1 = this.yScale(this.yAccessor(d.values[0]));
 					return `M${0},${_y1} L${this.width},${_y1}`;
 				} else {
 					return this.line(d.values);
 				}
-			});
+			})
+		let enter = update.enter();
+		if(enter.size() != 0) {
+			enter
+				.append('path')
+				.attr('class', (d, i)=>`line line-${i}`)
+				.attr('d', (d) => {
+					if (d.values.length == 1) {
+						let _y1 = this.yScale(this.yAccessor(d.values[0]));
+						return `M${0},${_y1} L${this.width},${_y1}`;
+					} else {
+						return this.line(d.values);
+					}
+				});
+		}
 
 		update.exit().remove();
 		// 初始化brush
@@ -286,7 +286,7 @@ export default class MultiLineChartWithZoomAndBrush {
 			.selectAll(".line")
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    let _y1 = this.yScale(this.yAccessor(d.values[0]));
                     return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
@@ -315,7 +315,7 @@ export default class MultiLineChartWithZoomAndBrush {
 			.selectAll(".line")
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
-                    let _y1 = this.yScale(this.yAccessor(d[0]));
+                    let _y1 = this.yScale(this.yAccessor(d.values[0]));
                     return `M${0},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
