@@ -115,12 +115,33 @@
 					stroke-width: 2px;
 					shape-rendering: crispEdges;
 				}
+				.tooltip {
+					opacity: 0.7;
+				}
 				.tooltip-inner {
+					box-shadow: 0 0 12px #ccc;
+					background-color: #fff;
+					color: #000;
 					p {
 						white-space: nowrap;
-						text-align: left;
+						text-align: center;
 						font-size: 14px;
 						margin-bottom: 0;
+						&.color-1 {
+							color: @color1;
+						}
+						&.color-2 {
+							color: @color2;
+						}
+						&.color-3 {
+							color: @color3;
+						}
+						&.color-4 {
+							color: @color4;
+						}
+						&.color-5 {
+							color: @color5;
+						}
 					}
 				}
 			}

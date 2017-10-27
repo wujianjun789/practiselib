@@ -304,7 +304,7 @@ export default class Sensor extends PureComponent {
 		const {selectDevices, startDate, endDate} = this.state;
         this.chart = new Chart({
             wrapper: ref,
-            data: selectDevices,
+            data: Object.values(selectDevices),
             xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
 			yAccessor: d => d.value,
 			xDomain: [startDate, endDate],

@@ -21,7 +21,6 @@
  * @param {Number[]}                obj.yDomain             optional        // y轴定义域，default： [0,1]。
  * @param {Function}                obj.xTickFormat         optional        // format y axis tick, default: d => d,
  * @param {Function}                obj.yTickFormat         optional        // format x axis tick, default: d => d,
- * @param {Function}                obj.tooltipAccessor     optional        // tooltip 数据访问器, default: d => d,
  * @param {Function}                obj.curveFactory        optional        // default: d3.curveStepAfter
  */
 export default class MultiLineChartWithZoomAndBrush {
@@ -36,7 +35,6 @@ export default class MultiLineChartWithZoomAndBrush {
         yDomain=[0,1],
 		xTickFormat=d=>d,
 		yTickFormat=d=>d,
-        tooltipAccessor=d=>d,
         curveFactory=d3.curveStepAfter
     }) {
         this.wrapper = wrapper;
@@ -49,7 +47,6 @@ export default class MultiLineChartWithZoomAndBrush {
         this.xTickFormat = xTickFormat;
         this.yTickFormat = yTickFormat;
         this.curveFactory = curveFactory;
-        this.tooltipAccessor = tooltipAccessor;
 
         this.initChart = this.initChart.bind(this);
         this.getAxis = this.getAxis.bind(this);
@@ -59,7 +56,10 @@ export default class MultiLineChartWithZoomAndBrush {
 		this.brushed = this.brushed.bind(this);
 		this.zoomed = this.zoomed.bind(this);
 
-		this.data = data;
+		this.sortByXAxisValue = this.sortByXAxisValue.bind(this);
+		this.bubbleSort = this.bubbleSort.bind(this);
+
+		this.data = data.map(item => this.sortByXAxisValue(item, this.xAccessor) );
 
         this.initChart();
 	}
@@ -165,10 +165,10 @@ export default class MultiLineChartWithZoomAndBrush {
 						_data.sort((a, b) => {
 							return a._offset - b._offset;
 						});
-						if( _data[0] && (this.xAccessor(_data[0]) - curX < 0) ) {
+						if( _data[0] && (this.xAccessor(_data[0]) - curX <= 0) ) {
 							return _data[0];
 						}
-						if( _data[1] && (this.xAccessor(_data[1]) - curX < 0) ) {
+						if( _data[1] && (this.xAccessor(_data[1]) - curX <= 0) ) {
 							return _data[1];
 						}
 						return null;
@@ -177,8 +177,8 @@ export default class MultiLineChartWithZoomAndBrush {
 						return {title: item.name, val: getData(item.values)}
 					});
 
-					tooltipData.forEach(item => {
-						html += item.val == null ? '' : `<p>${item.title}: ${this.yAccessor(item.val)}</p>`;
+					tooltipData.forEach((item, i) => {
+						html += item.val == null ? '' : `<p class="color-${i+1}">${item.title}: ${this.yAccessor(item.val)}</p>`;
 					})
 				}
 				this.tooltips.select('.tooltip-inner').html(html);
@@ -233,18 +233,17 @@ export default class MultiLineChartWithZoomAndBrush {
 			.style('pointer-events', 'none');
 
 		this.tooltips = tooltipWrapper.append('div')
-		.attr('class', 'tooltip top')
-		.style('position', 'absolute')
-		.style('top', '30px')
-		.style('left', '20px')
-		.style('z-index', 1000)
-		.style('opacity', .5)
-		.style('pointer-events', 'none')
-		.style('display', 'none');
+			.attr('class', 'tooltip top')
+			.style('position', 'absolute')
+			.style('top', '30px')
+			.style('left', '20px')
+			.style('z-index', 1000)
+			.style('pointer-events', 'none')
+			.style('display', 'none');
+
 		this.tooltipInner = this.tooltips.append('div')
 			.attr('class', 'tooltip-inner')
-			.style('pointer-events', 'none')
-			.text('this is a tooltips.');
+			.style('pointer-events', 'none');
 
         this.draw();
 	}
@@ -425,7 +424,7 @@ export default class MultiLineChartWithZoomAndBrush {
             this.yDomain = yDomain;
         }
 
-        this.data = data;
+        this.data = data.map(item => this.sortByXAxisValue(item, this.xAccessor) );
         // if (this.data.length==0) {
         //     this.destroy();
         //     this.initChart();
@@ -441,4 +440,25 @@ export default class MultiLineChartWithZoomAndBrush {
 			.on('mouseleave', null);
 		d3.select(this.wrapper).remove();
 	}
+
+	sortByXAxisValue(data, accessor) {
+        let _data = Object.assign({}, data);
+        let arr = Object.assign([], _data.values);
+        arr = this.bubbleSort(arr, accessor);
+        return Object.assign(_data, {values: arr});
+    }
+
+    bubbleSort(arr, accessor){
+        let _arr = Object.assign([], arr);
+        for(let i=0, len=_arr.length; i<len-1; i++){
+            for(let j=i+1; j<len; j++){
+                if( accessor(_arr[j]) - accessor(_arr[i]) < 0 ){
+                    let tmp = _arr[j];
+                    _arr[j] = _arr[i];
+                    _arr[i] = tmp;
+                }
+            }
+        }
+        return _arr;
+    }
 }
