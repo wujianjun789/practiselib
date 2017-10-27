@@ -144,7 +144,8 @@ export class PlayerArea extends Component {
 
     updatePlayerPlan() {
         const {playerData} = this.state;
-        this.props.actions.treeViewInit(playerData);
+        const {actions} = this.props;
+        actions && actions.treeViewInit(playerData);
     }
 
     onChange(id, value) {
@@ -168,23 +169,23 @@ export class PlayerArea extends Component {
             data.sceneName = '';
             actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
 
-            console.log(state);
             const type = state.typeList.get('index');
             if(type == 0){
                 data.sceneName = '';
-            data.width = 1920;
-            data.height = 1080;
-            data.axisX = 10;
-            data.axisY = 10;
-                actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-                }}/>)
-            }else if(type == 2){
-                 data.sceneName = '';
                 data.startDate = moment();
                 data.endDate = moment();
                 data.startTime = moment();
                 data.endTime = moment();
                 data.week = [1,0,1,0,0,0,0];
+
+                actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+                }}/>)
+            }else if(type == 2){
+                data.sceneName = '';
+                data.width = 1920;
+                data.height = 1080;
+                data.axisX = 10;
+                data.axisY = 10;
                 actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
                 }}/>)
             }
@@ -384,7 +385,6 @@ export class PlayerArea extends Component {
                 <ul>
                     {
                         playerListAsset.get('list').map(item=> {
-                            console.log(item.get("name"));
                             return <li key={item.get("id")} className="player-list-asset">
                                 <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                 <span className="icon"></span>

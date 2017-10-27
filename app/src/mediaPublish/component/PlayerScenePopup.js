@@ -60,7 +60,9 @@ export default class PlayerScenePopup extends PureComponent {
             }
             this.setState({[id]: newValue, prompt: Object.assign({}, this.state.prompt, {[id]: prompt})});
         }else{
+
             let curIndex = e.target.selectedIndex;
+            console.log("curIndex:", curIndex);
             this.state[id] = this.state[id].update("index", v=>curIndex);
             this.setState({[id]:this.state[id].update("name", v=>this.state[id].getIn(['list', curIndex, 'name']))});
         }
@@ -71,7 +73,11 @@ export default class PlayerScenePopup extends PureComponent {
     render() {
         let {typeList, parentList, sceneName, prompt} = this.state;
 
-        let valid = prompt.typeList || prompt.parentName || prompt.sceneName;
+        let valid = false;
+        if(typeList.get('index') == 1){
+            valid = prompt.typeList || prompt.parentName || prompt.sceneName;
+        }
+console.log(valid);
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;

@@ -2,22 +2,23 @@
  * Created by a on 2017/10/23.
  */
 import React from 'react';
-import {shallow} from 'enzyme'
-import renderer from 'react-test-renderer'
+import {mount} from 'enzyme';
+import {Provider} from 'react-redux';
+import configureStore from '../../../src/store/configureStore';
 
-import {PlayerArea} from '../../../src/mediaPublish/container/PlayerArea';
+
+import PlayerArea from '../../../src/mediaPublish/container/PlayerArea';
 
 
-test('PlayerArea renders', ()=>{
-    const component = renderer.create(
-        <PlayerArea />
-    )
+const store = configureStore();
+it('PlayerArea renders', ()=>{
+    const root = mount(
+        <Provider store={store}>
+            <div>
+                <PlayerArea />
+            </div>
+        </Provider>
+    );
 
-    let playerArea = component.toJSON();
-    expect(playerArea).toMatchSnapshot();
-})
-
-test('PlayerArea div click', ()=>{
-    const component = shallow(<PlayerArea />)
-    expect(component.find('.player-area').length).toEqual(1);
+    expect(root.find('.player-area').length).toEqual(1);
 })

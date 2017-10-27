@@ -25,7 +25,7 @@ exports[`test TreeView renders 1`] = `
         className="tree-2"
         style={
           Object {
-            "height": "80px",
+            "height": "100px",
           }
         }>
         <li
@@ -36,16 +36,8 @@ exports[`test TreeView renders 1`] = `
             <div
               onClick={[Function]}
               title="灯集中控制器灯集中控">
-              <svg>
-                <use
-                  height="200"
-                  transform="scale(0.08,0.08)"
-                  viewBox="0 0 20 20"
-                  width="200"
-                  x="0"
-                  xlinkHref="#glyphicon-list-alt"
-                  y="0" />
-              </svg>
+              <span
+                className="glyphicon-list-alt" />
               <span>
                 灯集中控制器灯集中控
               </span>
@@ -60,16 +52,8 @@ exports[`test TreeView renders 1`] = `
             <div
               onClick={[Function]}
               title="LED灯">
-              <svg>
-                <use
-                  height="200"
-                  transform="scale(0.08,0.08)"
-                  viewBox="0 0 20 20"
-                  width="200"
-                  x="0"
-                  xlinkHref="#glyphicon-lamp"
-                  y="0" />
-              </svg>
+              <span
+                className="glyphicon-lamp" />
               <span>
                 LED灯
               </span>

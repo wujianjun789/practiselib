@@ -151,7 +151,7 @@ exports[`test renders smartLightMap 1`] = `
             className=" "
             onClick={[Function]}>
             <span
-              className="icon icon_lamp" />
+              className="icon icon_lc" />
           </li>
           <li
             className=" "
@@ -163,7 +163,7 @@ exports[`test renders smartLightMap 1`] = `
             className=" "
             onClick={[Function]}>
             <span
-              className="icon icon_charge" />
+              className="icon icon_charge_pole" />
           </li>
           <li
             className=" "
@@ -353,31 +353,46 @@ exports[`test renders smartLightMap 1`] = `
         className="btn active"
         onClick={[Function]}>
         <span
-          className="icon icon_pole_hover" />
+          className="icon icon_pole_hover">
+          <span
+            className="icon_pole" />
+        </span>
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon icon_screen" />
+          className="icon ">
+          <span
+            className="icon_screen" />
+        </span>
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon icon_camera" />
+          className="icon ">
+          <span
+            className="icon_camera" />
+        </span>
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon icon_lamp" />
+          className="icon ">
+          <span
+            className="icon_lc" />
+        </span>
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon icon_charge" />
+          className="icon ">
+          <span
+            className="icon_charge_pole" />
+        </span>
       </li>
     </ul>
   </div>
