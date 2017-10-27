@@ -142,20 +142,47 @@ export default class MultiLineChartWithZoomAndBrush {
 			.attr('height', this.height)
 			.call(this.zoom)
 			.on('mouseenter', () => {
-				if(this.data.length > 0) {
+				// if(this.data.length > 0) {
 					d3.select('.tooltip-line').style('display', 'block');
-					this.tooltips.style('display', 'block');
-				}
-			},false)
+					this.tooltips.style('display', 'inline-block');
+				// }
+			}, false)
 			.on('mousemove', () => {
-				if(this.data.length > 0) {
-					let offsetX = d3.event.offsetX - this.padding.left;
-					d3.select('.tooltip-line').attr('transform', `translate(${offsetX}, 0)`);
+				let offsetX = d3.event.offsetX - this.padding.left;
+				let curX = this.xScale.invert(offsetX);
+				let html = `<p>${d3.timeFormat('%Y-%m-%d %H:%M:%S')(curX)}</p>`;
 
-					let curX = this.xScale.invert(offsetX);
-					this.tooltips.select('.tooltip-inner').html(`<p>${d3.timeFormat('%Y-%m-%d %H:%M:%S')(curX)}<p>`);
+				let tooltipW = document.getElementsByClassName('tooltip')[0].offsetWidth;
+				d3.select('.tooltip-line').attr('transform', `translate(${offsetX}, 0)`);
+				this.tooltips.style('left', `${offsetX - tooltipW / 2 + this.padding.left}px`);
+				if(this.data.length > 0) {
+					let getData = (data) => {
+						let _data = [...data];
+						_data = _data.map(item => {
+							item._offset = Math.abs(this.xAccessor(item) - curX);
+							return item;
+						});
+						_data.sort((a, b) => {
+							return a._offset - b._offset;
+						});
+						if( _data[0] && (this.xAccessor(_data[0]) - curX < 0) ) {
+							return _data[0];
+						}
+						if( _data[1] && (this.xAccessor(_data[1]) - curX < 0) ) {
+							return _data[1];
+						}
+						return null;
+					}
+					let tooltipData = this.data.map(item => {
+						return {title: item.name, val: getData(item.values)}
+					});
+
+					tooltipData.forEach(item => {
+						html += item.val == null ? '' : `<p>${item.title}: ${this.yAccessor(item.val)}</p>`;
+					})
 				}
-			},false)
+				this.tooltips.select('.tooltip-inner').html(html);
+			}, false)
 			.on('mouseleave', () => {
 				d3.select('.tooltip-line').style('display', 'none');
 				this.tooltips.style('display', 'none');
@@ -197,16 +224,24 @@ export default class MultiLineChartWithZoomAndBrush {
 		let wrapper = d3.select(this.wrapper);
 		wrapper.style('position', 'relative');
 
-		this.tooltips = wrapper.append('div')
-			.attr('class', 'tooltip top')
-			.style('position', 'absolute')
-			.style('top', `30px`)
-			.style('left', `${this.padding.left + 10}px`)
-			.style('z-index', 1000)
-			.style('opacity', .5)
-			.style('pointer-events', 'none')
-			.style('display', 'none');
-		this.tooltips.append('div')
+		let tooltipWrapper = wrapper.append('div')
+			.style('position', 'relative')
+			.style('top', `${-height}px`)
+			.style('width', `${width}px`)
+			.style('height', `${this.height}px`)
+			.style('margin', '0 auto')
+			.style('pointer-events', 'none');
+
+		this.tooltips = tooltipWrapper.append('div')
+		.attr('class', 'tooltip top')
+		.style('position', 'absolute')
+		.style('top', '30px')
+		.style('left', '20px')
+		.style('z-index', 1000)
+		.style('opacity', .5)
+		.style('pointer-events', 'none')
+		.style('display', 'none');
+		this.tooltipInner = this.tooltips.append('div')
 			.attr('class', 'tooltip-inner')
 			.style('pointer-events', 'none')
 			.text('this is a tooltips.');
@@ -280,7 +315,7 @@ export default class MultiLineChartWithZoomAndBrush {
 			.attr('d', (d) => {
 				if (d.values.length == 1) {
 					let _y1 = this.yScale(this.yAccessor(d.values[0]));
-					return `M${0},${_y1} L${this.width},${_y1}`;
+					return `M${this.xScale(this.xAccessor(d.values[0]))},${_y1} L${this.width},${_y1}`;
 				} else {
 					return this.line(d.values);
 				}
@@ -294,7 +329,7 @@ export default class MultiLineChartWithZoomAndBrush {
 				.attr('d', (d) => {
 					if (d.values.length == 1) {
 						let _y1 = this.yScale(this.yAccessor(d.values[0]));
-						return `M${0},${_y1} L${this.width},${_y1}`;
+						return `M${this.xScale(this.xAccessor(d.values[0]))},${_y1} L${this.width},${_y1}`;
 					} else {
 						return this.line(d.values);
 					}
@@ -333,7 +368,7 @@ export default class MultiLineChartWithZoomAndBrush {
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
                     let _y1 = this.yScale(this.yAccessor(d.values[0]));
-                    return `M${0},${_y1} L${this.width},${_y1}`;
+                    return `M${this.xScale(this.xAccessor(d.values[0]))},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
                 }
@@ -362,7 +397,7 @@ export default class MultiLineChartWithZoomAndBrush {
 			.attr('d', (d) => {
                 if (d.values.length == 1) {
                     let _y1 = this.yScale(this.yAccessor(d.values[0]));
-                    return `M${0},${_y1} L${this.width},${_y1}`;
+                    return `M${this.xScale(this.xAccessor(d.values[0]))},${_y1} L${this.width},${_y1}`;
                 } else {
                     return this.line(d.values);
                 }
@@ -400,7 +435,10 @@ export default class MultiLineChartWithZoomAndBrush {
     }
 
     destroy() {
-		this.svg.remove();
-		d3.select('.select-device-list').remove();
+		d3.select('.zoom')
+			.on('mouseenter', null)
+			.on('mousemove', null)
+			.on('mouseleave', null);
+		d3.select(this.wrapper).remove();
 	}
 }
