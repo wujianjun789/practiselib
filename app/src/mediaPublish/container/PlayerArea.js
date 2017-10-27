@@ -26,7 +26,8 @@ import Material from '../component/material';
 
 import moment from 'moment'
 import Immutable from 'immutable';
-import {numbersValid} from '../../util/index'
+import {numbersValid} from '../../util/index';
+import {getIndexByKey} from '../../util/algorithm';
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -109,7 +110,7 @@ export class PlayerArea extends Component {
                 value: '素材文字'
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
-            assetList: Immutable.fromJS({list: [{id: 1, name: '素材1'}, {id: 2, name: '素材2'},{id:3, name:'素材3'},
+            assetList: Immutable.fromJS({list: [{id: 1, name: '素材1', active:true}, {id: 2, name: '素材2'},{id:3, name:'素材3'},
                 {id:4, name:'素材4'}], id:1, name: '素材1'}),
             playerListAsset: Immutable.fromJS({
                 list: [{id: 1, name: '素材1', active:true}, {id: 2, name: '素材2'},{id: 3, name: '素材3'}, {id: 4, name: '素材4'},
@@ -132,6 +133,7 @@ export class PlayerArea extends Component {
         this.typeList = [{id:'playerPlan', name:'播放计划'},{id:'playerScene', name:'场景'},{id:'playerArea', name:"区域"}]
 
         this.onChange = this.onChange.bind(this);
+        this.pageChange = this.pageChange.bind(this);
         this.assetSelect = this.assetSelect.bind(this);
         this.playerAssetSelect = this.playerAssetSelect.bind(this);
         this.positionHandler = this.positionHandler.bind(this);
@@ -161,14 +163,16 @@ export class PlayerArea extends Component {
 
     assetSelect(item){
         console.log(item.toJS());
-        this.state.assetList = this.state.assetList.update('id', v=>item.get('id'));
-        this.setState({assetList:this.state.assetList.update('name',v=>item.get('name'))});
+        // this.state.assetList = this.state.assetList.update('id', v=>item.get('id'));
+        const curIndex = getIndexByKey(this.state.assetList.get('list'), 'id', item.get('id'));
+        this.setState({assetList:this.state.assetList.updateIn(['list', curIndex, 'active'],v=>!item.get('active'))});
     }
 
     playerAssetSelect(item){
         console.log(item.toJS());
-        this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        this.setState({playerListAsset:this.state.playerListAsset.update('name',v=>item.get('name'))});
+        // this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
+        const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
+        this.setState({playerListAsset:this.state.playerListAsset.updateIn(['list',curIndex,'active'],v=>!item.get('active'))});
     }
 
     onChange(id, value) {
@@ -195,6 +199,12 @@ export class PlayerArea extends Component {
                     prompt: Object.assign({}, this.state.prompt, {[id]:Object.assign({}, this.state.prompt[id], {[id]:prompt})})})
             }
         }
+    }
+
+    pageChange(current, pageSize) {
+        let page = this.state.page.set('current', current);
+        this.setState({page: page}, ()=>{
+        });
     }
 
     areaClick(id){
@@ -489,7 +499,7 @@ export class PlayerArea extends Component {
                                 {
                                     assetList.get('list').map((item,index)=> {
                                         return <li key={item.get('id')}  className={index>0&&index%4==0?"margin-right":""} onClick={()=>this.assetSelect(item)}>
-                                            <div className={"background "+(assetList.get('id')==item.get('id')?'':'hidden')}></div>
+                                            <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                             <span className="icon"></span>
                                             <span className="name">{item.get('name')}</span>
                                         </li>
@@ -510,7 +520,7 @@ export class PlayerArea extends Component {
                     {
                         playerListAsset.get('list').map(item=> {
                             return <li key={item.get("id")} className="player-list-asset" onClick={()=>this.playerAssetSelect(item)}>
-                                <div className={"background "+(playerListAsset.get('id')==item.get('id')?'':'hidden')}></div>
+                                <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
                             </li>
