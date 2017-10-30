@@ -124,19 +124,41 @@
 
       background-color: #e6e6e6;
 
-      button:first-child {
-        margin-top: 20px;
-        margin-right: 10px;
-        margin-left: 20px;
-      }
+      .btn-group{
+        .btn{
+          margin-top: 20px;
 
-      button:last-child {
-        margin-top: 20px;
-        margin-right: 15px;
-        margin-left: 10px;
+          border-radius: 4px;
+        }
+        &:first-child{
+          button:first-child {
+            margin-right: 10px;
+            margin-left: 20px;
+          }
 
-        background-color: #000;
-        border: 0;
+          button:last-child {
+            margin-right: 15px;
+            margin-left: 10px;
+
+            background-color: #495264;
+            border: 0;
+          }
+        }
+
+        &:last-child{
+          button:first-child{
+            margin-right: 10px;
+            margin-left: 20px;
+
+            background-color: #ff5c68;
+            border: 0;
+          }
+
+          button:last-child{
+            margin-right: 15px;
+            margin-left: 10px;
+          }
+        }
       }
     }
   }
@@ -164,8 +186,16 @@
           font-weight: bold;
 
           cursor: pointer;
+
+          span{
+            vertical-align: middle;
+          }
+
           .icon {
             margin-right: 10px;
+
+            font-size: 14px;
+            font-weight: bold;
           }
         }
       }
@@ -178,20 +208,26 @@
 
         background-color: #00ffff;
 
-        overflow-y: scroll;
+        overflow: scroll;
       }
       .control-container-bottom {
         position: absolute;
         right: 0;
-        bottom: 20px;
+        bottom: 10px;
         > div {
           display: inline-block;
           margin-left: 20px;
           font-weight: bold;
 
           cursor: pointer;
+          span{
+            vertical-align: middle;
+          }
           .icon {
             margin-right: 10px;
+
+            font-size: 14px;
+            font-weight: bold;
           }
         }
       }
@@ -302,22 +338,22 @@
               width: 50px;
             }
 
-            &.area-name{
-              .input-container{
+            &.area-name {
+              .input-container {
                 width: 560px;
               }
             }
           }
         }
 
-        &.playerScene{
+        &.playerScene {
           padding-left: 20px;
-          .form-group{
-            label{
+          .form-group {
+            label {
               width: 50px;
             }
-            &.asset-name{
-              .input-container{
+            &.asset-name {
+              .input-container {
                 width: 560px;
               }
             }
@@ -347,20 +383,37 @@
           }
           .searchText {
             width: 150px;
+            height: 30px;
 
             margin-right: 20px;
           }
 
-          button {
-            &.add {
-              margin-right: 20px;
+          .btn-group{
+            margin-top: -5px;
+            .btn{
+              border-radius: 4px;
+            }
+            &:nth-child(4) {
+              button:first-child {
+                margin-right: 20px;
+              }
+
+              button:last-child {
+                background-color: #495264;
+                border: 0;
+              }
             }
 
-            &:last-child{
-              background-color: #000;
-              border: 0;
+            &:nth-child(5){
+              button:first-child{
+                margin-right: 20px;
+                background-color: #ff5c68;
+                border: 0;
+              }
+
             }
           }
+
 
           padding-bottom: 10px;
           border-bottom: 1px solid #ffffff
@@ -443,6 +496,7 @@
     height: 94px;
     background-color: #e6e6e6;
 
+    min-width: 702px;
     .title {
       display: inline-block;
       font-size: 14px;
@@ -498,20 +552,34 @@
       display: inline-block;
       margin-right: 10px;
       margin-left: 20px;
-      > button {
-        display: block;
-      }
+      .list-group {
+        > button {
+          display: block;
+        }
+        &:first-child,&:last-child{
+          > button:first-child{
+            margin-top: 10px;
+            margin-bottom: 14px;
+          }
+        }
 
-      > button:first-child {
-        margin-top: 10px;
-        margin-bottom: 14px;
-      }
+        &:first-child{
+          > button:last-child {
+            margin-bottom: 10px;
 
-      > button:last-child {
-        margin-bottom: 10px;
+            background-color: #495264;
+            border: 0;
+          }
+        }
 
-        background-color: #000;
-        border: 0;
+        &:last-child{
+          > button:first-child {
+            margin-bottom: 10px;
+
+            background-color: #ff5c68;
+            border: 0;
+          }
+        }
       }
     }
   }

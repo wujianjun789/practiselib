@@ -19,6 +19,7 @@ import Page from '../../components/Page';
 import {treeViewInit} from '../../common/actions/treeView';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
+import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
 import PlayerPlanPopup from '../component/PlayerPlanPopup';
 import PlayerAreaPopup from '../component/PlayerAreaPopup';
@@ -111,10 +112,10 @@ export class PlayerArea extends Component {
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
             assetList: Immutable.fromJS({list: [{id: 1, name: '素材1', active:true}, {id: 2, name: '素材2'},{id:3, name:'素材3'},
-                {id:4, name:'素材4'}], id:1, name: '素材1'}),
+                {id:4, name:'素材4'}], id:1, name: '素材1', isEdit:true}),
             playerListAsset: Immutable.fromJS({
                 list: [{id: 1, name: '素材1', active:true}, {id: 2, name: '素材2'},{id: 3, name: '素材3'}, {id: 4, name: '素材4'},
-                    {id: 5, name: '素材5'}, {id: 6, name: '素材6'}], id: 1, name: '素材1'
+                    {id: 5, name: '素材5'}, {id: 6, name: '素材6'}], id: 1, name: '素材1', isEdit:true
             }),
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -145,10 +146,15 @@ export class PlayerArea extends Component {
         this.savePlanHandler = this.savePlanHandler.bind(this);
         this.quitHandler = this.quitHandler.bind(this);
         this.areaClick = this.areaClick.bind(this);
+        this.playerListAssetClick = this.playerListAssetClick.bind(this);
+        this.assetList = this.assetList.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal=this.showModal.bind(this);
         this.hideModal=this.hideModal.bind(this);
+        this.updatePlayerPlanPopup = this.updatePlayerPlanPopup.bind(this);
+        this.updatePlayerScenePopup = this.updatePlayerScenePopup.bind(this);
+        this.updatePlayerAreaPopup = this.updatePlayerAreaPopup.bind(this);
     }
 
     componentWillMount() {
@@ -207,37 +213,106 @@ export class PlayerArea extends Component {
         });
     }
 
+    playerListAssetClick(id){
+        if(id == 'add'){
+
+        }else if(id == 'edit'){
+            this.setState({playerListAsset:this.state.playerListAsset.update('isEdit', v=>false)});
+        }else if(id == 'remove'){
+            const {actions} = this.props;
+             actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="是否删除选中素材？"
+                                                            cancel={()=>{actions.overlayerHide()}} confirm={()=>{
+
+                                                            }}/>)
+        }else if(id == 'complete'){
+            this.setState({playerListAsset:this.state.playerListAsset.update('isEdit', v=>true)});
+        }
+    }
+
+    assetList(id){
+        if(id == 'add'){
+
+        }else if(id == 'edit'){
+            this.setState({assetList:this.state.assetList.update('isEdit', v=>false)});
+        }else if(id == 'remove'){
+            const {actions} = this.props;
+            actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="是否删除选中素材？"
+                                                           cancel={()=>{actions.overlayerHide()}} confirm={()=>{
+
+                                                            }}/>)
+        }else if(id == 'complete'){
+            this.setState({assetList:this.state.assetList.update('isEdit', v=>true)});
+        }
+    }
+
+    updatePlayerScenePopup(){
+        const {actions} = this.props;
+        let data = {}
+        data.typeList = this.typeList;
+        data.sceneName = '';
+        actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
+        const type = state.typeList.get('index');
+            if(type == 0){
+               this.updatePlayerPlanPopup();
+            }else if(type == 2){
+               this.updatePlayerAreaPopup();
+            }
+        }}/>)
+    }
+
+    updatePlayerPlanPopup(){
+        const {actions} = this.props;
+        let data = {}
+        data.sceneName = '';
+        data.startDate = moment();
+        data.endDate = moment();
+        data.startTime = moment();
+        data.endTime = moment();
+        data.week = [1,0,1,0,0,0,0];
+
+        actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+            if(type == 1){
+                  this.updatePlayerScenePopup();
+            }else if(type == 2){
+                this.updatePlayerAreaPopup();
+            }
+        }}/>)
+    }
+
+    updatePlayerAreaPopup(){
+        const {actions} = this.props;
+        let data = {}
+        data.sceneName = '';
+        data.width = 1920;
+        data.height = 1080;
+        data.axisX = 10;
+        data.axisY = 10;
+        actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+            if(type == 0){
+                  this.updatePlayerPlanPopup();
+            }else if(type == 1){
+                this.updatePlayerScenePopup();
+            }
+         }}/>)
+    }
     areaClick(id){
         const {actions} = this.props;
         let data = {}
         if(id == "add"){
-            data.typeList = this.typeList;
-            data.sceneName = '';
-            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
-
-            const type = state.typeList.get('index');
-            if(type == 0){
-                data.sceneName = '';
-                data.startDate = moment();
-                data.endDate = moment();
-                data.startTime = moment();
-                data.endTime = moment();
-                data.week = [1,0,1,0,0,0,0];
-
-                actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-                }}/>)
-            }else if(type == 2){
-                data.sceneName = '';
-                data.width = 1920;
-                data.height = 1080;
-                data.axisX = 10;
-                data.axisY = 10;
-                actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-                }}/>)
+            this.updatePlayerScenePopup();
+        }else if(id == "remove"){
+            let tips = "是否删除选中场景与场景中所有内容";
+            if(this.state.curType=="playerPlan"){
+                tips = "是否删除选中计划与计划中所有内容";
+            }else if(this.state.curType == "playerScene"){
+                tips = "是否删除选中场景与场景中所有内容";
+            }else if(this.state.curType == "playerArea"){
+                tips = "是否删除选中区域与区域中所有内容";
             }
-            }}/>)
-        }else{
 
+            actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
+                                                cancel={()=>{actions.overlayerHide()}} confirm={()=>{
+                                                }}/>)
         }
     }
 
@@ -490,8 +565,14 @@ export class PlayerArea extends Component {
                                         value={assetSearch.get('value')}
                                         onChange={value=>this.onChange("assetSearch", value)}
                                         submit={this.searchSubmit}></SearchText>
-                            <button className="btn btn-primary add" onClick={this.showModal}>添加</button>
-                            <button className="btn btn-primary">编辑</button>
+                             <div className={"btn-group "+(assetList.get('isEdit')?'':'hidden')}>
+                                 <button className="btn btn-primary add" onClick={this.showModal}>添加</button>
+                                 <button className="btn btn-primary" onClick={()=>this.assetList('edit')}>编辑</button>
+                             </div>
+                             <div className={"btn-group "+(assetList.get('isEdit')?'hidden':'')}>
+                                 <button className="btn btn-primary" onClick={()=>this.assetList('remove')}>删除</button>
+                                 <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成</button>
+                             </div>
                             {this.state.showModal?<Material showModal={this.state.showModal} hideModal={this.hideModal}/>:null}
                         </div>
                         <div className="bottom">
@@ -528,8 +609,14 @@ export class PlayerArea extends Component {
                     }
                 </ul>
                 <div className="pull-right control-container">
-                    <button className="btn btn-primary">添加</button>
-                    <button className="btn btn-primary">编辑</button>
+                    <div className={"list-group "+(playerListAsset.get('isEdit')?'':'hidden')}>
+                        <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('add')}>添加</button>
+                        <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('edit')}>编辑</button>
+                    </div>
+                    <div className={"list-group "+(playerListAsset.get('isEdit')?'hidden':'')}>
+                        <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('remove')}>删除</button>
+                        <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('complete')}>完成</button>
+                    </div>
                 </div>
             </div>
             <Overlayer />
