@@ -20,7 +20,7 @@ export default class PlayerPlanPopup extends PureComponent {
         const { typeList, sceneName, startDate, endDate, startTime, endTime } = this.props.data;
 
         this.state = {
-            typeList: Immutable.fromJS({list:[], index:1, name:'场景'}),
+            typeList: Immutable.fromJS({list:[], index:0, name:'场景'}),
             parentList: Immutable.fromJS({list: [{id: 1, name: 'parent1'}, {id: 2, name: 'parent2'}], index: 0, name: 'parent1'}),
             sceneName: sceneName,
             startDate: startDate,
@@ -105,7 +105,10 @@ export default class PlayerPlanPopup extends PureComponent {
     render() {
         let {typeList, parentList, sceneName, startDate, endDate, startTime, endTime, week, prompt} = this.state;
 
-        let valid = prompt.typeList || prompt.parentName || prompt.sceneName;
+        let valid = false;
+        if(typeList.get('index') == 0){
+            valid = prompt.typeList || prompt.parentName || prompt.sceneName;
+        }
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;

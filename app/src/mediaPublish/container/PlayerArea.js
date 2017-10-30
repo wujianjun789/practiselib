@@ -38,8 +38,8 @@ export class PlayerArea extends Component {
                 {
                     "id": "player1",
                     "name": "播放计划1",
-                    "toggled": false,
-                    "active": true,
+                    "toggled": true,
+                    "active": false,
                     "level": 1,
                     "children": [
                         {
@@ -52,7 +52,7 @@ export class PlayerArea extends Component {
                                 {
                                     "id": 'area1',
                                     "name": "区域1",
-                                    "active": false,
+                                    "active": true,
                                 }, {
                                     "id": 'area2',
                                     "name": "区域2",
@@ -65,7 +65,8 @@ export class PlayerArea extends Component {
                             "name": "场景2",
                             "toggled": false,
                             "class": "",
-                            "active": false
+                            "active": false,
+                            "children":[]
                         }
                     ]
                 },
@@ -73,15 +74,15 @@ export class PlayerArea extends Component {
                     "id": "player2",
                     "name": "播放计划2",
                     "toggled": false,
-                    "active": true,
-                    "level": 1
+                    "level": 1,
+                    "children":[]
                 },
                 {
                     "id": "player3",
                     "name": "播放计划3",
                     "toggled": false,
-                    "active": true,
-                    "level": 1
+                    "level": 1,
+                    "children":[]
                 }
             ],
             property: {
@@ -124,15 +125,18 @@ export class PlayerArea extends Component {
             }),
             prompt: {
                 action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
-                areaName: false,width:false,height:false,axisX_a:false,axisY_a:false,
-                assetName: false
+                areaName: true,width:true,height:true,axisX_a:true,axisY_a:true,
+                assetName: true
             },
 
             showModal:false,
+
+            assetStyle:{"bottom":"0px"},
         }
 
         this.typeList = [{id:'playerPlan', name:'播放计划'},{id:'playerScene', name:'场景'},{id:'playerArea', name:"区域"}]
 
+        this.onToggle = this.onToggle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.assetSelect = this.assetSelect.bind(this);
@@ -155,10 +159,25 @@ export class PlayerArea extends Component {
         this.updatePlayerPlanPopup = this.updatePlayerPlanPopup.bind(this);
         this.updatePlayerScenePopup = this.updatePlayerScenePopup.bind(this);
         this.updatePlayerAreaPopup = this.updatePlayerAreaPopup.bind(this);
+
+        this.setSize = this.setSize.bind(this);
     }
 
     componentWillMount() {
+        this.mounted = true;
         this.updatePlayerPlan();
+        window.onresize = event=>{
+            this.mounted && this.setSize();
+        }
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    setSize(){
+        let height = window.innerHeight;
+        this.setState({assetStyle:{"bottom":(height<766?0:height-766)+"px"}});
     }
 
     updatePlayerPlan() {
@@ -247,53 +266,63 @@ export class PlayerArea extends Component {
 
     updatePlayerScenePopup(){
         const {actions} = this.props;
-        let data = {}
-        data.typeList = this.typeList;
-        data.sceneName = '';
-        actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
-        const type = state.typeList.get('index');
-            if(type == 0){
-               this.updatePlayerPlanPopup();
-            }else if(type == 2){
-               this.updatePlayerAreaPopup();
-            }
-        }}/>)
+        this.setState({curType:'playerScene'},()=>{
+            let data = {}
+            data.typeList = this.typeList;
+            data.sceneName = '';
+            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
+                const type = state.typeList.get('index');
+                if(type == 0){
+                   this.updatePlayerPlanPopup();
+                }else if(type == 2){
+                   this.updatePlayerAreaPopup();
+                }
+            }}/>)
+        })
     }
 
     updatePlayerPlanPopup(){
         const {actions} = this.props;
-        let data = {}
-        data.sceneName = '';
-        data.startDate = moment();
-        data.endDate = moment();
-        data.startTime = moment();
-        data.endTime = moment();
-        data.week = [1,0,1,0,0,0,0];
+        this.setState({curType:'playerPlan'},()=>{
+            let data = {}
+            data.typeList = this.typeList;
+            data.sceneName = '';
+            data.startDate = moment();
+            data.endDate = moment();
+            data.startTime = moment();
+            data.endTime = moment();
+            data.week = [1,0,1,0,0,0,0];
 
-        actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
-            if(type == 1){
-                  this.updatePlayerScenePopup();
-            }else if(type == 2){
-                this.updatePlayerAreaPopup();
-            }
-        }}/>)
+            actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+                const type = state.typeList.get('index');
+                if(type == 1){
+                      this.updatePlayerScenePopup();
+                }else if(type == 2){
+                    this.updatePlayerAreaPopup();
+                }
+            }}/>)
+        })
     }
 
     updatePlayerAreaPopup(){
         const {actions} = this.props;
-        let data = {}
-        data.sceneName = '';
-        data.width = 1920;
-        data.height = 1080;
-        data.axisX = 10;
-        data.axisY = 10;
-        actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-            if(type == 0){
-                  this.updatePlayerPlanPopup();
-            }else if(type == 1){
-                this.updatePlayerScenePopup();
-            }
+        this.setState({curType:'playerArea'},()=>{
+            let data = {}
+            data.typeList = this.typeList;
+            data.sceneName = '';
+            data.width = 1920;
+            data.height = 1080;
+            data.axisX = 10;
+            data.axisY = 10;
+            actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+                const type = state.typeList.get('index');
+                if(type == 0){
+                      this.updatePlayerPlanPopup();
+                }else if(type == 1){
+                    this.updatePlayerScenePopup();
+                }
          }}/>)
+        })
     }
     areaClick(id){
         const {actions} = this.props;
@@ -337,7 +366,7 @@ export class PlayerArea extends Component {
     }
 
     quitHandler() {
-
+        this.props.router.push("/mediaPublish/playerList");
     }
 
     positionHandler(id) {
@@ -357,8 +386,12 @@ export class PlayerArea extends Component {
             showModal:false
         })
     }
+    onToggle(node){
+        console.log("node:",node);
+    }
+
     render() {
-        const {curType,playerData, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page} = this.state;
+        const {curType,playerData, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page,assetStyle} = this.state;
         console.log(property.position.list);
         return <div className={"container "+"mediaPublish-playerArea"}>
             <HeadBar moduleName="媒体发布" router={this.props.router}/>
@@ -595,7 +628,7 @@ export class PlayerArea extends Component {
                     </div>
                 </div>
             </Content>
-            <div className="mediaPublish-footer">
+            <div className="mediaPublish-footer" style={assetStyle}>
                 <span className="title">播放列表</span>
                 <ul>
                     {

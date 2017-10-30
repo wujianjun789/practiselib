@@ -32,6 +32,7 @@ export const TreeData=[
         "toggled": false,
         "active": true,
         "link": "/domainManage/mapPreview",
-        "level": 1
+        "level": 1,
+        "children":[]
     }
 ]

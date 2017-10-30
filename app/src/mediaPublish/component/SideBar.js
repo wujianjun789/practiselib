@@ -4,10 +4,10 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux';
 
-import {Treebeard} from 'react-treebeard';
+// import {Treebeard} from 'react-treebeard';
 
-import treeStyle from './treeStyle';
-// import TreeView from '../../components/TreeView'
+// import treeStyle from './treeStyle';
+import TreeView from '../../components/TreeView'
 
 export default class SideBar extends Component {
     constructor(props) {
@@ -25,16 +25,16 @@ export default class SideBar extends Component {
     }
 
     onToggle(node, toggled) {
-        if(this.state.cursor){
-            this.state.cursor.active = false;
-        }
-
-        node.active = true;
-        if(node.children){
-            node.toggled = toggled;
-        }
-
-        this.setState({cursor:node});
+        // if(this.state.cursor){
+        //     this.state.cursor.active = false;
+        // }
+        //
+        // node.active = true;
+        // if(node.children){
+        //     node.toggled = toggled;
+        // }
+        //
+        // this.setState({cursor:node});
         this.props.onToggle && this.props.onToggle(node);
     }
 
@@ -61,8 +61,8 @@ export default class SideBar extends Component {
                 </div>
 
             </div>
-            {/*<TreeView onToggle={ (node) => this.onToggle(node) } />*/}
-            <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>
+            <TreeView onToggle={ (node) => this.onToggle(node) } />
+            {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>
     }
 }

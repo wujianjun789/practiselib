@@ -71,10 +71,11 @@ function searchNode(list, id) {
 }
 
 function update(list, index, parentId, data) {
+    console.log(index);
     let curIndex = index;
     let nextIndex = index + 1;
     return list.map(node=>{
-        if(curIndex == 1 && !node.children){
+        if(curIndex == 1 && (!node.children  || !node.children.length)){
             return node;
         }
 
@@ -88,10 +89,20 @@ function update(list, index, parentId, data) {
             }
             return node;
         }else if(curIndex == 1 && node.id != data.id && !IsChildren(node.children, data.id)){
-            node.toggled = false;
+            // node.toggled = false;
         }
 
-        if(curIndex == 2){
+        if(curIndex == 2 && node.children && !node.children.length){
+            return node;
+        }
+
+        if(curIndex == 2 && node.children && node.id == data.id){
+            node.toggled = !node.toggled;
+        }else if(curIndex == 2 && node.children && node.id != data.id){
+            // node.toggled = false;
+        }
+
+        if(!node.children){
             if(node.id == data.id){
                 node.active = true
             }else if(node.id != data.id /*&& IsChildren(list, data.id) || node.id != data.id &&　IsParent(parentId, data.id)*/){
