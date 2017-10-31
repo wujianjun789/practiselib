@@ -37,6 +37,7 @@ export class PlayerArea extends Component {
             playerData: [
                 {
                     "id": "player1",
+                    "type": "plan",
                     "name": "播放计划1",
                     "toggled": true,
                     "active": false,
@@ -44,6 +45,7 @@ export class PlayerArea extends Component {
                     "children": [
                         {
                             "id": 'scene1',
+                            "type": "scene",
                             "name": "场景1",
                             "toggled": true,
                             "class": "",
@@ -51,10 +53,12 @@ export class PlayerArea extends Component {
                             "children": [
                                 {
                                     "id": 'area1',
+                                    "type": "area",
                                     "name": "区域1",
                                     "active": true,
                                 }, {
                                     "id": 'area2',
+                                    "type": "area",
                                     "name": "区域2",
                                     "active": false,
                                 }
@@ -62,6 +66,7 @@ export class PlayerArea extends Component {
                         },
                         {
                             "id": 'scene2',
+                            "type": "scene",
                             "name": "场景2",
                             "toggled": false,
                             "class": "",
@@ -72,6 +77,7 @@ export class PlayerArea extends Component {
                 },
                 {
                     "id": "player2",
+                    "type": "plan",
                     "name": "播放计划2",
                     "toggled": false,
                     "level": 1,
@@ -79,6 +85,7 @@ export class PlayerArea extends Component {
                 },
                 {
                     "id": "player3",
+                    "type": "plan",
                     "name": "播放计划3",
                     "toggled": false,
                     "level": 1,
@@ -266,24 +273,25 @@ export class PlayerArea extends Component {
 
     updatePlayerScenePopup(){
         const {actions} = this.props;
-        this.setState({curType:'playerScene'},()=>{
+
             let data = {}
             data.typeList = this.typeList;
             data.sceneName = '';
-            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
-                const type = state.typeList.get('index');
+            actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onChange={state=>{
+                 const type = state.typeList.get('index');
                 if(type == 0){
                    this.updatePlayerPlanPopup();
                 }else if(type == 2){
                    this.updatePlayerAreaPopup();
                 }
+            }} onCancel={()=>{ actions.overlayerHide()}} onConfirm={(state)=>{
+
             }}/>)
-        })
+
     }
 
     updatePlayerPlanPopup(){
         const {actions} = this.props;
-        this.setState({curType:'playerPlan'},()=>{
             let data = {}
             data.typeList = this.typeList;
             data.sceneName = '';
@@ -293,20 +301,21 @@ export class PlayerArea extends Component {
             data.endTime = moment();
             data.week = [1,0,1,0,0,0,0];
 
-            actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
-                const type = state.typeList.get('index');
+            actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onChange={state=>{
+                 const type = state.typeList.get('index');
                 if(type == 1){
                       this.updatePlayerScenePopup();
                 }else if(type == 2){
                     this.updatePlayerAreaPopup();
                 }
+            }} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+
             }}/>)
-        })
     }
 
     updatePlayerAreaPopup(){
         const {actions} = this.props;
-        this.setState({curType:'playerArea'},()=>{
+
             let data = {}
             data.typeList = this.typeList;
             data.sceneName = '';
@@ -314,15 +323,17 @@ export class PlayerArea extends Component {
             data.height = 1080;
             data.axisX = 10;
             data.axisY = 10;
-            actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+            actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onChange={state=>{
                 const type = state.typeList.get('index');
                 if(type == 0){
                       this.updatePlayerPlanPopup();
                 }else if(type == 1){
                     this.updatePlayerScenePopup();
                 }
+            }} onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+
          }}/>)
-        })
+
     }
     areaClick(id){
         const {actions} = this.props;
@@ -388,6 +399,20 @@ export class PlayerArea extends Component {
     }
     onToggle(node){
         console.log("node:",node);
+        let type = "scene";
+        switch(node.type){
+            case "scene":
+                type = 'playerScene';
+                break;
+            case 'plan':
+                type = 'playerPlan';
+                break;
+            case 'area':
+                type = 'playerArea';
+                break;
+        }
+
+        this.setState({curType:type});
     }
 
     render() {

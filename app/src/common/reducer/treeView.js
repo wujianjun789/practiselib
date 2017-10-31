@@ -71,46 +71,38 @@ function searchNode(list, id) {
 }
 
 function update(list, index, parentId, data) {
-    console.log(index);
+    // console.log(index);
     let curIndex = index;
     let nextIndex = index + 1;
     return list.map(node=>{
-        if(curIndex == 1 && (!node.children  || !node.children.length)){
-            return node;
+        if(node.id == data.id){
+            node.active = true;
+        }else{
+            node.active = false;
         }
 
-        if(curIndex == 1 && node.id == data.id){
+        // if(!(node.children  && node.children.length)){
+        //     return node;
+        // }
+
+        if(node.id == data.id && node.children && node.children.length){
             node.toggled = !node.toggled;
-            if(node.toggled && node.children && node.children.length){//默认选中第一个子节点
-                for(var i=0;i<node.children.length;i++){
-                    node.children[i].active = false;
+            if(!node.defaultSelect){
+                if(node.toggled && node.children && node.children.length){//默认选中第一个子节点
+                    for(var i=0;i<node.children.length;i++){
+                        node.children[i].active = false;
+                    }
+                    node.children[0].active = true;
                 }
-                node.children[0].active = true;
+
+                return node;
             }
-            return node;
-        }else if(curIndex == 1 && node.id != data.id && !IsChildren(node.children, data.id)){
-            // node.toggled = false;
+            // return node;
+        }else if(node.id != data.id && !IsChildren(node.children, data.id) && !node.defaultSelect){
+            node.toggled = false;
         }
 
-        if(curIndex == 2 && node.children && !node.children.length){
-            return node;
-        }
-
-        if(curIndex == 2 && node.children && node.id == data.id){
-            node.toggled = !node.toggled;
-        }else if(curIndex == 2 && node.children && node.id != data.id){
-            // node.toggled = false;
-        }
-
-        if(!node.children){
-            if(node.id == data.id){
-                node.active = true
-            }else if(node.id != data.id /*&& IsChildren(list, data.id) || node.id != data.id &&　IsParent(parentId, data.id)*/){
-                node.active = false;
-            }
-        }
-
-        if(node.children){
+        if(node.children && node.children.length){
             update(node.children, nextIndex, node.id, data);
         }
 

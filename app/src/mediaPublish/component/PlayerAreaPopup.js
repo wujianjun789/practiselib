@@ -16,7 +16,7 @@ export default class PlayerAreaPopup extends PureComponent {
         const { typeList, sceneName, width, height, axisX, axisY } = this.props.data;
 
         this.state = {
-            typeList: Immutable.fromJS({list:[], index:2, name:'场景'}),
+            typeList: Immutable.fromJS({list:[], index:2, name:'区域'}),
             parentList: Immutable.fromJS({list: [{id: 1, name: 'parent1'}, {id: 2, name: 'parent2'}], index: 0, name: 'parent1'}),
             sceneName: sceneName,
             width: width,
@@ -70,7 +70,11 @@ export default class PlayerAreaPopup extends PureComponent {
         }else if(id=="typeList" || id == "parentList"){
             let curIndex = e.target.selectedIndex;
             this.state[id] = this.state[id].update("index", v=>curIndex);
-            this.setState({[id]:this.state[id].update("name", v=>this.state[id].getIn(['list', curIndex, 'name']))});
+            this.setState({[id]:this.state[id].update("name", v=>this.state[id].getIn(['list', curIndex, 'name']))},()=>{
+                if(id == 'typeList'){
+                    this.props.onChange && this.props.onChange(this.state);
+                }
+            });
         }else{
             if(!numbersValid(newValue)){
                 prompt = true;
@@ -166,5 +170,6 @@ PlayerAreaPopup.propTypes = {
         axisY: PropTypes.number.isRequired
     }).isRequired,
     onConfirm: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
 }

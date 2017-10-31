@@ -21,7 +21,8 @@ export class TreeView extends Component{
     }
 
     onToggle(node){
-        const {actions} = this.props
+        const {actions,className} = this.props
+        if(className == "mediaPublish"){node.defaultSelect = true;}
         actions && actions.onToggle(node)
         this.props.onToggle && this.props.onToggle(node);
     }

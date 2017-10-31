@@ -64,7 +64,11 @@ export default class PlayerScenePopup extends PureComponent {
             let curIndex = e.target.selectedIndex;
             console.log("curIndex:", curIndex);
             this.state[id] = this.state[id].update("index", v=>curIndex);
-            this.setState({[id]:this.state[id].update("name", v=>this.state[id].getIn(['list', curIndex, 'name']))});
+            this.setState({[id]:this.state[id].update("name", v=>this.state[id].getIn(['list', curIndex, 'name']))},()=>{
+                if(id == 'typeList'){
+                    this.props.onChange && this.props.onChange(this.state);
+                }
+            });
         }
 
 
@@ -128,6 +132,7 @@ PlayerScenePopup.propTypes = {
         typeList: PropTypes.array.isRequired,
         sceneName: PropTypes.string.isRequired
     }).isRequired,
+    onChange: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
 }
