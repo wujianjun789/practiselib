@@ -10,17 +10,50 @@
         margin-right:10px;
     }
     input{
+        border:solid 1px #bbb;
         height:40px;
         width:414px;
         text-indent: 10px;
     }
     .media-file{
+        position: relative;
+        .file-input{
+            padding-left:10px;
+            background-color: #eee;
+            height:40px;
+            width:414px;
+            line-height: 40px;
+            display: inline-block;
+            border:solid 1px #ccc;
+            label{
+                float:right;
+                width:30px;
+                height:30px;
+                padding:7px;
+                cursor:pointer;
+                margin-bottom: 0px;
+            }
+            
+            
+        }
         input{
             display: inline-block;
+            position: absolute;
+            left:66px;
+            top:0px;
+            opacity:0;
+         
         }
     }
-    img{
+    .media-pic{
+        margin:0;
+        border:solid 1px #ccc;
         height:140px;
         width:480px;
+        img{
+            height:140px;
+            width:480px;
+        }
     }
+    
 }
