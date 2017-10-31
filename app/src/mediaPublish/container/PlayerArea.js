@@ -33,7 +33,7 @@ export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            curType:'playerScene',
+            curType:'playerArea',
             playerData: [
                 {
                     "id": "player1",
@@ -339,15 +339,29 @@ export class PlayerArea extends Component {
         const {actions} = this.props;
         let data = {}
         if(id == "add"){
-            this.updatePlayerScenePopup();
+            switch(this.state.curType){
+                case "playerPlan":
+                    this.updatePlayerPlanPopup();
+                    break;
+                case "playerScene":
+                    this.updatePlayerScenePopup();
+                    break;
+                case "playerArea":
+                    this.updatePlayerAreaPopup();
+                    break;
+            }
         }else if(id == "remove"){
             let tips = "是否删除选中场景与场景中所有内容";
-            if(this.state.curType=="playerPlan"){
-                tips = "是否删除选中计划与计划中所有内容";
-            }else if(this.state.curType == "playerScene"){
-                tips = "是否删除选中场景与场景中所有内容";
-            }else if(this.state.curType == "playerArea"){
-                tips = "是否删除选中区域与区域中所有内容";
+            switch (this.state.curType){
+                case "playerPlan":
+                    tips = "是否删除选中计划与计划中所有内容";
+                    break;
+                case "playerScene":
+                    tips = "是否删除选中场景与场景中所有内容";
+                    break;
+                case "playerArea":
+                    tips = "是否删除选中区域与区域中所有内容";
+                    break;
             }
 
             actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
@@ -637,7 +651,7 @@ export class PlayerArea extends Component {
                             <ul className="asset-list">
                                 {
                                     assetList.get('list').map((item,index)=> {
-                                        return <li key={item.get('id')}  className={index>0&&index%4==0?"margin-right":""} onClick={()=>this.assetSelect(item)}>
+                                        return <li key={item.get('id')}  draggable="true" className={index>0&&index%4==0?"margin-right":""} onClick={()=>this.assetSelect(item)}>
                                             <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                             <span className="icon"></span>
                                             <span className="name">{item.get('name')}</span>
