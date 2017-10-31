@@ -61,7 +61,7 @@ export default class SideBar extends Component {
                 </div>
 
             </div>
-            <TreeView onToggle={ (node) => this.onToggle(node) } />
+            <TreeView className="mediaPublish" onToggle={ (node) => this.onToggle(node) } />
             {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>
     }

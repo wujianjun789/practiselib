@@ -41,22 +41,6 @@
 
       background-color: #fff;
       border: solid 1px #e6e6e6;
-      /*.playerList-item{
-        height: 60px;
-        line-height: 60px;
-        .static-group{
-          display: inline-block;
-
-
-        }
-
-        .edit-group{
-          float: right;
-          button{
-            margin-right: 5px;
-          }
-        }
-      }*/
     }
 
     .page {
@@ -162,98 +146,99 @@
       }
     }
 
-    .tree-list .tree-2 > li > a > div {
-      font-weight:bold;
-      font-size:14px;
-      height: 40px;
-      padding: 10px 0px 10px 30px;
-      line-height: 20px;
-      background: #d3d8dd;
-    }
+    .tree-list{
+      &.mediaPublish{
+        .tree-2 > li > a > div {
+          font-weight: bold;
+          font-size: 14px;
+          height: 40px;
+          padding: 10px 0px 10px 30px;
+          line-height: 20px;
+          background: #d3d8dd;
+        }
 
-    .tree-list .tree-2 > .bottom > a > div{
-      background:#e6e6e6;
-    }
+        .tree-2 > li > a > div:hover {
+          //color: #4d4d4d;
+          background-color: #cce7ed;
+        }
 
-    .tree-list .tree-2 > li > a > div:hover {
-      background: #e6e6e6;
-      color:#333744;
-    }
+        .tree-2 .active > a > div{
+          color: #ffffff;
+          background: linear-gradient(to right, #00bcff, #00d8ff);
+        }
 
-    .tree-list .tree-2 .active > a > div{
-      color: #333744;
-    }
+        .tree-2 > li span {
+          top: 2px;
+          margin-right: 12px;
 
-    .tree-list .tree-2 > li span {
-      top:2px;
-      margin-right: 12px;
+          height: auto;
+          line-height: 0;
+          float: none;
+        }
 
-      height: auto;
-      line-height: 0;
-      float: none;
-    }
+        .tree-2 > li span.glyphicon{
+          //color: #646771;
+        }
 
-    .tree-list .tree-2 > li span.glyphicon{
-      color:#646771;
-    }
+        .tree-3{
+          overflow: hidden;
+        }
 
+        .tree-3 > li > a > div {
+          opacity: 0.8;
+          height: 40px;
 
-    .tree-list .tree-3{
-      overflow: hidden;
-    }
+          padding-left: 33px;
+          /*background: #d3d8dd;*/
+        }
 
-    .tree-list .tree-3 > li > a > div {
-      opacity:0.8;
-      height:40px;
+        .tree-3 > li > a > div svg{
+          width: 40px;
+          height: 40px;
+          display: inline-block;
+          float: left;
+          padding: 12px 12px;
+          fill: #3e455a;
+        }
 
-      padding-left:33px;
-      /*background: #d3d8dd;*/
-    }
+        .tree-3 > li > a > div span{
+          height: 40px;
+          display: inline-block;
+          float: left;
+          font-size: 14px;
+          line-height: 40px;
+        }
 
-    .tree-list .tree-3 > li > a > div svg{
-      width:40px;
-      height:40px;
-      display: inline-block;
-      float:left;
-      padding:12px 12px;
-      fill:#3e455a;
-    }
+        .tree-3 > li > a > div span:first-child{
+          font-size: 16px;
+        }
 
-    .tree-list .tree-3 > li > a > div span{
-      height:40px;
-      display: inline-block;
-      float:left;
-      font-size:14px;
-      line-height: 40px;
-    }
+        .tree-3 > li span {
+        }
 
-    .tree-list .tree-3 > li > a > div span:first-child{
-      font-size:16px;
-    }
+        .tree-3 > li > a > div:hover {
+          //color: #4d4d4d;
+          background: #cce7ed;
+        }
 
-    .tree-list .tree-3 > li span {
-    }
+        .tree-3 .active > a > div {
+          color: #ffffff;
+          background: linear-gradient(to right, #00bcff, #00d8ff);
+        }
 
-    .tree-list .tree-3 > li > a > div:hover {
-      opacity: 1;
-      background: #f2f2f4;
-    }
+        .tree-3 .active > a > div:hover{
+          color: #fff;
+          background: linear-gradient(to right, #00bcff, #00d8ff);
+        }
 
-    .tree-list .tree-3 .active > a > div {
-      color: #ffffff;
-      background: linear-gradient(to right, #00bcff, #00d8ff);
-    }
+        .tree-3 .active > a > div svg use{
+          fill: #fff;
+        }
 
-    .tree-list .tree-3 .active > a > div:hover{
-      background: linear-gradient(to right, #00bcff, #00d8ff);
-    }
+        .tree-3 .active > a > div span{
 
-    .tree-list .tree-3 .active > a > div svg use{
-      fill:#fff;
-    }
-
-    .tree-list .tree-3 .active > a > div span{
-
+        }
+      }
     }
   }
 
