@@ -26,10 +26,6 @@ export class NotifyPopup extends Component {
         return <ul className="list-group notify-popup">
                  { curList.map((item, index) => {
                        let id = item.get("id");
-                       setTimeout(()=>{
-                            this.props.actions.removeNotify(id);
-                       }, 1000);
-
                        let ani = item.get("animation");
                    
                        return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
