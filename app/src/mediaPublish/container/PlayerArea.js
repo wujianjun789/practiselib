@@ -84,7 +84,18 @@ export class PlayerArea extends Component {
                     "name": "播放计划2",
                     "toggled": false,
                     "level": 1,
-                    "children":[]
+                    "children":[
+                        {
+                            "id": 'scene3',
+                            "type": "scene",
+                            "name": "场景3",
+                            "toggled": true,
+                            "class": "",
+                            "active": false,
+                            "children": [
+                            ]
+                        },
+                    ]
                 },
                 {
                     "id": "player3",
