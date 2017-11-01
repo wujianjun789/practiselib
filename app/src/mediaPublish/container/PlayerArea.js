@@ -202,9 +202,10 @@ export class PlayerArea extends Component {
         }
     }
 
-    handleMouseDown(key, [pressX, pressY],{pageX, pageY}){
+    handleMouseDown(item, [pressX, pressY],{pageX, pageY}){
+        this.assetSelect(item);
         this.setState({
-            lastPress: key,
+            lastPress: item.get('id'),
             isPressed: true,
             mouseCircleDelta: [pageX - pressX, pageY - pressY],
             mouseXY: [pressX, pressY]
@@ -736,7 +737,7 @@ export class PlayerArea extends Component {
 
                                     return <li key={id}  className={index>0&&index%4==0?"margin-right":""}
                                                style={{transform: `translate(${x}px,${y}px)`, zIndex:id == lastPress?99:0}}
-                                               onClick={()=>this.assetSelect(item)} onMouseDown={event=>{this.handleMouseDown(id, [x, y],{pageX:event.pageX, pageY:event.pageY})}}>
+                                                onMouseDown={event=>{this.handleMouseDown(item, [x, y],{pageX:event.pageX, pageY:event.pageY})}}>
                                         <div className={"background "+(item.get('active')?'':'hidden')}></div>
                                         <span className="icon"></span>
                                         <span className="name">{item.get('name')}</span>
