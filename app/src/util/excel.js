@@ -16,12 +16,15 @@ export function excelImport(e,key,columns,cb){
                     });// 以二进制流方式读取得到整份excel表格对象
             } catch (e) {
                 console.log('文件类型不正确');
+                resolve([[]]);
                 return;
             }
 
             // key存在读取该表，不存在读取第一张表
             let sheetName = workbook.Sheets.hasOwnProperty(key)?key:workbook.SheetNames[0];
+            //获取表头
             let header = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header:1})[0];
+
             let fromTo = workbook.Sheets[sheetName]['!ref'];
             items = items.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]));
     
@@ -36,7 +39,7 @@ export function excelImport(e,key,columns,cb){
                         }
                     }
                     //表格内容
-                    let requireProperty = ['id','name','typeName']
+                    let requireProperty = ['id','name','typeName','domainName']
                     for(let i=0; i < items.length; i++){
                         for(let j=0; j < requireProperty.length; j++){
                             if(!items[i].hasOwnProperty(requireProperty[j])) {

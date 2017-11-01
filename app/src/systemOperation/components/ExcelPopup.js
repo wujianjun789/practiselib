@@ -33,12 +33,21 @@ export default class ExcelPopup extends Component {
         const {addNotify,columns,model} = this.props;
         var target = e.target;        
         excelImport(e,model,columns).then(([data, filename]) => {
+            let domainId = true;
             if(data.length==0){
                 addNotify(0, '导入Excel格式有误');
                 target.value = '';
-                return
+                return;
             }
-             
+            data.map(item=>{
+                let domain = getObjectByKeyObj(this.props.domainList.options, 'name', item.domainName);
+                if(!domain) domainId = false;
+            })
+            if(!domainId){
+                addNotify(0, '请添加所需域');
+                target.value = '';            
+                return;
+            }
             let page = this.state.page;
             page.total = data.length;
             this.setState({data:data,page:page,filename:filename})
@@ -55,13 +64,12 @@ export default class ExcelPopup extends Component {
         this.props.overlayerHide();
         let isUpdate = document.getElementsByName('isUpdate')[0].checked;
         let datas = this.state.data.map(item=>{
-            item.type=item.typeName;
-            delete item.typeName;
-            if(item.domainName){
-                item.domainId=getObjectByKeyObj(this.props.domainList.options, 'name', item.domainName).id;
+                item.type=item.typeName;
+                delete item.typeName;
+                item.domainId = getObjectByKeyObj(this.props.domainList.options, 'name', item.domainName).id;
                 delete item.domainName;            
+                return item;
             }
-            return item;}
         )
         this.props.onConfirm && this.props.onConfirm(datas, isUpdate);        
     }
@@ -83,7 +91,7 @@ export default class ExcelPopup extends Component {
                     <div className='import-select'>
                         {filename?filename:'选择列表文件路径'}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
-                        <input id='select-file' type="file" onChange={this.onChange}/>                        
+                        <input id='select-file' type="file" accept=".xls,.xlsx" onChange={this.onChange}/>                        
                     </div>
                     <input type="checkbox" name='isUpdate'/>覆盖已有设备
                 </div>
