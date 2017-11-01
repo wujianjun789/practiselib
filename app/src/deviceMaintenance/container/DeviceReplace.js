@@ -17,7 +17,9 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Checkbox from '../../components/Checkbox';
 import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
-import ImportFilePopup from '../component/ImportFilePopup';
+import ImportExcelPopup from '../component/ImportExcelPopup';
+import ExcelPopup from '../../../src/systemOperation/components/ExcelPopup';
+import {bacthImport} from '../../api/import';
 import {addNotify} from '../../common/actions/notifyPopup';
 import {getDomainList} from '../../api/domain';
 import {getAssetModelList} from '../../api/asset';
@@ -71,14 +73,16 @@ export class DeviceReplace extends Component {
             ])
         }
         this.columns = [
-            {id: 0, field: "name", title: "设备名称"},
-            {id: 1, field: "assetCategoryName", title: "设备类别"},
-            {id: 2, field: "domainName", title: "域"},
-            {id: 3, field: "id", title: "设备编号"}
+            {id: 0, field: "domainName", title: "域"},
+            {id: 1, field: "name", title: "设备名称"},
+            {id: 2, field: "typeName", title: "设备类别"},
+            {id: 3, field: "id", title: "设备编号"},
+            {id: 4, field: "lng", title: "经度"},
+            {id: 5, field: "lat", title: "纬度"}
         ];
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
-        // this.tableClick = this.tableClick.bind(this);
+        this.tableClick = this.tableClick.bind(this);
         this.updateSelectDevice = this.updateSelectDevice.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.pageChange = this.pageChange.bind(this);
@@ -175,12 +179,12 @@ export class DeviceReplace extends Component {
                 domainName = domain?domain.name:"";
             }
 
-            let assetCategoryName = "";
+            let typeName = "";
             if(this.state.assetCategoryList.options.length && asset.extendType) {
                 let assetCategory = getObjectByKey(this.state.assetCategoryList.options, 'key', asset.extendType);
-                assetCategoryName = assetCategory?assetCategory.intl.name.zh:"";
+                typeName = assetCategory?assetCategory.intl.name.zh:"";
             }
-            return Object.assign({}, asset, {domainName: domainName}, {assetCategoryName:assetCategoryName})
+            return Object.assign({}, asset, {domainName: domainName}, {typeName:typeName})
         })
         
         this.setState({data: Immutable.fromJS(list)});
@@ -211,7 +215,6 @@ export class DeviceReplace extends Component {
     }
 
     domainHandler(e) {
-        // console.log(e)
         let id = e.target.id;
         const {} = this.state
         const {overlayerHide, overlayerShow, addNotify} = this.props.actions;
@@ -223,12 +226,14 @@ export class DeviceReplace extends Component {
                     success: "更换成功",
                     fail: "更换失败",
                 };
-                // console.log(this.props.actions);
-                overlayerShow(<ImportFilePopup className="" data={dataInit2} overlayerHide={overlayerHide} 
-                addNotify={this.props.actions.addNotify}
-                onConfirm={()=>{
-                    // console.log("批量更换设备");
-                }}  />);
+
+                overlayerShow(<ImportExcelPopup className='devicemaintenance-popup' columns={this.columns} model={this.state.model} 
+                domainList = {this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide} 
+                onConfirm={ (datas,isUpdate) => {
+                    bacthImport(`${this.state.model}s`, datas,isUpdate, () => {
+                        this.requestSearch();
+                    });
+                } } />)
 
             break;
             case "device_num_modify":
@@ -239,9 +244,7 @@ export class DeviceReplace extends Component {
                 };
                 
                 overlayerShow(<DeviceNumberModifyPopup className="device-num-modify-popup" data={dataInit}
-                    /* addNotify={this.props.actions.addNotify} */
                     overlayerHide={overlayerHide} onConfirm={()=>{
-                        // console.log("更新设备编号")
                     }}/>);
             break;
 
@@ -258,25 +261,17 @@ export class DeviceReplace extends Component {
     domainSelect(e) {
         let index = e.target.selectedIndex;
         let {domainList} = this.state;
-        // domainList.index = index;
-        // domainList.value = domainList.options[index].name;
-        // console.log('%%%%%%%%%%%%')
-        // console.log({...domainList})
-        // console.log({...domainList, index: index, value: domainList.options[index].name})
         this.setState({domainList: {...domainList, index: index, value: domainList.options[index].name}}, ()=>{
             this.requestSearch();
-            // console.log(this.state.domainList);
         })
     }
 
     assetCategorySelect(e) {
         let index = e.target.selectedIndex;
-        // console.log(index)
         let {assetCategoryList} = this.state;
         assetCategoryList.index = index;
         assetCategoryList.value = assetCategoryList.options[index].intlName;
         assetCategoryList.key = assetCategoryList.options[index].key;
-        // console.log("assetCategoryList.key:", assetCategoryList.key)
         
         this.setState({assetCategoryList: assetCategoryList, model: assetCategoryList.key}, ()=>{
             this.requestSearch();
@@ -301,7 +296,20 @@ export class DeviceReplace extends Component {
 
     updateSelectDevice(item) {
         let selectDevice = this.state.selectDevice;
-
+        selectDevice.latlng = item.geoPoint;
+        selectDevice.data.splice(0);
+        selectDevice.data.push({
+            id: item.id,
+            name: item.name,
+            typeName: item.typeName
+        });
+        selectDevice.domainId = item.domainId;
+        selectDevice.position.splice(0);
+        selectDevice.position.push(Object.assign({}, {
+            "device_id": item.id,
+            "device_type": "DEVICE"
+        }, item.geoPoint));
+        this.setState({selectDevice:selectDevice});
     }
 
     onChange(e) {
