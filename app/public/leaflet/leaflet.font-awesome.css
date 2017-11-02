@@ -32,6 +32,12 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'anticon';
+  src: url('../font/font_zck90zmlh7hf47vi.woff') format('woff')
+
+}
 /* FONT AWESOME CORE
  * -------------------------- */
 [class^="icon-"],

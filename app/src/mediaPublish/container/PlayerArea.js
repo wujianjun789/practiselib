@@ -195,6 +195,7 @@ export class PlayerArea extends Component {
     componentWillMount() {
         this.mounted = true;
         this.updatePlayerPlan();
+        this.mounted && this.setSize();
         window.onresize = event=>{
             this.mounted && this.setSize();
         }

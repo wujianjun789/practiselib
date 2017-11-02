@@ -1045,7 +1045,7 @@ width:24px;
     float: left;
     width: 25px;
     height: 25px;
-    background-image: url(/images/icon_avatar.png);
+    background-image: url("/images/icon_avatar.png");
     background-size: 100% 100%;
 }
 
@@ -1114,12 +1114,12 @@ width:24px;
 }
 
 .user-center .icon.icon-alter {
-  background: url(/svg/icon_alter.svg) no-repeat center top;
+  background: url("/svg/icon_alter.svg") no-repeat center top;
   background-size: 16px;
 }
 
 .user-center .icon.icon-exit {
-  background: url(/svg/icon_exit.svg) no-repeat center top;
+  background: url("/svg/icon_exit.svg") no-repeat center top;
   background-size: 16px;
 }
 
@@ -1671,7 +1671,7 @@ width:24px;
 }
 
 .checkbox-group-item {
-    display: inline-block
+    display: inline-block;
 }
 
 @media \0screen {
@@ -1686,13 +1686,15 @@ width:24px;
         font-size: 8px;
         border: 0;
         color: #fff;
+
+        position: absolute;
         left: 2px;
         top: 3px;
-        position: absolute
     }
 }
+/*
 @font-face {
     font-family: 'anticon';
     src: url('/font/font_zck90zmlh7hf47vi.woff') format('woff')
 
-}
+}*/
