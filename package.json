@@ -106,7 +106,7 @@
   "build": "gulp",
   "start": "cd dist & npm start",
   "dev:server": "cd server & node server --dev ",
-  "dev:client": "webpack-dev-server --hot --inline --content-base=./app/public  --host=0.0.0.0 --port=18080 --history-api-fallback",
+  "dev:client": "webpack-dev-server --hot --inline --public --content-base=./app/public  --host=0.0.0.0 --port=18080 --history-api-fallback",
   "dev": "start npm run dev:server && start npm run dev:client ",
   "preprod": "npm run build",
   "prod": "npm start"
