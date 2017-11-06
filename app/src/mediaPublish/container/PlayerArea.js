@@ -807,7 +807,7 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成
                                     </button>
                                 </div>
-                                <Material showModal={this.state.showModal} hideModal={this.hideModal}/>
+                                <Material showModal={this.state.showModal} hideModal={this.hideModal} addNotify={this.props.actions.addNotify} removeAllNotify={this.props.actions.removeAllNotify}/>
                             </div>
                             <div className="bottom">
                                 <ul className="asset-list">
@@ -842,7 +842,7 @@ export class PlayerArea extends Component {
                     </div>
                 </div>
             </div>
-            <NotifyPopup />
+            {this.state.showModal?null:<NotifyPopup />}
             <Overlayer />
         </div>
     }
