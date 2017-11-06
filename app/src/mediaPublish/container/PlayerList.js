@@ -107,21 +107,21 @@ export class PlayerList extends Component{
 
     editHandler(id){
         console.log("edit:", id);
-        const {actions} = this.props;
-        const row = getObjectByKey(this.state.data, 'id', id);
-        const obj = row ? row.toJS() : {};
-        const data = {
-            playerId: obj.id,
-            playerName: obj.name,
-            width: obj.width,
-            height: obj.height
-        }
-
-        actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
-                                               onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-             actions.overlayerHide();
+        // const {actions} = this.props;
+        // const row = getObjectByKey(this.state.data, 'id', id);
+        // const obj = row ? row.toJS() : {};
+        // const data = {
+        //     playerId: obj.id,
+        //     playerName: obj.name,
+        //     width: obj.width,
+        //     height: obj.height
+        // }
+        //
+        // actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
+        //                                        onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+        //      actions.overlayerHide();
             this.props.router.push("/mediaPublish/playerArea");
-        }}/>)
+        // }}/>)
     }
 
     removeHandler(id){
