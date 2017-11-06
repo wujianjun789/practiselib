@@ -8,7 +8,8 @@ export const TreeData=[
         "toggled": false,
         "active": true,
         "link": "/mediaPublish/playerList",
-        "level": 1
+        "level": 1,
+        "children":[]
     },
     {
         "id": "publish",
@@ -16,6 +17,7 @@ export const TreeData=[
         "toggled": false,
         "active": true,
         "link": "/mediaPublish/publish",
-        "level": 1
+        "level": 1,
+        "children":[]
     }
 ]
