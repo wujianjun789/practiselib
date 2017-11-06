@@ -9,11 +9,12 @@ import PropTypes from 'prop-types';
 export default class DeviceNumberModifyPopup extends Component {
     constructor(props) {
         super(props);
-        const { selectDeviceName="", selectDeviceNumber="", title=""} = props.data;
+        const { selectDeviceName="", selectDeviceId="", title=""} = props.data;
         this.state = {
             title: title,
-            name: selectDeviceName,
-            number: selectDeviceNumber,
+            deviceName: selectDeviceName,
+            deviceId: selectDeviceId,
+            deviceIdNew:'', 
             numberValid: true
         };
 
@@ -25,9 +26,10 @@ export default class DeviceNumberModifyPopup extends Component {
     onChange(e) {
         let id = e.target.id;
         let value = e.target.vlaue;
-        if (id == "number") {
+        if (id == "deviceId") {
             this.setState({
-                number: value
+                deviceId: value,
+                deviceIdNew: value
             })
         }
     }
@@ -38,12 +40,12 @@ export default class DeviceNumberModifyPopup extends Component {
     
     onConfirm() {
         this.props.overlayerHide();
-        this.props.onConfirm && this.props.onConfirm(this.state);
+        this.props.onConfirm && this.props.onConfirm(this.state.deviceId,this.state.deviceIdNew);
     }
 
     render() {
-        const { title, name, number, numberValid } = this.state;
-        const {className} = this.props;
+        const { title, deviceName, deviceId, numberValid } = this.state;
+        const {selectDevice, className} = this.props;
         let valid = numberValid;
 
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={['取消', '确认']}
@@ -56,7 +58,7 @@ export default class DeviceNumberModifyPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="name" className="control-label">名称：</label>
                         <div className="name-content">
-                            <input type="text" className={ "form-control " } id="name" placeholder="name" value={ name } 
+                            <input type="text" className={ "form-control " } id="name" placeholder="name" value={ selectDevice.data[0].name } 
                             maxLength={ 16 } onChange={ this.onChange } disabled={ valid ? true : false }/>
                             {/* <span className={ prompt.name ? "prompt " : "prompt hidden" }>{ "不合法" }</span> */}
                         </div>
@@ -64,7 +66,7 @@ export default class DeviceNumberModifyPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="number" className="control-label">设备编号：</label>
                         <div className="number-content">
-                            <input type="text" className={ "form-control " } id="id" placeholder="id" value={ number } 
+                            <input type="text" className={ "form-control " } id="deviceId" placeholder="id" value={ deviceId } 
                             maxLength={ 16 } onChange={ this.onChange }/>
                             {/* <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "不合法" }</span> */}
                         </div>
