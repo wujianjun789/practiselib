@@ -733,7 +733,7 @@ export class PlayerArea extends Component {
                             <button className="btn btn-primary" onClick={()=>this.assetList('remove')}>删除</button>
                             <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成</button>
                         </div>
-                        {this.state.showModal?<Material showModal={this.state.showModal} hideModal={this.hideModal}/>:null}
+                        <Material showModal={this.state.showModal} hideModal={this.hideModal}/>
                     </div>
                     <div className="bottom">
                         <ul className="asset-list">
