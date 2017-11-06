@@ -598,7 +598,8 @@ export class PlayerArea extends Component {
                 </div>
                 <div className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={()=>{this.sidebarClick('propertyCollapsed')}}>
-                        <span className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-bottom":"glyphicon-triangle-right")}></span>属性
+                        <span
+                            className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-bottom":"glyphicon-triangle-right")}></span>属性
                     </div>
                     <div className="panel-body">
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
@@ -806,8 +807,7 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成
                                     </button>
                                 </div>
-                                {this.state.showModal ?
-                                    <Material showModal={this.state.showModal} hideModal={this.hideModal}/> : null}
+                                <Material showModal={this.state.showModal} hideModal={this.hideModal}/>
                             </div>
                             <div className="bottom">
                                 <ul className="asset-list">
@@ -841,8 +841,6 @@ export class PlayerArea extends Component {
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <NotifyPopup />
             <Overlayer />

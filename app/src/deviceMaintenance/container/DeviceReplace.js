@@ -50,8 +50,10 @@ export class DeviceReplace extends Component {
             }),
             selectDevice: {
                 id: 'systemOperation',
-                position: [],
-                data: []
+                position: [{device_id: "2", device_type: "DEVICE", lat: 32, lng: 123}],
+                data: [{id: "2", name: "b", typeName: "网关"}],
+                domainId: 4,
+                latlng: {lat: 32, lng: 123}
             },
             domainList: {
                 titleField: 'name',
@@ -151,7 +153,6 @@ export class DeviceReplace extends Component {
     }
 
     initDomainList(data) {
-        // console.log("data:", data)
         let domainList = Object.assign({}, this.state.domainList, {index: 0, 
             value: data.length?data[0].name: "", options: data.length? data : [{name: '请添加域'}]});
         this.setState({domainList: domainList});
@@ -207,16 +208,14 @@ export class DeviceReplace extends Component {
     }
 
     popupReplaceConfirm() {
-        //
     }
 
     popupUpdateConfirm() {
-        //
     }
 
     domainHandler(e) {
         let id = e.target.id;
-        const {} = this.state
+        const {selectDevice} = this.state
         const {overlayerHide, overlayerShow, addNotify} = this.props.actions;
         switch (id) {
             case "device_replace_batch": 
@@ -239,12 +238,14 @@ export class DeviceReplace extends Component {
             case "device_num_modify":
                 const dataInit = {
                     title: "修改设备编号",
-                    selectDeviceName: "被选中设备的名称",
-                    selectDeviceNumber: "被选中的设备编号",
+                    selectDeviceName: selectDevice.data[0].name,
+                    selectDeviceId: selectDevice.data[0].id,
                 };
                 
                 overlayerShow(<DeviceNumberModifyPopup className="device-num-modify-popup" data={dataInit}
-                    overlayerHide={overlayerHide} onConfirm={()=>{
+                    overlayerHide={overlayerHide} addNotify={addNotify} selectDevice = {this.state.selectDevice}
+                    onConfirm={(id1,id2)=>{
+                        updateDeviceIdById(id1,id2,()=>{this.requestSearch();})
                     }}/>);
             break;
 
