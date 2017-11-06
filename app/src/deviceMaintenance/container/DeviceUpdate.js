@@ -16,10 +16,16 @@ import Immutable from 'immutable';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 
 import Checkbox from '../../components/Checkbox';
-// import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
-import ImportFilePopup from '../component/ImportFilePopup';
-import {addNotify} from '../../common/actions/notifyPopup'
-
+import DeviceNumberModifyPopup from '../component/DeviceNumberModifyPopup';
+import ImportExcelPopup from '../component/ImportExcelPopup';
+import ExcelPopup from '../../../src/systemOperation/components/ExcelPopup';
+import {batchImport} from '../../api/domain';
+import {addNotify} from '../../common/actions/notifyPopup';
+import {getDomainList} from '../../api/domain';
+import {getAssetModelList} from '../../api/asset';
+import {getSearchAssets} from '../../api/asset';
+import {getSearchCount} from '../../api/asset';
+import {getObjectByKey} from '../../util/index';
 import Content from '../../components/Content';
 
 import {TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
@@ -31,73 +37,71 @@ export class DeviceUpdate extends Component {
         super(props);
         this.state = {
             allChecked: false,
-            model: "deviceupdate",
+            model: "gateway",
             collapse: false,
             page: Immutable.fromJS({
-                total: 15,
-                curent: 1,
-                limit: 10
+                total: 10,
+                current: 1,
+                pageSize: 10
             }),
             search: Immutable.fromJS({
                 value: '',
-                placeholder: '请输入设备编号',
+                placeholder: '请输入设备名称',
             }),
             selectDevice: {
                 id: 'systemOperation',
-                position: [],
-                data: []
+                position: [{device_id: "2", device_type: "DEVICE", lat: 32, lng: 123}],
+                data: [{id: "2", name: "b", typeName: "网关"}],
+                domainId: 4,
+                latlng: {lat: 32, lng: 123}
             },
             domainList: {
                 titleField: 'name',
-                valueField: 'value',
+                valueField: 'name',
                 index: 0,
                 value: "",
-                options: [
-                    {id: 1, title: 'domain01', value: 'domain01'},
-                    {id: 1, title: 'domain02', value: 'domain02'}
-                ]
+                options: []
             },
-            categoryList: {
-                titleField: 'name',
-                valueField: 'value',
+            assetCategoryList: { //设备类别列表
+                titleField: 'intlName',
+                valueField: 'intlName',
                 index: 0,
                 value: '',
-                options: [
-                    {id: 1, title: 'category01', value: 'category01'}, 
-                    {id: 2, title: 'category02', value: 'category02'}
-                ]
+                model:'',
+                options: []
             },
-            // modelList: {
-            //     titleField: 'title',
-            //     valueField: 'value',
-            //     options: [
-            //         {id: 1, title: 'model01', value: 'model01'}
-            //     ]
-            // }
+            data: Immutable.fromJS([
+
+            ])
         }
         this.columns = [
-            {id: 0, field: "deviceName", title: "设备名称"},
-            {id: 1, field: "deviceCategory", title: "设备类别"},
-            {id: 2, field: "domainName", title: "域"},
-            {id: 3, field: "deviceNumber", title: "设备编号"}
+            {id: 0, field: "domainName", title: "域"},
+            {id: 1, field: "name", title: "设备名称"},
+            {id: 2, field: "typeName", title: "设备类别"},
+            {id: 3, field: "id", title: "设备编号"},
+            {id: 4, field: "lng", title: "经度"},
+            {id: 5, field: "lat", title: "纬度"}
         ];
         this.collpseHandler = this.collpseHandler.bind(this);
-        // this.searchChange = this.searchChange.bind(this);
-        // this.tableClick = this.tableClick.bind(this);
-        // this.updateSelectDevice = this.updateSelectDevice.bind(this);
-        // this.searchSubmit = this.searchSubmit.bind(this);
-        // this.pageChange = this.pageChange.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.tableClick = this.tableClick.bind(this);
+        this.updateSelectDevice = this.updateSelectDevice.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.pageChange = this.pageChange.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
-        // this.domainSelect = this.domainSelect.bind(this);
+        this.domainSelect = this.domainSelect.bind(this);
+        this.assetCategorySelect = this.assetCategorySelect.bind(this);
 
         // this.popupCancel = this.popupCancel.bind(this);
         // this.popupConfirm = this.popupConfirm.bind(this);
 
-        // this.requestSearch = this.requestSearch.bind(this);
-        // this.initPageSize = this.initPageSize.bind(this);
-        // this.initDomainList = this.initDomainList.bind(this);
-        // this.initAssetList = this.initAssetList.bind(this);
+        this.requestSearch = this.requestSearch.bind(this);
+        this.initPageSize = this.initPageSize.bind(this);
+        this.initDomainList = this.initDomainList.bind(this);
+        this.initAssetList = this.initAssetList.bind(this);
         this.onChange = this.onChange.bind(this);
+        
+        this.initAssetCategoryList = this.initAssetCategoryList.bind(this);
     }
 
     componentWillMount() {
@@ -109,12 +113,14 @@ export class DeviceUpdate extends Component {
                 this.props.actions.treeViewInit(TreeData);
                 this.setState({
                     model: model
-                    // modelList: Object.assgin({}, this.state.modelList, {})
                 });
-                getDomainList(data=> {
-                    this.mounted && this.initDomainList(data)
-                })
             }
+        });
+        getDomainList(data=> {
+            this.mounted && this.initDomainList(data);
+            getAssetModelList((data) => {
+                this.mounted && this.initAssetCategoryList(data);
+            })
         })
     }
     componentWillUnmount() {
@@ -126,7 +132,7 @@ export class DeviceUpdate extends Component {
     }
 
     requestSearch(){
-        const { model, domainList, search, page } = this.state
+        const { model, domainList, search, page, assetCategoryList } = this.state
         let domain = domainList.options.length?domainList.options[domainList.index]:null;
         let name = search.get('value');
         let cur = page.get('current');
@@ -152,16 +158,48 @@ export class DeviceUpdate extends Component {
         this.requestSearch();
     }
 
-    initCategoryList(data) {
-        let categoryList = Object.assgin({}, this.state.categoryList, {index: 0}, {value: data.length?data[0].name: ""}, {options: data});
-        this.setState({categoryList: categoryList});
-        this.requestSearch();
+    initAssetCategoryList(data) {
+        let options = data.map((item,index) => {
+            item.intlName = item.intl.name.zh;
+            return item;
+        });
+        let assetCategoryList = Object.assign({}, this.state.assetCategoryList,
+        {index: 0}, {value: options.length?data[0].intlName: ""}, {options: options});
+        this.setState({assetCategoryList: assetCategoryList}, this.requestSearch);
     }
+
+    // initCategoryList(data) {
+    //     let categoryList = Object.assgin({}, this.state.categoryList, {index: 0}, {value: data.length?data[0].name: ""}, {options: data});
+    //     this.setState({categoryList: categoryList});
+    //     this.requestSearch();
+    // }
 
 
 
     initAssetList(data) {
+        let list = data.map((asset, index)=> {
+            let domainName = "";
+            if(this.state.domainList.options.length && asset.domainId) {
+                let domain = getObjectByKey(this.state.domainList.options, 'id', asset.domainId);
+                domainName = domain?domain.name:"";
+            }
 
+            let typeName = "";
+            if(this.state.assetCategoryList.options.length && asset.extendType) {
+                let assetCategory = getObjectByKey(this.state.assetCategoryList.options, 'key', asset.extendType);
+                typeName = assetCategory?assetCategory.intl.name.zh:"";
+            }
+
+            this.setState({data: Immutable.fromJS(list)});
+
+            if(list.length) {
+                let item = list[0];
+                this.updateSelectDevice(item);
+            } else {
+                this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {data: [] })})
+            }
+
+        })
     }
 
     popupReplacCancel() {
@@ -182,7 +220,7 @@ export class DeviceUpdate extends Component {
 
     domainHandler(e) {
         let id = e.target.id;
-        const {} = this.state;
+        const {selectDevice} = this.state;
         const {overlayerHide, overlayerShow, addNotify} = this.props.actions;
         switch (id) {
             case "device_update_batch":
@@ -192,9 +230,16 @@ export class DeviceUpdate extends Component {
                     success: "升级成功",
                     fail: "升级失败",
                 };
-                overlayerShow(<ImportFilePopup calssName="device_update_batch" data={dataInit} overlayerHide = {overlayerHide}
-                    addNotify={this.props.actions.addNotify}
-                    onConfirm={ ()=>{console.log("批量升级设备")} } />);
+                overlayerShow(<ImportExcelPopup className="devicemaintenance-popup" 
+                    title="批量升级"
+                    columns={this.columns} model={this.state.model}
+                    domainList={this.state.domainList} addNotify={this.props.actions.addNotify}
+                    overlayerHide = {overlayerHide}
+                    onConfirm={ (datas, isUpdate)=>{
+                        batchImport(`${this.state.model}s`, datas, isUpdate, ()=> {
+                            this.requestSearch();
+                        });    
+                    } } />);
                 break;
             case "device_update_one":
                 const dataInit2 = {
@@ -218,13 +263,57 @@ export class DeviceUpdate extends Component {
         })
     }
 
+    domainSelect(e) {
+        let index = e.target.selectedIndex;
+        let {domainList} = this.state;
+        this.setState({domainList: {...domainList, index: index, value: domainList.options[index].name}}, ()=>{
+            this.requestSearch();
+        })
+    }
+
+    assetCategorySelect(e) {
+        let index = e.target.selectedIndex;
+        let {assetCategoryList} = this.state;
+        assetCategoryList.index = index;
+        assetCategoryList.value = assetCategoryList.options[index].intlName;
+        assetCategoryList.key = assetCategoryList.options[index].key;
+
+        this.setState({assetCategoryList: assetCategoryList, model: assetCategoryList.key}, ()=>{
+            this.requestSearch();
+        })
+    }
+
+    searchChange(value){
+        this.setState({search: this.state.search.updata('value', ()=>value)});
+    }
+
+    searchSubmit(){
+        let page = this.state.page.set('current', 1);
+        this.setState({page:page}, ()=>{
+            this.requestSearch();
+        });
+    }
+
     tableClick(row) {
         this.updateSelectDevice(row.toJS());
     }
 
     updateSelectDevice(item) {
-        let selectdevice = this.state.selectDevice;
-
+        let selectDevice = this.state.selectDevice;
+        selectDevice.latlng = item.geoPoint;
+        selectDevice.data.splice(0);
+        selectDevice.data.push({
+            id: item.id,
+            name: item.name,
+            typeName: item.typeName
+        });
+        selectDevice.domainId = item.domainId;
+        selectDevice.position.splice(0);
+        selectDevice.position.push(Object.assign({}, {
+            "device_id": item.id,
+            "device_type": "DEVICE"
+        }, item.geoPoint));
+        this.setState({selectDevice: selectDevice});
     }
 
     onChange(e) {
@@ -237,23 +326,22 @@ export class DeviceUpdate extends Component {
     }
 
     collpseHandler() {
-        console.log("调用cool")
         this.setState({
             collapse: !this.state.collapse
         })
     }
 
     render() {
-        const {model, collapse, page, search, selectDevice, domainList, data, categoryList, allChecked} = this.state;
+        const {model, collapse, page, search, selectDevice, domainList, data, assetCategoryList, allChecked} = this.state;
         return <Content className={'offset-right' + (collapse?' collapsed':' ')} id = 'sysDeviceMaintenanceUpdate'>
                 <div className="heading">
                     {/* {<Checkbox onChange={onChange}>Checkbox</Checkbox>} */}
-                    {<Checkbox onChange = {this.onChange} allChecked = {allChecked} id='checkbox'></Checkbox>}
+                    {/* {<Checkbox onChange = {this.onChange} allChecked = {allChecked} id='checkbox'></Checkbox>} */}
                     {/* <input type="checkbox" className="" ></input> */}
-                    <Select id="domain"  titleField={domainList.valueField} valueField={domainList.valueField}
+                    <Select id="domain"  titleField={domainList.titleField} valueField={domainList.valueField}
                             options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
-                    <Select id="category"  titleField={categoryList.valueField} valueField={categoryList.valueField} 
-                            options={categoryList.options} value={categoryList.value} onChange={this.domainSelect}/>
+                    <Select id="assetCategory"  titleField={assetCategoryList.titleField} valueField={assetCategoryList.valueField} 
+                            options={assetCategoryList.options} value={assetCategoryList.value} onChange={this.domainSelect}/>
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                         onChange={this.searchChange} submit={this.searchSubmit} />
                     <button id="device_update_batch" className="btn btn-primary add-domain" onClick= {this.domainHandler} >批量升级</button>
