@@ -227,7 +227,7 @@ export class PlayerArea extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("mousemove", this.handleMouseMove, true);
+        // window.addEventListener("mousemove", this.handleMouseMove, true);
         // window.addEventListener("mouseup", this.handleMouseUp, true);
     }
 
@@ -792,7 +792,7 @@ export class PlayerArea extends Component {
 
                 <div className="panel panel-default asset-lib">
                     <div className="panel-heading lib-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed')}}>
-                        <span className={"glyphicon "+(sidebarInfo.assetLibCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>素材库
+                        <span className={sidebarInfo.collapsed?"icon_file":"glyphicon "+(sidebarInfo.assetLibCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>素材库
                     </div>
                     <div className={"panel-body "+(sidebarInfo.assetLibCollapsed?'assetLib-collapsed':'')}>
                         <div className="asset-container">
