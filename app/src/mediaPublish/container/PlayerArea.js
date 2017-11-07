@@ -173,6 +173,7 @@ export class PlayerArea extends Component {
             showModal: false,
 
             assetStyle: {"bottom": "0px"},
+            controlStyle:{"left":"auto", "right":"auto"},
 //拖拽
             mouseXY: [0, 0],
             mouseCircleDelta: [0, 0],
@@ -258,8 +259,16 @@ export class PlayerArea extends Component {
     }
 
     setSize() {
+        let width = window.innerWidth;
         let height = window.innerHeight;
-        this.setState({assetStyle: {"bottom": (height < 766 ? 0 : height - 766) + "px"}});
+        let cleft = "auto";
+        let cright = "auto";
+        if(width<1593){
+            cright = 0;
+        }else{
+            cleft = "535px";
+        }
+        this.setState({assetStyle: {"bottom": (height < 796 ? 0 : height - 796) + "px"}, controlStyle:{"left":cleft, "right":cright}});
     }
 
     updatePlayerPlan() {
@@ -533,7 +542,7 @@ export class PlayerArea extends Component {
 
     render() {
         const {
-            curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,
+            curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,controlStyle,
             lastPress, isPressed, mouseXY
         } = this.state;
         console.log(property.position.list);
@@ -553,7 +562,7 @@ export class PlayerArea extends Component {
                     <div className="img-container">
                         <img src=""/>
                     </div>
-                    <div className="control-container-bottom">
+                    <div className="control-container-bottom" style={controlStyle}>
                         <div className="form-group pull-right quit-container " onClick={()=>this.quitHandler()}>
                             <span className="icon icon_send"></span><span>退出</span>
                         </div>
