@@ -228,7 +228,7 @@ export class PlayerArea extends Component {
 
     componentDidMount() {
         window.addEventListener("mousemove", this.handleMouseMove, true);
-        window.addEventListener("mouseup", this.handleMouseUp, true);
+        // window.addEventListener("mouseup", this.handleMouseUp, true);
     }
 
     handleMouseMove({pageX, pageY}) {
@@ -263,7 +263,7 @@ export class PlayerArea extends Component {
         let height = window.innerHeight;
         let cleft = "auto";
         let cright = "auto";
-        if(width<1593){
+        if(width<1578){
             cright = 0;
         }else{
             cleft = "535px";
@@ -607,8 +607,8 @@ export class PlayerArea extends Component {
                 </div>
                 <div className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed')}}>
-                        <span
-                            className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>属性
+                        <span className={sidebarInfo.collapsed?"icon_info":
+                        "glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>属性
                     </div>
                     <div className={"panel-body "+(sidebarInfo.propertyCollapsed?'property-collapsed':'')}>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>

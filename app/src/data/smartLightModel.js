@@ -8,7 +8,8 @@ export const TreeData = [
         "toggled": false,
         "active": true,
         "link": "/smartLight/map",
-        "level": 1
+        "level": 1,
+        "children":[]
     },
     {
         "id": "list",
