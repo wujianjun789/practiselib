@@ -16,8 +16,20 @@ export class TreeView extends Component{
             language: getLanguage()
         },
         this.renderTree = this.renderTree.bind(this);
-        this.onToggle = this.onToggle.bind(this);
+        this.renderRemove = this.renderRemove.bind(this);
+        this.renderMove = this.renderMove.bind(this);
         this.getHeight = this.getHeight.bind(this);
+        this.onToggle = this.onToggle.bind(this);
+        this.onRemove = this.onRemove.bind(this);
+        this.onMove = this.onMove.bind(this);
+    }
+
+    onMove(key, node){
+        this.props.onMove && this.props.onMove(key, node);
+    }
+
+    onRemove(node){
+        this.props.onRemove && this.props.onRemove(node);
     }
 
     onToggle(node){
@@ -38,6 +50,15 @@ export class TreeView extends Component{
         return datalist.length;
     }
 
+    renderMove(node, key){
+        return this.props.IsMove && node.active && <span className={"glyphicon "+key+ " up-down"}
+                                                         onClick={(event)=>{event.stopPropagation();this.onMove(key=="glyphicon-triangle-bottom"?"down":"up", node)}}></span>
+    }
+
+    renderRemove(node){
+        return this.props.IsRemove && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.onRemove(node)}}></span>
+    }
+
     renderTree(datalist, index, toggled){
         if(!datalist){
             return null;
@@ -53,15 +74,27 @@ export class TreeView extends Component{
                     if(!(node.children)){
                         return <li key={index} className={'node '+(node.active ? 'active':'')}>
                                     <Link to={node.link}>
-                                    <div onClick={()=>this.onToggle(node)} title={node.name}><span className={node.class}></span>
-                                        <span>{value}</span></div></Link>
+                                        <div onClick={()=>this.onToggle(node)} title={node.name}>
+                                            <span className={"icon "+node.class}></span>
+                                            <span>{value}</span>
+                                            {this.renderRemove(node)}
+                                            {this.renderMove(node, "glyphicon-triangle-bottom")}
+                                            {this.renderMove(node, "glyphicon-triangle-top")}
+                                        </div>
+                                    </Link>
                                     {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }else{
                         return <li key={index} className={'node '+(node.active ? 'active':'')}>
                                     <Link to={node.link}>
-                                    <div onClick={()=>this.onToggle(node)} title={node.name}><span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')}></span>
-                                        {value}</div></Link>
+                                    <div onClick={()=>this.onToggle(node)} title={node.name}>
+                                        <span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')+' toggled'}></span>
+                                        {value}
+                                        {this.renderRemove()}
+                                        {this.renderMove(node, "glyphicon-triangle-bottom")}
+                                        {this.renderMove(node, "glyphicon-triangle-top")}
+                                    </div>
+                                    </Link>
                                     {this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }
@@ -71,7 +104,7 @@ export class TreeView extends Component{
     }
 
     render(){
-        const {datalist, className} = this.props;
+        const {className, datalist, IsRemove, IsMove} = this.props;
         return <div className={"tree-list "+className}>
             {
                 this.renderTree(datalist, 1)
