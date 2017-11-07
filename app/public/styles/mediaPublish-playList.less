@@ -95,7 +95,7 @@
   .sidebar {
     bottom: 115px;
 
-    max-height: 596px;
+    max-height: 626px;
     .title {
       height: 50px;
 
@@ -303,7 +303,7 @@
         top: 565px;
         left: 535px;
         //bottom: 10px;
-
+        min-width: 160px;
         min-height: 35px;
         > div {
           display: inline-block;
@@ -335,6 +335,11 @@
 
         border: 0;
         border-radius: 0;
+        background: #e6e6e6;
+
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
 
         width: 680px;
         .panel-heading{
@@ -344,8 +349,12 @@
         .panel-body{
           padding: 0;
           opacity: 1;
-
           .addAnimation();
+          &.property-collapsed, &.assetLib-collapsed{
+            opacity: 0;
+            height: 0;
+            display: none;
+          }
         }
 
       }
@@ -353,6 +362,7 @@
     position: absolute;
     top: 60px;
     right: 0;
+    bottom: 0;
     width: 680px;
     padding: 0;
 
@@ -377,6 +387,7 @@
         margin-top: 7.5px;
       }
     }
+
     .pro-title {
       padding: 14px 20px;
       //height: 50px;
@@ -394,7 +405,7 @@
     }
 
     .pro-container {
-      height: 215px;
+      //height: 215px;
 
       padding-top: 20px;
       padding-right: 20px;
@@ -520,6 +531,7 @@
       color: #333744;
 
       cursor: pointer;
+      z-index: 99;
       span{
         top: 2px;
         margin-right: 5px;
@@ -574,6 +586,7 @@
       }
 
       .bottom {
+        position: relative;
         height: 309px;
         padding-top: 10px;
         ul.asset-list {
@@ -649,10 +662,12 @@
         right: 60px;
       }
     }
-
+    .mediaPublish-footer{
+      right: 80px;
+    }
     .right {
       right: -620px;
-      background: #eaeef2;
+      background: #e6e6e6;
       .addAnimation();
       .collapse-container {
         background:#404555;
@@ -697,6 +712,9 @@
     background-color: #e6e6e6;
 
     min-width: 702px;
+
+    .addAnimation();
+
     .title {
       display: inline-block;
       font-size: 14px;

@@ -1,39 +1,51 @@
-import React, { Component } from 'react';
-import Select from '../../components/Select'
+import React, { Component } from 'react'
+import ReactDom from 'react-dom'
 
-import '../../../public/styles/material-text.less'
+
 export default class Text extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            url: '',
+            filename: ''
         }
+        this.readPicture = this.readPicture.bind(this);
+    }
+    componentDidMount() {
+
+    }
+    readPicture(e) {
+        const self = this;
+        const reader = new FileReader();
+        const file = e.target.files[0];
+        if (!/image\/\w+/.test(file.type)) {
+            alert('文件必须为图片格式!');
+            return false;
+        }
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            self.setState({ url: this.result })
+        }
+
     }
     render() {
+        const { filename } = this.state;
         return (
-            <div className='material-text'>
-                <div className='left'>
-                    <div><span>素材名称</span><input /></div>
-                    <div className='material-content'>
-                        <span>文本内容</span><textarea />
-                    </div>
-                    <div>
-                        <span>选择字体</span>
-                        <Select className='font-select' />
-                    </div>
-                    <div className='material-color'>
-                        <span>字体颜色</span>
-                        <div className='font-color'></div>
-                        <span>背景颜色</span>
-                        <div className='bg-color'></div>
-                    </div>
-                    <div className='material-bg'>
-                        <span>背景透明</span>
-                        <input type='checkbox'/>
+            <div className='material'>
+                <div>
+                    <span>素材名称</span>
+                    <input />
+                </div>
+                <div className='import'>
+                    <span>导入素材</span>
+                    <div className='file-path'>
+                        {filename ? filename : '选择列表文件路径'}
+                        <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
+                        <input type="file" id='select-file' onChange={this.readPicture} />
                     </div>
                 </div>
-                <div className='right'>
-                    <img/>
+                <div className='show'>
+                    <img src={this.state.url} alt='image' />
                 </div>
             </div>
         )

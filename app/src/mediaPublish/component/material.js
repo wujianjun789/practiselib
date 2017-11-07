@@ -1,36 +1,45 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import Text from './materialText'
-import Media from './materialMedia'
+import Image from './materialImage'
+import Video from './materialVideo'
 
 import { Modal ,Tabs} from 'antd';
 
 import '../../../public/styles/mediaPublish-modal.css'
-// import 'antd/lib/style/index.css'
+import '../../../public/styles/material.less'
+
 
 const TabPane=Tabs.TabPane;
 
-export default class Material extends Component {
-    
+export default class Material extends PureComponent {
+
     handleOk = (e) => {
         this.props.hideModal()
     }
 
     handleCancel = (e) => {
         this.props.hideModal()
+        this.props.removeAllNotify();
+    }
+    switchTab=(key)=>{
+        this.props.removeAllNotify();
     }
     render() {
+        console.log(this.props.showModal)
         return (
             <div>
                 <Modal title="添加素材" visible={this.props.showModal}
                     onOk={this.handleOk} onCancel={this.handleCancel}>
-                    <Tabs  defaultActiveKey="1">
+                    <Tabs  defaultActiveKey="1" onChange={this.switchTab}>
                         <TabPane tab="文字" key="1">
-                        </TabPane>
-                        <TabPane tab="图片" key="2">
                             <Text/>
                         </TabPane>
+                        <TabPane tab="图片" key="2">
+                            <Image addNotify={this.props.addNotify} />
+                        </TabPane>
                         <TabPane tab="视频" key="3">
-                            <Media/>
+                            <Video/>
                         </TabPane>
                     </Tabs>
                 </Modal>
@@ -39,3 +48,6 @@ export default class Material extends Component {
     }
 }
 
+Material.propTypes={
+    showModal:PropTypes.bool.isRequired
+}

@@ -173,6 +173,7 @@ export class PlayerArea extends Component {
             showModal: false,
 
             assetStyle: {"bottom": "0px"},
+            controlStyle:{"left":"auto", "right":"auto"},
 //拖拽
             mouseXY: [0, 0],
             mouseCircleDelta: [0, 0],
@@ -258,8 +259,16 @@ export class PlayerArea extends Component {
     }
 
     setSize() {
+        let width = window.innerWidth;
         let height = window.innerHeight;
-        this.setState({assetStyle: {"bottom": (height < 766 ? 0 : height - 766) + "px"}});
+        let cleft = "auto";
+        let cright = "auto";
+        if(width<1593){
+            cright = 0;
+        }else{
+            cleft = "535px";
+        }
+        this.setState({assetStyle: {"bottom": (height < 796 ? 0 : height - 796) + "px"}, controlStyle:{"left":cleft, "right":cright}});
     }
 
     updatePlayerPlan() {
@@ -533,7 +542,7 @@ export class PlayerArea extends Component {
 
     render() {
         const {
-            curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,
+            curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,controlStyle,
             lastPress, isPressed, mouseXY
         } = this.state;
         console.log(property.position.list);
@@ -553,7 +562,7 @@ export class PlayerArea extends Component {
                     <div className="img-container">
                         <img src=""/>
                     </div>
-                    <div className="control-container-bottom">
+                    <div className="control-container-bottom" style={controlStyle}>
                         <div className="form-group pull-right quit-container " onClick={()=>this.quitHandler()}>
                             <span className="icon icon_send"></span><span>退出</span>
                         </div>
@@ -597,11 +606,11 @@ export class PlayerArea extends Component {
                     <span className={ sidebarInfo.collapsed ? "icon_horizontal" : "icon_verital" }></span>
                 </div>
                 <div className="panel panel-default asset-property">
-                    <div className="panel-heading pro-title" onClick={()=>{this.sidebarClick('propertyCollapsed')}}>
+                    <div className="panel-heading pro-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed')}}>
                         <span
-                            className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-bottom":"glyphicon-triangle-right")}></span>属性
+                            className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>属性
                     </div>
-                    <div className="panel-body">
+                    <div className={"panel-body "+(sidebarInfo.propertyCollapsed?'property-collapsed':'')}>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
                             <div className="row">
                                 <div className="form-group  action">
@@ -782,11 +791,10 @@ export class PlayerArea extends Component {
                 </div>
 
                 <div className="panel panel-default asset-lib">
-                    <div className="panel-heading lib-title" onClick={()=>{this.sidebarClick('assetLibCollapsed')}}>
-                        <span
-                            className={"glyphicon "+(sidebarInfo.assetLibCollapsed?"glyphicon-triangle-bottom":"glyphicon-triangle-right")}></span>素材库
+                    <div className="panel-heading lib-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed')}}>
+                        <span className={"glyphicon "+(sidebarInfo.assetLibCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>素材库
                     </div>
-                    <div className="panel-body">
+                    <div className={"panel-body "+(sidebarInfo.assetLibCollapsed?'assetLib-collapsed':'')}>
                         <div className="asset-container">
                             <div className="top">
                                 <Select className="asset-type" data={assetType}
@@ -807,7 +815,7 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成
                                     </button>
                                 </div>
-                                <Material showModal={this.state.showModal} hideModal={this.hideModal}/>
+                                <Material showModal={this.state.showModal} hideModal={this.hideModal} addNotify={this.props.actions.addNotify} removeAllNotify={this.props.actions.removeAllNotify}/>
                             </div>
                             <div className="bottom">
                                 <ul className="asset-list">
@@ -842,7 +850,7 @@ export class PlayerArea extends Component {
                     </div>
                 </div>
             </div>
-            <NotifyPopup />
+            {this.state.showModal?null:<NotifyPopup />}
             <Overlayer />
         </div>
     }
