@@ -597,11 +597,11 @@ export class PlayerArea extends Component {
                     <span className={ sidebarInfo.collapsed ? "icon_horizontal" : "icon_verital" }></span>
                 </div>
                 <div className="panel panel-default asset-property">
-                    <div className="panel-heading pro-title" onClick={()=>{this.sidebarClick('propertyCollapsed')}}>
+                    <div className="panel-heading pro-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed')}}>
                         <span
-                            className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-bottom":"glyphicon-triangle-right")}></span>属性
+                            className={"glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>属性
                     </div>
-                    <div className="panel-body">
+                    <div className={"panel-body "+(sidebarInfo.propertyCollapsed?'property-collapsed':'')}>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
                             <div className="row">
                                 <div className="form-group  action">
@@ -782,11 +782,10 @@ export class PlayerArea extends Component {
                 </div>
 
                 <div className="panel panel-default asset-lib">
-                    <div className="panel-heading lib-title" onClick={()=>{this.sidebarClick('assetLibCollapsed')}}>
-                        <span
-                            className={"glyphicon "+(sidebarInfo.assetLibCollapsed?"glyphicon-triangle-bottom":"glyphicon-triangle-right")}></span>素材库
+                    <div className="panel-heading lib-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed')}}>
+                        <span className={"glyphicon "+(sidebarInfo.assetLibCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>素材库
                     </div>
-                    <div className="panel-body">
+                    <div className={"panel-body "+(sidebarInfo.assetLibCollapsed?'assetLib-collapsed':'')}>
                         <div className="asset-container">
                             <div className="top">
                                 <Select className="asset-type" data={assetType}

@@ -344,8 +344,12 @@
         .panel-body{
           padding: 0;
           opacity: 1;
-
           .addAnimation();
+          &.property-collapsed, &.assetLib-collapsed{
+            opacity: 0;
+            height: 0;
+            display: none;
+          }
         }
 
       }
@@ -377,6 +381,7 @@
         margin-top: 7.5px;
       }
     }
+
     .pro-title {
       padding: 14px 20px;
       //height: 50px;
@@ -394,7 +399,7 @@
     }
 
     .pro-container {
-      height: 215px;
+      //height: 215px;
 
       padding-top: 20px;
       padding-right: 20px;
@@ -520,6 +525,7 @@
       color: #333744;
 
       cursor: pointer;
+      z-index: 99;
       span{
         top: 2px;
         margin-right: 5px;
@@ -574,6 +580,7 @@
       }
 
       .bottom {
+        position: relative;
         height: 309px;
         padding-top: 10px;
         ul.asset-list {
