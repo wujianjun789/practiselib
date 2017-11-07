@@ -244,13 +244,17 @@ export class DeviceReplace extends Component {
                 };
                 
                 overlayerShow(<DeviceNumberModifyPopup className="device-num-modify-popup" data={dataInit}
+                    title="修改设备编号"
                     overlayerHide={overlayerHide} addNotify={addNotify} selectDevice = {this.state.selectDevice}
                     onConfirm={(id1,id2)=>{
-                        updateDeviceIdById(id1,id2,()=>{this.requestSearch();})
+                        // updateDeviceIdById(id1,id2,()=>{this.requestSearch();})
                     }}/>);
             break;
 
         }
+    }
+    updateDeviceIdById(id1, id2, cb) {
+       //更新设备编号 
     }
 
     pageChange(current, pageSize) {

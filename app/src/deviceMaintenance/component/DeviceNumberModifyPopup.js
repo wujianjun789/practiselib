@@ -44,8 +44,8 @@ export default class DeviceNumberModifyPopup extends Component {
     }
 
     render() {
-        const { title, deviceName, deviceId, numberValid } = this.state;
-        const {selectDevice, className} = this.props;
+        const { deviceName, deviceId, numberValid } = this.state;
+        const {title, selectDevice, className} = this.props;
         let valid = numberValid;
 
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={['取消', '确认']}
