@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import ReactDom from 'react-dom'
-import '../../../public/styles/material-media.less'
 
-export default class Media extends Component {
+
+export default class Video extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,21 +31,21 @@ export default class Media extends Component {
     render() {
         const { filename } = this.state;
         return (
-            <div className='material-media'>
+            <div className='material'>
                 <div>
                     <span>素材名称</span>
                     <input />
                 </div>
-                <div className='media-file'>
+                <div className='import'>
                     <span>导入素材</span>
-                    <div className='file-input'>
+                    <div className='file-path'>
                         {filename ? filename : '选择列表文件路径'}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
                         <input type="file" id='select-file' onChange={this.readPicture} />
                     </div>
                 </div>
-                <div className='media-pic'>
-                    <img src={this.state.url} alt='图片' />
+                <div className='show'>
+                    <img src={this.state.url} alt='image' />
                 </div>
             </div>
         )

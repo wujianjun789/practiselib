@@ -97,7 +97,7 @@ export class DeviceReplace extends Component {
 
         this.requestSearch = this.requestSearch.bind(this);
         this.initPageSize = this.initPageSize.bind(this);
-        // this.initDomainList = this.initDomainList.bind(this);
+        this.initDomainList = this.initDomainList.bind(this);
         this.initAssetList = this.initAssetList.bind(this);
         this.onChange = this.onChange.bind(this);
 
@@ -227,6 +227,7 @@ export class DeviceReplace extends Component {
                 };
 
                 overlayerShow(<ImportExcelPopup className='devicemaintenance-popup' columns={this.columns} model={this.state.model} 
+                title="批量更换"
                 domainList = {this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide} 
                 onConfirm={ (datas,isUpdate) => {
                     bacthImport(`${this.state.model}s`, datas,isUpdate, () => {

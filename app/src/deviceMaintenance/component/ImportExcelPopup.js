@@ -72,14 +72,14 @@ export default class ImportExcelPopup extends Component {
     }
 
     render() {
-        const {className,columns} =this.props;
+        const {className,columns, title} =this.props;
         const {data,page,filename} =this.state;
         
         let result=Immutable.fromJS(data.slice((page.current-1)*page.pageSize,page.current*page.pageSize))
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;    
         
         return <div className={ className }>
-            <Panel title = '批量更换' footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
+            <Panel title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className='row'>
                     <div className='import-select'>
                         {filename?filename:'选择列表文件路径'}
