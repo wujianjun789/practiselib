@@ -51,12 +51,12 @@ export class TreeView extends Component{
     }
 
     renderMove(node, key){
-        return this.props.IsMove && node.active && <span className={"glyphicon "+key+ " up-down"}
+        return this.props.IsMove && node.active && <span className={"glyphicon "+key+ " up-down"} title={key=="glyphicon-triangle-bottom"?"下移":"上移"}
                                                          onClick={(event)=>{event.stopPropagation();this.onMove(key=="glyphicon-triangle-bottom"?"down":"up", node)}}></span>
     }
 
     renderRemove(node){
-        return this.props.IsRemove && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.onRemove(node)}}></span>
+        return this.props.IsRemove && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.onRemove(node)}}></span>
     }
 
     renderTree(datalist, index, toggled){

@@ -625,9 +625,9 @@ export class PlayerArea extends Component {
                                 <div className={"background "+(curId==itemId?'':'hidden')}></div>
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-left move-left" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left')}}></span>}
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" onCLick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
-                                {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
+                                {curId==itemId && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left')}}></span>}
+                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onCLick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
+                                {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
                             </li>
                         })
                     }
@@ -909,7 +909,7 @@ export class PlayerArea extends Component {
                                             onChange={value=>this.onChange("assetSearch", value)}
                                             submit={this.searchSubmit}></SearchText>
                                 <div className={"btn-group "+(assetList.get('isEdit')?'':'hidden')}>
-                                    <button className="btn btn-primary add" onClick={this.showModal}>添加</button>
+                                    <button className="btn btn-primary add" onClick={this.showModal}>导入</button>
                                     <button className="btn btn-primary" onClick={()=>this.assetList('edit')}>编辑</button>
                                 </div>
                                 <div className={"btn-group "+(assetList.get('isEdit')?'hidden':'')}>
@@ -940,8 +940,8 @@ export class PlayerArea extends Component {
                                                 <div className={"background "+(curId==id?'':'hidden')}></div>
                                                 <span className="icon"></span>
                                                 <span className="name">{item.get('name')}</span>
-                                                {!playerListAsset.get('isEdit') && <span className="icon_add_c add" onClick={(event)=>{event.stopPropagation();this.addClick(item)}}></span>}
-                                                {!assetList.get('isEdit') && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
+                                                {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event)=>{event.stopPropagation();this.addClick(item)}}></span>}
+                                                {!assetList.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
                                             </li>
                                         })
                                     }

@@ -13,7 +13,9 @@ export default class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEdit: true
+            isEdit: true,
+            IsRemove: false,
+            IsMove: true
         };
 
         this.onClick = this.onClick.bind(this);
@@ -40,16 +42,16 @@ export default class SideBar extends Component {
 
     onClick(id){
         if(id == 'edit' || id == 'complete'){
-            this.setState({isEdit:!this.state.isEdit}, ()=>{this.props.onClick && this.props.onClick(id)})
+            this.setState({isEdit:!this.state.isEdit, IsRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
         }else{
             this.props.onClick && this.props.onClick(id);
         }
     }
     render() {
         const {data} = this.props;
-        const {isEdit}  = this.state;
+        const {isEdit, IsRemove, IsMove}  = this.state;
         return <div className="sidebar">
-            <div className="title">计划划分</div>
+
             <div className="edit-container">
                 <div className={"btn-group "+(isEdit?'':'hidden')}>
                     <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加</button>
@@ -61,7 +63,8 @@ export default class SideBar extends Component {
                 </div>
 
             </div>
-            <TreeView className="mediaPublish" IsRemove={true} IsMove={true} onToggle={ (node) => this.onToggle(node) } />
+            <div className="title">国庆节方案</div>
+            <TreeView className="mediaPublish" IsRemove={IsRemove} IsMove={IsMove} onToggle={ (node) => this.onToggle(node) } />
             {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>
     }
