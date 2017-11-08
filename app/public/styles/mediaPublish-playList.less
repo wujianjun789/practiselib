@@ -601,6 +601,8 @@
 
           &:nth-child(5){
             button:first-child{
+              visibility: hidden;
+
               margin-right: 20px;
               background-color: #ff5c68;
               border: 0;
@@ -663,6 +665,14 @@
               text-align: center;
 
               user-select: none;
+            }
+
+            .add,.remove{
+              position: absolute;
+              top: 1px;
+              right: 1px;
+
+              font-size: 18px;
             }
           }
         }
@@ -802,6 +812,30 @@
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+        }
+
+        .remove{
+          position: absolute;
+          top: 1px;
+          right: 1px;
+
+          font-size: 18px;
+        }
+
+        .move-left{
+          position: absolute;
+          top: 26px;
+          left: 22px;
+
+          font-size: 16px;
+        }
+
+        .move-right{
+          position: absolute;
+          top: 26px;
+          right: 22px;
+
+          font-size: 16px;
         }
       }
     }
