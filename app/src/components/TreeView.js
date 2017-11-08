@@ -51,12 +51,12 @@ export class TreeView extends Component{
     }
 
     renderMove(node, key){
-        return this.props.IsMove && node.active && <span className={"glyphicon "+key+ " up-down"}
+        return this.props.IsMove && !this.props.IsCancelSelect && node.active && <span className={"glyphicon "+key+ " up-down"} title={key=="glyphicon-triangle-bottom"?"下移":"上移"}
                                                          onClick={(event)=>{event.stopPropagation();this.onMove(key=="glyphicon-triangle-bottom"?"down":"up", node)}}></span>
     }
 
     renderRemove(node){
-        return this.props.IsRemove && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.onRemove(node)}}></span>
+        return this.props.IsRemove && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.onRemove(node)}}></span>
     }
 
     renderTree(datalist, index, toggled){
@@ -72,7 +72,7 @@ export class TreeView extends Component{
                     let count = this.state.language=='zh'?6:10;
                     let value = node.name.slice(0, count)+(node.name.length>count?'...':'');
                     if(!(node.children)){
-                        return <li key={index} className={'node '+(node.active ? 'active':'')}>
+                        return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                         <div onClick={()=>this.onToggle(node)} title={node.name}>
                                             <span className={"icon "+node.class}></span>
@@ -85,7 +85,7 @@ export class TreeView extends Component{
                                     {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }else{
-                        return <li key={index} className={'node '+(node.active ? 'active':'')}>
+                        return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                     <div onClick={()=>this.onToggle(node)} title={node.name}>
                                         <span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')+' toggled'}></span>

@@ -97,19 +97,25 @@
 
     max-height: 626px;
     .title {
-      height: 50px;
+      height: 40px;
+      line-height: 40px;
 
       padding-left: 35px;
 
-      background-color: #d3d8dd;
+      background-color: #b6bac1;
       font-size: 14px;
       font-weight: bold;
+
+      cursor: pointer;
+      &.active{
+        color: #ffffff;
+        background: linear-gradient(to right, #00bcff, #00d8ff);
+      }
     }
 
     .edit-container {
       height: 70px;
       background-color: #e6e6e6;
-
       .btn-group{
         .btn{
           margin-top: 20px;
@@ -131,7 +137,7 @@
           }
         }
 
-        &:last-child{
+        &:nth-child(2){
           button:first-child{
             visibility: hidden;
             margin-right: 10px;
@@ -146,6 +152,34 @@
             margin-left: 10px;
           }
         }
+      }
+    }
+
+    .add-poppup{
+      display: none;
+      position: absolute;
+      top: 58px;
+      left: 20px;
+
+      width: 95px;
+
+      padding: 5px;
+      border-radius: 5px;
+      background: #f2f2f4;
+      span{
+        padding: 0px 8px;
+        &.icon{
+          cursor: pointer;
+        }
+        &.glyphicon{
+          position: absolute;
+          top: -9px;
+          color: #f2f2f4;
+        }
+      }
+
+      &.active{
+        display: block;
       }
     }
 
@@ -187,6 +221,7 @@
             line-height: 20px;
 
             float: right;
+            font-size: 16px;
           }
 
           &.up-down{
@@ -194,6 +229,8 @@
             line-height: 20px;
 
             float: right;
+
+            font-size: 16px;
           }
 
           //clear: both;
@@ -236,12 +273,14 @@
             float: right;
             height: 40px;
             line-height: 40px;
+            font-size: 16px;
           }
 
           &.up-down{
             float: right;
             height: 40px;
             line-height: 40px;
+            font-size: 16px;
           }
         }
 
@@ -833,6 +872,7 @@
         }
         &:first-child,&:last-child{
           > button:first-child{
+            display: none;
             margin-top: 10px;
             margin-bottom: 14px;
           }
@@ -840,6 +880,7 @@
 
         &:first-child{
           > button:last-child {
+            margin-top: 30px;
             margin-bottom: 10px;
 
             background-color: #495264;
@@ -849,11 +890,15 @@
 
         &:last-child{
           > button:first-child {
-            visibility: hidden;
+            display: none;
             margin-bottom: 14px;
 
             background-color: #ff5c68;
             border: 0;
+          }
+
+          >button:last-child{
+            margin-top: 30px;
           }
         }
       }

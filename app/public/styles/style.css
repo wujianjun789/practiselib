@@ -620,6 +620,8 @@ ul {
     float: right;
     /*margin-top: 3px;*/
     padding-right: 8px;
+
+    font-size: 16px;
 }
 
 .tree-list span.up-down{
@@ -633,6 +635,7 @@ ul {
     padding-right: 3px;
 
     color: #fff;
+    font-size: 16px;
 }
 
 .map-view{

@@ -31,7 +31,7 @@ export default class Material extends PureComponent {
             <div>
                 <Modal title="添加素材" visible={this.props.showModal}
                     onOk={this.handleOk} onCancel={this.handleCancel}>
-                    <Tabs  defaultActiveKey="1" onChange={this.switchTab}>
+                    <Tabs  defaultActiveKey="2" onChange={this.switchTab}>
                         <TabPane tab="文字" key="1">
                             <Text/>
                         </TabPane>
