@@ -139,7 +139,8 @@ export class PlayerArea extends Component {
                 axisX_a: {key: "axisX_a", title: "X轴", placeholder: '请输入X轴坐标', value: ""},
                 axisY_a: {key: "axisY_a", title: "Y轴", placeholder: '请输入Y轴坐标', value: ""},
 
-                assetName: {key: "assetName", title: "素材名称", placeholder: '素材', value: ""},
+                //素材
+                assetName: {key: "assetName", title: "素材名称", placeholder: '素材名称', value: ""},
 
                 //图片素材
                 displayMode: {key: "displayMode", title: "显示方式", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
@@ -157,8 +158,15 @@ export class PlayerArea extends Component {
                         {id: 36, name: '随机'}                
                     ],index: 0, name: ""},
                 playTime: {key: "playTime", title: "播放时长", placeholder: '秒/s', value: ""},
-                playSpeed: {key: "playSpeed", title: "播放速度", placeholder: 'ms', value: ""} 
+                playSpeed: {key: "playSpeed", title: "播放速度", placeholder: 'ms', value: ""},
 
+                //视频素材
+                playTime:{key: "playTime", title: "播放次数", placeholder: '次', value: ""},
+                playType:{key: "playType", title: "播放类型", list: [{id: 1, name: '片段播放'}, {id: 2, name: '完整播放'}],index: 0, name: ""},
+                clipsRage:{key: "clipsRage", title: "片段范围", placeholder: '次', value: ""},
+                scaling: {key: "scaling", title: "缩放比例", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
+                volume: {key: "volume", title: "音量", list: [{id: 1, name: '100'}, {id: 2, name: '90'}, {id: 3, name: '80'}, 
+                {id: 4, name: '70'}, {id: 5, name: '60'}, {id: 6, name: '50'}, {id: 7, name: '40'}, {id: 8, name: '30'}, {id: 9, name: '20'},{id: 10, name: '10'},{id: 11, name: '11'}],index: 0, name: ""},
             },
             assetType: Immutable.fromJS({list: [{id: 1, value: '类别1'}, {id: 2, value: '类别2'}], index: 0, value: '类别1'}),
             assetSort: Immutable.fromJS({
@@ -310,7 +318,7 @@ export class PlayerArea extends Component {
     playerAssetSelect(item) {
         console.log(item.toJS());
         this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        this.setState({curType:"playerAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
+        this.setState({curType:"playerPicAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
         // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
@@ -354,7 +362,7 @@ export class PlayerArea extends Component {
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=> {
         });
-    }
+    } 
 
     playerListAssetClick(id) {
         if (id == 'add') {
@@ -827,31 +835,26 @@ export class PlayerArea extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className={"pro-container playerAsset "+(curType=='playerAsset'?'':"hidden")}>
-                            <div className="form-group  asset-name">
-                                <label className="control-label"
-                                        htmlFor={property.assetName.key}>{property.assetName.title}</label>
+                        <div className={"pro-container playerPicAsset "+(curType=='playerPicAsset'?'':"hidden")}>
+                            <div className="form-group">
+                                <label className="control-label">{property.assetName.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className={ "form-control " }
-                                            placeholder={property.assetName.placeholder} maxLength="8"
-                                            value={property.assetName.value}
-                                            onChange={event=>this.onChange("assetName", event)}/>
-                                    <span className={prompt.assetName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    <input type="text" className="form-control" disabled="disabled" value={property.assetName.value} />
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="control-label">{property.displayMode.title}</label>
                                 <div className="input-container">
-                                <select className={ "form-control" } value={ property.displayMode.name }
-                                                onChange={ event=>this.onChange("displayMode", event) }>
-                                            {
-                                                property.displayMode.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={ index } value={ value }>
-                                                        { value }
-                                                    </option>
-                                                }) }
-                                        </select>
+                                    <select className={ "form-control" } value={ property.displayMode.name }
+                                            onChange={ event=>this.onChange("displayMode", event) }>
+                                        {
+                                            property.displayMode.list.map((option, index) => {
+                                                let value = option.name;
+                                                return <option key={ index } value={ value }>
+                                                    { value }
+                                                </option>
+                                            }) }
+                                    </select>
                                 </div>
                             </div>
                             <div className="form-group">
@@ -869,7 +872,7 @@ export class PlayerArea extends Component {
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group  playTime">
+                            <div className="form-group">
                                 <label className="col-sm-3 control-label">{property.animation.title}</label>
                                 <div className="input-container">
                                     <input type="text" className={ "form-control " }
@@ -879,14 +882,77 @@ export class PlayerArea extends Component {
                                     <span className={prompt.playTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
-                            <div className="form-group  playSpeed">
+                            <div className="form-group">
                                 <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className={ "form-control " }
+                                    <input type="text" className={ "form-control" }
                                             placeholder={property.playSpeed.placeholder} maxLength="8"
                                             value={property.playSpeed.value}
                                             onChange={event=>this.onChange("playTime", event)}/>
                                     <span className={prompt.playSpeed?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={"pro-container playerVideoAsset "+(curType=='playerVideoAsset'?'':"hidden")}>
+                            <div className="form-group">
+                                <label className="control-label">{property.assetName.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className="form-control" disabled="disabled" value={property.assetName.value} />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-sm-3 control-label">{property.playTime.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.playTime.placeholder} maxLength="8"
+                                            value={property.playTime.value}
+                                            onChange={event=>this.onChange("playTime", event)}/>
+                                    <span className={prompt.playTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label">{property.scaling.title}</label>
+                                <div className="input-container">
+                                    <select className={ "form-control" } value={ property.scaling.name }
+                                            onChange={ event=>this.onChange("scaling", event) }>
+                                        {
+                                            property.scaling.list.map((option, index) => {
+                                                let value = option.name;
+                                                return <option key={ index } value={ value }>
+                                                    { value }
+                                                </option>
+                                            }) }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label">{property.playType.title}</label>
+                                <div className="input-container">
+                                    <select className={ "form-control" } value={ property.playType.name }
+                                            onChange={ event=>this.onChange("playType", event) }>
+                                        {
+                                            property.playType.list.map((option, index) => {
+                                                let value = option.name;
+                                                return <option key={ index } value={ value }>
+                                                    { value }
+                                                </option>
+                                            }) }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label">{property.volume.title}</label>
+                                <div className="input-container">
+                                    <select className={ "form-control" } value={ property.volume.name }
+                                            onChange={ event=>this.onChange("volume", event) }>
+                                        {
+                                            property.volume.list.map((option, index) => {
+                                                let value = option.name;
+                                                return <option key={ index } value={ value }>
+                                                    { value }
+                                                </option>
+                                            }) }
+                                    </select>
                                 </div>
                             </div>
                         </div>
