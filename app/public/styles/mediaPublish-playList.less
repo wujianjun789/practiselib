@@ -450,7 +450,6 @@
       }
       .form-group {
         display: inline-block;
-        margin-right: 20px;
         label {
           text-align: right;
           width: 30px;
@@ -461,9 +460,9 @@
         }
 
         .input-container {
-          //position: relative;
+          //position: relative; 
           display: inline-block;
-          width: 135px;
+          width: 250px;
           .form-control {
             height: 40px;
           }
@@ -520,30 +519,15 @@
         }
       }
 
-      &.playerArea {
-        padding-left: 20px;
+      &.playerArea,&.playerScene,&.playerAsset {
+        padding-left: 0;
         .form-group {
           label {
-            width: 50px;
+            width: 70px;
           }
-
-          &.area-name {
+          &:first-child {
             .input-container {
-              width: 560px;
-            }
-          }
-        }
-      }
-
-      &.playerScene {
-        padding-left: 20px;
-        .form-group {
-          label {
-            width: 50px;
-          }
-          &.asset-name {
-            .input-container {
-              width: 560px;
+              width: 580px;
             }
           }
         }

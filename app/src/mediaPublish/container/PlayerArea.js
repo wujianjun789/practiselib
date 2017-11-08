@@ -139,7 +139,26 @@ export class PlayerArea extends Component {
                 axisX_a: {key: "axisX_a", title: "X轴", placeholder: '请输入X轴坐标', value: ""},
                 axisY_a: {key: "axisY_a", title: "Y轴", placeholder: '请输入Y轴坐标', value: ""},
 
-                assetName: {key: "assetName", title: "素材名称", placeholder: '素材', value: ""}
+                assetName: {key: "assetName", title: "素材名称", placeholder: '素材', value: ""},
+
+                //图片素材
+                displayMode: {key: "displayMode", title: "显示方式", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
+                animation: {key: "animation", title: "动画效果", 
+                    list: [
+                        {id: 1, name: '立即显示'}, {id: 2, name: '闪烁'}, {id: 3, name: '长串左移'}, 
+                        {id: 4, name: '上移'}, {id: 5, name: '下移'}, {id: 6, name: '左移'}, {id: 7, name: '右移'}, 
+                        {id: 8, name: '自上而下展现'}, {id: 9, name: '自下而上展现'},{id: 10, name: '自右而左展现'}, {id: 11, name: '自左而右展现'}, 
+                        {id: 12, name: '自上而下百叶窗'}, {id: 13, name: '自下而上百叶窗'}, {id: 14, name: '自右而左百叶窗'}, {id: 15, name: '自左而右百叶窗'}, 
+                        {id: 16, name: '自上而下棋盘格'}, {id: 17, name: '自下而上棋盘格'}, {id: 18, name: '自右而左棋盘格'}, {id: 19, name: '自左而右棋盘格'}, 
+                        {id: 20, name: '上下向中间合拢'}, {id: 21, name: '中间向上下展开'}, {id: 22, name: '左右向中间合拢'}, {id: 23, name: '中间向左右展开'},
+                        {id: 24, name: '矩形自四周向中心合拢'}, {id: 25, name: '矩形自中心向四周展开'}, {id: 26, name: '向左拉幕'}, {id: 27, name: '向右拉幕'},
+                        {id: 28, name: '向上拉幕'}, {id: 29, name: '向下拉幕'}, {id: 30, name: '矩形自左下向右上展现'}, {id: 31, name: '矩形自左上向右下展现'},
+                        {id: 32, name: '矩形自右下向左上展现'}, {id: 33, name: '矩形自右上向左下展现'}, {id: 34, name: '斜线自左上向右下展现'}, {id: 35, name: '斜线自右下向左上展现'},
+                        {id: 36, name: '随机'}                
+                    ],index: 0, name: ""},
+                playTime: {key: "playTime", title: "播放时长", placeholder: '秒/s', value: ""},
+                playSpeed: {key: "playSpeed", title: "播放速度", placeholder: 'ms', value: ""} 
+
             },
             assetType: Immutable.fromJS({list: [{id: 1, value: '类别1'}, {id: 2, value: '类别2'}], index: 0, value: '类别1'}),
             assetSort: Immutable.fromJS({
@@ -167,7 +186,7 @@ export class PlayerArea extends Component {
             prompt: {
                 action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
-                assetName: true
+                assetName: true,playTime:true, playSpeed:true,
             },
 
             showModal: false,
@@ -288,7 +307,7 @@ export class PlayerArea extends Component {
         console.log(item.toJS());
         // this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
         const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
-        this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
+        this.setState({curType:"playerAsset",playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
     onChange(id, value) {
@@ -712,63 +731,59 @@ export class PlayerArea extends Component {
                             </div>
                         </div>
                         <div className={"pro-container playerArea "+(curType=='playerArea'?'':"hidden")}>
-                            <div className="row">
-                                <div className="form-group  area-name">
-                                    <label className="control-label"
-                                           htmlFor={property.areaName.key}>{property.areaName.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.areaName.placeholder} maxLength="8"
-                                               value={property.areaName.value}
-                                               onChange={event=>this.onChange("areaName", event)}/>
-                                        <span className={prompt.areaName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
+                            <div className="form-group  area-name">
+                                <label className="control-label"
+                                        htmlFor={property.areaName.key}>{property.areaName.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.areaName.placeholder} maxLength="8"
+                                            value={property.areaName.value}
+                                            onChange={event=>this.onChange("areaName", event)}/>
+                                    <span className={prompt.areaName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="form-group  width">
-                                    <label className="col-sm-3 control-label"
-                                           htmlFor={property.width.key}>{property.width.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.width.placeholder} maxLength="8"
-                                               value={property.width.value}
-                                               onChange={event=>this.onChange("width", event)}/>
-                                        <span className={prompt.width?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
+                            <div className="form-group  width">
+                                <label className="col-sm-3 control-label"
+                                        htmlFor={property.width.key}>{property.width.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.width.placeholder} maxLength="8"
+                                            value={property.width.value}
+                                            onChange={event=>this.onChange("width", event)}/>
+                                    <span className={prompt.width?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
-                                <div className="form-group  height">
-                                    <label className="col-sm-3 control-label"
-                                           htmlFor={property.height.key}>{property.height.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.height.placeholder} maxLength="8"
-                                               value={property.height.value}
-                                               onChange={event=>this.onChange("height", event)}/>
-                                        <span className={prompt.height?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
+                            </div>
+                            <div className="form-group  height">
+                                <label className="col-sm-3 control-label"
+                                        htmlFor={property.height.key}>{property.height.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.height.placeholder} maxLength="8"
+                                            value={property.height.value}
+                                            onChange={event=>this.onChange("height", event)}/>
+                                    <span className={prompt.height?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
-                                <div className="form-group  axisX_a">
-                                    <label className="col-sm-3 control-label"
-                                           htmlFor={property.axisX_a.key}>{property.axisX_a.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.axisX_a.placeholder} maxLength="8"
-                                               value={property.axisX_a.value}
-                                               onChange={event=>this.onChange("axisX_a", event)}/>
-                                        <span className={prompt.axisX_a?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
+                            </div>
+                            <div className="form-group  axisX_a">
+                                <label className="col-sm-3 control-label"
+                                        htmlFor={property.axisX_a.key}>{property.axisX_a.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.axisX_a.placeholder} maxLength="8"
+                                            value={property.axisX_a.value}
+                                            onChange={event=>this.onChange("axisX_a", event)}/>
+                                    <span className={prompt.axisX_a?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
-                                <div className="form-group  axisY_a">
-                                    <label className="col-sm-3 control-label"
-                                           htmlFor={property.axisY_a.key}>{property.axisY_a.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.axisY_a.placeholder} maxLength="8"
-                                               value={property.axisY_a.value}
-                                               onChange={event=>this.onChange("axisY_a", event)}/>
-                                        <span className={prompt.axisY_a?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
+                            </div>
+                            <div className="form-group  axisY_a">
+                                <label className="col-sm-3 control-label"
+                                        htmlFor={property.axisY_a.key}>{property.axisY_a.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.axisY_a.placeholder} maxLength="8"
+                                            value={property.axisY_a.value}
+                                            onChange={event=>this.onChange("axisY_a", event)}/>
+                                    <span className={prompt.axisY_a?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
                         </div>
@@ -784,6 +799,69 @@ export class PlayerArea extends Component {
                                                onChange={event=>this.onChange("assetName", event)}/>
                                         <span className={prompt.assetName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={"pro-container playerAsset "+(curType=='playerAsset'?'':"hidden")}>
+                            <div className="form-group  asset-name">
+                                <label className="control-label"
+                                        htmlFor={property.assetName.key}>{property.assetName.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.assetName.placeholder} maxLength="8"
+                                            value={property.assetName.value}
+                                            onChange={event=>this.onChange("assetName", event)}/>
+                                    <span className={prompt.assetName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label">{property.displayMode.title}</label>
+                                <div className="input-container">
+                                <select className={ "form-control" } value={ property.displayMode.name }
+                                                onChange={ event=>this.onChange("displayMode", event) }>
+                                            {
+                                                property.displayMode.list.map((option, index) => {
+                                                    let value = option.name;
+                                                    return <option key={ index } value={ value }>
+                                                        { value }
+                                                    </option>
+                                                }) }
+                                        </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label">{property.animation.title}</label>
+                                <div className="input-container">
+                                    <select className={ "form-control" } value={ property.animation.name }
+                                            onChange={ event=>this.onChange("animation", event) }>
+                                        {
+                                            property.animation.list.map((option, index) => {
+                                                let value = option.name;
+                                                return <option key={ index } value={ value }>
+                                                    { value }
+                                                </option>
+                                            }) }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group  playTime">
+                                <label className="col-sm-3 control-label">{property.animation.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.playTime.placeholder} maxLength="8"
+                                            value={property.playTime.value}
+                                            onChange={event=>this.onChange("playTime", event)}/>
+                                    <span className={prompt.playTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group  playSpeed">
+                                <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className={ "form-control " }
+                                            placeholder={property.playSpeed.placeholder} maxLength="8"
+                                            value={property.playSpeed.value}
+                                            onChange={event=>this.onChange("playTime", event)}/>
+                                    <span className={prompt.playSpeed?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
                         </div>
