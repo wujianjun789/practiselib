@@ -511,6 +511,8 @@ export class PlayerArea extends Component {
             actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{
                                                 }}/>)
+        }else if(id == "project"){
+
         }
     }
 

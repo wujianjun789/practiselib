@@ -53,8 +53,11 @@ export default class SideBar extends Component {
     }
 
     onProject(){
-        this.setState({isProject: true});
+        this.setState({isProject: true}, ()=>{
+            this.props.onClick && this.props.onClick('project');
+        });
     }
+
     render() {
         const {data} = this.props;
         const {isProject, isEdit, isRemove, isMove}  = this.state;
