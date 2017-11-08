@@ -626,7 +626,7 @@ export class PlayerArea extends Component {
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
                                 {curId==itemId && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left')}}></span>}
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onCLick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
+                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
                                 {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
                             </li>
                         })
