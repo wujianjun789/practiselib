@@ -172,11 +172,9 @@ export class PlayerArea extends Component {
                     {id: 4, name: '素材4'}], id: 1, name: '素材1', isEdit: true
             }),
             playerListAsset: Immutable.fromJS({
-                list: [{id: 1, name: '素材1', active: true}, {id: 2, name: '素材2'}, {id: 3, name: '素材3'}, {
-                    id: 4,
-                    name: '素材4'
-                },
-                    {id: 5, name: '素材5'}, {id: 6, name: '素材6'}], id: 1, name: '素材1', isEdit: true
+                list: [{id: 1, name: '素材1'}, {id: 2, name: '素材2'}, {id: 3, name: '素材3'},
+                    {id: 4, name: '素材4'}, {id: 5, name: '素材5'}, {id: 6, name: '素材6'}],
+                id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
                 pageSize: 10,
@@ -222,6 +220,11 @@ export class PlayerArea extends Component {
         this.playerListAssetClick = this.playerListAssetClick.bind(this);
         this.assetList = this.assetList.bind(this);
         this.sidebarClick = this.sidebarClick.bind(this);
+
+        this.addClick = this.addClick.bind(this);
+        this.assetLibRemove = this.assetLibRemove.bind(this);
+        this.playerAssetRemove = this.playerAssetRemove.bind(this);
+        this.playerAssetMove = this.playerAssetMove.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -298,16 +301,18 @@ export class PlayerArea extends Component {
 
     assetSelect(item) {
         console.log(item.toJS());
-        // this.state.assetList = this.state.assetList.update('id', v=>item.get('id'));
-        const curIndex = getIndexByKey(this.state.assetList.get('list'), 'id', item.get('id'));
-        this.setState({assetList: this.state.assetList.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
+        this.state.assetList = this.state.assetList.update('id', v=>item.get('id'));
+        this.setState({assetList: this.state.assetList.update('name', v=>item.get('name'))});
+        // const curIndex = getIndexByKey(this.state.assetList.get('list'), 'id', item.get('id'));
+        // this.setState({assetList: this.state.assetList.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
     playerAssetSelect(item) {
         console.log(item.toJS());
-        // this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
-        this.setState({curType:"playerAsset",playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
+        this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
+        this.setState({curType:"playerAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
+        // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
+        // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
     onChange(id, value) {
@@ -391,6 +396,22 @@ export class PlayerArea extends Component {
         } else if (id == 'complete') {
             this.setState({assetList: this.state.assetList.update('isEdit', v=>true)});
         }
+    }
+
+    addClick(item){
+        console.log('addClick:', item.toJS());
+    }
+
+    assetLibRemove(item){
+        console.log('assetLibRemove:', item.toJS());
+    }
+
+    playerAssetRemove(item){
+        console.log('playerAssetRemove:', item.toJS());
+    }
+
+    playerAssetMove(id){
+        console.log('playerAssetMove:', id);
     }
 
     updatePlayerScenePopup() {
@@ -598,11 +619,15 @@ export class PlayerArea extends Component {
                 <ul>
                     {
                         playerListAsset.get('list').map(item=> {
-                            return <li key={item.get("id")} className="player-list-asset"
-                                       onClick={()=>this.playerAssetSelect(item)}>
-                                <div className={"background "+(item.get('active')?'':'hidden')}></div>
+                            const itemId = item.get('id');
+                            const curId = playerListAsset.get('id');
+                            return <li key={itemId} className="player-list-asset" onClick={()=>this.playerAssetSelect(item)}>
+                                <div className={"background "+(curId==itemId?'':'hidden')}></div>
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
+                                {curId==itemId && <span className="glyphicon glyphicon-triangle-left move-left" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left')}}></span>}
+                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" onCLick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
+                                {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
                             </li>
                         })
                     }
@@ -901,6 +926,7 @@ export class PlayerArea extends Component {
                                         assetList.get('list').map((item, index)=> {
                                             let x, y;
                                             const id = item.get('id');
+                                            const curId = assetList.get('id');
                                             if (id == lastPress && isPressed) {
                                                 [x, y] = mouseXY;
                                             } else {
@@ -909,10 +935,13 @@ export class PlayerArea extends Component {
 
                                             return <li key={id} className={index>0&&index%4==0?"margin-right":""}
                                                        style={{transform: `translate(${x}px,${y}px)`, zIndex:id == lastPress?99:0}}
-                                                       onMouseDown={event=>{this.handleMouseDown(item, [x, y],{pageX:event.pageX, pageY:event.pageY})}}>
-                                                <div className={"background "+(item.get('active')?'':'hidden')}></div>
+                                                       onClick={()=>this.assetSelect(item)}>
+                                                    {/*onMouseDown={event=>{this.handleMouseDown(item, [x, y],{pageX:event.pageX, pageY:event.pageY})}}*/}
+                                                <div className={"background "+(curId==id?'':'hidden')}></div>
                                                 <span className="icon"></span>
                                                 <span className="name">{item.get('name')}</span>
+                                                {!playerListAsset.get('isEdit') && <span className="icon_add_c add" onClick={(event)=>{event.stopPropagation();this.addClick(item)}}></span>}
+                                                {!assetList.get('isEdit') && <span className="icon_delete_c remove" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
                                             </li>
                                         })
                                     }
