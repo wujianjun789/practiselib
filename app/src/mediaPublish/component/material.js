@@ -20,26 +20,24 @@ export default class Material extends PureComponent {
 
     handleCancel = (e) => {
         this.props.hideModal()
-        this.props.removeAllNotify();
     }
     switchTab=(key)=>{
-        this.props.removeAllNotify();
+       
     }
     render() {
-        console.log(this.props.showModal)
         return (
             <div>
                 <Modal title="添加素材" visible={this.props.showModal}
                     onOk={this.handleOk} onCancel={this.handleCancel}>
                     <Tabs  defaultActiveKey="2" onChange={this.switchTab}>
                         <TabPane tab="文字" key="1">
-                            <Text addNotify={this.props.addNotify}/>
+                            <Text/>
                         </TabPane>
                         <TabPane tab="图片" key="2">
-                            <Image addNotify={this.props.addNotify} />
+                            <Image />
                         </TabPane>
                         <TabPane tab="视频" key="3">
-                            <Video addNotify={this.props.addNotify}/>
+                            <Video />
                         </TabPane>
                     </Tabs>
                 </Modal>
