@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import NotifyPopup from '../../common/containers/NotifyPopup'
 
 
 export default class Video extends Component {
@@ -8,7 +7,7 @@ export default class Video extends Component {
         this.state = {
             name: '',
             path: '',
-            data:null
+            url:null
         }
         this.changeName = this.changeName.bind(this);
         this.importMaterial = this.importMaterial.bind(this);
@@ -20,23 +19,25 @@ export default class Video extends Component {
 
     importMaterial(e) {
         const self=this;
-        const { addNotify } = this.props;
-        const reader = new FileReader();
-        const file = e.target.files[0];
-        console.log(file.type)
-        if (!/^video\/\w+/.test(file.type)) {
-            addNotify(0, '请选择视频');
-            return false;
-        }
-        this.setState({path:file.name});
-        reader.readAsDataURL(file);
-        reader.onload=function(e){
-            self.setState({data:this.result})
-        }
+        const file=e.target.files[0];
+        const url=URL.createObjectURL(file);
+        this.setState({path:file.name,url:url})
+        // const reader = new FileReader();
+        // const file = e.target.files[0];
+        // console.log(file.type)
+        // if (!/^video\/\w+/.test(file.type)) {
+        //     addNotify(0, '请选择视频');
+        //     return false;
+        // }
+        // this.setState({path:file.name});
+        // reader.readAsDataURL(file);
+        // reader.onload=function(e){
+        //     self.setState({data:this.result})
+        // }
 
     }
     render() {
-        const { name, path } = this.state;
+        const { name, path,url } = this.state;
         return (
             <div className='material'>
                 <div>
@@ -52,9 +53,8 @@ export default class Video extends Component {
                     </div>
                 </div>
                 <div className='show'>
-                    <video src={this.state.data} controls/>
+                    <video src={url} controls/>
                 </div>
-                <NotifyPopup />
             </div>
         )
     }

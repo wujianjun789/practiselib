@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import NotifyPopup from '../../common/containers/NotifyPopup'
-
 
 export default class Text extends Component {
     constructor(props) {
@@ -8,7 +6,7 @@ export default class Text extends Component {
         this.state = {
             name: '',
             path: '',
-            data:null
+            data:''
         }
         this.changeName = this.changeName.bind(this);
         this.importMaterial = this.importMaterial.bind(this);
@@ -20,13 +18,14 @@ export default class Text extends Component {
 
     importMaterial(e) {
         const self=this;
-        const { addNotify } = this.props;
         const reader = new FileReader();
         const file = e.target.files[0];
         this.setState({path:file.name});
-        reader.readAsDataURL(file);
+        console.log(file)
+        reader.readAsText(file);
         reader.onload=function(e){
             self.setState({data:this.result})
+            console.log(this.result);
         }
 
     }
@@ -43,13 +42,12 @@ export default class Text extends Component {
                     <div className='file-path'>
                         {path ? path : '选择列表文件路径'}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
-                        <input type="file" accept="image/*" onChange={this.importMaterial} />
+                        <input type="file" accept="text/plain" onChange={this.importMaterial} />
                     </div>
                 </div>
                 <div className='show'>
-                    <textarea readOnly>{data}</textarea>
+                    <textarea value={data}></textarea>
                 </div>
-                <NotifyPopup />
             </div>
         )
     }

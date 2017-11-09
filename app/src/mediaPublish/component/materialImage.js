@@ -8,7 +8,7 @@ export default class Image extends Component {
         this.state = {
             name: '',
             path: '',
-            data:null
+            url:null
         }
         this.changeName = this.changeName.bind(this);
         this.importMaterial = this.importMaterial.bind(this);
@@ -20,22 +20,13 @@ export default class Image extends Component {
 
     importMaterial(e) {
         const self=this;
-        const { addNotify } = this.props;
         const reader = new FileReader();
         const file = e.target.files[0];
-        if (!/^image\/\w+/.test(file.type)) {
-            addNotify(0, '请选择图片');
-            return false;
-        }
-        this.setState({path:file.name});
-        reader.readAsDataURL(file);
-        reader.onload=function(e){
-            self.setState({data:this.result})
-        }
-
+        const url=URL.createObjectURL(file);
+        this.setState({path:file.name,url:url});
     }
     render() {
-        const { name, path } = this.state;
+        const { name, path,url } = this.state;
         return (
             <div className='material'>
                 <div>
@@ -51,9 +42,8 @@ export default class Image extends Component {
                     </div>
                 </div>
                 <div className='show'>
-                    <img src={this.state.data} />
+                    <img src={url} />
                 </div>
-                <NotifyPopup />
             </div>
         )
     }
