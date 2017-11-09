@@ -157,12 +157,12 @@ export class PlayerArea extends Component {
                         {id: 32, name: '矩形自右下向左上展现'}, {id: 33, name: '矩形自右上向左下展现'}, {id: 34, name: '斜线自左上向右下展现'}, {id: 35, name: '斜线自右下向左上展现'},
                         {id: 36, name: '随机'}                
                     ],index: 0, name: ""},
-                playTime: {key: "playTime", title: "播放时长", placeholder: '秒/s', value: ""},
+                playDuration: {key: "playDuration", title: "播放时长", placeholder: '秒/s', value: ""},
                 playSpeed: {key: "playSpeed", title: "播放速度", placeholder: 'ms', value: ""},
 
                 //视频素材
-                playTime:{key: "playTime", title: "播放次数", placeholder: '次', value: ""},
-                playType:{key: "playType", title: "播放类型", list: [{id: 1, name: '片段播放'}, {id: 2, name: '完整播放'}],index: 0, name: ""},
+                playTimes:{key: "playTimes", title: "播放次数", placeholder: '次', value: ""},
+                playType:{key: "playType", title: "播放类型", list: [{id: 1, name: '片段播放'}, {id: 2, name: '完整播放'}],index: 0, name: "片段播放"},
                 clipsRage:{key: "clipsRage", title: "片段范围", placeholder: '次', value: ""},
                 scaling: {key: "scaling", title: "缩放比例", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
                 volume: {key: "volume", title: "音量", list: [{id: 1, name: '100'}, {id: 2, name: '90'}, {id: 3, name: '80'}, 
@@ -321,7 +321,7 @@ export class PlayerArea extends Component {
     playerAssetSelect(item) {
         console.log(item.toJS());
         this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        this.setState({curType:"playerPicAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
+        this.setState({curType:"playerVideoAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
         // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
@@ -850,7 +850,7 @@ export class PlayerArea extends Component {
                             <div className="form-group">
                                 <label className="control-label">{property.displayMode.title}</label>
                                 <div className="input-container">
-                                    <select className={ "form-control" } value={ property.displayMode.name }
+                                    <select className= "form-control"  value={ property.displayMode.name }
                                             onChange={ event=>this.onChange("displayMode", event) }>
                                         {
                                             property.displayMode.list.map((option, index) => {
@@ -865,7 +865,7 @@ export class PlayerArea extends Component {
                             <div className="form-group">
                                 <label className="control-label">{property.animation.title}</label>
                                 <div className="input-container">
-                                    <select className={ "form-control" } value={ property.animation.name }
+                                    <select className= "form-control"  value={ property.animation.name }
                                             onChange={ event=>this.onChange("animation", event) }>
                                         {
                                             property.animation.list.map((option, index) => {
@@ -878,19 +878,19 @@ export class PlayerArea extends Component {
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.animation.title}</label>
+                                <label className="col-sm-3 control-label">{property.playDuration.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className={ "form-control " }
-                                            placeholder={property.playTime.placeholder} maxLength="8"
-                                            value={property.playTime.value}
-                                            onChange={event=>this.onChange("playTime", event)}/>
-                                    <span className={prompt.playTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    <input type="text" className= "form-control" 
+                                            placeholder={property.playDuration.placeholder} maxLength="8"
+                                            value={property.playDuration.value}
+                                            onChange={event=>this.onChange("playDuration", event)}/>
+                                    <span className={prompt.playDuration?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className={ "form-control" }
+                                    <input type="text" className= "form-control" 
                                             placeholder={property.playSpeed.placeholder} maxLength="8"
                                             value={property.playSpeed.value}
                                             onChange={event=>this.onChange("playTime", event)}/>
@@ -906,19 +906,19 @@ export class PlayerArea extends Component {
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.playTime.title}</label>
+                                <label className="col-sm-3 control-label">{property.playTimes.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className={ "form-control " }
-                                            placeholder={property.playTime.placeholder} maxLength="8"
-                                            value={property.playTime.value}
-                                            onChange={event=>this.onChange("playTime", event)}/>
-                                    <span className={prompt.playTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    <input type="text" className= "form-control" 
+                                            placeholder={property.playTimes.placeholder} maxLength="8"
+                                            value={property.playTimes.value}
+                                            onChange={event=>this.onChange("playTimes", event)}/>
+                                    <span className={prompt.playTimes?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="control-label">{property.scaling.title}</label>
                                 <div className="input-container">
-                                    <select className={ "form-control" } value={ property.scaling.name }
+                                    <select className= "form-control" value={ property.scaling.name }
                                             onChange={ event=>this.onChange("scaling", event) }>
                                         {
                                             property.scaling.list.map((option, index) => {
@@ -933,7 +933,7 @@ export class PlayerArea extends Component {
                             <div className="form-group">
                                 <label className="control-label">{property.playType.title}</label>
                                 <div className="input-container">
-                                    <select className={ "form-control" } value={ property.playType.name }
+                                    <select className="form-control" value={ property.playType.name }
                                             onChange={ event=>this.onChange("playType", event) }>
                                         {
                                             property.playType.list.map((option, index) => {
@@ -945,10 +945,21 @@ export class PlayerArea extends Component {
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            {
+                                property.playType.name == "片段播放" && (<div className="form-group clipsRage">
+                                    <label className="control-label">{property.clipsRage.title}</label>
+                                    <div className="input-container">
+                                        <input className="form-control" id="time1" type="time" value={''} onChange={event=>this.onChange("clipsRage1", event)}/>
+                                        <span className="text">至</span>
+                                        <input className="form-control" id="time2" type="time" value={''} onChange={event=>this.onChange("clipsRage2", event)}/>
+                                        <span className={prompt.clipsRage?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>)
+                            }
+                            <div className="form-group volume">
                                 <label className="control-label">{property.volume.title}</label>
                                 <div className="input-container">
-                                    <select className={ "form-control" } value={ property.volume.name }
+                                    <select className= "form-control"  value={ property.volume.name }
                                             onChange={ event=>this.onChange("volume", event) }>
                                         {
                                             property.volume.list.map((option, index) => {
