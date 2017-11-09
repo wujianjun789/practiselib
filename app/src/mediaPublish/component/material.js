@@ -33,13 +33,13 @@ export default class Material extends PureComponent {
                     onOk={this.handleOk} onCancel={this.handleCancel}>
                     <Tabs  defaultActiveKey="2" onChange={this.switchTab}>
                         <TabPane tab="文字" key="1">
-                            <Text/>
+                            <Text addNotify={this.props.addNotify}/>
                         </TabPane>
                         <TabPane tab="图片" key="2">
                             <Image addNotify={this.props.addNotify} />
                         </TabPane>
                         <TabPane tab="视频" key="3">
-                            <Video/>
+                            <Video addNotify={this.props.addNotify}/>
                         </TabPane>
                     </Tabs>
                 </Modal>
