@@ -111,6 +111,8 @@ export class PlayerArea extends Component {
                 assetLibCollapsed: false
             },
             property: {
+                //方案
+                project: {key: "project", title: "方案名称", placeholder:"请输入名称", value:""},
                 action: {
                     key: "action",
                     title: "动作",
@@ -190,6 +192,7 @@ export class PlayerArea extends Component {
                 total: 2
             }),
             prompt: {
+                project: true,
                 action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 assetName: true,playTime:true, playSpeed:true,
@@ -203,7 +206,9 @@ export class PlayerArea extends Component {
             mouseXY: [0, 0],
             mouseCircleDelta: [0, 0],
             lastPress: null,
-            isPressed: false
+            isPressed: false,
+//播放列表单击
+            isClick:false,
         }
 
         this.typeList = [{id: 'playerPlan', name: '播放计划'}, {id: 'playerScene', name: '场景'}, {
@@ -233,6 +238,7 @@ export class PlayerArea extends Component {
         this.assetLibRemove = this.assetLibRemove.bind(this);
         this.playerAssetRemove = this.playerAssetRemove.bind(this);
         this.playerAssetMove = this.playerAssetMove.bind(this);
+        this.projectClick = this.projectClick.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -321,7 +327,7 @@ export class PlayerArea extends Component {
     playerAssetSelect(item) {
         console.log(item.toJS());
         this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        this.setState({curType:"playerVideoAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
+        this.setState({isClick:true, curType:"playerVideoAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
         // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
@@ -406,6 +412,16 @@ export class PlayerArea extends Component {
                                                             }}/>)
         } else if (id == 'complete') {
             this.setState({assetList: this.state.assetList.update('isEdit', v=>true)});
+        }
+    }
+
+    projectClick(id){
+        console.log(id);
+        switch(id){
+            case "apply":
+                break;
+            case "reset":
+                break;
         }
     }
 
@@ -523,7 +539,7 @@ export class PlayerArea extends Component {
                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{
                                                 }}/>)
         }else if(id == "project"){
-
+            this.setState({curType:"playerProject", isClick:false});
         }
     }
 
@@ -586,7 +602,7 @@ export class PlayerArea extends Component {
                 break;
         }
 
-        this.setState({curType: type});
+        this.setState({curType: type, isClick:false});
     }
 
     sidebarClick(id) {
@@ -596,12 +612,16 @@ export class PlayerArea extends Component {
     render() {
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,controlStyle,
-            lastPress, isPressed, mouseXY
+            lastPress, isPressed, mouseXY,isClick
         } = this.state;
+        const {router} = this.props;
+        const routerState = router.location.state;
+        const projectItem = routerState?routerState.item:null;
+
         console.log(property.position.list);
         return <div className={"container "+"mediaPublish-playerArea "+(sidebarInfo.collapsed?'sidebar-collapse':'')}>
-            <HeadBar moduleName="媒体发布" router={this.props.router}/>
-            <SideBar data={playerData} onClick={this.areaClick} onToggle={this.onToggle}/>
+            <HeadBar moduleName="媒体发布" router={router}/>
+            <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} onClick={this.areaClick} onToggle={this.onToggle}/>
             <Content className="player-area">
                 <div className="left">
                     <div className="form-group control-container-top">
@@ -668,6 +688,24 @@ export class PlayerArea extends Component {
                         "glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>属性
                     </div>
                     <div className={"panel-body "+(sidebarInfo.propertyCollapsed?'property-collapsed':'')}>
+                        <div className={"pro-container playerProject "+(curType=='playerProject'?'':'hidden')}>
+                            <div className="row">
+                                <div className="form-group project-name">
+                                    <label className="control-label" htmlFor={property.project.key}>{property.project.title}</label>
+                                    <div className="input-container">
+                                        <input type="text" className={ "form-control " }
+                                               placeholder={property.project.placeholder} maxLength="16"
+                                               value={property.project.value}
+                                               onChange={event=>this.onChange("project", event)}/>
+                                        <span className={prompt.project?"prompt ":"prompt hidden"}>{"请输入名称"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
+                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
+                            </div>
+                        </div>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
                             <div className="row">
                                 <div className="form-group  action">

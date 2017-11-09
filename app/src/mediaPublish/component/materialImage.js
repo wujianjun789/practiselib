@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDom from 'react-dom'
 import NotifyPopup from '../../common/containers/NotifyPopup'
 
 
@@ -48,7 +47,7 @@ export default class Image extends Component {
                     <div className='file-path'>
                         {path ? path : '选择列表文件路径'}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
-                        <input type="file" onChange={this.importMaterial} />
+                        <input type="file" accept="image/*" onChange={this.importMaterial} />
                     </div>
                 </div>
                 <div className='show'>

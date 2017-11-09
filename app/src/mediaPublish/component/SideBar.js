@@ -28,6 +28,12 @@ export default class SideBar extends Component {
         // console.log("receive receive");
     }
 
+    componentDidUpdate(){
+        // if(this.props.isClick){
+        //     this.setState({isProject: false});
+        // }
+    }
+
     onToggle(node, toggled) {
         // if(this.state.cursor){
         //     this.state.cursor.active = false;
@@ -46,7 +52,7 @@ export default class SideBar extends Component {
 
     onClick(id){
         if(id == 'edit' || id == 'complete'){
-            this.setState({isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
+            this.setState({isProject:false, isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
         }else{
             this.props.onClick && this.props.onClick(id);
         }
@@ -59,13 +65,13 @@ export default class SideBar extends Component {
     }
 
     render() {
-        const {data} = this.props;
+        const {data, title, isClick} = this.props;
         const {isProject, isEdit, isRemove, isMove}  = this.state;
         return <div className="sidebar">
 
             <div className="edit-container">
                 <div className={"btn-group "+(isEdit?'':'hidden')}>
-                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加{isProject && <span>&nbsp;&or;</span>}</button>
+                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加{isProject && !isClick && <span>&nbsp;&or;</span>}</button>
                     <button className="btn btn-primary" onClick={()=>this.onClick("edit")}>编辑</button>
                 </div>
                 <div className={"btn-group "+(isEdit?'hidden':'')}>
@@ -73,14 +79,14 @@ export default class SideBar extends Component {
                     <button className="btn btn-primary" onClick={()=>this.onClick("complete")}>完成</button>
                 </div>
             </div>
-            <div className={"add-poppup "+(isProject?'active':'')}>
+            <div className={"add-poppup "+(isProject && !isClick?'active':'')}>
                 <span className="glyphicon glyphicon-triangle-top"></span>
                 <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
                 <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
                 <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
             </div>
-            <div className={"title "+(isProject?'active':'')} onClick={()=>this.onProject()}>国庆节方案</div>
-            <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isProject} onToggle={ (node) => this.onToggle(node) } />
+            <div className={"title "+(isProject && !isClick ?'active':'')} onClick={()=>this.onProject()}>{title}</div>
+            <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isProject || isClick} onToggle={ (node) => this.onToggle(node) } />
             {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>
     }

@@ -1,6 +1,7 @@
 .material{
     margin:0 auto;
     padding:20px;
+    padding-bottom:0;
     >div{
         margin-bottom:30px;
     }
@@ -47,14 +48,31 @@
         }
     }
     .show{
-        margin:0;
-        height:140px;
+        display: flex!important;
+        justify-content: center;
+        align-items: center;
+        // max-height:210px;
+        // position: absolute;
         width:480px;
+        height:212px;
+        border:solid 1px #ccc;
+        textarea{
+            width:480px;
+            height:210px;
+            resize:none;
+            padding:10px;
+            font-size:14px;
+            line-height:20px;
+        }
         img{
-            display:block;
-            height:100%;
-            width:100%;
-            border:solid 1px #ccc;
+            display:inline-block;
+            max-width:480px;
+            max-height:210px;
+        }
+        video{
+            display:inline-block;
+            width:480px;
+            height:210px;
         }
     }
     
