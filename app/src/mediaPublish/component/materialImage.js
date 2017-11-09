@@ -32,6 +32,7 @@ export default class Image extends Component {
                 <div>
                     <span>素材名称</span>
                     <input type='text' value={name} onChange={this.changeName} />
+                    <span className={name?"m-prompt m-hidden":"m-prompt"}>请输入名称</span>
                 </div>
                 <div className='import'>
                     <span>导入素材</span>
@@ -39,6 +40,7 @@ export default class Image extends Component {
                         {path ? path : '选择列表文件路径'}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
                         <input type="file" accept="image/*" onChange={this.importMaterial} />
+                        <span className={path?"m-prompt m-hidden":"m-prompt"}>请选择文件</span>
                     </div>
                 </div>
                 <div className='show'>

@@ -3,6 +3,7 @@
     padding:20px;
     padding-bottom:0;
     >div{
+        position: relative;
         margin-bottom:30px;
     }
     span{
@@ -10,6 +11,18 @@
         font-size:14px;
         font-weight: bold;
         margin-right:10px;
+    }
+    .m-prompt{
+        position: absolute;
+        font-size:12px;
+        line-height:24px;
+        color:#ff5c68;
+        font-weight: normal;
+        top:40px;
+        left:66px;
+    }
+    .m-hidden{
+        display:none;
     }
     input{
         border:solid 1px #bbb;
@@ -54,11 +67,11 @@
         // max-height:210px;
         // position: absolute;
         width:480px;
-        height:210px;
+        height:200px;
         border:solid 1px #ccc;
         textarea{
             width:480px;
-            height:208px;
+            height:198px;
             resize:none;
             padding:10px;
             font-size:14px;
@@ -68,12 +81,13 @@
         img{
             display:inline-block;
             max-width:480px;
-            max-height:208px;
+            max-height:198px;
         }
         video{
             display:inline-block;
+            background-color: #fff;
             width:480px;
-            height:208px;
+            height:198px;
         }
     }
     
