@@ -46,7 +46,7 @@ export default class SideBar extends Component {
 
     onClick(id){
         if(id == 'edit' || id == 'complete'){
-            this.setState({isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
+            this.setState({isProject:false, isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
         }else{
             this.props.onClick && this.props.onClick(id);
         }
@@ -59,7 +59,7 @@ export default class SideBar extends Component {
     }
 
     render() {
-        const {data} = this.props;
+        const {data, title} = this.props;
         const {isProject, isEdit, isRemove, isMove}  = this.state;
         return <div className="sidebar">
 
@@ -79,7 +79,7 @@ export default class SideBar extends Component {
                 <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
                 <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
             </div>
-            <div className={"title "+(isProject?'active':'')} onClick={()=>this.onProject()}>国庆节方案</div>
+            <div className={"title "+(isProject?'active':'')} onClick={()=>this.onProject()}>{title}</div>
             <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isProject} onToggle={ (node) => this.onToggle(node) } />
             {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>

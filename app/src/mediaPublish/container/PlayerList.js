@@ -90,11 +90,16 @@ export class PlayerList extends Component{
             height:1080
         }
         actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
-           onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
+           onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
              actions.overlayerHide();
-            this.props.router.push({
+             const id = parseInt(Math.random()*30);
+             let item = {id:id, icon:"", name:state.playerName, resolution:state.width+"X"+state.height, width:state.width, height:state.height}
+             this.setState({data:this.state.data.push(Immutable.fromJS(item))},()=>{console.log('size:',this.state.data.size)})
+             this.props.router.push({
                 pathname:"/mediaPublish/playerArea",
-                state:{id:'bbbbb'}
+                state:{
+                    item:item
+                }
             });
             // this.props.router.push('/playerArea');
         }}/>)
@@ -111,9 +116,9 @@ export class PlayerList extends Component{
 
     editHandler(id){
         console.log("edit:", id);
-        // const {actions} = this.props;
-        // const row = getObjectByKey(this.state.data, 'id', id);
-        // const obj = row ? row.toJS() : {};
+        const {actions} = this.props;
+        const row = getObjectByKey(this.state.data, 'id', id);
+        const obj = row ? row.toJS() : {};
         // const data = {
         //     playerId: obj.id,
         //     playerName: obj.name,
@@ -125,7 +130,8 @@ export class PlayerList extends Component{
         //                                        onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
         //      actions.overlayerHide();
             this.props.router.push({
-                pathname:"/mediaPublish/playerArea"
+                pathname:"/mediaPublish/playerArea",
+                state:{item: obj}
             });
         // }}/>)
     }
