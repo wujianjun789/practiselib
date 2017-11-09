@@ -558,7 +558,7 @@
         }
       }
 
-      &.playerProject,&.playerArea,&.playerScene,&.playerPicAsset,&.playerPicAsset,&.playerVideoAsset{
+      &.playerProject,&.playerArea,&.playerPicAsset,&.playerPicAsset,&.playerVideoAsset{
         padding-left: 0;
         .form-group {
           label {
@@ -572,13 +572,22 @@
         }
       }
 
-      &.playerProject{
+      &.playerProject,&.playerScene{
         button{
           margin-left: 15px;
 
           &:last-child{
             background: #495264;
             border: 0;
+          }
+        }
+      }
+
+      &.playerScene{
+        padding-left: 0;
+        .form-group{
+          label{
+            width: 70px;
           }
         }
       }

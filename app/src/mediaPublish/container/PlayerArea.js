@@ -113,6 +113,7 @@ export class PlayerArea extends Component {
             property: {
                 //方案
                 project: {key: "project", title: "方案名称", placeholder:"请输入名称", value:""},
+                //计划
                 action: {
                     key: "action",
                     title: "动作",
@@ -141,6 +142,10 @@ export class PlayerArea extends Component {
                 axisX_a: {key: "axisX_a", title: "X轴", placeholder: '请输入X轴坐标', value: ""},
                 axisY_a: {key: "axisY_a", title: "Y轴", placeholder: '请输入Y轴坐标', value: ""},
 
+                //场景名称
+                sceneName: {key: "assetName", title: "素材名称", placeholder: '素材名称', value: ""},
+                playMode: {key: "playMode", title: "播放方式", list:[{id: 1, name:"按次播放"},{id: 2, name:"按时长播放"},{id: 3, name:"循环播放"}],index:0, name:"按次播放"},
+                playModeCount: {key: "playModeCount", title: "播放次数", placeholder: '次', value: "", active:true},
                 //素材
                 assetName: {key: "assetName", title: "素材名称", placeholder: '素材名称', value: ""},
 
@@ -178,12 +183,12 @@ export class PlayerArea extends Component {
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
             assetList: Immutable.fromJS({
-                list: [{id: 1, name: '素材1', active: true}, {id: 2, name: '素材2'}, {id: 3, name: '素材3'},
-                    {id: 4, name: '素材4'}], id: 1, name: '素材1', isEdit: true
+                list: [{id: 1, name: '素材1', active: true, type:"word"}, {id: 2, name: '素材2', type:"video"}, {id: 3, name: '素材3', type:"picture"},
+                    {id: 4, name: '素材4', type:"video"}], id: 1, name: '素材1', isEdit: true
             }),
             playerListAsset: Immutable.fromJS({
-                list: [{id: 1, name: '素材1'}, {id: 2, name: '素材2'}, {id: 3, name: '素材3'},
-                    {id: 4, name: '素材4'}, {id: 5, name: '素材5'}, {id: 6, name: '素材6'}],
+                list: [{id: 1, name: '素材1',type:"word"}, {id: 2, name: '素材2',type:"video"}, {id: 3, name: '素材3',type:"picture"},
+                    {id: 4, name: '素材4',type:"word"}, {id: 5, name: '素材5',type:"video"}, {id: 6, name: '素材6',type:"picture"}],
                 id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
@@ -192,8 +197,12 @@ export class PlayerArea extends Component {
                 total: 2
             }),
             prompt: {
+                //方案
                 project: true,
+                //计划
                 action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
+                //场景
+                sceneName: true, playMode: true, playModeCount: true,
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 assetName: true,playTime:true, playSpeed:true,
             },
@@ -239,6 +248,7 @@ export class PlayerArea extends Component {
         this.playerAssetRemove = this.playerAssetRemove.bind(this);
         this.playerAssetMove = this.playerAssetMove.bind(this);
         this.projectClick = this.projectClick.bind(this);
+        this.playerSceneClick = this.playerSceneClick.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -326,8 +336,20 @@ export class PlayerArea extends Component {
 
     playerAssetSelect(item) {
         console.log(item.toJS());
+        let curType = "playerWord";
+        switch (item.get("type")){
+            case "word":
+                curType = "playerWord";
+                break;
+            case "picture":
+                curType = "playerPicAsset";
+                break;
+            case "video":
+                curType = "playerVideoAsset";
+                break;
+        }
         this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        this.setState({isClick:true, curType:"playerPicAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
+        this.setState({isClick:true, curType:curType,playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
         // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
@@ -335,7 +357,7 @@ export class PlayerArea extends Component {
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;
-        if (id == "playerList" || id == "sceneList" || id == "assetType" || id == "assetSort") {
+        if (id == "playerList" || id == "sceneList" || id == "assetType" || id == "assetSort" ) {
             this.state[id] = this.state[id].update('index', v=>value);
             this.setState({[id]: this.state[id].update('value', v=>this.state[id].getIn(["list", value, "value"]))});
         }
@@ -353,7 +375,35 @@ export class PlayerArea extends Component {
                         })
                     })
                 })
-            } else {
+            } else if(id == "playMode"){
+                const curIndex = value.target.selectedIndex;
+                let title = "播放次数";
+                let placeholder = '次';
+                let active = true;
+                switch (curIndex){
+                    case 0:
+                        title = "播放次数";
+                        placeholder = "次";
+                        break;
+                    case 1:
+                        title = "播放时长";
+                        placeholder = "秒";
+                        break;
+                    case 2:
+                        active = false;
+                        break;
+                }
+                this.setState({
+                    property: Object.assign({}, this.state.property, {
+                        [id]: Object.assign({}, this.state.property[id], {
+                            index: curIndex,
+                            name: this.state.property[id].list[curIndex].name
+                        })
+                    },{
+                        "playModeCount": Object.assign({}, this.state.property.playModeCount, {title:title, placeholder: placeholder, active:active})
+                    })
+                })
+            }else {
                 const val = value.target.value;
                 if (!numbersValid(val)) {
                     prompt = true;
@@ -416,6 +466,16 @@ export class PlayerArea extends Component {
     }
 
     projectClick(id){
+        console.log(id);
+        switch(id){
+            case "apply":
+                break;
+            case "reset":
+                break;
+        }
+    }
+
+    playerSceneClick(id){
         console.log(id);
         switch(id){
             case "apply":
@@ -865,17 +925,46 @@ export class PlayerArea extends Component {
                         </div>
                         <div className={"pro-container playerScene "+(curType=='playerScene'?'':"hidden")}>
                             <div className="row">
-                                <div className="form-group  asset-name">
+                                <div className="form-group  scene-name">
                                     <label className="control-label"
-                                           htmlFor={property.assetName.key}>{property.assetName.title}</label>
+                                           htmlFor={property.sceneName.key}>{property.sceneName.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={ "form-control " }
-                                               placeholder={property.assetName.placeholder} maxLength="8"
-                                               value={property.assetName.value}
-                                               onChange={event=>this.onChange("assetName", event)}/>
-                                        <span className={prompt.assetName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                               placeholder={property.sceneName.placeholder} maxLength="8"
+                                               value={property.sceneName.value}
+                                               onChange={event=>this.onChange("sceneName", event)}/>
+                                        <span className={prompt.sceneName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group">
+                                    <label className="control-label" htmlFor={property.playMode.key}>{property.playMode.title}</label>
+                                    <div className="input-container">
+                                        <select className={ "form-control" } value={ property.playMode.name } onChange={ event=>this.onChange("playMode", event) }>
+                                            {
+                                                property.playMode.list.map((option, index) => {
+                                                    let value = option.name;
+                                                    return <option key={ index } value={ value }>
+                                                        { value }
+                                                    </option>
+                                                }) }
+                                        </select>
+                                        <span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>
+                                <div className={"form-group "+(property.playModeCount.active?'':'hidden')}>
+                                    <label className="control-label">{property.playModeCount.title}</label>
+                                    <div className={"input-container "}>
+                                        <input type="text" className={"form-control "} htmlFor={property.playModeCount.key}  placeholder={property.playModeCount.placeholder} maxLength="8"
+                                               value={property.playModeCount.value} onChange={event=>this.onChange("playModeCount", event)}/>
+                                        <span className={prompt.playModeCount?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
+                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerPicAsset "+(curType=='playerPicAsset'?'':"hidden")}>
