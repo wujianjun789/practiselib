@@ -246,11 +246,14 @@ export class PlayerArea extends Component {
         window.onresize = event=> {
             this.mounted && this.setSize();
         }
+
+        console.log(this.props.router);
     }
 
     componentDidMount() {
         // window.addEventListener("mousemove", this.handleMouseMove, true);
         // window.addEventListener("mouseup", this.handleMouseUp, true);
+        console.log(this.props.router);
     }
 
     handleMouseMove({pageX, pageY}) {

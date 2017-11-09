@@ -92,7 +92,11 @@ export class PlayerList extends Component{
         actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
            onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
              actions.overlayerHide();
-            this.props.router.push("/mediaPublish/playerArea");
+            this.props.router.push({
+                pathname:"/mediaPublish/playerArea",
+                state:{id:'bbbbb'}
+            });
+            // this.props.router.push('/playerArea');
         }}/>)
 
     }
@@ -120,7 +124,9 @@ export class PlayerList extends Component{
         // actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
         //                                        onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
         //      actions.overlayerHide();
-            this.props.router.push("/mediaPublish/playerArea");
+            this.props.router.push({
+                pathname:"/mediaPublish/playerArea"
+            });
         // }}/>)
     }
 
