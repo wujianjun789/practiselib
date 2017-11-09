@@ -206,7 +206,9 @@ export class PlayerArea extends Component {
             mouseXY: [0, 0],
             mouseCircleDelta: [0, 0],
             lastPress: null,
-            isPressed: false
+            isPressed: false,
+//播放列表单击
+            isClick:false,
         }
 
         this.typeList = [{id: 'playerPlan', name: '播放计划'}, {id: 'playerScene', name: '场景'}, {
@@ -325,7 +327,7 @@ export class PlayerArea extends Component {
     playerAssetSelect(item) {
         console.log(item.toJS());
         this.state.playerListAsset = this.state.playerListAsset.update('id', v=>item.get('id'));
-        this.setState({curType:"playerPicAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
+        this.setState({isClick:true, curType:"playerPicAsset",playerListAsset:this.state.playerListAsset.update('name', v=>item.get('name'))});
         // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
@@ -537,7 +539,7 @@ export class PlayerArea extends Component {
                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{
                                                 }}/>)
         }else if(id == "project"){
-            this.setState({curType:"playerProject"});
+            this.setState({curType:"playerProject", isClick:false});
         }
     }
 
@@ -600,7 +602,7 @@ export class PlayerArea extends Component {
                 break;
         }
 
-        this.setState({curType: type});
+        this.setState({curType: type, isClick:false});
     }
 
     sidebarClick(id) {
@@ -610,7 +612,7 @@ export class PlayerArea extends Component {
     render() {
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,controlStyle,
-            lastPress, isPressed, mouseXY
+            lastPress, isPressed, mouseXY,isClick
         } = this.state;
         const {router} = this.props;
         const routerState = router.location.state;
@@ -619,7 +621,7 @@ export class PlayerArea extends Component {
         console.log(property.position.list);
         return <div className={"container "+"mediaPublish-playerArea "+(sidebarInfo.collapsed?'sidebar-collapse':'')}>
             <HeadBar moduleName="媒体发布" router={router}/>
-            <SideBar data={playerData} title={projectItem && projectItem.name} onClick={this.areaClick} onToggle={this.onToggle}/>
+            <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} onClick={this.areaClick} onToggle={this.onToggle}/>
             <Content className="player-area">
                 <div className="left">
                     <div className="form-group control-container-top">
