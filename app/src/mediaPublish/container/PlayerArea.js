@@ -32,6 +32,11 @@ import moment from 'moment'
 import Immutable from 'immutable';
 import {numbersValid} from '../../util/index';
 import {getIndexByKey} from '../../util/algorithm';
+
+import 'antd/lib/date-picker/style';
+import 'antd/lib/checkbox/style';
+import {DatePicker, Checkbox} from 'antd';
+const CheckboxGroup = Checkbox.Group;
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -114,6 +119,45 @@ export class PlayerArea extends Component {
                 //方案
                 project: {key: "project", title: "方案名称", placeholder:"请输入名称", value:""},
                 //计划
+                plan: { 
+                    key: "plan",
+                    title: "计划名称",
+                    placeholder: "请输入名称",
+                    value: ""
+                 },
+                startDate: { 
+                    key: "startDate",
+                    title: "开始日期",
+                    placeholder: "点击选择开始日期",
+                    value: ""
+                },
+                endDate: { 
+                    key: "endDate",
+                    title: "结束日期",
+                    placeholder: "点击选择结束日期",
+                    value: ""
+                 },
+                startTime: { 
+                    key: "startTime",
+                    title: "开始时间",
+                    placeholder: "点击选择开始时间",
+                    value: ""
+                },
+                endTime: { 
+                    key: "endTime",
+                    title: "结束时间",
+                    placeholder: "点击选择结束时间",
+                    value: ""
+                },
+                week: {
+                    key: "week",
+                    title: "工作日",
+                    list:[{label: "周一", value:1}, {label: "周二", value:2},
+                        {label: "周三", value:3}, {label: "周四", value:4}, 
+                        {label: "周五", value:5}, {label: "周六", value:6}, 
+                        {label: "周日", value:7}],
+                    value:[]
+                },
                 action: {
                     key: "action",
                     title: "动作",
@@ -205,6 +249,7 @@ export class PlayerArea extends Component {
                 sceneName: true, playMode: true, playModeCount: true,
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 assetName: true,playTime:true, playSpeed:true,
+                plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true
             },
 
             showModal: false,
@@ -417,6 +462,23 @@ export class PlayerArea extends Component {
                 })
             }
         }
+    }
+
+    dateChange(id, value){
+        if(id == "week"){
+            console.log(value);
+            this.setState({[id]:Object.assign({}, this.state.week, {value:value})});
+        }else{
+            this.setState({[id]:value});
+        }
+    }
+
+    planReset() {
+        console.log("计划重置")
+    }
+
+    planApply() {
+        console.log("计划应用")
     }
 
     pageChange(current, pageSize) {
@@ -776,101 +838,89 @@ export class PlayerArea extends Component {
                         </div>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
                             <div className="row">
-                                <div className="form-group  action">
+                                <div className="form-group plan">
                                     <label className="control-label"
-                                           htmlFor={property.action.key}>{property.action.title}</label>
-                                    <div className="input-container">
-                                        <select className={ "form-control" } value={ property.action.name }
-                                                onChange={ event=>this.onChange("action", event) }>
-                                            {
-                                                property.action.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={ index } value={ value }>
-                                                        { value }
-                                                    </option>
-                                                }) }
-                                        </select>
-                                        {/*<span className={prompt.action?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>*/}
-                                    </div>
-                                </div>
-                                <div className="form-group position">
-                                    <label className="control-label">{property.position.title}</label>
-                                    {
-                                        property.position.list.map(item=> {
-                                            return <span key={item.id} className={"icon icon_"+item.id}
-                                                         onClick={()=>{this.positionHandler(item.id)}}></span>
-                                        })
-                                    }
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group axis-X">
-                                    <label className="control-label"
-                                           htmlFor={property.axisX.key}>{property.axisX.title}</label>
+                                        htmlFor={property.plan.key}>{property.plan.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={ "form-control " }
-                                               placeholder={property.axisX.placeholder} maxLength="8"
-                                               value={property.axisX.value}
-                                               onChange={event=>this.onChange("axisX", event)}/>
-                                        <span className={prompt.axisX?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                                <div className="form-group speed">
-                                    <label className="control-label"
-                                           htmlFor={property.speed.key}>{property.speed.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.speed.placeholder} maxLength="8"
-                                               value={property.speed.value}
-                                               onChange={event=>this.onChange("speed", event)}/>
-                                        <span className={prompt.speed?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                                <div className="form-group repeat">
-                                    <label className="control-label"
-                                           htmlFor={property.repeat.key}>{property.repeat.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.repeat.placeholder} maxLength="8"
-                                               value={property.repeat.value}
-                                               onChange={event=>this.onChange("repeat", event)}/>
-                                        <span className={prompt.repeat?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                            placeholder={property.plan.placeholder} maxLength="16"
+                                            value={property.plan.value}
+                                            onChange={event=>this.onChange("plan", event)}/>
+                                        <span className={prompt.plan?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="form-group axisY">
-                                    <label className="col-sm-3 control-label"
-                                           htmlFor={property.axisY.key}>{property.axisY.title}</label>
+                                <div className="form-group startDate">
+                                    <label className="control-label"
+                                           htmlFor={property.startDate.key}>{property.startDate.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={ "form-control " }
-                                               placeholder={property.axisY.placeholder} maxLength="8"
-                                               value={property.axisY.value}
-                                               onChange={event=>this.onChange("axisY", event)}/>
-                                        <span className={prompt.axisY?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                               placeholder={property.startDate.placeholder} maxLength="8"
+                                               value={property.startDate.value}
+                                               onChange={event=>this.onChange("startDate", event)}/>
+                                        <span className={prompt.startDate?"prompt ":"prompt hidden"}>{"请选择开始日期"}</span>
                                     </div>
                                 </div>
-                                <div className="form-group resTime">
+                                <div className="form-group endDate">
                                     <label className="control-label"
-                                           htmlFor={property.resTime.key}>{property.resTime.title}</label>
+                                           htmlFor={property.endDate.key}>{property.endDate.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={ "form-control " }
-                                               placeholder={property.resTime.placeholder} maxLength="8"
-                                               value={property.resTime.value}
-                                               onChange={event=>this.onChange("resTime", event)}/>
-                                        <span className={prompt.resTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                               placeholder={property.endDate.placeholder} maxLength="8"
+                                               value={property.endDate.value}
+                                               onChange={event=>this.onChange("endDate", event)}/>
+                                        <span className={prompt.endDate?"prompt ":"prompt hidden"}>{"请选择结束日期"}</span>
                                     </div>
                                 </div>
-                                <div className="form-group flicker">
+                            </div>
+                            <div className="row">
+                                <div className="form-group startTime">
                                     <label className="control-label"
-                                           htmlFor={property.flicker.key}>{property.flicker.title}</label>
+                                           htmlFor={property.startTime.key}>{property.startTime.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={ "form-control " }
-                                               placeholder={property.flicker.placeholder} maxLength="8"
-                                               value={property.flicker.value}
-                                               onChange={event=>this.onChange("flicker", event)}/>
-                                        <span className={prompt.flicker?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                               placeholder={property.startTime.placeholder} maxLength="8"
+                                               value={property.startTime.value}
+                                               onChange={event=>this.onChange("startTime", event)}/>
+                                        <span className={prompt.startTime?"prompt ":"prompt hidden"}>{"请选择开始时间"}</span>
                                     </div>
+                                </div>
+                                <div className="form-group endTime">
+                                    <label className="control-label"
+                                           htmlFor={property.endTime.key}>{property.endTime.title}</label>
+                                    <div className="input-container">
+                                        <input type="text" className={ "form-control " }
+                                               placeholder={property.endTime.placeholder} maxLength="8"
+                                               value={property.endTime.value}
+                                               onChange={event=>this.onChange("endTime", event)}/>
+                                        <span className={prompt.endTime?"prompt ":"prompt hidden"}>{"请选择结束时间"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group week">
+                                    <label className="control-label"
+                                           htmlFor={property.week.key}>{property.week.title}</label>
+                                    <div className="input-container">
+                                        <CheckboxGroup id="startTime" options={property.week.list} defaultValue={property.week.value} onChange={value=>this.dateChange('week', value)}/>
+                                        <span className={"fixpos "+(prompt.week?"prompt ":"prompt hidden")}>{"请选择工作日"}</span>
+                                        {/* {
+                                            property.week.list.map(item=>{
+                                                return <label> 
+                                                <input type="checkbox" className="checkbox-inline" key={item.value}
+                                                checked = {item.value}
+                                                />{item.label}</label>
+                                            })
+                                        } */}
+                                        {/* <span className={prompt.week?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span> */}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bottom">
+                                <div className={"btn-group"}>
+                                    <button className="btn btn-primary reset" onClick={this.planReset}>重置</button>
+                                    <button className="btn btn-primary" onClick={()=>this.planApply}>应用</button>
                                 </div>
                             </div>
                         </div>

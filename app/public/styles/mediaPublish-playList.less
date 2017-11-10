@@ -611,6 +611,61 @@
           }
         }
       }
+
+      //播放计划样式
+      &.playerPlan {
+        padding-left: 0;
+        .form-group {
+          label {
+            width: 70px;
+          }
+        }
+        .plan {
+          .input-container {
+            width: 580px;
+          }
+        }
+        .week {
+          .input-container {
+            width: 580px;
+            .checkbox-inline {
+              min-width: 106px;
+              padding-right: 30px;
+              color: #808080;
+              font-size: 14px;
+              margin: 6px 0 14px 0
+            }
+          }
+          .fixpos{
+              margin-top: -13px
+          }   
+        }
+        .bottom {
+          padding-top: 20px;
+          border-top: 1px solid #d6dbdf;
+          height: 45px;
+          .btn-group {
+            float:right;
+            .btn {
+              border-radius: 4px;
+              &.reset {
+                background-color: #495264;
+              }
+            }
+            button:first-child{
+              // visibility: hidden;
+              margin-right: 10px;
+              margin-left: 20px;
+              border: 0;
+            }
+            button:last-child{
+              margin-left: 10px;
+              margin-right: 1px;
+            }
+          }
+        }
+      }
+
     }
 
     .lib-title {
