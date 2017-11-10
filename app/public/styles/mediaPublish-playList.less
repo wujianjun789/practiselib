@@ -615,19 +615,29 @@
       //播放计划样式
       &.playerPlan {
         padding-left: 0;
+        font-size: 14px;
         .form-group {
           label {
-            width: 70px;
+            width: 80px;
           }
+        }
+        .input-container {
+          margin-left: 10px;
         }
         .plan {
           .input-container {
-            width: 580px;
+            width: 550px;
           }
         }
         .week {
+            .control-label {
+              width: 80px;
+            }
+            label {
+              width: 65px;
+            } 
           .input-container {
-            width: 580px;
+            width: 550px;
             .checkbox-inline {
               min-width: 106px;
               padding-right: 30px;
@@ -639,6 +649,11 @@
           .fixpos{
               margin-top: -13px
           }   
+        }
+        .startDate, .startTime, .endDate, .endTime {
+          .input-container {
+            width: 200px
+          }
         }
         .bottom {
           padding-top: 20px;
@@ -662,6 +677,13 @@
               margin-left: 10px;
               margin-right: 1px;
             }
+          }
+        }
+        .ant-calendar-picker {
+          // span {width:250px;}
+          input {
+            height: 40px;
+            width: 160px;
           }
         }
       }
