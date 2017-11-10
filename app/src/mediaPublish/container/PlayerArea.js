@@ -32,7 +32,10 @@ import moment from 'moment'
 import Immutable from 'immutable';
 import {numbersValid} from '../../util/index';
 import {getIndexByKey} from '../../util/algorithm';
-import { TimePicker } from 'antd';
+import { TimePicker,DatePicker, Checkbox} from 'antd';
+import 'antd/lib/date-picker/style';
+import 'antd/lib/checkbox/style';
+const CheckboxGroup = Checkbox.Group;
 
 export class PlayerArea extends Component {
     constructor(props) {
@@ -116,6 +119,45 @@ export class PlayerArea extends Component {
                 //方案
                 project: {key: "project", title: "方案名称", placeholder:"请输入名称", value:""},
                 //计划
+                plan: { 
+                    key: "plan",
+                    title: "计划名称",
+                    placeholder: "请输入名称",
+                    value: ""
+                 },
+                startDate: { 
+                    key: "startDate",
+                    title: "开始日期",
+                    placeholder: "点击选择开始日期",
+                    value: ()=>{ moment()}
+                },
+                endDate: { 
+                    key: "endDate",
+                    title: "结束日期",
+                    placeholder: "点击选择结束日期",
+                    value: ""
+                 },
+                startTime: { 
+                    key: "startTime",
+                    title: "开始时间",
+                    placeholder: "点击选择开始时间",
+                    value: ""
+                },
+                endTime: { 
+                    key: "endTime",
+                    title: "结束时间",
+                    placeholder: "点击选择结束时间",
+                    value: ""
+                },
+                week: {
+                    key: "week",
+                    title: "工作日",
+                    list:[{label: "周一", value:1}, {label: "周二", value:2},
+                        {label: "周三", value:3}, {label: "周四", value:4}, 
+                        {label: "周五", value:5}, {label: "周六", value:6}, 
+                        {label: "周日", value:7}],
+                    value:[]
+                },
                 action: {
                     key: "action",
                     title: "动作",
@@ -185,12 +227,12 @@ export class PlayerArea extends Component {
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
             assetList: Immutable.fromJS({
-                list: [{id: 1, name: '素材1', active: true, type:"word"}, {id: 2, name: '素材2', type:"video"}, {id: 3, name: '素材3', type:"picture"},
-                    {id: 4, name: '素材4', type:"video"}], id: 1, name: '素材1', isEdit: true
+                list: [{id: 1, name: '素材1', active: true, assetType:"system", type:"word"}, {id: 2, name: '素材2', assetType:"source", type:"video"}, {id: 3, name: '素材3', assetType:"source", type:"picture"},
+                    {id: 4, name: '素材4', assetType:"source", type:"video"}], id: 1, name: '素材1', isEdit: true
             }),
             playerListAsset: Immutable.fromJS({
-                list: [{id: 1, name: '素材1',type:"word"}, {id: 2, name: '素材2',type:"video"}, {id: 3, name: '素材3',type:"picture"},
-                    {id: 4, name: '素材4',type:"word"}, {id: 5, name: '素材5',type:"video"}, {id: 6, name: '素材6',type:"picture"}],
+                list: [{id: 1, name: '素材1',assetType:"system", type:"word"}, {id: 2, name: '素材2',assetType:"source", type:"video"}, {id: 3, name: '素材3',assetType:"source", type:"picture"},
+                    {id: 4, name: '素材4', assetType:"source", type:"word"}, {id: 5, name: '素材5',assetType:"source", type:"video"}, {id: 6, name: '素材6',assetType:"source", type:"picture"}],
                 id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
@@ -209,6 +251,7 @@ export class PlayerArea extends Component {
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 //素材
                 playDuration:true, playSpeed:true, playTimes:true, clipsRage:true,
+                plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true
             },
 
             showModal: false,
@@ -432,6 +475,23 @@ export class PlayerArea extends Component {
         }
     }
 
+    dateChange(id, value){
+        if(id == "week"){
+            console.log(value);
+            this.setState({[id]:Object.assign({}, this.state.week, {value:value})});
+        }else{
+            this.setState({[id]:value});
+        }
+    }
+
+    planReset() {
+        console.log("计划重置")
+    }
+
+    planApply() {
+        console.log("计划应用")
+    }
+
     pageChange(current, pageSize) {
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=> {
@@ -506,14 +566,38 @@ export class PlayerArea extends Component {
 
     assetLibRemove(item){
         console.log('assetLibRemove:', item.toJS());
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中素材？"}
+                                            cancel={()=>{actions.overlayerHide()}} confirm={()=>{
+                                                    const itemId = item.get("id");
+                                                    const list = this.state.assetList.get("list");
+                                                    const curIndex = getIndexByKey(list, "id", itemId);
+
+                                                    this.setState({assetList: this.state.assetList.update("list", v=>v.splice(curIndex, 1))},()=>{
+                                                        actions.overlayerHide();
+                                                    });
+                                                }}/>)
+
     }
 
     playerAssetRemove(item){
         console.log('playerAssetRemove:', item.toJS());
+
+        const itemId = item.get("id");
+        const list = this.state.playerListAsset.get("list");
+        const curIndex = getIndexByKey(list, "id", itemId);
+
+        this.setState({playerListAsset: this.state.playerListAsset.update("list", v=>v.splice(curIndex, 1))});
     }
 
-    playerAssetMove(id){
-        console.log('playerAssetMove:', id);
+    playerAssetMove(id, item){
+        console.log('playerAssetMove:', id, item);
+        const itemId = item.get("id");
+        const list = this.state.playerListAsset.get("list");
+        const curIndex = getIndexByKey(list, "id", itemId);
+
+        this.state.playerListAsset = this.state.playerListAsset.update("list", v=>v.splice(curIndex, 1));
+        this.setState({playerListAsset:this.state.playerListAsset.update("list", v=>v.splice(id=="left"?curIndex-1:curIndex+1, 0, item))});
     }
 
     updatePlayerScenePopup() {
@@ -639,7 +723,13 @@ export class PlayerArea extends Component {
     }
 
     quitHandler() {
-        this.props.router.push("/mediaPublish/playerList");
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="未保存内容将会丢失，是否退出？"
+                    cancel={()=>{actions.overlayerHide();}} confirm={()=>{
+                                                                 actions.overlayerHide();
+                                                                this.props.router.push("/mediaPublish/playerList");
+                                                            }}/>)
+
     }
 
     positionHandler(id) {
@@ -726,16 +816,16 @@ export class PlayerArea extends Component {
                 <span className="title">播放列表</span>
                 <ul>
                     {
-                        playerListAsset.get('list').map(item=> {
+                        playerListAsset.get('list').map((item,index)=> {
                             const itemId = item.get('id');
                             const curId = playerListAsset.get('id');
                             return <li key={itemId} className="player-list-asset" onClick={()=>this.playerAssetSelect(item)}>
                                 <div className={"background "+(curId==itemId?'':'hidden')}></div>
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left')}}></span>}
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
-                                {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
+                                {curId==itemId && index>0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left', item)}}></span>}
+                                {curId==itemId && index<playerListAsset.get("list").size-1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('right', item)}}></span>}
+                                {!playerListAsset.get('isEdit') && item.get("assetType")=="source" && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
                             </li>
                         })
                     }
@@ -783,101 +873,81 @@ export class PlayerArea extends Component {
                         </div>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
                             <div className="row">
-                                <div className="form-group  action">
+                                <div className="form-group plan">
                                     <label className="control-label"
-                                           htmlFor={property.action.key}>{property.action.title}</label>
-                                    <div className="input-container">
-                                        <select className={ "form-control" } value={ property.action.name }
-                                                onChange={ event=>this.onChange("action", event) }>
-                                            {
-                                                property.action.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={ index } value={ value }>
-                                                        { value }
-                                                    </option>
-                                                }) }
-                                        </select>
-                                        {/*<span className={prompt.action?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>*/}
-                                    </div>
-                                </div>
-                                <div className="form-group position">
-                                    <label className="control-label">{property.position.title}</label>
-                                    {
-                                        property.position.list.map(item=> {
-                                            return <span key={item.id} className={"icon icon_"+item.id}
-                                                         onClick={()=>{this.positionHandler(item.id)}}></span>
-                                        })
-                                    }
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group axis-X">
-                                    <label className="control-label"
-                                           htmlFor={property.axisX.key}>{property.axisX.title}</label>
+                                        htmlFor={property.plan.key}>{property.plan.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={ "form-control " }
-                                               placeholder={property.axisX.placeholder} maxLength="8"
-                                               value={property.axisX.value}
-                                               onChange={event=>this.onChange("axisX", event)}/>
-                                        <span className={prompt.axisX?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                                <div className="form-group speed">
-                                    <label className="control-label"
-                                           htmlFor={property.speed.key}>{property.speed.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.speed.placeholder} maxLength="8"
-                                               value={property.speed.value}
-                                               onChange={event=>this.onChange("speed", event)}/>
-                                        <span className={prompt.speed?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                                <div className="form-group repeat">
-                                    <label className="control-label"
-                                           htmlFor={property.repeat.key}>{property.repeat.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.repeat.placeholder} maxLength="8"
-                                               value={property.repeat.value}
-                                               onChange={event=>this.onChange("repeat", event)}/>
-                                        <span className={prompt.repeat?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                            placeholder={property.plan.placeholder} maxLength="16"
+                                            value={property.plan.value}
+                                            onChange={event=>this.onChange("plan", event)}/>
+                                        <span className={prompt.plan?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="form-group axisY">
-                                    <label className="col-sm-3 control-label"
-                                           htmlFor={property.axisY.key}>{property.axisY.title}</label>
+                                <div className="form-group startDate">
+                                    <label className="control-label"
+                                           htmlFor={property.startDate.key}>{property.startDate.title}</label>
                                     <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.axisY.placeholder} maxLength="8"
-                                               value={property.axisY.value}
-                                               onChange={event=>this.onChange("axisY", event)}/>
-                                        <span className={prompt.axisY?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" 
+                                            defaultValue={moment()} onChange={value=>this.dateChange('startDate', value)}/>
+                                        {/* <span className={prompt.startDate?"prompt ":"prompt hidden"}>{"请选择开始日期"}</span> */}
                                     </div>
                                 </div>
-                                <div className="form-group resTime">
+                                <div className="form-group endDate">
                                     <label className="control-label"
-                                           htmlFor={property.resTime.key}>{property.resTime.title}</label>
+                                           htmlFor={property.endDate.key}>{property.endDate.title}</label>
                                     <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.resTime.placeholder} maxLength="8"
-                                               value={property.resTime.value}
-                                               onChange={event=>this.onChange("resTime", event)}/>
-                                        <span className={prompt.resTime?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
+                                            defaultValue={moment()} onChange={value=>this.dateChange('endDate', value)}/>
+                                        {/* <span className={prompt.endDate?"prompt ":"prompt hidden"}>{"请选择结束日期"}</span> */}
                                     </div>
                                 </div>
-                                <div className="form-group flicker">
+                            </div>
+                            <div className="row">
+                                <div className="form-group startTime">
                                     <label className="control-label"
-                                           htmlFor={property.flicker.key}>{property.flicker.title}</label>
+                                           htmlFor={property.startTime.key}>{property.startTime.title}</label>
                                     <div className="input-container">
-                                        <input type="text" className={ "form-control " }
-                                               placeholder={property.flicker.placeholder} maxLength="8"
-                                               value={property.flicker.value}
-                                               onChange={event=>this.onChange("flicker", event)}/>
-                                        <span className={prompt.flicker?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                        <DatePicker id="startTime" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
+                                            defaultValue={moment()} onChange={value=>this.dateChange('startTime', value)}/>
+                                        {/* <span className={prompt.startTime?"prompt ":"prompt hidden"}>{"请选择开始时间"}</span> */}
                                     </div>
+                                </div>
+                                <div className="form-group endTime">
+                                    <label className="control-label"
+                                           htmlFor={property.endTime.key}>{property.endTime.title}</label>
+                                    <div className="input-container">
+                                        <DatePicker id="endTime" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
+                                            defaultValue={moment()} onChange={value=>this.dateChange('endTime', value)}/>
+                                        {/* <span className={prompt.endTime?"prompt ":"prompt hidden"}>{"请选择结束时间"}</span> */}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group week">
+                                    <label className="control-label"
+                                           htmlFor={property.week.key}>{property.week.title}</label>
+                                    <div className="input-container">
+                                        <CheckboxGroup id="startTime" options={property.week.list} defaultValue={property.week.value} onChange={value=>this.dateChange('week', value)}/>
+                                        <span className={"fixpos "+(prompt.week?"prompt ":"prompt hidden")}>{"请选择工作日"}</span>
+                                        {/* {
+                                            property.week.list.map(item=>{
+                                                return <label> 
+                                                <input type="checkbox" className="checkbox-inline" key={item.value}
+                                                checked = {item.value}
+                                                />{item.label}</label>
+                                            })
+                                        } */}
+                                        {/* <span className={prompt.week?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span> */}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bottom">
+                                <div className={"btn-group"}>
+                                    <button className="btn btn-primary reset" onClick={this.planReset}>重置</button>
+                                    <button className="btn btn-primary" onClick={()=>this.planApply}>应用</button>
                                 </div>
                             </div>
                         </div>
@@ -948,7 +1018,7 @@ export class PlayerArea extends Component {
                                                placeholder={property.sceneName.placeholder} maxLength="8"
                                                value={property.sceneName.value}
                                                onChange={event=>this.onChange("sceneName", event)}/>
-                                        <span className={prompt.sceneName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                        <span className={prompt.sceneName?"prompt ":"prompt hidden"}>{"请输入名称"}</span>
                                     </div>
                                 </div>
                             </div>
@@ -965,7 +1035,7 @@ export class PlayerArea extends Component {
                                                     </option>
                                                 }) }
                                         </select>
-                                        <span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>
+                                        {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
                                     </div>
                                 </div>
                                 <div className={"form-group "+(property.playModeCount.active?'':'hidden')}>
@@ -1173,7 +1243,7 @@ export class PlayerArea extends Component {
                                                 <span className="icon"></span>
                                                 <span className="name">{item.get('name')}</span>
                                                 {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event)=>{event.stopPropagation();this.addClick(item)}}></span>}
-                                                {!assetList.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
+                                                {!assetList.get('isEdit') && item.get("assetType")=="source" && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
                                             </li>
                                         })
                                     }
