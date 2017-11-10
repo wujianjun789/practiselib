@@ -499,8 +499,14 @@ export class PlayerArea extends Component {
         console.log('playerAssetRemove:', item.toJS());
     }
 
-    playerAssetMove(id){
-        console.log('playerAssetMove:', id);
+    playerAssetMove(id, item){
+        console.log('playerAssetMove:', id, item);
+        const itemId = item.get("id");
+        const list = this.state.playerListAsset.get("list");
+        const curIndex = getIndexByKey(list, "id", itemId);
+
+        this.state.playerListAsset = this.state.playerListAsset.update("list", v=>v.splice(curIndex, 1));
+        this.setState({playerListAsset:this.state.playerListAsset.update("list", v=>v.splice(id=="left"?curIndex-1:curIndex+1, 0, item))});
     }
 
     updatePlayerScenePopup() {
@@ -713,15 +719,15 @@ export class PlayerArea extends Component {
                 <span className="title">播放列表</span>
                 <ul>
                     {
-                        playerListAsset.get('list').map(item=> {
+                        playerListAsset.get('list').map((item,index)=> {
                             const itemId = item.get('id');
                             const curId = playerListAsset.get('id');
                             return <li key={itemId} className="player-list-asset" onClick={()=>this.playerAssetSelect(item)}>
                                 <div className={"background "+(curId==itemId?'':'hidden')}></div>
                                 <span className="icon"></span>
                                 <span className="name">{item.get("name")}</span>
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left')}}></span>}
-                                {curId==itemId && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('right')}}></span>}
+                                {curId==itemId && index>0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left', item)}}></span>}
+                                {curId==itemId && index<playerListAsset.get("list").size-1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('right', item)}}></span>}
                                 {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
                             </li>
                         })
@@ -935,7 +941,7 @@ export class PlayerArea extends Component {
                                                placeholder={property.sceneName.placeholder} maxLength="8"
                                                value={property.sceneName.value}
                                                onChange={event=>this.onChange("sceneName", event)}/>
-                                        <span className={prompt.sceneName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                        <span className={prompt.sceneName?"prompt ":"prompt hidden"}>{"请输入名称"}</span>
                                     </div>
                                 </div>
                             </div>
@@ -952,7 +958,7 @@ export class PlayerArea extends Component {
                                                     </option>
                                                 }) }
                                         </select>
-                                        <span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>
+                                        {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
                                     </div>
                                 </div>
                                 <div className={"form-group "+(property.playModeCount.active?'':'hidden')}>
