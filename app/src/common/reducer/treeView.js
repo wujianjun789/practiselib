@@ -3,19 +3,26 @@
  */
 import {
     TREEVIEW_INIT,
-    TREEVIEW_TOGGLE
+    TREEVIEW_TOGGLE,
+    TREEVIEW_MOVE,
+    TREEVIEW_REMOVE
 } from '../actionTypes/treeView'
 
 const initialState = {
     datalist:[]
 };
 
+import lodash from 'lodash';
 export default function treeView(state=initialState, action) {
     switch(action.type) {
         case TREEVIEW_INIT:
             return treeViewInit(state, action.data);
         case TREEVIEW_TOGGLE:
             return onToggle(state, action.data);
+        case TREEVIEW_MOVE:
+            return onMove(state, action.data);
+        case TREEVIEW_REMOVE:
+            return onRemove(state, action.data);
         default:
             return state;
     }
@@ -50,6 +57,17 @@ function onToggle(state, data) {
     return Object.assign({}, state, {datalist:list});
 }
 
+function onMove(state, data) {
+    let list = move(state.datalist, data);
+    return Object.assign({}, state, {datalist:list});
+}
+
+function onRemove(state, data) {
+    let list = remove(state.datalist, data);
+    console.log("list:",list);
+    return Object.assign({}, state, {datalist:list});
+}
+
 function searchNode(list, id) {
     for(var key in list){
         let curNode = list[key];
@@ -68,6 +86,41 @@ function searchNode(list, id) {
     }
 
     return null;
+}
+
+function move(list, data) {
+    let curIndex = lodash.findIndex(list, node=>{return node.id == data.node.id});
+    if(curIndex>-1){
+        list.splice(curIndex, 1);
+        console.log(curIndex+1);
+        list.splice(data.key=="down"?curIndex+1:curIndex-1, 0, data.node);
+        return list;
+    }else{
+        return list.map(node=>{
+            if(node.children && node.children.length){
+                move(node.children,  data)
+            }
+
+            return node;
+        })
+    }
+}
+
+function remove(list, data) {
+    let curIndex = lodash.findIndex(list, node=>{return node.id == data.id});
+    if(curIndex>-1){
+        list.splice(curIndex, 1);
+        console.log(curIndex, list);
+        return list;
+    }else{
+        return list.map(node=>{
+            if(node.children && node.children.length){
+               remove(node.children,  data)
+            }
+
+            return node;
+        })
+    }
 }
 
 function update(list, index, parentId, data) {

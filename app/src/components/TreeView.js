@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {onToggle} from '../common/actions/treeView'
+import {onToggle,onMove, onRemove} from '../common/actions/treeView'
 
 import {getLanguage} from '../util/index'
 export class TreeView extends Component{
@@ -25,10 +25,17 @@ export class TreeView extends Component{
     }
 
     onMove(key, node){
+        const {actions} = this.props;
+        actions && actions.onMove(key, node);
+        this.setState({update: true});
         this.props.onMove && this.props.onMove(key, node);
     }
 
     onRemove(node){
+        console.log("remove:", node);
+        const {actions} = this.props;
+        actions && actions.onRemove(node);
+        this.setState({update: true});
         this.props.onRemove && this.props.onRemove(node);
     }
 
@@ -78,8 +85,8 @@ export class TreeView extends Component{
                                             <span className={"icon "+node.class}></span>
                                             <span>{value}</span>
                                             {this.renderRemove(node)}
-                                            {this.renderMove(node, "glyphicon-triangle-bottom")}
-                                            {this.renderMove(node, "glyphicon-triangle-top")}
+                                            {index<datalist.length-1 && this.renderMove(node, "glyphicon-triangle-bottom")}
+                                            {index>0 && this.renderMove(node, "glyphicon-triangle-top")}
                                         </div>
                                     </Link>
                                     {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
@@ -90,9 +97,9 @@ export class TreeView extends Component{
                                     <div onClick={()=>this.onToggle(node)} title={node.name}>
                                         <span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')+' toggled'}></span>
                                         {value}
-                                        {this.renderRemove()}
-                                        {this.renderMove(node, "glyphicon-triangle-bottom")}
-                                        {this.renderMove(node, "glyphicon-triangle-top")}
+                                        {this.renderRemove(node)}
+                                        {index<datalist.length-1 && this.renderMove(node, "glyphicon-triangle-bottom")}
+                                        {index>0 && this.renderMove(node, "glyphicon-triangle-top")}
                                     </div>
                                     </Link>
                                     {this.renderTree(node.children, nextIndex, node.toggled)}
@@ -104,7 +111,8 @@ export class TreeView extends Component{
     }
 
     render(){
-        const {className, datalist, IsRemove, IsMove} = this.props;
+        const { className, datalist } = this.props;
+        console.log("datalist:", datalist);
         return <div className={"tree-list "+className}>
             {
                 this.renderTree(datalist, 1)
@@ -122,7 +130,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
-            onToggle: onToggle
+            onToggle: onToggle,
+            onMove: onMove,
+            onRemove: onRemove
         }, dispatch)
     }
 }

@@ -30,8 +30,8 @@ export class PlayerList extends Component{
                 total: 2
             }),
             data: Immutable.fromJS([
-                {id:1, icon:"", name:"播放列表1", resolution:"1920X1080", width:1920, height:1080},
-                {id:2, icon:"", name:"播放列表2", resolution:"1920X1080", width:1920, height:1080}
+                {id:1, icon:"", name:"播放方案1", resolution:"1920X1080", width:1920, height:1080},
+                {id:2, icon:"", name:"播放方案2", resolution:"1920X1080", width:1920, height:1080}
             ])
         }
         
