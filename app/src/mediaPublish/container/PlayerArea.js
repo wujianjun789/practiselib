@@ -227,12 +227,12 @@ export class PlayerArea extends Component {
             }),
             assetSearch: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
             assetList: Immutable.fromJS({
-                list: [{id: 1, name: '素材1', active: true, type:"word"}, {id: 2, name: '素材2', type:"video"}, {id: 3, name: '素材3', type:"picture"},
-                    {id: 4, name: '素材4', type:"video"}], id: 1, name: '素材1', isEdit: true
+                list: [{id: 1, name: '素材1', active: true, assetType:"system", type:"word"}, {id: 2, name: '素材2', assetType:"source", type:"video"}, {id: 3, name: '素材3', assetType:"source", type:"picture"},
+                    {id: 4, name: '素材4', assetType:"source", type:"video"}], id: 1, name: '素材1', isEdit: true
             }),
             playerListAsset: Immutable.fromJS({
-                list: [{id: 1, name: '素材1',type:"word"}, {id: 2, name: '素材2',type:"video"}, {id: 3, name: '素材3',type:"picture"},
-                    {id: 4, name: '素材4',type:"word"}, {id: 5, name: '素材5',type:"video"}, {id: 6, name: '素材6',type:"picture"}],
+                list: [{id: 1, name: '素材1',assetType:"system", type:"word"}, {id: 2, name: '素材2',assetType:"source", type:"video"}, {id: 3, name: '素材3',assetType:"source", type:"picture"},
+                    {id: 4, name: '素材4', assetType:"source", type:"word"}, {id: 5, name: '素材5',assetType:"source", type:"video"}, {id: 6, name: '素材6',assetType:"source", type:"picture"}],
                 id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
@@ -555,10 +555,28 @@ export class PlayerArea extends Component {
 
     assetLibRemove(item){
         console.log('assetLibRemove:', item.toJS());
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中素材？"}
+                                            cancel={()=>{actions.overlayerHide()}} confirm={()=>{
+                                                    const itemId = item.get("id");
+                                                    const list = this.state.assetList.get("list");
+                                                    const curIndex = getIndexByKey(list, "id", itemId);
+
+                                                    this.setState({assetList: this.state.assetList.update("list", v=>v.splice(curIndex, 1))},()=>{
+                                                        actions.overlayerHide();
+                                                    });
+                                                }}/>)
+
     }
 
     playerAssetRemove(item){
         console.log('playerAssetRemove:', item.toJS());
+
+        const itemId = item.get("id");
+        const list = this.state.playerListAsset.get("list");
+        const curIndex = getIndexByKey(list, "id", itemId);
+
+        this.setState({playerListAsset: this.state.playerListAsset.update("list", v=>v.splice(curIndex, 1))});
     }
 
     playerAssetMove(id, item){
@@ -694,7 +712,13 @@ export class PlayerArea extends Component {
     }
 
     quitHandler() {
-        this.props.router.push("/mediaPublish/playerList");
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="未保存内容将会丢失，是否退出？"
+                    cancel={()=>{actions.overlayerHide();}} confirm={()=>{
+                                                                 actions.overlayerHide();
+                                                                this.props.router.push("/mediaPublish/playerList");
+                                                            }}/>)
+
     }
 
     positionHandler(id) {
@@ -790,7 +814,7 @@ export class PlayerArea extends Component {
                                 <span className="name">{item.get("name")}</span>
                                 {curId==itemId && index>0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('left', item)}}></span>}
                                 {curId==itemId && index<playerListAsset.get("list").size-1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event)=>{event.stopPropagation();this.playerAssetMove('right', item)}}></span>}
-                                {!playerListAsset.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
+                                {!playerListAsset.get('isEdit') && item.get("assetType")=="source" && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.playerAssetRemove(item)}}></span>}
                             </li>
                         })
                     }
@@ -1208,7 +1232,7 @@ export class PlayerArea extends Component {
                                                 <span className="icon"></span>
                                                 <span className="name">{item.get('name')}</span>
                                                 {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event)=>{event.stopPropagation();this.addClick(item)}}></span>}
-                                                {!assetList.get('isEdit') && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
+                                                {!assetList.get('isEdit') && item.get("assetType")=="source" && <span className="icon_delete_c remove" title="删除" onClick={(event)=>{event.stopPropagation();this.assetLibRemove(item)}}></span>}
                                             </li>
                                         })
                                     }
