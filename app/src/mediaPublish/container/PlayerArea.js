@@ -32,6 +32,8 @@ import moment from 'moment'
 import Immutable from 'immutable';
 import {numbersValid} from '../../util/index';
 import {getIndexByKey} from '../../util/algorithm';
+import { TimePicker } from 'antd';
+
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -170,7 +172,7 @@ export class PlayerArea extends Component {
                 //视频素材
                 playTimes:{key: "playTimes", title: "播放次数", placeholder: '次', value: ""},
                 playType:{key: "playType", title: "播放类型", list: [{id: 1, name: '片段播放'}, {id: 2, name: '完整播放'}],index: 0, name: "片段播放"},
-                clipsRage:{key: "clipsRage", title: "片段范围", placeholder: '次', value: ""},
+                clipsRage:{key: "clipsRage", title: "片段范围", clipsRage1: moment('00:00:00', 'HH:mm:ss'),clipsRage2:moment('00:00:00', 'HH:mm:ss')},
                 scaling: {key: "scaling", title: "缩放比例", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
                 volume: {key: "volume", title: "音量", list: [{id: 1, name: '100'}, {id: 2, name: '90'}, {id: 3, name: '80'}, 
                 {id: 4, name: '70'}, {id: 5, name: '60'}, {id: 6, name: '50'}, {id: 7, name: '40'}, {id: 8, name: '30'}, {id: 9, name: '20'},{id: 10, name: '10'},{id: 11, name: '11'}],index: 0, name: ""},
@@ -203,8 +205,10 @@ export class PlayerArea extends Component {
                 action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
                 //场景
                 sceneName: true, playMode: true, playModeCount: true,
+                //区域
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
-                assetName: true,playTime:true, playSpeed:true,
+                //素材
+                playDuration:true, playSpeed:true, playTimes:true, clipsRage:true,
             },
 
             showModal: false,
@@ -367,7 +371,7 @@ export class PlayerArea extends Component {
             this.setState({assetSearch: this.state.assetSearch.update('value', v=>value)});
         } else {
 
-            if (id == "action") {
+            if (id == "action"|| id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume") {
                 const curIndex = value.target.selectedIndex;
                 this.setState({
                     property: Object.assign({}, this.state.property, {
@@ -406,15 +410,24 @@ export class PlayerArea extends Component {
                     })
                 })
             }else {
-                const val = value.target.value;
-                if (!numbersValid(val)) {
-                    prompt = true;
+                if(id == "clipsRage1"||id == "clipsRage2"){
+                    prompt = !value;
+                    this.setState({
+                        property: Object.assign({}, this.state.property, {clipsRage: Object.assign({}, this.state.property.clipsRage, {[id]: value})}),
+                        prompt: Object.assign({}, this.state.prompt, {clipsRage:prompt})
+                    })
                 }
+                else{
+                    const val = value.target.value;
+                    if (!numbersValid(val)) {
+                        prompt = true;
+                    } 
 
-                this.setState({
-                    property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {value: val})}),
-                    prompt: Object.assign({}, this.state.prompt, {[id]: Object.assign({}, this.state.prompt[id], {[id]: prompt})})
-                })
+                    this.setState({
+                        property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {value: val})}),
+                        prompt: Object.assign({}, this.state.prompt, {[id]: prompt})
+                    })
+                }
             }
         }
     }
@@ -1022,9 +1035,13 @@ export class PlayerArea extends Component {
                                     <input type="text" className= "form-control" 
                                             placeholder={property.playSpeed.placeholder} maxLength="8"
                                             value={property.playSpeed.value}
-                                            onChange={event=>this.onChange("playTime", event)}/>
+                                            onChange={event=>this.onChange("playSpeed", event)}/>
                                     <span className={prompt.playSpeed?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
+                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerVideoAsset "+(curType=='playerVideoAsset'?'':"hidden")}>
@@ -1078,10 +1095,10 @@ export class PlayerArea extends Component {
                                 property.playType.name == "片段播放" && (<div className="form-group clipsRage">
                                     <label className="control-label">{property.clipsRage.title}</label>
                                     <div className="input-container">
-                                        <input className="form-control" id="time1" type="time" value={''} onChange={event=>this.onChange("clipsRage1", event)}/>
+                                        <TimePicker size="large" onChange={value=>this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1}/>
                                         <span className="text">至</span>
-                                        <input className="form-control" id="time2" type="time" value={''} onChange={event=>this.onChange("clipsRage2", event)}/>
-                                        <span className={prompt.clipsRage?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                        <TimePicker size="large" onChange={value=>this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2}/>
+                                        <span className={prompt.clipsRage?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>                                      
                                     </div>
                                 </div>)
                             }
@@ -1099,6 +1116,10 @@ export class PlayerArea extends Component {
                                             }) }
                                     </select>
                                 </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
+                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
                             </div>
                         </div>
                     </div>

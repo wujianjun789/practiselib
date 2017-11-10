@@ -489,6 +489,7 @@
       }
       .form-group {
         display: inline-block;
+        margin-bottom: 20px;
         label {
           text-align: right;
           width: 30px;
@@ -496,6 +497,7 @@
           margin-right: 10px;
           padding: 0;
           //float: left;
+          margin-bottom: 0;
         }
 
         .input-container {
@@ -558,17 +560,24 @@
         }
         &.clipsRage{
           .input-container {
+            position: absolute;
             vertical-align: top;
-            >input{
+            .ant-time-picker{
               width:100px;
               float: left;
-              padding: 9px 12px;
+              >input{
+                height: 40px;
+              }
             }
             .text{
               float: left;              
               width:50px;
               line-height: 40px;
               text-align: center;
+            }
+            .prompt{
+              top:40px;
+              left:0;
             }
           }
         }
@@ -592,13 +601,16 @@
         }
       }
 
-      &.playerProject,&.playerScene{
-        button{
-          margin-left: 15px;
-
-          &:last-child{
-            background: #495264;
-            border: 0;
+      &.playerProject,&.playerScene,&.playerPicAsset,&.playerVideoAsset{
+        .row{
+          clear: both;
+          button{
+            margin-left: 15px;
+  
+            &:last-child{
+              background: #495264;
+              border: 0;
+            }
           }
         }
       }
