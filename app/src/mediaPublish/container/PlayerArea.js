@@ -881,7 +881,7 @@ export class PlayerArea extends Component {
                                     <div className="input-container">
                                         <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" 
                                             defaultValue={moment()} onChange={value=>this.dateChange('startDate', value)}/>
-                                        {/* <span className={prompt.startDate?"prompt ":"prompt hidden"}>{"请选择开始日期"}</span> */}
+                                        <div className={prompt.startDate?"prompt ":"prompt hidden"}>{"请选择开始日期"}</div>
                                     </div>
                                 </div>
                                 <div className="form-group endDate">
@@ -890,7 +890,7 @@ export class PlayerArea extends Component {
                                     <div className="input-container">
                                         <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
                                             defaultValue={moment()} onChange={value=>this.dateChange('endDate', value)}/>
-                                        {/* <span className={prompt.endDate?"prompt ":"prompt hidden"}>{"请选择结束日期"}</span> */}
+                                        <div className={prompt.endDate?"prompt ":"prompt hidden"}>{"请选择结束日期"}</div>
                                     </div>
                                 </div>
                             </div>
@@ -899,18 +899,18 @@ export class PlayerArea extends Component {
                                     <label className="control-label"
                                            htmlFor={property.startTime.key}>{property.startTime.title}</label>
                                     <div className="input-container">
-                                        <DatePicker id="startTime" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
+                                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" 
                                             defaultValue={moment()} onChange={value=>this.dateChange('startTime', value)}/>
-                                        {/* <span className={prompt.startTime?"prompt ":"prompt hidden"}>{"请选择开始时间"}</span> */}
+                                        <div className={prompt.startTime?"prompt ":"prompt hidden"}>{"请选择开始时间"}</div>
                                     </div>
                                 </div>
                                 <div className="form-group endTime">
                                     <label className="control-label"
                                            htmlFor={property.endTime.key}>{property.endTime.title}</label>
                                     <div className="input-container">
-                                        <DatePicker id="endTime" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
+                                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" 
                                             defaultValue={moment()} onChange={value=>this.dateChange('endTime', value)}/>
-                                        {/* <span className={prompt.endTime?"prompt ":"prompt hidden"}>{"请选择结束时间"}</span> */}
+                                        <div className={prompt.endTime?"prompt ":"prompt hidden"}>{"请选择结束时间"}</div>
                                     </div>
                                 </div>
                             </div>
