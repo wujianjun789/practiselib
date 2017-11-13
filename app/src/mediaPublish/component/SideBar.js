@@ -86,9 +86,9 @@ export default class SideBar extends Component {
             </div>
             <div className={"add-poppup "+(isProject && !isClick?'active':'')}>
                 <span className="glyphicon glyphicon-triangle-top"></span>
-                <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
-                <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
-                <span className="icon icon_file" onClick={()=>this.onClick("add")}></span>
+                <span className="icon icon_mediaPublish_general" onClick={()=>this.onClick("add")}></span>
+                <span className="icon icon_mediaPublish_cycle" onClick={()=>this.onClick("add")}></span>
+                <span className="icon icon_mediaPublish_regular" onClick={()=>this.onClick("add")}></span>
             </div>
             <div className={"title "+(isProject && !isClick ?'active':'')} onClick={()=>this.onProject()}>{title}</div>
             <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isProject || isClick}
