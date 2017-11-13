@@ -9,9 +9,9 @@
 export function setCookie(key, value) {
     try {
         let cookie = document.cookie
-        if(getCookie(key)){
-            return;
-        }
+        // if(getCookie(key)){
+        //     return;
+        // }
 
         document.cookie = key+"="+JSON.stringify(value)+"; path=/";
         // $.cookie(key, JSON.stringify(value), {expires:1});
