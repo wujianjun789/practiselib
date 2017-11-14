@@ -167,3 +167,66 @@ export function delPlayerById(data, cb) {
         cb && cb(response);
     })
 }
+
+export function getSceneList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes',{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getSceneById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+id,{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function addScene(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateScene(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+data.id,{
+        headers: headers,
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateSceneOrders(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/orders/'+data.id,{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function delScene(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/scenes/'+data.id,{
+        headers: headers,
+        method: 'DELETE'
+    }, response=>{
+        cb && cb(response);
+    })
+}
