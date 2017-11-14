@@ -3,6 +3,7 @@
  */
 import {HOST_IP, getHttpHeader, httpRequest} from '../util/network';
 
+//播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
     let headers = getHttpHeader();
     let obj = {"offset":offset, "limint":limit}
@@ -57,7 +58,7 @@ export function getProjectPreviewById(data, cb) {
 }
 
 
-export function addProjectList(data, cb) {
+export function addProject(data, cb) {
     let headers = getHttpHeader();
 
     let url = HOST_IP+'/projects';
@@ -70,7 +71,7 @@ export function addProjectList(data, cb) {
     })
 }
 
-export function updateProjectList(data, cb) {
+export function updateProjectById(data, cb) {
     let headers = getHttpHeader();
 
     let url = HOST_IP+'/projects/'+data.id;
@@ -83,7 +84,7 @@ export function updateProjectList(data, cb) {
     })
 }
 
-export function delProjectList(data, cb) {
+export function delProjectById(data, cb) {
     let headers = getHttpHeader();
 
     let url = HOST_IP+'/projects/'+data.id;
@@ -96,7 +97,7 @@ export function delProjectList(data, cb) {
     })
 }
 
-
+//播放表
 export function getPlayerList(cb) {
     let headers = getHttpHeader();
 
@@ -145,7 +146,7 @@ export function updatePlayerById(data, cb) {
     })
 }
 
-export function updatePlayerOrdersById(data, cb) {
+export function updatePlayerOrders(data, cb) {
     let headers = getHttpHeader();
 
     httpRequest(HOST_IP+'/programs/orders',{
@@ -168,6 +169,7 @@ export function delPlayerById(data, cb) {
     })
 }
 
+//场景
 export function getSceneList(cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/scenes',{
@@ -199,7 +201,7 @@ export function addScene(data, cb) {
     })
 }
 
-export function updateScene(data, cb) {
+export function updateSceneById(data, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/scenes/'+data.id,{
         headers: headers,
@@ -221,7 +223,7 @@ export function updateSceneOrders(data, cb) {
     })
 }
 
-export function delScene(data, cb) {
+export function delSceneById(data, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/scenes/'+data.id,{
         headers: headers,
@@ -231,6 +233,7 @@ export function delScene(data, cb) {
     })
 }
 
+//区域
 export function getZoneList(cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/zones', {
@@ -241,7 +244,7 @@ export function getZoneList(cb) {
     })
 }
 
-export function getZone(id, cb) {
+export function getZoneById(id, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/zones/'+id,{
         headers: headers,
@@ -262,7 +265,7 @@ export function addZone(data, cb) {
     })
 }
 
-export function updateZone(data, cb) {
+export function updateZoneById(data, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/zones/'+data.id,{
         headers: headers,
@@ -284,9 +287,83 @@ export function updateZoneOrders(data, cb) {
     })
 }
 
-export function delZone(data, cb) {
+export function delZoneById(data, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/zones/'+data.id,{
+        headers: headers,
+        method: 'DELETE'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+//播放项
+export function getItemList(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items',{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getItembyId(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items/'+id,{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getItemPreviewbyId(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items/'+id+'/preview',{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function addItem(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateItemById(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items/'+data.id,{
+        headers: headers,
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateItemOrders(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items/orders',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function delItemById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/items/'+id,{
         headers: headers,
         method: 'DELETE'
     }, response=>{
