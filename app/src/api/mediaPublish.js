@@ -97,15 +97,10 @@ export function delProjectList(data, cb) {
 }
 
 
-export function searchPlayerList(type, assetName, offset, limit, cb) {
+export function getPlayerList(cb) {
     let headers = getHttpHeader();
-    let obj = {"offset":offset,"limit":limit}
-    if(domainName){
-        obj = Object.assign({"where":{type:type, name:{like:assetName}}}, obj);
-    }
-    let param = JSON.stringify(obj);
-    let url = HOST_IP+'/playerList?filter='+encodeURIComponent(param);
 
+    let url = HOST_IP+'/programs';
     httpRequest(url, {
         headers: headers,
         method: 'GET'
@@ -114,21 +109,34 @@ export function searchPlayerList(type, assetName, offset, limit, cb) {
     })
 }
 
-export function playerPublishByPlayerId(playerId, cb) {
+export function getPlayerById(id, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/player/publish/'+playerId, {
+    let url = HOST_IP+'/programs/'+id;
+    httpRequest(url, {
         headers: headers,
-        method: 'PUT'
+        method: 'GET'
     }, response=>{
         cb && cb(response);
     })
 }
 
-export function updatePlayerByPlayerId(playerId, data, cb) {
+export function addPlayer(data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/player/'+playerId,{
+    httpRequest(HOST_IP+'/programs', {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updatePlayerById(data, cb) {
+    let headers = getHttpHeader();
+
+    httpRequest(HOST_IP+'/programs/'+data.id,{
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
@@ -137,12 +145,24 @@ export function updatePlayerByPlayerId(playerId, data, cb) {
     })
 }
 
-export function removePlayerByPlayerId(playerId, cb) {
+export function updatePlayerOrdersById(data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/player/'+playerId,{
+    httpRequest(HOST_IP+'/programs/orders',{
         headers: headers,
-        method: 'DELETE',
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function delPlayerById(data, cb) {
+    let headers = getHttpHeader();
+
+    httpRequest(HOST_IP+'/programs/'+data.id,{
+        headers: headers,
+        method: 'DELETE'
     }, response=>{
         cb && cb(response);
     })
