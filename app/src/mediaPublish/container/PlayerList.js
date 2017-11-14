@@ -23,7 +23,7 @@ export class PlayerList extends Component{
         super(props);
         this.state = {
             type:Immutable.fromJS({list:[{id:1, value:'播放类型1'},{id:2, value:'播放类型2'}], index:0, value:'播放类型1'}),
-            search: Immutable.fromJS({placeholder: '输入素材名称', value: ''}),
+            search: Immutable.fromJS({placeholder: '输入方案名称', value: ''}),
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
