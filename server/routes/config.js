@@ -41,7 +41,7 @@ router.get('/module', function (req, res, next) {
         response.on('end', ()=>{
             console.log('body:', body, JSON.parse(body).roleId);
             let modules = JSON.parse(body).modules;
-            if(!modules){
+            if(!modules||user.role=="admin"){
                 res.json(client.module);
             }else{
                 let moduList = [];
