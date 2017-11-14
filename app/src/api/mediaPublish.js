@@ -230,3 +230,66 @@ export function delScene(data, cb) {
         cb && cb(response);
     })
 }
+
+export function getZoneList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/zones', {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getZone(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/zones/'+id,{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function addZone(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/zones',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateZone(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/zones/'+data.id,{
+        headers: headers,
+        method: 'PUT',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateZoneOrders(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/zones/orders',{
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function delZone(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/zones/'+data.id,{
+        headers: headers,
+        method: 'DELETE'
+    }, response=>{
+        cb && cb(response);
+    })
+}
