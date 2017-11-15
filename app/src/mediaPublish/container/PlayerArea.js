@@ -252,6 +252,8 @@ export class PlayerArea extends Component {
             isPressed: false,
 //播放列表单击
             isClick:false,
+            //左侧栏添加单击
+            isAddClick: false
         }
 
         this.typeList = [{id: 'playerPlan', name: '播放计划'}, {id: 'playerScene', name: '场景'}, {
@@ -669,18 +671,21 @@ export class PlayerArea extends Component {
         const {actions} = this.props;
         let data = {}
         if (id == "add") {
-            switch (this.state.curType) {
-                case "playerPlan":
-                    this.updatePlayerPlanPopup();
-                    break;
-                case "playerScene":
-                    this.updatePlayerScenePopup();
-                    break;
-                case "playerArea":
-                    this.updatePlayerAreaPopup();
-                    break;
-            }
-        } else if (id == "remove") {
+            // switch (this.state.curType) {
+            //     case "playerPlan":
+            //         this.updatePlayerPlanPopup();
+            //         break;
+            //     case "playerScene":
+            //         this.updatePlayerScenePopup();
+            //         break;
+            //     case "playerArea":
+            //         this.updatePlayerAreaPopup();
+            //         break;
+            // }
+            this.setState({isAddClick: true});
+        } else if(id == "edit"){
+
+        }else if (id == "remove") {
             let tips = "是否删除选中场景与场景中所有内容";
             switch (this.state.curType) {
                 case "playerPlan":
@@ -699,6 +704,8 @@ export class PlayerArea extends Component {
                                                 }}/>)
         }else if(id == "project"){
             this.setState({curType:"playerProject", isClick:false});
+        }else{
+            this.setState({isAddClick: false})
         }
     }
 
@@ -777,7 +784,7 @@ export class PlayerArea extends Component {
     render() {
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle,controlStyle,
-            lastPress, isPressed, mouseXY,isClick
+            lastPress, isPressed, mouseXY,isClick,isAddClick
         } = this.state;
         const {router} = this.props;
         let routerState = null;
@@ -789,7 +796,7 @@ export class PlayerArea extends Component {
         console.log(property.cycleStartDate, property.cycleStartTime, property.cycleWeek);
         return <div className={"container "+"mediaPublish-playerArea "+(sidebarInfo.collapsed?'sidebar-collapse':'')}>
             <HeadBar moduleName="媒体发布" router={router}/>
-            <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} onClick={this.areaClick} onToggle={this.onToggle}/>
+            <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick} onClick={this.areaClick} onToggle={this.onToggle}/>
             <Content className="player-area">
                 <div className="left">
                     <div className="form-group control-container-top">

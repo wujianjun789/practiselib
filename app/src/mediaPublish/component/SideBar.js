@@ -70,13 +70,13 @@ export default class SideBar extends Component {
     }
 
     render() {
-        const {data, title, isClick} = this.props;
+        const {data, title, isClick, isAddClick} = this.props;
         const {isProject, isEdit, isRemove, isMove}  = this.state;
         return <div className="sidebar">
 
             <div className="edit-container">
                 <div className={"btn-group "+(isEdit?'':'hidden')}>
-                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加{isProject && !isClick && <span>&nbsp;&or;</span>}</button>
+                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加{isProject && !isClick && isAddClick && <span>&nbsp;&or;</span>}</button>
                     <button className="btn btn-primary" onClick={()=>this.onClick("edit")}>编辑</button>
                 </div>
                 <div className={"btn-group "+(isEdit?'hidden':'')}>
@@ -84,11 +84,11 @@ export default class SideBar extends Component {
                     <button className="btn btn-primary" onClick={()=>this.onClick("complete")}>完成</button>
                 </div>
             </div>
-            <div className={"add-poppup "+(isProject && !isClick?'active':'')}>
+            <div className={"add-poppup "+(isProject && !isClick && isAddClick?'active':'')}>
                 <span className="glyphicon glyphicon-triangle-top"></span>
-                <span className="icon icon_mediaPublish_general" onClick={()=>this.onClick("add")}></span>
-                <span className="icon icon_mediaPublish_cycle" onClick={()=>this.onClick("add")}></span>
-                <span className="icon icon_mediaPublish_regular" onClick={()=>this.onClick("add")}></span>
+                <span className="icon icon_mediaPublish_general" onClick={()=>this.onClick("general")}></span>
+                <span className="icon icon_mediaPublish_cycle" onClick={()=>this.onClick("cycle")}></span>
+                <span className="icon icon_mediaPublish_regular" onClick={()=>this.onClick("regular")}></span>
             </div>
             <div className={"title "+(isProject && !isClick ?'active':'')} onClick={()=>this.onProject()}>{title}</div>
             <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isProject || isClick}
