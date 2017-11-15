@@ -26,7 +26,7 @@ exports[`test PlayerList renders 1`] = `
       <input
         className="form-control"
         onChange={[Function]}
-        placeholder="输入素材名称"
+        placeholder="输入方案名称"
         type="search"
         value="" />
       <ul
@@ -77,7 +77,7 @@ exports[`test PlayerList renders 1`] = `
                 type="checkbox" />
             </td>
             <td>
-              播放列表1
+              播放方案1
             </td>
             <td>
               1920X1080
@@ -117,7 +117,7 @@ exports[`test PlayerList renders 1`] = `
                 type="checkbox" />
             </td>
             <td>
-              播放列表2
+              播放方案2
             </td>
             <td>
               1920X1080

@@ -1,6 +1,6 @@
 exports[`test TreeView renders 1`] = `
 <div
-  className="tree-list">
+  className="tree-list undefined">
   <ul
     className="tree-1"
     style={
@@ -17,7 +17,7 @@ exports[`test TreeView renders 1`] = `
           onClick={[Function]}
           title="资产管理">
           <span
-            className="glyphicon glyphicon-triangle-bottom" />
+            className="glyphicon glyphicon-triangle-bottom toggled" />
           资产管理
         </div>
       </a>
@@ -25,7 +25,7 @@ exports[`test TreeView renders 1`] = `
         className="tree-2"
         style={
           Object {
-            "height": "100px",
+            "height": "80px",
           }
         }>
         <li
@@ -37,7 +37,7 @@ exports[`test TreeView renders 1`] = `
               onClick={[Function]}
               title="灯集中控制器灯集中控">
               <span
-                className="glyphicon-list-alt" />
+                className="icon glyphicon-list-alt" />
               <span>
                 灯集中控制器灯集中控
               </span>
@@ -53,7 +53,7 @@ exports[`test TreeView renders 1`] = `
               onClick={[Function]}
               title="LED灯">
               <span
-                className="glyphicon-lamp" />
+                className="icon glyphicon-lamp" />
               <span>
                 LED灯
               </span>
@@ -71,8 +71,10 @@ exports[`test TreeView renders 1`] = `
           onClick={[Function]}
           title="资产统计">
           <span
-            className="glyphicon glyphicon-triangle-right" />
-          资产统计
+            className="icon undefined" />
+          <span>
+            资产统计
+          </span>
         </div>
       </a>
     </li>

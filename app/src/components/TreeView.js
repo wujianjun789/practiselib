@@ -112,7 +112,6 @@ export class TreeView extends Component{
 
     render(){
         const { className, datalist } = this.props;
-        console.log("datalist:", datalist);
         return <div className={"tree-list "+className}>
             {
                 this.renderTree(datalist, 1)

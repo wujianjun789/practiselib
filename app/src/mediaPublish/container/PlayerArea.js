@@ -41,7 +41,7 @@ export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            curType: 'playerArea',
+            curType: 'cyclePlan',
             playerData: [
                 {
                     "id": "player1",
@@ -119,55 +119,21 @@ export class PlayerArea extends Component {
                 //方案
                 project: {key: "project", title: "方案名称", placeholder:"请输入名称", value:""},
                 //计划
-                plan: { 
-                    key: "plan",
-                    title: "计划名称",
-                    placeholder: "请输入名称",
-                    value: ""
-                 },
-                startDate: { 
-                    key: "startDate",
-                    title: "开始日期",
-                    placeholder: "点击选择开始日期",
-                    value: ()=>{ moment()}
-                },
-                endDate: { 
-                    key: "endDate",
-                    title: "结束日期",
-                    placeholder: "点击选择结束日期",
-                    value: ""
-                 },
-                startTime: { 
-                    key: "startTime",
-                    title: "开始时间",
-                    placeholder: "点击选择开始时间",
-                    value: ""
-                },
-                endTime: { 
-                    key: "endTime",
-                    title: "结束时间",
-                    placeholder: "点击选择结束时间",
-                    value: ""
-                },
-                week: {
-                    key: "week",
-                    title: "工作日",
+                plan: {key: "plan", title: "计划名称", placeholder: "请输入名称", value: ""},
+                startDate: {key: "startDate", title: "开始日期", placeholder: "点击选择开始日期", value: ()=>{ moment()}},
+                endDate: {key: "endDate", title: "结束日期", placeholder: "点击选择结束日期", value: ""},
+                startTime: {key: "startTime", title: "开始时间", placeholder: "点击选择开始时间", value: ""},
+                endTime: {key: "endTime", title: "结束时间", placeholder: "点击选择结束时间", value: ""},
+                week: {key: "week", title: "工作日",
                     list:[{label: "周一", value:1}, {label: "周二", value:2},
                         {label: "周三", value:3}, {label: "周四", value:4}, 
                         {label: "周五", value:5}, {label: "周六", value:6}, 
                         {label: "周日", value:7}],
-                    value:[]
+                    value:[1,2]
                 },
-                action: {
-                    key: "action",
-                    title: "动作",
-                    list: [{id: 1, name: '动作1'}, {id: 2, name: '动作2'}],
-                    index: 0,
-                    name: "动作1"
+                action: {key: "action", title: "动作", list: [{id: 1, name: '动作1'}, {id: 2, name: '动作2'}], index: 0, name: "动作1"
                 },
-                position: {
-                    key: 'position',
-                    title: '坐标位置',
+                position: {key: 'position', title: '坐标位置',
                     list: [{id: 'left', name: '左'}, {id: 'center', name: '居中'}, {id: 'right', name: '右'},
                         {id: 'top', name: '上'}, {id: 'middle', name: '中'}, {id: 'bottom', name: '下'},],
                     id: 'left'
@@ -178,6 +144,24 @@ export class PlayerArea extends Component {
                 repeat: {key: "repeat", title: "重复次数", placeholder: "1-255", value: ""},
                 resTime: {key: "resTime", title: "停留时间", placeholder: "ms", value: ""},
                 flicker: {key: "flicker", title: "闪烁次数", placeholder: "1-255", value: ""},
+
+                //周期插播计划
+                cycleName: {key: "cycleName", title: "计划名称", placeholder:'请输入名称', value:""},
+                cycleInterval: {key: "cycleInterval", title: "时间间隔", placeholder:'秒', value:""},
+                cyclePause: {key: "cyclePause", title: "暂停标志", list:[{id:'1',name:'暂停'},{id:'2',name:'不暂停'}], index:0,name:"暂停"},
+                cycleDate: {key: "cycleDate", title:"指定日期", appoint:false},
+                cycleStartDate: {key: "cycleStartDate", title: "开始日期", placeholder: "点击选择开始日期", value: moment()},
+                cycleEndDate: {key: "cycleEndDate", title: "结束日期", placeholder: "点击选择结束日期", value: moment()},
+                cycleTime: {key: "cycleDate", title:"指定时间", appoint:false},
+                cycleStartTime: {key: "cycleStartTime", title: "开始时间", placeholder: "点击选择开始时间", value: moment()},
+                cycleEndTime: {key: "cycleEndTime", title: "结束时间", placeholder: "点击选择结束时间", value: moment()},
+                cycleWeek: {key: "cycleWeek", title: "工作日",
+                    list:[{label: "周一", value:1}, {label: "周二", value:2},
+                        {label: "周三", value:3}, {label: "周四", value:4},
+                        {label: "周五", value:5}, {label: "周六", value:6},
+                        {label: "周日", value:7}],
+                    value:[1,2]
+                },
 
                 //区域
                 areaName: {key: "areaName", title: "区域名称", placeholder: '区域名称', value: ""},
@@ -251,7 +235,10 @@ export class PlayerArea extends Component {
                 areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 //素材
                 playDuration:true, playSpeed:true, playTimes:true, clipsRage:true,
-                plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true
+                //计划
+                plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true,
+                //周期插播计划
+                cycleName: true, cycleInterval: true, cyclePause: true, cycleDate: true, cycleTime: true, cycleWeek: true
             },
 
             showModal: false,
@@ -296,6 +283,7 @@ export class PlayerArea extends Component {
         this.playerAssetMove = this.playerAssetMove.bind(this);
         this.projectClick = this.projectClick.bind(this);
         this.playerSceneClick = this.playerSceneClick.bind(this);
+        this.cyclePlanClick = this.cyclePlanClick.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -414,7 +402,7 @@ export class PlayerArea extends Component {
             this.setState({assetSearch: this.state.assetSearch.update('value', v=>value)});
         } else {
 
-            if (id == "action"|| id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume") {
+            if (id == "action"|| id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume" || id == "cyclePause") {
                 const curIndex = value.target.selectedIndex;
                 this.setState({
                     property: Object.assign({}, this.state.property, {
@@ -452,6 +440,8 @@ export class PlayerArea extends Component {
                         "playModeCount": Object.assign({}, this.state.property.playModeCount, {title:title, placeholder: placeholder, active:active})
                     })
                 })
+            }else if(id== "cycleDate" || id == "cycleTime"){
+                this.setState({property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {appoint:value.target.checked})})})
             }else {
                 if(id == "clipsRage1"||id == "clipsRage2"){
                     prompt = !value;
@@ -476,11 +466,11 @@ export class PlayerArea extends Component {
     }
 
     dateChange(id, value){
-        if(id == "week"){
+        if(id == "week" || id == "cycleWeek"){
             console.log(value);
-            this.setState({[id]:Object.assign({}, this.state.week, {value:value})});
+            this.setState({property:Object.assign({}, this.state.property, {[id]:Object.assign({}, this.state.property[id], {value:value})})});
         }else{
-            this.setState({[id]:value});
+            this.setState({property:Object.assign({}, this.state.property, {[id]:Object.assign({}, this.state.property[id], {value:value})})});
         }
     }
 
@@ -551,6 +541,16 @@ export class PlayerArea extends Component {
     }
 
     playerSceneClick(id){
+        console.log(id);
+        switch(id){
+            case "apply":
+                break;
+            case "reset":
+                break;
+        }
+    }
+
+    cyclePlanClick(id){
         console.log(id);
         switch(id){
             case "apply":
@@ -780,10 +780,13 @@ export class PlayerArea extends Component {
             lastPress, isPressed, mouseXY,isClick
         } = this.state;
         const {router} = this.props;
-        const routerState = router.location.state;
+        let routerState = null;
+        if(router && router.location){
+            routerState = router.location.state;
+        }
         const projectItem = routerState?routerState.item:null;
 
-        console.log(property.position.list);
+        console.log(property.cycleStartDate, property.cycleStartTime, property.cycleWeek);
         return <div className={"container "+"mediaPublish-playerArea "+(sidebarInfo.collapsed?'sidebar-collapse':'')}>
             <HeadBar moduleName="媒体发布" router={router}/>
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} onClick={this.areaClick} onToggle={this.onToggle}/>
@@ -949,6 +952,107 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary reset" onClick={this.planReset}>重置</button>
                                     <button className="btn btn-primary" onClick={()=>this.planApply}>应用</button>
                                 </div>
+                            </div>
+                        </div>
+                        <div className={"pro-container cyclePlan "+(curType=='cyclePlan'?'':'hidden')}>
+                            <div className="row">
+                                <div className="form-group cycle-name">
+                                    <label className="control-label" htmlFor={property.cycleName.key}>{property.cycleName.title}</label>
+                                    <div className="input-container">
+                                        <input type="text" className="form-control" placeholder={property.cycleName.placeholder} value={property.cycleName.value} onChange={event=>this.onChange("cycleName", event)}/>
+                                        <span className={prompt.cycleName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group cycle-interval">
+                                    <label className="control-label" htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
+                                    <div className="input-container">
+                                        <input type="text" className="form-control" placeholder={property.cycleInterval.placeholder} value={property.cycleInterval.value} onChange={event=>this.onChange("cycleInterval",event)}/>
+                                        <span className={prompt.cycleInterval?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>
+                                <div className="form-group cycle-pause">
+                                    <label className="control-label" htmlFor={property.cyclePause.key}>{property.cyclePause.title}</label>
+                                    <div className="input-container">
+                                        <select className={ "form-control" } value={ property.cyclePause.name } onChange={ event=>this.onChange("cyclePause", event) }>
+                                            {
+                                                property.cyclePause.list.map((option, index) => {
+                                                    let value = option.name;
+                                                    return <option key={ index } value={ value }>
+                                                        { value }
+                                                    </option>
+                                                }) }
+                                        </select>
+                                        {/*<span className={prompt.cyclePause?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>*/}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group cycle-startDate">
+                                    <label className="control-label"
+                                           htmlFor={property.cycleStartDate.key}>{property.cycleStartDate.title}</label>
+                                    <div className="input-container">
+                                        <DatePicker id="cycleStartDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{width:"200px"}}
+                                                    defaultValue={property.cycleStartDate.value} onChange={value=>this.dateChange('cycleStartDate', value)}/>
+                                        <div className={prompt.cycleStartDate?"prompt ":"prompt hidden"}>{"请选择开始日期"}</div>
+                                    </div>
+                                </div>
+                                <div className="form-group cycle-endDate">
+                                    <label className="control-label"
+                                           htmlFor={property.cycleEndDate.key}>{property.cycleEndDate.title}</label>
+                                    <div className="input-container">
+                                        <DatePicker id="cycleEndDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{width:"200px"}}
+                                                    defaultValue={property.cycleEndDate.value} onChange={value=>this.dateChange('cycleEndDate', value)}/>
+                                        <div className={prompt.cycleEndDate?"prompt ":"prompt hidden"}>{"请选择结束日期"}</div>
+                                    </div>
+                                </div>
+                                <div className="form-group cycle-date">
+                                    <label className="control-label" htmlFor={property.cycleDate.key}>{property.cycleDate.title}</label>
+                                    <div className="input-container">
+                                        <Checkbox checked={property.cycleDate.appoint} onChange={event=>this.onChange("cycleDate", event)}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group cycle-startTime">
+                                    <label className="control-label"
+                                           htmlFor={property.cycleStartTime.key}>{property.cycleStartTime.title}</label>
+                                    <div className="input-container">
+                                        <DatePicker id="cycleStartTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" style={{width:"200px"}}
+                                                    defaultValue={property.cycleStartTime.value} onChange={value=>this.dateChange('cycleStartTime', value)}/>
+                                        <div className={prompt.cycleStartTime?"prompt ":"prompt hidden"}>{"请选择开始时间"}</div>
+                                    </div>
+                                </div>
+                                <div className="form-group cycle-endTime">
+                                    <label className="control-label"
+                                           htmlFor={property.cycleEndTime.key}>{property.cycleEndTime.title}</label>
+                                    <div className="input-container">
+                                        <DatePicker id="cycleEndTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" style={{width:"200px"}}
+                                                    defaultValue={property.cycleEndTime.value} onChange={value=>this.dateChange('cycleEndTime', value)}/>
+                                        <div className={prompt.cycleEndTime?"prompt ":"prompt hidden"}>{"请选择结束时间"}</div>
+                                    </div>
+                                </div>
+                                <div className="form-group cycle-time">
+                                    <label className="control-label" htmlFor={property.cycleTime.key}>{property.cycleTime.title}</label>
+                                    <div className="input-container">
+                                        <Checkbox checked={property.cycleTime.appoint} onChange={event=>this.onChange("cycleTime", event)}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group cycle-week">
+                                    <label className="control-label"
+                                           htmlFor={property.cycleWeek.key}>{property.cycleWeek.title}</label>
+                                    <div className="input-container">
+                                        <CheckboxGroup id="cycleWeek" options={property.cycleWeek.list} defaultValue={property.cycleWeek.value} onChange={value=>this.dateChange('cycleWeek', value)}/>
+                                        <span className={"fixpos "+(prompt.cycleWeek?"prompt ":"prompt hidden")}>{"请选择工作日"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.cyclePlanClick('apply')}}>应用</button>
+                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerArea "+(curType=='playerArea'?'':"hidden")}>

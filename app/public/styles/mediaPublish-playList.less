@@ -603,7 +603,7 @@
         }
       }
 
-      &.playerProject,&.playerScene,&.playerPicAsset,&.playerVideoAsset{
+      &.playerProject,&.playerScene,&.playerPicAsset,&.playerVideoAsset,&.cyclePlan{
         .row{
           clear: both;
           button{
@@ -617,7 +617,7 @@
         }
       }
 
-      &.playerScene{
+      &.playerScene,&.cyclePlan{
         padding-left: 0;
         .form-group{
           label{
@@ -626,6 +626,41 @@
         }
       }
 
+      &.cyclePlan{
+        .cycle-name{
+          .input-container {
+            width: 580px;
+          }
+        }
+
+        .cycle-startDate,.cycle-endDate,.cycle-startTime,.cycle-endTime{
+          .input-container{
+            width: 200px;
+            .ant-calendar-picker{
+              width: 100%;
+              input{
+                //width: 180px;
+                height: 40px;
+              }
+            }
+          }
+        }
+
+        .cycle-date,.cycle-time{
+          .input-container{
+            width: 20px;
+            label{
+              width: 20px;
+            }
+          }
+        }
+
+        .cycle-week{
+          .input-container{
+            width: 580px;
+          }
+        }
+      }
       //播放计划样式
       &.playerPlan {
         padding-left: 0;
