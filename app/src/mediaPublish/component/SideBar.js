@@ -77,7 +77,7 @@ export default class SideBar extends Component {
             <div className="edit-container">
                 <div className={"btn-group "+(isEdit?'':'hidden')}>
                     <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加{isProject && !isClick && isAddClick && <span>&nbsp;&or;</span>}</button>
-                    <button className="btn btn-reset" onClick={()=>this.onClick("edit")}>编辑</button>
+                    <button className="btn btn-gray" onClick={()=>this.onClick("edit")}>编辑</button>
                 </div>
                 <div className={"btn-group "+(isEdit?'hidden':'')}>
                     <button className="btn btn-primary" onClick={()=>this.onClick("remove")}>删除</button>

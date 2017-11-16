@@ -75,7 +75,7 @@ button{
 .btn.btn-primary,
 .btn.btn-default,
 .btn.btn-danger,
-.btn.btn-reset {
+.btn.btn-gray {
     min-width:60px;
     height:30px;
     padding: 0;
@@ -91,14 +91,14 @@ button{
     border-color: #00bcff;
 }
 
-.btn.btn-reset {
+.btn.btn-gray {
 	color: #fff;
 	background-color: #495264;
     border-color: #495264;
 }
 
-.btn.btn-reset:hover,
-.btn.btn-reset:focus{
+.btn.btn-gray:hover,
+.btn.btn-gray:focus{
 	color: #fff;
 	background-color: #343947;
     border-color: #252832;

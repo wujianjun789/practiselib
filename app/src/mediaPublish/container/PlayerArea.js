@@ -927,10 +927,10 @@ console.log(property.timingPlayModeCount);
                 <div className="pull-right control-container">
                     <div className={"list-group "+(playerListAsset.get('isEdit')?'':'hidden')}>
                         <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('add')}>添加</button>
-                        <button className="btn btn-reset" onClick={()=>this.playerListAssetClick('edit')}>编辑</button>
+                        <button className="btn btn-gray" onClick={()=>this.playerListAssetClick('edit')}>编辑</button>
                     </div>
                     <div className={"list-group "+(playerListAsset.get('isEdit')?'hidden':'')}>
-                        <button className="btn btn-reset" onClick={()=>this.playerListAssetClick('remove')}>删除
+                        <button className="btn btn-gray" onClick={()=>this.playerListAssetClick('remove')}>删除
                         </button>
                         <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('complete')}>完成
                         </button>
@@ -962,7 +962,7 @@ console.log(property.timingPlayModeCount);
                             </div>
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
-                                <button className="btn btn-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
@@ -1038,11 +1038,9 @@ console.log(property.timingPlayModeCount);
                                     </div>
                                 </div>
                             </div>
-                            <div className="bottom">
-                                <div className="row">
-                                    <button className="btn btn-reset reset" onClick={this.planReset}>重置</button>
-                                    <button className="btn btn-primary" onClick={()=>this.planApply}>应用</button>
-                                </div>
+                            <div className="row">
+                                <button className="btn btn-gray pull-right" onClick={this.planReset}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>this.planApply}>应用</button>
                             </div>
                         </div>
                         <div className={"pro-container cyclePlan "+(curType=='cyclePlan'?'':'hidden')}>
@@ -1143,7 +1141,7 @@ console.log(property.timingPlayModeCount);
                             </div>
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.cyclePlanClick('apply')}}>应用</button>
-                                <button className="btn btn-reset pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container timingPlan "+(curType=='timingPlan'?'':'hidden')}>
@@ -1171,7 +1169,7 @@ console.log(property.timingPlayModeCount);
                                                     }) }
                                             </select>
                                             <button className="btn btn-primary timing-sort-add" onClick={()=>{this.timingPlanClick('sort-add')}}>添加</button>
-                                            <button className="btn btn-reset timing-sort-edit" onClick={()=>{this.timingPlanClick('sort-edit')}}>编辑</button>
+                                            <button className="btn btn-gray timing-sort-edit" onClick={()=>{this.timingPlanClick('sort-edit')}}>编辑</button>
                                         </div>
                                         <div className="edit-body">
                                             <ul>
@@ -1235,7 +1233,7 @@ console.log(property.timingPlayModeCount);
                             </div>
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.timingPlanClick('apply')}}>应用</button>
-                                <button className="btn btn-reset pull-right" onClick={()=>{this.timingPlanClick('reset')}}>重置</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.timingPlanClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerArea "+(curType=='playerArea'?'':"hidden")}>
@@ -1294,6 +1292,10 @@ console.log(property.timingPlayModeCount);
                                     <span className={prompt.axisY_a?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
+                            <div className="row">
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
+                            </div>
                         </div>
                         <div className={"pro-container playerScene "+(curType=='playerScene'?'':"hidden")}>
                             <div className="row">
@@ -1336,7 +1338,7 @@ console.log(property.timingPlayModeCount);
                             </div>
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
-                                <button className="btn btn-reset pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerPicAsset "+(curType=='playerPicAsset'?'':"hidden")}>
@@ -1398,7 +1400,7 @@ console.log(property.timingPlayModeCount);
                             </div>
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.playerPicAssetClick('apply')}}>应用</button>
-                                <button className="btn btn-reset pull-right" onClick={()=>{this.playerPicAssetClick('reset')}}>重置</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerPicAssetClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerVideoAsset "+(curType=='playerVideoAsset'?'':"hidden")}>
@@ -1476,7 +1478,7 @@ console.log(property.timingPlayModeCount);
                             </div>
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.playerVideoAssetClick('apply')}}>应用</button>
-                                <button className="btn btn-reset pull-right" onClick={()=>{this.playerVideoAssetClick('reset')}}>重置</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerVideoAssetClick('reset')}}>重置</button>
                             </div>
                         </div>
                     </div>
@@ -1499,10 +1501,10 @@ console.log(property.timingPlayModeCount);
                                             submit={this.searchSubmit}></SearchText>
                                 <div className={"btn-group "+(assetList.get('isEdit')?'':'hidden')}>
                                     <button className="btn btn-primary add" onClick={this.showModal}>导入</button>
-                                    <button className="btn btn-reset" onClick={()=>this.assetList('edit')}>编辑</button>
+                                    <button className="btn btn-gray" onClick={()=>this.assetList('edit')}>编辑</button>
                                 </div>
                                 <div className={"btn-group "+(assetList.get('isEdit')?'hidden':'')}>
-                                    <button className="btn btn-reset" onClick={()=>this.assetList('remove')}>删除
+                                    <button className="btn btn-gray" onClick={()=>this.assetList('remove')}>删除
                                     </button>
                                     <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成
                                     </button>
