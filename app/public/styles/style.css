@@ -948,6 +948,10 @@ ul {
     color:#fff;
 }
 
+.lanauage-switch .lanauage-icon span:before{
+    color: #fff;
+}
+
 .language-switch .list-group svg{
     fill:#999;
 }
