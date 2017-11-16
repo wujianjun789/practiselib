@@ -600,7 +600,7 @@
         }
       }
 
-      &.playerProject,&.playerScene,&.playerPicAsset,&.playerVideoAsset,&.cyclePlan{
+      &.playerProject,&.playerScene,&.playerPicAsset,&.playerVideoAsset,&.cyclePlan,&.timingPlan{
         .row{
           clear: both;
           button{
@@ -609,7 +609,7 @@
         }
       }
 
-      &.playerScene,&.cyclePlan{
+      &.playerScene,&.cyclePlan,&.timingPlan{
         padding-left: 0;
         .form-group{
           label{
@@ -650,6 +650,75 @@
         .cycle-week{
           .input-container{
             width: 580px;
+          }
+        }
+      }
+
+      &.timingPlan{
+        .timing-name,.timing-list{
+          .input-container{
+            width: 580px;
+          }
+        }
+
+        .timing-list{
+          .control-label{
+            vertical-align: top;
+          }
+          .input-container{
+            //padding: 10px 15px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 250px;
+            background: #fff;
+            .edit-head{
+              margin-bottom: 10px;
+              padding: 10px 15px 5px 15px;
+              select{
+                width: 120px;
+                height: 30px;
+
+                vertical-align: top;
+              }
+
+              button{
+                margin-left: 15px;
+
+                vertical-align: top;
+                &:last-child{
+                  background: #495264;
+                  border: 0;
+                }
+              }
+            }
+
+            .edit-body{
+              ul li{
+                position: relative;
+
+                padding: 5px 15px;
+                color: #000;
+                cursor: pointer;
+                .background{
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  bottom: 0;
+                  left: 0;
+
+                  background: #00d8ff;
+                  opacity: .1;
+
+                  z-index: 0;
+                  pointer-events: none;
+                }
+
+                .icon{
+                  cursor: pointer;
+                  z-index: 3;
+                }
+              }
+            }
           }
         }
       }
