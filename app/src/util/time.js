@@ -58,6 +58,27 @@ export function getMomentUTC(mom) {
 }
 
 /**
+ *
+ * @param dateString(YYYY-MM-DD)
+ * @returns {string}(YYYY年MM月DD日)
+ */
+export function dateStrReplaceZh(dateString) {
+    let zhStr = "";
+    if(!dateString){
+        return "";
+    }
+
+    let strs = dateString.split("-");
+    if(strs.length>2){
+        zhStr = strs[0]+"年"+strs[1]+"月"+strs[2]+"日";
+    }else if(strs.length>1){
+        zhStr = strs[0]+"月"+strs[1]+"日";
+    }else{
+        zhStr = strs[0]+"日";
+    }
+    return zhStr;
+}
+/**
  * 获取当前时间时分
  * @returns {*}
  */

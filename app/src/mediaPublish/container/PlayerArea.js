@@ -37,11 +37,13 @@ import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
 const CheckboxGroup = Checkbox.Group;
 
+import {momentDateFormat, dateStrReplaceZh} from '../../util/time'
+import {weekReplace} from '../util/index'
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            curType: 'cyclePlan',
+            curType: 'timingPlan',
             playerData: [
                 {
                     "id": "player1",
@@ -163,6 +165,18 @@ export class PlayerArea extends Component {
                     value:[1,2]
                 },
 
+                //定时插播计划
+                timingName: {key: "timingName", title: "计划名称", placeholder:'请输入名称', value:""},
+                timingList: {key: "timingList", title: "定时插播",
+                    list:[{id:1,startTime: moment(), startDate:moment(), endDate:moment(), appointDate:false, week:[1,2,5]},
+                        {id:2, startTime: moment(), startDate:moment(), endDate:moment(), appointDate:false, week:[2,4,6]},],
+                    index:0,id:1,
+                    sort:{list:[{id:1, name:"时间排序"},{id:2, name:"日期排序"}],index:0, name:"时间排序"},
+                },
+                timingPlayMode: {key: "timingPlayMode", title: "播放方式", list:[{id: 1, name:"按次播放"},{id: 2, name:"按时长播放"},{id: 3, name:"循环播放"}],index:0, name:"按次播放"},
+                timingPlayModeCount: {key: "timingPlayModeCount", title: "播放次数", placeholder: '次', value: "", active:true},
+                timingPause: {key: "timingPause", title: "暂停标志", list:[{id:'1',name:'暂停'},{id:'2',name:'不暂停'}], index:0,name:"暂停"},
+
                 //区域
                 areaName: {key: "areaName", title: "区域名称", placeholder: '区域名称', value: ""},
                 width: {key: "width", title: "宽度", placeholder: '请输入宽度', value: ""},
@@ -238,7 +252,9 @@ export class PlayerArea extends Component {
                 //计划
                 plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true,
                 //周期插播计划
-                cycleName: true, cycleInterval: true, cyclePause: true, cycleDate: true, cycleTime: true, cycleWeek: true
+                cycleName: true, cycleInterval: true, cyclePause: true, cycleDate: true, cycleTime: true, cycleWeek: true,
+                //定时插播计划
+                timingName: true, timingPlayModeCount: true
             },
 
             showModal: false,
@@ -286,6 +302,8 @@ export class PlayerArea extends Component {
         this.projectClick = this.projectClick.bind(this);
         this.playerSceneClick = this.playerSceneClick.bind(this);
         this.cyclePlanClick = this.cyclePlanClick.bind(this);
+        this.timingPlanClick = this.timingPlanClick.bind(this);
+        this.timingPlanSelect = this.timingPlanSelect.bind(this);
 
         this.updatePlayerPlan = this.updatePlayerPlan.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -393,6 +411,10 @@ export class PlayerArea extends Component {
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
+    timingPlanSelect(item){
+        this.setState({property:Object.assign({}, this.state.property, {timingList:Object.assign({}, this.state.property.timingList, {id:item.id})})});
+    }
+
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;
@@ -404,7 +426,7 @@ export class PlayerArea extends Component {
             this.setState({assetSearch: this.state.assetSearch.update('value', v=>value)});
         } else {
 
-            if (id == "action"|| id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume" || id == "cyclePause") {
+            if (id == "action"|| id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume" || id == "cyclePause" || id == "timingPause") {
                 const curIndex = value.target.selectedIndex;
                 this.setState({
                     property: Object.assign({}, this.state.property, {
@@ -414,11 +436,19 @@ export class PlayerArea extends Component {
                         })
                     })
                 })
-            } else if(id == "playMode"){
+            }else if(id == "timingList-sort"){
                 const curIndex = value.target.selectedIndex;
+                this.setState({property:Object.assign({}, this.state.property,
+                    {timingList:Object.assign({}, this.state.property.timingList,
+                        {sort:Object.assign({}, this.state.property.timingList.sort, {index:curIndex, name:this.state.property.timingList.sort.list[curIndex].name})})})})
+            } else if(id == "playMode" || id == "timingPlayMode"){
+
+                const curIndex = value.target.selectedIndex;
+                console.log("correct", curIndex);
                 let title = "播放次数";
                 let placeholder = '次';
                 let active = true;
+                let updateId = (id == "playMode")?"playModeCount":"timingPlayModeCount";
                 switch (curIndex){
                     case 0:
                         title = "播放次数";
@@ -432,15 +462,9 @@ export class PlayerArea extends Component {
                         active = false;
                         break;
                 }
-                this.setState({
-                    property: Object.assign({}, this.state.property, {
-                        [id]: Object.assign({}, this.state.property[id], {
-                            index: curIndex,
-                            name: this.state.property[id].list[curIndex].name
-                        })
-                    },{
-                        "playModeCount": Object.assign({}, this.state.property.playModeCount, {title:title, placeholder: placeholder, active:active})
-                    })
+                this.setState({property: Object.assign({}, this.state.property,
+                    {[id]: Object.assign({}, this.state.property[id], {index: curIndex, name: this.state.property[id].list[curIndex].name})},
+                    {[updateId]: Object.assign({}, this.state.property[updateId], {title:title, placeholder: placeholder, active:active})})
                 })
             }else if(id== "cycleDate" || id == "cycleTime"){
                 this.setState({property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {appoint:value.target.checked})})})
@@ -560,6 +584,23 @@ export class PlayerArea extends Component {
             case "reset":
                 break;
         }
+    }
+
+    timingPlanClick(id){
+        console.log(id);
+        switch (id){
+            case "apply":
+                break;
+            case "reset":
+                break;
+            case "sort-add":
+                break;
+            case "sort-edit":
+                break;
+            case "sort-remove":
+                break;
+        }
+
     }
 
     addClick(item){
@@ -792,8 +833,16 @@ export class PlayerArea extends Component {
             routerState = router.location.state;
         }
         const projectItem = routerState?routerState.item:null;
-
-        console.log(property.cycleStartDate, property.cycleStartTime, property.cycleWeek);
+        let add_title = "";
+        switch(curType){
+            case "cyclePlan":
+                add_title = '(周期插播计划)';
+                break;
+            case "timingPlan":
+                add_title = '(定时插播计划)';
+                break;
+        }
+console.log(property.timingPlayModeCount);
         return <div className={"container "+"mediaPublish-playerArea "+(sidebarInfo.collapsed?'sidebar-collapse':'')}>
             <HeadBar moduleName="媒体发布" router={router}/>
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick} onClick={this.areaClick} onToggle={this.onToggle}/>
@@ -860,7 +909,7 @@ export class PlayerArea extends Component {
                 <div className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={()=>{!sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed')}}>
                         <span className={sidebarInfo.collapsed?"icon_info":
-                        "glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>属性
+                        "glyphicon "+(sidebarInfo.propertyCollapsed?"glyphicon-triangle-right":"glyphicon-triangle-bottom")}></span>{"属性"+add_title}
                     </div>
                     <div className={"panel-body "+(sidebarInfo.propertyCollapsed?'property-collapsed':'')}>
                         <div className={"pro-container playerProject "+(curType=='playerProject'?'':'hidden')}>
@@ -1058,8 +1107,100 @@ export class PlayerArea extends Component {
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.cyclePlanClick('apply')}}>应用</button>
-                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
+                                <button className="btn btn-primary cycle-plan-apply pull-right" onClick={()=>{this.cyclePlanClick('apply')}}>应用</button>
+                                <button className="btn btn-primary cycle-plan-reset pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
+                            </div>
+                        </div>
+                        <div className={"pro-container timingPlan "+(curType=='timingPlan'?'':'hidden')}>
+                            <div className="row">
+                                <div className="form-group timing-name">
+                                    <label className="control-label" htmlFor={property.timingName.key}>{property.timingName.title}</label>
+                                    <div className="input-container">
+                                        <input type="text" className="form-control" placeholder={property.timingName.placeholder} value={property.timingName.value} onChange={event=>this.onChange("timingName", event)}/>
+                                        <span className={prompt.timingName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group timing-list">
+                                    <label className="control-label" htmlFor={property.timingList.key}>{property.timingList.title}</label>
+                                    <div className="input-container">
+                                        <div className="edit-head">
+                                            <select value={ property.timingList.sort.name } onChange={ event=>this.onChange("timingList-sort", event) }>
+                                                {
+                                                    property.timingList.sort.list.map((option, index) => {
+                                                        let value = option.name;
+                                                        return <option key={ index } value={ value }>
+                                                            { value }
+                                                        </option>
+                                                    }) }
+                                            </select>
+                                            <button className="btn btn-primary timing-sort-add" onClick={()=>{this.timingPlanClick('sort-add')}}>添加</button>
+                                            <button className="btn btn-primary timing-sort-edit" onClick={()=>{this.timingPlanClick('sort-edit')}}>编辑</button>
+                                        </div>
+                                        <div className="edit-body">
+                                            <ul>
+                                                {
+                                                    property.timingList.list.map(item=>{
+                                                        let dateStr = dateStrReplaceZh(momentDateFormat(item.startDate,"YYYY-MM-DD"))+' 至 '+dateStrReplaceZh(momentDateFormat(item.endDate,"YYYY-MM-DD"));
+                                                        let weekStr = weekReplace(item.week);
+                                                        return <li key={item.id} onClick={()=>this.timingPlanSelect(item)}>
+                                                            <div className={"background "+(property.timingList.id == item.id?'':'hidden')}></div>
+                                                            {'['+momentDateFormat(item.startTime,'HH:mm')+']'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'['+dateStr+']'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'['+weekStr+']'}
+                                                            <span className="icon icon-delete pull-right" onClick={()=>this.timingPlanClick('sort-remove')}></span>
+                                                        </li>
+                                                    })
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group">
+                                    <label className="control-label" htmlFor={property.timingPlayMode.key}>{property.timingPlayMode.title}</label>
+                                    <div className="input-container">
+                                        <select className={ "form-control" } value={ property.timingPlayMode.name } onChange={ event=>this.onChange("timingPlayMode", event) }>
+                                            {
+                                                property.timingPlayMode.list.map((option, index) => {
+                                                    let value = option.name;
+                                                    return <option key={ index } value={ value }>
+                                                        { value }
+                                                    </option>
+                                                }) }
+                                        </select>
+                                        {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
+                                    </div>
+                                </div>
+                                <div className={"form-group "+(property.timingPlayModeCount.active?'':'hidden')}>
+                                    <label className="control-label">{property.timingPlayModeCount.title}</label>
+                                    <div className={"input-container "}>
+                                        <input type="text" className={"form-control "} htmlFor={property.timingPlayModeCount.key}  placeholder={property.timingPlayModeCount.placeholder} maxLength="8"
+                                               value={property.timingPlayModeCount.value} onChange={event=>this.onChange("timingPlayModeCount", event)}/>
+                                        <span className={prompt.timingPlayModeCount?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="form-group timing-pause">
+                                    <label className="control-label" htmlFor={property.timingPause.key}>{property.timingPause.title}</label>
+                                    <div className="input-container">
+                                        <select className={ "form-control" } value={ property.timingPause.name } onChange={ event=>this.onChange("timingPause", event) }>
+                                            {
+                                                property.timingPause.list.map((option, index) => {
+                                                    let value = option.name;
+                                                    return <option key={ index } value={ value }>
+                                                        { value }
+                                                    </option>
+                                                }) }
+                                        </select>
+                                        {/*<span className={prompt.cyclePause?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>*/}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary cycle-plan-apply pull-right" onClick={()=>{this.timingPlanClick('apply')}}>应用</button>
+                                <button className="btn btn-primary cycle-plan-reset pull-right" onClick={()=>{this.timingPlanClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerArea "+(curType=='playerArea'?'':"hidden")}>
