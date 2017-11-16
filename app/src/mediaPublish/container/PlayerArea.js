@@ -193,7 +193,7 @@ export class PlayerArea extends Component {
                 assetName: {key: "assetName", title: "素材名称", placeholder: '素材名称', value: ""},
 
                 //图片素材
-                displayMode: {key: "displayMode", title: "显示方式", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
+                displayMode: {key: "displayMode", title: "显示方式", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: "铺满"},
                 animation: {key: "animation", title: "动画效果", 
                     list: [
                         {id: 1, name: '立即显示'}, {id: 2, name: '闪烁'}, {id: 3, name: '长串左移'}, 
@@ -206,7 +206,7 @@ export class PlayerArea extends Component {
                         {id: 28, name: '向上拉幕'}, {id: 29, name: '向下拉幕'}, {id: 30, name: '矩形自左下向右上展现'}, {id: 31, name: '矩形自左上向右下展现'},
                         {id: 32, name: '矩形自右下向左上展现'}, {id: 33, name: '矩形自右上向左下展现'}, {id: 34, name: '斜线自左上向右下展现'}, {id: 35, name: '斜线自右下向左上展现'},
                         {id: 36, name: '随机'}                
-                    ],index: 0, name: ""},
+                    ],index: 0, name: "立即显示"},
                 playDuration: {key: "playDuration", title: "播放时长", placeholder: '秒/s', value: ""},
                 playSpeed: {key: "playSpeed", title: "播放速度", placeholder: 'ms', value: ""},
 
@@ -214,9 +214,9 @@ export class PlayerArea extends Component {
                 playTimes:{key: "playTimes", title: "播放次数", placeholder: '次', value: ""},
                 playType:{key: "playType", title: "播放类型", list: [{id: 1, name: '片段播放'}, {id: 2, name: '完整播放'}],index: 0, name: "片段播放"},
                 clipsRage:{key: "clipsRage", title: "片段范围", clipsRage1: moment('00:00:00', 'HH:mm:ss'),clipsRage2:moment('00:00:00', 'HH:mm:ss')},
-                scaling: {key: "scaling", title: "缩放比例", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: ""},
+                scaling: {key: "scaling", title: "缩放比例", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: "铺满"},
                 volume: {key: "volume", title: "音量", list: [{id: 1, name: '100'}, {id: 2, name: '90'}, {id: 3, name: '80'}, 
-                {id: 4, name: '70'}, {id: 5, name: '60'}, {id: 6, name: '50'}, {id: 7, name: '40'}, {id: 8, name: '30'}, {id: 9, name: '20'},{id: 10, name: '10'},{id: 11, name: '11'}],index: 0, name: ""},
+                {id: 4, name: '70'}, {id: 5, name: '60'}, {id: 6, name: '50'}, {id: 7, name: '40'}, {id: 8, name: '30'}, {id: 9, name: '20'},{id: 10, name: '10'},{id: 11, name: '11'}],index: 0, name: "100"},
             },
             assetType: Immutable.fromJS({list: [{id: 1, value: '类别1'}, {id: 2, value: '类别2'}], index: 0, value: '类别1'}),
             assetSort: Immutable.fromJS({
@@ -303,6 +303,8 @@ export class PlayerArea extends Component {
         this.projectClick = this.projectClick.bind(this);
         this.playerSceneClick = this.playerSceneClick.bind(this);
         this.cyclePlanClick = this.cyclePlanClick.bind(this);
+        this.playerPicAssetClick = this.playerPicAssetClick.bind(this);
+        this.playerVideoAssetClick = this.playerVideoAssetClick.bind(this);
         this.timingPlanClick = this.timingPlanClick.bind(this);
         this.timingPlanSelect = this.timingPlanSelect.bind(this);
 
@@ -584,6 +586,39 @@ export class PlayerArea extends Component {
             case "apply":
                 break;
             case "reset":
+                break;
+        }
+    }
+
+    playerPicAssetClick(id){
+        const {displayMode,animation,playDuration,playSpeed} = this.state.property;
+        switch(id){
+            case "apply":
+                break;
+            case "reset":
+                this.setState({property:Object.assign({},this.state.property,{
+                    displayMode:Object.assign({},displayMode,{index:0,name:"铺满"}),
+                    animation:Object.assign({},animation,{index:0,name:"立即显示"}),
+                    playDuration:Object.assign({},playDuration,{value: ""}),
+                    playSpeed:Object.assign({},playSpeed,{value: ""}),
+                })})
+                break;
+        }
+    }
+
+    playerVideoAssetClick(id){
+        const {playTimes,playType,clipsRage,scaling,volume} = this.state.property;         
+        switch(id){
+            case "apply":
+                break;
+            case "reset":
+                this.setState({property:Object.assign({},this.state.property,{
+                    playTimes:Object.assign({},playTimes,{value: ""}),
+                    playType:Object.assign({},playType,{index:0,name:"片段播放"}),
+                    clipsRage:Object.assign({},clipsRage,{clipsRage1: moment('00:00:00', 'HH:mm:ss'),clipsRage2:moment('00:00:00', 'HH:mm:ss')}),
+                    scaling:Object.assign({},scaling,{index:0,name:"铺满"}),
+                    volume:Object.assign({},volume,{index:0,name:"100"}),
+                })})
                 break;
         }
     }
@@ -916,10 +951,10 @@ console.log(property.timingPlayModeCount);
                 <div className="pull-right control-container">
                     <div className={"list-group "+(playerListAsset.get('isEdit')?'':'hidden')}>
                         <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('add')}>添加</button>
-                        <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('edit')}>编辑</button>
+                        <button className="btn btn-gray" onClick={()=>this.playerListAssetClick('edit')}>编辑</button>
                     </div>
                     <div className={"list-group "+(playerListAsset.get('isEdit')?'hidden':'')}>
-                        <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('remove')}>删除
+                        <button className="btn btn-gray" onClick={()=>this.playerListAssetClick('remove')}>删除
                         </button>
                         <button className="btn btn-primary" onClick={()=>this.playerListAssetClick('complete')}>完成
                         </button>
@@ -950,8 +985,8 @@ console.log(property.timingPlayModeCount);
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
-                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerPlan "+(curType=='playerPlan'?'':'hidden')}>
@@ -1027,11 +1062,9 @@ console.log(property.timingPlayModeCount);
                                     </div>
                                 </div>
                             </div>
-                            <div className="bottom">
-                                <div className={"btn-group"}>
-                                    <button className="btn btn-primary reset" onClick={this.planReset}>重置</button>
-                                    <button className="btn btn-primary" onClick={()=>this.planApply}>应用</button>
-                                </div>
+                            <div className="row">
+                                <button className="btn btn-gray pull-right" onClick={this.planReset}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>this.planApply}>应用</button>
                             </div>
                         </div>
                         <div className={"pro-container cyclePlan "+(curType=='cyclePlan'?'':'hidden')}>
@@ -1131,8 +1164,8 @@ console.log(property.timingPlayModeCount);
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary cycle-plan-apply pull-right" onClick={()=>{this.cyclePlanClick('apply')}}>应用</button>
-                                <button className="btn btn-primary cycle-plan-reset pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.cyclePlanClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.cyclePlanClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container timingPlan "+(curType=='timingPlan'?'':'hidden')}>
@@ -1160,7 +1193,7 @@ console.log(property.timingPlayModeCount);
                                                     }) }
                                             </select>
                                             <button className="btn btn-primary timing-sort-add" onClick={()=>{this.timingPlanClick('sort-add')}}>添加</button>
-                                            <button className="btn btn-primary timing-sort-edit" onClick={()=>{this.timingPlanClick('sort-edit')}}>编辑</button>
+                                            <button className="btn btn-gray timing-sort-edit" onClick={()=>{this.timingPlanClick('sort-edit')}}>编辑</button>
                                         </div>
                                         <div className="edit-body">
                                             <ul>
@@ -1223,8 +1256,8 @@ console.log(property.timingPlayModeCount);
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary cycle-plan-apply pull-right" onClick={()=>{this.timingPlanClick('apply')}}>应用</button>
-                                <button className="btn btn-primary cycle-plan-reset pull-right" onClick={()=>{this.timingPlanClick('reset')}}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.timingPlanClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.timingPlanClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerArea "+(curType=='playerArea'?'':"hidden")}>
@@ -1283,6 +1316,10 @@ console.log(property.timingPlayModeCount);
                                     <span className={prompt.axisY_a?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                 </div>
                             </div>
+                            <div className="row">
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
+                            </div>
                         </div>
                         <div className={"pro-container playerScene "+(curType=='playerScene'?'':"hidden")}>
                             <div className="row">
@@ -1324,8 +1361,8 @@ console.log(property.timingPlayModeCount);
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
-                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerPicAsset "+(curType=='playerPicAsset'?'':"hidden")}>
@@ -1386,8 +1423,8 @@ console.log(property.timingPlayModeCount);
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
-                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.playerPicAssetClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerPicAssetClick('reset')}}>重置</button>
                             </div>
                         </div>
                         <div className={"pro-container playerVideoAsset "+(curType=='playerVideoAsset'?'':"hidden")}>
@@ -1464,8 +1501,8 @@ console.log(property.timingPlayModeCount);
                                 </div>
                             </div>
                             <div className="row">
-                                <button className="btn btn-primary project-apply pull-right" onClick={()=>{this.projectClick('apply')}}>应用</button>
-                                <button className="btn btn-primary project-reset pull-right" onClick={()=>{this.projectClick('reset')}}>重置</button>
+                                <button className="btn btn-primary pull-right" onClick={()=>{this.playerVideoAssetClick('apply')}}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={()=>{this.playerVideoAssetClick('reset')}}>重置</button>
                             </div>
                         </div>
                     </div>
@@ -1488,10 +1525,10 @@ console.log(property.timingPlayModeCount);
                                             submit={this.searchSubmit}></SearchText>
                                 <div className={"btn-group "+(assetList.get('isEdit')?'':'hidden')}>
                                     <button className="btn btn-primary add" onClick={this.showModal}>导入</button>
-                                    <button className="btn btn-primary" onClick={()=>this.assetList('edit')}>编辑</button>
+                                    <button className="btn btn-gray" onClick={()=>this.assetList('edit')}>编辑</button>
                                 </div>
                                 <div className={"btn-group "+(assetList.get('isEdit')?'hidden':'')}>
-                                    <button className="btn btn-primary" onClick={()=>this.assetList('remove')}>删除
+                                    <button className="btn btn-gray" onClick={()=>this.assetList('remove')}>删除
                                     </button>
                                     <button className="btn btn-primary" onClick={()=>this.assetList('complete')}>完成
                                     </button>

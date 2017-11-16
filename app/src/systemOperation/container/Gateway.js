@@ -451,7 +451,7 @@ export class Gateway extends Component {
                    <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
                    <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
                    <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
-                   <button id="sys-import" className="btn btn-primary import-excel" onClick={ this.importHandler }>导入</button>
+                   <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>导入</button>
                  </div>
                 <div className="table-container">
                     <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
