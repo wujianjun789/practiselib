@@ -43,6 +43,8 @@ const CheckboxGroup = Checkbox.Group;
 import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
 import { weekReplace } from '../util/index';
 
+import {SketchPicker} from 'react-color';
+
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -204,8 +206,8 @@ export class PlayerArea extends Component {
 
                 //文字素材
                 textContent: { key: 'textContent', title: '文本内容', value: '' },
-                fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0, name: '微软雅黑' },
-                alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左下' }, { id: 3, name: '右上' }, { id: 3, name: '右下' }], index: 0, name: '左上' },
+                fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
+                alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左下' }, { id: 3, name: '右上' }, { id: 3, name: '右下' }], index: 0 },
                 wordSpacing: { key: 'wordSpacing', title: '字间距', placeholder: 'pt', value: '' },
                 lineSpacing: { key: 'lineSpacing', title: '行间距', placeholder: 'pt', value: '' },
 
@@ -224,7 +226,7 @@ export class PlayerArea extends Component {
                         { id: 28, name: '向上拉幕' }, { id: 29, name: '向下拉幕' }, { id: 30, name: '矩形自左下向右上展现' }, { id: 31, name: '矩形自左上向右下展现' },
                         { id: 32, name: '矩形自右下向左上展现' }, { id: 33, name: '矩形自右上向左下展现' }, { id: 34, name: '斜线自左上向右下展现' }, { id: 35, name: '斜线自右下向左上展现' },
                         { id: 36, name: '随机' }
-                    ], index: 0, name: "立即显示"
+                    ], index: 0
                 },
                 playDuration: { key: "playDuration", title: "播放时长", placeholder: '秒/s', value: "" },
                 playSpeed: { key: "playSpeed", title: "播放速度", placeholder: 'ms', value: "" },
@@ -293,7 +295,9 @@ export class PlayerArea extends Component {
             //播放列表单击
             isClick: false,
             //左侧栏添加单击
-            isAddClick: false
+            isAddClick: false,
+            showColorPicker:false,
+            fontColor:'#345'
         }
 
         this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, {
@@ -345,7 +349,6 @@ export class PlayerArea extends Component {
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
     }
-
     componentWillMount() {
         this.mounted = true;
         this.updatePlayerTree();
@@ -1029,6 +1032,9 @@ export class PlayerArea extends Component {
     sidebarClick(id) {
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
     }
+    handleColorChange({hex}){
+        this.setState({showColorPicker:false,fontColor:hex})
+    }
     render() {
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
@@ -1553,6 +1559,15 @@ export class PlayerArea extends Component {
                                         }
                                     </select>
                                 </div>
+                            </div>
+                            <div className='form-group'>
+                                <span>字体颜色</span>
+                                <div className='font-color' style={{backgroundColor:this.state.fontColor}} onClick={()=>{this.setState({showColorPicker:true})}}>
+                                        {this.state.showColorPicker?<SketchPicker color="#333" onChangeComplete={this.handleColorChange.bind(this)}/>:null}
+                                </div>
+                                
+                                <span>背景颜色</span>
+                                <span>背景透明</span>
                             </div>
                             <div className='form-group'>
                                 <label className='control-label'>{property.alignment.title}</label>
