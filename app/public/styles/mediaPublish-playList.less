@@ -608,8 +608,30 @@
           }
         }
       }
+<<<<<<< HEAD
 
       &.playerScene,&.cyclePlan,&.timingPlan,&.digitalClock{
+=======
+      &.playerText{
+        .control-label{
+          vertical-align: top;
+        }
+        .input-container{
+           &.text-container{
+             width:580px;
+           }
+           .text-content{
+             padding:10px;
+             border:none;
+             resize:none;
+             width:580px;
+             height:100px;
+          }
+        }
+        
+      }
+      &.playerScene,&.cyclePlan,&.timingPlan{
+>>>>>>> bccbf3aaef564e14f4ce30f2ffc9ead5e4c43354
         padding-left: 0;
         .form-group{
           label{
@@ -1244,6 +1266,9 @@
         }
 
         .prompt{
+          position: absolute;
+          top: 20px;
+
           color: #ff5c68;
         }
       }

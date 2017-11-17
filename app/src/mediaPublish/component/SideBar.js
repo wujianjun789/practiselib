@@ -59,6 +59,9 @@ export default class SideBar extends Component {
         if(id == 'edit' || id == 'complete'){
             this.setState({isProject:false, isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
         }else{
+            if(id == "general" || id == "cycle" || id == "regular"){
+                this.setState({isProject:false});
+            }
             this.props.onClick && this.props.onClick(id);
         }
     }
