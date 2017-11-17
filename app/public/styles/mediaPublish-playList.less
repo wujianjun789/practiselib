@@ -586,7 +586,7 @@
         }
       }
 
-      &.playerProject,&.playerArea,&.playerPicAsset,&.playerPicAsset,&.playerVideoAsset{
+      &.playerProject,&.playerArea,&.playerText,&.playerPicAsset,&.playerVideoAsset{
         padding-left: 0;
         .form-group {
           label {
@@ -600,7 +600,7 @@
         }
       }
 
-      &.playerProject,&.playerScene,&.playerPicAsset,&.playerVideoAsset,&.cyclePlan,&.timingPlan,&.playerPlan,&.playerArea{
+      &.playerProject,&.playerScene,&.playerText,&.playerPicAsset,&.playerVideoAsset,&.cyclePlan,&.timingPlan,&.playerPlan,&.playerArea{
         .row{
           clear: both;
           button{
@@ -608,7 +608,24 @@
           }
         }
       }
-
+      &.playerText{
+        .control-label{
+          vertical-align: top;
+        }
+        .input-container{
+           &.text-container{
+             width:580px;
+           }
+           .text-content{
+             padding:10px;
+             border:none;
+             resize:none;
+             width:580px;
+             height:100px;
+          }
+        }
+        
+      }
       &.playerScene,&.cyclePlan,&.timingPlan{
         padding-left: 0;
         .form-group{

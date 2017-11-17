@@ -9,7 +9,9 @@ const config = require("../routes/config");
 router.get('/api', function (req, res, next) {
   res.json({ message: 'Welcom' });
 })
-
+router.get('/hello',(req,res)=>{
+  res.json({helel:"world"})
+})
 router.use('/config', config);
 
 module.exports = router;
