@@ -55,8 +55,10 @@ export default class TimingPlanPopup extends PureComponent {
         week.map((item, index)=> {
             item == 1 && weekData.push(parseInt(index + 1));
         })
+
         this.setState({
-            week: Object.assign({}, this.state.week, {value: weekData})
+            week: Object.assign({}, this.state.week, {value: weekData}),
+            prompt: Object.assign({}, this.state.prompt, {week:!weekData.length})
         });
     }
 
@@ -74,8 +76,8 @@ export default class TimingPlanPopup extends PureComponent {
 
     dateChange(id, value) {
         if (id == "week") {
-            console.log(value);
-            this.setState({[id]: Object.assign({}, this.state.week, {value: value})});
+            this.setState({[id]: Object.assign({}, this.state.week, {value: value}),
+                prompt: Object.assign({}, this.state.prompt, {week:!value.length})});
         } else {
             this.setState({[id]: value});
         }
@@ -106,8 +108,7 @@ export default class TimingPlanPopup extends PureComponent {
         let {startTime, startDate, endDate, week, prompt} = this.state;
 
         let valid = false;
-
-            valid = prompt.startTime || prompt.startDate || prompt.endDate;
+            valid = prompt.startTime || prompt.startDate || prompt.endDate || prompt.week;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;

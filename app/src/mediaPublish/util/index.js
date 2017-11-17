@@ -11,3 +11,42 @@ export function weekReplace(list) {
 
     return weekStr;
 }
+
+export function updateTree(treeList, parentNode, node) {
+    treeList = clearState(treeList);
+
+    if(!parentNode){
+        treeList.push(node);
+        return treeList;
+    }else{
+        return treeList.map(curNode=>{
+            if (curNode.id == parentNode.id){
+                if(!curNode.children){
+                    curNode.children = [];
+                }
+
+                curNode.children.push(node);
+            }else{
+                if(curNode.children && curNode.children.length){
+                    updateTree(curNode.children, parentNode, node);
+                }
+            }
+
+            return curNode;
+        })
+    }
+}
+
+function clearState(treeList) {
+    return treeList.map(node=>{
+        if(node.hasOwnProperty("toggled")){
+            node.toggled = false;
+        }
+
+        if(node.hasOwnProperty("active")){
+            node.active = false;
+        }
+
+        return node;
+    })
+}
