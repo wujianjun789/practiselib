@@ -44,7 +44,7 @@ export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            curType: 'timingPlan',
+            curType: 'digitalClock',
             playerData: [
                 {
                     "id": "player1",
@@ -111,6 +111,14 @@ export class PlayerArea extends Component {
                     "toggled": false,
                     "level": 1,
                     "children": []
+                },
+                {
+                    "id": "player4",
+                    "type": "plan",
+                    "name": "播放计划4",
+                    "toggled": false,
+                    "level": 1,
+                    "children": []
                 }
             ],
             sidebarInfo: {
@@ -129,8 +137,8 @@ export class PlayerArea extends Component {
                 endTime: {key: "endTime", title: "结束时间", placeholder: "点击选择结束时间", value: ""},
                 week: {key: "week", title: "工作日",
                     list:[{label: "周一", value:1}, {label: "周二", value:2},
-                        {label: "周三", value:3}, {label: "周四", value:4}, 
-                        {label: "周五", value:5}, {label: "周六", value:6}, 
+                        {label: "周三", value:3}, {label: "周四", value:4},
+                        {label: "周五", value:5}, {label: "周六", value:6},
                         {label: "周日", value:7}],
                     value:[1,2]
                 },
@@ -197,28 +205,30 @@ export class PlayerArea extends Component {
 
                 //图片素材
                 displayMode: {key: "displayMode", title: "显示方式", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: "铺满"},
-                animation: {key: "animation", title: "动画效果", 
+                animation: {key: "animation", title: "动画效果",
                     list: [
-                        {id: 1, name: '立即显示'}, {id: 2, name: '闪烁'}, {id: 3, name: '长串左移'}, 
-                        {id: 4, name: '上移'}, {id: 5, name: '下移'}, {id: 6, name: '左移'}, {id: 7, name: '右移'}, 
-                        {id: 8, name: '自上而下展现'}, {id: 9, name: '自下而上展现'},{id: 10, name: '自右而左展现'}, {id: 11, name: '自左而右展现'}, 
-                        {id: 12, name: '自上而下百叶窗'}, {id: 13, name: '自下而上百叶窗'}, {id: 14, name: '自右而左百叶窗'}, {id: 15, name: '自左而右百叶窗'}, 
-                        {id: 16, name: '自上而下棋盘格'}, {id: 17, name: '自下而上棋盘格'}, {id: 18, name: '自右而左棋盘格'}, {id: 19, name: '自左而右棋盘格'}, 
+                        {id: 1, name: '立即显示'}, {id: 2, name: '闪烁'}, {id: 3, name: '长串左移'},
+                        {id: 4, name: '上移'}, {id: 5, name: '下移'}, {id: 6, name: '左移'}, {id: 7, name: '右移'},
+                        {id: 8, name: '自上而下展现'}, {id: 9, name: '自下而上展现'},{id: 10, name: '自右而左展现'}, {id: 11, name: '自左而右展现'},
+                        {id: 12, name: '自上而下百叶窗'}, {id: 13, name: '自下而上百叶窗'}, {id: 14, name: '自右而左百叶窗'}, {id: 15, name: '自左而右百叶窗'},
+                        {id: 16, name: '自上而下棋盘格'}, {id: 17, name: '自下而上棋盘格'}, {id: 18, name: '自右而左棋盘格'}, {id: 19, name: '自左而右棋盘格'},
                         {id: 20, name: '上下向中间合拢'}, {id: 21, name: '中间向上下展开'}, {id: 22, name: '左右向中间合拢'}, {id: 23, name: '中间向左右展开'},
                         {id: 24, name: '矩形自四周向中心合拢'}, {id: 25, name: '矩形自中心向四周展开'}, {id: 26, name: '向左拉幕'}, {id: 27, name: '向右拉幕'},
                         {id: 28, name: '向上拉幕'}, {id: 29, name: '向下拉幕'}, {id: 30, name: '矩形自左下向右上展现'}, {id: 31, name: '矩形自左上向右下展现'},
                         {id: 32, name: '矩形自右下向左上展现'}, {id: 33, name: '矩形自右上向左下展现'}, {id: 34, name: '斜线自左上向右下展现'}, {id: 35, name: '斜线自右下向左上展现'},
-                        {id: 36, name: '随机'}                
+                        {id: 36, name: '随机'}
                     ],index: 0, name: "立即显示"},
                 playDuration: {key: "playDuration", title: "播放时长", placeholder: '秒/s', value: ""},
                 playSpeed: {key: "playSpeed", title: "播放速度", placeholder: 'ms', value: ""},
 
+                //时钟
+                digitalClockTitle: {key:'digitalClockTitle', title:'素材名称'},
                 //视频素材
                 playTimes:{key: "playTimes", title: "播放次数", placeholder: '次', value: ""},
                 playType:{key: "playType", title: "播放类型", list: [{id: 1, name: '片段播放'}, {id: 2, name: '完整播放'}],index: 0, name: "片段播放"},
                 clipsRage:{key: "clipsRage", title: "片段范围", clipsRage1: moment('00:00:00', 'HH:mm:ss'),clipsRage2:moment('00:00:00', 'HH:mm:ss')},
                 scaling: {key: "scaling", title: "缩放比例", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: "铺满"},
-                volume: {key: "volume", title: "音量", list: [{id: 1, name: '100'}, {id: 2, name: '90'}, {id: 3, name: '80'}, 
+                volume: {key: "volume", title: "音量", list: [{id: 1, name: '100'}, {id: 2, name: '90'}, {id: 3, name: '80'},
                 {id: 4, name: '70'}, {id: 5, name: '60'}, {id: 6, name: '50'}, {id: 7, name: '40'}, {id: 8, name: '30'}, {id: 9, name: '20'},{id: 10, name: '10'},{id: 11, name: '11'}],index: 0, name: "100"},
             },
             assetType: Immutable.fromJS({list: [{id: 1, value: '类别1'}, {id: 2, value: '类别2'}], index: 0, value: '类别1'}),
@@ -487,7 +497,7 @@ export class PlayerArea extends Component {
                     const val = value.target.value;
                     if (!numbersValid(val)) {
                         prompt = true;
-                    } 
+                    }
 
                     this.setState({
                         property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {value: val})}),
@@ -519,7 +529,7 @@ export class PlayerArea extends Component {
         let page = this.state.page.set('current', current);
         this.setState({page: page}, ()=> {
         });
-    } 
+    }
 
     playerListAssetClick(id) {
         if (id == 'add') {
@@ -610,7 +620,7 @@ export class PlayerArea extends Component {
     }
 
     playerVideoAssetClick(id){
-        const {playTimes,playType,clipsRage,scaling,volume} = this.state.property;         
+        const {playTimes,playType,clipsRage,scaling,volume} = this.state.property;
         switch(id){
             case "apply":
                 break;
@@ -1011,7 +1021,7 @@ console.log(property.timingPlayModeCount);
                                     <label className="control-label"
                                            htmlFor={property.startDate.key}>{property.startDate.title}</label>
                                     <div className="input-container">
-                                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" 
+                                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期"
                                             defaultValue={moment()} onChange={value=>this.dateChange('startDate', value)}/>
                                         <div className={prompt.startDate?"prompt ":"prompt hidden"}>{"请选择开始日期"}</div>
                                     </div>
@@ -1020,7 +1030,7 @@ console.log(property.timingPlayModeCount);
                                     <label className="control-label"
                                            htmlFor={property.endDate.key}>{property.endDate.title}</label>
                                     <div className="input-container">
-                                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" 
+                                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期"
                                             defaultValue={moment()} onChange={value=>this.dateChange('endDate', value)}/>
                                         <div className={prompt.endDate?"prompt ":"prompt hidden"}>{"请选择结束日期"}</div>
                                     </div>
@@ -1031,7 +1041,7 @@ console.log(property.timingPlayModeCount);
                                     <label className="control-label"
                                            htmlFor={property.startTime.key}>{property.startTime.title}</label>
                                     <div className="input-container">
-                                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" 
+                                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间"
                                             defaultValue={moment()} onChange={value=>this.dateChange('startTime', value)}/>
                                         <div className={prompt.startTime?"prompt ":"prompt hidden"}>{"请选择开始时间"}</div>
                                     </div>
@@ -1040,7 +1050,7 @@ console.log(property.timingPlayModeCount);
                                     <label className="control-label"
                                            htmlFor={property.endTime.key}>{property.endTime.title}</label>
                                     <div className="input-container">
-                                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" 
+                                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间"
                                             defaultValue={moment()} onChange={value=>this.dateChange('endTime', value)}/>
                                         <div className={prompt.endTime?"prompt ":"prompt hidden"}>{"请选择结束时间"}</div>
                                     </div>
@@ -1055,7 +1065,7 @@ console.log(property.timingPlayModeCount);
                                         <span className={"fixpos "+(prompt.week?"prompt ":"prompt hidden")}>{"请选择工作日"}</span>
                                         {/* {
                                             property.week.list.map(item=>{
-                                                return <label> 
+                                                return <label>
                                                 <input type="checkbox" className="checkbox-inline" key={item.value}
                                                 checked = {item.value}
                                                 />{item.label}</label>
@@ -1423,7 +1433,7 @@ console.log(property.timingPlayModeCount);
                             <div className="form-group">
                                 <label className="col-sm-3 control-label">{property.playDuration.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className= "form-control" 
+                                    <input type="text" className= "form-control"
                                             placeholder={property.playDuration.placeholder} maxLength="8"
                                             value={property.playDuration.value}
                                             onChange={event=>this.onChange("playDuration", event)}/>
@@ -1433,7 +1443,7 @@ console.log(property.timingPlayModeCount);
                             <div className="form-group">
                                 <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className= "form-control" 
+                                    <input type="text" className= "form-control"
                                             placeholder={property.playSpeed.placeholder} maxLength="8"
                                             value={property.playSpeed.value}
                                             onChange={event=>this.onChange("playSpeed", event)}/>
@@ -1455,7 +1465,7 @@ console.log(property.timingPlayModeCount);
                             <div className="form-group">
                                 <label className="col-sm-3 control-label">{property.playTimes.title}</label>
                                 <div className="input-container">
-                                    <input type="text" className= "form-control" 
+                                    <input type="text" className= "form-control"
                                             placeholder={property.playTimes.placeholder} maxLength="8"
                                             value={property.playTimes.value}
                                             onChange={event=>this.onChange("playTimes", event)}/>
@@ -1499,7 +1509,7 @@ console.log(property.timingPlayModeCount);
                                         <TimePicker size="large" onChange={value=>this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1}/>
                                         <span className="text">至</span>
                                         <TimePicker size="large" onChange={value=>this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2}/>
-                                        <span className={prompt.clipsRage?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>                                      
+                                        <span className={prompt.clipsRage?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
                                     </div>
                                 </div>)
                             }
@@ -1522,6 +1532,18 @@ console.log(property.timingPlayModeCount);
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.playerVideoAssetClick('apply')}}>应用</button>
                                 <button className="btn btn-gray pull-right" onClick={()=>{this.playerVideoAssetClick('reset')}}>重置</button>
                             </div>
+                        </div>
+                        {/*数字时钟 Created By ChrisWen*/}
+                        <div className={"pro-container digitalClock"+(curType === 'digitalClock' ? '':'hidden')}>
+                          <div className="row">
+                              <div className="form-group">
+                                  <label className="dtClock_label control-label" htmlFor={property.digitalClockTitle.key}>{property.digitalClockTitle.title}</label>
+                                  <div className="dtClock_input input-container">
+                                      <input type="text" className="form-control" placeholder={property.timingName.placeholder} value={property.timingName.value} onChange={event=>this.onChange("timingName", event)}/>
+                                      <span className={prompt.timingName?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>
+                                  </div>
+                              </div>
+                          </div>
                         </div>
                     </div>
                 </div>
