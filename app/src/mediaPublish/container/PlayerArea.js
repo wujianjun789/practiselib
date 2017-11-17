@@ -204,7 +204,10 @@ export class PlayerArea extends Component {
 
                 //文字素材
                 textContent: { key: 'textContent', title: '文本内容', value: '' },
-                fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' },{id:3,name:'serif'},{id:4,name:'monospace'}], index: 0, name: '微软雅黑' },
+                fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0, name: '微软雅黑' },
+                alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左下' }, { id: 3, name: '右上' }, { id: 3, name: '右下' }], index: 0, name: '左上' },
+                wordSpacing: { key: 'wordSpacing', title: '字间距', placeholder: 'pt', value: '' },
+                lineSpacing: { key: 'lineSpacing', title: '行间距', placeholder: 'pt', value: '' },
 
                 //图片素材
                 displayMode: { key: "displayMode", title: "显示方式", list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
@@ -248,8 +251,8 @@ export class PlayerArea extends Component {
                 { id: 4, name: '素材4', assetType: "source", type: "video" }], id: 1, name: '素材1', isEdit: true
             }),
             playerListAsset: Immutable.fromJS({
-                list: [{ id: 1, name: '素材1', assetType: "system", type: "word" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
-                { id: 4, name: '素材4', assetType: "source", type: "word" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }],
+                list: [{ id: 1, name: '素材1', assetType: "system", type: "text" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
+                { id: 4, name: '素材4', assetType: "source", type: "text" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }],
                 id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
@@ -261,45 +264,20 @@ export class PlayerArea extends Component {
                 //方案
                 project: true,
                 //计划
-                action: false,
-                axisX: true,
-                axisY: true,
-                speed: true,
-                repeat: true,
-                resTime: true,
-                flicker: true,
+                action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
                 //场景
-                sceneName: true,
-                playMode: true,
-                playModeCount: true,
+                sceneName: true, playMode: true, playModeCount: true,
                 //区域
-                areaName: true,
-                width: true,
-                height: true,
-                axisX_a: true,
-                axisY_a: true,
+                areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 //素材
-                playDuration: true,
-                playSpeed: true,
-                playTimes: true,
-                clipsRage: true,
+                textArea: false, lineSpacing: false, wordSpacing: false,
+                playDuration: false, playSpeed: false, playTimes: true, clipsRage: true,
                 //计划
-                plan: true,
-                startDate: true,
-                endDate: true,
-                startTime: true,
-                endTime: true,
-                week: true,
+                plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true,
                 //周期插播计划
-                cycleName: true,
-                cycleInterval: true,
-                cyclePause: true,
-                cycleDate: true,
-                cycleTime: true,
-                cycleWeek: true,
+                cycleName: true, cycleInterval: true, cyclePause: true, cycleDate: true, cycleTime: true, cycleWeek: true,
                 //定时插播计划
-                timingName: true,
-                timingPlayModeCount: true
+                timingName: true, timingPlayModeCount: true
             },
 
             showModal: false,
@@ -427,17 +405,17 @@ export class PlayerArea extends Component {
     }
 
     updatePlayerTree() {
-        const {playerData} = this.state;
-        const {actions} = this.props;
+        const { playerData } = this.state;
+        const { actions } = this.props;
         console.log("playerData:", playerData);
         actions && actions.treeViewInit(playerData);
 
     }
 
-    updateTreeData(parentNode, node){
+    updateTreeData(parentNode, node) {
         const treeList = updateTree(this.state.playerData, parentNode, node);
         console.log()
-        this.setState({playerData:treeList}, ()=>{
+        this.setState({ playerData: treeList }, () => {
             this.updatePlayerTree();
         })
     }
@@ -455,7 +433,7 @@ export class PlayerArea extends Component {
 
         let curType = "playerText";
         switch (item.get("type")) {
-            case "word":
+            case "text":
                 curType = "playerText";
                 break;
             case "picture":
@@ -472,22 +450,22 @@ export class PlayerArea extends Component {
     }
 
     timingPlanSelect(item) {
-        this.setState({property: Object.assign({}, this.state.property, {timingList: Object.assign({}, this.state.property.timingList, {id: item.id})})});
+        this.setState({ property: Object.assign({}, this.state.property, { timingList: Object.assign({}, this.state.property.timingList, { id: item.id }) }) });
     }
 
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;
         if (id == "playerList" || id == "sceneList" || id == "assetType" || id == "assetSort") {
-            this.state[id] = this.state[id].update('index', v=>value);
-            this.setState({[id]: this.state[id].update('value', v=>this.state[id].getIn(["list", value, "value"]))});
+            this.state[id] = this.state[id].update('index', v => value);
+            this.setState({ [id]: this.state[id].update('value', v => this.state[id].getIn(["list", value, "value"])) });
         }
         else if (id == "assetSearch") {
             this.setState({ assetSearch: this.state.assetSearch.update('value', v => value) });
         } else {
 
 
-            if (id == "action" || id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume" || id == "cyclePause" || id == "timingPause" || id == "fontType") {
+            if (id == "action" || id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume" || id == "cyclePause" || id == "timingPause" || id == "fontType" || id == "alignment") {
                 const curIndex = value.target.selectedIndex;
                 this.setState({
                     property: Object.assign({}, this.state.property, {
@@ -539,8 +517,8 @@ export class PlayerArea extends Component {
                 if (id == "clipsRage1" || id == "clipsRage2") {
                     prompt = !value;
                     this.setState({
-                        property: Object.assign({}, this.state.property, {clipsRage: Object.assign({}, this.state.property.clipsRage, {[id]: value})}),
-                        prompt: Object.assign({}, this.state.prompt, {clipsRage: prompt})
+                        property: Object.assign({}, this.state.property, { clipsRage: Object.assign({}, this.state.property.clipsRage, { [id]: value }) }),
+                        prompt: Object.assign({}, this.state.prompt, { clipsRage: prompt })
                     })
                 }
                 else {
@@ -561,9 +539,9 @@ export class PlayerArea extends Component {
     dateChange(id, value) {
         if (id == "week" || id == "cycleWeek") {
             console.log(value);
-            this.setState({property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {value: value})})});
+            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
         } else {
-            this.setState({property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {value: value})})});
+            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
         }
     }
 
@@ -652,19 +630,42 @@ export class PlayerArea extends Component {
                 break;
         }
     }
-
+    playerTextClick(id) {
+        const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
+        switch (id) {
+            case 'apply':
+                break;
+            case 'reset':
+                this.setState({
+                    property: Object.assign({}, this.state.property, {
+                        textContent: Object.assign({}, textContent, { value: '' }),
+                        fontType: Object.assign({}, fontType, { index: 0, name: '微软雅黑' }),
+                        fontColor: Object.assign({}, fontColor),
+                        bgColor: Object.assign({}, bgColor),
+                        bgTransparent: Object.assign({}, bgTransparent),
+                        alignment: Object.assign({}, alignment, { index: 0, name: '左上' }),
+                        animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),
+                        playDuration: Object.assign({}, playDuration, { value: "" }),
+                        playSpeed: Object.assign({}, playSpeed, { value: "" }),
+                        wordSpacing: Object.assign({}, wordSpacing, { value: '' }),
+                        lineSpacing: Object.assign({}, lineSpacing, { value: '' })
+                    })
+                });
+                break;
+        }
+    }
     playerPicAssetClick(id) {
-        const {displayMode, animation, playDuration, playSpeed} = this.state.property;
+        const { displayMode, animation, playDuration, playSpeed } = this.state.property;
         switch (id) {
             case "apply":
                 break;
             case "reset":
                 this.setState({
                     property: Object.assign({}, this.state.property, {
-                        displayMode: Object.assign({}, displayMode, {index: 0, name: "铺满"}),
-                        animation: Object.assign({}, animation, {index: 0, name: "立即显示"}),
-                        playDuration: Object.assign({}, playDuration, {value: ""}),
-                        playSpeed: Object.assign({}, playSpeed, {value: ""}),
+                        displayMode: Object.assign({}, displayMode, { index: 0, name: "铺满" }),
+                        animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),
+                        playDuration: Object.assign({}, playDuration, { value: "" }),
+                        playSpeed: Object.assign({}, playSpeed, { value: "" }),
                     })
                 })
                 break;
@@ -672,7 +673,7 @@ export class PlayerArea extends Component {
     }
 
     playerVideoAssetClick(id) {
-        const {playTimes, playType, clipsRage, scaling, volume} = this.state.property;
+        const { playTimes, playType, clipsRage, scaling, volume } = this.state.property;
         switch (id) {
             case "apply":
                 break;
@@ -757,13 +758,13 @@ export class PlayerArea extends Component {
         const list = this.state.playerListAsset.get("list");
         const curIndex = getIndexByKey(list, "id", itemId);
 
-        this.state.playerListAsset = this.state.playerListAsset.update("list", v=>v.splice(curIndex, 1));
-        this.setState({playerListAsset: this.state.playerListAsset.update("list", v=>v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item))});
+        this.state.playerListAsset = this.state.playerListAsset.update("list", v => v.splice(curIndex, 1));
+        this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item)) });
     }
 
     updateTimingPlanPopup(data) {
-        const {actions} = this.props;
-        actions.overlayerShow(<TimingPlanPopup title="添加/修改插播计划" data={data} onChange={state=>{
+        const { actions } = this.props;
+        actions.overlayerShow(<TimingPlanPopup title="添加/修改插播计划" data={data} onChange={state => {
 
         }} onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
         }} />)
@@ -850,9 +851,9 @@ export class PlayerArea extends Component {
             //         break;
             // }
 
-            if(this.state.curType == "playerProject"){
-                this.setState({isAddClick: true});
-            }else{
+            if (this.state.curType == "playerProject") {
+                this.setState({ isAddClick: true });
+            } else {
                 let type = "scene";
                 let name = "场景新建";
                 let isChildren = false;
@@ -866,29 +867,29 @@ export class PlayerArea extends Component {
                         isChildren = true;
 
                         node = {
-                            "id": "scene"+parseInt(Math.random()*999),
+                            "id": "scene" + parseInt(Math.random() * 999),
                             "type": type,
                             "name": name,
-                            "toggled":false,
+                            "toggled": false,
                             "active": true,
-                            "level":2,
-                            children:[]
+                            "level": 2,
+                            children: []
                         }
 
-                        this.setState({curType:'playerScene'}, ()=>this.updateTreeData(this.state.curNode, node));
+                        this.setState({ curType: 'playerScene' }, () => this.updateTreeData(this.state.curNode, node));
                         break;
                     case 'playerScene':
                         type = 'area';
                         name = "区域新建";
                         isChildren = false;
                         node = {
-                            "id": "area"+parseInt(Math.random()*999),
+                            "id": "area" + parseInt(Math.random() * 999),
                             "type": type,
                             "name": name,
                             "active": true,
-                            "level":3
+                            "level": 3
                         }
-                        this.setState({curType:'playerArea'}, this.updateTreeData(this.state.curNode, node));
+                        this.setState({ curType: 'playerArea' }, this.updateTreeData(this.state.curNode, node));
                         break;
                 }
             }
@@ -909,12 +910,12 @@ export class PlayerArea extends Component {
             }
 
             actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
-                                                cancel={()=>{actions.overlayerHide()}} confirm={()=>{
-                                                }}/>)
+                cancel={() => { actions.overlayerHide() }} confirm={() => {
+                }} />)
         } else if (id == "project") {
-            this.setState({curType: "playerProject", isClick: false});
+            this.setState({ curType: "playerProject", isClick: false });
         } else {
-            this.setState({isAddClick: false}, ()=> {
+            this.setState({ isAddClick: false }, () => {
                 let type = "plan";
                 let proType = "playerPlan";
                 let name = "";
@@ -937,16 +938,16 @@ export class PlayerArea extends Component {
                 }
 
                 const node = {
-                    "id": "player"+parseInt(Math.random()*999),
+                    "id": "player" + parseInt(Math.random() * 999),
                     "type": type,
                     "name": name,
                     "toggled": false,
                     "active": true,
                     "level": 1,
-                    "children":[]
+                    "children": []
                 }
 
-                this.setState({curType:proType}, ()=>this.updateTreeData(null, node));
+                this.setState({ curType: proType }, () => this.updateTreeData(null, node));
             })
         }
     }
@@ -1022,16 +1023,11 @@ export class PlayerArea extends Component {
                 break;
         }
 
-        this.setState({curNode:node, curType: type, isClick: false});
+        this.setState({ curNode: node, curType: type, isClick: false });
     }
 
     sidebarClick(id) {
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
-    }
-    changeTextContent(e) {
-        this.setState({
-
-        })
     }
     render() {
         const {
@@ -1054,10 +1050,10 @@ export class PlayerArea extends Component {
                 break;
         }
 
-        return <div className={"container "+"mediaPublish-playerArea "+(sidebarInfo.collapsed?'sidebar-collapse':'')}>
-            <HeadBar moduleName="媒体发布" router={router}/>
+        return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
+            <HeadBar moduleName="媒体发布" router={router} />
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
-                     onClick={this.areaClick} onToggle={this.onToggle}/>
+                onClick={this.areaClick} onToggle={this.onToggle} />
             <Content className="player-area">
                 <div className="left">
                     <div className="form-group control-container-top">
@@ -1129,7 +1125,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group project-name">
                                     <label className="control-label"
-                                           htmlFor={property.project.key}>{property.project.title}</label>
+                                        htmlFor={property.project.key}>{property.project.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={"form-control "}
                                             placeholder={property.project.placeholder} maxLength="16"
@@ -1148,7 +1144,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group plan">
                                     <label className="control-label"
-                                           htmlFor={property.plan.key}>{property.plan.title}</label>
+                                        htmlFor={property.plan.key}>{property.plan.title}</label>
                                     <div className="input-container">
                                         <input type="text" className={"form-control "}
                                             placeholder={property.plan.placeholder} maxLength="16"
@@ -1226,7 +1222,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group cycle-name">
                                     <label className="control-label"
-                                           htmlFor={property.cycleName.key}>{property.cycleName.title}</label>
+                                        htmlFor={property.cycleName.key}>{property.cycleName.title}</label>
                                     <div className="input-container">
                                         <input type="text" className="form-control" placeholder={property.cycleName.placeholder} value={property.cycleName.value} onChange={event => this.onChange("cycleName", event)} />
                                         <span className={prompt.cycleName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
@@ -1236,7 +1232,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group cycle-interval">
                                     <label className="control-label"
-                                           htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
+                                        htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
                                     <div className="input-container">
                                         <input type="text" className="form-control" placeholder={property.cycleInterval.placeholder} value={property.cycleInterval.value} onChange={event => this.onChange("cycleInterval", event)} />
                                         <span className={prompt.cycleInterval ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
@@ -1244,7 +1240,7 @@ export class PlayerArea extends Component {
                                 </div>
                                 <div className="form-group cycle-pause">
                                     <label className="control-label"
-                                           htmlFor={property.cyclePause.key}>{property.cyclePause.title}</label>
+                                        htmlFor={property.cyclePause.key}>{property.cyclePause.title}</label>
                                     <div className="input-container">
                                         <select className={"form-control"} value={property.cyclePause.name} onChange={event => this.onChange("cyclePause", event)}>
                                             {
@@ -1280,7 +1276,7 @@ export class PlayerArea extends Component {
                                 </div>
                                 <div className="form-group cycle-date">
                                     <label className="control-label"
-                                           htmlFor={property.cycleDate.key}>{property.cycleDate.title}</label>
+                                        htmlFor={property.cycleDate.key}>{property.cycleDate.title}</label>
                                     <div className="input-container">
                                         <Checkbox checked={property.cycleDate.appoint} onChange={event => this.onChange("cycleDate", event)} />
                                     </div>
@@ -1307,7 +1303,7 @@ export class PlayerArea extends Component {
                                 </div>
                                 <div className="form-group cycle-time">
                                     <label className="control-label"
-                                           htmlFor={property.cycleTime.key}>{property.cycleTime.title}</label>
+                                        htmlFor={property.cycleTime.key}>{property.cycleTime.title}</label>
                                     <div className="input-container">
                                         <Checkbox checked={property.cycleTime.appoint} onChange={event => this.onChange("cycleTime", event)} />
                                     </div>
@@ -1332,7 +1328,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group timing-name">
                                     <label className="control-label"
-                                           htmlFor={property.timingName.key}>{property.timingName.title}</label>
+                                        htmlFor={property.timingName.key}>{property.timingName.title}</label>
                                     <div className="input-container">
                                         <input type="text" className="form-control" placeholder={property.timingName.placeholder} value={property.timingName.value} onChange={event => this.onChange("timingName", event)} />
                                         <span className={prompt.timingName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
@@ -1342,7 +1338,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group timing-list">
                                     <label className="control-label"
-                                           htmlFor={property.timingList.key}>{property.timingList.title}</label>
+                                        htmlFor={property.timingList.key}>{property.timingList.title}</label>
                                     <div className="input-container">
                                         <div className="edit-head">
                                             <select value={property.timingList.sort.name} onChange={event => this.onChange("timingList-sort", event)}>
@@ -1378,7 +1374,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group">
                                     <label className="control-label"
-                                           htmlFor={property.timingPlayMode.key}>{property.timingPlayMode.title}</label>
+                                        htmlFor={property.timingPlayMode.key}>{property.timingPlayMode.title}</label>
                                     <div className="input-container">
                                         <select className={"form-control"} value={property.timingPlayMode.name} onChange={event => this.onChange("timingPlayMode", event)}>
                                             {
@@ -1404,7 +1400,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group timing-pause">
                                     <label className="control-label"
-                                           htmlFor={property.timingPause.key}>{property.timingPause.title}</label>
+                                        htmlFor={property.timingPause.key}>{property.timingPause.title}</label>
                                     <div className="input-container">
                                         <select className={"form-control"} value={property.timingPause.name} onChange={event => this.onChange("timingPause", event)}>
                                             {
@@ -1427,7 +1423,7 @@ export class PlayerArea extends Component {
                         <div className={"pro-container playerArea " + (curType == 'playerArea' ? '' : "hidden")}>
                             <div className="form-group  area-name">
                                 <label className="control-label"
-                                       htmlFor={property.areaName.key}>{property.areaName.title}</label>
+                                    htmlFor={property.areaName.key}>{property.areaName.title}</label>
                                 <div className="input-container">
                                     <input type="text" className={"form-control "}
                                         placeholder={property.areaName.placeholder} maxLength="8"
@@ -1503,7 +1499,7 @@ export class PlayerArea extends Component {
                             <div className="row">
                                 <div className="form-group">
                                     <label className="control-label"
-                                           htmlFor={property.playMode.key}>{property.playMode.title}</label>
+                                        htmlFor={property.playMode.key}>{property.playMode.title}</label>
                                     <div className="input-container">
                                         <select className={"form-control"} value={property.playMode.name} onChange={event => this.onChange("playMode", event)}>
                                             {
@@ -1558,7 +1554,78 @@ export class PlayerArea extends Component {
                                     </select>
                                 </div>
                             </div>
-
+                            <div className='form-group'>
+                                <label className='control-label'>{property.alignment.title}</label>
+                                <div className='input-container'>
+                                    <select className='form-control' value={property.alignment.name}
+                                        onChange={e => this.onChange('alignment', e)}>
+                                        {
+                                            property.alignment.list.map((item, index) => {
+                                                return <option key={index} value={item.name}>{item.name}</option>
+                                            })
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-sm-3 control-label">{property.playDuration.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className="form-control"
+                                        placeholder={property.playDuration.placeholder} maxLength="8"
+                                        value={property.playDuration.value}
+                                        onChange={event => this.onChange("playDuration", event)} />
+                                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="control-label">{property.animation.title}</label>
+                                <div className="input-container">
+                                    <select className="form-control" value={property.animation.name}
+                                        onChange={event => this.onChange("animation", event)}>
+                                        {
+                                            property.animation.list.map((option, index) => {
+                                                let value = option.name;
+                                                return <option key={index} value={value}>
+                                                    {value}
+                                                </option>
+                                            })}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className="form-control"
+                                        placeholder={property.playSpeed.placeholder} maxLength="8"
+                                        value={property.playSpeed.value}
+                                        onChange={event => this.onChange("playSpeed", event)} />
+                                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-sm-3 control-label">{property.lineSpacing.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className="form-control"
+                                        placeholder={property.lineSpacing.placeholder} maxLength="8"
+                                        value={property.lineSpacing.value}
+                                        onChange={event => this.onChange("lineSpacing", event)} />
+                                    <span className={prompt.lineSpacing ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-sm-3 control-label">{property.wordSpacing.title}</label>
+                                <div className="input-container">
+                                    <input type="text" className="form-control"
+                                        placeholder={property.wordSpacing.placeholder} maxLength="8"
+                                        value={property.wordSpacing.value}
+                                        onChange={event => this.onChange("wordSpacing", event)} />
+                                    <span className={prompt.wordSpacing ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}>应用</button>
+                                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}>重置</button>
+                            </div>
                         </div>
                         {/* Edit text end */}
                         <div className={"pro-container playerPicAsset " + (curType == 'playerPicAsset' ? '' : "hidden")}>
@@ -1566,7 +1633,7 @@ export class PlayerArea extends Component {
                                 <label className="control-label">{property.assetName.title}</label>
                                 <div className="input-container">
                                     <input type="text" className="form-control" disabled="disabled"
-                                           value={property.assetName.value}/>
+                                        value={property.assetName.value} />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -1629,7 +1696,7 @@ export class PlayerArea extends Component {
                                 <label className="control-label">{property.assetName.title}</label>
                                 <div className="input-container">
                                     <input type="text" className="form-control" disabled="disabled"
-                                           value={property.assetName.value}/>
+                                        value={property.assetName.value} />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -1731,7 +1798,7 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary" onClick={() => this.assetList('complete')}>完成
                                     </button>
                                 </div>
-                                <Material showModal={this.state.showModal} hideModal={this.hideModal}/>
+                                <Material showModal={this.state.showModal} hideModal={this.hideModal} />
                             </div>
                             <div className="bottom">
                                 <ul className="asset-list">
