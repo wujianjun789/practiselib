@@ -192,6 +192,9 @@ export class PlayerArea extends Component {
                 //素材
                 assetName: {key: "assetName", title: "素材名称", placeholder: '素材名称', value: ""},
 
+                //文字素材
+                textContent:{key:'textContent',title:'文本内容',value:''},
+
                 //图片素材
                 displayMode: {key: "displayMode", title: "显示方式", list: [{id: 1, name: '铺满'}, {id: 2, name: '原始比例'}, {id: 3, name: '4:3'}, {id: 4, name: '5:4'}, {id: 5, name: '16.9'}],index: 0, name: "铺满"},
                 animation: {key: "animation", title: "动画效果", 
@@ -395,10 +398,10 @@ export class PlayerArea extends Component {
 
     playerAssetSelect(item) {
         console.log(item.toJS());
-        let curType = "playerWord";
+        let curType = "playerText";
         switch (item.get("type")){
             case "word":
-                curType = "playerWord";
+                curType = "playerText";
                 break;
             case "picture":
                 curType = "playerPicAsset";
@@ -1363,6 +1366,21 @@ console.log(property.timingPlayModeCount);
                             <div className="row">
                                 <button className="btn btn-primary pull-right" onClick={()=>{this.playerSceneClick('apply')}}>应用</button>
                                 <button className="btn btn-gray pull-right" onClick={()=>{this.playerSceneClick('reset')}}>重置</button>
+                            </div>
+                        </div>
+                        {/* Edit word here !!!!*/}
+                        <div className={"pro-container playerText "+(curType=='playerText'?'':"hidden")}>
+                            <div className='form-group'>
+                                <label className='control-label'>{property.assetName.title}</label>
+                                <div className='input-container'>
+                                    <input type='text' className='form-control' disabled='disabled' value={property.assetName.value}/>
+                                </div>
+                            </div>
+                            <div className='form-group'>
+                                <label className='control-label'>{property.textContent.title}</label>
+                                <div className='input-container'>
+                                    <textarea className='form-control' value={property.textContent.value}/>
+                                </div>
                             </div>
                         </div>
                         <div className={"pro-container playerPicAsset "+(curType=='playerPicAsset'?'':"hidden")}>
