@@ -43,7 +43,7 @@ const CheckboxGroup = Checkbox.Group;
 import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
 import { weekReplace } from '../util/index';
 
-import {SketchPicker} from 'react-color';
+import { SketchPicker } from 'react-color';
 
 export class PlayerArea extends Component {
     constructor(props) {
@@ -207,9 +207,12 @@ export class PlayerArea extends Component {
                 //文字素材
                 textContent: { key: 'textContent', title: '文本内容', value: '' },
                 fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
-                alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左下' }, { id: 3, name: '右上' }, { id: 3, name: '右下' }], index: 0 },
+                alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
                 wordSpacing: { key: 'wordSpacing', title: '字间距', placeholder: 'pt', value: '' },
                 lineSpacing: { key: 'lineSpacing', title: '行间距', placeholder: 'pt', value: '' },
+                fontColor: { key: 'fontColor', title: '字体颜色', value: '#456' },
+                bgColor: { key: 'bgColor', title: '背景颜色', value: '#789' },
+                bgTransparent: { key: 'bgTransparent', title: '背景透明', value: false },
 
                 //图片素材
                 displayMode: { key: "displayMode", title: "显示方式", list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
@@ -296,8 +299,10 @@ export class PlayerArea extends Component {
             isClick: false,
             //左侧栏添加单击
             isAddClick: false,
-            showColorPicker:false,
-            fontColor:'#345'
+
+            //字体颜色，背景颜色,背景透明
+            displayFontColorPicker: false,
+            displayBgColorPicker: false,
         }
 
         this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, {
@@ -348,6 +353,13 @@ export class PlayerArea extends Component {
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handleFontColorChange = this.handleFontColorChange.bind(this);
+        this.handleFontColorClick = this.handleFontColorClick.bind(this);
+        this.handleFontColorClose = this.handleFontColorClose.bind(this)
+        this.handleBgColorChange = this.handleBgColorChange.bind(this);
+        this.handleBgColorClick = this.handleBgColorClick.bind(this);
+        this.handleBgColorClose = this.handleBgColorClose.bind(this);
+        this.handleBgTransparent = this.handleBgTransparent.bind(this)
     }
     componentWillMount() {
         this.mounted = true;
@@ -651,7 +663,10 @@ export class PlayerArea extends Component {
                         playDuration: Object.assign({}, playDuration, { value: "" }),
                         playSpeed: Object.assign({}, playSpeed, { value: "" }),
                         wordSpacing: Object.assign({}, wordSpacing, { value: '' }),
-                        lineSpacing: Object.assign({}, lineSpacing, { value: '' })
+                        lineSpacing: Object.assign({}, lineSpacing, { value: '' }),
+                        fontColor: Object.assign({}, fontColor, { value: '#789' }),
+                        bgColor: Object.assign({}, bgColor, { value: '#456' }),
+                        bgTransparent: Object.assign({}, bgTransparent, { value: false }),
                     })
                 });
                 break;
@@ -1032,10 +1047,79 @@ export class PlayerArea extends Component {
     sidebarClick(id) {
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
     }
-    handleColorChange({hex}){
-        this.setState({showColorPicker:false,fontColor:hex})
+    handleFontColorClick(e) {
+        e.stopPropagation();
+        if (this.fontTarget === undefined) {
+            this.fontTarget = e.target;
+            this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker });
+            return;
+        } else {
+            if (this.fontTarget !== e.target) {
+                return;
+            }
+        }
+        this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker })
+    };
+    handleBgColorClick(e) {
+        e.stopPropagation();
+        if (this.bgTarget === undefined) {
+            this.bgTarget = e.target;
+            this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
+            return;
+        } else {
+            if (this.bgTarget !== e.target) {
+                return;
+            }
+        }
+        this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker })
+    };
+    handleFontColorClose(e) {
+        e.stopPropagation();
+        this.setState({ displayFontColorPicker: false })
+    };
+    handleBgColorClose(e) {
+        e.stopPropagation();
+        this.setState({ displayBgColorPicker: false })
+    };
+    handleFontColorChange(color) {
+        this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } })
+    };
+    handleBgColorChange(color) {
+        this.setState({ property: { ...this.state.property, bgColor: { ...this.state.property.bgColor, value: color.hex } } })
+    };
+    handleBgTransparent(e) {
+        e.stopPropagation();
+        this.setState({ property: { ...this.state.property, bgTransparent: { ...this.state.property.bgTransparent, value: e.target.checked } } })
     }
     render() {
+        const styles =
+            {
+                color: {
+                    width: '36px',
+                    height: '14px',
+                    borderRadius: '2px',
+                },
+                swatch: {
+                    padding: '5px',
+                    background: '#fff',
+                    borderRadius: '1px',
+                    boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                },
+                popover: {
+                    position: 'absolute',
+                    zIndex: '2',
+                },
+                cover: {
+                    position: 'fixed',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                },
+            };
+
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
@@ -1055,7 +1139,6 @@ export class PlayerArea extends Component {
                 add_title = '(定时插播计划)';
                 break;
         }
-
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName="媒体发布" router={router} />
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
@@ -1542,7 +1625,7 @@ export class PlayerArea extends Component {
                                 </div>
                             </div>
                             <div className='form-group'>
-                                <label className='control-label'>{property.textContent.title}</label>
+                                <label className='control-label label-alignment'>{property.textContent.title}</label>
                                 <div className='input-container text-container'>
                                     <textarea className='text-content' value={property.textContent.value} onChange={e => this.onChange('textContent', e)} />
                                 </div>
@@ -1560,14 +1643,27 @@ export class PlayerArea extends Component {
                                     </select>
                                 </div>
                             </div>
-                            <div className='form-group'>
-                                <span>字体颜色</span>
-                                <div className='font-color' style={{backgroundColor:this.state.fontColor}} onClick={()=>{this.setState({showColorPicker:true})}}>
-                                        {this.state.showColorPicker?<SketchPicker color="#333" onChangeComplete={this.handleColorChange.bind(this)}/>:null}
+                            <div className='form-group font-color'>
+                                <label className='control-label'>{property.fontColor.title}</label>
+                                <div className='color-show' style={{ backgroundColor: property.fontColor.value }} onClick={this.handleFontColorClick}>
+                                    {this.state.displayFontColorPicker
+                                        ? <div className='popover'>
+                                            {<div className='cover' onClick={this.handleFontColorClose}></div>}
+                                            <SketchPicker color={property.fontColor.value} onChange={this.handleFontColorChange} />
+                                        </div>
+                                        : null}
                                 </div>
-                                
-                                <span>背景颜色</span>
-                                <span>背景透明</span>
+                                <label className='control-label'>{property.bgColor.title}</label>
+                                <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={this.handleBgColorClick}>
+                                    {this.state.displayBgColorPicker
+                                        ? <div className='popover bg-popover'>
+                                            {<div className='cover' onClick={this.handleBgColorClose}></div>}
+                                            <SketchPicker color={property.bgColor.value} onChange={this.handleBgColorChange} />
+                                        </div>
+                                        : null}
+                                </div>
+                                <label className='control-label'>{property.bgTransparent.title}</label>
+                                <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
                             </div>
                             <div className='form-group'>
                                 <label className='control-label'>{property.alignment.title}</label>
@@ -1852,9 +1948,9 @@ export class PlayerArea extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
-            <NotifyPopup />
-            <Overlayer />
+                <NotifyPopup />
+                <Overlayer />
+            </div >
         </div>
     }
 }

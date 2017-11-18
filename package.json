@@ -16,12 +16,10 @@
     "moment": "^2.18.1",
     "morgan": "~1.7.0",
     "nock": "^9.0.13",
-    "rc-color-picker": "^1.2.3",
     "rc-pagination": "^1.9.8",
     "react-color": "^2.13.8",
     "react-datepicker": "^0.53.0",
     "react-fontawesome": "^1.6.1",
-    "react-input-color": "^1.7.2",
     "react-treebeard": "^2.0.3",
     "serve-favicon": "~2.3.0"
   },
