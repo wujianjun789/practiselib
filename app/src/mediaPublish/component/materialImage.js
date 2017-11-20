@@ -24,6 +24,9 @@ export default class Image extends Component {
         const file = e.target.files[0];
         const url=URL.createObjectURL(file);
         this.setState({path:file.name,url:url});
+        if(file){
+            this.props.upload('image',file)
+        }
     }
     render() {
         const { name, path,url } = this.state;

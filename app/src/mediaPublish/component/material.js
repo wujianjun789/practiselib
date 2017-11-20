@@ -17,10 +17,26 @@ export default class Material extends PureComponent {
         super(props);
         this.video = undefined;
         this.state = {
-            currentKey: 2
+            currentKey: 2,
+            data: {}
         }
     }
     handleOk = (e) => {
+        console.log(this.state.currentKey)
+        switch (this.state.currentKey.toString()) {
+            case '1':
+                this.upload('text');
+                break;
+            case '2':
+                this.upload('image');
+                break;
+            case '3':
+                this.upload('video');
+                break;
+            default:
+                console.log('some errors')
+                break;
+        }
         this.props.hideModal()
     }
 
@@ -31,12 +47,42 @@ export default class Material extends PureComponent {
         if (this.video !== undefined && this.video.src) {
             if (key !== 3) {
                 this.video.pause();
-            } 
+            }
         }
         this.setState({ currentKey: key })
     }
     focus = (node) => {
         this.video = node
+    }
+    addFile = (type, file) => {
+        this.setState({ data: { ...this.state.data, [type]: file } })
+        console.log(this.state.data)
+    }
+    upload = (type) => {
+        const data=this.state.data[type];
+        if(!data){
+            console.log('未选择文件')
+            return;
+        }
+        console.log(data.type)
+        console.log(`上传${type}文件了`)
+        const url = 'http://192.168.155.207:3000/api/containers/common/upload';
+        const form=new FormData();
+        const myHeaders=new Headers();
+        form.append('file',data);
+        myHeaders.append('Content-Type',data.type)
+        fetch(url,{
+            method:'POST',
+            headers:myHeaders,
+            // mode:'cors',
+            body:form
+        }).then(res=>{
+            console.log(res)
+        })
+
+    }
+    componentDidUpdate() {
+        console.log(this.state.data)
     }
     render() {
         return (
@@ -45,13 +91,13 @@ export default class Material extends PureComponent {
                     onOk={this.handleOk} onCancel={this.handleCancel}>
                     <Tabs defaultActiveKey="2" onChange={this.switchTab}>
                         <TabPane tab="文字" key="1">
-                            <Text />
+                            <Text upload={this.addFile} />
                         </TabPane>
-                        <TabPane tab="图片" key="2">
-                            <Image />
+                        <TabPane tab="图片" key="2" >
+                            <Image upload={this.addFile} />
                         </TabPane>
                         <TabPane tab="视频" key="3" >
-                            <Video focus={this.focus} />
+                            <Video focus={this.focus} upload={this.addFile} />
                         </TabPane>
                     </Tabs>
                 </Modal>

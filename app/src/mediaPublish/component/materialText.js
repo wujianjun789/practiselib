@@ -24,7 +24,9 @@ export default class Text extends Component {
         reader.onload=function(e){
             self.setState({path:file.name,data:this.result})
         }
-
+        if(file){
+            this.props.upload('text',file)
+        }
     }
     render() {
         const { name, path, data } = this.state;

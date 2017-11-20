@@ -24,6 +24,9 @@ export default class Video extends Component {
             this.video.controls='controls'
         }
         this.setState({ path: file.name, url: url })
+        if(file){
+            this.props.upload('video',file)
+        }
     }
     refsCb=(node)=>{
         this.props.focus(node);

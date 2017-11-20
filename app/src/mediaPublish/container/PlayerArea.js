@@ -24,6 +24,7 @@ import CyclePlan from '../component/CyclePlan';
 import TimingPlan from '../component/TimingPlan';
 import PlayerPicAsset from '../component/PlayerPicAsset';
 import PlayerVideoAsset from '../component/PlayerVideoAsset';
+import PlayerText from '../component/PlayerText';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
@@ -49,7 +50,6 @@ import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
 const CheckboxGroup = Checkbox.Group;
 
-import { SketchPicker } from 'react-color';
 
 import DigitalClock from '../component/digitalClock';
 
@@ -132,50 +132,7 @@ export class PlayerArea extends Component {
                 propertyCollapsed: false,
                 assetLibCollapsed: false
             },
-            property: {
-                //素材
-                assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },
 
-                //文字素材
-                textContent: { key: 'textContent', title: '文本内容', value: '' },
-                fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
-                alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
-                wordSpacing: { key: 'wordSpacing', title: '字间距', placeholder: 'pt', value: '' },
-                lineSpacing: { key: 'lineSpacing', title: '行间距', placeholder: 'pt', value: '' },
-                fontColor: { key: 'fontColor', title: '字体颜色', value: '#456' },
-                bgColor: { key: 'bgColor', title: '背景颜色', value: '#789' },
-                bgTransparent: { key: 'bgTransparent', title: '背景透明', value: false },
-
-                //图片素材
-                displayMode: { key: "displayMode", title: "显示方式", list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
-                animation: {
-                    key: "animation", title: "动画效果",
-                    list: [
-                        { id: 1, name: '立即显示' }, { id: 2, name: '闪烁' }, { id: 3, name: '长串左移' },
-                        { id: 4, name: '上移' }, { id: 5, name: '下移' }, { id: 6, name: '左移' }, { id: 7, name: '右移' },
-                        { id: 8, name: '自上而下展现' }, { id: 9, name: '自下而上展现' }, { id: 10, name: '自右而左展现' }, { id: 11, name: '自左而右展现' },
-                        { id: 12, name: '自上而下百叶窗' }, { id: 13, name: '自下而上百叶窗' }, { id: 14, name: '自右而左百叶窗' }, { id: 15, name: '自左而右百叶窗' },
-                        { id: 16, name: '自上而下棋盘格' }, { id: 17, name: '自下而上棋盘格' }, { id: 18, name: '自右而左棋盘格' }, { id: 19, name: '自左而右棋盘格' },
-                        { id: 20, name: '上下向中间合拢' }, { id: 21, name: '中间向上下展开' }, { id: 22, name: '左右向中间合拢' }, { id: 23, name: '中间向左右展开' },
-                        { id: 24, name: '矩形自四周向中心合拢' }, { id: 25, name: '矩形自中心向四周展开' }, { id: 26, name: '向左拉幕' }, { id: 27, name: '向右拉幕' },
-                        { id: 28, name: '向上拉幕' }, { id: 29, name: '向下拉幕' }, { id: 30, name: '矩形自左下向右上展现' }, { id: 31, name: '矩形自左上向右下展现' },
-                        { id: 32, name: '矩形自右下向左上展现' }, { id: 33, name: '矩形自右上向左下展现' }, { id: 34, name: '斜线自左上向右下展现' }, { id: 35, name: '斜线自右下向左上展现' },
-                        { id: 36, name: '随机' }
-                    ], index: 0
-                },
-                playDuration: { key: "playDuration", title: "播放时长", placeholder: '秒/s', value: "" },
-                playSpeed: { key: "playSpeed", title: "播放速度", placeholder: 'ms', value: "" },
-
-                //视频素材
-                playTimes: { key: "playTimes", title: "播放次数", placeholder: '次', value: "" },
-                playType: { key: "playType", title: "播放类型", list: [{ id: 1, name: '片段播放' }, { id: 2, name: '完整播放' }], index: 0, name: "片段播放" },
-                clipsRage: { key: "clipsRage", title: "片段范围", clipsRage1: moment('00:00:00', 'HH:mm:ss'), clipsRage2: moment('00:00:00', 'HH:mm:ss') },
-                scaling: { key: "scaling", title: "缩放比例", list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
-                volume: {
-                    key: "volume", title: "音量", list: [{ id: 1, name: '100' }, { id: 2, name: '90' }, { id: 3, name: '80' },
-                    { id: 4, name: '70' }, { id: 5, name: '60' }, { id: 6, name: '50' }, { id: 7, name: '40' }, { id: 8, name: '30' }, { id: 9, name: '20' }, { id: 10, name: '10' }, { id: 11, name: '11' }], index: 0, name: "100"
-                },
-            },
             assetType: Immutable.fromJS({ list: [{ id: 1, value: '类别1' }, { id: 2, value: '类别2' }], index: 0, value: '类别1' }),
             assetSort: Immutable.fromJS({
                 list: [{ id: 1, value: '素材文字' }, { id: 2, value: '素材图片' }],
@@ -197,10 +154,6 @@ export class PlayerArea extends Component {
                 current: 1,
                 total: 2
             }),
-            prompt: {
-                //素材
-                textArea: false, lineSpacing: false, wordSpacing: false,
-            },
 
             showModal: false,
 
@@ -216,13 +169,9 @@ export class PlayerArea extends Component {
             isClick: false,
             //左侧栏添加单击
             isAddClick: false,
-
-            //字体颜色，背景颜色,背景透明
-            displayFontColorPicker: false,
-            displayBgColorPicker: false,
         }
 
-        this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, {id: 'playerArea', name: "区域"}]
+        this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }]
 
         this.onToggle = this.onToggle.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -260,13 +209,6 @@ export class PlayerArea extends Component {
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
-        this.handleFontColorChange = this.handleFontColorChange.bind(this);
-        this.handleFontColorClick = this.handleFontColorClick.bind(this);
-        this.handleFontColorClose = this.handleFontColorClose.bind(this)
-        this.handleBgColorChange = this.handleBgColorChange.bind(this);
-        this.handleBgColorClick = this.handleBgColorClick.bind(this);
-        this.handleBgColorClose = this.handleBgColorClose.bind(this);
-        this.handleBgTransparent = this.handleBgTransparent.bind(this)
     }
     componentWillMount() {
         this.mounted = true;
@@ -383,36 +325,26 @@ export class PlayerArea extends Component {
         } else {
 
 
-            if (id == "action" || id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume"  ||  id == "fontType" || id == "alignment") {
-                const curIndex = value.target.selectedIndex;
-                this.setState({
-                    property: Object.assign({}, this.state.property, {
-                        [id]: Object.assign({}, this.state.property[id], {
-                            index: curIndex,
-                            name: this.state.property[id].list[curIndex].name
-                        })
-                    })
-                })
-            }else {
-                if (id == "clipsRage1" || id == "clipsRage2") {
-                    prompt = !value;
-                    this.setState({
-                        property: Object.assign({}, this.state.property, { clipsRage: Object.assign({}, this.state.property.clipsRage, { [id]: value }) }),
-                        prompt: Object.assign({}, this.state.prompt, { clipsRage: prompt })
-                    })
-                }
-                else {
-                    const val = value.target.value;
-                    if (!Name2Valid(val)) {
-                        prompt = true;
-                    }
 
-                    this.setState({
-                        property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
-                        prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
-                    })
-                }
+            if (id == "clipsRage1" || id == "clipsRage2") {
+                prompt = !value;
+                this.setState({
+                    property: Object.assign({}, this.state.property, { clipsRage: Object.assign({}, this.state.property.clipsRage, { [id]: value }) }),
+                    prompt: Object.assign({}, this.state.prompt, { clipsRage: prompt })
+                })
             }
+            else {
+                const val = value.target.value;
+                if (!Name2Valid(val)) {
+                    prompt = true;
+                }
+
+                this.setState({
+                    property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
+                    prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
+                })
+            }
+
         }
     }
 
@@ -473,33 +405,7 @@ export class PlayerArea extends Component {
         }
     }
 
-    playerTextClick(id) {
-        const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
-        switch (id) {
-            case 'apply':
-                break;
-            case 'reset':
-                this.setState({
-                    property: Object.assign({}, this.state.property, {
-                        textContent: Object.assign({}, textContent, { value: '' }),
-                        fontType: Object.assign({}, fontType, { index: 0, name: '微软雅黑' }),
-                        fontColor: Object.assign({}, fontColor),
-                        bgColor: Object.assign({}, bgColor),
-                        bgTransparent: Object.assign({}, bgTransparent),
-                        alignment: Object.assign({}, alignment, { index: 0, name: '左上' }),
-                        animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),
-                        playDuration: Object.assign({}, playDuration, { value: "" }),
-                        playSpeed: Object.assign({}, playSpeed, { value: "" }),
-                        wordSpacing: Object.assign({}, wordSpacing, { value: '' }),
-                        lineSpacing: Object.assign({}, lineSpacing, { value: '' }),
-                        fontColor: Object.assign({}, fontColor, { value: '#789' }),
-                        bgColor: Object.assign({}, bgColor, { value: '#456' }),
-                        bgTransparent: Object.assign({}, bgTransparent, { value: false }),
-                    })
-                });
-                break;
-        }
-    }
+
 
     addClick(item) {
         console.log('addClick:', item.toJS());
@@ -808,81 +714,11 @@ export class PlayerArea extends Component {
     sidebarClick(id) {
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
     }
-    handleFontColorClick(e) {
-        e.stopPropagation();
-        if (this.fontTarget === undefined) {
-            this.fontTarget = e.target;
-            this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker });
-            return;
-        } else {
-            if (this.fontTarget !== e.target) {
-                return;
-            }
-        }
-        this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker })
-    };
-    handleBgColorClick(e) {
-        e.stopPropagation();
-        if (this.bgTarget === undefined) {
-            this.bgTarget = e.target;
-            this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
-            return;
-        } else {
-            if (this.bgTarget !== e.target) {
-                return;
-            }
-        }
-        this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker })
-    };
-    handleFontColorClose(e) {
-        e.stopPropagation();
-        this.setState({ displayFontColorPicker: false })
-    };
-    handleBgColorClose(e) {
-        e.stopPropagation();
-        this.setState({ displayBgColorPicker: false })
-    };
-    handleFontColorChange(color) {
-        this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } })
-    };
-    handleBgColorChange(color) {
-        this.setState({ property: { ...this.state.property, bgColor: { ...this.state.property.bgColor, value: color.hex } } })
-    };
-    handleBgTransparent(e) {
-        e.stopPropagation();
-        this.setState({ property: { ...this.state.property, bgTransparent: { ...this.state.property.bgTransparent, value: e.target.checked } } })
-    }
+
     render() {
-        const styles =
-            {
-                color: {
-                    width: '36px',
-                    height: '14px',
-                    borderRadius: '2px',
-                },
-                swatch: {
-                    padding: '5px',
-                    background: '#fff',
-                    borderRadius: '1px',
-                    boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                    display: 'inline-block',
-                    cursor: 'pointer',
-                },
-                popover: {
-                    position: 'absolute',
-                    zIndex: '2',
-                },
-                cover: {
-                    position: 'fixed',
-                    top: '0px',
-                    right: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                },
-            };
 
         const {
-            curType, playerData, sidebarInfo, playerListAsset, assetList, property, prompt, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
+            curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
         const { router } = this.props;
@@ -972,136 +808,14 @@ export class PlayerArea extends Component {
                     </div>
                     <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
                         {curType == 'playerProject' && <PlayerProject />}
-                        {curType == 'playerPlan' && <PlayerPlan/>}
-                        {curType == 'playerScene' && <PlayerScene/>}
-                        {curType == 'playerArea' && <PlayerAreaPro/>}
-                        {curType == 'cyclePlan' && <CyclePlan/>}
-                        {curType == 'timingPlan' && <TimingPlan updateTimingPlanPopup={this.updateTimingPlanPopup}/>}
-                        {curType == 'playerPicAsset' && <PlayerPicAsset/>}
-                        {curType == 'playerVideoAsset' && <PlayerVideoAsset/>}
-                        {/* Edit text here !!!!*/}
-                        <div className={"pro-container playerText " + (curType == 'playerText' ? '' : "hidden")}>
-                            <div className='form-group'>
-                                <label className='control-label'>{property.assetName.title}</label>
-                                <div className='input-container'>
-                                    <input type='text' className='form-control' disabled='disabled' value={property.assetName.value} />
-                                </div>
-                            </div>
-                            <div className='form-group'>
-                                <label className='control-label label-alignment'>{property.textContent.title}</label>
-                                <div className='input-container text-container'>
-                                    <textarea className='text-content' value={property.textContent.value} onChange={e => this.onChange('textContent', e)} />
-                                </div>
-                            </div>
-                            <div className='form-group'>
-                                <label className='control-label'>{property.fontType.title}</label>
-                                <div className='input-container'>
-                                    <select className='form-control' value={property.fontType.name}
-                                        onChange={e => this.onChange('fontType', e)}>
-                                        {
-                                            property.fontType.list.map((item, index) => {
-                                                return <option key={index} value={item.name}>{item.name}</option>
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className='form-group font-color'>
-                                <label className='control-label'>{property.fontColor.title}</label>
-                                <div className='color-show' style={{ backgroundColor: property.fontColor.value }} onClick={this.handleFontColorClick}>
-                                    {this.state.displayFontColorPicker
-                                        ? <div className='popover'>
-                                            {<div className='cover' onClick={this.handleFontColorClose}></div>}
-                                            <SketchPicker color={property.fontColor.value} onChange={this.handleFontColorChange} />
-                                        </div>
-                                        : null}
-                                </div>
-                                <label className='control-label'>{property.bgColor.title}</label>
-                                <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={this.handleBgColorClick}>
-                                    {this.state.displayBgColorPicker
-                                        ? <div className='popover bg-popover'>
-                                            {<div className='cover' onClick={this.handleBgColorClose}></div>}
-                                            <SketchPicker color={property.bgColor.value} onChange={this.handleBgColorChange} />
-                                        </div>
-                                        : null}
-                                </div>
-                                <label className='control-label'>{property.bgTransparent.title}</label>
-                                <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
-                            </div>
-                            <div className='form-group'>
-                                <label className='control-label'>{property.alignment.title}</label>
-                                <div className='input-container'>
-                                    <select className='form-control' value={property.alignment.name}
-                                        onChange={e => this.onChange('alignment', e)}>
-                                        {
-                                            property.alignment.list.map((item, index) => {
-                                                return <option key={index} value={item.name}>{item.name}</option>
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.playDuration.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.playDuration.placeholder} maxLength="8"
-                                        value={property.playDuration.value}
-                                        onChange={event => this.onChange("playDuration", event)} />
-                                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label">{property.animation.title}</label>
-                                <div className="input-container">
-                                    <select className="form-control" value={property.animation.name}
-                                        onChange={event => this.onChange("animation", event)}>
-                                        {
-                                            property.animation.list.map((option, index) => {
-                                                let value = option.name;
-                                                return <option key={index} value={value}>
-                                                    {value}
-                                                </option>
-                                            })}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.playSpeed.placeholder} maxLength="8"
-                                        value={property.playSpeed.value}
-                                        onChange={event => this.onChange("playSpeed", event)} />
-                                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.lineSpacing.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.lineSpacing.placeholder} maxLength="8"
-                                        value={property.lineSpacing.value}
-                                        onChange={event => this.onChange("lineSpacing", event)} />
-                                    <span className={prompt.lineSpacing ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.wordSpacing.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.wordSpacing.placeholder} maxLength="8"
-                                        value={property.wordSpacing.value}
-                                        onChange={event => this.onChange("wordSpacing", event)} />
-                                    <span className={prompt.wordSpacing ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}>重置</button>
-                            </div>
-                        </div>
-                        {/* Edit text end */}
+                        {curType == 'playerPlan' && <PlayerPlan />}
+                        {curType == 'playerScene' && <PlayerScene />}
+                        {curType == 'playerArea' && <PlayerAreaPro />}
+                        {curType == 'cyclePlan' && <CyclePlan />}
+                        {curType == 'timingPlan' && <TimingPlan updateTimingPlanPopup={this.updateTimingPlanPopup} />}
+                        {curType == 'playerPicAsset' && <PlayerPicAsset />}
+                        {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
+                        {curType == 'playerText' && <PlayerText />}
                     </div>
                 </div>
 
