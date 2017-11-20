@@ -25,6 +25,7 @@ import TimingPlan from '../component/TimingPlan';
 import PlayerPicAsset from '../component/PlayerPicAsset';
 import PlayerVideoAsset from '../component/PlayerVideoAsset';
 import PlayerText from '../component/PlayerText';
+import DigitalClock from '../component/digitalClock';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
@@ -51,14 +52,14 @@ import 'antd/lib/checkbox/style';
 const CheckboxGroup = Checkbox.Group;
 
 
-import DigitalClock from '../component/digitalClock';
+
 
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
             curNode: null,
-            curType: 'playerArea',
+            curType: 'digitalClock',
             playerData: [
                 {
                     "id": "player1",
@@ -816,6 +817,7 @@ export class PlayerArea extends Component {
                         {curType == 'playerPicAsset' && <PlayerPicAsset />}
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
                         {curType == 'playerText' && <PlayerText />}
+                        {curType === 'digitalClock' && <DigitalClock />}
                     </div>
                 </div>
 
@@ -825,6 +827,7 @@ export class PlayerArea extends Component {
                     </div>
                     <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')}>
                         <div className="asset-container">
+
                             <div className="top">
                                 <Select className="asset-type" data={assetType}
                                     onChange={selectIndex => this.onChange("assetType", selectIndex)}></Select>

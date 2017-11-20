@@ -3,25 +3,31 @@
  *  数字时钟
  */
 
- import React, { Component } from 'react';
+import React, { Component } from 'react';
+import '../../../public/styles/digitalClock.less';
 
  export default class DigitalClock extends Component {
    constructor(props) {
      super(props);
-     this.state = {}
+     this.state = {
+       config:{
+         key: 'digitalClock',
+         title: '属性'
+       }
+     }
    }
    render() {
-     const { curType } = this.props;
+     const { config } = this.state;
      return(
-       <div className={'pro-container digitalClock' + (curType == 'digitalClock' ? '' : 'hidden')}>
-        <div className='form-group clock-name'>
-          <label className="control-label"
-                 htmlFor={property.areaName.key}>{property.areaName.title}</label>
-          <div className="input-container">
-              <input type="text" className='form-control'/>
-              <span className=''>{"请输入正确参数"}</span>
-          </div>
-        </div>
+       <div className='pro-container digitalClock' id='digitalClock'>
+        <ul>
+          <li>
+            <div>素材名称:</div>
+            <div>
+              <input type='text'/>
+              <div>123</div>
+            </div></li>
+        </ul>
        </div>
      )
    }

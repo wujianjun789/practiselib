@@ -1,0 +1,26 @@
+#digitalClock {
+  ul {
+    li:first-child{
+    border: 1px solid red;
+    display: flex;
+    justify-content:flex-start;
+    div:first-child {
+      border: 1px solid green;
+      font-size: 16px;
+      line-height: 30px;
+    }
+    div:nth-child(2) {
+      border: 1px solid yellow;
+      margin-left: 5px;
+      input {
+        line-height: 30px;
+        width: 450px;
+        outline: none;
+      }
+      input:focus {
+        background-color: white;
+      }
+    }
+    }
+  }
+}
