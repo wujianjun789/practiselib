@@ -16,6 +16,13 @@ import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
 import Page from '../../components/Page';
 
+import PlayerProject from '../component/PlayerProject';
+import PlayerPlan from '../component/PlayerPlan';
+import PlayerScene from '../component/PlayerScene';
+import PlayerAreaPro from '../component/PlayerAreaPro';
+import CyclePlan from '../component/CyclePlan';
+import TimingPlan from '../component/TimingPlan';
+
 import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
 import PlayerPlanPopup from '../component/PlayerPlanPopup';
@@ -32,16 +39,13 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup'
 import moment from 'moment'
 import Immutable from 'immutable';
 
-import { numbersValid } from '../../util/index';
+import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
 import { TimePicker, DatePicker, Checkbox } from 'antd';
 
 import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
 const CheckboxGroup = Checkbox.Group;
-
-import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
-import { weekReplace } from '../util/index';
 
 import { SketchPicker } from 'react-color';
 
@@ -50,7 +54,7 @@ export class PlayerArea extends Component {
         super(props);
         this.state = {
             curNode: null,
-            curType: 'timingPlan',
+            curType: 'playerArea',
             playerData: [
                 {
                     "id": "player1",
@@ -125,82 +129,6 @@ export class PlayerArea extends Component {
                 assetLibCollapsed: false
             },
             property: {
-                //方案
-                project: { key: "project", title: "方案名称", placeholder: "请输入名称", value: "" },
-                //计划
-                plan: { key: "plan", title: "计划名称", placeholder: "请输入名称", value: "" },
-                startDate: { key: "startDate", title: "开始日期", placeholder: "点击选择开始日期", value: () => { moment() } },
-                endDate: { key: "endDate", title: "结束日期", placeholder: "点击选择结束日期", value: "" },
-                startTime: { key: "startTime", title: "开始时间", placeholder: "点击选择开始时间", value: "" },
-                endTime: { key: "endTime", title: "结束时间", placeholder: "点击选择结束时间", value: "" },
-                week: {
-                    key: "week", title: "工作日",
-                    list: [{ label: "周一", value: 1 }, { label: "周二", value: 2 },
-                    { label: "周三", value: 3 }, { label: "周四", value: 4 },
-                    { label: "周五", value: 5 }, { label: "周六", value: 6 },
-                    { label: "周日", value: 7 }],
-                    value: [1, 2]
-                },
-                action: {
-                    key: "action", title: "动作", list: [{ id: 1, name: '动作1' }, { id: 2, name: '动作2' }], index: 0, name: "动作1"
-                },
-                position: {
-                    key: 'position', title: '坐标位置',
-                    list: [{ id: 'left', name: '左' }, { id: 'center', name: '居中' }, { id: 'right', name: '右' },
-                    { id: 'top', name: '上' }, { id: 'middle', name: '中' }, { id: 'bottom', name: '下' },],
-                    id: 'left'
-                },
-                axisX: { key: "axisX", title: "X轴", placeholder: "输入X轴", value: "" },
-                axisY: { key: "axisY", title: "Y轴", placeholder: "输入Y轴", value: "" },
-                speed: { key: "speed", title: "速度", placeholder: "fps(1-100)", value: "" },
-                repeat: { key: "repeat", title: "重复次数", placeholder: "1-255", value: "" },
-                resTime: { key: "resTime", title: "停留时间", placeholder: "ms", value: "" },
-                flicker: { key: "flicker", title: "闪烁次数", placeholder: "1-255", value: "" },
-
-                //周期插播计划
-                cycleName: { key: "cycleName", title: "计划名称", placeholder: '请输入名称', value: "" },
-                cycleInterval: { key: "cycleInterval", title: "时间间隔", placeholder: '秒', value: "" },
-                cyclePause: { key: "cyclePause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], index: 0, name: "暂停" },
-                cycleDate: { key: "cycleDate", title: "指定日期", appoint: false },
-                cycleStartDate: { key: "cycleStartDate", title: "开始日期", placeholder: "点击选择开始日期", value: moment() },
-                cycleEndDate: { key: "cycleEndDate", title: "结束日期", placeholder: "点击选择结束日期", value: moment() },
-                cycleTime: { key: "cycleDate", title: "指定时间", appoint: false },
-                cycleStartTime: { key: "cycleStartTime", title: "开始时间", placeholder: "点击选择开始时间", value: moment() },
-                cycleEndTime: { key: "cycleEndTime", title: "结束时间", placeholder: "点击选择结束时间", value: moment() },
-                cycleWeek: {
-                    key: "cycleWeek", title: "工作日",
-                    list: [{ label: "周一", value: 1 }, { label: "周二", value: 2 },
-                    { label: "周三", value: 3 }, { label: "周四", value: 4 },
-                    { label: "周五", value: 5 }, { label: "周六", value: 6 },
-                    { label: "周日", value: 7 }],
-                    value: [1, 2]
-                },
-
-                //定时插播计划
-                timingName: { key: "timingName", title: "计划名称", placeholder: '请输入名称', value: "" },
-                timingList: {
-                    key: "timingList", title: "定时插播",
-                    list: [{ id: 1, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [1, 2, 5] },
-                    { id: 2, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [2, 4, 6] },],
-                    index: 0, id: 1,
-                    sort: { list: [{ id: 1, name: "时间排序" }, { id: 2, name: "日期排序" }], index: 0, name: "时间排序" },
-                },
-                timingPlayMode: { key: "timingPlayMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], index: 0, name: "按次播放" },
-                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次', value: "", active: true },
-                timingPause: { key: "timingPause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], index: 0, name: "暂停" },
-
-                //区域
-                areaName: { key: "areaName", title: "区域名称", placeholder: '区域名称', value: "" },
-                width: { key: "width", title: "宽度", placeholder: '请输入宽度', value: "" },
-                height: { key: "height", title: "高度", placeholder: '请输入高度', value: "" },
-                axisX_a: { key: "axisX_a", title: "X轴", placeholder: '请输入X轴坐标', value: "" },
-                axisY_a: { key: "axisY_a", title: "Y轴", placeholder: '请输入Y轴坐标', value: "" },
-
-                //场景名称
-                sceneName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },
-                playMode: { key: "playMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], index: 0, name: "按次播放" },
-                playModeCount: { key: "playModeCount", title: "播放次数", placeholder: '次', value: "", active: true },
-
                 //素材
                 assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },
 
@@ -266,23 +194,9 @@ export class PlayerArea extends Component {
                 total: 2
             }),
             prompt: {
-                //方案
-                project: true,
-                //计划
-                action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
-                //场景
-                sceneName: true, playMode: true, playModeCount: true,
-                //区域
-                areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
                 //素材
                 textArea: false, lineSpacing: false, wordSpacing: false,
                 playDuration: false, playSpeed: false, playTimes: true, clipsRage: true,
-                //计划
-                plan: true, startDate: true, endDate: true, startTime: true, endTime: true, week: true,
-                //周期插播计划
-                cycleName: true, cycleInterval: true, cyclePause: true, cycleDate: true, cycleTime: true, cycleWeek: true,
-                //定时插播计划
-                timingName: true, timingPlayModeCount: true
             },
 
             showModal: false,
@@ -305,10 +219,7 @@ export class PlayerArea extends Component {
             displayBgColorPicker: false,
         }
 
-        this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, {
-            id: 'playerArea',
-            name: "区域"
-        }]
+        this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, {id: 'playerArea', name: "区域"}]
 
         this.onToggle = this.onToggle.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -332,13 +243,8 @@ export class PlayerArea extends Component {
         this.assetLibRemove = this.assetLibRemove.bind(this);
         this.playerAssetRemove = this.playerAssetRemove.bind(this);
         this.playerAssetMove = this.playerAssetMove.bind(this);
-        this.projectClick = this.projectClick.bind(this);
-        this.playerSceneClick = this.playerSceneClick.bind(this);
-        this.cyclePlanClick = this.cyclePlanClick.bind(this);
         this.playerPicAssetClick = this.playerPicAssetClick.bind(this);
         this.playerVideoAssetClick = this.playerVideoAssetClick.bind(this);
-        this.timingPlanClick = this.timingPlanClick.bind(this);
-        this.timingPlanSelect = this.timingPlanSelect.bind(this);
 
         this.updatePlayerTree = this.updatePlayerTree.bind(this);
         this.updateTreeData = this.updateTreeData.bind(this);
@@ -464,10 +370,6 @@ export class PlayerArea extends Component {
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
-    timingPlanSelect(item) {
-        this.setState({ property: Object.assign({}, this.state.property, { timingList: Object.assign({}, this.state.property.timingList, { id: item.id }) }) });
-    }
-
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;
@@ -480,7 +382,7 @@ export class PlayerArea extends Component {
         } else {
 
 
-            if (id == "action" || id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume" || id == "cyclePause" || id == "timingPause" || id == "fontType" || id == "alignment") {
+            if (id == "action" || id == "displayMode" || id == "animation" || id == "playType" || id == "scaling" || id == "volume"  ||  id == "fontType" || id == "alignment") {
                 const curIndex = value.target.selectedIndex;
                 this.setState({
                     property: Object.assign({}, this.state.property, {
@@ -490,45 +392,7 @@ export class PlayerArea extends Component {
                         })
                     })
                 })
-            } else if (id == "timingList-sort") {
-                const curIndex = value.target.selectedIndex;
-                this.setState({
-                    property: Object.assign({}, this.state.property,
-                        {
-                            timingList: Object.assign({}, this.state.property.timingList,
-                                { sort: Object.assign({}, this.state.property.timingList.sort, { index: curIndex, name: this.state.property.timingList.sort.list[curIndex].name }) })
-                        })
-                })
-            } else if (id == "playMode" || id == "timingPlayMode") {
-
-                const curIndex = value.target.selectedIndex;
-                console.log("correct", curIndex);
-                let title = "播放次数";
-                let placeholder = '次';
-                let active = true;
-                let updateId = (id == "playMode") ? "playModeCount" : "timingPlayModeCount";
-                switch (curIndex) {
-                    case 0:
-                        title = "播放次数";
-                        placeholder = "次";
-                        break;
-                    case 1:
-                        title = "播放时长";
-                        placeholder = "秒";
-                        break;
-                    case 2:
-                        active = false;
-                        break;
-                }
-                this.setState({
-                    property: Object.assign({}, this.state.property,
-
-                        { [id]: Object.assign({}, this.state.property[id], { index: curIndex, name: this.state.property[id].list[curIndex].name }) },
-                        { [updateId]: Object.assign({}, this.state.property[updateId], { title: title, placeholder: placeholder, active: active }) })
-                })
-            } else if (id == "cycleDate" || id == "cycleTime") {
-                this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { appoint: value.target.checked }) }) })
-            } else {
+            }else {
                 if (id == "clipsRage1" || id == "clipsRage2") {
                     prompt = !value;
                     this.setState({
@@ -538,7 +402,7 @@ export class PlayerArea extends Component {
                 }
                 else {
                     const val = value.target.value;
-                    if (!numbersValid(val)) {
+                    if (!Name2Valid(val)) {
                         prompt = true;
                     }
 
@@ -558,14 +422,6 @@ export class PlayerArea extends Component {
         } else {
             this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
         }
-    }
-
-    planReset() {
-        console.log("计划重置")
-    }
-
-    planApply() {
-        console.log("计划应用")
     }
 
     pageChange(current, pageSize) {
@@ -616,35 +472,6 @@ export class PlayerArea extends Component {
         }
     }
 
-    projectClick(id) {
-        console.log(id);
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                break;
-        }
-    }
-
-    playerSceneClick(id) {
-        console.log(id);
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                break;
-        }
-    }
-
-    cyclePlanClick(id) {
-        console.log(id);
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                break;
-        }
-    }
     playerTextClick(id) {
         const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
         switch (id) {
@@ -709,36 +536,7 @@ export class PlayerArea extends Component {
         }
     }
 
-    timingPlanClick(id) {
-        console.log(id);
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                break;
-            case "sort-add":
-                const data = {
-                    startTime: moment(),
-                    startDate: moment(),
-                    endDate: moment(),
-                    week: []
-                }
-                this.updateTimingPlanPopup(data);
-                break;
-            case "sort-edit":
-                const data2 = {
-                    startTime: moment(),
-                    startDate: moment(),
-                    endDate: moment(),
-                    week: [1, 0, 1, 0, 1, 1, 1]
-                }
-                this.updateTimingPlanPopup(data2);
-                break;
-            case "sort-remove":
-                break;
-        }
-
-    }
+    
 
     addClick(item) {
         console.log('addClick:', item.toJS());
@@ -1210,412 +1008,13 @@ export class PlayerArea extends Component {
                             "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{"属性" + add_title}
                     </div>
                     <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-                        <div className={"pro-container playerProject " + (curType == 'playerProject' ? '' : 'hidden')}>
-                            <div className="row">
-                                <div className="form-group project-name">
-                                    <label className="control-label"
-                                        htmlFor={property.project.key}>{property.project.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={"form-control "}
-                                            placeholder={property.project.placeholder} maxLength="16"
-                                            value={property.project.value}
-                                            onChange={event => this.onChange("project", event)} />
-                                        <span className={prompt.project ? "prompt " : "prompt hidden"}>{"请输入名称"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.projectClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.projectClick('reset') }}>重置</button>
-                            </div>
-                        </div>
-                        <div className={"pro-container playerPlan " + (curType == 'playerPlan' ? '' : 'hidden')}>
-                            <div className="row">
-                                <div className="form-group plan">
-                                    <label className="control-label"
-                                        htmlFor={property.plan.key}>{property.plan.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={"form-control "}
-                                            placeholder={property.plan.placeholder} maxLength="16"
-                                            value={property.plan.value}
-                                            onChange={event => this.onChange("plan", event)} />
-                                        <span className={prompt.plan ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group startDate">
-                                    <label className="control-label"
-                                        htmlFor={property.startDate.key}>{property.startDate.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期"
-                                            defaultValue={moment()} onChange={value => this.dateChange('startDate', value)} />
-                                        <div className={prompt.startDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
-                                    </div>
-                                </div>
-                                <div className="form-group endDate">
-                                    <label className="control-label"
-                                        htmlFor={property.endDate.key}>{property.endDate.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期"
-                                            defaultValue={moment()} onChange={value => this.dateChange('endDate', value)} />
-                                        <div className={prompt.endDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group startTime">
-                                    <label className="control-label"
-                                        htmlFor={property.startTime.key}>{property.startTime.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间"
-                                            defaultValue={moment()} onChange={value => this.dateChange('startTime', value)} />
-                                        <div className={prompt.startTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
-                                    </div>
-                                </div>
-                                <div className="form-group endTime">
-                                    <label className="control-label"
-                                        htmlFor={property.endTime.key}>{property.endTime.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间"
-                                            defaultValue={moment()} onChange={value => this.dateChange('endTime', value)} />
-                                        <div className={prompt.endTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group week">
-                                    <label className="control-label"
-                                        htmlFor={property.week.key}>{property.week.title}</label>
-                                    <div className="input-container">
-                                        <CheckboxGroup id="startTime" options={property.week.list} defaultValue={property.week.value} onChange={value => this.dateChange('week', value)} />
-                                        <span className={"fixpos " + (prompt.week ? "prompt " : "prompt hidden")}>{"请选择工作日"}</span>
-                                        {/* {
-                                         property.week.list.map(item=>{
-                                         return <label>
-                                         <input type="checkbox" className="checkbox-inline" key={item.value}
-                                         checked = {item.value}
-                                         />{item.label}</label>
-                                         })
-                                         } */}
-                                        {/* <span className={prompt.week?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span> */}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-gray pull-right" onClick={this.planReset}>重置</button>
-                                <button className="btn btn-primary pull-right" onClick={() => this.planApply}>应用</button>
-                            </div>
-                        </div>
-                        <div className={"pro-container cyclePlan " + (curType == 'cyclePlan' ? '' : 'hidden')}>
-                            <div className="row">
-                                <div className="form-group cycle-name">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleName.key}>{property.cycleName.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className="form-control" placeholder={property.cycleName.placeholder} value={property.cycleName.value} onChange={event => this.onChange("cycleName", event)} />
-                                        <span className={prompt.cycleName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group cycle-interval">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className="form-control" placeholder={property.cycleInterval.placeholder} value={property.cycleInterval.value} onChange={event => this.onChange("cycleInterval", event)} />
-                                        <span className={prompt.cycleInterval ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                                <div className="form-group cycle-pause">
-                                    <label className="control-label"
-                                        htmlFor={property.cyclePause.key}>{property.cyclePause.title}</label>
-                                    <div className="input-container">
-                                        <select className={"form-control"} value={property.cyclePause.name} onChange={event => this.onChange("cyclePause", event)}>
-                                            {
-                                                property.cyclePause.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={index} value={value}>
-                                                        {value}
-                                                    </option>
-                                                })}
-                                        </select>
-                                        {/*<span className={prompt.cyclePause?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>*/}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group cycle-startDate">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleStartDate.key}>{property.cycleStartDate.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="cycleStartDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{ width: "200px" }}
-                                            defaultValue={property.cycleStartDate.value} onChange={value => this.dateChange('cycleStartDate', value)} />
-                                        <div className={prompt.cycleStartDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
-                                    </div>
-                                </div>
-                                <div className="form-group cycle-endDate">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleEndDate.key}>{property.cycleEndDate.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="cycleEndDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{ width: "200px" }}
-                                            defaultValue={property.cycleEndDate.value} onChange={value => this.dateChange('cycleEndDate', value)} />
-                                        <div className={prompt.cycleEndDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
-                                    </div>
-                                </div>
-                                <div className="form-group cycle-date">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleDate.key}>{property.cycleDate.title}</label>
-                                    <div className="input-container">
-                                        <Checkbox checked={property.cycleDate.appoint} onChange={event => this.onChange("cycleDate", event)} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group cycle-startTime">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleStartTime.key}>{property.cycleStartTime.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="cycleStartTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" style={{ width: "200px" }}
-                                            defaultValue={property.cycleStartTime.value} onChange={value => this.dateChange('cycleStartTime', value)} />
-                                        <div className={prompt.cycleStartTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
-                                    </div>
-                                </div>
-                                <div className="form-group cycle-endTime">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleEndTime.key}>{property.cycleEndTime.title}</label>
-                                    <div className="input-container">
-                                        <DatePicker id="cycleEndTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" style={{ width: "200px" }}
-                                            defaultValue={property.cycleEndTime.value} onChange={value => this.dateChange('cycleEndTime', value)} />
-                                        <div className={prompt.cycleEndTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
-                                    </div>
-                                </div>
-                                <div className="form-group cycle-time">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleTime.key}>{property.cycleTime.title}</label>
-                                    <div className="input-container">
-                                        <Checkbox checked={property.cycleTime.appoint} onChange={event => this.onChange("cycleTime", event)} />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group cycle-week">
-                                    <label className="control-label"
-                                        htmlFor={property.cycleWeek.key}>{property.cycleWeek.title}</label>
-                                    <div className="input-container">
-                                        <CheckboxGroup id="cycleWeek" options={property.cycleWeek.list} defaultValue={property.cycleWeek.value} onChange={value => this.dateChange('cycleWeek', value)} />
-                                        <span className={"fixpos " + (prompt.cycleWeek ? "prompt " : "prompt hidden")}>{"请选择工作日"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.cyclePlanClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.cyclePlanClick('reset') }}>重置</button>
-                            </div>
-                        </div>
-                        <div className={"pro-container timingPlan " + (curType == 'timingPlan' ? '' : 'hidden')}>
-                            <div className="row">
-                                <div className="form-group timing-name">
-                                    <label className="control-label"
-                                        htmlFor={property.timingName.key}>{property.timingName.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className="form-control" placeholder={property.timingName.placeholder} value={property.timingName.value} onChange={event => this.onChange("timingName", event)} />
-                                        <span className={prompt.timingName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group timing-list">
-                                    <label className="control-label"
-                                        htmlFor={property.timingList.key}>{property.timingList.title}</label>
-                                    <div className="input-container">
-                                        <div className="edit-head">
-                                            <select value={property.timingList.sort.name} onChange={event => this.onChange("timingList-sort", event)}>
-                                                {
-                                                    property.timingList.sort.list.map((option, index) => {
-                                                        let value = option.name;
-                                                        return <option key={index} value={value}>
-                                                            {value}
-                                                        </option>
-                                                    })}
-                                            </select>
-                                            <button className="btn btn-primary timing-sort-add" onClick={() => { this.timingPlanClick('sort-add') }}>添加</button>
-                                            <button className="btn btn-gray timing-sort-edit" onClick={() => { this.timingPlanClick('sort-edit') }}>编辑</button>
-                                        </div>
-                                        <div className="edit-body">
-                                            <ul>
-                                                {
-                                                    property.timingList.list.map(item => {
-                                                        let dateStr = dateStrReplaceZh(momentDateFormat(item.startDate, "YYYY-MM-DD")) + ' 至 ' + dateStrReplaceZh(momentDateFormat(item.endDate, "YYYY-MM-DD"));
-                                                        let weekStr = weekReplace(item.week);
-                                                        return <li key={item.id} onClick={() => this.timingPlanSelect(item)}>
-                                                            <div className={"background " + (property.timingList.id == item.id ? '' : 'hidden')}></div>
-                                                            {'[' + momentDateFormat(item.startTime, 'HH:mm') + ']'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'[' + dateStr + ']'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'[' + weekStr + ']'}
-                                                            <span className="icon icon-delete pull-right" onClick={() => this.timingPlanClick('sort-remove')}></span>
-                                                        </li>
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group">
-                                    <label className="control-label"
-                                        htmlFor={property.timingPlayMode.key}>{property.timingPlayMode.title}</label>
-                                    <div className="input-container">
-                                        <select className={"form-control"} value={property.timingPlayMode.name} onChange={event => this.onChange("timingPlayMode", event)}>
-                                            {
-                                                property.timingPlayMode.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={index} value={value}>
-                                                        {value}
-                                                    </option>
-                                                })}
-                                        </select>
-                                        {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
-                                    </div>
-                                </div>
-                                <div className={"form-group " + (property.timingPlayModeCount.active ? '' : 'hidden')}>
-                                    <label className="control-label">{property.timingPlayModeCount.title}</label>
-                                    <div className={"input-container "}>
-                                        <input type="text" className={"form-control "} htmlFor={property.timingPlayModeCount.key} placeholder={property.timingPlayModeCount.placeholder} maxLength="8"
-                                            value={property.timingPlayModeCount.value} onChange={event => this.onChange("timingPlayModeCount", event)} />
-                                        <span className={prompt.timingPlayModeCount ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group timing-pause">
-                                    <label className="control-label"
-                                        htmlFor={property.timingPause.key}>{property.timingPause.title}</label>
-                                    <div className="input-container">
-                                        <select className={"form-control"} value={property.timingPause.name} onChange={event => this.onChange("timingPause", event)}>
-                                            {
-                                                property.timingPause.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={index} value={value}>
-                                                        {value}
-                                                    </option>
-                                                })}
-                                        </select>
-                                        {/*<span className={prompt.cyclePause?"prompt ":"prompt hidden"}>{"请输入正确参数"}</span>*/}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.timingPlanClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.timingPlanClick('reset') }}>重置</button>
-                            </div>
-                        </div>
-                        <div className={"pro-container playerArea " + (curType == 'playerArea' ? '' : "hidden")}>
-                            <div className="form-group  area-name">
-                                <label className="control-label"
-                                    htmlFor={property.areaName.key}>{property.areaName.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className={"form-control "}
-                                        placeholder={property.areaName.placeholder} maxLength="8"
-                                        value={property.areaName.value}
-                                        onChange={event => this.onChange("areaName", event)} />
-                                    <span className={prompt.areaName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        {curType == 'playerProject' && <PlayerProject />}
+                        {curType == 'playerPlan' && <PlayerPlan/>}
+                        {curType == 'playerScene' && <PlayerScene/>}
+                        {curType == 'playerArea' && <PlayerAreaPro/>}
+                        {curType == 'cyclePlan' && <CyclePlan/>}
+                        {curType == 'timingPlan' && <TimingPlan updateTimingPlanPopup={this.updateTimingPlanPopup}/>}
 
-                                </div>
-                            </div>
-                            <div className="form-group  width">
-                                <label className="col-sm-3 control-label"
-                                    htmlFor={property.width.key}>{property.width.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className={"form-control "}
-                                        placeholder={property.width.placeholder} maxLength="8"
-                                        value={property.width.value}
-                                        onChange={event => this.onChange("width", event)} />
-                                    <span className={prompt.width ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group  height">
-                                <label className="col-sm-3 control-label"
-                                    htmlFor={property.height.key}>{property.height.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className={"form-control "}
-                                        placeholder={property.height.placeholder} maxLength="8"
-                                        value={property.height.value}
-                                        onChange={event => this.onChange("height", event)} />
-                                    <span className={prompt.height ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group  axisX_a">
-                                <label className="col-sm-3 control-label"
-                                    htmlFor={property.axisX_a.key}>{property.axisX_a.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className={"form-control "}
-                                        placeholder={property.axisX_a.placeholder} maxLength="8"
-                                        value={property.axisX_a.value}
-                                        onChange={event => this.onChange("axisX_a", event)} />
-                                    <span className={prompt.axisX_a ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group  axisY_a">
-                                <label className="col-sm-3 control-label"
-                                    htmlFor={property.axisY_a.key}>{property.axisY_a.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className={"form-control "}
-                                        placeholder={property.axisY_a.placeholder} maxLength="8"
-                                        value={property.axisY_a.value}
-                                        onChange={event => this.onChange("axisY_a", event)} />
-                                    <span className={prompt.axisY_a ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.playerSceneClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.playerSceneClick('reset') }}>重置</button>
-                            </div>
-                        </div>
-                        <div className={"pro-container playerScene " + (curType == 'playerScene' ? '' : "hidden")}>
-                            <div className="row">
-                                <div className="form-group  scene-name">
-                                    <label className="control-label"
-                                        htmlFor={property.sceneName.key}>{property.sceneName.title}</label>
-                                    <div className="input-container">
-                                        <input type="text" className={"form-control "}
-                                            placeholder={property.sceneName.placeholder} maxLength="8"
-                                            value={property.sceneName.value}
-                                            onChange={event => this.onChange("sceneName", event)} />
-                                        <span className={prompt.sceneName ? "prompt " : "prompt hidden"}>{"请输入名称"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group">
-                                    <label className="control-label"
-                                        htmlFor={property.playMode.key}>{property.playMode.title}</label>
-                                    <div className="input-container">
-                                        <select className={"form-control"} value={property.playMode.name} onChange={event => this.onChange("playMode", event)}>
-                                            {
-                                                property.playMode.list.map((option, index) => {
-                                                    let value = option.name;
-                                                    return <option key={index} value={value}>
-                                                        {value}
-                                                    </option>
-                                                })}
-                                        </select>
-                                        {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
-                                    </div>
-                                </div>
-                                <div className={"form-group " + (property.playModeCount.active ? '' : 'hidden')}>
-                                    <label className="control-label">{property.playModeCount.title}</label>
-                                    <div className={"input-container "}>
-                                        <input type="text" className={"form-control "} htmlFor={property.playModeCount.key} placeholder={property.playModeCount.placeholder} maxLength="8"
-                                            value={property.playModeCount.value} onChange={event => this.onChange("playModeCount", event)} />
-                                        <span className={prompt.playModeCount ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.playerSceneClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.playerSceneClick('reset') }}>重置</button>
-                            </div>
-                        </div>
                         {/* Edit text here !!!!*/}
                         <div className={"pro-container playerText " + (curType == 'playerText' ? '' : "hidden")}>
                             <div className='form-group'>
