@@ -5,6 +5,7 @@ import Image from './materialImage'
 import Video from './materialVideo'
 
 import { Modal, Tabs } from 'antd';
+import {uploadMaterialFile} from '../../api/mediaPublish';
 
 import '../../../public/styles/mediaPublish-modal.css'
 import '../../../public/styles/material.less'
@@ -60,25 +61,16 @@ export default class Material extends PureComponent {
     }
     upload = (type) => {
         const data=this.state.data[type];
+    
         if(!data){
             console.log('未选择文件')
             return;
         }
-        console.log(data.type)
-        console.log(`上传${type}文件了`)
-        const url = 'http://192.168.155.207:3000/api/containers/common/upload';
-        const form=new FormData();
-        const myHeaders=new Headers();
-        form.append('file',data);
-        myHeaders.append('Content-Type',data.type)
-        fetch(url,{
-            method:'POST',
-            headers:myHeaders,
-            // mode:'cors',
-            body:form
-        }).then(res=>{
-            console.log(res)
-        })
+
+        uploadMaterialFile(type,data)
+
+        
+
 
     }
     componentDidUpdate() {
