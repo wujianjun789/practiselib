@@ -67,46 +67,64 @@ export default class PlayerText extends PureComponent {
             })
         }
     }
-    handleFontColorClick = (e) => {
+    handleColorClick = (e, type) => {
         e.stopPropagation();
-        if (this.fontTarget === undefined) {
-            this.fontTarget = e.target;
-            this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker });
-            return;
-        } else {
-            if (this.fontTarget !== e.target) {
-                return;
-            }
+        switch (type) {
+            case 'font':
+                if (this.fontTarget === undefined) {
+                    this.fontTarget = e.target;
+                    this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker });
+                    return;
+                } else {
+                    if (this.fontTarget !== e.target) {
+                        return;
+                    }
+                }
+                this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker })
+                break;
+            case 'bg':
+                if (this.bgTarget === undefined) {
+                    this.bgTarget = e.target;
+                    this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
+                    return;
+                } else {
+                    if (this.bgTarget !== e.target) {
+                        return;
+                    }
+                }
+                this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker })
+                break;
+            default:
+                break;
+
         }
-        this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker })
     };
-    handleBgColorClick = (e) => {
+    handleColorClose = (e, type) => {
         e.stopPropagation();
-        if (this.bgTarget === undefined) {
-            this.bgTarget = e.target;
-            this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
-            return;
-        } else {
-            if (this.bgTarget !== e.target) {
-                return;
-            }
+        switch (type) {
+            case 'font':
+                this.setState({ displayFontColorPicker: false });
+                break;
+            case 'bg':
+                this.setState({ displayBgColorPicker: false });
+                break;
+            default:
+                break;
         }
-        this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker })
     };
-    handleFontColorClose = (e) => {
-        e.stopPropagation();
-        this.setState({ displayFontColorPicker: false })
+    handleColorChange = (color, type) => {
+        switch (type) {
+            case 'font':
+                this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } });
+                break;
+            case 'bg':
+                this.setState({ property: { ...this.state.property, bgColor: { ...this.state.property.bgColor, value: color.hex } } });
+                break;
+            default:
+                break;
+        }
     };
-    handleBgColorClose = (e) => {
-        e.stopPropagation();
-        this.setState({ displayBgColorPicker: false })
-    };
-    handleFontColorChange = (color) => {
-        this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } })
-    };
-    handleBgColorChange = (color) => {
-        this.setState({ property: { ...this.state.property, bgColor: { ...this.state.property.bgColor, value: color.hex } } })
-    };
+
     handleBgTransparent = (e) => {
         e.stopPropagation();
         this.setState({ property: { ...this.state.property, bgTransparent: { ...this.state.property.bgTransparent, value: e.target.checked } } })
@@ -169,20 +187,20 @@ export default class PlayerText extends PureComponent {
             </div>
             <div className='form-group font-color'>
                 <label className='control-label'>{property.fontColor.title}</label>
-                <div className='color-show' style={{ backgroundColor: property.fontColor.value }} onClick={this.handleFontColorClick}>
+                <div className='color-show' style={{ backgroundColor: property.fontColor.value }} onClick={(e) => this.handleColorClick(e, 'font')}>
                     {this.state.displayFontColorPicker
                         ? <div className='popover'>
-                            {<div className='cover' onClick={this.handleFontColorClose}></div>}
-                            <SketchPicker color={property.fontColor.value} onChange={this.handleFontColorChange} />
+                            {<div className='cover' onClick={(e) => this.handleColorClose(e, 'font')}></div>}
+                            <SketchPicker color={property.fontColor.value} onChange={(color) => this.handleColorChange(color, 'font')} />
                         </div>
                         : null}
                 </div>
                 <label className='control-label'>{property.bgColor.title}</label>
-                <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={this.handleBgColorClick}>
+                <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={(e) => this.handleColorClick(e, 'bg')}>
                     {this.state.displayBgColorPicker
                         ? <div className='popover bg-popover'>
-                            {<div className='cover' onClick={this.handleBgColorClose}></div>}
-                            <SketchPicker color={property.bgColor.value} onChange={this.handleBgColorChange} />
+                            {<div className='cover' onClick={(e) => this.handleColorClose(e, 'bg')}></div>}
+                            <SketchPicker color={property.bgColor.value} onChange={(color) => this.handleColorChange(color, 'bg')} />
                         </div>
                         : null}
                 </div>
