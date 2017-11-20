@@ -51,8 +51,12 @@ import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
 const CheckboxGroup = Checkbox.Group;
 
+<<<<<<< HEAD
 
 
+=======
+import DigitalClock from '../component/digitalClock';
+>>>>>>> f74c531c4b14f4242c057bbf85439275a19e8bbb
 
 export class PlayerArea extends Component {
     constructor(props) {
@@ -317,44 +321,22 @@ export class PlayerArea extends Component {
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;
-        if (id == "playerList" || id == "sceneList" || id == "assetType" || id == "assetSort") {
+        if ( id == "assetType" || id == "assetSort") {
             this.state[id] = this.state[id].update('index', v => value);
             this.setState({ [id]: this.state[id].update('value', v => this.state[id].getIn(["list", value, "value"])) });
         }
         else if (id == "assetSearch") {
             this.setState({ assetSearch: this.state.assetSearch.update('value', v => value) });
         } else {
-
-
-
-            if (id == "clipsRage1" || id == "clipsRage2") {
-                prompt = !value;
-                this.setState({
-                    property: Object.assign({}, this.state.property, { clipsRage: Object.assign({}, this.state.property.clipsRage, { [id]: value }) }),
-                    prompt: Object.assign({}, this.state.prompt, { clipsRage: prompt })
-                })
-            }
-            else {
-                const val = value.target.value;
-                if (!Name2Valid(val)) {
-                    prompt = true;
-                }
-
-                this.setState({
-                    property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
-                    prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
-                })
+            const val = value.target.value;
+            if (!Name2Valid(val)) {
+                prompt = true;
             }
 
-        }
-    }
-
-    dateChange(id, value) {
-        if (id == "week" || id == "cycleWeek") {
-            console.log(value);
-            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
-        } else {
-            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
+            this.setState({
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
+                prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
+            })
         }
     }
 
@@ -472,7 +454,6 @@ export class PlayerArea extends Component {
         }} onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
 
         }} />)
-
     }
 
     updatePlayerPlanPopup() {
@@ -525,18 +506,6 @@ export class PlayerArea extends Component {
         const { actions } = this.props;
         let data = {}
         if (id == "add") {
-            // switch (this.state.curType) {
-            //     case "playerPlan":
-            //         this.updatePlayerPlanPopup();
-            //         break;
-            //     case "playerScene":
-            //         this.updatePlayerScenePopup();
-            //         break;
-            //     case "playerArea":
-            //         this.updatePlayerAreaPopup();
-            //         break;
-            // }
-
             if (this.state.curType == "playerProject") {
                 this.setState({ isAddClick: true });
             } else {
@@ -717,7 +686,6 @@ export class PlayerArea extends Component {
     }
 
     render() {
-
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
@@ -764,13 +732,11 @@ export class PlayerArea extends Component {
                         </div>
                     </div>
                 </div>
-
             </Content>
             <div className="mediaPublish-footer" style={assetStyle}>
                 <span className="title">播放列表</span>
                 <ul>
                     {
-
                         playerListAsset.get('list').map((item, index) => {
                             const itemId = item.get('id');
                             const curId = playerListAsset.get('id');
@@ -861,7 +827,6 @@ export class PlayerArea extends Component {
                                             } else {
                                                 [x, y] = [0, 0];
                                             }
-
 
                                             return <li key={id} className={index > 0 && index % 4 == 0 ? "margin-right" : ""}
                                                 style={{ transform: `translate(${x}px,${y}px)`, zIndex: id == lastPress ? 99 : 0 }}

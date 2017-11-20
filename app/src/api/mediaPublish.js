@@ -1,22 +1,38 @@
 /**
  * Created by a on 2017/10/19.
  */
-import {HOST_IP, getHttpHeader, httpRequest} from '../util/network';
+import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
+
+//上传文件
+export function uploadMaterialFile(type, file) {
+    const url = 'http://192.168.155.207:3000/api/containers/common/upload';
+
+    const form = new FormData();
+    form.append('file', file);
+
+
+    httpRequest(url, {
+        method: 'POST',
+        body: form
+    },res => {
+        console.log(res)
+    })
+}
 
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
     let headers = getHttpHeader();
-    let obj = {"offset":offset, "limint":limit}
-    if(projectName){
-        obj = Object.assign({"where":{type:type, name:{like:projectName}}}, obj);
+    let obj = { "offset": offset, "limint": limit }
+    if (projectName) {
+        obj = Object.assign({ "where": { type: type, name: { like: projectName } } }, obj);
     }
 
     let param = JSON.stringify(obj);
-    let url = HOST_IP+'/projects?filter='+encodeURIComponent(param);
-    httpRequest(url,{
+    let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
+    httpRequest(url, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -24,11 +40,11 @@ export function searchProjectList(type, projectName, offset, limit, cb) {
 export function getProjectList(cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/projects';
-    httpRequest(url,{
+    let url = HOST_IP + '/projects';
+    httpRequest(url, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -36,11 +52,11 @@ export function getProjectList(cb) {
 export function getProjectById(data, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/projects/'+data.id;
-    httpRequest(url,{
+    let url = HOST_IP + '/projects/' + data.id;
+    httpRequest(url, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -48,11 +64,11 @@ export function getProjectById(data, cb) {
 export function getProjectPreviewById(data, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/projects/'+data.id+'/preview';
-    httpRequest(url,{
+    let url = HOST_IP + '/projects/' + data.id + '/preview';
+    httpRequest(url, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -61,12 +77,12 @@ export function getProjectPreviewById(data, cb) {
 export function addProject(data, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/projects';
-    httpRequest(url,{
+    let url = HOST_IP + '/projects';
+    httpRequest(url, {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -74,12 +90,12 @@ export function addProject(data, cb) {
 export function updateProjectById(data, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/projects/'+data.id;
-    httpRequest(url,{
+    let url = HOST_IP + '/projects/' + data.id;
+    httpRequest(url, {
         headers: headers,
         method: 'PATCH',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -87,12 +103,12 @@ export function updateProjectById(data, cb) {
 export function delProjectById(data, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/projects/'+data.id;
-    httpRequest(url,{
+    let url = HOST_IP + '/projects/' + data.id;
+    httpRequest(url, {
         headers: headers,
         method: 'DELETE',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -101,11 +117,11 @@ export function delProjectById(data, cb) {
 export function getPlayerList(cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/programs';
+    let url = HOST_IP + '/programs';
     httpRequest(url, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -113,11 +129,11 @@ export function getPlayerList(cb) {
 export function getPlayerById(id, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP+'/programs/'+id;
+    let url = HOST_IP + '/programs/' + id;
     httpRequest(url, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -125,11 +141,11 @@ export function getPlayerById(id, cb) {
 export function addPlayer(data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/programs', {
+    httpRequest(HOST_IP + '/programs', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -137,11 +153,11 @@ export function addPlayer(data, cb) {
 export function updatePlayerById(data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/programs/'+data.id,{
+    httpRequest(HOST_IP + '/programs/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -149,11 +165,11 @@ export function updatePlayerById(data, cb) {
 export function updatePlayerOrders(data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/programs/orders',{
+    httpRequest(HOST_IP + '/programs/orders', {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -161,10 +177,10 @@ export function updatePlayerOrders(data, cb) {
 export function delPlayerById(data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP+'/programs/'+data.id,{
+    httpRequest(HOST_IP + '/programs/' + data.id, {
         headers: headers,
         method: 'DELETE'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -172,63 +188,63 @@ export function delPlayerById(data, cb) {
 //场景
 export function getSceneList(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/scenes',{
+    httpRequest(HOST_IP + '/scenes', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function getSceneById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/scenes/'+id,{
+    httpRequest(HOST_IP + '/scenes/' + id, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function addScene(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/scenes',{
+    httpRequest(HOST_IP + '/scenes', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function updateSceneById(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/scenes/'+data.id,{
+    httpRequest(HOST_IP + '/scenes/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function updateSceneOrders(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/scenes/orders/'+data.id,{
+    httpRequest(HOST_IP + '/scenes/orders/' + data.id, {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function delSceneById(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/scenes/'+data.id,{
+    httpRequest(HOST_IP + '/scenes/' + data.id, {
         headers: headers,
         method: 'DELETE'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -236,63 +252,63 @@ export function delSceneById(data, cb) {
 //区域
 export function getZoneList(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/zones', {
+    httpRequest(HOST_IP + '/zones', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function getZoneById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/zones/'+id,{
+    httpRequest(HOST_IP + '/zones/' + id, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function addZone(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/zones',{
+    httpRequest(HOST_IP + '/zones', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function updateZoneById(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/zones/'+data.id,{
+    httpRequest(HOST_IP + '/zones/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function updateZoneOrders(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/zones/orders',{
+    httpRequest(HOST_IP + '/zones/orders', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function delZoneById(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/zones/'+data.id,{
+    httpRequest(HOST_IP + '/zones/' + data.id, {
         headers: headers,
         method: 'DELETE'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -300,73 +316,73 @@ export function delZoneById(data, cb) {
 //播放项
 export function getItemList(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items',{
+    httpRequest(HOST_IP + '/items', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function getItembyId(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items/'+id,{
+    httpRequest(HOST_IP + '/items/' + id, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function getItemPreviewbyId(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items/'+id+'/preview',{
+    httpRequest(HOST_IP + '/items/' + id + '/preview', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function addItem(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items',{
+    httpRequest(HOST_IP + '/items', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function updateItemById(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items/'+data.id,{
+    httpRequest(HOST_IP + '/items/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function updateItemOrders(data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items/orders',{
+    httpRequest(HOST_IP + '/items/orders', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function delItemById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/items/'+id,{
+    httpRequest(HOST_IP + '/items/' + id, {
         headers: headers,
         method: 'DELETE'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
