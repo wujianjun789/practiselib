@@ -3,9 +3,9 @@
  *  数字时钟
  */
 
- import React, { Componenet } fom 'react';
+ import React, { Component } from 'react';
 
- export default class DigitalClock extends Componenet {
+ export default class DigitalClock extends Component {
    constructor(props) {
      super(props);
      this.state = {}

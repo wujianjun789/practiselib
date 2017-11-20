@@ -22,6 +22,8 @@ import PlayerScene from '../component/PlayerScene';
 import PlayerAreaPro from '../component/PlayerAreaPro';
 import CyclePlan from '../component/CyclePlan';
 import TimingPlan from '../component/TimingPlan';
+import PlayerPicAsset from '../component/PlayerPicAsset';
+import PlayerVideoAsset from '../component/PlayerVideoAsset';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
@@ -198,7 +200,6 @@ export class PlayerArea extends Component {
             prompt: {
                 //素材
                 textArea: false, lineSpacing: false, wordSpacing: false,
-                playDuration: false, playSpeed: false, playTimes: true, clipsRage: true,
             },
 
             showModal: false,
@@ -245,8 +246,6 @@ export class PlayerArea extends Component {
         this.assetLibRemove = this.assetLibRemove.bind(this);
         this.playerAssetRemove = this.playerAssetRemove.bind(this);
         this.playerAssetMove = this.playerAssetMove.bind(this);
-        this.playerPicAssetClick = this.playerPicAssetClick.bind(this);
-        this.playerVideoAssetClick = this.playerVideoAssetClick.bind(this);
 
         this.updatePlayerTree = this.updatePlayerTree.bind(this);
         this.updateTreeData = this.updateTreeData.bind(this);
@@ -501,44 +500,6 @@ export class PlayerArea extends Component {
                 break;
         }
     }
-    playerPicAssetClick(id) {
-        const { displayMode, animation, playDuration, playSpeed } = this.state.property;
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                this.setState({
-                    property: Object.assign({}, this.state.property, {
-                        displayMode: Object.assign({}, displayMode, { index: 0, name: "铺满" }),
-                        animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),
-                        playDuration: Object.assign({}, playDuration, { value: "" }),
-                        playSpeed: Object.assign({}, playSpeed, { value: "" }),
-                    })
-                })
-                break;
-        }
-    }
-
-    playerVideoAssetClick(id) {
-        const { playTimes, playType, clipsRage, scaling, volume } = this.state.property;
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                this.setState({
-                    property: Object.assign({}, this.state.property, {
-                        playTimes: Object.assign({}, playTimes, { value: "" }),
-                        playType: Object.assign({}, playType, { index: 0, name: "片段播放" }),
-                        clipsRage: Object.assign({}, clipsRage, { clipsRage1: moment('00:00:00', 'HH:mm:ss'), clipsRage2: moment('00:00:00', 'HH:mm:ss') }),
-                        scaling: Object.assign({}, scaling, { index: 0, name: "铺满" }),
-                        volume: Object.assign({}, volume, { index: 0, name: "100" }),
-                    })
-                })
-                break;
-        }
-    }
-
-    
 
     addClick(item) {
         console.log('addClick:', item.toJS());
@@ -1016,7 +977,8 @@ export class PlayerArea extends Component {
                         {curType == 'playerArea' && <PlayerAreaPro/>}
                         {curType == 'cyclePlan' && <CyclePlan/>}
                         {curType == 'timingPlan' && <TimingPlan updateTimingPlanPopup={this.updateTimingPlanPopup}/>}
-
+                        {curType == 'playerPicAsset' && <PlayerPicAsset/>}
+                        {curType == 'playerVideoAsset' && <PlayerVideoAsset/>}
                         {/* Edit text here !!!!*/}
                         <div className={"pro-container playerText " + (curType == 'playerText' ? '' : "hidden")}>
                             <div className='form-group'>
@@ -1140,148 +1102,6 @@ export class PlayerArea extends Component {
                             </div>
                         </div>
                         {/* Edit text end */}
-                        <div className={"pro-container playerPicAsset " + (curType == 'playerPicAsset' ? '' : "hidden")}>
-                            <div className="form-group">
-                                <label className="control-label">{property.assetName.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control" disabled="disabled"
-                                        value={property.assetName.value} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label">{property.displayMode.title}</label>
-                                <div className="input-container">
-                                    <select className="form-control" value={property.displayMode.name}
-                                        onChange={event => this.onChange("displayMode", event)}>
-                                        {
-                                            property.displayMode.list.map((option, index) => {
-                                                let value = option.name;
-                                                return <option key={index} value={value}>
-                                                    {value}
-                                                </option>
-                                            })}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label">{property.animation.title}</label>
-                                <div className="input-container">
-                                    <select className="form-control" value={property.animation.name}
-                                        onChange={event => this.onChange("animation", event)}>
-                                        {
-                                            property.animation.list.map((option, index) => {
-                                                let value = option.name;
-                                                return <option key={index} value={value}>
-                                                    {value}
-                                                </option>
-                                            })}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.playDuration.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.playDuration.placeholder} maxLength="8"
-                                        value={property.playDuration.value}
-                                        onChange={event => this.onChange("playDuration", event)} />
-                                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.playSpeed.placeholder} maxLength="8"
-                                        value={property.playSpeed.value}
-                                        onChange={event => this.onChange("playSpeed", event)} />
-                                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.playerPicAssetClick('reset') }}>重置</button>
-                            </div>
-                        </div>
-                        <div className={"pro-container playerVideoAsset " + (curType == 'playerVideoAsset' ? '' : "hidden")}>
-                            <div className="form-group">
-                                <label className="control-label">{property.assetName.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control" disabled="disabled"
-                                        value={property.assetName.value} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-sm-3 control-label">{property.playTimes.title}</label>
-                                <div className="input-container">
-                                    <input type="text" className="form-control"
-                                        placeholder={property.playTimes.placeholder} maxLength="8"
-                                        value={property.playTimes.value}
-                                        onChange={event => this.onChange("playTimes", event)} />
-                                    <span className={prompt.playTimes ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label">{property.scaling.title}</label>
-                                <div className="input-container">
-                                    <select className="form-control" value={property.scaling.name}
-                                        onChange={event => this.onChange("scaling", event)}>
-                                        {
-                                            property.scaling.list.map((option, index) => {
-                                                let value = option.name;
-                                                return <option key={index} value={value}>
-                                                    {value}
-                                                </option>
-                                            })}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="control-label">{property.playType.title}</label>
-                                <div className="input-container">
-                                    <select className="form-control" value={property.playType.name}
-                                        onChange={event => this.onChange("playType", event)}>
-                                        {
-                                            property.playType.list.map((option, index) => {
-                                                let value = option.name;
-                                                return <option key={index} value={value}>
-                                                    {value}
-                                                </option>
-                                            })}
-                                    </select>
-                                </div>
-                            </div>
-                            {
-                                property.playType.name == "片段播放" && (<div className="form-group clipsRage">
-                                    <label className="control-label">{property.clipsRage.title}</label>
-                                    <div className="input-container">
-                                        <TimePicker size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
-                                        <span className="text">至</span>
-                                        <TimePicker size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
-                                        <span className={prompt.clipsRage ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                                    </div>
-                                </div>)
-                            }
-                            <div className="form-group volume">
-                                <label className="control-label">{property.volume.title}</label>
-                                <div className="input-container">
-                                    <select className="form-control" value={property.volume.name}
-                                        onChange={event => this.onChange("volume", event)}>
-                                        {
-                                            property.volume.list.map((option, index) => {
-                                                let value = option.name;
-                                                return <option key={index} value={value}>
-                                                    {value}
-                                                </option>
-                                            })}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply') }}>应用</button>
-                                <button className="btn btn-gray pull-right" onClick={() => { this.playerVideoAssetClick('reset') }}>重置</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
