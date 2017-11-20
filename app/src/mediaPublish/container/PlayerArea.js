@@ -49,6 +49,8 @@ const CheckboxGroup = Checkbox.Group;
 
 import { SketchPicker } from 'react-color';
 
+import DigitalClock from '../component/digitalClock';
+
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
