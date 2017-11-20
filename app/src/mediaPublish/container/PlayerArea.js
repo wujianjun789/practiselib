@@ -51,12 +51,8 @@ import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
 const CheckboxGroup = Checkbox.Group;
 
-<<<<<<< HEAD
 
 
-=======
-import DigitalClock from '../component/digitalClock';
->>>>>>> f74c531c4b14f4242c057bbf85439275a19e8bbb
 
 export class PlayerArea extends Component {
     constructor(props) {

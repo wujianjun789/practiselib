@@ -5,22 +5,31 @@
     display: flex;
     justify-content:flex-start;
     div:first-child {
-      border: 1px solid green;
-      font-size: 16px;
+      // border: 1px solid green;
+      font-size: 14px;
       line-height: 30px;
+      font-weight: bold;
     }
-    div:nth-child(2) {
-      border: 1px solid yellow;
+    .input_form {
+      // border: 1px solid yellow;
       margin-left: 5px;
       input {
         line-height: 30px;
-        width: 450px;
+        width: 550px;
         outline: none;
       }
       input:focus {
         background-color: white;
       }
+      div {
+        color: red;
+      }
     }
+    }
+    li:nth-child(2), li:nth-child(2) > div{
+      // border: 1px solid red;
+      display: flex;
+      justify-content: flex-start;
     }
   }
 }
