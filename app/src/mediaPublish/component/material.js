@@ -57,21 +57,14 @@ export default class Material extends PureComponent {
     }
     addFile = (type, file) => {
         this.setState({ data: { ...this.state.data, [type]: file } })
-        console.log(this.state.data)
     }
     upload = (type) => {
         const data=this.state.data[type];
-    
         if(!data){
             console.log('未选择文件')
             return;
         }
-
         uploadMaterialFile(type,data)
-
-        
-
-
     }
     componentDidUpdate() {
         console.log(this.state.data)
