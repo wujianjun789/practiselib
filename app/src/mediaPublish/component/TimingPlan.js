@@ -3,12 +3,6 @@
  */
 import React,{ PureComponent } from 'react';
 
-import 'antd/lib/date-picker/style';
-import 'antd/lib/checkbox/style';
-import { DatePicker, Checkbox } from 'antd';
-
-const CheckboxGroup = Checkbox.Group;
-
 import moment from 'moment'
 
 import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
