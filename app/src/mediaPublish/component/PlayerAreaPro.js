@@ -12,10 +12,11 @@ export default class PlayerAreaPro extends PureComponent{
             property: {
                 //区域
                 areaName: { key: "areaName", title: "区域名称", placeholder: '区域名称', value: "" },
-                width: { key: "width", title: "宽度", placeholder: '请输入宽度', value: "" },
-                height: { key: "height", title: "高度", placeholder: '请输入高度', value: "" },
-                axisX_a: { key: "axisX_a", title: "X轴", placeholder: '请输入X轴坐标', value: "" },
-                axisY_a: { key: "axisY_a", title: "Y轴", placeholder: '请输入Y轴坐标', value: "" },
+                width: { key: "width", title: "区域宽度", placeholder: '请输入宽度', value: "" },
+                height: { key: "height", title: "区域高度", placeholder: '请输入高度', value: "" },
+                axisX_a: { key: "axisX_a", title: "X轴坐标", placeholder: '请输入X轴坐标', value: "" },
+                axisY_a: { key: "axisY_a", title: "Y轴坐标", placeholder: '请输入Y轴坐标', value: "" },
+                playEnd: { key: "play_end", title:"播放结束", list:[{id:1, name:"最后三帧"},{id:1, name:"最后一帧"}], index:0, name:"最后一帧"}
             },
             prompt: {
                 //区域
@@ -42,7 +43,12 @@ export default class PlayerAreaPro extends PureComponent{
         let prompt = false;
 
         const val = value.target.value;
-        if (id == "areaName") {
+        if(id == "playEnd"){
+            const selectIndex = value.target.selectedIndex;
+            this.setState({property: Object.assign({}, this.state.property, {[id]: Object.assign({}, this.state.property[id], {index: selectIndex, name:this.state.property[id].list[selectIndex].name})})})
+            return;
+        }
+        else if (id == "areaName") {
             if(!Name2Valid(val)){
                 prompt = true;
             }
@@ -116,6 +122,20 @@ export default class PlayerAreaPro extends PureComponent{
                            value={property.axisY_a.value}
                            onChange={event => this.onChange("axisY_a", event)} />
                     <span className={prompt.axisY_a ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                </div>
+            </div>
+            <div className="form-group pull-right play_end">
+                <label className="col-sm-3 control-label" htmlFor={property.playEnd.key}>{property.playEnd.title}</label>
+                <div className="input-container">
+                    <select className={"form-control"} value={property.playEnd.name} onChange={event => this.onChange("playEnd", event)}>
+                        {
+                            property.playEnd.list.map((option, index) => {
+                                let value = option.name;
+                                return <option key={index} value={value}>
+                                    {value}
+                                </option>
+                            })}
+                    </select>
                 </div>
             </div>
             <div className="row">
