@@ -45,6 +45,8 @@ import { weekReplace } from '../util/index';
 
 import { SketchPicker } from 'react-color';
 
+import DigitalClock from '../component/digitalClock';
+
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
