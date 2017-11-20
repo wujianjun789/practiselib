@@ -2,6 +2,7 @@
  * Created by a on 2017/10/19.
  */
 import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
+import { HeadBar } from '../components/HeadBar';
 
 //上传文件
 export function uploadMaterialFile(type, file) {
@@ -9,7 +10,7 @@ export function uploadMaterialFile(type, file) {
 
     const form = new FormData();
     form.append('file', file);
-
+    const myHeaders=new Headers();
 
     httpRequest(url, {
         method: 'POST',

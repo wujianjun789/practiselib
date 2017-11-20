@@ -3,25 +3,84 @@
  *  数字时钟
  */
 
- import React, { Component } from 'react';
+import React, { Component } from 'react';
+import Select from '../../components/Select.1.js'
+import '../../../public/styles/digitalClock.less';
 
  export default class DigitalClock extends Component {
    constructor(props) {
      super(props);
-     this.state = {}
+     this.state = {
+       config:{
+         key: 'digitalClock',
+         title: '属性'
+       }
+     }
    }
    render() {
-     const { curType } = this.props;
+     const { config } = this.state;
      return(
-       <div className={'pro-container digitalClock' + (curType == 'digitalClock' ? '' : 'hidden')}>
-        <div className='form-group clock-name'>
-          <label className="control-label"
-                 htmlFor={property.areaName.key}>{property.areaName.title}</label>
-          <div className="input-container">
-              <input type="text" className='form-control'/>
-              <span className=''>{"请输入正确参数"}</span>
+       <div className='pro-container digitalClock' id='digitalClock'>
+        <ul>
+          <li>
+            <div>素材名称:</div>
+            <div className='input_form'>
+              <input type='text' disabled/>
+              <div>123</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+            <div>
+              <div>播放时长:</div>
+              <div className='input_form'>
+                <input type='text'/>
+            </div>
           </div>
-        </div>
+            <div>背景颜色</div>
+          </li>
+          <li>
+            <div>素材名称:</div>
+            <div className='input_form'>
+              <input type='text' disabled/>
+              <div>123</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+            <div>
+              <div>播放时长:</div>
+              <div className='input_form'>
+                <input type='text'/>
+            </div>
+          </div>
+            <div>背景颜色</div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+            <div>
+              <div>播放时长:</div>
+              <div className='input_form'>
+                <input type='text'/>
+            </div>
+          </div>
+          </li>
+        </ul>
        </div>
      )
    }
