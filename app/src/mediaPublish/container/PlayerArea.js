@@ -44,11 +44,8 @@ import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
-import { TimePicker, DatePicker, Checkbox } from 'antd';
 
-import 'antd/lib/date-picker/style';
-import 'antd/lib/checkbox/style';
-const CheckboxGroup = Checkbox.Group;
+import {updateTree} from '../util/index'
 
 import DigitalClock from '../component/digitalClock';
 
