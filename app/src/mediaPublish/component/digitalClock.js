@@ -38,10 +38,47 @@ import '../../../public/styles/digitalClock.less';
               <div>播放时长:</div>
               <div className='input_form'>
                 <input type='text'/>
-                <div>123</div>
             </div>
           </div>
             <div>背景颜色</div>
+          </li>
+          <li>
+            <div>素材名称:</div>
+            <div className='input_form'>
+              <input type='text' disabled/>
+              <div>123</div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+            <div>
+              <div>播放时长:</div>
+              <div className='input_form'>
+                <input type='text'/>
+            </div>
+          </div>
+            <div>背景颜色</div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div>时区:</div>
+              <div><Select/></div>
+            </div>
+            <div>
+              <div>播放时长:</div>
+              <div className='input_form'>
+                <input type='text'/>
+            </div>
+          </div>
           </li>
         </ul>
        </div>
