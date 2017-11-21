@@ -26,6 +26,7 @@ import PlayerPicAsset from '../component/PlayerPicAsset';
 import PlayerVideoAsset from '../component/PlayerVideoAsset';
 import PlayerText from '../component/PlayerText';
 import DigitalClock from '../component/digitalClock';
+import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
@@ -144,7 +145,7 @@ export class PlayerArea extends Component {
             }),
             playerListAsset: Immutable.fromJS({
                 list: [{ id: 1, name: '素材1', assetType: "system", type: "text" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
-                { id: 4, name: '素材4', assetType: "source", type: "text" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }],
+                { id: 4, name: '素材4', assetType: "source", type: "timing" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }],
                 id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
@@ -303,6 +304,9 @@ export class PlayerArea extends Component {
                 break;
             case "video":
                 curType = "playerVideoAsset";
+                break;
+            case "timing":
+                curType = "playerTimeAsset";
                 break;
         }
         this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
@@ -777,6 +781,7 @@ export class PlayerArea extends Component {
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
                         {curType == 'playerText' && <PlayerText />}
                         {curType === 'digitalClock' && <DigitalClock />}
+                        {curType === 'playerTimeAsset' && <PlayerTimeAsset />}
                     </div>
                 </div>
 
