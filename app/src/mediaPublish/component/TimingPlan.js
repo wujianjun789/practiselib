@@ -3,50 +3,73 @@
  */
 import React,{ PureComponent } from 'react';
 
-import moment from 'moment'
+import TimingPlanPopup from '../component/TimingPlanPopup';
+import ConfirmPopup from '../../components/ConfirmPopup';
 
-import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
 import { weekReplace } from '../util/index';
 
-import { NameValid } from '../../util/index';
+import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
+import {DeepCopy} from '../../util/algorithm';
+import { NameValid, numbersValid } from '../../util/index';
+
+import moment from 'moment';
+import lodash from 'lodash';
 export default class TimingPlan extends PureComponent{
     constructor(props){
         super(props);
-
+        const {name="", timingList= [{ id: 1, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [1, 2, 5] },
+            { id: 2, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [2, 4, 6] },], timingPlayIndex=0, playModeCount=0, pauseIndex=0} = this.props;
         this.state = {
             property: {
                 //定时插播计划
-                timingName: { key: "timingName", title: "计划名称", placeholder: '请输入名称', value: "" },
+                timingName: { key: "timingName", title: "计划名称", placeholder: '请输入名称', defaultValue:name?name:"", value: name?name:"" },
                 timingList: {
                     key: "timingList", title: "定时插播",
-                    list: [{ id: 1, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [1, 2, 5] },
-                        { id: 2, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [2, 4, 6] },],
+                    list:timingList?DeepCopy(timingList):[],
                     index: 0, id: 1,
+                    defaultList:timingList?timingList:[],
                     sort: { list: [{ id: 1, name: "时间排序" }, { id: 2, name: "日期排序" }], index: 0, name: "时间排序" },
                 },
-                timingPlayMode: { key: "timingPlayMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], index: 0, name: "按次播放" },
-                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次', value: "", active: true },
-                timingPause: { key: "timingPause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], index: 0, name: "暂停" },
-
+                timingPlayMode: { key: "timingPlayMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }],
+                    defaultIndex:timingPlayIndex>-1?timingPlayIndex:0, index: timingPlayIndex>-1?timingPlayIndex:0, name: "按次播放" },
+                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次', defaultValue:playModeCount?playModeCount:0, value: playModeCount?playModeCount:0, active: true },
+                timingPause: { key: "timingPause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }],
+                    defaultIndex:pauseIndex>-1?pauseIndex:0,index: pauseIndex>-1?pauseIndex:0, name: "暂停" },
             },
             prompt: {
                 //定时插播计划
-                timingName: true, timingPlayModeCount: true
+                timingName: name?false:true, timingPlayModeCount: playModeCount?false:true
             }
         }
 
         this.onChange = this.onChange.bind(this);
-        this.dateChange = this.dateChange.bind(this);
         this.timingPlanSelect = this.timingPlanSelect.bind(this);
         this.timingPlanClick = this.timingPlanClick.bind(this);
+        this.updateTimingPlanPopup = this.updateTimingPlanPopup.bind(this);
     }
 
-    timingPlanClick(id) {
+    timingPlanClick(id, itemId) {
         console.log(id);
         switch (id) {
             case "apply":
                 break;
             case "reset":
+                for(let key in this.state.property){
+                    if(key == "timingList"){
+                        const index = 0;
+                        this.state.property[key].list = this.state.property[key].defaultList;
+                        this.state.property[key].index = index;
+                        this.state.property[key].name = this.state.property[key].list[index].id;
+                    }else if(key == "timingPlayMode" || key == "timingPause"){
+                        const curIndex = this.state.property[key].defaultIndex;
+                        this.state.property[key].index = curIndex;
+                        this.state.property[key].name = this.state.property[key].list[curIndex].name;
+                    }else{
+                        this.state.property[key].value = this.state.property[key].defaultValue;
+                    }
+                }
+
+                this.setState({property: Object.assign({}, this.state.property)});
                 break;
             case "sort-add":
                 const data = {
@@ -55,7 +78,7 @@ export default class TimingPlan extends PureComponent{
                     endDate: moment(),
                     week: []
                 }
-                this.props.updateTimingPlanPopup(data);
+                this.updateTimingPlanPopup(data);
                 break;
             case "sort-edit":
                 const data2 = {
@@ -64,25 +87,46 @@ export default class TimingPlan extends PureComponent{
                     endDate: moment(),
                     week: [1, 0, 1, 0, 1, 1, 1]
                 }
-                this.props.updateTimingPlanPopup(data2);
+                this.updateTimingPlanPopup(data2);
                 break;
             case "sort-remove":
+                const {actions} = this.props;
+                actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="是否删除选中时间段？"
+                                            cancel={() => { actions.overlayerHide() }} confirm={() => {
+                    let list = this.state.property.timingList.list;
+                    const curIndex = lodash.findIndex(list, function(item) {
+                        return item.id  == itemId
+                    })
+
+                     let activeId = this.state.property.timingList.id;
+                     let activeIndex = this.state.property.timingList.index;
+                    if(curIndex>-1 && curIndex < list.length){
+                        list.splice(curIndex, 1);
+                    }
+
+                    if(itemId == activeId){
+                        activeIndex = 0;
+                        activeId = this.state.property.timingList.list[activeIndex].id;
+                    }
+                    console.log("timing:",list, curIndex)
+                   this.setState({property:Object.assign({}, this.state.property, {timingList:Object.assign({}, this.state.property.timingList, {list:list, id:activeId, index:activeIndex})})},()=>{
+                        actions.overlayerHide();
+                   });
+                }} />)
                 break;
         }
 
+    }
+
+    updateTimingPlanPopup(data) {
+        const { actions } = this.props;
+        actions.overlayerShow(<TimingPlanPopup title="添加/修改插播计划" data={data}
+                                   onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
+        }} />)
     }
 
     timingPlanSelect(item) {
         this.setState({ property: Object.assign({}, this.state.property, { timingList: Object.assign({}, this.state.property.timingList, { id: item.id }) }) });
-    }
-
-    dateChange(id, value) {
-        if (id == "week" || id == "cycleWeek") {
-            console.log(value);
-            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
-        } else {
-            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
-        }
     }
 
     onChange(id, value) {
@@ -136,8 +180,14 @@ export default class TimingPlan extends PureComponent{
             let prompt = false;
 
             const val = value.target.value;
-            if (!NameValid(val)) {
-                prompt = true;
+            if(id == "timingName"){
+                if (!NameValid(val)) {
+                    prompt = true;
+                }
+            }else if(id == "timingPlayModeCount"){
+                if(!numbersValid(val)){
+                    prompt = true;
+                }
             }
 
             this.setState({
@@ -187,7 +237,7 @@ export default class TimingPlan extends PureComponent{
                                         return <li key={item.id} onClick={() => this.timingPlanSelect(item)}>
                                             <div className={"background " + (property.timingList.id == item.id ? '' : 'hidden')}></div>
                                             {'[' + momentDateFormat(item.startTime, 'HH:mm') + ']'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'[' + dateStr + ']'}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{'[' + weekStr + ']'}
-                                            <span className="icon icon-delete pull-right" onClick={() => this.timingPlanClick('sort-remove')}></span>
+                                            <span className="icon icon-delete pull-right" onClick={() => this.timingPlanClick('sort-remove', item.id)}></span>
                                         </li>
                                     })
                                 }

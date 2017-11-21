@@ -171,8 +171,8 @@ export default class PlayerPlan extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-gray pull-right" onClick={()=>this.planClick}>重置</button>
-                <button className="btn btn-primary pull-right" onClick={() => this.planClick}>应用</button>
+                <button className="btn btn-primary pull-right" onClick={() => this.planClick('apply')}>应用</button>
+                <button className="btn btn-gray pull-right" onClick={()=>this.planClick('reset')}>重置</button>
             </div>
         </div>
     }
