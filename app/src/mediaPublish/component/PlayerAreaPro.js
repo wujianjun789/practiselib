@@ -7,7 +7,6 @@ import { Name2Valid, numbersValid } from '../../util/index';
 export default class PlayerAreaPro extends PureComponent{
     constructor(props){
         super(props);
-
         this.state = {
             property: {
                 //区域
