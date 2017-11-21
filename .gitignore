@@ -26,3 +26,6 @@ coverage
 
 #tern-project
 .tern-project
+
+#ds-store
+.DS_Store
