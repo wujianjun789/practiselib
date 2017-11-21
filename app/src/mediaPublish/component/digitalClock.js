@@ -18,39 +18,23 @@ import '../../../public/styles/digitalClock.less';
    componentDidMount() {
      const { config } = this.state;
    }
+   renderOptions(_property) {
+     const { config } = this.state;
+     return config[_property].map((item, index) => {
+         for(let k in item){
+           return <option value={item[k]} key={index}>{k}</option>
+         }
+     })
+
+   }
    render() {
      const { config } = this.state;
-     const timeZone  = config.timeZone.map((item,index) => {
-       for(let k in item){
-         return <option value={item[k]} key={index}>{k}</option>
-       }
-     });
-     const fontFamily = config.fontFamily.map((item,index) => {
-       for(let k in item){
-         return <option value={item[k]} key={index}>{k}</option>
-       }
-     });
-     const fontSize = config.fontSize.map((item,index) => {
-       for(let k in item){
-         return <option value={item[k]} key={index}>{k}</option>
-       }
-     });
-     const location = config.location.map((item,index) => {
-       for(let k in item){
-         return <option value={item[k]} key={index}>{k}</option>
-       }
-     });
-     const timeFormat = config.timeFormat.map((item,index) => {
-       for(let k in item){
-         return <option value={item[k]} key={index}>{k}</option>
-       }
-     });
-     const dateFormat = config.dateFormat.map((item,index) => {
-       for(let k in item){
-         return <option value={item[k]} key={index}>{k}</option>
-       }
-     });
-
+     const timeZone  = this.renderOptions('timeZone');
+     const fontFamily = this.renderOptions('fontFamily');
+     const fontSize = this.renderOptions('fontSize');
+     const location = this.renderOptions('location');
+     const timeFormat = this.renderOptions('timeFormat');
+     const dateFormat = this.renderOptions('dateFormat');
      return(
        <div className='pro-container digitalClock' id='digitalClock'>
         <ul>
