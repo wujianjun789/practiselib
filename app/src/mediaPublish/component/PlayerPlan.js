@@ -15,23 +15,24 @@ import { NameValid } from '../../util/index';
 export default class PlayerPlan extends PureComponent{
     constructor(props){
         super(props);
-
+        const {name="", startDate=moment(), endDate=moment(), startTime=moment(), endTime=moment(), week=[]} = props;
         this.state = {
             //计划
             property:{
-                plan: { key: "plan", title: "计划名称", placeholder: "请输入名称", value: "" },
-                startDate: { key: "startDate", title: "开始日期", placeholder: "点击选择开始日期", value: () => { moment() } },
-                endDate: { key: "endDate", title: "结束日期", placeholder: "点击选择结束日期", value: "" },
-                startTime: { key: "startTime", title: "开始时间", placeholder: "点击选择开始时间", value: "" },
-                endTime: { key: "endTime", title: "结束时间", placeholder: "点击选择结束时间", value: "" },
+                plan: { key: "plan", title: "计划名称", placeholder: "请输入名称", defaultValue:name, value: name },
+                startDate: { key: "startDate", title: "开始日期", placeholder: "点击选择开始日期", defaultValue:startDate,value: startDate },
+                endDate: { key: "endDate", title: "结束日期", placeholder: "点击选择结束日期", defaultValue:endDate, value: endDate },
+                startTime: { key: "startTime", title: "开始时间", placeholder: "点击选择开始时间", defaultValue:startTime, value: startTime },
+                endTime: { key: "endTime", title: "结束时间", placeholder: "点击选择结束时间", defaultValue:endTime, value: endTime },
                 week: {
                     key: "week", title: "工作日",
                     list: [{ label: "周一", value: 1 }, { label: "周二", value: 2 },
                         { label: "周三", value: 3 }, { label: "周四", value: 4 },
                         { label: "周五", value: 5 }, { label: "周六", value: 6 },
                         { label: "周日", value: 7 }],
-                    value: [1, 2]
-                },
+                    defaultValue: week,
+                    value: week
+                }/*,
                 action: {
                     key: "action", title: "动作", list: [{ id: 1, name: '动作1' }, { id: 2, name: '动作2' }], index: 0, name: "动作1"
                 },
@@ -46,11 +47,12 @@ export default class PlayerPlan extends PureComponent{
                 speed: { key: "speed", title: "速度", placeholder: "fps(1-100)", value: "" },
                 repeat: { key: "repeat", title: "重复次数", placeholder: "1-255", value: "" },
                 resTime: { key: "resTime", title: "停留时间", placeholder: "ms", value: "" },
-                flicker: { key: "flicker", title: "闪烁次数", placeholder: "1-255", value: "" }
+                flicker: { key: "flicker", title: "闪烁次数", placeholder: "1-255", value: "" }*/
             },
             prompt:{
                 //计划
-                action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,
+                plan:name?false:true,week:week.length?false:true,
+                /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
             }
         }
 
@@ -65,14 +67,20 @@ export default class PlayerPlan extends PureComponent{
             case "apply":
                 break;
             case "reset":
+                for(let key in this.state.property){
+                    this.state.property[key].value = this.state.property[key].defaultValue;
+                }
+
+                this.setState({property:Object.assign({}, this.state.property)})
                 break;
         }
     }
 
     dateChange(id, value) {
-        if (id == "week" || id == "cycleWeek") {
+        if (id == "week") {
             console.log(value);
-            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
+            this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
+            prompt:Object.assign({}, this.state.prompt, {[id]:value.length?false:true})});
         } else {
             this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
         }
@@ -84,8 +92,10 @@ export default class PlayerPlan extends PureComponent{
         let prompt = false;
 
         const val = value.target.value;
-        if (!NameValid(val)) {
-            prompt = true;
+        if(id == "plan"){
+            if (!NameValid(val)) {
+                prompt = true;
+            }
         }
 
         this.setState({
@@ -116,8 +126,8 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.startDate.key}>{property.startDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期"
-                                    defaultValue={moment()} onChange={value => this.dateChange('startDate', value)} />
+                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{ width: "250px" }}
+                                    defaultValue={property.startDate.value} value={property.startDate.value} onChange={value => this.dateChange('startDate', value)} />
                         <div className={prompt.startDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
                     </div>
                 </div>
@@ -125,8 +135,8 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.endDate.key}>{property.endDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期"
-                                    defaultValue={moment()} onChange={value => this.dateChange('endDate', value)} />
+                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{ width: "250px" }}
+                                    defaultValue={property.endDate.value} value={property.endDate.value} onChange={value => this.dateChange('endDate', value)} />
                         <div className={prompt.endDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
                     </div>
                 </div>
@@ -136,8 +146,8 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.startTime.key}>{property.startTime.title}</label>
                     <div className="input-container">
-                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间"
-                                    defaultValue={moment()} onChange={value => this.dateChange('startTime', value)} />
+                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" style={{ width: "250px" }}
+                                    defaultValue={property.startTime.value} value={property.startTime.value} onChange={value => this.dateChange('startTime', value)} />
                         <div className={prompt.startTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
                     </div>
                 </div>
@@ -145,8 +155,8 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.endTime.key}>{property.endTime.title}</label>
                     <div className="input-container">
-                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间"
-                                    defaultValue={moment()} onChange={value => this.dateChange('endTime', value)} />
+                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" style={{ width: "250px" }}
+                                    defaultValue={property.endTime.value} value={property.endTime.value} onChange={value => this.dateChange('endTime', value)} />
                         <div className={prompt.endTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
                     </div>
                 </div>
@@ -156,7 +166,8 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.week.key}>{property.week.title}</label>
                     <div className="input-container">
-                        <CheckboxGroup id="startTime" options={property.week.list} defaultValue={property.week.value} onChange={value => this.dateChange('week', value)} />
+                        <CheckboxGroup id="startTime" options={property.week.list} defaultValue={property.week.value}
+                                       value={property.week.value} onChange={value => this.dateChange('week', value)} />
                         <span className={"fixpos " + (prompt.week ? "prompt " : "prompt hidden")}>{"请选择工作日"}</span>
                         {/* {
                          property.week.list.map(item=>{

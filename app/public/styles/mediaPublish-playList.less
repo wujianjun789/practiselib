@@ -586,7 +586,7 @@
         }
       }
 
-      &.playerProject,&.playerArea,&.playerText,&.playerPicAsset,&.playerVideoAsset{
+      &.playerProject,&.playerArea,&.playerText,&.playerPicAsset,&.playerVideoAsset,&.playerTimeAsset{
         padding-left: 0;
         .form-group {
           label {
@@ -603,7 +603,7 @@
         }
       }
 
-      &.playerProject,&.playerScene,&.playerText,&.playerPicAsset,&.playerVideoAsset,&.cyclePlan,&.timingPlan,&.playerPlan,&.playerArea{
+      &.playerProject,&.playerScene,&.playerText,&.playerPicAsset,&.playerVideoAsset,&.playerTimeAsset,&.cyclePlan,&.timingPlan,&.playerPlan,&.playerArea{
         .row{
           clear: both;
           button{
@@ -662,6 +662,43 @@
           }
         }
       }
+
+      &.playerTimeAsset{
+        .input-container{
+          width: 190px;
+        }
+        .datePicker{
+          width: 250px;
+          .ant-calendar-picker{
+            width: 250px!important;         
+            input{
+              height: 40px;
+              width: 250px;
+              font-size: 14px;
+            }
+          }
+        }
+        .textContent{
+          width: 580px;
+        }
+        #isRow{
+          vertical-align: middle;
+          height: 36px;
+          line-height: 36px;
+          margin: 0;
+        }
+        .color-show{
+          padding:0;
+          margin:0;
+          width:40px;
+          height:40px;
+          border-radius:2px;
+          position: relative;
+          display:inline-block;
+          vertical-align: top;
+        }
+      }
+
       &.playerScene,&.cyclePlan,&.timingPlan{
         padding-left: 0;
         .form-group{
@@ -791,26 +828,26 @@
         font-size: 14px;
         .form-group {
           label {
-            width: 80px;
+            width: 70px;
           }
         }
         .input-container {
-          margin-left: 10px;
+          //margin-left: 10px;
         }
         .plan {
           .input-container {
-            width: 550px;
+            width: 580px;
           }
         }
         .week {
-            .control-label {
-              width: 80px;
-            }
-            label {
-              width: 65px;
-            }
+            //.control-label {
+            //  width: 80px;
+            //}
+            //label {
+            //  width: 65px;
+            //}
           .input-container {
-            width: 550px;
+            width: 580px;
             .checkbox-inline {
               min-width: 106px;
               padding-right: 30px;
@@ -825,7 +862,27 @@
         }
         .startDate, .startTime, .endDate, .endTime {
           .input-container {
-            width: 200px
+            width: 250px;
+            .ant-calendar-picker{
+              width: 100%;
+              input{
+                //width: 180px;
+                height: 40px;
+                font-size: 14px;
+              }
+
+              .ant-calendar-picker-clear,.ant-calendar-picker-icon{
+                font-size: 14px;
+                width: 16px;
+                height: 16px;
+
+                margin-top: -6px;
+              }
+
+              .ant-calendar-picker-icon:after{
+                font-size: 14px;
+              }
+            }
           }
         }
         .bottom {
@@ -850,13 +907,6 @@
               margin-left: 10px;
               margin-right: 1px;
             }
-          }
-        }
-        .ant-calendar-picker {
-          // span {width:250px;}
-          input {
-            height: 40px;
-            width: 160px;
           }
         }
       }
