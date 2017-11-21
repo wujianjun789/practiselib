@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import Select from '../../components/Select.1.js'
+import PanelFooter from '../../components/PanelFooter.js'
 import '../../../public/styles/digitalClock.less';
 
  export default class DigitalClock extends Component {
@@ -23,62 +23,70 @@ import '../../../public/styles/digitalClock.less';
        <div className='pro-container digitalClock' id='digitalClock'>
         <ul>
           <li>
-            <div>素材名称:</div>
+            <div>素材名称</div>
             <div className='input_form'>
               <input type='text' disabled/>
-              <div>123</div>
             </div>
           </li>
           <li>
             <div>
-              <div>时区:</div>
-              <div><Select/></div>
+              <div>时区</div>
+              <div><select/></div>
             </div>
             <div>
-              <div>播放时长:</div>
-              <div className='input_form'>
-                <input type='text'/>
+              <div>播放时长</div>
+              <div><input type='text'/></div>
             </div>
-          </div>
-            <div>背景颜色</div>
+            <div>
+              <div>背景颜色</div>
+              <div className='color-picker'></div>
+            </div>
           </li>
           <li>
-            <div>素材名称:</div>
+            <div>文字内容</div>
             <div className='input_form'>
-              <input type='text' disabled/>
-              <div>123</div>
+              <input type='text' />
             </div>
           </li>
           <li>
             <div>
-              <div>时区:</div>
-              <div><Select/></div>
+              <div>选择字体</div>
+              <div><select/></div>
             </div>
             <div>
-              <div>播放时长:</div>
-              <div className='input_form'>
-                <input type='text'/>
+              <div>文字大小</div>
+              <div><select/></div>
             </div>
-          </div>
-            <div>背景颜色</div>
-          </li>
-          <li>
             <div>
-              <div>时区:</div>
-              <div><Select/></div>
+              <div>文字颜色</div>
+              <div className='color-picker'></div>
             </div>
           </li>
           <li>
             <div>
-              <div>时区:</div>
-              <div><Select/></div>
+              <div>区域设置</div>
+              <div><select/></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <div>日期格式</div>
+              <div><select/></div>
             </div>
             <div>
-              <div>播放时长:</div>
-              <div className='input_form'>
-                <input type='text'/>
+              <div>时间格式</div>
+              <div><input type='text'/></div>
             </div>
-          </div>
+            <div>
+              <div>单行显示</div>
+              <div><input type='checkbox' /></div>
+            </div>
+          </li>
+          <li>
+            <div>
+              <button className='btn btn-primary'>重置</button>
+              <button className='btn btn-primary'>应用</button>
+            </div>
           </li>
         </ul>
        </div>
