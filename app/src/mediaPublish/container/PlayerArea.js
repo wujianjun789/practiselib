@@ -33,7 +33,6 @@ import PlayerScenePopup from '../component/PlayerScenePopup';
 import PlayerPlanPopup from '../component/PlayerPlanPopup';
 import PlayerAreaPopup from '../component/PlayerAreaPopup';
 import Material from '../component/material';
-import TimingPlanPopup from '../component/TimingPlanPopup';
 
 import NotifyPopup from '../../common/containers/NotifyPopup';
 
@@ -48,16 +47,12 @@ import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
 
 import {updateTree} from '../util/index'
-
-
-
-
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
             curNode: null,
-            curType: 'digitalClock',
+            curType: 'timingPlan',
             playerData: [
                 {
                     "id": "player1",
@@ -202,7 +197,6 @@ export class PlayerArea extends Component {
         this.updatePlayerPlanPopup = this.updatePlayerPlanPopup.bind(this);
         this.updatePlayerScenePopup = this.updatePlayerScenePopup.bind(this);
         this.updatePlayerAreaPopup = this.updatePlayerAreaPopup.bind(this);
-        this.updateTimingPlanPopup = this.updateTimingPlanPopup.bind(this);
 
         this.setSize = this.setSize.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -425,14 +419,6 @@ export class PlayerArea extends Component {
 
         this.state.playerListAsset = this.state.playerListAsset.update("list", v => v.splice(curIndex, 1));
         this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item)) });
-    }
-
-    updateTimingPlanPopup(data) {
-        const { actions } = this.props;
-        actions.overlayerShow(<TimingPlanPopup title="添加/修改插播计划" data={data} onChange={state => {
-
-        }} onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
-        }} />)
     }
 
     updatePlayerScenePopup() {
@@ -776,7 +762,7 @@ export class PlayerArea extends Component {
                         {curType == 'playerScene' && <PlayerScene />}
                         {curType == 'playerArea' && <PlayerAreaPro />}
                         {curType == 'cyclePlan' && <CyclePlan />}
-                        {curType == 'timingPlan' && <TimingPlan updateTimingPlanPopup={this.updateTimingPlanPopup} />}
+                        {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} />}
                         {curType == 'playerPicAsset' && <PlayerPicAsset />}
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
                         {curType == 'playerText' && <PlayerText />}

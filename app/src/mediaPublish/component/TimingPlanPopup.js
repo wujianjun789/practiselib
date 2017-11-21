@@ -44,7 +44,6 @@ export default class TimingPlanPopup extends PureComponent {
         }
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.dateChange = this.dateChange.bind(this);
     }
 
@@ -83,27 +82,6 @@ export default class TimingPlanPopup extends PureComponent {
         }
     }
 
-    onChange(e) {
-        const id = e.target.id;
-
-        let prompt = false;
-        let newValue = e.target.value;
-        if (id == "sceneName") {
-            if (!Name2Valid(newValue)) {
-                prompt = true;
-            }
-            this.setState({[id]: newValue, prompt: Object.assign({}, this.state.prompt, {[id]: prompt})});
-        } else if (id == "typeList" || id == "parentList") {
-            let curIndex = e.target.selectedIndex;
-            this.state[id] = this.state[id].update("index", v=>curIndex);
-            this.setState({[id]: this.state[id].update("name", v=>this.state[id].getIn(['list', curIndex, 'name']))}, ()=> {
-                if (id == 'typeList') {
-                    this.props.onChange && this.props.onChange(this.state);
-                }
-            });
-        }
-    }
-
     render() {
         let {startTime, startDate, endDate, week, prompt} = this.state;
 
@@ -115,7 +93,6 @@ export default class TimingPlanPopup extends PureComponent {
 
         return <div className="timingPlan-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel}>
-
                 <div className="form-group row">
                     <label className="col-sm-2 control-label" htmlFor="startTime">开始时间：</label>
                     <div className="col-sm-4">
@@ -162,6 +139,5 @@ TimingPlanPopup.propTypes = {
         endDate: PropTypes.object.isRequired,
     }).isRequired,
     onConfirm: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired
 }
