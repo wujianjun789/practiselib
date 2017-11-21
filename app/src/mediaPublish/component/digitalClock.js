@@ -29,10 +29,12 @@ import '../../../public/styles/digitalClock.less';
         location: 'ShangHai',
         dateFormat: 'Lunar + YMD',
         timeFormat: 'Lunar + YMD',
-        fontColor: 'red'
+        fontColor: 'red',
+        bgColor: 'pink'
       },
       colorPicker: {
-        showModal: false
+        bgColor: false,
+        fontColor: false
       }
      }
 
@@ -66,23 +68,27 @@ import '../../../public/styles/digitalClock.less';
     const _digitalClockData = this.state.data;
     console.log('数字时钟的设置:', _digitalClockData);
    }
-   handleColorPicker(){
-     const {showModal} = this.state.colorPicker;
+   handleColorPicker(e){
+     // console.log(e.target.id);
+     const id = e.target.id;
+     // const status = this.state.colorPicker[id];
+     // console.log(status);
      this.setState({
       colorPicker: {
-        showModal: !showModal
+        [id]: !this.state.colorPicker[id]
       }
      })
    }
-  handleColorChange(color){
-    console.log(color);
+  handleColorChange(color, e){
+    // console.log(color, e.target.parentNode.parentNode.parentNode.parentNode.parentNode.id);
+    const colorPicker_id = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.id;
     this.setState({
       data:{
         ...this.state.data,
-        fontColor: color.hex
+        [colorPicker_id]: color.hex
       }
     });
-    this.handleColorPicker();
+  //this.handleColorPicker();
   }
    renderOptions(_propertyArray) {
      const { config } = this.state;
@@ -128,7 +134,9 @@ import '../../../public/styles/digitalClock.less';
             </div>
             <div>
               <div>背景颜色</div>
-              <div className='color-picker'></div>
+              <div className='color-picker' id='bgColor' onClick={this.handleColorPicker} style={{backgroundColor:data.bgColor,borderColor:data.bgColor}}>
+                  {colorPicker.bgColor ? <SketchPicker color={data.bgColor} onChange={ this.handleColorChange }/> : null}
+              </div>
             </div>
           </li>
           <li>
@@ -148,8 +156,8 @@ import '../../../public/styles/digitalClock.less';
             </div>
             <div>
               <div>文字颜色</div>
-              <div className='color-picker' onClick={this.handleColorPicker} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
-                  {colorPicker.showModal ? <SketchPicker color={data.fontColor} onChange={ this.handleColorChange }/> : null}
+              <div className='color-picker' id='fontColor' onClick={this.handleColorPicker} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
+                  {colorPicker.fontColor ? <SketchPicker color={data.fontColor} onChange={ this.handleColorChange }/> : null}
               </div>
             </div>
           </li>
