@@ -25,7 +25,8 @@ import '../../../public/styles/digitalClock.less';
          dateFormat: 'Lunar + YMD',
          timeFormat: 'Lunar + YMD',
          fontColor: 'red',
-         bgColor: 'pink'
+         bgColor: 'pink',
+         singleShow: false
        },
        data: this.props.data ? this.props.data :{
         name: '数字时钟',
@@ -38,7 +39,8 @@ import '../../../public/styles/digitalClock.less';
         dateFormat: 'Lunar + YMD',
         timeFormat: 'Lunar + YMD',
         fontColor: 'red',
-        bgColor: 'pink'
+        bgColor: 'pink',
+        singleShow: false
       },
       colorPicker: {
         bgColor: false,
@@ -54,6 +56,7 @@ import '../../../public/styles/digitalClock.less';
     this.handleData = this.handleData.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleSingleShow = this.handleSingleShow.bind(this);
    }
    componentDidMount() {
      const { config } = this.state;
@@ -114,7 +117,6 @@ import '../../../public/styles/digitalClock.less';
         }
        })
      }
-     console.log(e.target.value);
    }
    handleColorPicker(item){
      const id = item;
@@ -132,6 +134,16 @@ import '../../../public/styles/digitalClock.less';
         [colorPicker_id]: color.hex
       }
     });
+  }
+  handleSingleShow(){
+    const _data = this.state.data;
+    const _show = this.state.data.singleShow;
+    this.setState({
+      data:{
+        ..._data,
+        singleShow: !_show
+      }
+    })
   }
    renderOptions(_propertyArray) {
      const { config } = this.state;
@@ -224,7 +236,7 @@ import '../../../public/styles/digitalClock.less';
             </div>
             <div>
               <div>单行显示</div>
-              <div><input type='checkbox' /></div>
+              <div><input type='checkbox' checked={data.singleShow} onClick={this.handleSingleShow}/></div>
             </div>
           </li>
           <li>
