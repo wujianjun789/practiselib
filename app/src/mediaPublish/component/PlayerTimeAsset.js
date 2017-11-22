@@ -1,7 +1,7 @@
 import React,{ PureComponent } from 'react';
 import { numbersValid } from '../../util/index';
 import moment from 'moment';
-import { DatePicker } from 'antd';
+import { DatePicker,TimePicker } from 'antd';
 import ColorPicker from '../../components/ColorPicker'
 export default class PlayerTimeAsset extends PureComponent{
     constructor(props){
@@ -13,19 +13,19 @@ export default class PlayerTimeAsset extends PureComponent{
                 assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },                
                 timing:{ key: "timing", title: "计时方式", list: [{ id: 1, name: '倒计时' }, { id: 2, name: '正计时' }], index: 0, name: "倒计时" },
                 playDuration: { key: "playDuration", title: "播放时长", placeholder: '秒/s', value: "" },                
-                bgColor: { key: 'bgColor', title: '背景颜色', value: '#789' },
+                bgColor: { key: 'bgColor', title: '背景颜色', value: '#fff' },
                 textContent: { key: 'textContent', title: '文本内容', value: '' },
                 fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0},
                 fontSize:{ key: 'fontSize', title: '文字大小', list: [{ id: 1, name: '2pt' }, { id: 2, name: '4pt' }], index: 0},
-                fontColor: { key: 'fontColor', title: '文字颜色', value: '#456' },
+                fontColor: { key: 'fontColor', title: '文字颜色', value: '#000' },
                 area:{ key: "area", title: "区域设置", list: [{ id: 1, name: '中国' }, { id: 2, name: '美国' }], index: 0, name: "中国" },
                 format: {key: "format", title: "选择格式", list: [{ id: 1, name: '天+时+分+秒' }, { id: 2, name: '秒+分+时+天' }], index: 0, name: "天+时+分+秒" },
-                stopDate: { key: 'stopDate', title: '截止日期', placeholder: '点击选择截止日期', value: '' },
-                stopTime: { key: 'stopTime', title: '截止时间', placeholder: '点击选择截止时间', value: '' }
+                stopDate: { key: 'stopDate', title: '截止日期', placeholder: '点击选择截止日期', value: moment() },
+                stopTime: { key: 'stopTime', title: '截止时间', placeholder: '点击选择截止时间', value: moment() }
             },
             prompt:{
                 //计划
-                playTimes: true, clipsRage: true,
+                playDuration: false, textContent: false,
             },
         }
         this.onChange = this.onChange.bind(this);
@@ -33,25 +33,20 @@ export default class PlayerTimeAsset extends PureComponent{
     }
 
 
-    onChange(id, value) {
-        console.log("id:", id);
+    onChange(id, data) {
         let prompt = false;        
-        if(id == "playDuration"||id == "textContent"||id == "stopDate"||id == "stopTime"){
-            const val = value.target.value;
-            console.log(val);
-            console.log(numbersValid(val));
-            if(id == "playDuration"){
-                if (!numbersValid(val)) {
-                    prompt = true;
-                }
-            }
-            this.setState({
+        if(id == "playDuration"||id == "textContent"){
+            const val = data.target.value;
+            id == "playDuration"?this.setState({
                 property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
-                prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
+                prompt: Object.assign({}, this.state.prompt, { [id]: !numbersValid(val) })
             })
-        }else if(id == "bgColor"||id == "fontColor"){
+            :this.setState({
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
+            })
+        }else if(id == "bgColor"||id == "fontColor"||id == "stopDate"||id == "stopTime"){
             this.setState({
-                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: data }) }),
             })
         }
         else{
@@ -79,6 +74,7 @@ export default class PlayerTimeAsset extends PureComponent{
 
     render(){
         const {property, prompt} = this.state;
+        console.log(property.stopDate.value)
         return <div className="pro-container playerTimeAsset">
             <div className="form-group">
                 <label className="control-label">{property.assetName.title}</label>
@@ -123,7 +119,6 @@ export default class PlayerTimeAsset extends PureComponent{
                             placeholder={property.textContent.placeholder}
                             value={property.textContent.value}
                             onChange={event => this.onChange("textContent", event)} />
-                        <span className={prompt.textContent ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                     </div>
             </div>
             <div className="form-group">
@@ -197,16 +192,15 @@ export default class PlayerTimeAsset extends PureComponent{
             <div className="form-group">
                 <label className="control-label">{property.stopDate.title}</label>
                 <div className="input-container datePicker">
-                    <DatePicker id="stopDate" showTime format="YYYY-MM-DD" placeholder={property.stopDate.placeholder}
-                                defaultValue={moment()} onChange={value => this.onChange('stopDate',value)} />
+                    <DatePicker id="stopDate" format="YYYY-MM-DD" placeholder={property.stopDate.placeholder}
+                                defaultValue={moment()} value={property.stopDate.value} onChange={value => this.onChange('stopDate',value)} />
                     <span className={prompt.stopDate ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                 </div>
             </div>
             <div className="form-group">
                 <label className="control-label">{property.stopTime.title}</label>
-                <div className="input-container datePicker">
-                    <DatePicker id="stopTime" showTime format="HH:mm:ss" placeholder={property.stopDate.placeholder}
-                                defaultValue={moment()} onChange={value => this.onChange('startTime', value)} />
+                <div className="input-container timePicker">
+                    <TimePicker size="large" onChange={value => this.onChange("stopTime", value)} defaultValue={moment()} value={property.stopTime.value} />
                     <span className={prompt.stopTime ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                 </div>
             </div>
