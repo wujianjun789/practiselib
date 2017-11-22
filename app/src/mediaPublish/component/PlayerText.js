@@ -54,6 +54,10 @@ export default class PlayerText extends PureComponent {
                     })
                 })
             })
+        }else if(id=='bgColor'||id=='fontColor'){
+            this.setState({
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
+            })
         }
         else {
             let prompt = false;
@@ -68,7 +72,6 @@ export default class PlayerText extends PureComponent {
             })
         }
     }
-
 
     handleBgTransparent = (e) => {
         e.stopPropagation();
@@ -150,7 +153,7 @@ export default class PlayerText extends PureComponent {
             </div>
             <div className='form-group font-color'>
                 <label className='control-label'>{property.bgColor.title}</label>
-                <ColorPicker onChange={value=>this.onChange('bgColor',value)} value={property.fontColor.value}/>
+                <ColorPicker onChange={value=>this.onChange('bgColor',value)} value={property.bgColor.value}/>
                 <label className='control-label'>{property.bgTransparent.title}</label>
                 <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
             </div>
