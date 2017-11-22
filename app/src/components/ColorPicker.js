@@ -36,7 +36,7 @@ export default class ColorPicker extends Component{
         return <div className='color-show' style={{ backgroundColor: this.props.value }} onClick={(e) => this.handleColorClick(e)}>
             {this.state.displayColorPicker
                 ? <div className='popover'>
-                    {<div className='cover' onClick={(e) => this.handleColorClose(e)}></div>}
+                    <div className='cover' onClick={(e) => this.handleColorClose(e)}></div>
                     <SketchPicker color={this.props.value} onChange={(color) => this.handleColorChange(color)} />
                 </div>
                 : null}

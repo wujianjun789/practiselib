@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { numbersValid } from '../../util/index'
 
-import { SketchPicker } from 'react-color';
+import ColorPicker from '../../components/ColorPicker'
 
 export default class PlayerText extends PureComponent {
     state = {
@@ -68,63 +68,7 @@ export default class PlayerText extends PureComponent {
             })
         }
     }
-    handleColorClick = (e, type) => {
-        e.stopPropagation();
-        switch (type) {
-            case 'font':
-                if (this.fontTarget === undefined) {
-                    this.fontTarget = e.target;
-                    this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker });
-                    return;
-                } else {
-                    if (this.fontTarget !== e.target) {
-                        return;
-                    }
-                }
-                this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker })
-                break;
-            case 'bg':
-                if (this.bgTarget === undefined) {
-                    this.bgTarget = e.target;
-                    this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
-                    return;
-                } else {
-                    if (this.bgTarget !== e.target) {
-                        return;
-                    }
-                }
-                this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker })
-                break;
-            default:
-                break;
 
-        }
-    };
-    handleColorClose = (e, type) => {
-        e.stopPropagation();
-        switch (type) {
-            case 'font':
-                this.setState({ displayFontColorPicker: false });
-                break;
-            case 'bg':
-                this.setState({ displayBgColorPicker: false });
-                break;
-            default:
-                break;
-        }
-    };
-    handleColorChange = (color,type) => {
-        switch (type) {
-            case 'font':
-                this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } });
-                break;
-            case 'bg':
-                this.setState({ property: { ...this.state.property, bgColor: { ...this.state.property.bgColor, value: color.hex } } });
-                break;
-            default:
-                break;
-        }
-    };
 
     handleBgTransparent = (e) => {
         e.stopPropagation();
@@ -189,14 +133,7 @@ export default class PlayerText extends PureComponent {
             </div>
             <div className='form-group font-color'>
                 <label className='control-label'>{property.fontColor.title}</label>
-                <div className='color-show' style={{ backgroundColor: property.fontColor.value }} onClick={(e) => this.handleColorClick(e, 'font')}>
-                    {this.state.displayFontColorPicker
-                        ? <div className='popover'>
-                            {<div className='cover' onClick={(e) => this.handleColorClose(e, 'font')}></div>}
-                            <SketchPicker color={property.fontColor.value} onChange={(color,event) => this.handleColorChange(color,event, 'font')} />
-                        </div>
-                        : null}
-                </div>
+                <ColorPicker onChange={value=>this.onChange('fontColor',value)} value={property.fontColor.value}/>
             </div>
             <div className='form-group'>
                 <label className='control-label'>{property.fontSize.title}</label>
@@ -213,14 +150,7 @@ export default class PlayerText extends PureComponent {
             </div>
             <div className='form-group font-color'>
                 <label className='control-label'>{property.bgColor.title}</label>
-                <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={(e) => this.handleColorClick(e, 'bg')}>
-                    {this.state.displayBgColorPicker
-                        ? <div className='popover'>
-                            {<div className='cover' onClick={(e) => this.handleColorClose(e, 'bg')}></div>}
-                            <SketchPicker color={property.bgColor.value} onChange={(color) => this.handleColorChange(color,'bg')} />
-                        </div>
-                        : null}
-                </div>
+                <ColorPicker onChange={value=>this.onChange('bgColor',value)} value={property.fontColor.value}/>
                 <label className='control-label'>{property.bgTransparent.title}</label>
                 <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
             </div>
