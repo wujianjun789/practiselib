@@ -11,6 +11,7 @@ export default class PlayerText extends PureComponent {
             textContent: { key: 'textContent', title: '文本内容', value: '' },
             fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
             alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
+            fontSize:{key:'fontSize',title:'字体大小',list:[{id:1,name:'12pt'},{id:2,name:'13pt'},{id:3,name:'14pt'},{id:4,name:'15pt'},{id:5,name:'16pt'},],index:0},
             wordSpacing: { key: 'wordSpacing', title: '字间距', placeholder: 'pt', value: '' },
             lineSpacing: { key: 'lineSpacing', title: '行间距', placeholder: 'pt', value: '' },
             fontColor: { key: 'fontColor', title: '字体颜色', value: '#456' },
@@ -43,7 +44,7 @@ export default class PlayerText extends PureComponent {
     }
     onChange = (id, value) => {
         console.log("id:", id);
-        if (id == "fontType" || id == "alignment" || id == "animation") {
+        if (id == "fontType" || id == "alignment" || id == "animation" || id=="fontSize") {
             const curIndex = value.target.selectedIndex;
             this.setState({
                 property: Object.assign({}, this.state.property, {
@@ -112,7 +113,7 @@ export default class PlayerText extends PureComponent {
                 break;
         }
     };
-    handleColorChange = (color, type) => {
+    handleColorChange = (color,type) => {
         switch (type) {
             case 'font':
                 this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } });
@@ -130,7 +131,7 @@ export default class PlayerText extends PureComponent {
         this.setState({ property: { ...this.state.property, bgTransparent: { ...this.state.property.bgTransparent, value: e.target.checked } } })
     }
     playerTextClick = (id) => {
-        const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
+        const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, fontSize,playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
         switch (id) {
             case 'apply':
                 break;
@@ -143,6 +144,7 @@ export default class PlayerText extends PureComponent {
                         bgColor: Object.assign({}, bgColor),
                         bgTransparent: Object.assign({}, bgTransparent),
                         alignment: Object.assign({}, alignment, { index: 0, name: '左上' }),
+                        fontSize:Object.assign({},fontSize,{index:0,name:'12pt'}),
                         animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),
                         playDuration: Object.assign({}, playDuration, { value: "" }),
                         playSpeed: Object.assign({}, playSpeed, { value: "" }),
@@ -191,22 +193,38 @@ export default class PlayerText extends PureComponent {
                     {this.state.displayFontColorPicker
                         ? <div className='popover'>
                             {<div className='cover' onClick={(e) => this.handleColorClose(e, 'font')}></div>}
-                            <SketchPicker color={property.fontColor.value} onChange={(color) => this.handleColorChange(color, 'font')} />
+                            <SketchPicker color={property.fontColor.value} onChange={(color,event) => this.handleColorChange(color,event, 'font')} />
                         </div>
                         : null}
                 </div>
+            </div>
+            <div className='form-group'>
+                <label className='control-label'>{property.fontSize.title}</label>
+                <div className='input-container'>
+                    <select className='form-control' value={property.fontSize.name}
+                        onChange={e => this.onChange('fontSize', e)}>
+                        {
+                            property.fontSize.list.map((item, index) => {
+                                return <option key={index} value={item.name}>{item.name}</option>
+                            })
+                        }
+                    </select>
+                </div>
+            </div>
+            <div className='form-group font-color'>
                 <label className='control-label'>{property.bgColor.title}</label>
                 <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={(e) => this.handleColorClick(e, 'bg')}>
                     {this.state.displayBgColorPicker
-                        ? <div className='popover bg-popover'>
+                        ? <div className='popover'>
                             {<div className='cover' onClick={(e) => this.handleColorClose(e, 'bg')}></div>}
-                            <SketchPicker color={property.bgColor.value} onChange={(color) => this.handleColorChange(color, 'bg')} />
+                            <SketchPicker color={property.bgColor.value} onChange={(color) => this.handleColorChange(color,'bg')} />
                         </div>
                         : null}
                 </div>
                 <label className='control-label'>{property.bgTransparent.title}</label>
                 <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
             </div>
+            
             <div className='form-group'>
                 <label className='control-label'>{property.alignment.title}</label>
                 <div className='input-container'>

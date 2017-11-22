@@ -69,7 +69,11 @@ export default class TimingPlan extends PureComponent{
                     }
                 }
 
-                this.setState({property: Object.assign({}, this.state.property)});
+                for(let key in this.state.prompt){
+                    const defaultValue = this.state.property[key].defaultValue;
+                    this.state.prompt[key] = defaultValue?false:true;
+                }
+                this.setState({property: Object.assign({}, this.state.property), prompt: Object.assign({}, this.state.prompt)});
                 break;
             case "sort-add":
                 const data = {
