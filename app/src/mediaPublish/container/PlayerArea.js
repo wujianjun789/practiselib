@@ -52,7 +52,7 @@ export class PlayerArea extends Component {
         super(props);
         this.state = {
             curNode: null,
-            curType: 'digitalClock',
+            curType: 'cyclePlan',
             playerData: [
                 {
                     "id": "player1",
@@ -761,7 +761,7 @@ export class PlayerArea extends Component {
                         {curType == 'playerPlan' && <PlayerPlan />}
                         {curType == 'playerScene' && <PlayerScene />}
                         {curType == 'playerArea' && <PlayerAreaPro />}
-                        {curType == 'cyclePlan' && <CyclePlan />}
+                        {curType == 'cyclePlan' && <CyclePlan pause={1}/>}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} />}
                         {curType == 'playerPicAsset' && <PlayerPicAsset />}
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset />}

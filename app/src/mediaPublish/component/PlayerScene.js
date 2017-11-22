@@ -3,26 +3,47 @@
  */
 import React,{ PureComponent } from 'react';
 
-import { NameValid } from '../../util/index';
+import { NameValid,numbersValid } from '../../util/index';
 export default class PlayerScene extends PureComponent{
     constructor(props){
         super(props);
-
+        const {sceneName, playMode, playModeCount} = props;
         this.state = {
             property: {
                 //场景名称
-                sceneName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },
-                playMode: { key: "playMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], index: 0, name: "按次播放" },
-                playModeCount: { key: "playModeCount", title: "播放次数", placeholder: '次', value: "", active: true }
+                sceneName: { key: "assetName", title: "素材名称", placeholder: '素材名称', defaultValue:sceneName?sceneName:"", value: sceneName?sceneName:"" },
+                playMode: { key: "playMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], defaultIndex: 0, index: 0, name: "按次播放" },
+                playModeCount: { key: "playModeCount", title: "播放次数", placeholder: '次', defaultValue: playModeCount?playModeCount:"", value: playModeCount?playModeCount:"", active: true }
             },
             prompt: {
                 //场景
-                sceneName: true, playMode: true, playModeCount: true,
+                sceneName: sceneName?false:true, /*playMode: playMode?false:true,*/ playModeCount: playModeCount?false:true,
             }
         }
 
         this.onChange = this.onChange.bind(this);
         this.playerSceneClick = this.playerSceneClick.bind(this);
+        this.updatePlayMode = this.updatePlayMode.bind(this);
+    }
+
+    componentWillMount(){
+        const {playMode} = this.props;
+        this.updatePlayMode(playMode);
+    }
+
+    updatePlayMode(playMode){
+        const playModeList = this.state.property.playMode.list;
+        if(playMode != undefined && playMode>-1 && playMode<playModeList.length){
+            this.state.property.playMode.defaultIndex = playMode;
+            this.state.property.playMode.index = playMode;
+            this.state.property.playMode.name = playModeList[playMode].name
+            if(playMode==2){
+                this.state.property.playModeCount.active = false;
+            }else{
+                this.state.property.playModeCount.active = true;
+            }
+            this.setState({property:Object.assign({}, this.state.property)})
+        }
     }
 
     playerSceneClick(id) {
@@ -31,6 +52,19 @@ export default class PlayerScene extends PureComponent{
             case "apply":
                 break;
             case "reset":
+                for(let key in this.state.property){
+                    if(key == "playMode"){
+                        this.updatePlayMode(this.state.property[key].defaultIndex);
+                    }
+                    const defaultValue = this.state.property[key].defaultValue;
+                    this.state.property[key].value = defaultValue;
+                }
+
+                for(let key in this.state.prompt){
+                    const defaultValue2 = this.state.property[key].defaultValue;
+                    this.state.prompt[key] = defaultValue2?false:true;
+                }
+                this.setState({property: Object.assign({}, this.state.property)});
                 break;
         }
     }
@@ -67,8 +101,14 @@ export default class PlayerScene extends PureComponent{
             let prompt = false;
 
             const val = value.target.value;
-            if (!NameValid(val)) {
-                prompt = true;
+            if(id == "sceneName"){
+                if (!NameValid(val)) {
+                    prompt = true;
+                }
+            }else{
+                if(!numbersValid(val)){
+                    prompt = true;
+                }
             }
 
             this.setState({
