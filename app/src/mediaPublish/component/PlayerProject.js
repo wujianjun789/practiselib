@@ -7,15 +7,15 @@ import { NameValid } from '../../util/index';
 export default class PlayerProject extends PureComponent{
     constructor(props){
         super(props);
-
+        const {name=""} = props;
         this.state = {
             property: {
                 //方案
-                project: { key: "project", title: "方案名称", placeholder: "请输入名称", value: "" }
+                project: { key: "project", title: "方案名称", placeholder: "请输入名称", defaultValue: name, value: name }
             },
             prompt: {
                 //方案
-                project: true,
+                project: name?false:true,
             }
         }
 
@@ -24,11 +24,14 @@ export default class PlayerProject extends PureComponent{
     }
 
     projectClick(id) {
-        console.log(id);
         switch (id) {
             case "apply":
                 break;
             case "reset":
+                const defaultValue = this.state.property.project.defaultValue;
+                this.setState({property:Object.assign({}, this.state.property,
+                    {project:Object.assign({}, this.state.property.project, {value:defaultValue})}),
+                prompt:{project:defaultValue?false:true}});
                 break;
         }
     }

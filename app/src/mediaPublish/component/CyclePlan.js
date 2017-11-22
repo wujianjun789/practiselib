@@ -38,7 +38,7 @@ export default class CyclePlan extends PureComponent{
             },
             prompt: {
                 //周期插播计划
-                cycleName: name?false:true, cycleInterval: false, cyclePause: pause?false:true, cycleDate: true, cycleTime: true, cycleWeek: week && week.length?false:true
+                cycleName: name?false:true, cycleInterval: false, cyclePause: pause?false:true, /*cycleDate: true, cycleTime: true,*/ cycleWeek: week && week.length?false:true
             }
         }
 
@@ -66,7 +66,21 @@ export default class CyclePlan extends PureComponent{
 
                 }
 
-                this.setState({property: Object.assign({}, this.state.property)});
+                for(let key in this.state.prompt){
+                    if(key == "cyclePause"){
+                        this.state.prompt[key] = this.state.property[key].defaultIndex>-1?false:true;
+                    }else if(key == "cycleWeek"){
+                        const defaultValue2 = this.state.property[key].defaultValue;
+                        this.state.prompt[key] = defaultValue2.length?false:true;
+                    }else{
+                        const defaultValue = this.state.property[key].defaultValue;
+                        this.state.prompt[key] = defaultValue?false:true;
+                    }
+
+
+                }
+
+                this.setState({property: Object.assign({}, this.state.property), prompt: Object.assign({}, this.state.prompt)});
                 break;
         }
     }
