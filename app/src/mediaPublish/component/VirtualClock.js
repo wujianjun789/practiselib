@@ -40,6 +40,10 @@ import '../../../public/styles/virtualClock.less';
          split_color: '#778899',
          date_color: '#228877',
          weekend_color: '#445533',
+         scale_width: '',
+         scale_height: '',
+         split_width: '',
+         split_height: '',
          singleShow: false
        },
        data: this.props.data ? this.props.data :{
@@ -68,6 +72,10 @@ import '../../../public/styles/virtualClock.less';
         split_color: '#778899',
         date_color: '#228877',
         weekend_color: '#445533',
+        scale_width: '',
+        scale_height: '',
+        split_width: '',
+        split_height: '',
         singleShow: false
       },
       colorPicker: {
@@ -75,7 +83,12 @@ import '../../../public/styles/virtualClock.less';
         fontColor: false
       },
       options: {
-        noticeShow: false
+        playTime_noticeShow: false,
+        scale_width_noticeShow: false,
+        scale_height_noticeShow: false,
+        split_width_noticeShow: false,
+        split_height_noticeShow: false,
+        textContent_noticeShow: false
       }
      }
 
@@ -118,14 +131,32 @@ import '../../../public/styles/virtualClock.less';
       console.log('模拟时钟的设置:', _digitalClockData);
     }
    }
-   handleTextChange(e){
+   handleTextChange(e, _id, _property){
+    const _options = this.state.options;
     const _textContent = e.target.value;
-    this.setState({
-      data: {
-        ...this.state.data,
-        textContent: _textContent
-      }
-    })
+    const __id = _id ? `${_id}_` : '';
+    const _name = `${__id}${_property}`;
+    const _show =`${__id}${_property}_noticeShow`;
+    console.log(_name);
+    if(!_textContent){
+      this.setState({
+        options: {
+          ..._options,
+          [_show]: true
+        }
+      })
+    }else {
+      this.setState({
+        data: {
+          ...this.state.data,
+          [_name]: _textContent
+        },
+        options: {
+          ..._options,
+          [_show]: false
+        }
+      })
+    }
    }
    handleTimeChange(e){
      const _playTime = e.target.value;
@@ -142,7 +173,12 @@ import '../../../public/styles/virtualClock.less';
           playTime: _playTime
         },
         options:{
-          noticeShow: false
+          playTime_noticeShow: false,
+          scale_width_noticeShow: false,
+          scale_height_noticeShow: false,
+          split_width_noticeShow: false,
+          split_height_noticeShow: false,
+          textContent_noticeShow: false
         }
        })
      }
@@ -214,7 +250,7 @@ import '../../../public/styles/virtualClock.less';
               <div>播放时长</div>
               <div>
                 <input type='number' placeholder='秒' onChange={this.handleTimeChange} value={data.playTime}/>
-                <div className='notice'><span className={`${options.noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+                <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
             <div>
@@ -227,7 +263,8 @@ import '../../../public/styles/virtualClock.less';
           <li>
             <div>标题内容</div>
             <div className='input_form'>
-              <input type='text' value={data.textContent} onChange={this.handleTextChange}/>
+              <input type='text' value={data.textContent_textContent} onChange={(e) => {this.handleTextChange(e, '', 'textContent')}}/>
+              <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
             </div>
           </li>
           <li>
@@ -253,11 +290,17 @@ import '../../../public/styles/virtualClock.less';
             </div>
             <div>
               <div>时标宽度</div>
-              <input type='text'/>
+              <div>
+              <input type='text' value={data.scale_width} onChange={(e) => {this.handleTextChange(e, 'scale', 'width')}}/>
+              <div className='notice'><span className={`${options.scale_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+            </div>
             </div>
             <div>
               <div>时标高度</div>
-              <input type='text'/>
+              <div>
+              <input type='text' value={data.scale_height} onChange={(e) => {this.handleTextChange(e, 'scale', 'height')}}/>
+              <div className='notice'><span className={`${options.scale_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+            </div>
             </div>
           </li>
           <li>
@@ -283,11 +326,17 @@ import '../../../public/styles/virtualClock.less';
               </div>
               <div>
                 <div>分标宽度</div>
-                <input type='text'/>
+                <div>
+                <input type='text' value={data.split_width} onChange={(e) => {this.handleTextChange(e, 'split', 'width')}}/>
+                <div className='notice'><span className={`${options.split_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+              </div>
               </div>
               <div>
                 <div>分标高度</div>
-                <input type='text'/>
+                <div>
+                <input type='text' value={data.split_height} onChange={(e) => {this.handleTextChange(e, 'split', 'height')}}/>
+                <div className='notice'><span className={`${options.split_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+              </div>
               </div>
             </li>
             <li>
