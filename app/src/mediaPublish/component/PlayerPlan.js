@@ -71,7 +71,16 @@ export default class PlayerPlan extends PureComponent{
                     this.state.property[key].value = this.state.property[key].defaultValue;
                 }
 
-                this.setState({property:Object.assign({}, this.state.property)})
+                for (let key in this.state.prompt){
+                    if(key == "week"){
+                        const defaultValue = this.state.property[key].defaultValue;
+                        this.state.prompt[key] = defaultValue.length ? false:true;
+                    }else{
+                        const defaultValue2 = this.state.property[key].defaultValue;
+                        this.state.prompt[key] = defaultValue2 ? false:true;
+                    }
+                }
+                this.setState({property:Object.assign({}, this.state.property), prompt:Object.assign({}, this.state.prompt)});
                 break;
         }
     }

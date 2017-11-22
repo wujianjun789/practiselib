@@ -21,7 +21,7 @@ export default class CyclePlan extends PureComponent{
                 //周期插播计划
                 cycleName: { key: "cycleName", title: "计划名称", placeholder: '请输入名称', defaultValue:name?name:"", value: name?name:"" },
                 cycleInterval: { key: "cycleInterval", title: "时间间隔", placeholder: '秒', defaultValue:interval?interval:5, value: interval?interval:5 },
-                cyclePause: { key: "cyclePause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], defaultIndex: pause>-1?pause:0, index: pause?pause:0, name: "暂停" },
+                cyclePause: { key: "cyclePause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], defaultIndex: 0, index: 0, name: "暂停" },
                 cycleDate: { key: "cycleDate", title: "指定日期", defaultAppoint:dateAppoint?dateAppoint:false, appoint: dateAppoint?dateAppoint:false },
                 cycleStartDate: { key: "cycleStartDate", title: "开始日期", placeholder: "点击选择开始日期", defaultValue:startDate?startDate:moment(),value: startDate?startDate:moment() },
                 cycleEndDate: { key: "cycleEndDate", title: "结束日期", placeholder: "点击选择结束日期", defaultValue:endDate?endDate:moment(),value: endDate?endDate:moment() },
@@ -38,13 +38,30 @@ export default class CyclePlan extends PureComponent{
             },
             prompt: {
                 //周期插播计划
-                cycleName: name?false:true, cycleInterval: false, cyclePause: pause?false:true, cycleDate: true, cycleTime: true, cycleWeek: week && week.length?false:true
+                cycleName: name?false:true, cycleInterval: false, cyclePause: pause?false:true, /*cycleDate: true, cycleTime: true,*/ cycleWeek: week && week.length?false:true
             }
         }
 
         this.onChange = this.onChange.bind(this);
         this.dateChange = this.dateChange.bind(this);
         this.cyclePlanClick = this.cyclePlanClick.bind(this);
+        this.updateCyclePause = this.updateCyclePause.bind(this);
+    }
+
+    componentWillMount(){
+        const {pause} = this.props;
+        this.updateCyclePause(pause);
+    }
+
+    updateCyclePause(pause){
+        const pauseList = this.state.property.cyclePause.list;
+        if(pause != undefined && pause > -1 && pause < pauseList.length){
+            this.state.property.cyclePause.defaultIndex = pause;
+            this.state.property.cyclePause.index = pause;
+            this.state.property.cyclePause.name = pauseList[pause].name;
+
+            this.setState({property: Object.assign({}, this.state.property)});
+        }
     }
 
     cyclePlanClick(id) {
@@ -56,8 +73,9 @@ export default class CyclePlan extends PureComponent{
                 for(let key in this.state.property){
                     if(key == "cyclePause"){
                         const index = this.state.property[key].defaultIndex;
-                        this.state.property[key].index = index;
-                        this.state.property[key].name = this.state.property[key].list[index].name;
+                        // this.state.property[key].index = index;
+                        // this.state.property[key].name = this.state.property[key].list[index].name;
+                        this.updateCyclePause(index);
                     }else if(key == "cycleDate" || key == "cycleTime"){
                         this.state.property[key].appoint = this.state.property[key].defaultAppoint;
                     }else{
@@ -66,7 +84,21 @@ export default class CyclePlan extends PureComponent{
 
                 }
 
-                this.setState({property: Object.assign({}, this.state.property)});
+                for(let key in this.state.prompt){
+                    if(key == "cyclePause"){
+                        this.state.prompt[key] = this.state.property[key].defaultIndex>-1?false:true;
+                    }else if(key == "cycleWeek"){
+                        const defaultValue2 = this.state.property[key].defaultValue;
+                        this.state.prompt[key] = defaultValue2.length?false:true;
+                    }else{
+                        const defaultValue = this.state.property[key].defaultValue;
+                        this.state.prompt[key] = defaultValue?false:true;
+                    }
+
+
+                }
+
+                this.setState({property: Object.assign({}, this.state.property), prompt: Object.assign({}, this.state.prompt)});
                 break;
         }
     }

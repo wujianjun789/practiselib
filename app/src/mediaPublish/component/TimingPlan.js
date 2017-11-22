@@ -31,10 +31,10 @@ export default class TimingPlan extends PureComponent{
                     sort: { list: [{ id: 1, name: "时间排序" }, { id: 2, name: "日期排序" }], index: 0, name: "时间排序" },
                 },
                 timingPlayMode: { key: "timingPlayMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }],
-                    defaultIndex:timingPlayIndex>-1?timingPlayIndex:0, index: timingPlayIndex>-1?timingPlayIndex:0, name: "按次播放" },
-                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次', defaultValue:playModeCount?playModeCount:0, value: playModeCount?playModeCount:0, active: true },
+                    defaultIndex: 0, index: 0, name: "按次播放" },
+                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次', defaultValue:playModeCount?playModeCount:"", value: playModeCount?playModeCount:"", active: true },
                 timingPause: { key: "timingPause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }],
-                    defaultIndex:pauseIndex>-1?pauseIndex:0,index: pauseIndex>-1?pauseIndex:0, name: "暂停" },
+                    defaultIndex: 0,index: 0, name: "暂停" },
             },
             prompt: {
                 //定时插播计划
@@ -46,6 +46,41 @@ export default class TimingPlan extends PureComponent{
         this.timingPlanSelect = this.timingPlanSelect.bind(this);
         this.timingPlanClick = this.timingPlanClick.bind(this);
         this.updateTimingPlanPopup = this.updateTimingPlanPopup.bind(this);
+        this.updateTimingPlayMode = this.updateTimingPlayMode.bind(this);
+        this.updateTimingPause = this.updateTimingPause.bind(this);
+    }
+
+    componentWillMount(){
+        const {timingPlayIndex,pauseIndex} = this.props;
+        this.updateTimingPlayMode(timingPlayIndex);
+        this.updateTimingPause(pauseIndex);
+    }
+
+    updateTimingPlayMode(timingPlayIndex){
+        const timingPlayModeList = this.state.property.timingPlayMode.list;
+        if(timingPlayIndex != undefined && timingPlayIndex>-1 && timingPlayIndex < timingPlayModeList.length){
+            this.state.property.timingPlayMode.defaultIndex = timingPlayIndex;
+            this.state.property.timingPlayMode.index = timingPlayIndex;
+            this.state.property.timingPlayMode.name = timingPlayModeList[timingPlayIndex].name;
+            if(timingPlayIndex == 2){
+                this.state.property.timingPlayModeCount.active = false;
+            }else{
+                this.state.property.timingPlayModeCount.active = true;
+            }
+
+            this.setState({property: Object.assign({}, this.state.property)});
+        }
+    }
+
+    updateTimingPause(pauseIndex){
+        const timingPauseList = this.state.property.timingPause.list;
+        if(pauseIndex != undefined && pauseIndex>-1 && pauseIndex < timingPauseList.length){
+            this.state.property.timingPause.defaultIndex = pauseIndex;
+            this.state.property.timingPause.index = pauseIndex;
+            this.state.property.timingPause.name = timingPauseList[pauseIndex].name;
+
+            this.setState({property: Object.assign({}, this.state.property)});
+        }
     }
 
     timingPlanClick(id, itemId) {
@@ -60,16 +95,24 @@ export default class TimingPlan extends PureComponent{
                         this.state.property[key].list = this.state.property[key].defaultList;
                         this.state.property[key].index = index;
                         this.state.property[key].name = this.state.property[key].list[index].id;
-                    }else if(key == "timingPlayMode" || key == "timingPause"){
+                    }else if(key == "timingPlayMode"){
                         const curIndex = this.state.property[key].defaultIndex;
-                        this.state.property[key].index = curIndex;
-                        this.state.property[key].name = this.state.property[key].list[curIndex].name;
+                        // this.state.property[key].index = curIndex;
+                        // this.state.property[key].name = this.state.property[key].list[curIndex].name;
+                        this.updateTimingPlayMode(curIndex);
+                    }else if(key == "timingPause"){
+                        const curIndex2 = this.state.property[key].defaultIndex;
+                        this.updateTimingPause(curIndex2);
                     }else{
                         this.state.property[key].value = this.state.property[key].defaultValue;
                     }
                 }
 
-                this.setState({property: Object.assign({}, this.state.property)});
+                for(let key in this.state.prompt){
+                    const defaultValue = this.state.property[key].defaultValue;
+                    this.state.prompt[key] = defaultValue?false:true;
+                }
+                this.setState({property: Object.assign({}, this.state.property), prompt: Object.assign({}, this.state.prompt)});
                 break;
             case "sort-add":
                 const data = {

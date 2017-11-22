@@ -6,6 +6,7 @@ import { HeadBar } from '../components/HeadBar';
 
 //上传文件
 export function uploadMaterialFile(type, file) {
+    console.log('here:',file)
     const url = 'http://192.168.155.207:3000/api/containers/common/upload';
 
     const form = new FormData();

@@ -2,8 +2,7 @@ import React,{ PureComponent } from 'react';
 import { numbersValid } from '../../util/index';
 import moment from 'moment';
 import { DatePicker } from 'antd';
-import { SketchPicker } from 'react-color';
-
+import ColorPicker from '../../components/ColorPicker'
 export default class PlayerTimeAsset extends PureComponent{
     constructor(props){
         super(props);
@@ -28,8 +27,6 @@ export default class PlayerTimeAsset extends PureComponent{
                 //计划
                 playTimes: true, clipsRage: true,
             },
-            displayFontColorPicker: false,
-            displayBgColorPicker: false,
         }
         this.onChange = this.onChange.bind(this);
         this.playerTimeAssetClick = this.playerTimeAssetClick.bind(this);
@@ -39,15 +36,22 @@ export default class PlayerTimeAsset extends PureComponent{
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;        
-        if(id == "playDuration"||id == "textContent"||id == "bgColor"||id == "fontColor"||id == "stopDate"||id == "stopTime"){
+        if(id == "playDuration"||id == "textContent"||id == "stopDate"||id == "stopTime"){
             const val = value.target.value;
-            // if (!numbersValid(val)) {
-            //     prompt = true;
-            // }
-    
+            console.log(val);
+            console.log(numbersValid(val));
+            if(id == "playDuration"){
+                if (!numbersValid(val)) {
+                    prompt = true;
+                }
+            }
             this.setState({
                 property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
                 prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
+            })
+        }else if(id == "bgColor"||id == "fontColor"){
+            this.setState({
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
             })
         }
         else{
@@ -72,64 +76,6 @@ export default class PlayerTimeAsset extends PureComponent{
                 break;
         }
     }
-
-    handleColorClick = (e, type) => {
-        e.stopPropagation();
-        switch (type) {
-            case 'font':
-                if (this.fontTarget === undefined) {
-                    this.fontTarget = e.target;
-                    this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker });
-                    return;
-                } else {
-                    if (this.fontTarget !== e.target) {
-                        return;
-                    }
-                }
-                this.setState({ displayFontColorPicker: !this.state.displayFontColorPicker })
-                break;
-            case 'bg':
-                if (this.bgTarget === undefined) {
-                    this.bgTarget = e.target;
-                    this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
-                    return;
-                } else {
-                    if (this.bgTarget !== e.target) {
-                        return;
-                    }
-                }
-                this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker })
-                break;
-            default:
-                break;
-
-        }
-    };
-    handleColorClose = (e, type) => {
-        e.stopPropagation();
-        switch (type) {
-            case 'font':
-                this.setState({ displayFontColorPicker: false });
-                break;
-            case 'bg':
-                this.setState({ displayBgColorPicker: false });
-                break;
-            default:
-                break;
-        }
-    };
-    handleColorChange = (color, type) => {
-        switch (type) {
-            case 'font':
-                this.setState({ property: { ...this.state.property, fontColor: { ...this.state.property.fontColor, value: color.hex } } });
-                break;
-            case 'bg':
-                this.setState({ property: { ...this.state.property, bgColor: { ...this.state.property.bgColor, value: color.hex } } });
-                break;
-            default:
-                break;
-        }
-    };
 
     render(){
         const {property, prompt} = this.state;
@@ -168,14 +114,7 @@ export default class PlayerTimeAsset extends PureComponent{
             </div>
             <div className='form-group'>
                 <label className='control-label'>{property.bgColor.title}</label>
-                <div className='color-show' style={{ backgroundColor: property.bgColor.value }} onClick={(e)=>this.handleColorClick(e, 'bg')}>
-                    {this.state.displayBgColorPicker
-                        ? <div className='popover bg-popover'>
-                            {<div className='cover' onClick={(e) => this.handleColorClose(e, 'bg')}></div>}
-                            <SketchPicker color={property.bgColor.value} onChange={(color) => this.handleColorChange(color, 'bg')} />
-                        </div>
-                        : null}
-                </div>
+                <ColorPicker onChange={value=>this.onChange("bgColor",value)} value={property.bgColor.value}/>
             </div>
             <div className='form-group'>
                     <label className='control-label'>{property.textContent.title}</label>
@@ -219,14 +158,7 @@ export default class PlayerTimeAsset extends PureComponent{
             </div>
             <div className='form-group'>
                 <label className='control-label'>{property.fontColor.title}</label>
-                <div className='color-show' style={{ backgroundColor: property.fontColor.value }} onClick={(e) => this.handleColorClick(e, 'font')}>
-                    {this.state.displayFontColorPicker
-                        ? <div className='popover'>
-                            {<div className='cover' onClick={(e) => this.handleColorClose(e, 'font')}></div>}
-                            <SketchPicker color={property.fontColor.value} onChange={(color) => this.handleColorChange(color, 'font')} />
-                        </div>
-                        : null}
-                </div>
+                <ColorPicker onChange={value=>this.onChange("fontColor",value)} value={property.fontColor.value}/>
             </div>
             <div className="form-group">
                 <label className="control-label">{property.area.title}</label>
@@ -266,7 +198,7 @@ export default class PlayerTimeAsset extends PureComponent{
                 <label className="control-label">{property.stopDate.title}</label>
                 <div className="input-container datePicker">
                     <DatePicker id="stopDate" showTime format="YYYY-MM-DD" placeholder={property.stopDate.placeholder}
-                                defaultValue={moment()} onChange={e => this.onChange('stopDate', e)} />
+                                defaultValue={moment()} onChange={value => this.onChange('stopDate',value)} />
                     <span className={prompt.stopDate ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                 </div>
             </div>
@@ -274,7 +206,7 @@ export default class PlayerTimeAsset extends PureComponent{
                 <label className="control-label">{property.stopTime.title}</label>
                 <div className="input-container datePicker">
                     <DatePicker id="stopTime" showTime format="HH:mm:ss" placeholder={property.stopDate.placeholder}
-                                defaultValue={moment()} onChange={e => this.onChange('startTime', e)} />
+                                defaultValue={moment()} onChange={value => this.onChange('startTime', value)} />
                     <span className={prompt.stopTime ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                 </div>
             </div>

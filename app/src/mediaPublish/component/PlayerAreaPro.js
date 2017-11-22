@@ -7,24 +7,42 @@ import { Name2Valid, numbersValid } from '../../util/index';
 export default class PlayerAreaPro extends PureComponent{
     constructor(props){
         super(props);
+        const {name, width, height, axisX, axisY, playEndIndex} = props;
         this.state = {
             property: {
                 //区域
-                areaName: { key: "areaName", title: "区域名称", placeholder: '区域名称', value: "" },
-                width: { key: "width", title: "区域宽度", placeholder: '请输入宽度', value: "" },
-                height: { key: "height", title: "区域高度", placeholder: '请输入高度', value: "" },
-                axisX_a: { key: "axisX_a", title: "X轴坐标", placeholder: '请输入X轴坐标', value: "" },
-                axisY_a: { key: "axisY_a", title: "Y轴坐标", placeholder: '请输入Y轴坐标', value: "" },
-                playEnd: { key: "play_end", title:"播放结束", list:[{id:1, name:"最后三帧"},{id:1, name:"最后一帧"}], index:0, name:"最后一帧"}
+                areaName: { key: "areaName", title: "区域名称", placeholder: '区域名称', defaultValue: name?name:"", value: name?name:"" },
+                width: { key: "width", title: "区域宽度", placeholder: '请输入宽度', defaultValue: width?width:0, value: width?width:0 },
+                height: { key: "height", title: "区域高度", placeholder: '请输入高度', defaultValue: height?height:0, value: height?height:0 },
+                axisX_a: { key: "axisX_a", title: "X轴坐标", placeholder: '请输入X轴坐标', defaultValue: axisX?axisX:0, value: axisX?axisX:0 },
+                axisY_a: { key: "axisY_a", title: "Y轴坐标", placeholder: '请输入Y轴坐标', defaultValue: axisY?axisY:0, value: axisY?axisY:0 },
+                playEnd: { key: "play_end", title:"播放结束", list:[{id:1, name:"最后一帧"},{id:1, name:"最后三帧"}], defaultIndex:0, index:0, name:"最后一帧"}
             },
             prompt: {
                 //区域
-                areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
+                areaName: name?false:true, width: true, height: true, axisX_a: true, axisY_a: true,
             }
         }
 
         this.onChange = this.onChange.bind(this);
         this.playerAreaClick = this.playerAreaClick.bind(this);
+        this.updatePlayEnd = this.updatePlayEnd.bind(this);
+    }
+
+    componentWillMount(){
+        const {playEndIndex} = this.props;
+        this.updatePlayEnd(playEndIndex);
+    }
+
+    updatePlayEnd(playEndIndex){
+        const playEndList = this.state.property.playEnd.list;
+        if(playEndIndex != undefined && playEndIndex>-1 && playEndIndex<playEndList.length){
+            this.state.property.playEnd.defaultIndex = playEndIndex;
+            this.state.property.playEnd.index = playEndIndex;
+            this.state.property.playEnd.name = playEndList[playEndIndex].name;
+
+            this.setState({property: Object.assign({}, this.state.property)});
+        }
     }
 
     playerAreaClick(id) {
@@ -33,6 +51,20 @@ export default class PlayerAreaPro extends PureComponent{
             case "apply":
                 break;
             case "reset":
+                for (let key in this.state.property){
+                    if(key == "playEnd"){
+                        this.updatePlayEnd(this.state.property[key].defaultIndex);
+                    }else{
+                        this.state.property[key].value = this.state.property[key].defaultValue;
+                    }
+                }
+
+                for (let key in this.state.prompt){
+                    const defaultValue = this.state.property[key].defaultValue;
+                    this.state.prompt[key] = defaultValue ? false:true;
+                }
+
+                this.setState({property: Object.assign({}, this.state.property), prompt: Object.assign({}, this.state.prompt)});
                 break;
         }
     }
@@ -66,6 +98,7 @@ export default class PlayerAreaPro extends PureComponent{
 
     render(){
         const {property, prompt} = this.state;
+        console.log(property.width);
         return <div className={"pro-container playerArea "}>
             <div className="form-group  area-name">
                 <label className="control-label"
