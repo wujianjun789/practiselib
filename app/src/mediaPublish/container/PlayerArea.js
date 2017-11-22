@@ -53,11 +53,7 @@ export class PlayerArea extends Component {
         super(props);
         this.state = {
             curNode: null,
-<<<<<<< HEAD
             curType: 'virtualClock',
-=======
-            curType: 'cyclePlan',
->>>>>>> 6ecefd201157139c12e08cf3282b33492e11b054
             playerData: [
                 {
                     "id": "player1",
