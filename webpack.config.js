@@ -29,7 +29,7 @@ module.exports = {
             template: 'app/src/templates/index.html',
             inject: true,
             hash: true
-        })
+        }),
     ],
 
 
@@ -43,7 +43,8 @@ module.exports = {
                 test: /\.jsx?$/,
                 loader: "babel-loader?presets[]=es2015&presets[]=react&presets[]=react-hmre&presets[]=stage-0",
                 exclude: /node_modules/,
-                include: __dirname
+                include: __dirname,
+    
             },
             {
                 test: /\.css$/,
