@@ -26,6 +26,7 @@ import PlayerPicAsset from '../component/PlayerPicAsset';
 import PlayerVideoAsset from '../component/PlayerVideoAsset';
 import PlayerText from '../component/PlayerText';
 import DigitalClock from '../component/digitalClock';
+import VirtualClock from '../component/VirtualClock';
 import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
@@ -52,7 +53,7 @@ export class PlayerArea extends Component {
         super(props);
         this.state = {
             curNode: null,
-            curType: 'cyclePlan',
+            curType: 'virtualClock',
             playerData: [
                 {
                     "id": "player1",
@@ -767,6 +768,7 @@ export class PlayerArea extends Component {
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
                         {curType == 'playerText' && <PlayerText />}
                         {curType === 'digitalClock' && <DigitalClock />}
+                        {curType === 'virtualClock' && <VirtualClock />}
                         {curType === 'playerTimeAsset' && <PlayerTimeAsset />}
                     </div>
                 </div>
