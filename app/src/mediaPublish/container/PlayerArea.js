@@ -760,7 +760,7 @@ export class PlayerArea extends Component {
                         {curType == 'playerProject' && <PlayerProject />}
                         {curType == 'playerPlan' && <PlayerPlan />}
                         {curType == 'playerScene' && <PlayerScene />}
-                        {curType == 'playerArea' && <PlayerAreaPro />}
+                        {curType == 'playerArea' && <PlayerAreaPro playEndIndex={1}/>}
                         {curType == 'cyclePlan' && <CyclePlan pause={1}/>}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} />}
                         {curType == 'playerPicAsset' && <PlayerPicAsset />}
