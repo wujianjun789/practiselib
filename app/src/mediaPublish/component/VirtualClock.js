@@ -40,13 +40,16 @@ import '../../../public/styles/virtualClock.less';
          split_color: '#778899',
          date_color: '#228877',
          weekend_color: '#445533',
+         weekend_color: '#445533',
+         hour_color: '#0C80F3',
+         minute_color: '#29E629',
+         second_color: '#E207E2',
          scale_width: '',
          scale_height: '',
          split_width: '',
-         split_height: '',
-         singleShow: false
+         split_height: ''
        },
-       data: this.props.data ? this.props.data :{
+       data: {
         name: '模拟时钟',
         playTime: '',
         textContent: '',
@@ -72,11 +75,13 @@ import '../../../public/styles/virtualClock.less';
         split_color: '#778899',
         date_color: '#228877',
         weekend_color: '#445533',
+        hour_color: '#0C80F3',
+        minute_color: '#29E629',
+        second_color: '#E207E2',
         scale_width: '',
         scale_height: '',
         split_width: '',
-        split_height: '',
-        singleShow: false
+        split_height: ''
       },
       colorPicker: {
         bg_color: false,
@@ -95,7 +100,7 @@ import '../../../public/styles/virtualClock.less';
     this.selectChange = this.selectChange.bind(this);
     this.resetData = this.resetData.bind(this);
     this.handleData = this.handleData.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
+    // this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.selectChange = this.selectChange.bind(this);
@@ -121,15 +126,34 @@ import '../../../public/styles/virtualClock.less';
    }
    handleData(){
     const _digitalClockData = this.state.data;
-    if(!_digitalClockData.playTime){
-      this.setState({
-        options:{
-          noticeShow: true
+    let _options = {};
+    console.table(_digitalClockData);
+    for(let k in _digitalClockData) {
+      if(!_digitalClockData[k]) {
+        const warnTarget = `${k}_noticeShow`;
+        _options = {
+          ..._options,
+          [warnTarget]: true
         }
+      }
+    }
+    if(_options){
+      this.setState({
+        options: _options
       })
     } else {
-      console.log('模拟时钟的设置:', _digitalClockData);
+      console.table(_digitalClockData);
     }
+    console.table(_options);
+    // if(!_digitalClockData.playTime){
+    //   this.setState({
+    //     options:{
+    //       noticeShow: true
+    //     }
+    //   })
+    // } else {
+    //   console.log('模拟时钟的设置:', _digitalClockData);
+    // }
    }
    handleTextChange(e, _id, _property){
     const _options = this.state.options;
@@ -137,7 +161,6 @@ import '../../../public/styles/virtualClock.less';
     const __id = _id ? `${_id}_` : '';
     const _name = `${__id}${_property}`;
     const _show =`${__id}${_property}_noticeShow`;
-    console.log(_name);
     if(!_textContent){
       this.setState({
         options: {
@@ -158,31 +181,7 @@ import '../../../public/styles/virtualClock.less';
       })
     }
    }
-   handleTimeChange(e){
-     const _playTime = e.target.value;
-     if(_playTime < 0 || !e){
-      this.setState({
-        options:{
-          noticeShow: true
-        }
-      })
-     } else {
-      this.setState({
-        data: {
-          ...this.state.data,
-          playTime: _playTime
-        },
-        options:{
-          playTime_noticeShow: false,
-          scale_width_noticeShow: false,
-          scale_height_noticeShow: false,
-          split_width_noticeShow: false,
-          split_height_noticeShow: false,
-          textContent_noticeShow: false
-        }
-       })
-     }
-   }
+   // }
    handleColorPicker(item){
      const id = item;
      this.setState({
@@ -204,7 +203,7 @@ import '../../../public/styles/virtualClock.less';
     const { config, data } = this.state;
     const __id = _id ? `${_id}_` : '';
     const _name = `${__id}${_property}`;
-    return (<select name={_name} onChange={this.selectChange} value={data[_name]}>{config[_property].map((item, index) => {
+    return (<select className='form-control' name={_name} onChange={this.selectChange} value={data[_name]}>{config[_property].map((item, index) => {
       for(let k in item) {
       return <option value={item[k]} key={index}>{k}</option>
     }})}</select>)
@@ -238,7 +237,7 @@ import '../../../public/styles/virtualClock.less';
           <li>
             <div>素材名称</div>
             <div className='input_form'>
-              <input type='text' value={data.name} disabled/>
+              <input className='form-control' type='text' value={data.name} disabled/>
             </div>
           </li>
           <li>
@@ -249,7 +248,7 @@ import '../../../public/styles/virtualClock.less';
             <div>
               <div>播放时长</div>
               <div>
-                <input type='number' placeholder='秒' onChange={this.handleTimeChange} value={data.playTime}/>
+                <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.handleTextChange(e, '', 'playTime')}} value={data.playTime}/>
                 <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
@@ -263,7 +262,7 @@ import '../../../public/styles/virtualClock.less';
           <li>
             <div>标题内容</div>
             <div className='input_form'>
-              <input type='text' value={data.textContent_textContent} onChange={(e) => {this.handleTextChange(e, '', 'textContent')}}/>
+              <input className='form-control' type='number' value={data.textContent} onChange={(e) => {this.handleTextChange(e, '', 'textContent')}}/>
               <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
             </div>
           </li>
@@ -291,14 +290,14 @@ import '../../../public/styles/virtualClock.less';
             <div>
               <div>时标宽度</div>
               <div>
-              <input type='text' value={data.scale_width} onChange={(e) => {this.handleTextChange(e, 'scale', 'width')}}/>
+              <input className='form-control' type='number' value={data.scale_width} onChange={(e) => {this.handleTextChange(e, 'scale', 'width')}}/>
               <div className='notice'><span className={`${options.scale_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
             </div>
             </div>
             <div>
               <div>时标高度</div>
               <div>
-              <input type='text' value={data.scale_height} onChange={(e) => {this.handleTextChange(e, 'scale', 'height')}}/>
+              <input className='form-control' type='number' value={data.scale_height} onChange={(e) => {this.handleTextChange(e, 'scale', 'height')}}/>
               <div className='notice'><span className={`${options.scale_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
             </div>
             </div>
@@ -327,14 +326,14 @@ import '../../../public/styles/virtualClock.less';
               <div>
                 <div>分标宽度</div>
                 <div>
-                <input type='text' value={data.split_width} onChange={(e) => {this.handleTextChange(e, 'split', 'width')}}/>
+                <input className='form-control' type='number' value={data.split_width} onChange={(e) => {this.handleTextChange(e, 'split', 'width')}}/>
                 <div className='notice'><span className={`${options.split_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
               </div>
               <div>
                 <div>分标高度</div>
                 <div>
-                <input type='text' value={data.split_height} onChange={(e) => {this.handleTextChange(e, 'split', 'height')}}/>
+                <input className='form-control' type='number' value={data.split_height} onChange={(e) => {this.handleTextChange(e, 'split', 'height')}}/>
                 <div className='notice'><span className={`${options.split_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
               </div>
@@ -396,6 +395,26 @@ import '../../../public/styles/virtualClock.less';
                 {colorPicker.weekend_color ? <SketchPicker color={data.weekend_color} onChange={color => {this.handleColorChange('weekend_color', color)} }/> : null}
             </div>
           </div>
+      </li>
+      <li>
+        <div>
+          <div>时针颜色</div>
+          <div className='color-picker' onClick={() => {this.handleColorPicker('hour_color')}} style={{backgroundColor:data.hour_color,borderColor:data.hour_color}}>
+              {colorPicker.hour_color ? <SketchPicker color={data.hour_color} onChange={color => {this.handleColorChange('hour_color', color)} }/> : null}
+          </div>
+        </div>
+        <div>
+          <div>分针颜色</div>
+          <div className='color-picker' onClick={() => {this.handleColorPicker('minute_color')}} style={{backgroundColor:data.minute_color,borderColor:data.minute_color}}>
+              {colorPicker.minute_color ? <SketchPicker color={data.minute_color} onChange={color => {this.handleColorChange('minute_color', color)} }/> : null}
+          </div>
+        </div>
+        <div>
+          <div>秒针颜色</div>
+          <div className='color-picker' onClick={() => {this.handleColorPicker('second_color')}} style={{backgroundColor:data.second_color,borderColor:data.second_color}}>
+              {colorPicker.second_color ? <SketchPicker color={data.second_color} onChange={color => {this.handleColorChange('second_color', color)} }/> : null}
+          </div>
+        </div>
       </li>
           <li>
             <div>
