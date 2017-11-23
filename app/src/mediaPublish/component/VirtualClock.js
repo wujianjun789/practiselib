@@ -99,9 +99,9 @@ import '../../../public/styles/virtualClock.less';
 
     this.selectChange = this.selectChange.bind(this);
     this.resetData = this.resetData.bind(this);
-    this.handleData = this.handleData.bind(this);
+    this.submitData = this.submitData.bind(this);
     // this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.handleTextChange = this.handleTextChange.bind(this);
+    this.submitDataChange = this.submitDataChange.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.selectChange = this.selectChange.bind(this);
    }
@@ -124,12 +124,11 @@ import '../../../public/styles/virtualClock.less';
        data: initData
      })
    }
-   handleData(){
-    const _digitalClockData = this.state.data;
-    let _options = {};
-    console.table(_digitalClockData);
-    for(let k in _digitalClockData) {
-      if(!_digitalClockData[k]) {
+   submitData(){
+    const _virtualClock = this.state.data;
+    let _options = null;
+    for(let k in _virtualClock) {
+      if(!_virtualClock[k]) {
         const warnTarget = `${k}_noticeShow`;
         _options = {
           ..._options,
@@ -142,9 +141,8 @@ import '../../../public/styles/virtualClock.less';
         options: _options
       })
     } else {
-      console.table(_digitalClockData);
+      console.table(_virtualClock);
     }
-    console.table(_options);
     // if(!_digitalClockData.playTime){
     //   this.setState({
     //     options:{
@@ -155,7 +153,7 @@ import '../../../public/styles/virtualClock.less';
     //   console.log('模拟时钟的设置:', _digitalClockData);
     // }
    }
-   handleTextChange(e, _id, _property){
+   submitDataChange(e, _id, _property){
     const _options = this.state.options;
     const _textContent = e.target.value;
     const __id = _id ? `${_id}_` : '';
@@ -248,7 +246,7 @@ import '../../../public/styles/virtualClock.less';
             <div>
               <div>播放时长</div>
               <div>
-                <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.handleTextChange(e, '', 'playTime')}} value={data.playTime}/>
+                <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.submitDataChange(e, '', 'playTime')}} value={data.playTime}/>
                 <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
@@ -262,8 +260,8 @@ import '../../../public/styles/virtualClock.less';
           <li>
             <div>标题内容</div>
             <div className='input_form'>
-              <input className='form-control' type='number' value={data.textContent} onChange={(e) => {this.handleTextChange(e, '', 'textContent')}}/>
-              <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+              <input className='form-control' type='number' value={data.textContent} onChange={(e) => {this.submitDataChange(e, '', 'textContent')}}/>
+              <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入标题内容</span></div>
             </div>
           </li>
           <li>
@@ -290,15 +288,15 @@ import '../../../public/styles/virtualClock.less';
             <div>
               <div>时标宽度</div>
               <div>
-              <input className='form-control' type='number' value={data.scale_width} onChange={(e) => {this.handleTextChange(e, 'scale', 'width')}}/>
-              <div className='notice'><span className={`${options.scale_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+              <input className='form-control' type='number' value={data.scale_width} onChange={(e) => {this.submitDataChange(e, 'scale', 'width')}}/>
+              <div className='notice'><span className={`${options.scale_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入时标宽度</span></div>
             </div>
             </div>
             <div>
               <div>时标高度</div>
               <div>
-              <input className='form-control' type='number' value={data.scale_height} onChange={(e) => {this.handleTextChange(e, 'scale', 'height')}}/>
-              <div className='notice'><span className={`${options.scale_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+              <input className='form-control' type='number' value={data.scale_height} onChange={(e) => {this.submitDataChange(e, 'scale', 'height')}}/>
+              <div className='notice'><span className={`${options.scale_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入时标高度</span></div>
             </div>
             </div>
           </li>
@@ -326,15 +324,15 @@ import '../../../public/styles/virtualClock.less';
               <div>
                 <div>分标宽度</div>
                 <div>
-                <input className='form-control' type='number' value={data.split_width} onChange={(e) => {this.handleTextChange(e, 'split', 'width')}}/>
-                <div className='notice'><span className={`${options.split_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+                <input className='form-control' type='number' value={data.split_width} onChange={(e) => {this.submitDataChange(e, 'split', 'width')}}/>
+                <div className='notice'><span className={`${options.split_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入分标宽度</span></div>
               </div>
               </div>
               <div>
                 <div>分标高度</div>
                 <div>
-                <input className='form-control' type='number' value={data.split_height} onChange={(e) => {this.handleTextChange(e, 'split', 'height')}}/>
-                <div className='notice'><span className={`${options.split_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+                <input className='form-control' type='number' value={data.split_height} onChange={(e) => {this.submitDataChange(e, 'split', 'height')}}/>
+                <div className='notice'><span className={`${options.split_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入分标高度</span></div>
               </div>
               </div>
             </li>
@@ -419,7 +417,7 @@ import '../../../public/styles/virtualClock.less';
           <li>
             <div>
               <button className='btn btn-primary' onClick={this.resetData}>重置</button>
-              <button className='btn btn-primary' onClick={this.handleData}>应用</button>
+              <button className='btn btn-primary' onClick={this.submitData}>应用</button>
             </div>
           </li>
         </ul>
