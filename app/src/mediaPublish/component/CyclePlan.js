@@ -9,8 +9,10 @@ import { DatePicker, Checkbox } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 
-import moment from 'moment'
+import moment from 'moment';
+import lodash from 'lodash';
 
+import {getPlayerById} from '../../api/mediaPublish';
 import { NameValid, numbersValid } from '../../util/index';
 export default class CyclePlan extends PureComponent{
     constructor(props){
@@ -46,11 +48,36 @@ export default class CyclePlan extends PureComponent{
         this.dateChange = this.dateChange.bind(this);
         this.cyclePlanClick = this.cyclePlanClick.bind(this);
         this.updateCyclePause = this.updateCyclePause.bind(this);
+        this.initProperty = this.initProperty.bind(this);
     }
 
     componentWillMount(){
-        const {pause} = this.props;
+        this.mounted = true;
+        const {id, pause} = this.props;
         this.updateCyclePause(pause);
+        getPlayerById(id, data=>{this.mounted && this.initProperty(data)})
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    initProperty(data){
+        const pauseList = this.state.property.cyclePause.list;
+        const pauseIndex = lodash.findIndex(pauseList, item=>{
+            return item.name = data.pauseName;
+        })
+        this.state.property.cycleName.defaultValue = this.state.property.cycleName.value = data.name;
+        this.state.property.cycleInterval.defaultValue = this.state.property.cycleInterval.value = data.interval;
+        this.state.property.cyclePause.defaultIndex = this.state.property.cyclePause.index = pauseIndex;
+        this.state.property.cyclePause.name = pauseList[pauseIndex].name;
+        this.state.property.cycleDate.defaultAppoint = this.state.property.cycleDate.appoint =  data.dateAppoint;
+        this.state.property.cycleStartDate.defaultValue = this.state.property.cycleStartDate.value = data.startDate;
+        this.state.property.cycleEndDate.defaultValue = this.state.property.cycleEndDate.value = data.endDate;
+        this.state.property.cycleTime.defaultAppoint = this.state.property.cycleTime.appoint =  data.timeAppoint;
+        this.state.property.cycleStartTime.defaultValue = this.state.property.cycleStartTime.value = data.startTime;
+        this.state.property.cycleEndTime.defaultValue = this.state.property.cycleEndTime.value = data.endTime;
+        this.state.property.cycleWeek.defaultValue = this.state.property.cycleWeek.value = data.week;
     }
 
     updateCyclePause(pause){

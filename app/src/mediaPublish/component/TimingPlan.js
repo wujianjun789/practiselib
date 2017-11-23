@@ -64,6 +64,10 @@ export default class TimingPlan extends PureComponent{
         getPlayerById(id,response=>{this.mounted && this.initProperty(response)})
     }
 
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
     initProperty(data){
         const modeList = this.state.property.timingPlayMode.list;
         const pauseList = this.state.property.timingPause.list;

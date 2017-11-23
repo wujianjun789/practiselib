@@ -13,7 +13,9 @@ export default class PlayerScene extends PureComponent{
                 //场景名称
                 sceneName: { key: "assetName", title: "素材名称", placeholder: '素材名称', defaultValue:sceneName?sceneName:"", value: sceneName?sceneName:"" },
                 playMode: { key: "playMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], defaultIndex: 0, index: 0, name: "按次播放" },
-                playModeCount: { key: "playModeCount", title: "播放次数", placeholder: '次', defaultValue: playModeCount?playModeCount:"", value: playModeCount?playModeCount:"", active: true }
+                playModeCount: { key: "playModeCount", title: "播放次数", placeholder: '次', active: true,
+                    defaultValue: playModeCount?playModeCount:"", value: playModeCount?playModeCount:"",
+                    defaultValue2: playModeCount?playModeCount:"", value2: playModeCount?playModeCount:""}
             },
             prompt: {
                 //场景
@@ -77,15 +79,22 @@ export default class PlayerScene extends PureComponent{
             let title = "播放次数";
             let placeholder = '次';
             let active = true;
-            let updateId = (id == "playMode") ? "playModeCount" : "timingPlayModeCount";
+            let updateId = "playModeCount";
+            let prompt = false;
             switch (curIndex) {
                 case 0:
                     title = "播放次数";
                     placeholder = "次";
+                    if(!numbersValid(this.state.property.playModeCount.value)){
+                        prompt = true;
+                    }
                     break;
                 case 1:
                     title = "播放时长";
                     placeholder = "秒";
+                    if(!numbersValid(this.state.property.playModeCount.value2)){
+                        prompt = true;
+                    }
                     break;
                 case 2:
                     active = false;
@@ -93,9 +102,9 @@ export default class PlayerScene extends PureComponent{
             }
             this.setState({
                 property: Object.assign({}, this.state.property,
-
                     { [id]: Object.assign({}, this.state.property[id], { index: curIndex, name: this.state.property[id].list[curIndex].name }) },
-                    { [updateId]: Object.assign({}, this.state.property[updateId], { title: title, placeholder: placeholder, active: active }) })
+                    { [updateId]: Object.assign({}, this.state.property[updateId], { title: title, placeholder: placeholder, active: active }) }),
+                prompt: Object.assign({}, this.state.property, {playModeCount: prompt})
             })
         }else{
             let prompt = false;
@@ -110,9 +119,14 @@ export default class PlayerScene extends PureComponent{
                     prompt = true;
                 }
             }
-
+            let valueKey = {}
+            if(id == "playModeCount" && this.state.property.playMode.index == 1){
+                valueKey = {value2: val};
+            }else{
+                valueKey = {value: val};
+            }
             this.setState({
-                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], valueKey) }),
                 prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
             })
         }
@@ -155,7 +169,7 @@ export default class PlayerScene extends PureComponent{
                     <label className="control-label">{property.playModeCount.title}</label>
                     <div className={"input-container "}>
                         <input type="text" className={"form-control "} htmlFor={property.playModeCount.key} placeholder={property.playModeCount.placeholder} maxLength="8"
-                               value={property.playModeCount.value} onChange={event => this.onChange("playModeCount", event)} />
+                               value={property.playMode.index==0?property.playModeCount.value:property.playModeCount.value2} onChange={event => this.onChange("playModeCount", event)} />
                         <span className={prompt.playModeCount ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                     </div>
                 </div>
