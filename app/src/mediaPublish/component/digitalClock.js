@@ -47,7 +47,8 @@ import '../../../public/styles/digitalClock.less';
         fontColor: false
       },
       options: {
-        noticeShow: false
+        time_noticeShow: false,
+        text_noticeShow: false
       }
      }
 
@@ -82,28 +83,49 @@ import '../../../public/styles/digitalClock.less';
     if(!_digitalClockData.playTime){
       this.setState({
         options:{
-          noticeShow: true
+          time_noticeShow: true
         }
       })
-    } else {
-      console.log('数字时钟的设置:', _digitalClockData);
-    }
+    } else if(!_digitalClockData.textContent){
+      this.setState({
+        options:{
+          text_noticeShow: true
+          }
+        })
+      } else {
+        console.table(_digitalClockData);
+      }
    }
    handleTextChange(e){
     const _textContent = e.target.value;
-    this.setState({
-      data: {
-        ...this.state.data,
-        textContent: _textContent
-      }
-    })
+    if(!_textContent){
+      this.setState({
+        options:{
+          ...this.state.options,
+          text_noticeShow: true
+        }
+      })
+    } else {
+      this.setState({
+        data: {
+          ...this.state.data,
+          textContent: _textContent
+        },
+        options: {
+          ...this.state.options,
+          text_noticeShow: false
+        }
+      })
+    }
+
    }
    handleTimeChange(e){
      const _playTime = e.target.value;
      if(_playTime < 0 || !e){
       this.setState({
         options:{
-          noticeShow: true
+          ...this.state.options,
+          time_noticeShow: true
         }
       })
      } else {
@@ -113,7 +135,8 @@ import '../../../public/styles/digitalClock.less';
           playTime: _playTime
         },
         options:{
-          noticeShow: false
+          ...this.state.options,
+          time_noticeShow: false
         }
        })
      }
@@ -150,7 +173,7 @@ import '../../../public/styles/digitalClock.less';
      const { data } = this.state;
      return _propertyArray.map((item, index) => {
        return <div>
-                <select key={index} onChange={this.selectChange} name={item} value={data[item]}>{config[item].map((_item, _index) => {
+                <select className='form-control' key={index} onChange={this.selectChange} name={item} value={data[item]}>{config[item].map((_item, _index) => {
                   for(let k in _item){
                     return <option value={_item[k]} key={_index}>{k}</option>
                   }
@@ -175,7 +198,7 @@ import '../../../public/styles/digitalClock.less';
           <li>
             <div>素材名称</div>
             <div className='input_form'>
-              <input type='text' value={data.name} disabled/>
+              <input className='form-control' type='text' value={data.name} disabled/>
             </div>
           </li>
           <li>
@@ -186,8 +209,8 @@ import '../../../public/styles/digitalClock.less';
             <div>
               <div>播放时长</div>
               <div>
-                <input type='number' placeholder='秒' onChange={this.handleTimeChange} value={data.playTime}/>
-                <div className='notice'><span className={`${options.noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+                <input className='form-control' type='number' placeholder='秒' onChange={this.handleTimeChange} value={data.playTime}/>
+                <div className='notice'><span className={`${options.time_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
             <div>
@@ -200,7 +223,8 @@ import '../../../public/styles/digitalClock.less';
           <li>
             <div>文字内容</div>
             <div className='input_form'>
-              <input type='text' value={data.textContent} onChange={this.handleTextChange}/>
+              <input className='form-control' type='text' value={data.textContent} onChange={this.handleTextChange}/>
+              <div className='notice'><span className={`${options.text_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
             </div>
           </li>
           <li>
