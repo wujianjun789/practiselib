@@ -104,7 +104,7 @@ export default class PlayerScene extends PureComponent{
                 property: Object.assign({}, this.state.property,
                     { [id]: Object.assign({}, this.state.property[id], { index: curIndex, name: this.state.property[id].list[curIndex].name }) },
                     { [updateId]: Object.assign({}, this.state.property[updateId], { title: title, placeholder: placeholder, active: active }) }),
-                prompt: Object.assign({}, this.state.property, {playModeCount: prompt})
+                prompt: Object.assign({}, this.state.prompt, {playModeCount: prompt})
             })
         }else{
             let prompt = false;
