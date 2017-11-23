@@ -47,16 +47,16 @@ import '../../../public/styles/digitalClock.less';
         fontColor: false
       },
       options: {
-        noticeShow: false
+        playTime_noticeShow: false,
+        textContent_noticeShow: false
       }
      }
 
     this.selectChange = this.selectChange.bind(this);
     this.resetData = this.resetData.bind(this);
-    this.handleData = this.handleData.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleDataChange = this.handleDataChange.bind(this);
     this.handleSingleShow = this.handleSingleShow.bind(this);
+    this.submitData = this.submitData.bind(this);
    }
    componentDidMount() {
      const { config } = this.state;
@@ -77,46 +77,35 @@ import '../../../public/styles/digitalClock.less';
        data: initData
      })
    }
-   handleData(){
-    const _digitalClockData = this.state.data;
-    if(!_digitalClockData.playTime){
-      this.setState({
-        options:{
-          noticeShow: true
-        }
-      })
-    } else {
-      console.log('数字时钟的设置:', _digitalClockData);
-    }
-   }
-   handleTextChange(e){
+   handleDataChange(e, _id, _property){
+    const _options = this.state.options;
     const _textContent = e.target.value;
-    this.setState({
-      data: {
-        ...this.state.data,
-        textContent: _textContent
-      }
-    })
-   }
-   handleTimeChange(e){
-     const _playTime = e.target.value;
-     if(_playTime < 0 || !e){
-      this.setState({
-        options:{
-          noticeShow: true
-        }
-      })
-     } else {
+    const __id = _id ? `${_id}_` : '';
+    const _name = `${__id}${_property}`;
+    const _show =`${__id}${_property}_noticeShow`;
+    if(!_textContent){
       this.setState({
         data: {
           ...this.state.data,
-          playTime: _playTime
+          [_name]: _textContent
         },
-        options:{
-          noticeShow: false
+        options: {
+          ..._options,
+          [_show]: true
         }
-       })
-     }
+      })
+    }else {
+      this.setState({
+        data: {
+          ...this.state.data,
+          [_name]: _textContent
+        },
+        options: {
+          ..._options,
+          [_show]: false
+        }
+      })
+    }
    }
    handleColorPicker(item){
      const id = item;
@@ -145,12 +134,32 @@ import '../../../public/styles/digitalClock.less';
       }
     })
   }
+  submitData(){
+    const _digitalClockData = this.state.data;
+    let _options = null;
+    for(let k in _digitalClockData) {
+      if(!_digitalClockData[k] && k !== 'singleShow') {
+        const warnTarget = `${k}_noticeShow`;
+        _options = {
+          ..._options,
+          [warnTarget]: true
+        }
+      }
+    }
+    if(_options){
+      this.setState({
+        options: _options
+      })
+    } else {
+      console.table(_digitalClockData);
+    }
+  }
    renderOptions(_propertyArray) {
      const { config } = this.state;
      const { data } = this.state;
      return _propertyArray.map((item, index) => {
        return <div>
-                <select key={index} onChange={this.selectChange} name={item} value={data[item]}>{config[item].map((_item, _index) => {
+                <select className='form-control' key={index} onChange={this.selectChange} name={item} value={data[item]}>{config[item].map((_item, _index) => {
                   for(let k in _item){
                     return <option value={_item[k]} key={_index}>{k}</option>
                   }
@@ -175,7 +184,7 @@ import '../../../public/styles/digitalClock.less';
           <li>
             <div>素材名称</div>
             <div className='input_form'>
-              <input type='text' value={data.name} disabled/>
+              <input className='form-control' type='text' value={data.name} disabled/>
             </div>
           </li>
           <li>
@@ -186,8 +195,8 @@ import '../../../public/styles/digitalClock.less';
             <div>
               <div>播放时长</div>
               <div>
-                <input type='number' placeholder='秒' onChange={this.handleTimeChange} value={data.playTime}/>
-                <div className='notice'><span className={`${options.noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+                <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.handleDataChange(e, '', 'playTime')}} value={data.playTime}/>
+                <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
             <div>
@@ -200,7 +209,8 @@ import '../../../public/styles/digitalClock.less';
           <li>
             <div>文字内容</div>
             <div className='input_form'>
-              <input type='text' value={data.textContent} onChange={this.handleTextChange}/>
+              <input className='form-control' type='text' onChange={(e) => {this.handleDataChange(e, '', 'textContent')}} value={data.textContent}/>
+              <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入文字内容</span></div>
             </div>
           </li>
           <li>
@@ -242,7 +252,7 @@ import '../../../public/styles/digitalClock.less';
           <li>
             <div>
               <button className='btn btn-primary' onClick={this.resetData}>重置</button>
-              <button className='btn btn-primary' onClick={this.handleData}>应用</button>
+              <button className='btn btn-primary' onClick={this.submitData}>应用</button>
             </div>
           </li>
         </ul>

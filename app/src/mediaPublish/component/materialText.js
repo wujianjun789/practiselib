@@ -6,7 +6,8 @@ export default class Text extends Component {
         this.state = {
             name: '',
             path: '',
-            data:''
+            data:'',
+            width:0,
         }
         this.changeName = this.changeName.bind(this);
         this.importMaterial = this.importMaterial.bind(this);
@@ -20,14 +21,17 @@ export default class Text extends Component {
         const self=this;
         const reader = new FileReader();
         const file = e.target.files[0];
+        if(!file){
+            return;
+        }
         reader.readAsText(file);
         reader.onload=function(e){
             self.setState({path:file.name,data:this.result})
         }
-        if(file){
-            this.props.upload('text',file)
-        }
+        this.props.addFile('text',file);
+        this.props.resetProgress(0);
     }
+
     render() {
         const { name, path, data } = this.state;
         return (
@@ -48,6 +52,10 @@ export default class Text extends Component {
                 </div>
                 <div className='show'>
                     <textarea value={data}></textarea>
+                </div>
+                <div className='material-progressWrap'>
+                    <div className='material-progress' style={{ width: `${this.props.progress}%` }} />
+                    <span className='progress-text' style={{left:`${this.props.progress}%`}}>{this.props.progress}%</span>
                 </div>
             </div>
         )

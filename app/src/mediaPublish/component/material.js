@@ -5,7 +5,7 @@ import Image from './materialImage'
 import Video from './materialVideo'
 
 import { Modal, Tabs } from 'antd';
-import {uploadMaterialFile} from '../../api/mediaPublish';
+// import {uploadMaterialFile} from '../../api/mediaPublish';
 
 import '../../../public/styles/mediaPublish-modal.css'
 import '../../../public/styles/material.less'
@@ -19,26 +19,26 @@ export default class Material extends PureComponent {
         this.video = undefined;
         this.state = {
             currentKey: 2,
-            data: {}
+            data: {},
+            progress: [0,0,0],
+            progressShow: [false,false,false]
         }
     }
     handleOk = (e) => {
-        console.log(this.state.currentKey)
         switch (this.state.currentKey.toString()) {
+            case '0':
+                this.upload('text',0);
+                break;
             case '1':
-                this.upload('text');
+                this.upload('image',1);
                 break;
             case '2':
-                this.upload('image');
-                break;
-            case '3':
-                this.upload('video');
+                this.upload('video',2);
                 break;
             default:
                 console.log('some errors')
                 break;
         }
-        this.props.hideModal()
     }
 
     handleCancel = (e) => {
@@ -58,31 +58,56 @@ export default class Material extends PureComponent {
     addFile = (type, file) => {
         this.setState({ data: { ...this.state.data, [type]: file } })
     }
-    upload = (type) => {
-        const data=this.state.data[type];
-        if(!data){
+    upload = (type,key) => {
+        const data = this.state.data[type];
+
+        if (!data) {
             console.log('未选择文件')
             return;
         }
-        uploadMaterialFile(type,data)
+
+        this.setState({progressShow:true})
+        const url = 'http://192.168.155.207:3000/api/containers/common/upload';
+
+        const form = new FormData();
+        form.append('file', data);
+
+        const xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+                const progress = Math.round((e.loaded / e.total) * 100);
+                this.setState({
+                    progress:{...this.state.progress,[key]:progress}
+                })
+            }
+        }, false);
+        xhr.addEventListener('load',()=>{
+            this.setState({progressShow:false})
+        },false);
+        // xhr.addEventListener('error',uploadFail,false);
+        // xhr.addEventListener('abort',uploadCancel,false)
+        xhr.open('POST', url, true);
+        xhr.send(form)
     }
-    componentDidUpdate() {
-        console.log(this.state.data)
+    resetProgress=(key)=>{
+        this.setState({
+            progress:{...this.state.progress,[key]:0}
+        })
     }
     render() {
         return (
             <div>
                 <Modal title="添加素材" visible={this.props.showModal}
-                    onOk={this.handleOk} onCancel={this.handleCancel}>
+                    onOk={this.handleOk} onCancel={this.handleCancel} okText='上传'>
                     <Tabs defaultActiveKey="2" onChange={this.switchTab}>
-                        <TabPane tab="文字" key="1">
-                            <Text upload={this.addFile} />
+                        <TabPane tab="文字" key="0">
+                            <Text addFile={this.addFile} progress={this.state.progress[0]} resetProgress={this.resetProgress}/>
                         </TabPane>
-                        <TabPane tab="图片" key="2" >
-                            <Image upload={this.addFile} />
+                        <TabPane tab="图片" key="1" >
+                            <Image addFile={this.addFile} progress={this.state.progress[1]} resetProgress={this.resetProgress}/>
                         </TabPane>
-                        <TabPane tab="视频" key="3" >
-                            <Video focus={this.focus} upload={this.addFile} />
+                        <TabPane tab="视频" key="2" >
+                            <Video focus={this.focus} addFile={this.addFile} progress={this.state.progress[2]} resetProgress={this.resetProgress}/>
                         </TabPane>
                     </Tabs>
                 </Modal>
@@ -90,7 +115,5 @@ export default class Material extends PureComponent {
         )
     }
 }
-Material.propTypes = {
-    showModal: PropTypes.bool.isRequired
-}
+
 

@@ -53,7 +53,7 @@ export class PlayerArea extends Component {
         super(props);
         this.state = {
             curNode: null,
-            curType: 'timingPlan',
+            curType: 'digitalClock',
             playerData: [
                 {
                     "id": "player1",
