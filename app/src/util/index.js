@@ -158,7 +158,10 @@ export const STRATEGY_NAME_LENGTH = 16;
 
 export function numbersValid(number) {
     // return /^([1-9]\d*)|0$/.test(number)
-    return /^[0-9]*$/.test(number)
+    if(!number){
+        return false;
+    }
+    return /^[+-]?\d*\.?\d*$/.test(number);
 }
 
 export function NameValid(name) {

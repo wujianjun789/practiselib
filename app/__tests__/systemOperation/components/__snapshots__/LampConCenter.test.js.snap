@@ -32,7 +32,7 @@ exports[`<Gateway /> component snapshot 1`] = `
       添加
     </button>
     <button
-      className="btn btn-primary import-excel"
+      className="btn btn-gray"
       id="sys-import"
       onClick={[Function]}>
       导入

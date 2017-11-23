@@ -12,13 +12,15 @@ import { momentDateFormat, dateStrReplaceZh } from '../../util/time';
 import {DeepCopy} from '../../util/algorithm';
 import { NameValid, numbersValid } from '../../util/index';
 
+import {getPlayerById} from '../../api/mediaPublish';
+
 import moment from 'moment';
 import lodash from 'lodash';
 export default class TimingPlan extends PureComponent{
     constructor(props){
         super(props);
         const {name="", timingList= [{ id: 1, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [1, 2, 5] },
-            { id: 2, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [2, 4, 6] },], timingPlayIndex=0, playModeCount=0, pauseIndex=0} = this.props;
+            { id: 2, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [2, 4, 6] },], timingPlayIndex=0, playModeCount=0, playTimeCount=0, pauseIndex=0} = this.props;
         this.state = {
             property: {
                 //定时插播计划
@@ -32,7 +34,9 @@ export default class TimingPlan extends PureComponent{
                 },
                 timingPlayMode: { key: "timingPlayMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }],
                     defaultIndex: 0, index: 0, name: "按次播放" },
-                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次', defaultValue:playModeCount?playModeCount:"", value: playModeCount?playModeCount:"", active: true },
+                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次',active: true,
+                    defaultValue:playModeCount?playModeCount:"", value: playModeCount?playModeCount:"",
+                    defaultValue2:playTimeCount?playTimeCount:"", value2: playTimeCount?playTimeCount:""},
                 timingPause: { key: "timingPause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }],
                     defaultIndex: 0,index: 0, name: "暂停" },
             },
@@ -48,12 +52,38 @@ export default class TimingPlan extends PureComponent{
         this.updateTimingPlanPopup = this.updateTimingPlanPopup.bind(this);
         this.updateTimingPlayMode = this.updateTimingPlayMode.bind(this);
         this.updateTimingPause = this.updateTimingPause.bind(this);
+        this.initProperty = this.initProperty.bind(this);
     }
 
     componentWillMount(){
-        const {timingPlayIndex,pauseIndex} = this.props;
+        this.mounted = true;
+        const {id, timingPlayIndex, pauseIndex} = this.props;
         this.updateTimingPlayMode(timingPlayIndex);
         this.updateTimingPause(pauseIndex);
+
+        getPlayerById(id,response=>{this.mounted && this.initProperty(response)})
+    }
+
+    initProperty(data){
+        const modeList = this.state.property.timingPlayMode.list;
+        const pauseList = this.state.property.timingPause.list;
+        const modeIndex = lodash.findIndex(modeList, item=>{
+            return item.name = data.modeName;
+        })
+        const pauseIndex = lodash.findIndex(pauseList, item=>{
+            return item.name = data.pauseName;
+        })
+
+        this.state.property.timingName.defaultValue = this.state.property.timingName.value = data.name;
+        this.state.property.timingList.defaultList = this.state.property.timingList.list = data.list;
+        this.state.property.timingPlayMode.defaultIndex = this.state.property.timingPlayMode.index = modeIndex;
+        this.state.property.timingPlayMode.name = modeList[modeIndex].name;
+
+        this.state.property.timingPlayModeCount.defaultValue = this.state.property.timingPlayModeCount.value = data.playCount;
+        this.state.property.timingPlayModeCount.defaultValue2 = this.state.property.timingPlayModeCount.value2 = data.playTime;
+        this.state.property.timingPause.defaultIndex = this.state.property.timingPause.index = pauseIndex;
+        this.state.property.timingPause.name = pauseList[pauseIndex].name;
+        this.setState({property: Object.assign({}, this.state.property), prompt:{timingName:data.name?false:true, timingPlayModeCount:(modeIndex==0 && data.playCount || modeIndex==1 && data.playTime)?false:true}});
     }
 
     updateTimingPlayMode(timingPlayIndex){
@@ -105,6 +135,9 @@ export default class TimingPlan extends PureComponent{
                         this.updateTimingPause(curIndex2);
                     }else{
                         this.state.property[key].value = this.state.property[key].defaultValue;
+                        if(key == "timingPlayModeCount"){
+                            this.state.property[key].value2 = this.state.property[key].defaultValue2;
+                        }
                     }
                 }
 
@@ -200,14 +233,21 @@ export default class TimingPlan extends PureComponent{
             let placeholder = '次';
             let active = true;
             let updateId =  "timingPlayModeCount";
+            let prompt = false;
             switch (curIndex) {
                 case 0:
                     title = "播放次数";
                     placeholder = "次";
+                    if(!numbersValid(this.state.property.timingPlayModeCount.value)){
+                        prompt = true;
+                    }
                     break;
                 case 1:
                     title = "播放时长";
                     placeholder = "秒";
+                    if(!numbersValid(this.state.property.timingPlayModeCount.value2)){
+                        prompt = true;
+                    }
                     break;
                 case 2:
                     active = false;
@@ -215,9 +255,9 @@ export default class TimingPlan extends PureComponent{
             }
             this.setState({
                 property: Object.assign({}, this.state.property,
-
                     { [id]: Object.assign({}, this.state.property[id], { index: curIndex, name: this.state.property[id].list[curIndex].name }) },
-                    { [updateId]: Object.assign({}, this.state.property[updateId], { title: title, placeholder: placeholder, active: active }) })
+                    { [updateId]: Object.assign({}, this.state.property[updateId], { title: title, placeholder: placeholder, active: active })}),
+                prompt: Object.assign({}, this.state.prompt, {timingPlayModeCount: prompt})
             })
         }else{
             let prompt = false;
@@ -233,8 +273,14 @@ export default class TimingPlan extends PureComponent{
                 }
             }
 
+            let valueKey = {};
+            if(id == "timingPlayModeCount" && this.state.property.timingPlayMode.index==1){
+                valueKey = {value2: val};
+            }else{
+                valueKey = {value: val};
+            }
             this.setState({
-                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
+                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], valueKey) }),
                 prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
             })
         }
@@ -310,7 +356,7 @@ export default class TimingPlan extends PureComponent{
                     <label className="control-label">{property.timingPlayModeCount.title}</label>
                     <div className={"input-container "}>
                         <input type="text" className={"form-control "} htmlFor={property.timingPlayModeCount.key} placeholder={property.timingPlayModeCount.placeholder} maxLength="8"
-                               value={property.timingPlayModeCount.value} onChange={event => this.onChange("timingPlayModeCount", event)} />
+                               value={property.timingPlayMode.index==0?property.timingPlayModeCount.value:property.timingPlayModeCount.value2} onChange={event => this.onChange("timingPlayModeCount", event)} />
                         <span className={prompt.timingPlayModeCount ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                     </div>
                 </div>
