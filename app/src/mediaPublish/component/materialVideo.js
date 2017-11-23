@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 export default class Video extends Component {
     constructor(props) {
         super(props);
-        this.video=undefined;
+        this.video = undefined;
         this.state = {
             name: '',
             path: '',
@@ -13,24 +13,26 @@ export default class Video extends Component {
 
     }
 
-    changeName=(e)=>{
+    changeName = (e) => {
         this.setState({ name: e.target.value })
     }
 
-    importMaterial=(e)=> {
+    importMaterial = (e) => {
         const file = e.target.files[0];
+        if (!file) {
+            return;
+        }
         const url = URL.createObjectURL(file);
-        if(url){
-            this.video.controls='controls'
+        if (url) {
+            this.video.controls = 'controls'
         }
         this.setState({ path: file.name, url: url })
-        if(file){
-            this.props.upload('video',file)
-        }
+        this.props.addFile('video', file)
+        this.props.resetProgress(2);
     }
-    refsCb=(node)=>{
+    refsCb = (node) => {
         this.props.focus(node);
-        this.video=node;
+        this.video = node;
     }
     render() {
         const { name, path, url } = this.state;
@@ -52,6 +54,10 @@ export default class Video extends Component {
                 </div>
                 <div className='show'>
                     <video src={url} ref={this.refsCb} autoPlay loop />
+                </div>
+                <div className='material-progressWrap'>
+                    <div className='material-progress' style={{ width: `${this.props.progress}%` }} />
+                    <span className='progress-text' style={{left:`${this.props.progress}%`}}>{this.props.progress}%</span>
                 </div>
             </div>
         )

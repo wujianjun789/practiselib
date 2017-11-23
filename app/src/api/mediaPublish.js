@@ -5,21 +5,29 @@ import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
 import { HeadBar } from '../components/HeadBar';
 
 //上传文件
-export function uploadMaterialFile(type, file) {
-    console.log('here:',file)
-    const url = 'http://192.168.155.207:3000/api/containers/common/upload';
+// export function uploadMaterialFile(type, file) {
 
-    const form = new FormData();
-    form.append('file', file);
-    const myHeaders=new Headers();
+//     const url = 'http://192.168.155.207:3000/api/containers/common/upload';
 
-    httpRequest(url, {
-        method: 'POST',
-        body: form
-    },res => {
-        console.log(res)
-    })
-}
+//     const form = new FormData();
+//     form.append('file', file);
+
+//     const xhr = new XMLHttpRequest();
+//     xhr.upload.addEventListener('progress',uploadProgress,false);
+//     // xhr.addEventListener('load',uploadComplete,false);
+//     // xhr.addEventListener('error',uploadFail,false);
+//     // xhr.addEventListener('abort',uploadCancel,false)
+
+//     xhr.open('POST',url,true);
+//     xhr.send(form)
+
+//     function uploadProgress(e){
+//         if(e.lengthComputable){
+//             const progress=Math.round((e.loaded/e.total)*100);
+//             console.log(progress);
+//         }
+//     }
+// }
 
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
