@@ -799,7 +799,7 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary" onClick={() => this.assetList('complete')}>完成
                                     </button>
                                 </div>
-                                <Material showModal={this.state.showModal} hideModal={this.hideModal} />
+                                {this.state.showModal?<Material showModal={this.state.showModal} hideModal={this.hideModal} />:null}
                             </div>
                             <div className="bottom">
                                 <ul className="asset-list">

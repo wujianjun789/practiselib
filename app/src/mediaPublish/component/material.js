@@ -18,7 +18,7 @@ export default class Material extends PureComponent {
         super(props);
         this.video = undefined;
         this.state = {
-            currentKey: 2,
+            currentKey: 1,
             data: {},
             progress: [0,0,0],
             progressShow: [false,false,false]
@@ -27,13 +27,13 @@ export default class Material extends PureComponent {
     handleOk = (e) => {
         switch (this.state.currentKey.toString()) {
             case '0':
-                this.upload('text',0);
+                this.upload('text');
                 break;
             case '1':
-                this.upload('image',1);
+                this.upload('image');
                 break;
             case '2':
-                this.upload('video',2);
+                this.upload('video');
                 break;
             default:
                 console.log('some errors')
@@ -46,7 +46,7 @@ export default class Material extends PureComponent {
     }
     switchTab = (key) => {
         if (this.video !== undefined && this.video.src) {
-            if (key !== 3) {
+            if (key !== 2) {
                 this.video.pause();
             }
         }
@@ -58,7 +58,7 @@ export default class Material extends PureComponent {
     addFile = (type, file) => {
         this.setState({ data: { ...this.state.data, [type]: file } })
     }
-    upload = (type,key) => {
+    upload = (type) => {
         const data = this.state.data[type];
 
         if (!data) {
@@ -73,33 +73,44 @@ export default class Material extends PureComponent {
         form.append('file', data);
 
         const xhr = new XMLHttpRequest();
-        xhr.upload.addEventListener('progress', (e) => {
-            if (e.lengthComputable) {
-                const progress = Math.round((e.loaded / e.total) * 100);
-                this.setState({
-                    progress:{...this.state.progress,[key]:progress}
-                })
-            }
-        }, false);
-        xhr.addEventListener('load',()=>{
-            this.setState({progressShow:false})
-        },false);
+        this.xhr=xhr
+        xhr.upload.addEventListener('progress', this.uploadProgress);
+
+
+        // xhr.addEventListener('load',()=>{
+        //     this.setState({progressShow:false})
+        // },false);
         // xhr.addEventListener('error',uploadFail,false);
         // xhr.addEventListener('abort',uploadCancel,false)
         xhr.open('POST', url, true);
         xhr.send(form)
+        console.log(xhr);
+        console.log(this.xhr)
+        console.log(Object.is(xhr,this.xhr))
+    }
+    uploadProgress=(e)=>{
+        if (e.lengthComputable) {
+            const progress = Math.round((e.loaded / e.total) * 100);
+            this.setState({
+                progress:{...this.state.progress,[this.state.currentKey]:progress}
+            })
+        }
     }
     resetProgress=(key)=>{
         this.setState({
             progress:{...this.state.progress,[key]:0}
         })
     }
+    componentWillUnmount(){
+        this.xhr.upload.removeEventListener('progress',this.uploadProgress);
+        // this.xhr.removeEventListener('load',)
+    }
     render() {
         return (
             <div>
                 <Modal title="添加素材" visible={this.props.showModal}
                     onOk={this.handleOk} onCancel={this.handleCancel} okText='上传'>
-                    <Tabs defaultActiveKey="2" onChange={this.switchTab}>
+                    <Tabs defaultActiveKey="1" onChange={this.switchTab}>
                         <TabPane tab="文字" key="0">
                             <Text addFile={this.addFile} progress={this.state.progress[0]} resetProgress={this.resetProgress}/>
                         </TabPane>

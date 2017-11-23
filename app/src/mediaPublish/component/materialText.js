@@ -46,7 +46,7 @@ export default class Text extends Component {
                     <div className='file-path'>
                         {path ? path : '选择列表文件路径'}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
-                        <input type="file" accept="text/plain" onChange={this.importMaterial} />
+                        <input type="file" accept="text/*" onChange={this.importMaterial} />
                         <span className={path?"m-prompt m-hidden":"m-prompt"}>请选择文件</span>
                     </div>
                 </div>
