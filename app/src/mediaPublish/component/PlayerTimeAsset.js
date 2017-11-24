@@ -200,7 +200,7 @@ export default class PlayerTimeAsset extends PureComponent{
             <div className="form-group">
                 <label className="control-label">{property.stopTime.title}</label>
                 <div className="input-container timePicker">
-                    <TimePicker size="large" onChange={value => this.onChange("stopTime", value)} defaultValue={moment()} value={property.stopTime.value} />
+                    <TimePicker size="large" onChange={value => this.onChange("stopTime", value)} defaultValue={moment()} value={property.stopTime.value} placeholder={property.stopTime.placeholder}/> 
                     <span className={prompt.stopTime ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
                 </div>
             </div>
