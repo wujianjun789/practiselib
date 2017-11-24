@@ -21,7 +21,6 @@ export default class Material extends PureComponent {
             currentKey: 1,
             data: {},
             progress: [0,0,0],
-            progressShow: [false,false,false]
         }
     }
     handleOk = (e) => {
@@ -66,7 +65,6 @@ export default class Material extends PureComponent {
             return;
         }
 
-        this.setState({progressShow:true})
         const url = 'http://192.168.155.207:3000/api/containers/common/upload';
 
         const form = new FormData();

@@ -15,6 +15,7 @@ import Content from '../../components/Content';
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
 import Page from '../../components/Page';
+import Panel from '../../components/Panel';
 
 import PlayerProject from '../component/PlayerProject';
 import PlayerPlan from '../component/PlayerPlan';
