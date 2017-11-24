@@ -5,7 +5,7 @@ import React,{ PureComponent } from 'react';
 
 import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
-import { DatePicker, Checkbox } from 'antd';
+import { DatePicker, Checkbox, TimePicker} from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -144,7 +144,7 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.startDate.key}>{property.startDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{ width: "250px" }}
+                        <DatePicker id="startDate" format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{ width: "250px" }}
                                     defaultValue={property.startDate.value} value={property.startDate.value} onChange={value => this.dateChange('startDate', value)} />
                         <div className={prompt.startDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
                     </div>
@@ -153,7 +153,7 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.endDate.key}>{property.endDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{ width: "250px" }}
+                        <DatePicker id="endDate" format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{ width: "250px" }}
                                     defaultValue={property.endDate.value} value={property.endDate.value} onChange={value => this.dateChange('endDate', value)} />
                         <div className={prompt.endDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
                     </div>
@@ -164,8 +164,7 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.startTime.key}>{property.startTime.title}</label>
                     <div className="input-container">
-                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" style={{ width: "250px" }}
-                                    defaultValue={property.startTime.value} value={property.startTime.value} onChange={value => this.dateChange('startTime', value)} />
+                        <TimePicker size="large" placeholder={property.startTime.placeholder} onChange={value => this.dateChange("startTime", value)} defaultValue={property.startTime.value} value={property.startTime.value} />
                         <div className={prompt.startTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
                     </div>
                 </div>
@@ -173,8 +172,7 @@ export default class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.endTime.key}>{property.endTime.title}</label>
                     <div className="input-container">
-                        <DatePicker id="endTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" style={{ width: "250px" }}
-                                    defaultValue={property.endTime.value} value={property.endTime.value} onChange={value => this.dateChange('endTime', value)} />
+                        <TimePicker size="large" placeholder={property.endTime.placeholder} onChange={value => this.dateChange("endTime", value)} defaultValue={property.endTime.value}value={property.endTime.value} />
                         <div className={prompt.endTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
                     </div>
                 </div>
