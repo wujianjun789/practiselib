@@ -11,6 +11,7 @@ const CheckboxGroup = Checkbox.Group;
 
 import moment from 'moment'
 
+import {getPlayerById} from '../../api/mediaPublish'
 import { NameValid } from '../../util/index';
 export default class PlayerPlan extends PureComponent{
     constructor(props){
@@ -32,33 +33,41 @@ export default class PlayerPlan extends PureComponent{
                         { label: "周日", value: 7 }],
                     defaultValue: week,
                     value: week
-                }/*,
-                action: {
-                    key: "action", title: "动作", list: [{ id: 1, name: '动作1' }, { id: 2, name: '动作2' }], index: 0, name: "动作1"
-                },
-                position: {
-                    key: 'position', title: '坐标位置',
-                    list: [{ id: 'left', name: '左' }, { id: 'center', name: '居中' }, { id: 'right', name: '右' },
-                        { id: 'top', name: '上' }, { id: 'middle', name: '中' }, { id: 'bottom', name: '下' },],
-                    id: 'left'
-                },
-                axisX: { key: "axisX", title: "X轴", placeholder: "输入X轴", value: "" },
-                axisY: { key: "axisY", title: "Y轴", placeholder: "输入Y轴", value: "" },
-                speed: { key: "speed", title: "速度", placeholder: "fps(1-100)", value: "" },
-                repeat: { key: "repeat", title: "重复次数", placeholder: "1-255", value: "" },
-                resTime: { key: "resTime", title: "停留时间", placeholder: "ms", value: "" },
-                flicker: { key: "flicker", title: "闪烁次数", placeholder: "1-255", value: "" }*/
+                }
             },
             prompt:{
                 //计划
-                plan:name?false:true,week:week.length?false:true,
+                plan:name?false:true,week:week && week.length?false:true,
                 /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
             }
         }
 
         this.onChange = this.onChange.bind(this);
         this.dateChange = this.dateChange.bind(this);
-        this.planClick = this.planClick.bind(this)
+        this.planClick = this.planClick.bind(this);
+        this.initProperty = this.initProperty.bind(this);
+    }
+
+    componentWillMount(){
+        this.mounted = true;
+        const {id} = this.props;
+        getPlayerById(id, data=>{this.mounted && this.initProperty(data);})
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    initProperty(data){
+        this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
+        this.state.property.startDate.defaultValue = this.state.property.startDate.value = data.startDate;
+        this.state.property.endDate.defaultValue = this.state.property.endDate.value = data.endDate;
+        this.state.property.startTime.defaultValue = this.state.property.startTime.value = data.startTime;
+        this.state.property.endTime.defaultValue = this.state.property.endTime.value = data.endTime;
+        this.state.property.endTime.defaultValue = this.state.property.endTime.value = data.week;
+
+        this.setState({property: Object.assign({}, this.state.property),
+        prompt: {plan:data.name?false:true,week: data.week && data.week.length?false:true,}})
     }
 
     planClick(id) {
@@ -74,7 +83,7 @@ export default class PlayerPlan extends PureComponent{
                 for (let key in this.state.prompt){
                     if(key == "week"){
                         const defaultValue = this.state.property[key].defaultValue;
-                        this.state.prompt[key] = defaultValue.length ? false:true;
+                        this.state.prompt[key] = defaultValue && defaultValue.length ? false:true;
                     }else{
                         const defaultValue2 = this.state.property[key].defaultValue;
                         this.state.prompt[key] = defaultValue2 ? false:true;

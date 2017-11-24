@@ -78,6 +78,9 @@ export default class CyclePlan extends PureComponent{
         this.state.property.cycleStartTime.defaultValue = this.state.property.cycleStartTime.value = data.startTime;
         this.state.property.cycleEndTime.defaultValue = this.state.property.cycleEndTime.value = data.endTime;
         this.state.property.cycleWeek.defaultValue = this.state.property.cycleWeek.value = data.week;
+
+        this.setState({property: Object.assign({}, this.state.property),
+            prompt:{cycleName: data.name?false:true, cycleInterval: data.interval?false:true, cyclePause: pauseIndex>-1?false:true,  cycleWeek: data.week && data.week.length?false:true}})
     }
 
     updateCyclePause(pause){
