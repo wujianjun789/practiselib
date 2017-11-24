@@ -3,6 +3,9 @@
  */
 import React,{ PureComponent } from 'react';
 
+import {getSceneById} from '../../api/mediaPublish';
+
+import lodash from 'lodash';
 import { NameValid,numbersValid } from '../../util/index';
 export default class PlayerScene extends PureComponent{
     constructor(props){
@@ -26,11 +29,33 @@ export default class PlayerScene extends PureComponent{
         this.onChange = this.onChange.bind(this);
         this.playerSceneClick = this.playerSceneClick.bind(this);
         this.updatePlayMode = this.updatePlayMode.bind(this);
+        this.initProperty = this.initProperty.bind(this);
     }
 
     componentWillMount(){
-        const {playMode} = this.props;
+        this.mounted = true;
+        const {id, playMode} = this.props;
         this.updatePlayMode(playMode);
+        getSceneById(id, data=>{this.mounted && this.initProperty(data)})
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
+    initProperty(data){
+        const modeList = this.state.property.playMode.list;
+        const modeIndex = lodash.findIndex(modeList, item=>{
+            return item.name == data.modeName;
+        })
+        this.state.property.sceneName.defaultValue = this.state.property.sceneName.value = data.name;
+        this.state.property.playMode.defaultIndex = this.state.property.playMode.index = modeIndex;
+        this.state.property.playMode.name = modeList[modeIndex].name;
+        this.state.property.playModeCount.defaultValue = this.state.property.playModeCount.value = data.count;
+        this.state.property.playModeCount.defaultValue2 = this.state.property.playModeCount.value2 = data.time;
+
+        this.setState({property: Object.assign({}, this.state.property),
+            prompt: {sceneName: data.name?false:true,  playModeCount: (modeIndex==0 && data.count || modeIndex==1 && data.time)?false:true,}})
     }
 
     updatePlayMode(playMode){
