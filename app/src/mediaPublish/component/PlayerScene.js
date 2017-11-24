@@ -49,8 +49,9 @@ export default class PlayerScene extends PureComponent{
             return item.name == data.modeName;
         })
         this.state.property.sceneName.defaultValue = this.state.property.sceneName.value = data.name;
-        this.state.property.playMode.defaultIndex = this.state.property.playMode.index = modeIndex;
-        this.state.property.playMode.name = modeList[modeIndex].name;
+        // this.state.property.playMode.defaultIndex = this.state.property.playMode.index = modeIndex;
+        // this.state.property.playMode.name = modeList[modeIndex].name;
+        this.updatePlayMode(modeIndex);
         this.state.property.playModeCount.defaultValue = this.state.property.playModeCount.value = data.count;
         this.state.property.playModeCount.defaultValue2 = this.state.property.playModeCount.value2 = data.time;
 

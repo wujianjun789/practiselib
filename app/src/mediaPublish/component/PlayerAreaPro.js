@@ -3,6 +3,9 @@
  */
 import React,{ PureComponent } from 'react';
 
+import {getZoneById} from '../../api/mediaPublish';
+
+import lodash from 'lodash';
 import { Name2Valid, numbersValid } from '../../util/index';
 export default class PlayerAreaPro extends PureComponent{
     constructor(props){
@@ -27,11 +30,36 @@ export default class PlayerAreaPro extends PureComponent{
         this.onChange = this.onChange.bind(this);
         this.playerAreaClick = this.playerAreaClick.bind(this);
         this.updatePlayEnd = this.updatePlayEnd.bind(this);
+        this.initProperty = this.initProperty.bind(this);
     }
 
     componentWillMount(){
-        const {playEndIndex} = this.props;
+        this.mounted = true;
+        const {id, playEndIndex} = this.props;
         this.updatePlayEnd(playEndIndex);
+        getZoneById(id, data=>{this.mounted && this.initProperty(data)});
+    }
+
+    componwntWillUnmount(){
+        this.mounted = false;
+    }
+
+    initProperty(data){
+        const playEndList = this.state.property.playEnd.list;
+        const playEndIndex = lodash.findIndex(playEndList, item=>{
+            return item.name = data.playEndName;
+        })
+        this.state.property.areaName.defaultValue = this.state.property.areaName.value = data.name;
+        this.state.property.width.defaultValue = this.state.property.width.value = data.width;
+        this.state.property.height.defaultValue = this.state.property.height.value = data.height;
+        this.state.property.axisX_a.defaultValue = this.state.property.axisX_a.value = data.axisX;
+        this.state.property.axisY_a.defaultValue = this.state.property.axisY_a.value = data.axisY;
+
+        this.updatePlayEnd(playEndIndex);
+        this.setState({property: Object.assign({}, this.state.property),
+            prompt: {areaName: data.name?false:true, width: data.width?false:true, height: data.height?false:true,
+                axisX_a: axisX?false:true, axisY_a: axisY?false:true}
+        });
     }
 
     updatePlayEnd(playEndIndex){

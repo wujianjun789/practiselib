@@ -80,13 +80,15 @@ export default class TimingPlan extends PureComponent{
 
         this.state.property.timingName.defaultValue = this.state.property.timingName.value = data.name;
         this.state.property.timingList.defaultList = this.state.property.timingList.list = data.list;
-        this.state.property.timingPlayMode.defaultIndex = this.state.property.timingPlayMode.index = modeIndex;
-        this.state.property.timingPlayMode.name = modeList[modeIndex].name;
+        // this.state.property.timingPlayMode.defaultIndex = this.state.property.timingPlayMode.index = modeIndex;
+        // this.state.property.timingPlayMode.name = modeList[modeIndex].name;
+        this.updateTimingPlayMode(modeIndex);
 
         this.state.property.timingPlayModeCount.defaultValue = this.state.property.timingPlayModeCount.value = data.playCount;
         this.state.property.timingPlayModeCount.defaultValue2 = this.state.property.timingPlayModeCount.value2 = data.playTime;
-        this.state.property.timingPause.defaultIndex = this.state.property.timingPause.index = pauseIndex;
-        this.state.property.timingPause.name = pauseList[pauseIndex].name;
+        // this.state.property.timingPause.defaultIndex = this.state.property.timingPause.index = pauseIndex;
+        // this.state.property.timingPause.name = pauseList[pauseIndex].name;
+        this.updateTimingPause(pauseIndex);
         this.setState({property: Object.assign({}, this.state.property), prompt:{timingName:data.name?false:true, timingPlayModeCount:(modeIndex==0 && data.playCount || modeIndex==1 && data.playTime)?false:true}});
     }
 

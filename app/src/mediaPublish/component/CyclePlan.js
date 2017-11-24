@@ -69,8 +69,9 @@ export default class CyclePlan extends PureComponent{
         })
         this.state.property.cycleName.defaultValue = this.state.property.cycleName.value = data.name;
         this.state.property.cycleInterval.defaultValue = this.state.property.cycleInterval.value = data.interval;
-        this.state.property.cyclePause.defaultIndex = this.state.property.cyclePause.index = pauseIndex;
-        this.state.property.cyclePause.name = pauseList[pauseIndex].name;
+        // this.state.property.cyclePause.defaultIndex = this.state.property.cyclePause.index = pauseIndex;
+        // this.state.property.cyclePause.name = pauseList[pauseIndex].name;
+        this.updateCyclePause(pauseIndex);
         this.state.property.cycleDate.defaultAppoint = this.state.property.cycleDate.appoint =  data.dateAppoint;
         this.state.property.cycleStartDate.defaultValue = this.state.property.cycleStartDate.value = data.startDate;
         this.state.property.cycleEndDate.defaultValue = this.state.property.cycleEndDate.value = data.endDate;
