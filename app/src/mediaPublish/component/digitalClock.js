@@ -170,6 +170,8 @@ import '../../../public/styles/digitalClock.less';
    }
    render() {
      const { config, data, colorPicker, options } = this.state;
+     const {property} = config;
+
      const _propertyArray = ['timeZone', 'fontFamily', 'fontSize', 'location', 'timeFormat', 'dateFormat'];
      const _propertyOptions = this.renderOptions(_propertyArray);
      const timeZone  = _propertyOptions[_propertyArray.indexOf('timeZone')];
@@ -182,32 +184,32 @@ import '../../../public/styles/digitalClock.less';
        <div className='pro-container digitalClock' id='digitalClock'>
         <ul>
           <li>
-            <div>素材名称</div>
+            <div>{property.materialName}</div>
             <div className='input_form'>
               <input className='form-control' type='text' value={data.name} disabled/>
             </div>
           </li>
           <li>
             <div>
-              <div>时区</div>
+              <div>{property.timeZone}</div>
                 {timeZone}
             </div>
             <div>
-              <div>播放时长</div>
+              <div>{property.playTime}</div>
               <div>
                 <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.handleDataChange(e, '', 'playTime')}} value={data.playTime}/>
                 <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
             <div>
-              <div>背景颜色</div>
+              <div>{property.bgColor}</div>
               <div className='color-picker' id='bgColor' onClick={() => {this.handleColorPicker('bgColor')}} style={{backgroundColor:data.bgColor,borderColor:data.bgColor}}>
                   {colorPicker.bgColor ? <SketchPicker color={data.bgColor} onChange={(color) => {this.handleColorChange('bgColor', color)} }/> : null}
               </div>
             </div>
           </li>
           <li>
-            <div>文字内容</div>
+            <div>{property.textContent}</div>
             <div className='input_form'>
               <input className='form-control' type='text' onChange={(e) => {this.handleDataChange(e, '', 'textContent')}} value={data.textContent}/>
               <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入文字内容</span></div>
@@ -215,15 +217,15 @@ import '../../../public/styles/digitalClock.less';
           </li>
           <li>
             <div>
-              <div>选择字体</div>
+              <div>{property.fontFamily}</div>
                 {fontFamily}
             </div>
             <div>
-              <div>文字大小</div>
+              <div>{property.fontSize}</div>
                 {fontSize}
             </div>
             <div>
-              <div>文字颜色</div>
+              <div>{property.fontColor}</div>
               <div className='color-picker' id='fontColor' onClick={() => {this.handleColorPicker('fontColor')}} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
                   {colorPicker.fontColor ? <SketchPicker color={data.fontColor} onChange={color => {this.handleColorChange('fontColor', color)} }/> : null}
               </div>
@@ -231,28 +233,28 @@ import '../../../public/styles/digitalClock.less';
           </li>
           <li>
             <div>
-              <div>区域设置</div>
+              <div>{property.locationSet}</div>
                 {location}
             </div>
           </li>
           <li>
             <div>
-              <div>日期格式</div>
+              <div>{property.dateFormat}</div>
                 {dateFormat}
             </div>
             <div>
-              <div>时间格式</div>
+              <div>{property.timeFormat}</div>
                 {timeFormat}
             </div>
             <div>
-              <div>单行显示</div>
+              <div>{property.singleShow}</div>
               <div><input type='checkbox' checked={data.singleShow} onClick={this.handleSingleShow}/></div>
             </div>
           </li>
           <li>
             <div>
-              <button className='btn btn-primary' onClick={this.resetData}>重置</button>
-              <button className='btn btn-primary' onClick={this.submitData}>应用</button>
+              <button className='btn btn-primary' onClick={this.resetData}>{property.resetBtn}</button>
+              <button className='btn btn-primary' onClick={this.submitData}>{property.confirmBtn}</button>
             </div>
           </li>
         </ul>
