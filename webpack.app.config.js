@@ -20,6 +20,10 @@ module.exports = {
                 NODE_ENV: JSON.stringify("production")
             }
         }),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require('./manifest.json'),
+        }),
         new webpack.optimize.UglifyJsPlugin({
             output: {
                 comments: false, // remove all comments

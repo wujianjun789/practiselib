@@ -106,7 +106,9 @@
   },
   "scripts": {
     "test": "jest --coverage",
+    "build:lib":"webpack --config ddl.config.js",
     "build": "gulp",
+    "build:all":"npm run build:lib && npm run build",
     "start": "cd dist & npm start",
     "dev:server": "cd server & node server --dev ",
     "dev:client": "webpack-dev-server --hot --inline --public --content-base=./app/public  --host=0.0.0.0 --port=18080 --history-api-fallback",

@@ -2,6 +2,8 @@ var gulp = require('gulp');
 var webpack = require('webpack-stream');
 var path = require('path')
 var dest_app = path.join(__dirname, './dist/app/public');
+const dest_app_lib = path.join(__dirname, './dist/app/public/lib');
+const config_app_lib = require('./ddl.config');
 var config_app = require('./webpack.app.config');
 var clean = require('gulp-clean');
 var uglifyjs = require('uglify-js-harmony'); // replace 'uglify-js' with `uglify-js-harmony` for ES6 support
@@ -24,6 +26,14 @@ gulp.task('clean', function () {
     return gulp.src('dist/', { read: false })
         .pipe(clean());
 })
+
+gulp.task('app.webpack.lib',function () {
+    // return webpack(config_app_lib)
+    //     .pipe(gulp.dest(dest_app_lib));
+    return gulp.src('lib.js')
+        .pipe(gulp.dest(path.resolve(dest_app_lib, './')));
+})
+
 gulp.task('app.webpack', function () {
     return webpack(config_app)
         .pipe(gulp.dest(dest_app));
@@ -59,7 +69,7 @@ gulp.task('server.webpack', function (cb) {
     );
 
 })
-gulp.task('server', ['server.webpack', 'server.config', 'server.package']);
+gulp.task('server', ['app.webpack.lib','server.webpack', 'server.config', 'server.package']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start(['app', 'server']);
