@@ -2,7 +2,7 @@ export default  {
     locale:'en',
     messages:{
         'app.asset.manage':'Asset Manage',
-        'app.permission.manage':'Permission Manage',
+        'app.permission.manage':'Permission',
         'app.system.operation':'System Operation',
         'app.smart.light':'Smart Light',
         'app.light':'Smart Light',
