@@ -3,7 +3,7 @@ export default  {
     messages:{
         'app.asset.manage':'Asset Manage',
         'app.permission.manage':'Permission',
-        'app.system.operation':'System Operation',
+        'app.system.operation':'System Operate',
         'app.smart.light':'Smart Light',
         'app.light':'Smart Light',
         'app.report.manage':'Report Manage',
