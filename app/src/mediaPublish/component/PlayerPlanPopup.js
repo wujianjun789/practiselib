@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import Panel from './../../components/Panel';
 import PanelFooter from './../../components/PanelFooter';
 
-import 'antd/lib/date-picker/style';
-import 'antd/lib/checkbox/style';
 import {DatePicker, Checkbox} from 'antd';
 const CheckboxGroup = Checkbox.Group;
 import NotifyPopup from '../../common/containers/NotifyPopup'

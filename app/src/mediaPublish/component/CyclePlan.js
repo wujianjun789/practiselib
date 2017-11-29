@@ -3,8 +3,6 @@
  */
 import React,{ PureComponent } from 'react';
 
-import 'antd/lib/date-picker/style';
-import 'antd/lib/checkbox/style';
 import { DatePicker, Checkbox } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
