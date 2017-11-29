@@ -1,23 +1,44 @@
-var path = require('path')
-var webpack = require('webpack')
-var HtmlwebpackPlugin = require('html-webpack-plugin');
-var entry = {
-    app: ['babel-polyfill', 'webpack-hot-middleware/client', './app/src/root/index']
-};
+const path = require('path')
+const webpack = require('webpack')
+const HtmlwebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    // Enable sourcemaps for debugging webpack's output.
-    devtool: 'eval-source-map',
-    entry: entry,
+    entry: path.resolve(__dirname,'app/src/root/index.js'),
     output: {
-        path: path.join(__dirname, 'app', 'public'),
+        path: path.resolve(__dirname, 'app', 'public'),
         filename: '[name].bundle.js',
         publicPath: '/',
         chunkFilename: '[name].[chunkhash].chunk.js',
     },
+    devtool: 'eval-source-map',
+    devServer:{
+        contentBase:path.resolve(__dirname,'app/public'),
+        historyApiFallback:true,
+        inline:true,
+        hot:true,
+        host:'0.0.0.0',
+        port:18080
+    },
+    module: {
+        rules: [
+            {
+                test: /\.jsx?$/,
+                loader: "babel-loader",
+                exclude: /node_modules/,
+                include: __dirname,
+    
+            },
+            {
+                test: /\.css|\.less$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'less-loader'
+                ]
+            }
+        ]
+    },
     plugins: [
-
-        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DllReferencePlugin({
            context: __dirname,
@@ -35,32 +56,4 @@ module.exports = {
             hash: true
         }),
     ],
-
-
-    resolve: {
-        extensions: ["", ".js", ".jsx"]
-    },
-
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                loader: "babel-loader?presets[]=es2015&presets[]=react&presets[]=react-hmre&presets[]=stage-0",
-                exclude: /node_modules/,
-                include: __dirname,
-    
-            },
-            {
-                test: /\.css$/,
-                loader: "style-loader!css-loader"
-            },
-            {
-                test: /\.less$/,
-                loader: "style-loader!css-loader!less-loader"
-            },
-
-        ]
-
-    }
-
 };

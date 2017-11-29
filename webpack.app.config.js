@@ -1,35 +1,53 @@
-var path = require('path')
-var webpack = require('webpack')
-var HtmlwebpackPlugin = require('html-webpack-plugin');
-var entry = {
-    app: ['babel-polyfill', './app/src/root']
-};
+const path = require('path');
+const webpack = require('webpack')
+// const UglifyJsPlugin=require('uglifyjs-webpack-plugin');
+const HtmlwebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin=require('extract-text-webpack-plugin');
+
 
 module.exports = {
-    entry: entry,
+    entry: path.resolve(__dirname,'app/src/root/index.js'),
     output: {
-        path: path.join(__dirname, 'dist', 'app', 'public'),
+        path: path.resolve(__dirname, 'dist','app', 'public'),
         filename: '[name].bundle.js',
+        publicPath: '/',
         chunkFilename: '[name].[chunkhash].chunk.js',
-        publicPath: '/'
+    },
+
+    module: {
+        rules: [
+            {
+                test: /\.jsx?$/,
+                loader: "babel-loader",
+                exclude: /node_modules/,
+                include: __dirname,
+            },
+            {
+                test: /\.css|\.less$/,
+                use: ExtractTextPlugin.extract({
+                      fallback: 'style-loader',
+                      use: [ {
+                         loader:'css-loader',
+                      },'less-loader']
+                  })
+            }
+        ]
+
     },
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DllReferencePlugin({
+           context: __dirname,
+            manifest: require('./manifest.json'),
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name:'commons',
+            filename:'commons.js'
+        }),
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify("production")
-            }
-        }),
-        new webpack.DllReferencePlugin({
-            context: __dirname,
-            manifest: require('./manifest.json'),
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            output: {
-                comments: false, // remove all comments
-            },
-            compress: {
-                warnings: false
             }
         }),
         new HtmlwebpackPlugin({
@@ -37,31 +55,17 @@ module.exports = {
             template: 'app/src/templates/index.html',
             inject: true,
             hash: true
-        })
-    ],
-
-
-    resolve: {
-        extensions: ["", ".js", ".jsx"]
-    },
-
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                loader: "babel-loader?presets[]=es2015&presets[]=react&presets[]=stage-0",
-                exclude: /node_modules/
-            },
-            {
-                test: /\.css$/,
-                loader: "style-loader!css-loader"
-            },
-            {
-                test: /\.less$/,
-                loader: "style-loader!css-loader!less-loader"
-            }
-        ]
-
-    }
-
+        }),
+        // new UglifyJsPlugin({
+        //     uglifyOptions:{
+        //         output:{
+        //             comments:false,
+        //             beautify:false,
+                    
+        //         },
+        //         warnings:false
+        //     }
+        // }),
+        new ExtractTextPlugin('styles.css'),
+    ]
 };

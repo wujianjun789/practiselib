@@ -1,7 +1,7 @@
 // .babelrc
 {
   "presets": [
-    "es2015",
+    "env",
     "react",
     "stage-0"
   ],
@@ -13,5 +13,27 @@
         "style": "true"
       }
     ]
-  ]
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        [
+          "react-transform",
+          {
+            "transforms": [
+              {
+                "transform": "react-transform-hmr",
+                "imports": [
+                  "react"
+                ],
+                "locals": [
+                  "module"
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  }
 }

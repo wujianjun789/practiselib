@@ -19,7 +19,7 @@ router.get('/map', function (req, res, next) {
 
 router.get('/module', function (req, res, next) {
     let user = JSON.parse(req.query.user);
-    console.log(user, user.id, user.role, user.userId, "%%%%%%%");
+    // console.log(user, user.id, user.role, user.userId, "%%%%%%%");
 
     let options = {
         host: client.HOST,
@@ -39,7 +39,7 @@ router.get('/module', function (req, res, next) {
         })
 
         response.on('end', ()=>{
-            console.log('body:', body, JSON.parse(body).roleId);
+            // console.log('body:', body, JSON.parse(body).roleId);
             let modules = JSON.parse(body).modules;
             if(!modules||user.role=="admin"){
                 res.json(client.module);
