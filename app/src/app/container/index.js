@@ -4,6 +4,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+
+import {injectIntl} from 'react-intl';
+
 import PropTypes from 'prop-types';
 import '../../../public/styles/app.less';
 import Card from './Card';
@@ -28,6 +31,7 @@ export class App extends Component{
 
     render(){
         const {title="StarRiver", name="智慧路灯管理系统", items} = this.props;
+        console.log(items);
         return (
             <div className="app">
                 <svg className="svgOnload">
@@ -63,7 +67,7 @@ export class App extends Component{
                 </div>
                 <div className="cont">
                     <ul className="clearfix">
-                        {items.map((item, index)=><li key={item.key}><Card _key={item.key} title={item.title} link={item.link}/></li>)}
+                        {items.map((item, index)=><li key={item.key}><Card _key={item.key} title={this.props.intl.formatMessage({id:item.title})} link={item.link}/></li>)}
                     </ul>
                 </div>
                 <Overlayer />
@@ -101,4 +105,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(App));

@@ -7,15 +7,15 @@ import {
 } from '../actionType/index';
 
 export const moduleInfo = {
-	asset: {key: 'asset', title: '资产管理', link: '/assetManage/model'},
-	permission: {key: 'permission', title: '权限管理', link: '/permissionManage'},
-	maintenance: {key: 'maintenance', title: '系统运维', link: '/systemOperation/config'},
-	control: {key: 'control', title: '智慧路灯', link: '/smartLight/map'},
-	light: {key: 'light', title: '智能照明', link: '/light/map'},
-	report: {key: 'report', title: '报表管理', link: '/reporterManage/device'},
-	publish: {key: 'publish', title: '媒体发布', link: '/mediaPublish/playerList'},
-	visual: {key: 'visual', title: '可视化', link: '/'},
-	domain: {key: 'domain', title: '域管理', link: '/domainManage/domainEdit/list'}
+	asset: {key: 'asset', title: 'app.asset.manage', link: '/assetManage/model'},
+	permission: {key: 'permission', title: 'app.permission.manage', link: '/permissionManage'},
+	maintenance: {key: 'maintenance', title: 'app.system.operation', link: '/systemOperation/config'},
+	control: {key: 'control', title: 'app.smart.light', link: '/smartLight/map'},
+	light: {key: 'light', title: 'app.light', link: '/light/map'},
+	report: {key: 'report', title: 'app.report.manage', link: '/reporterManage/device'},
+	publish: {key: 'publish', title: 'app.mediaPublish', link: '/mediaPublish/playerList'},
+	visual: {key: 'visual', title: 'app.visualization', link: '/'},
+	domain: {key: 'domain', title: 'app.domain.manage', link: '/domainManage/domainEdit/list'}
 };
 
 export const initialState = {
@@ -34,6 +34,7 @@ export default function app(state=initialState, action) {
 }
 
 export function moduleInit(state, data) {
+	console.log(data);
     let items = data.map(val => {
 		if(moduleInfo[val.key]) {
 			return moduleInfo[val.key];

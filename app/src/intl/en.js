@@ -2,6 +2,14 @@ export default  {
     locale:'en',
     messages:{
         'app.asset.manage':'Asset Manage',
+        'app.permission.manage':'Permission Manage',
+        'app.system.operation':'System Operation',
+        'app.smart.light':'Smart Light',
+        'app.light':'Smart Light',
+        'app.report.manage':'Report Manage',
+        'app.mediaPublish':'MediaPublish',
+        'app.visualization':'Visualization',
+        'app.domain.manage':'Domain Manage',
 
         'app.link.index': 'home',
         'app.link.config': 'config',

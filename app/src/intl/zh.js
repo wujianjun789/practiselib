@@ -2,6 +2,14 @@ export default {
     locale: 'zh',
     messages: {
         'app.asset.manage':'资产管理',
+        'app.permission.manage':'权限管理',
+        'app.system.operation':'系统运维',
+        'app.smart.light':'智慧路灯',
+        'app.light':'智能照明',
+        'app.report.manage':'报表管理',
+        'app.mediaPublish':'媒体发布',
+        'app.visualization':'可视化',
+        'app.domain.manage':'域管理',
 
         'app.link.index': '首页',
         'app.link.config': '配置',
