@@ -45,7 +45,7 @@ const vendors = [
 
 module.exports = {
     output: {
-        path: path.join(__dirname),
+        path: path.join(__dirname, 'app/public/lib'),
         filename: '[name].js',
         library: '[name]',
     },

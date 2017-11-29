@@ -27,13 +27,6 @@ gulp.task('clean', function () {
         .pipe(clean());
 })
 
-gulp.task('app.webpack.lib',function () {
-    // return webpack(config_app_lib)
-    //     .pipe(gulp.dest(dest_app_lib));
-    return gulp.src('lib.js')
-        .pipe(gulp.dest(path.resolve(dest_app_lib, './')));
-})
-
 gulp.task('app.webpack', function () {
     return webpack(config_app)
         .pipe(gulp.dest(dest_app));
@@ -69,7 +62,7 @@ gulp.task('server.webpack', function (cb) {
     );
 
 })
-gulp.task('server', ['app.webpack.lib','server.webpack', 'server.config', 'server.package']);
+gulp.task('server', ['server.webpack', 'server.config', 'server.package']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start(['app', 'server']);
