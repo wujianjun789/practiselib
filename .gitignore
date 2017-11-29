@@ -29,3 +29,7 @@ coverage
 
 #ds-store
 .DS_Store
+
+#package lib
+app/publish/lib/lib.js
+manifest.json
