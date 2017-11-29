@@ -62,7 +62,7 @@ export class App extends Component{
                     <UserCenter />
                     <LanguageSwitch/>
                     <div className="header-right clearfix">
-                        <span className="name">{name}</span>
+                        <span className="name">{this.props.intl.formatMessage({id:name})}</span>
                     </div>
                 </div>
                 <div className="cont">

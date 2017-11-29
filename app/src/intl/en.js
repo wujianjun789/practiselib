@@ -1,6 +1,7 @@
 export default  {
     locale:'en',
     messages:{
+        'app.title':'Smart Light Manage System',
         'app.asset.manage':'Asset Manage',
         'app.permission.manage':'Permission',
         'app.system.operation':'System Operate',

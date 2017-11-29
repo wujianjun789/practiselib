@@ -20,7 +20,7 @@ export const moduleInfo = {
 
 export const initialState = {
     title: "StarRiver",
-    name: "智慧路灯管理系统",
+    name: "app.title",
     items: [],
 };
 

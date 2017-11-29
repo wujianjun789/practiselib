@@ -1,6 +1,7 @@
 export default {
     locale: 'zh',
     messages: {
+        'app.title':'智慧路灯管理系统',
         'app.asset.manage':'资产管理',
         'app.permission.manage':'权限管理',
         'app.system.operation':'系统运维',
