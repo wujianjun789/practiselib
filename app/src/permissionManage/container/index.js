@@ -17,13 +17,14 @@ import {requestUserData,requestUserMount,deleteUser,addUser,editUser} from '../.
 import {getMomentDate,momentDateFormat} from '../../util/time'
 import ModulePopup from './ModulePopup';
 import {getModule} from '../../app/action'
+import {FormattedMessage,injectIntl} from 'react-intl';
 
 export class PermissionManage extends Component{
     constructor(props){
         super(props);
         this.state = {
             datas:[],
-            search:Immutable.fromJS({placeholder:'输入用户名称', value:''}),
+            search:Immutable.fromJS({placeholder:'permission.input.username', value:''}),
             page: {
                 pageSize:10,
                 current: 1,
@@ -36,8 +37,9 @@ export class PermissionManage extends Component{
                 modules:[]
             }
         }
-        this.columns = [{field:"role", title:" "}, {field:"username", title:"用户名称"},
-            {field:"lastLoginDate", title:"最后登录时间"}];
+        this.columns = [{field:"role", title:" "}, {field:"username", title:"permission.username"},
+            {field:"lastLoginDate", title:"permission.lastLoginDate"}
+        ];
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -66,7 +68,7 @@ export class PermissionManage extends Component{
     }
 
     onClick(){
-        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title='添加用户' onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
+        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title={<FormattedMessage id='permission.addUser'/>} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
     }
 
     searchChange(value){
@@ -104,21 +106,21 @@ export class PermissionManage extends Component{
             let roleName = ''
             switch(item.roleId){
                 case 1:
-                    roleName = {title:'系统管理员',cls:"sysManage"};
+                    roleName = {title:'permission.admin',cls:"sysManage"};
                     break;
                 case 2:
-                    roleName = {title:'设备管理员',cls:"eqpManage"};
+                    roleName = {title:'permission.deviceAdmin',cls:"eqpManage"};
                     break;
                 case 3:
-                    roleName = {title:'设备操作员',cls:"eqpOperate"};
+                    roleName = {title:'permission.deviceOperator',cls:"eqpOperate"};
                     break;
                 case 4:
-                    roleName = {title:'访客',cls:"guest"};
+                    roleName = {title:'permission.guest',cls:"guest"};
                     break;
                 default:
-                    roleName = {title:'访客',cls:"guest"};
+                    roleName = {title:'permission.guest',cls:"guest"};
             }
-            item.role = <div className='role-icon'><span className={`icon btn-${roleName.cls}` }>{roleName.title}</span></div>;
+            item.role = <div className='role-icon'><span className={`icon btn-${roleName.cls}` }>{<FormattedMessage id={roleName.title}/>}</span></div>;
             item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
@@ -133,9 +135,9 @@ export class PermissionManage extends Component{
                 break;
             case 2:
                 popupInfo.roleId = {index:2, value:'设备管理员'};
-                break;
+            break;
             case 3:
-                popupInfo.roleId = {index:1, value:'设备操作员'};
+                popupInfo.roleId = {index:1, value:'设备操作员'};            
                 break;
             case 4:
                 popupInfo.roleId = {index:0, value:'访客'};
@@ -143,8 +145,7 @@ export class PermissionManage extends Component{
             default:
                 popupInfo.roleId = {index:0, value:'访客'};
         }
-        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title='用户资料' data={this.state.popupInfo} isEdit onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>))
-        
+        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title={<FormattedMessage id='permission.userData'/>} data={this.state.popupInfo} isEdit onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>))
     }
 
     rowDelete(id){
@@ -156,12 +157,12 @@ export class PermissionManage extends Component{
     }
 
     rowDomainEdit(id){
-        this.props.action.overlayerShow(<DomainPopup className='user-domain-edit-popup' title='用户域管理' id={id}/>)
+        this.props.action.overlayerShow(<DomainPopup className='user-domain-edit-popup' title={<FormattedMessage id='permission.domain'/>} id={id}/>)
     }
 
     rowModuleEdit(id){
         let row = getObjectByKeyObj(this.state.datas,'id',id);
-        this.props.action.overlayerShow(<ModulePopup className='user-module-edit-popup' title='模块权限管理' id={id} modules={this.props.modules} data = {row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>)
+        this.props.action.overlayerShow(<ModulePopup className='user-module-edit-popup' title={<FormattedMessage id='permission.module'/>} id={id} modules={this.props.modules} data = {row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>)
     }
 
     confirmClick(datas,isEdit){
@@ -177,11 +178,11 @@ export class PermissionManage extends Component{
         const {datas,search, page} = this.state;
         return(
             <div className='container permission-manage'>
-                <HeadBar moduleName='权限管理' router={this.props.router}/>
+                <HeadBar moduleName='app.permission.manage' router={this.props.router}/>
                 <div className = 'content '>
                     <div className = 'heading'>
-                        <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>                        
-                        <button className='btn btn-primary' onClick={this.onClick}>添加</button>
+                        <SearchText className="search" placeholder={ this.props.intl.formatMessage({id:search.get('placeholder')})} value={search.get('value')} onChange={(value)=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>                        
+                        <button className='btn btn-primary' onClick={this.onClick}><FormattedMessage id="button.add"/></button>
                     </div>
                     <div className="table-container">
                         <Table2 columns={this.columns} data = {this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit} rowModuleEdit={this.rowModuleEdit}/>
@@ -212,4 +213,4 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
     }
 }
 
-export default connect(mapStateToprops, mapDispatchToProps)(PermissionManage) 
+export default connect(mapStateToprops, mapDispatchToProps)(injectIntl(PermissionManage))

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
 import '../../public/styles/table.less';
+import {FormattedMessage} from 'react-intl';
+
 /**
  * Table 组件
  * keyField:string 指定key
@@ -67,7 +69,7 @@ export default class Table2 extends Component {
                         </th>
                         {
                             columns.map((item, index)=> {
-                                return <th key={index}>{item.title}</th>
+                                return <th key={index}><FormattedMessage id={item.title}/></th>
                             })
                         }
                         {
@@ -97,10 +99,10 @@ export default class Table2 extends Component {
                                 {
                                     isEdit &&
                                         <td className = 'button-icon'>
-                                            <a className="btn" onClick={()=>keyField && this.rowModuleEdit(row[keyField])}><span className="icon_module"></span><span className="module">模块权限</span></a>                                            
-                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="icon_domain"></span><span className="domain">域管理</span></a>
-                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon_edit"></span><span className="update">修改</span></a>
-                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon_delete"></span><span className="del">删除</span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowModuleEdit(row[keyField])}><span className="icon_module"></span><span className="module"><FormattedMessage id="button.module"/></span></a>                                            
+                                            <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="icon_domain"></span><span className="domain"><FormattedMessage id="app.domain.manage"/></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon_edit"></span><span className="update"><FormattedMessage id="button.edit"/></span></a>
+                                            <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon_delete"></span><span className="del"><FormattedMessage id="button.delete"/></span></a>
                                         </td>
                                 }
 

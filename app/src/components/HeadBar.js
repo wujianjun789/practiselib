@@ -8,6 +8,7 @@ import UserCenter from '../common/containers/UserCenter'
 import LanguageSwitch from '../common/containers/LanguageSwitch';
 import NotifyPopup from '../common/containers/NotifyPopup';
 import {addNotify} from '../common/actions/notifyPopup';
+import {FormattedMessage} from 'react-intl';
 
 export class HeadBar extends Component{
     constructor(props){
@@ -29,7 +30,7 @@ export class HeadBar extends Component{
             <div className="home" onClick={this.onClick}>
                 <span className="glyphicon glyphicon-home" aria-hidden="true"></span>
             </div>
-            <span className="title">{moduleName}</span>
+            <span className="title">{<FormattedMessage id={moduleName}/>}</span>
             <UserCenter />
             <LanguageSwitch />
         </div>
