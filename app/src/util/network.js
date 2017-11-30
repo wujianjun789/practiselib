@@ -45,6 +45,7 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
         return fetch(url, option).then((response)=>{
             responseCall && responseCall.apply(null, [response]);
         }).catch((error)=>{
+            alertPopup(error);
             errorCall && errorCall.apply(null, [error, errorParam]);
         })
     }
@@ -71,9 +72,8 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
 function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return response
-    } else if (statusCode[response.status]) {
-        return response;
     } else {
+        alertPopup(response);
         return parseJSON(response).then(({json,response}) => {
             var error = new Error(json && json.message || response.status);
             throw error;
@@ -139,6 +139,14 @@ export function getToken() {
             return null            
     }
     
+}
+
+export function alertPopup(response) {
+    if(typeof response === 'string'){
+        alert(response);
+    }else{
+        response && alert(response.statusText?response.statusText:statusCode[response.statusCode]);
+    }
 }
 
 export function getConfig(cb) {
