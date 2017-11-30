@@ -490,6 +490,7 @@ export class PlayerArea extends Component {
     areaClick(id) {
         const { actions } = this.props;
         let data = {}
+        console.log(id);
         if (id == "add") {
             if (this.state.curType == "playerProject") {
                 this.setState({ isAddClick: true });
@@ -554,7 +555,9 @@ export class PlayerArea extends Component {
                 }} />)
         } else if (id == "project") {
             this.setState({ curType: "playerProject", isClick: false });
-        } else {
+        } else if(id == "complete"){
+
+        }else {
             this.setState({ isAddClick: false }, () => {
                 let type = "plan";
                 let proType = "playerPlan";
