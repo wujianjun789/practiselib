@@ -1,6 +1,16 @@
 export default  {
     locale:'en',
     messages:{
+        //按钮
+        ' ':' ',
+        'button.add': 'Add',
+        'button.edit': 'Edit',
+        'button.delete': 'Delete',
+        'button.confirm': 'Confirm',
+        'button.cancel': 'Cancel',
+        'button.module':'Module Permissions',
+
+        //首页
         'app.title':'Smart Light Manage System',
         'app.asset.manage':'Asset Manage',
         'app.permission.manage':'Permission',
@@ -12,6 +22,19 @@ export default  {
         'app.visualization':'Visualization',
         'app.domain.manage':'Domain Manage',
 
+        //权限管理
+        'permission.username':'UserName',
+        'permission.lastLoginDate':'Last Login Date',
+        'permission.admin':'Admin',
+        'permission.deviceAdmin':'Device admin',
+        'permission.deviceOperator':'Device operator',
+        'permission.guest':'Guest',
+        'permission.addUser':'Add User',
+        'permission.userData':'User Data',
+        'permission.domain':'Domain Manage',
+        'permission.module':'Module Manage',
+        'permission.input.username':'Please input username',             
+        
         'app.link.index': 'home',
         'app.link.config': 'config',
         'app.search': 'Search',
@@ -108,12 +131,6 @@ export default  {
         'manage.link.screen': 'Screen',
         'manage.link.playList':'PlayList',
         'manage.link.rfid':'RFID',
-
-        'button.add': 'Add',
-        'button.edit': 'Edit',
-        'button.delete': 'Delete',
-        'button.confirm': 'Confirm',
-        'button.cancel': 'Cancel',
 
         'panel.info': 'No relevant data!',
         'manage.name':'Name',

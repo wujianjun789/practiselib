@@ -1,6 +1,16 @@
 export default {
     locale: 'zh',
     messages: {
+        //按钮
+        ' ':' ',
+        'button.add': '添加',
+        'button.edit': '编辑',
+        'button.delete': '删除',
+        'button.confirm': '确认',
+        'button.cancel': '取消',
+        'button.module':'模块权限',
+
+        //首页
         'app.title':'智慧路灯管理系统',
         'app.asset.manage':'资产管理',
         'app.permission.manage':'权限管理',
@@ -11,6 +21,19 @@ export default {
         'app.mediaPublish':'媒体发布',
         'app.visualization':'可视化',
         'app.domain.manage':'域管理',
+
+        //权限管理
+        'permission.username':'用户名称',
+        'permission.lastLoginDate':'最后登录时间',
+        'permission.admin':'系统管理员',
+        'permission.deviceAdmin':'设备管理员',
+        'permission.deviceOperator':'设备操作员',
+        'permission.guest':'访客',
+        'permission.addUser':'添加用户',
+        'permission.userData':'用户资料',
+        'permission.domain':'用户域管理',
+        'permission.module':'模块权限管理',
+        'permission.input.username':'请输入用户名称',     
 
         'app.link.index': '首页',
         'app.link.config': '配置',
@@ -108,12 +131,6 @@ export default {
         'manage.link.screen': '屏',
         'manage.link.playList':'播放列表',
         'manage.link.rfid':'RFID',
-
-        'button.add': '新增',
-        'button.edit': '编辑',
-        'button.delete': '删除',
-        'button.confirm': '确认',
-        'button.cancel': '取消',
 
         'panel.info': '无相关数据！',
         'manage.name':'名称',
