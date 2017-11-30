@@ -8,7 +8,6 @@ export default {
         'button.delete': '删除',
         'button.confirm': '确认',
         'button.cancel': '取消',
-        'button.module':'模块权限',
 
         //首页
         'app.title':'智慧路灯管理系统',
@@ -31,9 +30,17 @@ export default {
         'permission.guest':'访客',
         'permission.addUser':'添加用户',
         'permission.userData':'用户资料',
-        'permission.domain':'用户域管理',
-        'permission.module':'模块权限管理',
-        'permission.input.username':'请输入用户名称',     
+        'permission.domain':'域权限',
+        'permission.module':'模块权限',
+        'permission.input.username':'请输入用户名称',
+        'permission.input.domain':'请输入域名称',        
+        'permission.added':'已添加',
+        'permission.lastname':'姓氏',
+        'permission.firstname':'名字',
+        'permission.password':'密码',
+        'permission.repassword':'重复密码',
+        'permission.grade':'用户等级',
+        
 
         'app.link.index': '首页',
         'app.link.config': '配置',

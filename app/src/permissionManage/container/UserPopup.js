@@ -9,6 +9,8 @@ import Select from '../../components/Select';
 import Immutable from 'immutable';
 import {PassWordValid} from '../../util/index';
 import {IsExitInArray} from '../../util/algorithm';
+import {FormattedMessage} from 'react-intl';
+
 export default class UserPopup extends Component{
     constructor(props){
         super(props);
@@ -20,7 +22,7 @@ export default class UserPopup extends Component{
             firstName:Immutable.fromJS({value:isEdit?data.firstName:'',checked:'',reminder:''}),
             password:Immutable.fromJS({value:'',checked:'',reminder:''}),
             rePassword:Immutable.fromJS({value:'',checked:'',reminder:''}),
-            role:Immutable.fromJS({list:[{id:4, value:'访客'},{id:3, value:'设备操作员'},{id:2, value:'设备管理员'},{id:1, value:'系统管理员'}], index:isEdit?data.roleId.index:0, value:isEdit?data.roleId.value:'访客'}),
+            role:Immutable.fromJS({list:[{id:4, value:this.props.intl.formatMessage({id:'permission.guest'})},{id:3, value:this.props.intl.formatMessage({id:'permission.deviceOperator'})},{id:2, value:this.props.intl.formatMessage({id:'permission.deviceAdmin'})},{id:1, value:this.props.intl.formatMessage({id:'permission.admin'})}], index:isEdit?data.roleId.index:0, value:isEdit?data.roleId.value:this.props.intl.formatMessage({id:'permission.guest'})}),
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -98,27 +100,27 @@ export default class UserPopup extends Component{
     render() {
         let {className = '',title = '',isEdit=false} = this.props;
         let {username,lastName,firstName,password,rePassword,toggle,domainList} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className = 'form-group row basic-info'>
-                    <InputCheck label='用户名' id='username' placeholder='请输入用户名' value= {username.get('value')} disabled={isEdit?true:false}
+                    <InputCheck label='permission.username' id='username' value= {username.get('value')} disabled={isEdit?true:false}
                         checked={username.get('checked')} reminder={username.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
                     <div className="inputCheck">
-                        <label className="control-label">用户等级:</label>
+                        <label className="control-label"><FormattedMessage id='permission.grade'/>:</label>
                         <div className="has-feedback">
                             <Select className="role" data={this.state.role}
                                 onChange={this.roleChange}/>
                             <span className="glyphicon  form-control-feedback" aria-hidden="true"></span><span className="reminder"></span>
                         </div>
                     </div>
-                    <InputCheck label='姓氏' id='lastName' placeholder='请输入姓氏' value= {lastName.get('value')}
+                    <InputCheck label='permission.lastname' id='lastName' value= {lastName.get('value')}
                         checked={lastName.get('checked')} reminder={lastName.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
-                    <InputCheck label='名字' id='firstName' placeholder='请输入名字' value= {firstName.get('value')}
+                    <InputCheck label='permission.firstname' id='firstName' value= {firstName.get('value')}
                         checked={firstName.get('checked')} reminder={firstName.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
-                    <InputCheck label='密码' className={`${isEdit?'hidden':''}`} id='password' type='password' placeholder='请输入密码' value= {password.get('value')} 
+                    <InputCheck label='permission.password' className={`${isEdit?'hidden':''}`} id='password' type='password' value= {password.get('value')} 
                         checked={password.get('checked')} reminder={password.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
-                    <InputCheck label='重复密码' className={`${isEdit?'hidden':''}`} id='rePassword' type='password' placeholder='请再次输入密码' value= {rePassword.get('value')} 
+                    <InputCheck label='permission.repassword' className={`${isEdit?'hidden':''}`} id='rePassword' type='password' value= {rePassword.get('value')} 
                         checked={rePassword.get('checked')} reminder={rePassword.get('reminder')} onBlur = {this.checkOut} onFocus={this.onFocus} onChange = {this.onChange}/>
                 </div>
             </Panel>

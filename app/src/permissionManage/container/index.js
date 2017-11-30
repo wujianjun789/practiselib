@@ -68,7 +68,7 @@ export class PermissionManage extends Component{
     }
 
     onClick(){
-        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title={<FormattedMessage id='permission.addUser'/>} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
+        this.props.action.overlayerShow(<UserPopup className='user-add-popup' title={<FormattedMessage id='permission.addUser'/>} intl={this.props.intl} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
     }
 
     searchChange(value){
@@ -131,21 +131,21 @@ export class PermissionManage extends Component{
         let popupInfo = getObjectByKeyObj(this.state.datas,'id',id);
         switch(popupInfo.roleId){
             case 1:
-                popupInfo.roleId = {index:3, value:'系统管理员'};
+                popupInfo.roleId = {index:3, value:this.props.intl.formatMessage({id:'permission.admin'})};
                 break;
             case 2:
-                popupInfo.roleId = {index:2, value:'设备管理员'};
-            break;
+                popupInfo.roleId = {index:2, value:this.props.intl.formatMessage({id:'permission.deviceOperator'})};
+                break;
             case 3:
-                popupInfo.roleId = {index:1, value:'设备操作员'};            
+                popupInfo.roleId = {index:1, value:this.props.intl.formatMessage({id:'permission.deviceOperator'})};            
                 break;
             case 4:
-                popupInfo.roleId = {index:0, value:'访客'};
+                popupInfo.roleId = {index:0, value:this.props.intl.formatMessage({id:'permission.guest'})};
                 break;
             default:
-                popupInfo.roleId = {index:0, value:'访客'};
+                popupInfo.roleId = {index:0, value:this.props.intl.formatMessage({id:'permission.guest'})};
         }
-        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' title={<FormattedMessage id='permission.userData'/>} data={this.state.popupInfo} isEdit onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>))
+        this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' intl={this.props.intl} title={<FormattedMessage id='permission.userData'/>} data={this.state.popupInfo} isEdit onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>))
     }
 
     rowDelete(id){

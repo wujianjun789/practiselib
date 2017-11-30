@@ -16,12 +16,14 @@ import Node from '../../components/Node';
 import {getIndexByKey,getObjectByKey,getListKeyByKeyFuzzy,getObjectByKeyObj,getListKeyByKey} from '../../util/algorithm';
 import {makeTree} from '../../util/index'
 import {updateUserDomain} from '../../api/permission'
+import {FormattedMessage,injectIntl} from 'react-intl';
+
 export class DomainPopup extends Component{
     constructor(props){
         super(props);
         this.state={
             toggle:'hidden',
-            search:Immutable.fromJS({placeholder:'输入域名称', value:''}),
+            search:Immutable.fromJS({placeholder:'permission.input.domain', value:''}),
             domainList:Immutable.fromJS([]),
             tree:[],
             nodes:Immutable.fromJS([])
@@ -165,14 +167,14 @@ export class DomainPopup extends Component{
     render() {
         let {className = '',title = ''} = this.props;
         let {toggle,domainList,data,tree,nodes,search} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className = 'form-group row domain-per'>
-                    <label className="control-label">域权限:</label>
+                    <label className="control-label"><FormattedMessage id='permission.domain'/>:</label>
                     <div className="domain-content">
                         <div className='domain-tree'>
-                                <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
+                                <SearchText className="search" placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
                                 <div className='domain-tree-list'>
                                 {
                                     tree && tree.map((node)=>{
@@ -214,4 +216,4 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
     }
 }
 
-export default connect(mapStateToprops, mapDispatchToProps)(DomainPopup) 
+export default connect(mapStateToprops, mapDispatchToProps)(injectIntl(DomainPopup)) 

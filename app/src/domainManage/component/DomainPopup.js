@@ -107,7 +107,7 @@ export default class DomainPopup extends PureComponent {
 
         let valid = prompt.domainName || prompt.lng || prompt.lat;
 
-         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
+         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']}
             btnClassName={['btn-default', 'btn-primary']} 
             btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         let curDomain = null;

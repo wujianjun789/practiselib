@@ -1,5 +1,6 @@
 import React,{PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {FormattedMessage} from 'react-intl';
 
 export default class InputCheck extends PureComponent{
     constructor(props){
@@ -25,7 +26,7 @@ export default class InputCheck extends PureComponent{
         const {type = 'text',className = '',id,label,checked = 'fail',reminder = '',placeholder = '',value='',disabled=false} = this.props;
 
         return <div className={`inputCheck ${className}`}>
-                <label className = 'control-label'>{label}:</label>
+                <label className = 'control-label'><FormattedMessage id={label}/>:</label>
                 <div className = {`has-feedback ${checked=='success'?'has-success':checked=='fail'?'has-error':''}`}>
                     <input disabled={!!disabled} type={type} id = {id} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
                     <span className={`glyphicon ${checked=='success'?'glyphicon-ok':checked=='fail'?'glyphicon-remove':''} form-control-feedback`} aria-hidden="true"></span>
