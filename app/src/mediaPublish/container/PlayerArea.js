@@ -34,7 +34,11 @@ import ConfirmPopup from '../../components/ConfirmPopup'
 import PlayerScenePopup from '../component/PlayerScenePopup';
 import PlayerPlanPopup from '../component/PlayerPlanPopup';
 import PlayerAreaPopup from '../component/PlayerAreaPopup';
-import Material from '../component/material';
+
+import PreviewFile from '../component/previewFile';
+import UploadNotify from '../component/uploadNotify';
+import UploadFile from '../component/uploadFile';
+
 
 import NotifyPopup from '../../common/containers/NotifyPopup';
 
@@ -48,7 +52,7 @@ import Immutable from 'immutable';
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
 
-import {updateTree} from '../util/index'
+import { updateTree } from '../util/index'
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -152,6 +156,9 @@ export class PlayerArea extends Component {
             }),
 
             showModal: false,
+            showUploadNotify: false,
+            showUploadFile: false,
+            uploadFileList: [],
 
             assetStyle: { "bottom": "0px" },
             controlStyle: { "left": "auto", "right": "auto" },
@@ -196,6 +203,13 @@ export class PlayerArea extends Component {
         this.updateTreeData = this.updateTreeData.bind(this);
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
+        this.showUploadNotify = this.showUploadNotify.bind(this);
+        this.hideUploadNotify = this.hideUploadNotify.bind(this)
+        this.showUploadFile = this.showUploadFile.bind(this);
+        this.hideUploadFile = this.hideUploadFile.bind(this);
+        this.addUploadFile = this.addUploadFile.bind(this);
+        this.cancelUploadFile = this.cancelUploadFile.bind(this);
+        this.updateProgress = this.updateProgress.bind(this);
         this.updatePlayerPlanPopup = this.updatePlayerPlanPopup.bind(this);
         this.updatePlayerScenePopup = this.updatePlayerScenePopup.bind(this);
         this.updatePlayerAreaPopup = this.updatePlayerAreaPopup.bind(this);
@@ -314,7 +328,7 @@ export class PlayerArea extends Component {
     onChange(id, value) {
         console.log("id:", id);
         let prompt = false;
-        if ( id == "assetType" || id == "assetSort") {
+        if (id == "assetType" || id == "assetSort") {
             this.state[id] = this.state[id].update('index', v => value);
             this.setState({ [id]: this.state[id].update('value', v => this.state[id].getIn(["list", value, "value"])) });
         }
@@ -555,9 +569,9 @@ export class PlayerArea extends Component {
                 }} />)
         } else if (id == "project") {
             this.setState({ curType: "playerProject", isClick: false });
-        } else if(id == "complete"){
+        } else if (id == "complete") {
 
-        }else {
+        } else {
             this.setState({ isAddClick: false }, () => {
                 let type = "plan";
                 let proType = "playerPlan";
@@ -645,6 +659,114 @@ export class PlayerArea extends Component {
         })
     }
 
+    showUploadNotify() {
+        this.setState({
+            showUploadNotify: true
+        })
+    }
+    hideUploadNotify() {
+        this.setState({
+            showUploadNotify: false
+        })
+    }
+
+    showUploadFile() {
+        this.setState({
+            showUploadFile: true
+        })
+    }
+    hideUploadFile() {
+        this.setState({
+            showUploadFile: false
+        })
+    }
+    uploadProgress = (e) => {
+        if (e.lengthComputable) {
+            const progress = Math.round((e.loaded / e.total) * 100);
+            this.updateProgress({ name: name, progress: progress })
+            console.log(progress);
+        }
+    }
+    uploadComplete = (e) => {
+        console.log(e.target.responseText);
+    }
+    uploadFailed = (e) => {
+        console.log('There was an error attempting to upload the file');
+    }
+    uploadCanceled = (e) => {
+        console.log('取消上传');
+    }
+    addUploadFile(file) {
+
+        const self = this;
+        const url = 'http://192.168.155.207:3000/api/containers/common/upload';
+        const name = file.name;
+        const form = new FormData();
+        form.append('file', file.data);
+
+        const xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', this.uploadProgress);
+        xhr.addEventListener('load', this.uploadComplete, false);
+        xhr.addEventListener('error', this.uploadFailed, false);
+        xhr.addEventListener('abort', this.uploadCanceled, false);
+
+        xhr.open('POST', url, true);
+        xhr.send(form);
+
+        // const timer=setInterval(update.bind(this),2000);
+        // function update(){
+        //     let progress=Math.random()*100;
+        //     console.log(progress);
+        //     this.updateProgress({name:name,progress:progress,timer:timer})
+        // }
+        console.log(file);
+        const newUploadFileList = this.state.uploadFileList;
+        newUploadFileList.push({ name: file.name, progress: file.progress, xhr: xhr });
+        this.setState({
+            uploadFileList: newUploadFileList
+        }, () => {
+            if (this.state.uploadFileList.length !== 0) {
+                this.showUploadNotify();
+            }
+            else if (this.state.uploadFileList.length === 0) {
+                this.hideUploadNotify()
+            }
+        })
+    }
+    cancelUploadFile(index) {
+        const newUploadFileList = this.state.uploadFileList;
+        this.uploadCanceled(newUploadFileList[index].xhr)
+        newUploadFileList.splice(index, 1);
+        this.setState({
+            uploadFileList: newUploadFileList
+        }, () => {
+            if (this.state.uploadFileList.length !== 0) {
+                this.showUploadNotify();
+            }
+            else if (this.state.uploadFileList.length === 0) {
+                this.hideUploadNotify()
+            }
+        })
+    }
+    updateProgress(item) {
+        const list = this.state.uploadFileList;
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].name === item.name) {
+                list[i].progress = item.progress;
+                this.setState({
+                    uploadFileList: list
+                })
+            }
+        }
+    }
+    // componentDidUpdate() {
+    //     if (this.state.uploadFileList.length !== 0) {
+    //         this.showUploadNotify();
+    //     }
+    //     else if (this.state.uploadFileList.length === 0) {
+    //         this.hideUploadNotify()
+    //     }
+    // }
     onToggle(node) {
         console.log("node:", node);
         let type = "scene";
@@ -672,7 +794,16 @@ export class PlayerArea extends Component {
     sidebarClick(id) {
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
     }
-
+    componentWillUnmount() {
+        const list = this.state.uploadFileList;
+        list.map((item) => {
+            item.xhr.upload.removeEventListener('progress', this.uploadProgress)
+            item.xhr.removeEventListener('load', this.uploadComplete);
+            item.xhr.removeEventListener('error', this.uploadFailed);
+            item.xhr.removeEventListener('abort', this.uploadCanceled);
+            console.log(item.xhr)
+        })
+    }
     render() {
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
@@ -697,7 +828,9 @@ export class PlayerArea extends Component {
             <HeadBar moduleName="媒体发布" router={router} />
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
                 onClick={this.areaClick} onToggle={this.onToggle} />
+
             <Content className="player-area">
+
                 <div className="left">
                     <div className="form-group control-container-top">
                         <div className="form-group play-container" onClick={() => this.playHandler()}>
@@ -765,8 +898,8 @@ export class PlayerArea extends Component {
                         {curType == 'playerProject' && <PlayerProject />}
                         {curType == 'playerPlan' && <PlayerPlan />}
                         {curType == 'playerScene' && <PlayerScene />}
-                        {curType == 'playerArea' && <PlayerAreaPro playEndIndex={1}/>}
-                        {curType == 'cyclePlan' && <CyclePlan pause={1}/>}
+                        {curType == 'playerArea' && <PlayerAreaPro playEndIndex={1} />}
+                        {curType == 'cyclePlan' && <CyclePlan pause={1} />}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} />}
                         {curType == 'playerPicAsset' && <PlayerPicAsset />}
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
@@ -803,7 +936,7 @@ export class PlayerArea extends Component {
                                     <button className="btn btn-primary" onClick={() => this.assetList('complete')}>完成
                                     </button>
                                 </div>
-                                {this.state.showModal?<Material showModal={this.state.showModal} hideModal={this.hideModal} />:null}
+                                <PreviewFile showModal={this.state.showModal} hideModal={this.hideModal} addUploadFile={this.addUploadFile} />
                             </div>
                             <div className="bottom">
                                 <ul className="asset-list">
@@ -844,6 +977,8 @@ export class PlayerArea extends Component {
                 <NotifyPopup />
                 <Overlayer />
             </div >
+            <UploadNotify showUploadNotify={this.state.showUploadNotify} hideUploadNotify={this.hideUploadNotify} showUploadFile={this.showUploadFile} />
+            <UploadFile showUploadFile={this.state.showUploadFile} hideUploadFile={this.hideUploadFile} uploadFileList={this.state.uploadFileList} cancelUploadFile={this.cancelUploadFile} />
         </div>
     }
 }
