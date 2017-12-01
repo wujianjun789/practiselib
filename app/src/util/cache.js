@@ -73,9 +73,9 @@ export function setLocalStorage(key, value) {
 }
 
 export function getLocalStorage(key) {
-    let data
+    let data;
     if(localStorage && localStorage.getItem){
-        localStorage.getItem(key);
+        data = localStorage.getItem(key);
     }
 
     if(!!data){

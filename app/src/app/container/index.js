@@ -31,7 +31,6 @@ export class App extends Component{
 
     render(){
         const {title="StarRiver", name="智慧路灯管理系统", items} = this.props;
-        console.log(items);
         return (
             <div className="app">
                 <svg className="svgOnload">

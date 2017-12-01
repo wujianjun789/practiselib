@@ -2,8 +2,9 @@
  * Created by a on 2017/9/5.
  */
 import React,{Component} from 'react';
-import {getDefaultIntl} from '../../intl/index'
+import {getDefaultIntl} from '../../intl/index';
 import {getObjectByKey} from '../../util/index'
+
 export default class LanguageSwitch extends Component{
     constructor(props){
         super(props);
