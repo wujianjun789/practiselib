@@ -15,6 +15,7 @@ import NotifyPopup from '../../common/containers/NotifyPopup';
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 
 import Immutable from 'immutable';
+import {injectIntl} from 'react-intl'
 
 import {getLightLevelConfig} from '../../util/network'
 import {getDomainList} from '../../api/domain'
@@ -86,9 +87,9 @@ export class SmartLightMap extends Component{
             {id:"6", value:50}, {id:"7", value:60}, {id:"9", value:70}, {id:"10", value:80}, {id:"11", value:90}, {id:"12", value:100}*/
         ]}
 
-        this.searchPromptList = [{id:"device", value:"设备"},{id:"domain", value:"域"}];
-        this.screenSwitch = {id:"screenSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
-        this.lightSwitch = {id:"lightSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
+        this.searchPromptList = [{id:"device", value:this.formatIntl('app.device')},{id:"domain", value:this.formatIntl("app.domain")}];
+        this.screenSwitch = {id:"screenSwitch", value:this.formatIntl('app.close'),options:[{id:1, value:"关"},{id:2, value:this.formatIntl('app.open')}]};
+        this.lightSwitch = {id:"lightSwitch", value:this.formatIntl('app.close'),options:[{id:1, value:"关"},{id:2, value:this.formatIntl('app.open')}]};
         this.presetList = {id:"preset", value:"1",options:[{id:1, value:"1"},{id:2, value:"2"}]};
 
         this.focusInput = {min:0, max:100, step:10};
@@ -191,7 +192,7 @@ console.log(tableIndex);
             if(curDomain){
                 getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
             }else{
-                this.props.actions.addNotify(0, "没有找到匹配域。");
+                this.props.actions.addNotify(0, this.formatIntl('app.not.found'));
                 this.setState({IsSearchResult:false});
             }
             return;
@@ -203,7 +204,7 @@ console.log("%%%%%%%")
     updateSearch(data, IsSearch){
         console.log(data);
         if(IsSearch && (!data || data.length==0)){
-            this.props.actions.addNotify(0, "没有找到结果。");
+            this.props.actions.addNotify(0, this.formatIntl('app.not.found'));
         }
 
         let searchList = Immutable.fromJS(data);
@@ -280,8 +281,8 @@ console.log("%%%%%%%")
     }
 
     formatIntl(formatId){
-        // return this.props.intl.formatMessage({id:formatId});
-        return formatId;
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     onChange(key, event){
@@ -449,11 +450,11 @@ console.log("tableIndex:",tableIndex)
         }
 
         if(key == 'online'){
-            return this.formatIntl(sf ? '在线' : '离线');
+            return this.formatIntl(sf ? 'app.online' : 'app.offline');
         }
 
         if(key == 'charge_state'){
-            return this.formatIntl(sf ? '充电中' : '充电故障');
+            return this.formatIntl(sf ? 'app.charging' : 'app.charging.fault');
         }
         return this.formatIntl(sf ? 'abnormal':'normal');
     }
@@ -608,7 +609,7 @@ console.log("tableIndex:",tableIndex)
                 const {timeTableList} = this.state
                 return <div className="row state-control screen">
                         <div className="col-sm-12 form-group switch">
-                            <label className="col-sm-4">显示屏开关:</label>
+                            <label className="col-sm-4">{this.formatIntl('app.led.control')}</label>
                             <select className="col-sm-4" value={this.screenSwitch.value} onChange={event=>this.onChange("screenSwitch", event)}>
                                 {
                                     this.screenSwitch.options.map(sw=>{
@@ -616,10 +617,10 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>应用</button>
+                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>{this.formatIntl('app.apply')}</button>
                         </div>
                         <div className="col-sm-12 form-group time-table">
-                            <label className="col-sm-4">时间表1</label>
+                            <label className="col-sm-4">{this.formatIntl('app.schedule')}</label>
                             <select className="col-sm-4" value={timeTableList.get("value")} onChange={event=>this.onChange("timeTable", event)}>
                                 {
                                     timeTableList.get("options").map(time=>{
@@ -627,7 +628,7 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>{this.formatIntl('app.apply')}</button>
                         </div>
                     </div>
             case "camera":
@@ -639,7 +640,7 @@ console.log("tableIndex:",tableIndex)
                         </canvas>
                     </div>
                     <div className="col-sm-12 form-group focus">
-                        <label className="col-sm-3">变焦:</label>
+                        <label className="col-sm-3">{this.formatIntl('app.zoom')}</label>
                         <div className="col-sm-9">
                             <span className="glyphicon glyphicon-minus minus" onClick={()=>this.focusClick('minus')}></span>
                             <input type="range" min={min} max={max} step={step} value={camera.get("focus")} onChange={event=>this.onChange("focus", event)}/>
@@ -647,7 +648,7 @@ console.log("tableIndex:",tableIndex)
                         </div>
                     </div>
                     <div className="col-sm-12 form-group preset">
-                        <label className="col-sm-3">预置:</label>
+                        <label className="col-sm-3">{this.formatIntl('app.preset')}</label>
                         <select className="col-sm-6" value={this.presetList.value} onChange={event=>this.onChange("preset", event)}>
                             {
                                 this.presetList.options.map(sw=>{
@@ -655,14 +656,14 @@ console.log("tableIndex:",tableIndex)
                                 })
                             }
                         </select>
-                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("preset")}>切换</button>
+                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("preset")}>{this.formatIntl('app.switch')}</button>
                     </div>
                 </div>
             case "lamp":
                 const {strategyList} = this.state;
                 return <div className="row state-control lamp">
                         <div className="col-sm-12 form-group group">
-                            <label className="col-sm-4">整组调光:</label>
+                            <label className="col-sm-4">{this.formatIntl('app.group.dimming')}</label>
                             <label className="col-sm-8 checkbox-inline">
                                 <input type="checkbox"/>
                                 {"疏影路组"}
@@ -670,7 +671,7 @@ console.log("tableIndex:",tableIndex)
                         </div>
 
                         <div className="col-sm-12 form-group strategy">
-                            <label className="col-sm-4">策略调光:</label>
+                            <label className="col-sm-4">{this.formatIntl('app.strategy.dimming')}</label>
                             <select className="col-sm-4" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
                                 {
                                     strategyList.get("options").map(strategy=>{
@@ -678,10 +679,10 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>{this.formatIntl('app.apply')}</button>
                         </div>
                         <div className="col-sm-12 form-group handler">
-                            <label className="col-sm-4">手动调光:</label>
+                            <label className="col-sm-4">{this.formatIntl('app.manual.dimming')}</label>
                             <select className="col-sm-4" value={this.lightList.value} onChange={(event)=>{this.onChange("handler", event)}}>
                                 {
                                     this.lightList.options.map(light=>{
@@ -689,7 +690,7 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>应用</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>{this.formatIntl('app.apply')}</button>
                         </div>
                     </div>
         }
@@ -722,7 +723,7 @@ console.log("searchList:",searchList.toJS());
                 <MapView mapData={{id:"smartLightMap", latlng:mapLatlng, position:positionList, data:searchList.toJS()}} panLatlng={panLatLng}/>
                 <div className="search-container">
                     <div className={"searchText smartLight-map"} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={this.onkeydown}>
-                        <input type="search" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>
+                        <input type="search" className="form-control" placeholder={this.formatIntl("app.search.placeholder.name")} value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>
                         <ul className={interactive ? 'select-active':''} >
                             {
                                 this.searchPromptList.map((item, index)=>{
@@ -751,7 +752,7 @@ console.log("searchList:",searchList.toJS());
                     <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}
                         onClick={this.backHandler}>
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
-                        <span className="name">{"返回搜索结果"}</span>
+                        <span className="name">{this.formatIntl('app.search.list')}</span>
                     </div>
                     <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || !IsOpenPoleInfo || infoStyle.maxHeight==0?"hidden":"")}
                          style={{"maxHeight":infoStyle.maxHeight+"px"}}>
@@ -776,7 +777,7 @@ console.log("searchList:",searchList.toJS());
                         <div className={"panel-heading "+(controlStyle.maxHeight==0?"hidden":"")}
                              style={{"maxHeight":(controlStyle.maxHeight>40?38:controlStyle.maxHeight)+"px","borderBottom":(controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(controlStyle.maxHeight<40?0:10)+"px","paddingTop":(controlStyle.maxHeight<30?0:10)+"px"}}>
-                            <h3 className={"panel-title "+(controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
+                            <h3 className={"panel-title "+(controlStyle.maxHeight<19?"hidden":"")}>{this.formatIntl('app.device.control')}</h3>
                             <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle}></span>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || controlStyle.maxHeight<=40?"hidden":"")}
@@ -818,4 +819,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(
     mapStateToProps, mapDispatchToProps
-)(SmartLightMap);
+)(injectIntl(SmartLightMap));
