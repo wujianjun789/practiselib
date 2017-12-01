@@ -62,7 +62,7 @@ class AssetManageIndex extends Component{
         }
 
         return <div className={"container "+"asset-"+parentPath+" "+parentPath+"-"+childPath}>
-            <HeadBar moduleName={this.props.intl.formatMessage({id:"app.asset.manage"})} router={this.props.router}/>
+            <HeadBar moduleName="app.asset.manage" router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />

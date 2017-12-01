@@ -9,6 +9,9 @@ export default {
         'button.confirm': '确认',
         'button.cancel': '取消',
 
+        //删除弹框
+        'delete.user':'是否删除选中用户？',
+
         //首页
         'app.title':'智慧路灯管理系统',
         'app.asset.manage':'资产管理',

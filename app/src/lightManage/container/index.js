@@ -56,7 +56,7 @@ class lightManageIndex extends Component{
             childPath = routes[4].path;
         }
         return <div className={"container light-"+parentPath+" "+parentPath+"-"+childPath}>
-                    <HeadBar moduleName={"智能照明"} router={this.props.router}/>
+                    <HeadBar moduleName={"app.light"} router={this.props.router}/>
                     
                     <SideBar onToggle={this.onToggle}/>
                     {this.props.children}

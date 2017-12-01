@@ -57,7 +57,7 @@ class SystemOperationIndex extends Component{
         }
 
         return <div className={"container smartLight-"+parentPath+" "+parentPath+"-"+childPath}>
-            <HeadBar moduleName={"智慧路灯"} router={this.props.router}/>
+            <HeadBar moduleName={"app.smart.light"} router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />
