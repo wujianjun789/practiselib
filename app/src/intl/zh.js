@@ -51,13 +51,6 @@ export default {
         'permission.repassword':'重复密码',
         'permission.grade':'用户等级',
         
-        //智慧路灯
-        'app.map': '地图',
-        'app.list': '列表',
-        'app.control': '控制',
-        'app.scene': "场景",
-        'app.strategy': "策略",
-        
         //系统运维
         'sysOperation.selected.device':'选中设备',
         'sysOperation.whiteList':'白名单',
@@ -71,26 +64,55 @@ export default {
         'sysOperation.lng':'经度',
         'sysOperation.lat':'纬度',
         'sysOperation.dataOrigin':'数据源',
-        'sysOperation.dataOrigins':'个数据源',        
+        'sysOperation.dataOrigins':'个数据源',
 
+        //智慧路灯
+        'app.map': '地图',
+        'app.list': '列表',
+        'app.control': '控制',
+        'app.scene': "场景",
+        'app.strategy': "策略",
+
+        'app.search.placeholder.name': "搜索名称或域",
+        'app.search.list': '返回',
+        'app.device': '设备',
+        'app.domain': '域',
+        'app.open': '开',
+        'app.close': '关',
+        'app.device.control': '设备控制',
+        'app.apply': '应用',
+        'app.environment-brightness-control': '环境亮度控制',
+        'app.manual.dimming': '手动调光',
+        'app.strategy.dimming': '策略调光',
+        'app.group.dimming': '组调光',
+        'app.switch': '切换',
+        'app.preset': '预置',
+        'app.zoom': '变焦',
+
+        'app.schedule':'时间表',
+        'app.led.control': '显示屏控制',
+        'app.online': '在线',
+        'app.offline': '离线',
+        'app.charging': '充电中。。。',
+        'app.charging.fault': '充电故障',
+
+        //以前的
         'app.link.index': '首页',
         'app.link.config': '配置',
         'app.search': '搜索',
         'app.search.smartlight': '智慧路灯',
         'app.search.camera': '摄像头',
         'app.search.led': '屏',
-        'app.search.list': '返回',
         'app.screen.state': '屏状态',
         'app.environment.state': '环境状态',
         'app.camera.control': '摄像头控制',
-        'app.led.control': '显示屏控制',
+
         'app.led.status': '显示屏离线',
         'app.refresh': '刷新',
-        'app.open': '开',
-        'app.close': '关',
+
         'app.publish': '发布',
         'app.force': '焦距',
-        'app.preset': '预置',
+
         'app.work': '激活',
         'app.call': '调用',
         'app.plus': '加',
@@ -127,8 +149,6 @@ export default {
         
         'app.normal': '正常',
         'app.abnormal': '异常',
-        'app.environment-brightness-control': '环境亮度控制',
-        'app.manual': '手动控制',
 
         'app.temperature': '环境温度',
         'app.humidity': '环境湿度',
@@ -160,9 +180,9 @@ export default {
         'app.date':'时间',
 
         'manage.title':'StarRiver 管理',
-        'manage.link.domain': '域',
+
         'manage.link.gateway': '网关',
-        'manage.link.device': '设备',
+
         'manage.link.whiteList': '白名单',
         'manage.link.camera': '摄像头',
         'manage.link.smartLight': '智慧路灯',

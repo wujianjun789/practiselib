@@ -52,13 +52,6 @@ export default  {
         'permission.password':'Password',
         'permission.repassword':'Repassword',  
         'permission.grade':'Grade',
-
-        //智慧路灯
-        'app.map': 'map',
-        'app.list': 'list',
-        'app.control': 'control',
-        'app.scene': "scene",
-        'app.strategy': "strategy",
         
         //系统运维
         'sysOperation.selected.device':'Selected Device',
@@ -73,26 +66,56 @@ export default  {
         'sysOperation.lng':'Lng',
         'sysOperation.lat':'Lat', 
         'sysOperation.dataOrigin':'Data origin',
-        'sysOperation.dataOrigins':'data origins',   
+        'sysOperation.dataOrigins':'data origins',
 
+        //智慧路灯
+        'app.map': 'map',
+        'app.list': 'list',
+        'app.control': 'control',
+        'app.scene': "scene",
+        'app.strategy': "strategy",
+        
+        'app.search.placeholder.name': 'Search name or domain',
+        'app.search.list': 'Return',
+        'app.device': 'Device',
+        'app.domain': 'Domain',
+        'app.open': 'on',
+        'app.close': 'off',
+        'app.device.control': 'device control',
+        'app.apply': 'apply',
+        'app.environment-brightness-control': 'Auto',
+        'app.manual.dimming': 'Manual Dimming',
+        'app.strategy.dimming': 'Strategy Dimming',
+        'app.group.dimming': 'Group Dimming',
+        'app.switch': 'Switch',
+        'app.preset': 'Preset',
+        'app.zoom': 'Zoom',
+
+        'app.schedule': 'Schedule',
+        'app.led.control': 'led control',
+        'app.online': 'online',
+        'app.offline': 'offline',
+        'app.charging': 'charging',
+        'app.charging.fault': 'charging fault',
+
+        //last
         'app.link.index': 'home',
         'app.link.config': 'config',
         'app.search': 'Search',
         'app.search.smartlight': 'smart-light',
         'app.search.camera': 'camera',
         'app.search.led': 'led',
-        'app.search.list': 'Return',
+
         'app.screen.state': 'screen state',
         'app.environment.state': 'environment state',
         'app.camera.control': 'camera control',
-        'app.led.control': 'led control',
+       
         'app.led.status': 'led offline',
         'app.refresh': 'refresh',
-        'app.open': 'on',
-        'app.close': 'off',
+
         'app.publish': 'publish',
         'app.force': 'Focol',
-        'app.preset': 'Preset',
+
         'app.work': 'Active',
         'app.call': 'call',
         'app.plus': 'plus',
@@ -129,8 +152,6 @@ export default  {
 
         'app.normal': 'Normal',
         'app.abnormal': 'Abnormal',
-        'app.environment-brightness-control': 'Auto',
-        'app.manual': 'Manual',
 
         'app.temperature': 'Temperature',
         'app.humidity': 'Humidity',
@@ -162,9 +183,8 @@ export default  {
         'app.date':'time',
 
         'manage.title':'StarRiver Manage',
-        'manage.link.domain': 'Domain',
+
         'manage.link.gateway': 'Gateway',
-        'manage.link.device': 'Device',
         'manage.link.whiteList': 'WhiteList',
         'manage.link.camera': 'Camera',
         'manage.link.smartLight': 'Smart Light',
