@@ -75,6 +75,8 @@ export default  {
         'app.charging': 'charging',
         'app.charging.fault': 'charging fault',
 
+        'app.manual':'Manual',
+
         //last
         'app.link.index': 'home',
         'app.link.config': 'config',

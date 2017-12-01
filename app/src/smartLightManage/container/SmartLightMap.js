@@ -247,21 +247,16 @@ console.log("%%%%%%%")
         }
 
         data.map(ass=>{
-            if(ass.extendType == "lc"){//screen:23, charge:45, camera:56, lamp:89, collect:99
-                asset = Object.assign({}, asset, {lamp:ass});
+            //extendType:: screen:23, charge:45, camera:56, lamp:89, collect:99
+            let key = "";
+            if(ass.extendType == "lc"){
+                key = "lamp";
+            }else if(ass.extendType == "xes"){
+                key = "collect"
+            }else{
+                key == ass.extendType;
             }
-            if(ass.extendType == "screen"){
-                asset = Object.assign({}, asset, {screen:ass});
-            }
-            if(ass.extendType == "xes"){
-                asset = Object.assign({}, asset, {collect:ass});
-            }
-            if(ass.extendType == "camera"){
-                asset = Object.assign({}, asset, {camera:ass});
-            }
-            if(ass.extendType == "charge"){
-                asset = Object.assign({}, asset, {charge:ass});
-            }
+            asset = Object.assign({}, asset, {[key]:ass})
         })
 
         this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))});
@@ -346,18 +341,8 @@ console.log("%%%%%%%")
     itemClick(asset){
         const {model} = this.state
         if(model == "pole"){
-            let curId = "";
-            if(asset.getIn(["asset","screen"])){
-                curId = "screen";
-            } else if(asset.getIn(["asset","lamp"])) {
-                curId = "lamp";
-            } else if(asset.getIn(["asset","camera"])){
-                curId = "camera";
-            } else if(asset.getIn(["asset","charge"])){
-                curId = "charge";
-            } else if(asset.getIn(["asset","collect"])){
-                curId = "collect";
-            }
+            let keys = asset.get("asset").keys();
+            let curId = keys && keys.length?keys.length[0]:"";
             this.setState({curDevice:asset, curId:curId, panLatlng:asset.geoPoint,IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
                 this.setSize();
             });
@@ -446,7 +431,7 @@ console.log("tableIndex:",tableIndex)
         }
 
         if(key == 'brightness_mode'){
-            return this.formatIntl(sf ? 'manual' : 'environment-brightness-control');
+            return this.formatIntl(sf ? 'app.manual' : 'app.environment-brightness-control');
         }
 
         if(key == 'online'){
@@ -473,18 +458,18 @@ console.log("tableIndex:",tableIndex)
     renderState(parentPro, key, name, IsTransform, unit){
         if(key == "resolution"){
             if(parentPro && parentPro.has("width") && parentPro.has("height")){
-                return <div key={key} className="pro"><span>{name?this.formatIntl(name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
+                return <div key={key} className="pro"><span>{name?this.formatIntl("app."+name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
             }
         }
         if(parentPro && parentPro.has(key)){
             if(key == 'wind-direction'){
-                return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{this.transformState(key, parentPro.get(key))}</div>
+                return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{this.transformState(key, parentPro.get(key))}</div>
             }
 
             if(key == 'o2'){
-                return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
+                return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
             }
-            return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
+            return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
         }
     }
 
@@ -504,15 +489,15 @@ console.log("tableIndex:",tableIndex)
                         {this.renderState(props, "brightness_mode", "brightness_mode", true)}
                         {this.renderState(props, "brightness", "brightness")}
                         {
-                            <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                            <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
                         }
                         {
                             faultList.length>0 &&
-                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
+                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('app.fault_info')} closeBtn={true}
                                    closeClick={this.closeClick}>
                                 {
                                     faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl(""+key)}</div>
+                                        return <div key={key}>{this.formatIntl("app."+key)}</div>
                                     })
                                 }
                             </Panel>
@@ -535,7 +520,7 @@ console.log("tableIndex:",tableIndex)
                                    closeClick={this.closeClick}>
                                 {
                                     faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl(""+key)}</div>
+                                        return <div key={key}>{this.formatIntl("app."+key)}</div>
                                     })
                                 }
                             </Panel>
@@ -558,7 +543,7 @@ console.log("tableIndex:",tableIndex)
                                        closeClick={this.closeClick}>
                                     {
                                         faultList.map(key=>{
-                                            return <div key={key}>{this.formatIntl(""+key)}</div>
+                                            return <div key={key}>{this.formatIntl("app."+key)}</div>
                                         })
                                     }
                                 </Panel>
@@ -580,7 +565,7 @@ console.log("tableIndex:",tableIndex)
                                            closeClick={this.closeClick}>
                                         {
                                             faultList.map(key=>{
-                                                return <div key={key}>{this.formatIntl(""+key)}</div>
+                                                return <div key={key}>{this.formatIntl("app."+key)}</div>
                                             })
                                         }
                                     </Panel>

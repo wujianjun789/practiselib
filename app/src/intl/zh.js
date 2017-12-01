@@ -74,6 +74,8 @@ export default {
         'app.charging': '充电中。。。',
         'app.charging.fault': '充电故障',
 
+        'app.manual': '手动',
+
         //以前的
         'app.link.index': '首页',
         'app.link.config': '配置',
