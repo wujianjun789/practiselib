@@ -14,7 +14,7 @@ class ReporterManage extends Component{
     constructor(props){
 		super(props);
 
-		this.moduleName = '报表管理';
+		this.moduleName = 'app.report.manage';
 
         this.initTreeData = this.initTreeData.bind(this);
         this.onToggle = this.onToggle.bind(this);

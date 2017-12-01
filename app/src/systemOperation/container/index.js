@@ -63,7 +63,7 @@ class SystemOperationIndex extends Component {
         }
 
         return <div className={ "container " +"systemOperation-"+parentPath+" "+parentPath+"-"+childPath }>
-                    <HeadBar moduleName={ "系统运维" } router={ this.props.router } />
+                    <HeadBar moduleName={ "app.system.operation" } router={ this.props.router } />
                     <SideBar onToggle={ this.onToggle } />
                     { this.props.children }
                     <Overlayer/>

@@ -10,12 +10,15 @@ export default  {
         'button.cancel': 'Cancel',
         'button.module':'Module Permissions',
 
+        //删除弹框
+        'delete.user':'Are you sure to delete the seleted user？',
+
         //首页
         'app.title':'Smart Light Manage System',
         'app.asset.manage':'Asset Manage',
         'app.permission.manage':'Permission',
         'app.system.operation':'System Operate',
-        'app.smart.light':'Smart Light',
+        'app.smart.light':'Smart Lamp',
         'app.light':'Smart Light',
         'app.report.manage':'Report Manage',
         'app.mediaPublish':'MediaPublish',
