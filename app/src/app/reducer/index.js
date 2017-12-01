@@ -34,7 +34,6 @@ export default function app(state=initialState, action) {
 }
 
 export function moduleInit(state, data) {
-	console.log(data);
     let items = data.map(val => {
 		if(moduleInfo[val.key]) {
 			return moduleInfo[val.key];

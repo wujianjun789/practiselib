@@ -9,8 +9,14 @@ export default  {
         'button.confirm': 'Confirm',
         'button.cancel': 'Cancel',
         'button.module':'Module Permissions',
+        'button.import': 'Import',        
+        
+        //地图
+        'map.location':'Map Location',
+
         //提示
         'app.not.found':'Not Found',
+        
         //删除弹框
         'delete.user':'Are you sure to delete the seleted user？',
 
@@ -25,6 +31,7 @@ export default  {
         'app.mediaPublish':'MediaPublish',
         'app.visualization':'Visualization',
         'app.domain.manage':'Domain Manage',
+        
 
         //权限管理
         'permission.username':'UserName',
@@ -45,6 +52,21 @@ export default  {
         'permission.password':'Password',
         'permission.repassword':'Repassword',  
         'permission.grade':'Grade',
+        
+        //系统运维
+        'sysOperation.selected.device':'Selected Device',
+        'sysOperation.whiteList':'WhiteList',
+        'sysOperation.include':'Include',
+        'sysOperation.devices':'devices',
+        'sysOperation.input.device':'Input device name',
+        'sysOperation.domain':'Domain',
+        'sysOperation.device':'DeviceName',
+        'sysOperation.type':'Type',
+        'sysOperation.id':'Id',
+        'sysOperation.lng':'Lng',
+        'sysOperation.lat':'Lat', 
+        'sysOperation.dataOrigin':'Data origin',
+        'sysOperation.dataOrigins':'data origins',
 
         //智慧路灯
         'app.map': 'map',
@@ -52,6 +74,7 @@ export default  {
         'app.control': 'control',
         'app.scene': "scene",
         'app.strategy': "strategy",
+        
         'app.search.placeholder.name': 'Search name or domain',
         'app.search.list': 'Return',
         'app.device': 'Device',
