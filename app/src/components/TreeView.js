@@ -4,16 +4,18 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router';
 
+import {FormattedMessage} from 'react-intl';
+
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {onToggle,onMove, onRemove} from '../common/actions/treeView'
 
-import {getLanguage} from '../util/index'
+import {getDefaultIntl} from '../intl/index'
 export class TreeView extends Component{
     constructor(props){
         super(props)
         this.state = {
-            language: getLanguage()
+            language: 'zh'
         },
         this.renderTree = this.renderTree.bind(this);
         this.renderRemove = this.renderRemove.bind(this);
@@ -22,6 +24,12 @@ export class TreeView extends Component{
         this.onToggle = this.onToggle.bind(this);
         this.onRemove = this.onRemove.bind(this);
         this.onMove = this.onMove.bind(this);
+    }
+
+    componentWillMount(){
+        getDefaultIntl(intl=>{
+            this.setState({language: intl.locale});
+        })
     }
 
     onMove(key, node){
@@ -67,6 +75,7 @@ export class TreeView extends Component{
     }
 
     renderTree(datalist, index, toggled){
+        const {intl} = this.props;
         if(!datalist){
             return null;
         }
@@ -77,7 +86,9 @@ export class TreeView extends Component{
             {
                 datalist.map((node, index)=> {
                     let count = this.state.language=='zh'?6:10;
-                    let value = node.name.slice(0, count)+(node.name.length>count?'...':'');
+                    let intlMessage = intl.messages[node.name];
+                    let name = intlMessage?intlMessage:node.name;
+                    let value = name.slice(0, count)+(name.length>count?'...':'');
                     if(!(node.children)){
                         return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
@@ -111,7 +122,8 @@ export class TreeView extends Component{
     }
 
     render(){
-        const { className, datalist } = this.props;
+        const { className, datalist, intl } = this.props;
+
         return <div className={"tree-list "+className}>
             {
                 this.renderTree(datalist, 1)
@@ -122,7 +134,8 @@ export class TreeView extends Component{
 
 function mapStateToProps(state) {
     return {
-        datalist: state.treeView.datalist
+        datalist: state.treeView.datalist,
+        intl: state.intl
     }
 }
 

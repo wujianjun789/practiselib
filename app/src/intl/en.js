@@ -9,7 +9,8 @@ export default  {
         'button.confirm': 'Confirm',
         'button.cancel': 'Cancel',
         'button.module':'Module Permissions',
-
+        //提示
+        'app.not.found':'Not Found',
         //删除弹框
         'delete.user':'Are you sure to delete the seleted user？',
 
@@ -43,8 +44,15 @@ export default  {
         'permission.firstname':'First Name',
         'permission.password':'Password',
         'permission.repassword':'Repassword',  
-        'permission.grade':'Grade',    
-        
+        'permission.grade':'Grade',
+
+        //智慧路灯
+        'app.map': 'map',
+        'app.list': 'list',
+        'app.control': 'control',
+        'app.scene': "scene",
+        'app.strategy': "strategy",
+
         'app.link.index': 'home',
         'app.link.config': 'config',
         'app.search': 'Search',

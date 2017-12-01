@@ -8,7 +8,8 @@ export default {
         'button.delete': '删除',
         'button.confirm': '确认',
         'button.cancel': '取消',
-
+        //提示
+        'app.not.found':'没有找到结果',
         //删除弹框
         'delete.user':'是否删除选中用户？',
 
@@ -44,6 +45,12 @@ export default {
         'permission.repassword':'重复密码',
         'permission.grade':'用户等级',
         
+        //智慧路灯
+        'app.map': '地图',
+        'app.list': '列表',
+        'app.control': '控制',
+        'app.scene': "场景",
+        'app.strategy': "策略",
 
         'app.link.index': '首页',
         'app.link.config': '配置',

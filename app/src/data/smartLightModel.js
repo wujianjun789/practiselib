@@ -4,7 +4,7 @@
 export const TreeData = [
     {
         "id": "map",
-        "name": "地图",
+        "name": "app.map",
         "toggled": false,
         "active": true,
         "link": "/smartLight/map",
@@ -13,7 +13,7 @@ export const TreeData = [
     },
     {
         "id": "list",
-        "name": "列表",
+        "name": "app.list",
         "toggled": false,
         "active": true,
         "link": "/smartLight/list",
@@ -65,7 +65,7 @@ export const TreeData = [
     },
     {
         "id": "control",
-        "name": "控制",
+        "name": "app.control",
         "toggled": false,
         "active": true,
         "link": "/smartLight/control/scene",
@@ -73,13 +73,13 @@ export const TreeData = [
         "children": [
             {
                 "id": "scene",
-                "name": "场景",
+                "name": "app.scene",
                 "class": "icon_scene",
                 "active": false,
                 "link": "/smartLight/control/scene"
             },{
                 "id": "strategy",
-                "name": "策略",
+                "name": "app.strategy",
                 "class": "icon_control",
                 "active": false,
                 "link": "/smartLight/control/strategy"
