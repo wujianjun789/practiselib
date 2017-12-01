@@ -5,6 +5,8 @@ import React, { Component } from 'react'
 import '../../public/styles/sideBarInfo.less';
 
 import MapView from '../components/MapView'
+import {FormattedMessage} from 'react-intl';
+
 /**
  * 右侧栏带地图伸缩信息
  */
@@ -41,7 +43,7 @@ export default class SideBarInfo extends Component {
                 {IsHaveMap &&
                  <div className="panel panel-default map-position">
                    <div className="panel-heading">
-                     <span className="icon_map"></span>地图位置
+                     <span className="icon_map"></span><FormattedMessage id='map.location'/>
                    </div>
                    <div className="map-container panel-body">
                      <MapView option={ { mapZoom: false } } mapData={ mapDevice } />

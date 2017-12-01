@@ -7,9 +7,15 @@ export default {
         'button.edit': '编辑',
         'button.delete': '删除',
         'button.confirm': '确认',
+        'button.import': '导入',        
         'button.cancel': '取消',
+
+        //地图
+        'map.location':'地图位置',
+
         //提示
         'app.not.found':'没有找到结果',
+
         //删除弹框
         'delete.user':'是否删除选中用户？',
 
@@ -51,6 +57,21 @@ export default {
         'app.control': '控制',
         'app.scene': "场景",
         'app.strategy': "策略",
+        
+        //系统运维
+        'sysOperation.selected.device':'选中设备',
+        'sysOperation.whiteList':'白名单',
+        'sysOperation.include':'包含',
+        'sysOperation.devices':'个设备',
+        'sysOperation.':'输入设备名称',
+        'sysOperation.domain':'域',
+        'sysOperation.device':'设备名称',
+        'sysOperation.type':'型号',
+        'sysOperation.id':'设备编号',
+        'sysOperation.lng':'经度',
+        'sysOperation.lat':'纬度',
+        'sysOperation.dataOrigin':'数据源',
+        'sysOperation.dataOrigins':'个数据源',        
 
         'app.link.index': '首页',
         'app.link.config': '配置',

@@ -26,6 +26,8 @@ import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel
 import { getObjectByKey } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
+import {FormattedMessage,injectIntl} from 'react-intl';
+
 export class Sensor extends Component {
     constructor(props) {
         super(props);
@@ -38,7 +40,7 @@ export class Sensor extends Component {
                 total: 0
             }),
             search: Immutable.fromJS({
-                placeholder: '输入设备名称',
+                placeholder: 'sysOperation.input.device',
                 value: ''
             }),
             selectDevice: {
@@ -164,32 +166,32 @@ export class Sensor extends Component {
             {
                 id: 0,
                 field: "domainName",
-                title: "域"
+                title: this.props.intl.formatMessage({id:"sysOperation.domain"})
             },
             {
                 id: 1,
                 field: "name",
-                title: "设备名称"
+                title: this.props.intl.formatMessage({id:"sysOperation.device"})
             },
             {
                 id: 2,
                 field: "typeName",
-                title: "型号"
+                title: this.props.intl.formatMessage({id:"sysOperation.type"})
             },
             {
                 id: 3,
                 field: "id",
-                title: "设备编号"
+                title: this.props.intl.formatMessage({id:"sysOperation.id"})
             },
             {
                 id: 5,
                 field: "lng",
-                title: "经度"
+                title: this.props.intl.formatMessage({id:"sysOperation.lng"})
             },
             {
                 id: 6,
                 field: "lat",
-                title: "纬度"
+                title: this.props.intl.formatMessage({id:"sysOperation.lat"})
             },
         ];
 
@@ -455,8 +457,8 @@ export class Sensor extends Component {
                  <div className="heading">
                    <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }
                    />
-                   <SearchText placeholder={ search.get('placeholder') } value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
-                   <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>添加</button>
+                   <SearchText placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})} value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
+                   <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>{this.props.intl.formatMessage({id:'button.add'})}</button>
                  </div>
                 <div className="table-container">
                     <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
@@ -466,13 +468,13 @@ export class Sensor extends Component {
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                    <div className="panel panel-default device-statics-info">
                      <div className="panel-heading">
-                       <span className="icon_select"></span>选中设备
+                       <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
-                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>编辑
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>{this.props.intl.formatMessage({id:'button.edit'})}
                        </button>
-                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>删除
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>{this.props.intl.formatMessage({id:'button.delete'})}
                        </button>
                      </div>
                    </div>
@@ -494,4 +496,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sensor);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Sensor));

@@ -17,6 +17,9 @@ button{
     outline: none!important;
 }
 
+.panel-heading{
+    padding:11px 15px;
+}
 
 .scale_panel {
     width: 10px!important;
