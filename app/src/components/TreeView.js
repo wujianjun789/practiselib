@@ -92,7 +92,7 @@ export class TreeView extends Component{
                     if(!(node.children)){
                         return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
-                                        <div onClick={()=>this.onToggle(node)} title={node.name}>
+                                        <div onClick={()=>this.onToggle(node)} title={name}>
                                             <span className={"icon "+node.class}></span>
                                             <span>{value}</span>
                                             {this.renderRemove(node)}
@@ -105,7 +105,7 @@ export class TreeView extends Component{
                     }else{
                         return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
-                                    <div onClick={()=>this.onToggle(node)} title={node.name}>
+                                    <div onClick={()=>this.onToggle(node)} title={name}>
                                         <span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')+' toggled'}></span>
                                         {value}
                                         {this.renderRemove(node)}
