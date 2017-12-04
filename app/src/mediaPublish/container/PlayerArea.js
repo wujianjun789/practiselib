@@ -159,6 +159,10 @@ export class PlayerArea extends Component {
             showUploadNotify: false,
             showUploadFile: false,
             uploadFileList: [],
+            usefulListLength: 0,
+            currentXhr: null,
+            isUpload: false,
+            afterFirstUpload: false,
 
             assetStyle: { "bottom": "0px" },
             controlStyle: { "left": "auto", "right": "auto" },
@@ -209,7 +213,6 @@ export class PlayerArea extends Component {
         this.hideUploadFile = this.hideUploadFile.bind(this);
         this.addUploadFile = this.addUploadFile.bind(this);
         this.cancelUploadFile = this.cancelUploadFile.bind(this);
-        this.updateProgress = this.updateProgress.bind(this);
         this.updatePlayerPlanPopup = this.updatePlayerPlanPopup.bind(this);
         this.updatePlayerScenePopup = this.updatePlayerScenePopup.bind(this);
         this.updatePlayerAreaPopup = this.updatePlayerAreaPopup.bind(this);
@@ -683,90 +686,185 @@ export class PlayerArea extends Component {
     uploadProgress = (e) => {
         if (e.lengthComputable) {
             const progress = Math.round((e.loaded / e.total) * 100);
-            this.updateProgress({ name: name, progress: progress })
-            console.log(progress);
+
+            const list = this.state.uploadFileList, key = e.target.key;
+
+            list[key].progress = progress + '%';
+            this.setState({ uploadFileList: list })
         }
     }
+
     uploadComplete = (e) => {
-        console.log(e.target.responseText);
+        const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
+        list[key].progress = '已完成';
+        this.setState({ uploadFileList: list })
+
+        const nextKey = key + 1;
+
+        for (let i = nextKey; i < list.length; i++) {
+            if (list[i] !== undefined && list[i].progress === '待上传') {
+                const currentXhr = list[i].xhr;
+                currentXhr.open('POST', list[i].url, true);
+                currentXhr.send(list[i].form);
+                this.setState({ currentXhr: currentXhr });
+                return;
+            }
+        }
+        this.setState({ isUpload: false, currentXhr: null })
     }
     uploadFailed = (e) => {
-        console.log('There was an error attempting to upload the file');
+        const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
+        list[key].progress = '失败';
+        this.setState({ uploadFileList: list })
+
+        const nextKey = key + 1;
+
+        for (let i = nextKey; i < list.length; i++) {
+            if (list[i] !== undefined && list[i].progress === '待上传') {
+                const currentXhr = list[i].xhr;
+                currentXhr.open('POST', list[i].url, true);
+                currentXhr.send(list[i].form);
+                this.setState({ currentXhr: currentXhr });
+                return;
+            }
+        }
+        this.setState({ isUpload: false, currentXhr: null })
+
+
     }
     uploadCanceled = (e) => {
         console.log('取消上传');
     }
+
     addUploadFile(file) {
 
         const self = this;
-        const url = 'http://192.168.155.207:3000/api/containers/common/upload';
-        const name = file.name;
+        const url = 'http://192.168.155.196:3001/api/file/upload';
+        const name = file.name, key = file.key;
+
         const form = new FormData();
         form.append('file', file.data);
+        form.append('name', name)
 
         const xhr = new XMLHttpRequest();
+        xhr.key = key, xhr.upload.key = key;
+
         xhr.upload.addEventListener('progress', this.uploadProgress);
-        xhr.addEventListener('load', this.uploadComplete, false);
-        xhr.addEventListener('error', this.uploadFailed, false);
-        xhr.addEventListener('abort', this.uploadCanceled, false);
+        xhr.addEventListener('load', this.uploadComplete);
+        xhr.addEventListener('error', this.uploadFailed);
+        xhr.addEventListener('abort', this.uploadCanceled);
 
-        xhr.open('POST', url, true);
-        xhr.send(form);
-
-        // const timer=setInterval(update.bind(this),2000);
-        // function update(){
-        //     let progress=Math.random()*100;
-        //     console.log(progress);
-        //     this.updateProgress({name:name,progress:progress,timer:timer})
-        // }
-        console.log(file);
         const newUploadFileList = this.state.uploadFileList;
-        newUploadFileList.push({ name: file.name, progress: file.progress, xhr: xhr });
+        newUploadFileList.push({ name: file.name, progress: file.progress, xhr: xhr, url: url, form: form });
+        const usefulListLength = this.state.usefulListLength + 1;
+
         this.setState({
-            uploadFileList: newUploadFileList
+            uploadFileList: newUploadFileList,
+            usefulListLength: usefulListLength
         }, () => {
-            if (this.state.uploadFileList.length !== 0) {
-                this.showUploadNotify();
+            this.showUploadNotify();
+
+            if (!this.state.afterFirstUpload) {
+                let currentList = this.state.uploadFileList, currentXhr;
+                currentXhr = currentList[0].xhr;
+                currentXhr.open('POST', currentList[0].url, true);
+                currentXhr.send(currentList[0].form);
+                this.setState({ currentXhr: currentXhr, afterFirstUpload: true, isUpload: true })
+                return;
             }
-            else if (this.state.uploadFileList.length === 0) {
-                this.hideUploadNotify()
+            if (this.state.isUpload) {
+                return;
             }
+
+            let currentList = this.state.uploadFileList, currentXhr;
+            currentXhr=currentList[currentList.length-1].xhr;
+            currentXhr.open('POST',currentList[currentList.length-1].url,true);
+            currentXhr.send(currentList[currentList.length-1].form);
+            this.setState({currentXhr:currentXhr,isUpload:true})
         })
     }
+
     cancelUploadFile(index) {
-        const newUploadFileList = this.state.uploadFileList;
-        this.uploadCanceled(newUploadFileList[index].xhr)
-        newUploadFileList.splice(index, 1);
-        this.setState({
-            uploadFileList: newUploadFileList
-        }, () => {
-            if (this.state.uploadFileList.length !== 0) {
-                this.showUploadNotify();
+
+        console.log('取消上传')
+        const newUploadFileList = this.state.uploadFileList, xhr = newUploadFileList[index].xhr;
+
+        if (this.state.currentXhr === xhr) {
+
+            xhr.abort();
+            xhr.upload.removeEventListener('progress', this.uploadProgress)
+            xhr.removeEventListener('load', this.uploadComplete);
+            xhr.removeEventListener('error', this.uploadFailed);
+            xhr.removeEventListener('abort', this.uploadCanceled);
+
+            const list = this.state.uploadFileList;
+            const nextKey = index + 1;
+            for (let i = nextKey; i < list.length; i++) {
+                if (list[i] !== undefined && list[i].progress === '待上传') {
+                    const currentXhr = list[i].xhr;
+                    currentXhr.open('POST', list[i].url, true);
+                    currentXhr.send(list[i].form);
+
+                    newUploadFileList[index] = undefined;
+                    const usefulListLength = this.state.usefulListLength - 1;
+                    this.setState({
+                        uploadFileList: newUploadFileList,
+                        usefulListLength: usefulListLength,
+                        currentXhr: currentXhr
+                    }, () => {
+                        if (this.state.usefulListLength === 0) {
+                            this.hideUploadNotify()
+                        }
+                    })
+                    return;
+                }
             }
-            else if (this.state.uploadFileList.length === 0) {
-                this.hideUploadNotify()
-            }
-        })
-    }
-    updateProgress(item) {
-        const list = this.state.uploadFileList;
-        for (let i = 0; i < list.length; i++) {
-            if (list[i].name === item.name) {
-                list[i].progress = item.progress;
-                this.setState({
-                    uploadFileList: list
-                })
-            }
+
+            newUploadFileList[index] = undefined;
+            const usefulListLength = this.state.usefulListLength - 1;
+            this.setState({
+                uploadFileList: newUploadFileList,
+                usefulListLength: usefulListLength,
+                currentXhr: null,
+                isUpload: false
+            }, () => {
+                if (this.state.usefulListLength === 0) {
+                    this.hideUploadNotify()
+                }
+            })
+        }
+        else if (xhr.readyState === 0) {
+            newUploadFileList[index] = undefined;
+            const usefulListLength = this.state.usefulListLength - 1;
+            this.setState({
+                uploadFileList: newUploadFileList,
+                usefulListLength: usefulListLength
+            }, () => {
+                if (this.state.usefulListLength === 0) {
+                    this.hideUploadNotify();
+                }
+            })
+        }
+        else {
+            xhr.abort();
+            xhr.upload.removeEventListener('progress', this.uploadProgress)
+            xhr.removeEventListener('load', this.uploadComplete);
+            xhr.removeEventListener('error', this.uploadFailed);
+            xhr.removeEventListener('abort', this.uploadCanceled);
+
+            newUploadFileList[index] = undefined;
+            const usefulListLength = this.state.usefulListLength - 1;
+            this.setState({
+                uploadFileList: newUploadFileList,
+                usefulListLength: usefulListLength
+            }, () => {
+                if (this.state.usefulListLength === 0) {
+                    this.hideUploadNotify();
+                }
+            })
         }
     }
-    // componentDidUpdate() {
-    //     if (this.state.uploadFileList.length !== 0) {
-    //         this.showUploadNotify();
-    //     }
-    //     else if (this.state.uploadFileList.length === 0) {
-    //         this.hideUploadNotify()
-    //     }
-    // }
+
     onToggle(node) {
         console.log("node:", node);
         let type = "scene";
@@ -797,11 +895,12 @@ export class PlayerArea extends Component {
     componentWillUnmount() {
         const list = this.state.uploadFileList;
         list.map((item) => {
-            item.xhr.upload.removeEventListener('progress', this.uploadProgress)
-            item.xhr.removeEventListener('load', this.uploadComplete);
-            item.xhr.removeEventListener('error', this.uploadFailed);
-            item.xhr.removeEventListener('abort', this.uploadCanceled);
-            console.log(item.xhr)
+            if (item !== undefined) {
+                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
+                item.xhr.removeEventListener('load', this.uploadComplete);
+                item.xhr.removeEventListener('error', this.uploadFailed);
+                item.xhr.removeEventListener('abort', this.uploadCanceled);
+            }
         })
     }
     render() {
@@ -978,7 +1077,7 @@ export class PlayerArea extends Component {
                 <Overlayer />
             </div >
             <UploadNotify showUploadNotify={this.state.showUploadNotify} hideUploadNotify={this.hideUploadNotify} showUploadFile={this.showUploadFile} />
-            <UploadFile showUploadFile={this.state.showUploadFile} hideUploadFile={this.hideUploadFile} uploadFileList={this.state.uploadFileList} cancelUploadFile={this.cancelUploadFile} />
+            {this.state.showUploadFile ? <UploadFile showUploadFile={this.state.showUploadFile} hideUploadFile={this.hideUploadFile} uploadFileList={this.state.uploadFileList} cancelUploadFile={this.cancelUploadFile} /> : null}
         </div>
     }
 }

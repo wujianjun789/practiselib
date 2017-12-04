@@ -17,13 +17,16 @@ export default class UploadFile extends Component {
             <Modal title='上传中' visible={this.props.showUploadFile} footer={footer} maskClosable={false} onCancel={this.handleCancel}>
                 <ul className='upload-file-ul'>
                     <li><span className='upload-filename upload-filename-title'>名称</span><span className='upload-progress upload-progress-title'>上传进度</span></li>
-                    {uploadFileList.map((item, index) => (
-                        <li key={index}>
-                            <span className='upload-filename'>{item.name}</span>
-                            <span className='upload-progress'>{item.progress}</span>
-                            <span className='upload-close-x' onClick={() => this.props.cancelUploadFile(index)}></span>
-                        </li>
-                    ))}
+                    {uploadFileList.map((item, index) => {
+                        if (item !== undefined) {
+                            return (
+                                <li key={index}>
+                                    <span className='upload-filename'>{item.name}</span>
+                                    <span className='upload-progress'>{item.progress}</span>
+                                    <span className='upload-close-x' onClick={() => this.props.cancelUploadFile(index)}></span>
+                                </li>)
+                        }
+                    })}
                 </ul>
             </Modal>
         )

@@ -10,7 +10,8 @@ export default class PreviewFile extends Component {
         path: '',
         url: null,
         show: null,
-        data: null
+        data: null,
+        currentKey:0
     }
     changeName = (e) => {
         this.setState({ name: e.target.value })
@@ -27,7 +28,7 @@ export default class PreviewFile extends Component {
         }
         else if (/^video\/.+$/.test(file.type)) {
             const url = URL.createObjectURL(file);
-            const show = <video src={url} controls autoPlay loop />;
+            const show = <video src={url} controls loop />;
             this.setState({ path: file.name, url: url, show: show, data: file })
         }
         else if (/^text\/plain$/.test(file.type)) {
@@ -45,35 +46,24 @@ export default class PreviewFile extends Component {
         }
     }
     handleOk = () => {
-        console.log('上传文件');
-
-        if (!this.state.name) {
-            alert('请输入素材名称');
-            return;
-        }
-        if (!this.state.path) {
-            alert('请选择文件');
-            return;
-        }
-
-        this.props.addUploadFile({ name: this.state.name, progress: 0, data: this.state.data })
+        const key=this.state.currentKey;
+        this.props.addUploadFile({ name: this.state.name, progress: '待上传', data: this.state.data,key:key })
         this.props.hideModal();
+        this.setState({currentKey:key+1})
     }
-    // uploadProgress=(e)=>{
-    //     if (e.lengthComputable) {
-    //         const progress = Math.round((e.loaded / e.total) * 100);
-    //         this.props.addUploadFile({name:this.state.name,progress:progress})            
-    //         console.log(progress);
-    //     }
-    // }
-    // componentWillUnmount(){
-    //     this.xhr.upload.removeEventListener('progress',this.uploadProgress)
-    // }
+
+
     render() {
         const { name, path, url, show } = this.state;
+        const footer =
+            <div>
+                <button type='button' className='btn ant-btn' onClick={this.props.hideModal}>取消</button>
+                <button type='button' disabled={(name&&path)?false:true} className='btn ant-btn ant-btn-primary' onClick={this.handleOk}>上传文件</button>
+            </div>;
+
         return (
             <Modal title='添加素材' visible={this.props.showModal}
-                onOk={this.handleOk} onCancel={this.props.hideModal} okText='上传文件' maskClosable={false}>
+                onCancel={this.props.hideModal} footer={footer} okText='上传文件' maskClosable={false}>
                 <div className='material'>
                     <div>
                         <span>素材名称</span>
@@ -92,10 +82,6 @@ export default class PreviewFile extends Component {
                     <div className='show'>
                         {show}
                     </div>
-                    {/* <div className='material-progressWrap'>
-                        <div className='material-progress' style={{ width: `${this.props.progress}%` }} />
-                        <span className='progress-text' style={{left:`${this.props.progress}%`}}>{this.props.progress}%</span>
-                    </div> */}
                 </div>
             </Modal>
 
