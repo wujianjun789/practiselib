@@ -10,6 +10,7 @@ import NotifyPopup from '../../common/containers/NotifyPopup';
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 import {getModelTypesNameById } from '../../data/systemModel';
 import {getObjectByKeyObj} from '../../util/algorithm'
+import { FormattedMessage } from 'react-intl';
 
 export default class ExcelPopup extends Component {
     constructor(props) {
@@ -83,17 +84,17 @@ export default class ExcelPopup extends Component {
         const {data,page,filename} =this.state;
         
         let result=Immutable.fromJS(data.slice((page.current-1)*page.pageSize,page.current*page.pageSize))
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;    
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;    
         
         return <div className={ className }>
-            <Panel title = '导入列表' footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
+            <Panel title ={<FormattedMessage id='sysOperation.importList'/>}  footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className='row'>
                     <div className='import-select'>
-                        {filename?filename:'选择列表文件路径'}
+                        {filename?filename:<FormattedMessage id='sysOperation.select'/>}
                         <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
                         <input id='select-file' type="file" accept=".xls,.xlsx" onChange={this.onChange}/>                        
                     </div>
-                    <input type="checkbox" name='isUpdate'/>覆盖已有设备
+                    <input type="checkbox" name='isUpdate'/>{<FormattedMessage id='sysOperation.cover'/>}
                 </div>
                 {
                     data.length !== 0 &&<div className="table-container">

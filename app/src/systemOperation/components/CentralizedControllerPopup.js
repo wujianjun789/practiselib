@@ -4,6 +4,7 @@ import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
+import {FormattedMessage} from 'react-intl';
 
 import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../util/index'
 export default class CentralizedControllerPopup extends Component {
@@ -86,7 +87,7 @@ export default class CentralizedControllerPopup extends Component {
         //     return null
         // }
         return <div className="form-group clearfix">
-                 <label htmlFor="model" className="fixed-width-left control-label">型号：</label>
+                 <label htmlFor="model" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.type'/>：</label>
                  <div className="fixed-width-right">
                    <Select id="model" className="form-control" titleField={ this.props.modelList.titleField } valueField={ this.props.modelList.valueField } options={ this.props.modelList.options } value={ this.state.model }
                      onChange={ this.onChange } disabled={this.props.model === "xes"&&this.props.popId=='edit'?true:false}/>
@@ -122,21 +123,21 @@ export default class CentralizedControllerPopup extends Component {
         const {id, name, model, domain, lng, lat, prompt} = this.state;
         let valid = prompt.id || prompt.name || !domainList || !domainList.options.length || prompt.lng || prompt.lat || !id || !name || !lng || !lat;
 
-        const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={ ['取消', '确认'] } btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
+        const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={['button.cancel','button.confirm']} btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
                          onConfirm={ this.onConfirm } />;
         return (
             <div className={ className }>
               <Panel title={ title } closeBtn={ true } closeClick={ this.onCancel }>
                 <div className="popup-left">
                   <div className="form-group clearfix">
-                    <label htmlFor="id" className="fixed-width-left control-label">设备编号：</label>
+                    <label htmlFor="id" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.id'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="id" placeholder="id" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }/>
                       <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="name" className="fixed-width-left control-label">名称：</label>
+                    <label htmlFor="name" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.device'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="name" placeholder="name" value={ name } maxLength={ 16 } onChange={ this.onChange }/>
                       <span className={ prompt.name ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
@@ -144,7 +145,7 @@ export default class CentralizedControllerPopup extends Component {
                   </div>
                   { this.renderHtmlForModel() }
                   <div className="form-group clearfix">
-                    <label htmlFor="domain" className="fixed-width-left control-label">域：</label>
+                    <label htmlFor="domain" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.domain'/>：</label>
                     <div className="fixed-width-right">
                       <Select id="domain" className="form-control" titleField={ domainList.titleField } valueField={ domainList.valueField } options={ domainList.options } value={ domain }
                         onChange={ this.onChange } />
@@ -152,17 +153,17 @@ export default class CentralizedControllerPopup extends Component {
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="lng" className="fixed-width-left control-label">经度：</label>
+                    <label htmlFor="lng" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.lng'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
-                      <span className={ prompt.lng ? "prompt " : "prompt hidden" }>{ "经度数不合法" }</span>
+                      <span className={ prompt.lng ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="lat" className="fixed-width-left control-label">纬度：</label>
+                    <label htmlFor="lat" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.lat'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
-                      <span className={ prompt.lat ? "prompt " : "prompt hidden" }>{ "纬度数不合法" }</span>
+                      <span className={ prompt.lat ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
                   { footer }

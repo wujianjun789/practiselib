@@ -9,7 +9,7 @@ let models = []
 export const TreeData = [
   {
     "id": "config",
-    "name": "设备配置",
+    "name": "sysOperation.device.config",
     "toggled": true,
     "active": true,
     "link": "/systemOperation/config",

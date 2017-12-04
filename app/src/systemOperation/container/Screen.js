@@ -225,7 +225,7 @@ export class Screen extends Component {
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={this.state.model}
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.addDevice'})} model={this.state.model}
                                                         data={dataInit} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={(data)=>{
                                                                 postAssetsByModel(model, data, ()=>{
@@ -246,7 +246,7 @@ export class Screen extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器"
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.screen'})}
                                                           data={dataInit2} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={data=>{
                                                                 updateAssetsByModel(model, data, (data)=>{
@@ -256,7 +256,7 @@ export class Screen extends Component {
                                                           }}/>);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel }
+                overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'delete.device'})} iconClass="icon_popup_delete" cancel={ this.popupCancel }
                                             confirm={ this.popupConfirm }/>)
                 break;
         }

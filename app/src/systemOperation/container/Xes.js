@@ -222,7 +222,7 @@ export class Xes extends Component {
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={model}
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.addDevice'})} model={model}
                                                         data={dataInit} domainList={domainList} modelList={modelList}
                                                         overlayerHide={overlayerHide} onConfirm={(data)=>{
                                                             postXes(model, data, ()=>{
@@ -241,7 +241,7 @@ export class Xes extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="数据采集仪" model={model}
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.xes'})} model={model}
                                                           data={dataInit2} domainList={domainList} modelList={modelList}
                                                           overlayerHide={overlayerHide} onConfirm={data=>{
                                                             updateXes(model, data, (data)=>{
@@ -251,7 +251,7 @@ export class Xes extends Component {
                                                           }}/>);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel }
+                overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'delete.device'})} iconClass="icon_popup_delete" cancel={ this.popupCancel }
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-dataOrigin':

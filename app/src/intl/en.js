@@ -1,6 +1,10 @@
 export default  {
     locale:'en',
     messages:{
+        //公共
+        'name':'Name',
+        'id':'Id',
+
         //按钮
         ' ':' ',
         'button.add': 'Add',
@@ -9,7 +13,8 @@ export default  {
         'button.confirm': 'Confirm',
         'button.cancel': 'Cancel',
         'button.module':'Module Permissions',
-        'button.import': 'Import',        
+        'button.import': 'Import',
+        'button.finish': 'Finish',        
         
         //地图
         'map.location':'Map Location',
@@ -18,7 +23,8 @@ export default  {
         'app.not.found':'Not Found',
         
         //删除弹框
-        'delete.user':'Are you sure to delete the seleted user？',
+        'delete.user':'Are you sure to delete the seleted user ?',
+        'delete.device':'Are you sure to delete the seleted device ?',
 
         //首页
         'app.title':'Smart Light Manage System',
@@ -55,8 +61,9 @@ export default  {
         'permission.password':'Password',
         'permission.repassword':'Repassword',  
         'permission.grade':'Grade',
-        
+
         //系统运维
+        'sysOperation.device.config':'Device config',        
         'sysOperation.selected.device':'Selected Device',
         'sysOperation.whiteList':'WhiteList',
         'sysOperation.include':'Include',
@@ -70,6 +77,17 @@ export default  {
         'sysOperation.lat':'Lat', 
         'sysOperation.dataOrigin':'Data origin',
         'sysOperation.dataOrigins':'data origins',
+        'sysOperation.gateway':'Gateway',
+        'sysOperation.lamp.control':'Single lamp controller',
+        'sysOperation.pole':'Pole',
+        'sysOperation.screen':'Screen',
+        'sysOperation.sensor':'Sensor',
+        'sysOperation.xes':'Xes',
+        'sysOperation.addDevice':'Add device', 
+        'sysOperation.importList':'Import list',
+        'sysOperation.select':'Select the list file path',
+        'sysOperation.cover':'Cover existing devices',
+        'sysOperation.input.asset':'Please input asset name',        
 
         //智慧路灯
         'app.map': 'map',

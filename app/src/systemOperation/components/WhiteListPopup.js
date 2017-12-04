@@ -8,20 +8,21 @@ import Immutable from 'immutable';
 import {getWhiteListById, addLcToWhiteListById, delLcFromWhiteListById} from '../../api/domain';
 
 import {getAssetsBaseByModelWithDomain} from '../../api/asset'
+import { FormattedMessage } from 'react-intl';
 
 export default class WhiteListPopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             whiteList: [],     /*白名单列表*/
-            search: {placeholder: '输入素材名称', value: ''},
+            search: {placeholder: 'sysOperation.input.asset', value: ''},
             assetsList: [],        /*可添加的设备列表*/
             activeIndex:-1,
         }
 
         this.columns = [
-            {field: "name", title: "名称"},
-            {field: "id", title: "编号"},
+            {field: "name", title: "name"},
+            {field: "id", title: "id"},
         ];
 
         this.onCancel = this.onCancel.bind(this);
@@ -130,18 +131,18 @@ export default class WhiteListPopup extends Component {
                 datalist.push({id:item.id, value:item.name})
             }
         }
-        let footer = <div className='modal-footer'><button type="button" className='btn btn-primary' onClick={this.onConfirm}>完成</button></div>
+        let footer = <div className='modal-footer'><button type="button" className='btn btn-primary' onClick={this.onConfirm}><FormattedMessage id='button.finish'/></button></div>
             
         return <div className={className}>
-            <Panel title='白名单' footer={footer} closeBtn={true} closeClick={this.onCancel}>
+            <Panel title={this.props.intl.formatMessage({id:'sysOperation.whiteList'})} footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row search-group">
-                    <SearchText IsTip={true} datalist = {datalist} placeholder={search.placeholder}  value={search.value} onChange={this.searchChange}/>
-                    <button className="btn btn-primary" onClick={this.onAdd}>添加</button>
+                    <SearchText IsTip={true} datalist = {datalist} placeholder={this.props.intl.formatMessage({id:search.placeholder})}  value={search.value} onChange={this.searchChange}/>
+                    <button className="btn btn-primary" onClick={this.onAdd}><FormattedMessage id = 'button.add'/></button>
                 </div>
                 <div className="table-list">
                     <ul className="table-header">
                     {
-                        this.columns.map((item, index) =>(<li key={index} className="tables-cell">{item.title}</li>))
+                        this.columns.map((item, index) =>(<li key={index} className="tables-cell"><FormattedMessage id={item.title}/></li>))
                     }
                         <li className="tables-cell"></li>
                     </ul>

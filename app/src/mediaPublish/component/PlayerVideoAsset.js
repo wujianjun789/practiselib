@@ -28,6 +28,15 @@ export default class PlayerPicAsset extends PureComponent{
         this.playerVideoAssetClick = this.playerVideoAssetClick.bind(this);
     }
 
+    componentWillMount(){
+        this.initData();
+    }
+
+    initData(){
+        // getVideoAsset((data)=>{
+        //     this.setState({})
+        // })
+    }
 
     onChange(id, value) {
         console.log("id:", id);
@@ -70,15 +79,7 @@ export default class PlayerPicAsset extends PureComponent{
             case "apply":
                 break;
             case "reset":
-                this.setState({
-                    property: Object.assign({}, this.state.property, {
-                        playTimes: Object.assign({}, playTimes, { value: "" }),
-                        playType: Object.assign({}, playType, { index: 0, name: "片段播放" }),
-                        clipsRage: Object.assign({}, clipsRage, { clipsRage1: moment('00:00:00', 'HH:mm:ss'), clipsRage2: moment('00:00:00', 'HH:mm:ss') }),
-                        scaling: Object.assign({}, scaling, { index: 0, name: "铺满" }),
-                        volume: Object.assign({}, volume, { index: 0, name: "100" }),
-                    })
-                })
+                this.initData()
                 break;
         }
     }
