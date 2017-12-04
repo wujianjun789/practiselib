@@ -1,29 +1,31 @@
 /**
  * Created by a on 2017/7/13.
  */
+import { getLocalStorage, setLocalStorage} from './cache'
 const _ = require('lodash');
 let language = "";
 export function getLanguage() {
-    if (!language) {
-        language = navigator.language;
-    }
-
-    if (!language) {  
-        language = navigator.browserLanguage;
-    }
-
-    if (language) {
-        let lans = language.split('-')
-        if (lans.length > 1) {
-            language = lans[0]
-        }
-    }
-    
+    // if (!language) {
+    //     language = navigator.language;
+    // }
+    //
+    // if (!language) {
+    //     language = navigator.browserLanguage;
+    // }
+    //
+    // if (language) {
+    //     let lans = language.split('-')
+    //     if (lans.length > 1) {
+    //         language = lans[0]
+    //     }
+    // }
+    language = getLocalStorage("appLanguage");
     return language;
 }
 
 export function setLanguage(language) {
     this.language = language
+    setLocalStorage("appLanguage", language);
 }
 
 export function intlFormat(data) {

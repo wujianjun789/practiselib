@@ -31,6 +31,10 @@ export default {
         'app.visualization':'可视化',
         'app.domain.manage':'域管理',
 
+        //资产管理
+        'asset.model': '资产管理',
+        'asset.statistics': '资产统计',
+
         //权限管理
         'permission.username':'用户名称',
         'permission.lastLoginDate':'最后登录时间',

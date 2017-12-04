@@ -31,7 +31,10 @@ export default  {
         'app.mediaPublish':'MediaPublish',
         'app.visualization':'Visualization',
         'app.domain.manage':'Domain Manage',
-        
+
+        //资产管理
+        'asset.model': 'asset model',
+        'asset.statistics': 'asset statistics',
 
         //权限管理
         'permission.username':'UserName',
