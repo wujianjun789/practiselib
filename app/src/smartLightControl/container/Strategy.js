@@ -5,6 +5,8 @@ import React,{Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
 
+import {injectIntl,FormattedMessage} from 'react-intl';
+
 import Content from '../../components/Content'
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
@@ -28,9 +30,10 @@ export class Strategy extends Component{
     constructor(props){
         super(props);
         this.state = {
-            sort:Immutable.fromJS({list:[{id:1, value:'场景序号'},{id:2, value:'设备多少'}], index:0, value:'场景序号',placeholder:"排序"}),
-            strategy:Immutable.fromJS({list:[{id:"time", value:'时间策略'},{id:"sensor", value:'传感器策略'},{id:"latlng", value:'经纬度策略'}],index:0, value:'时间策略',placeholder:'策略类型'}),
-            search:Immutable.fromJS({placeholder:'输入策略名称', value:''}),
+            sort:Immutable.fromJS({list:[{id:1, value:this.formatIntl('app.scene.order')},{id:2, value:this.formatIntl('app.device.number')}], index:0, value:this.formatIntl('app.device.number')}),
+            strategy:Immutable.fromJS({list:[{id:"time", value:this.formatIntl('app.time.strategy')},
+                {id:"sensor", value:this.formatIntl('app.sensor.strategy')},{id:"latlng", value:this.formatIntl('app.latlng.strategy')}],index:0, value:this.formatIntl('app.time.strategy')}),
+            search:Immutable.fromJS({placeholder:this.formatIntl('app.input.strategy.name'), value:''}),
 
             collapse:false,
             page: Immutable.fromJS({
@@ -56,8 +59,8 @@ export class Strategy extends Component{
             sensorTypeDefault:{}
         }
 
-        this.columns = [{field:"name", title:"策略名称"}, {field:"type", title:"策略类型"},
-            {field:"asset", title:"设备种类"}, {field:"setState", title:"设定状态"}]
+        this.columns = [{field:"name", title:this.formatIntl("app.strategy.name")}, {field:"type", title:this.formatIntl("app.strategy.type")},
+            {field:"asset", title:this.formatIntl("app.device.type")}, {field:"setState", title:this.formatIntl("app.set.state")}]
 
         this.timeStrategy = null;
         this.sensorStrategy = null;
@@ -75,6 +78,7 @@ export class Strategy extends Component{
         this.initData = this.initData.bind(this);
         this.initPageTotal = this.initPageTotal.bind(this);
         this.getStrategyDevice = this.getStrategyDevice.bind(this);
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
@@ -88,6 +92,11 @@ export class Strategy extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     requestSearch(){
@@ -265,17 +274,17 @@ export class Strategy extends Component{
                 <SideBarInfo IsHaveMap={false} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default strategy-info">
                         <div className="panel-heading">
-                            <span className="icon_select"></span>选中设备
+                            <span className="icon_select"></span><FormattedMessage id="sysOperation.selected.device"/>
                         </div>
                         <div className="panel-body strategy-property">
                             <span className="strategy-name">{selectDevice.name}</span>
-                            <button id="sys-update" className="btn btn-primary pull-right" onClick={this.setHandler} disabled={data.size==0 ? true : false}>设定
+                            <button id="sys-update" className="btn btn-primary pull-right" onClick={this.setHandler} disabled={data.size==0 ? true : false}><FormattedMessage id="button.set"/>
                             </button>
                         </div>
                     </div>
                     <div className="panel panel-default strategy-param">
                         <div className="panel-heading">
-                            <span className="icon_list"></span>策略参数
+                            <span className="icon_list"></span><FormattedMessage id="app.strategy.param"/>
                         </div>
                         <div className="panel-body strategy-chart" id="strategyChart" ref={this.renderChart}>
 
@@ -283,7 +292,7 @@ export class Strategy extends Component{
                     </div>
                     <div className="panel panel-default strategy-device">
                         <div className="panel-heading">
-                            <span className="icon_device_list"></span>包含目标设备
+                            <span className="icon_device_list"></span><FormattedMessage id="app.include.target.devices"/>
                         </div>
                         <div className="panel-body">
                             <ul>
@@ -315,4 +324,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(
     mapStateToProps, mapDispatchToProps
-)(Strategy);
+)(injectIntl(Strategy));
