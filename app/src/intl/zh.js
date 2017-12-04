@@ -13,6 +13,7 @@ export default {
         'button.confirm': '确认',
         'button.import': '导入',        
         'button.cancel': '取消',
+        'button.set': '设定',
         'button.finish': '完成',
 
         //地图
@@ -126,6 +127,17 @@ export default {
         'app.scene.order': '场景序号',
         'app.device.number': '设备数量',
         'app.input.scene.name': '输入场景名称',
+
+        'app.time.strategy':'时间策略',
+        'app.sensor.strategy':'传感器策略',
+        'app.latlng.strategy':'经纬度策略',
+        'app.input.strategy.name':'输入策略名称',
+        'app.strategy.name':'策略名称',
+        'app.strategy.type':'策略类型',
+        'app.device.type':'设备种类',
+        'app.set.state':'设定状态',
+        'app.strategy.param':'策略参数',
+        'app.include.target.devices':'包含目标设备',
 
         //以前的
         'app.link.index': '首页',

@@ -14,7 +14,8 @@ export default  {
         'button.cancel': 'Cancel',
         'button.module':'Module Permissions',
         'button.import': 'Import',
-        'button.finish': 'Finish',        
+        'button.set': 'Set',
+        'button.finish': 'Finish',
         
         //地图
         'map.location':'Map Location',
@@ -127,6 +128,17 @@ export default  {
         'app.scene.order': 'scene order',
         'app.device.number': 'device number',
         'app.input.scene.name': 'input scene name',
+
+        'app.time.strategy':'time strategy',
+        'app.sensor.strategy':'sensor strategy',
+        'app.latlng.strategy':'latlng strategy',
+        'app.input.strategy.name':'input strategy name',
+        'app.strategy.name':'strategy name',
+        'app.strategy.type':'strategy type',
+        'app.device.type':'device type',
+        'app.set.state':'set state',
+        'app.strategy.param':'strategy param',
+        'app.include.target.devices':'include target devices',
 
         //last
         'app.link.index': 'home',
