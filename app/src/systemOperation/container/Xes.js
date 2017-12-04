@@ -31,6 +31,7 @@ import ExcelPopup from '../components/ExcelPopup';
 import {addNotify} from '../../common/actions/notifyPopup';
 import {bacthImport} from '../../api/import';
 import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../../util/index'
 
 export class Xes extends Component {
     constructor(props) {
@@ -119,25 +120,10 @@ export class Xes extends Component {
     }
 
     updateSensorTypeList(data){
-        const sensorTitles = {
-            SENSOR_NOISE: '噪声传感器',
-            SENSOR_PM25: 'PM2.5 传感器',
-            SENSOR_PA: '大气压传感器',
-            SENSOR_HUMIS: '湿度传感器',
-            SENSOR_TEMPS: '温度传感器',
-            SENSOR_WINDS: '风速传感器',
-            SENSOR_WINDDIR: '风向传感器',
-            SENSOR_CO: '一氧化碳传感器',
-            SENSOR_O2: '氧气传感器',
-            SENSOR_CH4: '甲烷传感器',
-            SENSOR_CH2O: '甲醛传感器',
-            SENSOR_LX: '照度传感器'
-        }
-        let list = []
-        if('types' in data) {
-            data.types.forEach(val=>{
-                list.push({value: val, title: sensorTitles[val]});                
-            });
+        let list = [],
+            types = data.intl.types;
+        for(var key in types){
+            list.push({value: key, title: intlFormat(types[key])}); 
         }
         this.setState({sensorTypeList:list})
     }
@@ -255,7 +241,7 @@ export class Xes extends Component {
                                             confirm={ this.popupConfirm }/>)
                 break;
             case 'sys-dataOrigin':
-                overlayerShow(<DataOriginPopup className="dataOrigin-popup"  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide} onConfirm={(data,type)=>updateDataOrigin(data,type)}/>)
+                overlayerShow(<DataOriginPopup className="dataOrigin-popup" intl={this.props.intl}  sensorTypeList={sensorTypeList} type={data.type} overlayerHide={overlayerHide} onConfirm={(data,type)=>updateDataOrigin(data,type)}/>)
                 break;
         }
     }

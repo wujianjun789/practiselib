@@ -87,7 +87,10 @@ export default  {
         'sysOperation.importList':'Import list',
         'sysOperation.select':'Select the list file path',
         'sysOperation.cover':'Cover existing devices',
-        'sysOperation.input.asset':'Please input asset name',        
+        'sysOperation.input.asset':'Please input asset name',
+        'sysOperation.select.sensor':'Select sensor：',
+        'sysOperation.label':'Label：', 
+        'sysOperation.input.id':'Input id to add',        
 
         //智慧路灯
         'app.map': 'map',

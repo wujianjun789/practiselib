@@ -83,9 +83,9 @@ export default class DataOriginPopup extends Component {
                                   btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
         return <div className={className}>
-            <Panel title='数据源' footer={footer} closeBtn={true} closeClick={this.onCancel}>
+            <Panel title={this.props.intl.formatMessage({id:'sysOperation.dataOrigin'})} footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="selectItem">
-                        <label className="control-label">{type == 'XES-200S'?'选择传感器：':'修改标签：'}</label>
+                        <label className="control-label">{type == 'XES-200S'?this.props.intl.formatMessage({id:'sysOperation.select.sensor'}):this.props.intl.formatMessage({id:'sysOperation.label'})}</label>
                         {
                             type == 'XES-200S'?
                             <div className = 'select-Sensor'>
@@ -100,11 +100,11 @@ export default class DataOriginPopup extends Component {
                             :
                             <div className="rfid-label">
                                 <div className="form-group clearfix">
-                                    <input type="text" className="form-control" placeholder="输入编号添加" />
-                                    <button className='btn btn-primary' onClick={this.rfidAdd}>添加</button>
+                                    <input type="text" className="form-control" placeholder={this.props.intl.formatMessage({id:'sysOperation.input.id'})} />
+                                    <button className='btn btn-primary' onClick={this.rfidAdd}>{this.props.intl.formatMessage({id:'button.add'})}</button>
                                 </div>
                                 <ul className = 'label-list'>
-                                    <li>标签</li>
+                                    <li>{this.props.intl.formatMessage({id:'sysOperation.label'})}</li>
                                     {
                                         rfidList.map((item,index)=>{
                                         return <li key = {index}>
