@@ -100,6 +100,10 @@ export default  {
 
         'app.manual':'Manual',
 
+        'app.scene.order': 'scene order',
+        'app.device.number': 'device number',
+        'app.input.scene.name': 'input scene name',
+
         //last
         'app.link.index': 'home',
         'app.link.config': 'config',

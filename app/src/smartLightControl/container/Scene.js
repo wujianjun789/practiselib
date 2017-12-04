@@ -2,6 +2,8 @@
  * Created by a on 2017/8/24.
  */
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import Content from '../../components/Content'
 
 import Select from '../../components/Select'
@@ -9,16 +11,18 @@ import SearchText from '../../components/SearchText'
 import Page from '../../components/Page';
 import SceneItem from '../component/SceneItem'
 
+import {injectIntl} from 'react-intl';
+
 import {getSearchScene, getSearchSceneCount} from '../../api/scene'
 import {getAssetList} from '../../api/asset'
 import Immutable from 'immutable';
 const lodash = require('lodash');
-export default class Scene extends Component{
+export class Scene extends Component{
     constructor(props){
         super(props);
         this.state = {
-            sort:Immutable.fromJS({list:[{id:1, value:'场景序号'},{id:2, value:'设备多少'}], index:0, value:'场景序号',placeholder:"排序"}),
-            search:Immutable.fromJS({placeholder:'输入场景名称', value:''}),
+            sort:Immutable.fromJS({list:[{id:1, value:this.formatIntl('app.scene.order')},{id:2, value:this.formatIntl('app.device.number')}], index:0, value:this.formatIntl('app.scene.order')}),
+            search:Immutable.fromJS({placeholder:this.formatIntl('app.input.scene.name'), value:''}),
             sceneList:[
                /* {id:1, name:"场景1", active:false, presets:[{id:1, name:"灯1"},{id:2, name:"屏幕"}]},
                 {id:2, name:"场景2", active:false, presets:[{id:3, name:"灯1"},{id:4, name:"屏幕"}]},
@@ -45,6 +49,8 @@ export default class Scene extends Component{
         this.initResult = this.initResult.bind(this);
         this.getAssetName = this.getAssetName.bind(this);
         this.initPageTotal = this.initPageTotal.bind(this);
+
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
@@ -58,6 +64,11 @@ export default class Scene extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     requestSearch(){
@@ -157,3 +168,17 @@ export default class Scene extends Component{
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+    }, dispatch),
+})
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(injectIntl(Scene));

@@ -98,6 +98,10 @@ export default {
 
         'app.manual': '手动',
 
+        'app.scene.order': '场景序号',
+        'app.device.number': '设备数量',
+        'app.input.scene.name': '输入场景名称',
+
         //以前的
         'app.link.index': '首页',
         'app.link.config': '配置',
