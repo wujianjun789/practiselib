@@ -323,7 +323,7 @@ export class Gateway extends Component {
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title="添加设备" model={ this.state.model } data={ dataInit } domainList={ domainList }
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.addDevice'})} model={ this.state.model } data={ dataInit } domainList={ domainList }
                                 modelList={ modelList } overlayerHide={ overlayerHide } onConfirm={ (data) => {
                                                                                                         postAssetsByModel(model, data, () => {
                                                                                                             this.requestSearch();
@@ -346,7 +346,7 @@ export class Gateway extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title="灯集中控制器" data={ dataInit2 } domainList={ domainList } modelList={ modelList }
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.gateway'})} data={ dataInit2 } domainList={ domainList } modelList={ modelList }
                                 overlayerHide={ overlayerHide } onConfirm={ data => {
                                                                                 updateAssetsByModel(model, data, (data) => {
                                                                                     this.requestSearch();
@@ -355,11 +355,11 @@ export class Gateway extends Component {
                                                                             } } />);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup tips="是否删除选中设备？" iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
+                overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'delete.device'})} iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
             case 'sys-whitelist':
                 let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
-                overlayerShow(<WhiteListPopup className="whitelist-popup" id={ data2.id } domainId={ selectDevice.domainId } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
+                overlayerShow(<WhiteListPopup className="whitelist-popup" intl={this.props.intl} id={ data2.id } domainId={ selectDevice.domainId } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
                                                                                                                                  this.requestWhiteListCount()
                                                                                                                              } } />)
                 break;

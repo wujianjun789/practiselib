@@ -79,7 +79,7 @@ export default class DataOriginPopup extends Component {
     render() {
         let {className='',sensorTypeList,type} = this.props;
         const {dataOriList,rfidList} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']}
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
         return <div className={className}>

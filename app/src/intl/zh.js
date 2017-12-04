@@ -1,6 +1,10 @@
 export default {
     locale: 'zh',
     messages: {
+        //公共
+        'name':'名称',
+        'id':'编号',
+
         //按钮
         ' ':' ',
         'button.add': '添加',
@@ -10,7 +14,8 @@ export default {
         'button.import': '导入',        
         'button.cancel': '取消',
         'button.set': '设定',
-        
+        'button.finish': '完成',
+
         //地图
         'map.location':'地图位置',
 
@@ -19,6 +24,7 @@ export default {
 
         //删除弹框
         'delete.user':'是否删除选中用户？',
+        'delete.device':'是否删除选中设备？',        
 
         //首页
         'app.title':'智慧路灯管理系统',
@@ -55,13 +61,14 @@ export default {
         'permission.password':'密码',
         'permission.repassword':'重复密码',
         'permission.grade':'用户等级',
-        
+
         //系统运维
+        'sysOperation.device.config':'设备配置',
         'sysOperation.selected.device':'选中设备',
         'sysOperation.whiteList':'白名单',
         'sysOperation.include':'包含',
         'sysOperation.devices':'个设备',
-        'sysOperation.':'输入设备名称',
+        'sysOperation.input.device':'输入设备名称',
         'sysOperation.domain':'域',
         'sysOperation.device':'设备名称',
         'sysOperation.type':'型号',
@@ -70,7 +77,18 @@ export default {
         'sysOperation.lat':'纬度',
         'sysOperation.dataOrigin':'数据源',
         'sysOperation.dataOrigins':'个数据源',
-
+        'sysOperation.gateway':'网关',
+        'sysOperation.lamp.control':'单灯控制器',
+        'sysOperation.pole':'灯杆',
+        'sysOperation.screen':'显示屏',
+        'sysOperation.sensor':'传感器',
+        'sysOperation.xes':'数据采集仪',
+        'sysOperation.addDevice':'添加设备',
+        'sysOperation.importList':'导入列表',
+        'sysOperation.select':'选择列表文件路径',
+        'sysOperation.cover':'覆盖已有设备',
+        'sysOperation.input.asset':'请输入素材名称',
+        
         //智慧路灯
         'app.map': '地图',
         'app.list': '列表',
