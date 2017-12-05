@@ -92,12 +92,12 @@ export class Screen extends Component {
             {
                 id: 5,
                 field: "lng",
-                title: this.props.intl.formatMessage({id:"sysOperation.lng"})
+                title: this.props.intl.formatMessage({id:"map.lng"})
             },
             {
                 id: 6,
                 field: "lat",
-                title: this.props.intl.formatMessage({id:"sysOperation.lat"})
+                title: this.props.intl.formatMessage({id:"map.lat"})
             },
         ];
 

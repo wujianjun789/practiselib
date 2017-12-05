@@ -37,6 +37,17 @@ export default {
 
         //地图
         'map.location': 'Map Location',
+        'map.lng':'Lng',
+        'map.lat':'Lat',
+
+        //设备
+        'sysOperation.gateway':'Gateway',
+        'sysOperation.lamp.control':'Single lamp controller',
+        'sysOperation.pole':'Pole',
+        'sysOperation.screen':'Screen',
+        'sysOperation.sensor':'Sensor',
+        'sysOperation.xes':'Xes',
+        'sysOperation.charge':'Charge',
 
         //提示
         'app.not.found': 'Not Found',
@@ -91,18 +102,9 @@ export default {
         'sysOperation.device':'DeviceName',
         'sysOperation.type':'Type',
         'sysOperation.id':'Id',
-        'sysOperation.lng':'Lng',
-        'sysOperation.lat':'Lat', 
         'sysOperation.dataOrigin':'Data origin',
         'sysOperation.dataOrigins':'data origins',
-        'sysOperation.gateway':'Gateway',
-        'sysOperation.lamp.control':'Single lamp controller',
-        'sysOperation.pole':'Pole',
-        'sysOperation.screen':'Screen',
-        'sysOperation.sensor':'Sensor',
-        'sysOperation.xes':'Xes',
-        'sysOperation.charge':'Charge',
-        'sysOperation.addDevice':'Add device', 
+        'sysOperation.addDevice':'Add device',
         'sysOperation.importList':'Import list',
         'sysOperation.select':'Select the list file path',
         'sysOperation.cover':'Cover existing devices',
