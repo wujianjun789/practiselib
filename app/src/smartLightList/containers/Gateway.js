@@ -3,6 +3,11 @@
  */
 import '../../../public/styles/smartLightManage-list.less';
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+import {injectIntl, FormattedMessage} from 'react-intl';
+
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
@@ -13,7 +18,7 @@ import {getDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById} from '../../api/asset';
 import {getMomentDate, momentDateFormat} from '../../util/time';
 
-export default class Gateway extends Component{
+export class Gateway extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -24,7 +29,7 @@ export default class Gateway extends Component{
             },
             search: {
                 value: '',
-                placeholder: '请输入设备名称',
+                placeholder: this.formatIntl('app.input.device.name'),
 
             },
             sidebarCollapse: false,
@@ -41,8 +46,8 @@ export default class Gateway extends Component{
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    {title: '远程', value: 'remote'},
-                    {title: '自动', value: 'auto'}
+                    {title: this.formatIntl('app.remote'), value: 'remote'},
+                    {title: this.formatIntl('app.auto'), value: 'auto'}
                 ]
             }
         };
@@ -50,17 +55,18 @@ export default class Gateway extends Component{
         this.model = 'gateway';
 
         this.columns = [
-            {accessor: 'name', title: '设备名称'},
-            {accessor: 'comm', title: '通信状态'},
-            {accessor: 'device', title: '设备状态'},
-            {accessor: 'mode', title: '调光模式'},
+            {accessor: 'name', title: this.formatIntl('app.device.name')},
+            {accessor: 'comm', title: this.formatIntl('app.comm.state')},
+            {accessor: 'device', title: this.formatIntl('app.device.state')},
+            {accessor: 'mode', title: this.formatIntl('app.dimming.mode')},
             {
                 accessor(data) {
                     return data.updated?momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm'):'';
                 },
-                title: '更新时间'
+                title: this.formatIntl('app.update.time')
             }
         ];
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.collapseHandler = this.collapseHandler.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -84,6 +90,11 @@ export default class Gateway extends Component{
 
     componentWillUnmount() {
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     initData() {
@@ -208,7 +219,7 @@ export default class Gateway extends Component{
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
-                                <span className="icon_select"></span>选中设备
+                                <span className="icon_select"></span><FormattedMessage id="sysOperation.selected.device"/>
                             </div>
                             <div className="panel-body">
                                 <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
@@ -216,19 +227,19 @@ export default class Gateway extends Component{
                         </div>
                         <div className="panel panel-default panel-2">
                             <div className="panel-heading">
-                                <span className="icon_touch"></span>设备操作
+                                <span className="icon_touch"></span><FormattedMessage id="app.device.operation"/>
                             </div>
                             <div className="panel-body">
                                 <div>
-                                    <span className="tit">控制模式：</span>
+                                    <span className="tit">{this.formatIntl('app.control.mode')}</span>
                                     <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField}
                                         options={controlModeList.options}  value={currentControlMode} onChange={this.onChange} disabled={disabled}/>
-                                    <button id="controlMode_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>应用</button>
+                                    <button id="controlMode_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
                                 </div>
                                 <div>
-                                    <span className="tit">校时：</span>
-                                    <span className="note">(点击以校准时间)</span>
-                                    <button id=" timing" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>校时</button>
+                                    <span className="tit">{this.formatIntl('app.automatic.time')}</span>
+                                    <span className="note">({this.formatIntl('app.click.automatic.time')})</span>
+                                    <button id=" timing" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
                                 </div>
                             </div>
                         </div>
@@ -241,3 +252,18 @@ export default class Gateway extends Component{
  *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>
  */
+
+const mapStateToProps = (state) => {
+    return {
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+    }, dispatch),
+})
+
+export default connect(
+    mapStateToProps, mapDispatchToProps
+)(injectIntl(Gateway));
+

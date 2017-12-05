@@ -263,13 +263,13 @@ export class SingleLampCon extends Component {
                                     <span className="tit">{this.formatIntl("app.device.switch")}</span>
                                     <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField}
                                         options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
-                                    <button id="deviceSwitch_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="app.apply"/></button>
+                                    <button id="deviceSwitch_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
                                 </div>
                                 <div>
                                     <span className="tit"><FormattedMessage id="app.dimming"/></span>
                                     <Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField}
                                         options={brightnessList.options}  value={currentBrightness} onChange={this.onChange} disabled={disabled} />
-                                    <button id="dimming_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="app.apply"/></button>
+                                    <button id="dimming_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
                                 </div>
                             </div>
                         </div>
