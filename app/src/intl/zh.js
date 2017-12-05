@@ -83,6 +83,7 @@ export default {
         'sysOperation.screen':'显示屏',
         'sysOperation.sensor':'传感器',
         'sysOperation.xes':'数据采集仪',
+        'sysOperation.charge':'充电桩',
         'sysOperation.addDevice':'添加设备',
         'sysOperation.importList':'导入列表',
         'sysOperation.select':'选择列表文件路径',
@@ -139,6 +140,24 @@ export default {
         'app.strategy.param':'策略参数',
         'app.include.target.devices':'包含目标设备',
 
+        'app.input.device.name':'请输入设备名称',
+        'app.device.name': '设备名称',
+        'app.online.state': '在线状态',
+        'app.fault.state': '故障状态',
+        'app.current.brightness':'当前亮度',
+        'app.brightness.mode':'亮度模式',
+        'app.update.time':'更新时间',
+        'app.light.state':'灯状态',
+        'app.switch.state':'开关状态',
+        'app.brightness':'亮度',
+        'app.voltage':'电压',
+        'app.electric.current':'电流',
+        'app.power':'功率',
+
+        'app.device.operation':'设备操作',
+        'app.device.switch':'设备开关',
+        'app.dimming': '调光',
+        
         //以前的
         'app.link.index': '首页',
         'app.link.config': '配置',

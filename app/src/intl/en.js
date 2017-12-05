@@ -84,6 +84,7 @@ export default  {
         'sysOperation.screen':'Screen',
         'sysOperation.sensor':'Sensor',
         'sysOperation.xes':'Xes',
+        'sysOperation.charge':'Charge',
         'sysOperation.addDevice':'Add device', 
         'sysOperation.importList':'Import list',
         'sysOperation.select':'Select the list file path',
@@ -139,6 +140,24 @@ export default  {
         'app.set.state':'set state',
         'app.strategy.param':'strategy param',
         'app.include.target.devices':'include target devices',
+
+        'app.input.device.name':'input device name',
+        'app.device.name': 'device name',
+        'app.online.state': 'online state',
+        'app.fault.state': 'fault state',
+        'app.current.brightness':'current brightness',
+        'app.brightness.mode':'brightness mode',
+        'app.update.time':'update time',
+        'app.light.state':'light state',
+        'app.switch.state':'switch state',
+        'app.brightness':'brightness',
+        'app.voltage':'voltage',
+        'app.electric.current':'electric current',
+        'app.power':'power',
+
+        'app.device.operation':'device operation',
+        'app.device.switch':'device switch',
+        'app.dimming': 'dimming',
 
         //last
         'app.link.index': 'home',

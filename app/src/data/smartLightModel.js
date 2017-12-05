@@ -21,42 +21,42 @@ export const TreeData = [
         "children": [
             {
                 "id": 'lc',
-                "name": "单灯控制器",
+                "name": "sysOperation.lamp.control",
                 "class": "icon_lc",
                 "active": false,
                 "link": "/smartLight/list"
             },
             {
                 "id": 'gateway',
-                "name": "网关",
+                "name": "sysOperation.gateway",
                 "class": "icon_control",
                 "active": false,
                 "link": "/smartLight/list/gateway"
             },
             {
                 "id": 'screen',
-                "name": "显示屏",
+                "name": "sysOperation.screen",
                 "class": "icon_screen",
                 "active": false,
                 "link": "/smartLight/list/screen"
             },
             {
                 "id": 'xes',
-                "name": "数据采集仪",
+                "name": "sysOperation.xes",
                 "class": "icon_collect",
                 "active": false,
                 "link": "/smartLight/list/xes"
             },
             {
                 "id": 'chargePole',
-                "name": "充电桩",
+                "name": "sysOperation.charge",
                 "class": "icon_charge_pole",
                 "active": false,
                 "link": "/smartLight/list/chargePole"
             },
             {
                 "id": 'sensor',
-                "name": "传感器",
+                "name": "sysOperation.sensor",
                 "class": "icon_sensor",
                 "active": false,
                 "link": "/smartLight/list/sensor"
