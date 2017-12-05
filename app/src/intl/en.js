@@ -72,6 +72,9 @@ export default {
         //资产管理
         'asset.model': 'asset model',
         'asset.statistics': 'asset statistics',
+        'asset.property': 'asset properties',
+        'asset.type':'asset types',
+        'asset.param':'default params',
 
         //权限管理
         'permission.username': 'UserName',
