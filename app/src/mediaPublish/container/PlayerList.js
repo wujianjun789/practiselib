@@ -146,7 +146,7 @@ export class PlayerList extends Component {
 
     removeHandler(id) {
         const { actions } = this.props;
-        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中播放列表？"}
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.props.intl.formatMessage({id:'mediaPublish.isDeleteList'})}
             cancel={() => { actions.overlayerHide() }} confirm={() => {
             }} />);
     }

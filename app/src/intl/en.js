@@ -171,6 +171,13 @@ export default {
         'mediaPublish.playPlan':'play plan',
         'mediaPublish.screenSize':'screen size',
         'mediaPublish.prompt':'Only letters, numbers, and underscores',
+        'mediaPublish.isDeleteList':'Whether to delete the selected playlist',
+        'mediaPublish.play':'play',
+        'mediaPublish.enlarge':'enlarge',
+        'mediaPublish.narrow':'narrow',
+        'mediaPublish.savePlan':'Save',
+        'mediaPublish.quit':'Quit',
+        
 
 
 
