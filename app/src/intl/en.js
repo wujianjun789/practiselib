@@ -214,6 +214,16 @@ export default {
         'mediaPublish.volume':'volume',
         'mediaPublish.number':'number',
         'mediaPublish.displayMethod':'mode',
+        'mediaPublish.timeDirection':'direction',
+        'mediaPublish.areaSet':'area',
+        'mediaPublish.selectFormat':'format',
+        'mediaPublish.singleLine':'singleLine',
+        'mediaPublish.lastDate':'last date',
+        'mediaPublish.lastTime':'last time',
+        'mediaPublish.digitalClock':'clock',
+        'mediaPublish.timeZone':'timeZone',
+        'mediaPublish.dateFormat':'dateFormat',
+        'mediaPublish.timeFormat':'timeFormat',
         
 
 

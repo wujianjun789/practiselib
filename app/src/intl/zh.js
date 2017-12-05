@@ -214,6 +214,16 @@ export default {
         'mediaPublish.volume':'音量',
         'mediaPublish.number':'次',
         'mediaPublish.displayMethod':'显示方式',
+        'mediaPublish.timeDirection':'计时方式',
+        'mediaPublish.areaSet':'区域设置',
+        'mediaPublish.selectFormat':'选择格式',
+        'mediaPublish.singleLine':'单行显示',
+        'mediaPublish.lastDate':'截止日期',
+        'mediaPublish.lastTime':'截止时间',
+        'mediaPublish.digitalClock':'数字时钟',
+        'mediaPublish.timeZone':'时区',
+        'mediaPublish.dateFormat':'日期格式',
+        'mediaPublish.timeFormat':'时间格式',
 
 
         //以前的

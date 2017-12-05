@@ -3,25 +3,28 @@ import { numbersValid } from '../../util/index';
 import moment from 'moment';
 import { DatePicker,TimePicker } from 'antd';
 import ColorPicker from '../../components/ColorPicker'
-export default class PlayerTimeAsset extends PureComponent{
+
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
+class PlayerTimeAsset extends PureComponent{
     constructor(props){
         super(props);
         this.state = {
             //计划
             property:{
                //计时素材                
-                assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },                
-                timing:{ key: "timing", title: "计时方式", list: [{ id: 1, name: '倒计时' }, { id: 2, name: '正计时' }], index: 0, name: "倒计时" },
-                playDuration: { key: "playDuration", title: "播放时长", placeholder: '秒/s', value: "" },                
-                bgColor: { key: 'bgColor', title: '背景颜色', value: '#fff' },
-                textContent: { key: 'textContent', title: '文本内容', value: '' },
-                fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0},
-                fontSize:{ key: 'fontSize', title: '文字大小', list: [{ id: 1, name: '2pt' }, { id: 2, name: '4pt' }], index: 0},
-                fontColor: { key: 'fontColor', title: '文字颜色', value: '#000' },
-                area:{ key: "area", title: "区域设置", list: [{ id: 1, name: '中国' }, { id: 2, name: '美国' }], index: 0, name: "中国" },
-                format: {key: "format", title: "选择格式", list: [{ id: 1, name: '天+时+分+秒' }, { id: 2, name: '秒+分+时+天' }], index: 0, name: "天+时+分+秒" },
-                stopDate: { key: 'stopDate', title: '截止日期', placeholder: '点击选择截止日期', value: moment() },
-                stopTime: { key: 'stopTime', title: '截止时间', placeholder: '点击选择截止时间', value: moment() }
+                assetName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: "" },             
+                timing:{ key: "timing", title: this.props.intl.formatMessage({id:'mediaPublish.timeDirection'}), list: [{ id: 1, name: '倒计时' }, { id: 2, name: '正计时' }], index: 0, name: "倒计时" },
+                playDuration: { key: "playDuration", title: this.props.intl.formatMessage({id:'mediaPublish.playDuration'}), placeholder: 's', value: "" },                
+                bgColor: { key: 'bgColor', title: this.props.intl.formatMessage({id:'mediaPublish.bgColor'}), value: '#fff' },
+                textContent: { key: 'textContent', title: this.props.intl.formatMessage({id:'mediaPublish.textContent'}), value: '' },
+                fontType: { key: 'fontType', title: this.props.intl.formatMessage({id:'mediaPublish.selectFont'}), list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0},
+                fontSize:{ key: 'fontSize', title: this.props.intl.formatMessage({id:'mediaPublish.fontSize'}), list: [{ id: 1, name: '2pt' }, { id: 2, name: '4pt' }], index: 0},
+                fontColor: { key: 'fontColor', title: this.props.intl.formatMessage({id:'mediaPublish.fontColor'}), value: '#000' },
+                area:{ key: "area", title: this.props.intl.formatMessage({id:'mediaPublish.areaSet'}), list: [{ id: 1, name: '中国' }, { id: 2, name: '美国' }], index: 0, name: "中国" },
+                format: {key: "format", title: this.props.intl.formatMessage({id:'mediaPublish.selectFormat'}), list: [{ id: 1, name: '天+时+分+秒' }, { id: 2, name: '秒+分+时+天' }], index: 0, name: "天+时+分+秒" },
+                stopDate: { key: 'stopDate', title: this.props.intl.formatMessage({id:'mediaPublish.lastDate'}), placeholder: '点击选择截止日期', value: moment() },
+                stopTime: { key: 'stopTime', title: this.props.intl.formatMessage({id:'mediaPublish.lastTime'}), placeholder: '点击选择截止时间', value: moment() }
             },
             prompt:{
                 //计划
@@ -186,7 +189,7 @@ export default class PlayerTimeAsset extends PureComponent{
                 </div>
             </div>
             <div className="form-group">
-                <label className="control-label" htmlFor="isRow">单行显示</label>
+                <label className="control-label" htmlFor="isRow"><FormattedMessage id='mediaPublish.singleLine'/></label>
                 <input id="isRow" type="checkbox"/>
             </div>
             <div className="form-group">
@@ -205,9 +208,11 @@ export default class PlayerTimeAsset extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerTimeAssetClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerTimeAssetClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.playerTimeAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.playerTimeAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(PlayerTimeAsset)

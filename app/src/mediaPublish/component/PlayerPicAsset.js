@@ -134,7 +134,7 @@ class PlayerPicAsset extends PureComponent{
                         placeholder={property.playDuration.placeholder} maxLength="8"
                         value={property.playDuration.value}
                         onChange={event => this.onChange("playDuration", event)} />
-                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="form-group">
@@ -144,12 +144,12 @@ class PlayerPicAsset extends PureComponent{
                         placeholder={property.playSpeed.placeholder} maxLength="8"
                         value={property.playSpeed.value}
                         onChange={event => this.onChange("playSpeed", event)} />
-                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerPicAssetClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.playerPicAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }

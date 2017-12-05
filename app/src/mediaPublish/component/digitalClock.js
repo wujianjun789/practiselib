@@ -9,7 +9,9 @@ import _digitalClock from '../config/digitalClock.js';
 import { SketchPicker, BlockPicker } from 'react-color';
 import '../../../public/styles/digitalClock.less';
 
- export default class DigitalClock extends Component {
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
+class DigitalClock extends Component {
    constructor(props) {
      super(props);
      this.state = {
@@ -184,32 +186,32 @@ import '../../../public/styles/digitalClock.less';
        <div className='pro-container digitalClock' id='digitalClock'>
         <ul>
           <li>
-            <div>{property.materialName}</div>
+            <div>{this.props.intl.formatMessage({id:property.materialName})}</div>
             <div className='input_form'>
               <input className='form-control' type='text' value={data.name} disabled/>
             </div>
           </li>
           <li>
             <div>
-              <div>{property.timeZone}</div>
+              <div>{this.props.intl.formatMessage({id:property.timeZone})}</div>
                 {timeZone}
             </div>
             <div>
-              <div>{property.playTime}</div>
+              <div>{this.props.intl.formatMessage({id:property.playTime})}</div>
               <div>
                 <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.handleDataChange(e, '', 'playTime')}} value={data.playTime}/>
                 <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
             <div>
-              <div>{property.bgColor}</div>
+              <div>{this.props.intl.formatMessage({id:property.bgColor})}</div>
               <div className='color-picker' id='bgColor' onClick={() => {this.handleColorPicker('bgColor')}} style={{backgroundColor:data.bgColor,borderColor:data.bgColor}}>
                   {colorPicker.bgColor ? <SketchPicker color={data.bgColor} onChange={(color) => {this.handleColorChange('bgColor', color)} }/> : null}
               </div>
             </div>
           </li>
           <li>
-            <div>{property.textContent}</div>
+            <div>{this.props.intl.formatMessage({id:property.textContent})}</div>
             <div className='input_form'>
               <input className='form-control' type='text' onChange={(e) => {this.handleDataChange(e, '', 'textContent')}} value={data.textContent}/>
               <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入文字内容</span></div>
@@ -217,15 +219,15 @@ import '../../../public/styles/digitalClock.less';
           </li>
           <li>
             <div>
-              <div>{property.fontFamily}</div>
+              <div>{this.props.intl.formatMessage({id:property.fontFamily})}</div>
                 {fontFamily}
             </div>
             <div>
-              <div>{property.fontSize}</div>
+              <div>{this.props.intl.formatMessage({id:property.fontSize})}</div>
                 {fontSize}
             </div>
             <div>
-              <div>{property.fontColor}</div>
+              <div>{this.props.intl.formatMessage({id:property.fontColor})}</div>
               <div className='color-picker' id='fontColor' onClick={() => {this.handleColorPicker('fontColor')}} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
                   {colorPicker.fontColor ? <SketchPicker color={data.fontColor} onChange={color => {this.handleColorChange('fontColor', color)} }/> : null}
               </div>
@@ -233,28 +235,28 @@ import '../../../public/styles/digitalClock.less';
           </li>
           <li>
             <div>
-              <div>{property.locationSet}</div>
+              <div>{this.props.intl.formatMessage({id:property.locationSet})}</div>
                 {location}
             </div>
           </li>
           <li>
             <div>
-              <div>{property.dateFormat}</div>
+              <div>{this.props.intl.formatMessage({id:property.dateFormat})}</div>
                 {dateFormat}
             </div>
             <div>
-              <div>{property.timeFormat}</div>
+              <div>{this.props.intl.formatMessage({id:property.timeFormat})}</div>
                 {timeFormat}
             </div>
             <div>
-              <div>{property.singleShow}</div>
+              <div>{this.props.intl.formatMessage({id:property.singleShow})}</div>
               <div><input type='checkbox' checked={data.singleShow} onClick={this.handleSingleShow}/></div>
             </div>
           </li>
           <li>
             <div>
-              <button className='btn btn-primary' onClick={this.resetData}>{property.resetBtn}</button>
-              <button className='btn btn-primary' onClick={this.submitData}>{property.confirmBtn}</button>
+              <button className='btn btn-primary' onClick={this.resetData}>{this.props.intl.formatMessage({id:property.resetBtn})}</button>
+              <button className='btn btn-primary' onClick={this.submitData}>{this.props.intl.formatMessage({id:property.confirmBtn})}</button>
             </div>
           </li>
         </ul>
@@ -262,3 +264,5 @@ import '../../../public/styles/digitalClock.less';
      )
    }
  }
+
+ export default injectIntl(DigitalClock);

@@ -15,20 +15,20 @@
  */
 const _digitalClock = {
   property:{
-    materialName: '数字时钟',
-    timeZone: '时区',
-    playTime: '播放时长',
-    bgColor: '背景颜色',
-    textContent: '文字内容',
-    fontFamily: '选择字体',
-    fontSize: '文字大小',
-    fontColor: '文字颜色',
-    locationSet: '区域设置',
-    dateFormat: '日期格式',
-    timeFormat: '时间格式',
-    singleShow: '单行显示',
-    resetBtn: '重置',
-    confirmBtn: '应用'
+    materialName: 'mediaPublish.digitalClock',
+    timeZone: 'mediaPublish.timeZone',
+    playTime: 'mediaPublish.playDuration',
+    bgColor: 'mediaPublish.bgColor',
+    textContent: 'mediaPublish.textContent',
+    fontFamily: 'mediaPublish.selectFont',
+    fontSize: 'mediaPublish.fontSize',
+    fontColor: 'mediaPublish.fontColor',
+    locationSet: 'mediaPublish.areaSet',
+    dateFormat: 'mediaPublish.dateFormat',
+    timeFormat: 'mediaPublish.timeFormat',
+    singleShow: 'mediaPublish.singleLine',
+    resetBtn: 'mediaPublish.reset',
+    confirmBtn: 'mediaPublish.apply'
   },
   timeZone:[
     {'上海': 'ShangHai'},
