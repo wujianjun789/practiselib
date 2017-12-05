@@ -1,6 +1,9 @@
 import React,{ PureComponent } from 'react';
 import { numbersValid } from '../../util/index';
-export default class PlayerPicAsset extends PureComponent{
+
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
+class PlayerPicAsset extends PureComponent{
     constructor(props){
         super(props);
 
@@ -8,10 +11,10 @@ export default class PlayerPicAsset extends PureComponent{
             //计划
             property:{
                 //图片素材
-                assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },                
-                displayMode: { key: "displayMode", title: "显示方式", list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
+                assetName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: "" },
+                displayMode: { key: "displayMode", title: this.props.intl.formatMessage({id:'mediaPublish.displayMethod'}), list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
                 animation: {
-                    key: "animation", title: "动画效果",
+                    key: "animation", title: this.props.intl.formatMessage({id:'mediaPublish.animation'}),
                     list: [
                         { id: 1, name: '立即显示' }, { id: 2, name: '闪烁' }, { id: 3, name: '长串左移' },
                         { id: 4, name: '上移' }, { id: 5, name: '下移' }, { id: 6, name: '左移' }, { id: 7, name: '右移' },
@@ -25,8 +28,8 @@ export default class PlayerPicAsset extends PureComponent{
                         { id: 36, name: '随机' }
                     ], index: 0
                 },
-                playDuration: { key: "playDuration", title: "播放时长", placeholder: '秒/s', value: "" },
-                playSpeed: { key: "playSpeed", title: "播放速度", placeholder: 'ms', value: "" },
+                playDuration: { key: "playDuration", title: this.props.intl.formatMessage({id:'mediaPublish.playDuration'}), placeholder: 's', value: "" },
+                playSpeed: { key: "playSpeed", title: this.props.intl.formatMessage({id:'mediaPublish.playSpeed'}), placeholder: 'm/s', value: "" },
             },
             prompt:{
                 //计划
@@ -151,3 +154,5 @@ export default class PlayerPicAsset extends PureComponent{
         </div>
     }
 }
+
+export default injectIntl(PlayerPicAsset)

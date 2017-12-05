@@ -190,7 +190,7 @@ export default {
         'mediaPublish.property':'属性',
         'mediaPublish.materialLib':'素材库',
 
-        'meidaPublish.materialName':'素材名称',
+        'mediaPublish.materialName':'素材名称',
         'mediaPublish.textContent':'文本内容',
         'mediaPublish.selectFont':'选择字体',
         'mediaPublish.fontColor':'字体颜色',
@@ -213,7 +213,7 @@ export default {
         'mediaPublish.to':'至',
         'mediaPublish.volume':'音量',
         'mediaPublish.number':'次',
-
+        'mediaPublish.displayMethod':'显示方式',
 
 
         //以前的

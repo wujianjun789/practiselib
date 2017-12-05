@@ -193,7 +193,7 @@ export default {
         'mediaPublish.materialName':'name',
         'mediaPublish.textContent':'content',
         'mediaPublish.selectFont':'font type',
-        'mediaPublish.fontColor':'color',
+        'mediaPublish.fontColor':'font',
         'mediaPublish.fontSize':'font size',
         'mediaPublish.bgColor':'background',
         'mediaPublish.bgTransparent':'opacity',
@@ -213,6 +213,7 @@ export default {
         'mediaPublish.to':'to',
         'mediaPublish.volume':'volume',
         'mediaPublish.number':'number',
+        'mediaPublish.displayMethod':'mode',
         
 
 
