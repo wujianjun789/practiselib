@@ -53,6 +53,9 @@ import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
 
 import { updateTree } from '../util/index'
+
+import {FormattedMessage,injectIntl} from 'react-intl';
+
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -737,7 +740,7 @@ export class PlayerArea extends Component {
     }
 
     addUploadFile(file) {
-
+        
         const self = this;
         const url = 'http://192.168.155.196:3001/api/file/upload';
         const name = file.name, key = file.key;

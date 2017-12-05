@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+import { FormattedMessage, injectIntl } from 'react-intl';
 import '../../public/styles/table.less'
 /**
  * Table 组件
@@ -81,8 +82,8 @@ export default class Table extends Component {
                                 {
                                     isEdit &&
                                         <td className="edit">
-                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update">修改</span></a>
-                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del">删除</span></a>
+                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.modify'/></span></a>
+                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete'/></span></a>
                                         </td>
                                 }
 

@@ -16,6 +16,8 @@ import Overlayer from '../../common/containers/Overlayer'
 import {TreeData} from '.././../data/mediaPublishModel'
 import {treeViewInit} from '../../common/actions/treeView'
 import {sideBarToggled} from '../action/index'
+
+
 class MediaPublishIndex extends Component{
     constructor(props){
         super(props);

@@ -15,6 +15,7 @@ export default {
         'button.cancel': '取消',
         'button.set': '设定',
         'button.finish': '完成',
+        'button.modify':'修改',
 
         //地图
         'map.location':'地图位置',
@@ -140,6 +141,7 @@ export default {
         'app.strategy.param':'策略参数',
         'app.include.target.devices':'包含目标设备',
 
+
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
         'app.online.state': '在线状态',
@@ -158,6 +160,18 @@ export default {
         'app.device.switch':'设备开关',
         'app.dimming': '调光',
         
+
+        //多媒体
+        'mediaPublish.playList':'播放列表',
+        'mediaPublish.manage':'发布管理',
+        'mediaPublish.playType':'播放类型',
+        'mediaPublish.addPlan':'添加方案',
+        'mediaPublish.planName':'方案名称',
+        'mediaPublish.inputPlanName':'输入方案名称',
+        'mediaPublish.resolution':'分辨率',
+        'mediaPublish.playPlan':'播放方案',
+
+
         //以前的
         'app.link.index': '首页',
         'app.link.config': '配置',
@@ -249,7 +263,6 @@ export default {
         'manage.link.camera': '摄像头',
         'manage.link.smartLight': '智慧路灯',
         'manage.link.screen': '屏',
-        'manage.link.playList':'播放列表',
         'manage.link.rfid':'RFID',
 
         'panel.info': '无相关数据！',

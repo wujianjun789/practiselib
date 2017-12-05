@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 
-import '../../../public/styles/uploadNotify.less'
+import '../../../public/styles/uploadFile.less'
 
 export default class UploadNotify extends Component{
     handleClick=(e)=>{

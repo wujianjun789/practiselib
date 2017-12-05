@@ -1,67 +1,68 @@
-export default  {
-    locale:'en',
-    messages:{
+export default {
+    locale: 'en',
+    messages: {
         //公共
-        'name':'Name',
-        'id':'Id',
+        'name': 'Name',
+        'id': 'Id',
 
         //按钮
-        ' ':' ',
+        ' ': ' ',
         'button.add': 'Add',
         'button.edit': 'Edit',
         'button.delete': 'Delete',
         'button.confirm': 'Confirm',
         'button.cancel': 'Cancel',
-        'button.module':'Module Permissions',
+        'button.module': 'Module Permissions',
         'button.import': 'Import',
         'button.set': 'Set',
         'button.finish': 'Finish',
-        
+        'button.modify':'Modify',
+
         //地图
-        'map.location':'Map Location',
+        'map.location': 'Map Location',
 
         //提示
-        'app.not.found':'Not Found',
-        
+        'app.not.found': 'Not Found',
+
         //删除弹框
-        'delete.user':'Are you sure to delete the seleted user ?',
-        'delete.device':'Are you sure to delete the seleted device ?',
+        'delete.user': 'Are you sure to delete the seleted user ?',
+        'delete.device': 'Are you sure to delete the seleted device ?',
 
         //首页
-        'app.title':'Smart Light Manage System',
-        'app.asset.manage':'Asset Manage',
-        'app.permission.manage':'Permission',
-        'app.system.operation':'System Operate',
-        'app.smart.light':'Smart Lamp',
-        'app.light':'Smart Light',
-        'app.report.manage':'Report Manage',
-        'app.mediaPublish':'MediaPublish',
-        'app.visualization':'Visualization',
-        'app.domain.manage':'Domain Manage',
+        'app.title': 'Smart Light Manage System',
+        'app.asset.manage': 'Asset Manage',
+        'app.permission.manage': 'Permission',
+        'app.system.operation': 'System Operate',
+        'app.smart.light': 'Smart Lamp',
+        'app.light': 'Smart Light',
+        'app.report.manage': 'Report Manage',
+        'app.mediaPublish': 'MediaPublish',
+        'app.visualization': 'Visualization',
+        'app.domain.manage': 'Domain Manage',
 
         //资产管理
         'asset.model': 'asset model',
         'asset.statistics': 'asset statistics',
 
         //权限管理
-        'permission.username':'UserName',
-        'permission.lastLoginDate':'Last Login Date',
-        'permission.admin':'Admin',
-        'permission.deviceAdmin':'Device admin',
-        'permission.deviceOperator':'Device operator',
-        'permission.guest':'Guest',
-        'permission.addUser':'Add User',
-        'permission.userData':'User Data',
-        'permission.domain':'Domain Manage',
-        'permission.module':'Module Manage',
-        'permission.input.username':'Please input username', 
-        'permission.input.domain':'Please input domain', 
-        'permission.added':'Added',
-        'permission.lastname':'Last Name',
-        'permission.firstname':'First Name',
-        'permission.password':'Password',
-        'permission.repassword':'Repassword',  
-        'permission.grade':'Grade',
+        'permission.username': 'UserName',
+        'permission.lastLoginDate': 'Last Login Date',
+        'permission.admin': 'Admin',
+        'permission.deviceAdmin': 'Device admin',
+        'permission.deviceOperator': 'Device operator',
+        'permission.guest': 'Guest',
+        'permission.addUser': 'Add User',
+        'permission.userData': 'User Data',
+        'permission.domain': 'Domain Manage',
+        'permission.module': 'Module Manage',
+        'permission.input.username': 'Please input username',
+        'permission.input.domain': 'Please input domain',
+        'permission.added': 'Added',
+        'permission.lastname': 'Last Name',
+        'permission.firstname': 'First Name',
+        'permission.password': 'Password',
+        'permission.repassword': 'Repassword',
+        'permission.grade': 'Grade',
 
         //系统运维
         'sysOperation.device.config':'Device config',        
@@ -94,13 +95,14 @@ export default  {
         'sysOperation.label':'Label：', 
         'sysOperation.input.id':'Input id to add',        
 
+
         //智慧路灯
         'app.map': 'map',
         'app.list': 'list',
         'app.control': 'control',
         'app.scene': "scene",
         'app.strategy': "strategy",
-        
+
         'app.search.placeholder.name': 'Search name or domain',
         'app.search.list': 'Return',
         'app.device': 'Device',
@@ -124,22 +126,32 @@ export default  {
         'app.charging': 'charging',
         'app.charging.fault': 'charging fault',
 
-        'app.manual':'Manual',
+        'app.manual': 'Manual',
 
         'app.scene.order': 'scene order',
         'app.device.number': 'device number',
         'app.input.scene.name': 'input scene name',
 
-        'app.time.strategy':'time strategy',
-        'app.sensor.strategy':'sensor strategy',
-        'app.latlng.strategy':'latlng strategy',
-        'app.input.strategy.name':'input strategy name',
-        'app.strategy.name':'strategy name',
-        'app.strategy.type':'strategy type',
-        'app.device.type':'device type',
-        'app.set.state':'set state',
-        'app.strategy.param':'strategy param',
-        'app.include.target.devices':'include target devices',
+        'app.time.strategy': 'time strategy',
+        'app.sensor.strategy': 'sensor strategy',
+        'app.latlng.strategy': 'latlng strategy',
+        'app.input.strategy.name': 'input strategy name',
+        'app.strategy.name': 'strategy name',
+        'app.strategy.type': 'strategy type',
+        'app.device.type': 'device type',
+        'app.set.state': 'set state',
+        'app.strategy.param': 'strategy param',
+        'app.include.target.devices': 'include target devices',
+
+        //media
+        'mediaPublish.playList': 'Play List',
+        'mediaPublish.manage': 'Publish Manage',
+        'mediaPublish.playType':'play type',
+        'mediaPublish.addPlan':'Add plan',
+        'mediaPublish.planName':'plan name',
+        'mediaPublish.inputPlanName':'please input plan name',
+        'mediaPublish.resolution':'resolution',
+        'mediaPublish.playPlan':'play plan',
 
         'app.input.device.name':'input device name',
         'app.device.name': 'device name',
@@ -170,7 +182,7 @@ export default  {
         'app.screen.state': 'screen state',
         'app.environment.state': 'environment state',
         'app.camera.control': 'camera control',
-       
+
         'app.led.status': 'led offline',
         'app.refresh': 'refresh',
 
@@ -234,27 +246,27 @@ export default  {
         'app.W': 'W',
         'app.NW': 'NW',
 
-        'app.screen.content':'Uploading...',
-        'app.screen.content2':'This could take a while',
-        'app.confirm':'OK',
+        'app.screen.content': 'Uploading...',
+        'app.screen.content2': 'This could take a while',
+        'app.confirm': 'OK',
 
-        'app.alarm':'Alarm',
-        'app.name':'name',
-        'app.type':'type',
-        'app.date':'time',
+        'app.alarm': 'Alarm',
+        'app.name': 'name',
+        'app.type': 'type',
+        'app.date': 'time',
 
-        'manage.title':'StarRiver Manage',
+        'manage.title': 'StarRiver Manage',
 
         'manage.link.gateway': 'Gateway',
         'manage.link.whiteList': 'WhiteList',
         'manage.link.camera': 'Camera',
         'manage.link.smartLight': 'Smart Light',
         'manage.link.screen': 'Screen',
-        'manage.link.playList':'PlayList',
-        'manage.link.rfid':'RFID',
+        'manage.link.playList': 'PlayList',
+        'manage.link.rfid': 'RFID',
 
         'panel.info': 'No relevant data!',
-        'manage.name':'Name',
+        'manage.name': 'Name',
 
         'manage.screen.table.esn': 'ESN',
         'manage.screen.table.name': 'Name',
@@ -281,23 +293,23 @@ export default  {
         'manage.popup.screen.name': 'Name',
         'manage.popup.screen.domain': 'Domain',
 
-        'manage.playlist.time':'Modify Time',
-        'manage.playlist.add':'Add Playlist',
-        'manage.playlist.browse':'Select File',
+        'manage.playlist.time': 'Modify Time',
+        'manage.playlist.add': 'Add Playlist',
+        'manage.playlist.browse': 'Select File',
 
-        'manage.camera.ip':'IP',
-        'manage.camera.rtsp':'RTSP Port',
-        'manage.camera.http':'HTTP Port',
-        'manage.camera.username':'Username',
-        'manage.camera.password':'Password',
-        'manage.camera.channel':'Channel',
-        'manage.camera.add':'Add Camera',
-        'manage.camera.edit':'Edit Camera',
+        'manage.camera.ip': 'IP',
+        'manage.camera.rtsp': 'RTSP Port',
+        'manage.camera.http': 'HTTP Port',
+        'manage.camera.username': 'Username',
+        'manage.camera.password': 'Password',
+        'manage.camera.channel': 'Channel',
+        'manage.camera.add': 'Add Camera',
+        'manage.camera.edit': 'Edit Camera',
 
         'manage.rfid.esn': 'ESN',
         'manage.rfid.name': 'Name',
         'manage.rfid.domain': 'Domain',
-        'manage.rfid.add':'Add RFID',
-        'manage.rfid.edit':'Edit RFID',
+        'manage.rfid.add': 'Add RFID',
+        'manage.rfid.edit': 'Edit RFID',
     }
 }

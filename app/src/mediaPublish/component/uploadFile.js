@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Modal from 'antd/lib/modal'
-import 'antd/lib/modal/style/index.css'
+
 import '../../../public/styles/uploadFile.less'
 
 export default class UploadFile extends Component {

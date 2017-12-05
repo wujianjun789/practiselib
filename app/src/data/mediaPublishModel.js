@@ -4,7 +4,7 @@
 export const TreeData=[
     {
         "id": "playerList",
-        "name":"播放列表",
+        "name":"mediaPublish.playList",
         "toggled": false,
         "active": true,
         "link": "/mediaPublish/playerList",
@@ -13,7 +13,7 @@ export const TreeData=[
     },
     {
         "id": "publish",
-        "name": "发布管理",
+        "name": "mediaPublish.manage",
         "toggled": false,
         "active": true,
         "link": "/mediaPublish/publish",

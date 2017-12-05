@@ -33,6 +33,7 @@ export default class ChargePole extends Component {
                 options: []
             }
         }
+        //! 后端暂时没有充电桩api
         this.model = 'sensor';//暂时使用传感器代替
         this.columns = [
             { field: 'name', title: '设备名称' },
