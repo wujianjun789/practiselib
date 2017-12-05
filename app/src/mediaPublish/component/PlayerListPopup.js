@@ -66,7 +66,7 @@ export default class PlayerListPopup extends PureComponent {
         let {playerId, playerName, width, height, prompt} = this.state;
 
         let valid = prompt.playerName || prompt.width || prompt.height;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={[this.props.intl.formatMessage({id:'button.cancel'}),this.props.intl.formatMessage({id:'button.confirm'})]}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
@@ -76,9 +76,9 @@ export default class PlayerListPopup extends PureComponent {
                     <div className="form-group row">
                         <label className="col-sm-3 control-label" htmlFor="playerName"><FormattedMessage id='mediaPublish.planName' /></label>
                         <div className="col-sm-9">
-                            <input type="text" className={ "form-control " } id="playerName" placeholder="输入方案名称"
+                            <input type="text" className={ "form-control " } id="playerName" placeholder={this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'})}
                                    maxLength="16" value={playerName} onChange={this.onChange}/>
-                            <span className={prompt.playerName?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                            <span className={prompt.playerName?"prompt ":"prompt hidden"}><FormattedMessage id='mediaPublish.prompt'/></span>
                         </div>
                     </div>
                     <div className="form-group row">

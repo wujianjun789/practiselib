@@ -97,7 +97,7 @@ export class PlayerList extends Component {
             width: 1920,
             height: 1080
         }
-        actions.overlayerShow(<PlayerListPopup title={this.props.intl.formatMessage({id:'mediaPublish.addPlan'})} data={data}
+        actions.overlayerShow(<PlayerListPopup intl={this.props.intl} title={this.props.intl.formatMessage({id:'mediaPublish.addPlan'})} data={data}
             onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
                 actions.overlayerHide();
                 const id = parseInt(Math.random() * 30);

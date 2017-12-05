@@ -170,6 +170,7 @@ export default {
         'mediaPublish.resolution':'resolution',
         'mediaPublish.playPlan':'play plan',
         'mediaPublish.screenSize':'screen size',
+        'mediaPublish.prompt':'Only letters, numbers, and underscores',
 
 
 

@@ -171,6 +171,7 @@ export default {
         'mediaPublish.resolution':'分辨率',
         'mediaPublish.playPlan':'播放方案',
         'mediaPublish.screenSize':'屏幕尺寸',
+        'mediaPublish.prompt':'仅能输入字母、数字、下划线',
 
 
         //以前的
