@@ -602,7 +602,7 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>{this.formatIntl('app.apply')}</button>
+                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>{this.formatIntl('button.apply')}</button>
                         </div>
                         <div className="col-sm-12 form-group time-table">
                             <label className="col-sm-4">{this.formatIntl('app.schedule')}</label>
@@ -613,7 +613,7 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>{this.formatIntl('app.apply')}</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>{this.formatIntl('button.apply')}</button>
                         </div>
                     </div>
             case "camera":
@@ -664,7 +664,7 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>{this.formatIntl('app.apply')}</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>{this.formatIntl('button.apply')}</button>
                         </div>
                         <div className="col-sm-12 form-group handler">
                             <label className="col-sm-4">{this.formatIntl('app.manual.dimming')}</label>
@@ -675,7 +675,7 @@ console.log("tableIndex:",tableIndex)
                                     })
                                 }
                             </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>{this.formatIntl('app.apply')}</button>
+                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>{this.formatIntl('button.apply')}</button>
                         </div>
                     </div>
         }

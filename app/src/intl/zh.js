@@ -5,6 +5,23 @@ export default {
         'name':'名称',
         'id':'编号',
 
+        'app.map': '地图',
+        'app.list': '列表',
+        'app.control': '控制',
+        'app.scene': "场景",
+        'app.strategy': "策略",
+        'app.device': '设备',
+        'app.domain': '域',
+        'app.open': '开',
+        'app.close': '关',
+        'app.update.time':'更新时间',
+        'app.contro.mode':'控制模式',
+        'app.automatic.time':'校时',
+        'app.click.automatic.time':'点击校时',
+
+        'sysOperation.selected.device':'选中设备',
+        'app.device.operation':'设备操作',
+
         //按钮
         ' ':' ',
         'button.add': '添加',
@@ -16,6 +33,7 @@ export default {
         'button.set': '设定',
         'button.finish': '完成',
         'button.modify':'修改',
+        'button.apply': '应用',
 
         //地图
         'map.location':'地图位置',
@@ -65,7 +83,6 @@ export default {
 
         //系统运维
         'sysOperation.device.config':'设备配置',
-        'sysOperation.selected.device':'选中设备',
         'sysOperation.whiteList':'白名单',
         'sysOperation.include':'包含',
         'sysOperation.devices':'个设备',
@@ -95,20 +112,9 @@ export default {
         'sysOperation.input.id':'输入编号添加',
 
         //智慧路灯
-        'app.map': '地图',
-        'app.list': '列表',
-        'app.control': '控制',
-        'app.scene': "场景",
-        'app.strategy': "策略",
-
         'app.search.placeholder.name': "搜索名称或域",
         'app.search.list': '返回',
-        'app.device': '设备',
-        'app.domain': '域',
-        'app.open': '开',
-        'app.close': '关',
         'app.device.control': '设备控制',
-        'app.apply': '应用',
         'app.environment-brightness-control': '环境亮度控制',
         'app.manual.dimming': '手动调光',
         'app.strategy.dimming': '策略调光',
@@ -141,14 +147,12 @@ export default {
         'app.strategy.param':'策略参数',
         'app.include.target.devices':'包含目标设备',
 
-
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
         'app.online.state': '在线状态',
         'app.fault.state': '故障状态',
         'app.current.brightness':'当前亮度',
         'app.brightness.mode':'亮度模式',
-        'app.update.time':'更新时间',
         'app.light.state':'灯状态',
         'app.switch.state':'开关状态',
         'app.brightness':'亮度',
@@ -156,10 +160,15 @@ export default {
         'app.electric.current':'电流',
         'app.power':'功率',
 
-        'app.device.operation':'设备操作',
         'app.device.switch':'设备开关',
         'app.dimming': '调光',
         
+        'app.remote':'远程',
+        'app.auto':'自动',
+        'app.comm.state':'通信状态',
+        'app.device.state':'设备状态',
+        'app.dimming.mode':'设备模式',
+
 
         //多媒体
         'mediaPublish.playList':'播放列表',

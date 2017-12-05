@@ -4,6 +4,22 @@ export default {
         //公共
         'name': 'Name',
         'id': 'Id',
+        'app.map': 'map',
+        'app.list': 'list',
+        'app.control': 'control',
+        'app.scene': "scene",
+        'app.strategy': "strategy",
+        'app.device': 'Device',
+        'app.domain': 'Domain',
+        'app.open': 'on',
+        'app.close': 'off',
+        'app.update.time':'update time',
+        'app.control.mode':'control mode',
+        'app.automatic.time':'calibration',
+        'app.click.automatic.time':'click calibration',
+
+        'sysOperation.selected.device':'Selected Device',
+        'app.device.operation':'device operation',
 
         //按钮
         ' ': ' ',
@@ -17,6 +33,7 @@ export default {
         'button.set': 'Set',
         'button.finish': 'Finish',
         'button.modify':'Modify',
+        'button.apply': 'apply',
 
         //地图
         'map.location': 'Map Location',
@@ -65,8 +82,7 @@ export default {
         'permission.grade': 'Grade',
 
         //系统运维
-        'sysOperation.device.config':'Device config',        
-        'sysOperation.selected.device':'Selected Device',
+        'sysOperation.device.config':'Device config',
         'sysOperation.whiteList':'WhiteList',
         'sysOperation.include':'Include',
         'sysOperation.devices':'devices',
@@ -97,20 +113,10 @@ export default {
 
 
         //智慧路灯
-        'app.map': 'map',
-        'app.list': 'list',
-        'app.control': 'control',
-        'app.scene': "scene",
-        'app.strategy': "strategy",
-
         'app.search.placeholder.name': 'Search name or domain',
         'app.search.list': 'Return',
-        'app.device': 'Device',
-        'app.domain': 'Domain',
-        'app.open': 'on',
-        'app.close': 'off',
+
         'app.device.control': 'device control',
-        'app.apply': 'apply',
         'app.environment-brightness-control': 'Auto',
         'app.manual.dimming': 'Manual Dimming',
         'app.strategy.dimming': 'Strategy Dimming',
@@ -148,7 +154,6 @@ export default {
         'app.fault.state': 'fault state',
         'app.current.brightness':'current brightness',
         'app.brightness.mode':'brightness mode',
-        'app.update.time':'update time',
         'app.light.state':'light state',
         'app.switch.state':'switch state',
         'app.brightness':'brightness',
@@ -156,9 +161,14 @@ export default {
         'app.electric.current':'electric current',
         'app.power':'power',
 
-        'app.device.operation':'device operation',
         'app.device.switch':'device switch',
         'app.dimming': 'dimming',
+
+        'app.remote':'remote',
+        'app.auto':'auto',
+        'app.comm.state':'communication state',
+        'app.device.state':'device state',
+        'app.dimming.mode':'device mode',
 
         //media
         'mediaPublish.playList': 'Play List',
