@@ -181,6 +181,12 @@ export default {
         'mediaPublish.playPlan':'播放方案',
         'mediaPublish.screenSize':'屏幕尺寸',
         'mediaPublish.prompt':'仅能输入字母、数字、下划线',
+        'mediaPublish.isDeleteList':'是否删除选中播放列表',
+        'mediaPublish.play':'播放',
+        'mediaPublish.enlarge':'放大',
+        'mediaPublish.narrow':'缩小',
+        'mediaPublish.savePlan':'保存计划',
+        'mediaPublish.quit':'退出',
 
 
         //以前的

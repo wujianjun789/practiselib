@@ -9,6 +9,8 @@ import { bindActionCreators } from 'redux';
 // import treeStyle from './treeStyle';
 import TreeView from '../../components/TreeView'
 
+import { FormattedMessage, injectIntl } from 'react-intl';
+
 export default class SideBar extends Component {
     constructor(props) {
         super(props);
@@ -79,12 +81,12 @@ export default class SideBar extends Component {
 
             <div className="edit-container">
                 <div className={"btn-group "+(isEdit?'':'hidden')}>
-                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}>添加{isProject && !isClick && isAddClick && <span>&nbsp;&or;</span>}</button>
-                    <button className="btn btn-gray" onClick={()=>this.onClick("edit")}>编辑</button>
+                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}><FormattedMessage id='button.add'/>{isProject && !isClick && isAddClick && <span>&nbsp;&or;</span>}</button>
+                    <button className="btn btn-gray" onClick={()=>this.onClick("edit")}><FormattedMessage id='button.edit'/></button>
                 </div>
                 <div className={"btn-group "+(isEdit?'hidden':'')}>
-                    <button className="btn btn-primary" onClick={()=>this.onClick("remove")}>删除</button>
-                    <button className="btn btn-primary" onClick={()=>this.onClick("complete")}>完成</button>
+                    <button className="btn btn-primary" onClick={()=>this.onClick("remove")}><FormattedMessage id='button.delete'/></button>
+                    <button className="btn btn-primary" onClick={()=>this.onClick("complete")}><FormattedMessage id='button.finish'/></button>
                 </div>
             </div>
             <div className={"add-poppup "+(isProject && !isClick && isAddClick?'active':'')}>

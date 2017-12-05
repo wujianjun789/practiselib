@@ -54,7 +54,7 @@ import { getIndexByKey } from '../../util/algorithm';
 
 import { updateTree } from '../util/index'
 
-import {FormattedMessage,injectIntl} from 'react-intl';
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
 export class PlayerArea extends Component {
     constructor(props) {
@@ -927,7 +927,7 @@ export class PlayerArea extends Component {
                 break;
         }
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
-            <HeadBar moduleName="媒体发布" router={router} />
+            <HeadBar moduleName={this.props.intl.formatMessage({id:'app.mediaPublish'})} router={router} />
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
                 onClick={this.areaClick} onToggle={this.onToggle} />
 
@@ -936,28 +936,28 @@ export class PlayerArea extends Component {
                 <div className="left">
                     <div className="form-group control-container-top">
                         <div className="form-group play-container" onClick={() => this.playHandler()}>
-                            <span className="icon icon_play"></span><span>播放</span></div>
+                            <span className="icon icon_play"></span><span><FormattedMessage id='mediaPublish.play'/></span></div>
                         <div className="form-group zoom-out-container" onClick={() => this.zoomOutHandler()}>
-                            <span className="icon icon_enlarge"></span><span>放大</span></div>
+                            <span className="icon icon_enlarge"></span><span><FormattedMessage id='mediaPublish.enlarge'/></span></div>
                         <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
-                            <span className="icon icon_reduce"></span><span>缩小</span></div>
+                            <span className="icon icon_reduce"></span><span><FormattedMessage id='mediaPublish.narrow'/></span></div>
                     </div>
                     <div className="img-container">
                         <img src="" />
                     </div>
                     <div className="control-container-bottom" style={controlStyle}>
                         <div className="form-group pull-right quit-container " onClick={() => this.quitHandler()}>
-                            <span className="icon icon_send"></span><span>退出</span>
+                            <span className="icon icon_send"></span><span><FormattedMessage id='mediaPublish.quit'/></span>
                         </div>
                         <div className="form-group pull-right save-plan-container "
                             onClick={() => this.savePlanHandler()}>
-                            <span className="icon icon_save save-plan"></span><span>保存计划</span>
+                            <span className="icon icon_save save-plan"></span><span><FormattedMessage id='mediaPublish.savePlan'/></span>
                         </div>
                     </div>
                 </div>
             </Content>
             <div className="mediaPublish-footer" style={assetStyle}>
-                <span className="title">播放列表</span>
+                <span className="title"><FormattedMessage id='mediaPublish.playList'/></span>
                 <ul>
                     {
                         playerListAsset.get('list').map((item, index) => {
@@ -976,13 +976,13 @@ export class PlayerArea extends Component {
                 </ul>
                 <div className="pull-right control-container">
                     <div className={"list-group " + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
-                        <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}>添加</button>
-                        <button className="btn btn-gray" onClick={() => this.playerListAssetClick('edit')}>编辑</button>
+                        <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id='button.add'/></button>
+                        <button className="btn btn-gray" onClick={() => this.playerListAssetClick('edit')}><FormattedMessage id='button.edit'/></button>
                     </div>
                     <div className={"list-group " + (playerListAsset.get('isEdit') ? 'hidden' : '')}>
-                        <button className="btn btn-gray" onClick={() => this.playerListAssetClick('remove')}>删除
+                        <button className="btn btn-gray" onClick={() => this.playerListAssetClick('remove')}><FormattedMessage id='button.delete'/>
                         </button>
-                        <button className="btn btn-primary" onClick={() => this.playerListAssetClick('complete')}>完成
+                        <button className="btn btn-primary" onClick={() => this.playerListAssetClick('complete')}><FormattedMessage id='button.finish'/>
                         </button>
                     </div>
                 </div>
@@ -1105,4 +1105,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(PlayerArea);
+)(injectIntl(PlayerArea));
