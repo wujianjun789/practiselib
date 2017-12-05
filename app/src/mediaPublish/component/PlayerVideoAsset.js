@@ -2,20 +2,21 @@ import React,{ PureComponent } from 'react';
 import { numbersValid } from '../../util/index';
 import moment from 'moment';
 import { TimePicker } from 'antd';
-export default class PlayerPicAsset extends PureComponent{
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+class PlayerPicAsset extends PureComponent{
     constructor(props){
         super(props);
         this.state = {
             //计划
             property:{
                 //视频素材
-                assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },                
-                playTimes: { key: "playTimes", title: "播放次数", placeholder: '次', value: "" },
-                playType: { key: "playType", title: "播放类型", list: [{ id: 1, name: '片段播放' }, { id: 2, name: '完整播放' }], index: 0, name: "片段播放" },
-                clipsRage: { key: "clipsRage", title: "片段范围", clipsRage1: moment('00:00:00', 'HH:mm:ss'), clipsRage2: moment('00:00:00', 'HH:mm:ss') },
-                scaling: { key: "scaling", title: "缩放比例", list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
+                assetName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: "" },
+                playTimes: { key: "playTimes", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), value: "" },
+                playType: { key: "playType", title: this.props.intl.formatMessage({id:'mediaPublish.playType'}), list: [{ id: 1, name: '片段播放' }, { id: 2, name: '完整播放' }], index: 0, name: "片段播放" },
+                clipsRage: { key: "clipsRage", title: this.props.intl.formatMessage({id:'mediaPublish.fragmentRange'}), clipsRage1: moment('00:00:00', 'HH:mm:ss'), clipsRage2: moment('00:00:00', 'HH:mm:ss') },
+                scaling: { key: "scaling", title: this.props.intl.formatMessage({id:'mediaPublish.scalingRatio'}), list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
                 volume: {
-                    key: "volume", title: "音量", list: [{ id: 1, name: '100' }, { id: 2, name: '90' }, { id: 3, name: '80' },
+                    key: "volume", title: this.props.intl.formatMessage({id:'mediaPublish.volume'}), list: [{ id: 1, name: '100' }, { id: 2, name: '90' }, { id: 3, name: '80' },
                     { id: 4, name: '70' }, { id: 5, name: '60' }, { id: 6, name: '50' }, { id: 7, name: '40' }, { id: 8, name: '30' }, { id: 9, name: '20' }, { id: 10, name: '10' }, { id: 11, name: '11' }], index: 0, name: "100"
                 },
             },
@@ -101,7 +102,7 @@ export default class PlayerPicAsset extends PureComponent{
                         placeholder={property.playTimes.placeholder} maxLength="8"
                         value={property.playTimes.value}
                         onChange={event => this.onChange("playTimes", event)} />
-                    <span className={prompt.playTimes ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.playTimes ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="form-group">
@@ -139,9 +140,9 @@ export default class PlayerPicAsset extends PureComponent{
                     <label className="control-label">{property.clipsRage.title}</label>
                     <div className="input-container">
                         <TimePicker size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
-                        <span className="text">至</span>
+                        <span className="text"><FormattedMessage id='mediaPublish.to'/></span>
                         <TimePicker size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
-                        <span className={prompt.clipsRage ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.clipsRage ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>)
             }
@@ -161,9 +162,11 @@ export default class PlayerPicAsset extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerVideoAssetClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.playerVideoAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(PlayerPicAsset)

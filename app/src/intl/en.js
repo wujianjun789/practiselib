@@ -177,6 +177,32 @@ export default {
         'mediaPublish.narrow':'narrow',
         'mediaPublish.savePlan':'Save',
         'mediaPublish.quit':'Quit',
+        'mediaPublish.property':'Property',
+        'mediaPublish.materialLib':'Material library',
+
+        'mediaPublish.materialName':'name',
+        'mediaPublish.textContent':'content',
+        'mediaPublish.selectFont':'font type',
+        'mediaPublish.fontColor':'color',
+        'mediaPublish.fontSize':'font size',
+        'mediaPublish.bgColor':'background',
+        'mediaPublish.bgTransparent':'opacity',
+        'mediaPublish.alignment':'alignment',
+        'mediaPublish.playDuration':'duration',
+        'mediaPublish.playSpeed':'speed',
+        'mediaPublish.animation':'animation',
+        'mediaPublish.wordSpacing':'wordSpacing',
+        'mediaPublish.lineSpacing':'lineSpacing',
+
+        'mediaPublish.reset':'Reset',
+        'mediaPublish.apply':'Apply',
+        'mediaPublish.check':'Please enter the correct parameters',
+        'mediaPublish.repeatTimes':'repeat',
+        'mediaPublish.scalingRatio':'scaling',
+        'mediaPublish.fragmentRange':'range',
+        'mediaPublish.to':'to',
+        'mediaPublish.volume':'volume',
+        'mediaPublish.number':'number',
         
 
 

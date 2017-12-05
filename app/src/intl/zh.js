@@ -178,6 +178,33 @@ export default {
         'mediaPublish.narrow':'缩小',
         'mediaPublish.savePlan':'保存计划',
         'mediaPublish.quit':'退出',
+        'mediaPublish.property':'属性',
+        'mediaPublish.materialLib':'素材库',
+
+        'meidaPublish.materialName':'素材名称',
+        'mediaPublish.textContent':'文本内容',
+        'mediaPublish.selectFont':'选择字体',
+        'mediaPublish.fontColor':'字体颜色',
+        'mediaPublish.fontSize':'字体大小',
+        'mediaPublish.bgColor':'背景颜色',
+        'mediaPublish.bgTransparent':'背景透明',
+        'mediaPublish.alignment':'对齐方式',
+        'mediaPublish.playDuration':'播放时长',
+        'mediaPublish.playSpeed':'播放速度',
+        'mediaPublish.animation':'动画效果',
+        'mediaPublish.wordSpacing':'字间距',
+        'mediaPublish.lineSpacing':'行间距',
+
+        'mediaPublish.reset':'重置',
+        'mediaPublish.apply':'应用',
+        'mediaPublish.check':'请输入正确参数',
+        'mediaPublish.repeatTimes':'播放次数',
+        'mediaPublish.scalingRatio':'缩放比例',
+        'mediaPublish.fragmentRange':'片段范围',
+        'mediaPublish.to':'至',
+        'mediaPublish.volume':'音量',
+        'mediaPublish.number':'次',
+
 
 
         //以前的

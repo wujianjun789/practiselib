@@ -142,7 +142,7 @@ export class PlayerArea extends Component {
                 index: 0,
                 value: '素材文字'
             }),
-            assetSearch: Immutable.fromJS({ placeholder: '输入素材名称', value: '' }),
+            assetSearch: Immutable.fromJS({ placeholder: this.props.intl.formatMessage({id:'sysOperation.input.asset'}), value: '' }),
             assetList: Immutable.fromJS({
                 list: [{ id: 1, name: '素材1', active: true, assetType: "system", type: "word" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
                 { id: 4, name: '素材4', assetType: "source", type: "video" }], id: 1, name: '素材1', isEdit: true
@@ -994,7 +994,7 @@ export class PlayerArea extends Component {
                 <div className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_info" :
-                            "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{"属性" + add_title}
+                            "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{`${this.props.intl.formatMessage({id:'mediaPublish.property'})}${add_title}`}
                     </div>
                     <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
                         {curType == 'playerProject' && <PlayerProject />}
@@ -1014,7 +1014,7 @@ export class PlayerArea extends Component {
 
                 <div className="panel panel-default asset-lib">
                     <div className="panel-heading lib-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed') }}>
-                        <span className={sidebarInfo.collapsed ? "icon_file" : "glyphicon " + (sidebarInfo.assetLibCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>素材库
+                        <span className={sidebarInfo.collapsed ? "icon_file" : "glyphicon " + (sidebarInfo.assetLibCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span><FormattedMessage id='mediaPublish.materialLib'/>
                     </div>
                     <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')}>
                         <div className="asset-container">
@@ -1029,13 +1029,13 @@ export class PlayerArea extends Component {
                                     onChange={value => this.onChange("assetSearch", value)}
                                     submit={this.searchSubmit}></SearchText>
                                 <div className={"btn-group " + (assetList.get('isEdit') ? '' : 'hidden')}>
-                                    <button className="btn btn-primary add" onClick={this.showModal}>导入</button>
-                                    <button className="btn btn-gray" onClick={() => this.assetList('edit')}>编辑</button>
+                                    <button className="btn btn-primary add" onClick={this.showModal}><FormattedMessage id='button.import'/></button>
+                                    <button className="btn btn-gray" onClick={() => this.assetList('edit')}><FormattedMessage id='button.edit'/></button>
                                 </div>
                                 <div className={"btn-group " + (assetList.get('isEdit') ? 'hidden' : '')}>
-                                    <button className="btn btn-gray" onClick={() => this.assetList('remove')}>删除
+                                    <button className="btn btn-gray" onClick={() => this.assetList('remove')}><FormattedMessage id='button.delete'/>
                                     </button>
-                                    <button className="btn btn-primary" onClick={() => this.assetList('complete')}>完成
+                                    <button className="btn btn-primary" onClick={() => this.assetList('complete')}><FormattedMessage id='button.finish'/>
                                     </button>
                                 </div>
                                 <PreviewFile showModal={this.state.showModal} hideModal={this.hideModal} addUploadFile={this.addUploadFile} />

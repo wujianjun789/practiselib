@@ -3,24 +3,26 @@ import { numbersValid } from '../../util/index'
 
 import ColorPicker from '../../components/ColorPicker'
 
-export default class PlayerText extends PureComponent {
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
+class PlayerText extends PureComponent {
     state = {
         property: {
-            assetName: { key: "assetName", title: "素材名称", placeholder: '素材名称', value: "" },
+            assetName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: "" },
 
-            textContent: { key: 'textContent', title: '文本内容', value: '' },
-            fontType: { key: 'fontType', title: '选择字体', list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
-            alignment: { key: 'alignment', title: '对齐方式', list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
-            fontSize:{key:'fontSize',title:'字体大小',list:[{id:1,name:'12pt'},{id:2,name:'13pt'},{id:3,name:'14pt'},{id:4,name:'15pt'},{id:5,name:'16pt'},],index:0},
-            wordSpacing: { key: 'wordSpacing', title: '字间距', placeholder: 'pt', value: '' },
-            lineSpacing: { key: 'lineSpacing', title: '行间距', placeholder: 'pt', value: '' },
-            fontColor: { key: 'fontColor', title: '字体颜色', value: '#456' },
-            bgColor: { key: 'bgColor', title: '背景颜色', value: '#789' },
-            bgTransparent: { key: 'bgTransparent', title: '背景透明', value: false },
-            playDuration: { key: "playDuration", title: "播放时长", placeholder: '秒/s', value: "" },
-            playSpeed: { key: "playSpeed", title: "播放速度", placeholder: 'ms', value: "" },
+            textContent: { key: 'textContent', title: this.props.intl.formatMessage({id:'mediaPublish.textContent'}), value: '' },
+            fontType: { key: 'fontType', title: this.props.intl.formatMessage({id:'mediaPublish.selectFont'}), list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
+            alignment: { key: 'alignment', title: this.props.intl.formatMessage({id:'mediaPublish.alignment'}), list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
+            fontSize:{key:'fontSize',title:this.props.intl.formatMessage({id:'mediaPublish.fontSize'}),list:[{id:1,name:'12pt'},{id:2,name:'13pt'},{id:3,name:'14pt'},{id:4,name:'15pt'},{id:5,name:'16pt'},],index:0},
+            wordSpacing: { key: 'wordSpacing', title: this.props.intl.formatMessage({id:'mediaPublish.wordSpacing'}), placeholder: 'pt', value: '' },
+            lineSpacing: { key: 'lineSpacing', title:this.props.intl.formatMessage({id:'mediaPublish.lineSpacing'}), placeholder: 'pt', value: '' },
+            fontColor: { key: 'fontColor', title: this.props.intl.formatMessage({id:'mediaPublish.fontColor'}), value: '#456' },
+            bgColor: { key: 'bgColor', title: this.props.intl.formatMessage({id:'mediaPublish.bgColor'}), value: '#789' },
+            bgTransparent: { key: 'bgTransparent', title: this.props.intl.formatMessage({id:'mediaPublish.bgTransparent'}), value: false },
+            playDuration: { key: "playDuration", title: this.props.intl.formatMessage({id:'mediaPublish.playDuration'}), placeholder: 's', value: "" },
+            playSpeed: { key: "playSpeed", title: this.props.intl.formatMessage({id:'mediaPublish.playSpeed'}), placeholder: 'm/s', value: "" },
             animation: {
-                key: "animation", title: "动画效果",
+                key: "animation", title: this.props.intl.formatMessage({id:'mediaPublish.animation'}),
                 list: [
                     { id: 1, name: '立即显示' }, { id: 2, name: '闪烁' }, { id: 3, name: '长串左移' },
                     { id: 4, name: '上移' }, { id: 5, name: '下移' }, { id: 6, name: '左移' }, { id: 7, name: '右移' },
@@ -178,7 +180,7 @@ export default class PlayerText extends PureComponent {
                         placeholder={property.playDuration.placeholder} maxLength="8"
                         value={property.playDuration.value}
                         onChange={event => this.onChange("playDuration", event)} />
-                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="form-group">
@@ -203,7 +205,7 @@ export default class PlayerText extends PureComponent {
                         placeholder={property.playSpeed.placeholder} maxLength="8"
                         value={property.playSpeed.value}
                         onChange={event => this.onChange("playSpeed", event)} />
-                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="form-group">
@@ -213,7 +215,7 @@ export default class PlayerText extends PureComponent {
                         placeholder={property.lineSpacing.placeholder} maxLength="8"
                         value={property.lineSpacing.value}
                         onChange={event => this.onChange("lineSpacing", event)} />
-                    <span className={prompt.lineSpacing ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.lineSpacing ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="form-group">
@@ -223,13 +225,15 @@ export default class PlayerText extends PureComponent {
                         placeholder={property.wordSpacing.placeholder} maxLength="8"
                         value={property.wordSpacing.value}
                         onChange={event => this.onChange("wordSpacing", event)} />
-                    <span className={prompt.wordSpacing ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    <span className={prompt.wordSpacing ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(PlayerText)
