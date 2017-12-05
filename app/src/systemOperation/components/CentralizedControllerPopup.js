@@ -153,14 +153,14 @@ export default class CentralizedControllerPopup extends Component {
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="lng" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.lng'/>：</label>
+                    <label htmlFor="lng" className="fixed-width-left control-label"><FormattedMessage id='map.lng'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
                       <span className={ prompt.lng ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="lat" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.lat'/>：</label>
+                    <label htmlFor="lat" className="fixed-width-left control-label"><FormattedMessage id='map.lat'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
                       <span className={ prompt.lat ? "prompt " : "prompt hidden" }>{ "不合法" }</span>

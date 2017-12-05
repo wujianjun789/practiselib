@@ -37,7 +37,18 @@ export default {
 
         //地图
         'map.location':'地图位置',
+        'map.lng':'经度',
+        'map.lat':'纬度',
 
+        //设备
+        'sysOperation.gateway':'网关',
+        'sysOperation.lamp.control':'单灯控制器',
+        'sysOperation.pole':'灯杆',
+        'sysOperation.screen':'显示屏',
+        'sysOperation.sensor':'传感器',
+        'sysOperation.xes':'数据采集仪',
+        'sysOperation.charge':'充电桩',
+        
         //提示
         'app.not.found':'没有找到结果',
 
@@ -91,17 +102,8 @@ export default {
         'sysOperation.device':'设备名称',
         'sysOperation.type':'型号',
         'sysOperation.id':'设备编号',
-        'sysOperation.lng':'经度',
-        'sysOperation.lat':'纬度',
         'sysOperation.dataOrigin':'数据源',
         'sysOperation.dataOrigins':'个数据源',
-        'sysOperation.gateway':'网关',
-        'sysOperation.lamp.control':'单灯控制器',
-        'sysOperation.pole':'灯杆',
-        'sysOperation.screen':'显示屏',
-        'sysOperation.sensor':'传感器',
-        'sysOperation.xes':'数据采集仪',
-        'sysOperation.charge':'充电桩',
         'sysOperation.addDevice':'添加设备',
         'sysOperation.importList':'导入列表',
         'sysOperation.select':'选择列表文件路径',
