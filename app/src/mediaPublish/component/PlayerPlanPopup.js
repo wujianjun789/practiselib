@@ -12,6 +12,8 @@ import NotifyPopup from '../../common/containers/NotifyPopup'
 
 import {Name2Valid, numbersValid} from '../../util/index'
 import Immutable from 'immutable';
+import { FormattedMessage, injectIntl } from 'react-intl';
+
 export default class PlayerPlanPopup extends PureComponent {
     constructor(props) {
         super(props);

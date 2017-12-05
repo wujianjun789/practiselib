@@ -6,6 +6,7 @@ import PanelFooter from './../../components/PanelFooter';
 import NotifyPopup from '../../common/containers/NotifyPopup'
 
 import {Name2Valid, numbersValid} from '../../util/index'
+import { FormattedMessage, injectIntl } from 'react-intl';
 export default class PlayerListPopup extends PureComponent {
     constructor(props) {
         super(props);
@@ -73,7 +74,7 @@ export default class PlayerListPopup extends PureComponent {
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row">
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="playerName">方案名称：</label>
+                        <label className="col-sm-3 control-label" htmlFor="playerName"><FormattedMessage id='mediaPublish.planName' /></label>
                         <div className="col-sm-9">
                             <input type="text" className={ "form-control " } id="playerName" placeholder="输入方案名称"
                                    maxLength="16" value={playerName} onChange={this.onChange}/>
@@ -81,7 +82,7 @@ export default class PlayerListPopup extends PureComponent {
                         </div>
                     </div>
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="screen-size">屏幕尺寸：</label>
+                        <label className="col-sm-3 control-label" htmlFor="screen-size"><FormattedMessage id='mediaPublish.screenSize'/></label>
                         <div className="col-sm-4">
                             <input type="text" className={ "form-control " } id="width" placeholder="输入屏幕宽度" value={width} onChange={this.onChange}/>
                             <span className={prompt.width?"prompt ":"prompt hidden"}>{"屏幕宽度不合法"}</span>

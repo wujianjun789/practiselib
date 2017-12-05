@@ -142,17 +142,6 @@ export default {
         'app.set.state': 'set state',
         'app.strategy.param': 'strategy param',
         'app.include.target.devices': 'include target devices',
-
-        //media
-        'mediaPublish.playList': 'Play List',
-        'mediaPublish.manage': 'Publish Manage',
-        'mediaPublish.playType':'play type',
-        'mediaPublish.addPlan':'Add plan',
-        'mediaPublish.planName':'plan name',
-        'mediaPublish.inputPlanName':'please input plan name',
-        'mediaPublish.resolution':'resolution',
-        'mediaPublish.playPlan':'play plan',
-
         'app.input.device.name':'input device name',
         'app.device.name': 'device name',
         'app.online.state': 'online state',
@@ -170,6 +159,19 @@ export default {
         'app.device.operation':'device operation',
         'app.device.switch':'device switch',
         'app.dimming': 'dimming',
+
+        //media
+        'mediaPublish.playList': 'Play List',
+        'mediaPublish.manage': 'Publish Manage',
+        'mediaPublish.playType':'play type',
+        'mediaPublish.addPlan':'Add plan',
+        'mediaPublish.planName':'plan name',
+        'mediaPublish.inputPlanName':'please input plan name',
+        'mediaPublish.resolution':'resolution',
+        'mediaPublish.playPlan':'play plan',
+        'mediaPublish.screenSize':'screen size',
+
+
 
         //last
         'app.link.index': 'home',
