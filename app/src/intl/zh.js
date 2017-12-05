@@ -227,7 +227,6 @@ export default {
         'mediaPublish.dateFormat':'日期格式',
         'mediaPublish.timeFormat':'时间格式',
 
-
         //以前的
         'app.link.index': '首页',
         'app.link.config': '配置',

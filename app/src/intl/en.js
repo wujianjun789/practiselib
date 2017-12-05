@@ -115,6 +115,13 @@ export default {
 
 
         //智慧路灯
+
+        'app.map': 'map',
+        'app.list': 'list',
+        'app.control': 'control',
+        'app.scene': "scene",
+        'app.strategy': "strategy",
+
         'app.search.placeholder.name': 'Search name or domain',
         'app.search.list': 'Return',
 
@@ -181,6 +188,7 @@ export default {
         'mediaPublish.inputPlanName':'please input plan name',
         'mediaPublish.resolution':'resolution',
         'mediaPublish.playPlan':'play plan',
+
         'mediaPublish.screenSize':'screen size',
         'mediaPublish.prompt':'Only letters, numbers, and underscores',
         'mediaPublish.isDeleteList':'Whether to delete the selected playlist',
@@ -227,6 +235,7 @@ export default {
         'mediaPublish.dateFormat':'dateFormat',
         'mediaPublish.timeFormat':'timeFormat',
         
+
 
 
 

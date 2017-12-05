@@ -54,7 +54,11 @@ import { getIndexByKey } from '../../util/algorithm';
 
 import { updateTree } from '../util/index'
 
+<<<<<<< Updated upstream
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+=======
+import {FormattedMessage,injectIntl} from 'react-intl';
+>>>>>>> Stashed changes
 
 export class PlayerArea extends Component {
     constructor(props) {
