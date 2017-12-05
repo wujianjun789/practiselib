@@ -97,11 +97,9 @@ export class PlayerList extends Component {
             width: 1920,
             height: 1080
         }
-<<<<<<< Updated upstream
+
         actions.overlayerShow(<PlayerListPopup intl={this.props.intl} title={this.props.intl.formatMessage({id:'mediaPublish.addPlan'})} data={data}
-=======
-        actions.overlayerShow(<PlayerListPopup title={this.props.intl.formatMessage({id:'mediaPublish.addPlan'})} data={data}
->>>>>>> Stashed changes
+
             onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
                 actions.overlayerHide();
                 const id = parseInt(Math.random() * 30);
@@ -150,11 +148,8 @@ export class PlayerList extends Component {
 
     removeHandler(id) {
         const { actions } = this.props;
-<<<<<<< Updated upstream
         actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.props.intl.formatMessage({id:'mediaPublish.isDeleteList'})}
-=======
-        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中播放列表？"}
->>>>>>> Stashed changes
+
             cancel={() => { actions.overlayerHide() }} confirm={() => {
             }} />);
     }
