@@ -31,5 +31,5 @@ coverage
 .DS_Store
 
 #package lib
-app/publish/lib/lib.js
+app/public/lib/lib.js
 manifest.json
