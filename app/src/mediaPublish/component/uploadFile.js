@@ -2,21 +2,23 @@ import React, { Component } from 'react'
 
 import Modal from 'antd/lib/modal'
 
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
 import '../../../public/styles/uploadFile.less'
 
-export default class UploadFile extends Component {
+class UploadFile extends Component {
 
     handleCancel = () => {
         this.props.hideUploadFile();
     }
 
     render() {
-        const footer = <button type='button' className='ant-btn ant-btn-primary upload-close-btn' onClick={this.props.hideUploadFile}>关闭</button>;
+        const footer = <button type='button' className='ant-btn ant-btn-primary upload-close-btn' onClick={this.props.hideUploadFile}><FormattedMessage id='button.close'/></button>;
         const uploadFileList = this.props.uploadFileList;
         return (
-            <Modal title='上传中' visible={this.props.showUploadFile} footer={footer} maskClosable={false} onCancel={this.handleCancel}>
+            <Modal title={this.props.intl.formatMessage({id:'mediaPublish.uploading'})} visible={this.props.showUploadFile} footer={footer} maskClosable={false} onCancel={this.handleCancel}>
                 <ul className='upload-file-ul'>
-                    <li><span className='upload-filename upload-filename-title'>名称</span><span className='upload-progress upload-progress-title'>上传进度</span></li>
+                    <li><span className='upload-filename upload-filename-title'><FormattedMessage id='mediaPublish.materialName'/></span><span className='upload-progress upload-progress-title'><FormattedMessage id='mediaPublish.uploadProgress'/></span></li>
                     {uploadFileList.map((item, index) => {
                         if (item !== undefined) {
                             return (
@@ -33,3 +35,4 @@ export default class UploadFile extends Component {
     }
 }
 
+export default injectIntl(UploadFile)

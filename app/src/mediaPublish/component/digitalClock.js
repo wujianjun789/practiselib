@@ -199,7 +199,7 @@ class DigitalClock extends Component {
             <div>
               <div>{this.props.intl.formatMessage({id:property.playTime})}</div>
               <div>
-                <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.handleDataChange(e, '', 'playTime')}} value={data.playTime}/>
+                <input className='form-control' type='number' placeholder='s' onChange={(e) => {this.handleDataChange(e, '', 'playTime')}} value={data.playTime}/>
                 <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>

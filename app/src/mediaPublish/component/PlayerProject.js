@@ -4,14 +4,17 @@
 import React,{ PureComponent } from 'react';
 
 import { NameValid } from '../../util/index';
-export default class PlayerProject extends PureComponent{
+
+import { FormattedMessage, injectIntl } from 'react-intl';
+
+class PlayerProject extends PureComponent{
     constructor(props){
         super(props);
         const {name=""} = props;
         this.state = {
             property: {
                 //方案
-                project: { key: "project", title: "方案名称", placeholder: "请输入名称", defaultValue: name, value: name }
+                project: { key: "project", title: this.props.intl.formatMessage({id:'mediaPublish.schemeName'}), placeholder:this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'}), defaultValue: name, value: name }
             },
             prompt: {
                 //方案
@@ -64,14 +67,16 @@ export default class PlayerProject extends PureComponent{
                                placeholder={property.project.placeholder} maxLength="16"
                                value={property.project.value}
                                onChange={event => this.onChange("project", event)} />
-                        <span className={prompt.project ? "prompt " : "prompt hidden"}>{"请输入名称"}</span>
+                        <span className={prompt.project ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.projectClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.projectClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.projectClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.projectClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(PlayerProject)

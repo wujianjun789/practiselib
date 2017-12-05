@@ -11,24 +11,27 @@ import moment from 'moment'
 
 import {getPlayerById} from '../../api/mediaPublish'
 import { NameValid } from '../../util/index';
-export default class PlayerPlan extends PureComponent{
+
+import { FormattedMessage, injectIntl } from 'react-intl';
+
+class PlayerPlan extends PureComponent{
     constructor(props){
         super(props);
         const {name="", startDate=moment(), endDate=moment(), startTime=moment(), endTime=moment(), week=[]} = props;
         this.state = {
             //计划
             property:{
-                plan: { key: "plan", title: "计划名称", placeholder: "请输入名称", defaultValue:name, value: name },
-                startDate: { key: "startDate", title: "开始日期", placeholder: "点击选择开始日期", defaultValue:startDate,value: startDate },
-                endDate: { key: "endDate", title: "结束日期", placeholder: "点击选择结束日期", defaultValue:endDate, value: endDate },
-                startTime: { key: "startTime", title: "开始时间", placeholder: "点击选择开始时间", defaultValue:startTime, value: startTime },
-                endTime: { key: "endTime", title: "结束时间", placeholder: "点击选择结束时间", defaultValue:endTime, value: endTime },
+                plan: { key: "plan", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:name, value: name },
+                startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue:startDate,value: startDate },
+                endDate: { key: "endDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue:endDate, value: endDate },
+                startTime: { key: "startTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue:startTime, value: startTime },
+                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue:endTime, value: endTime },
                 week: {
-                    key: "week", title: "工作日",
-                    list: [{ label: "周一", value: 1 }, { label: "周二", value: 2 },
-                        { label: "周三", value: 3 }, { label: "周四", value: 4 },
-                        { label: "周五", value: 5 }, { label: "周六", value: 6 },
-                        { label: "周日", value: 7 }],
+                    key: "week", title:this.props.intl.formatMessage({id:'mediaPublish.weekday'}),
+                    list: [{ label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1 }, { label:this.props.intl.formatMessage({id:'mediaPublish.tuesday'}), value: 2 },
+                        { label:this.props.intl.formatMessage({id:'mediaPublish.wednesday'}), value: 3 }, { label: this.props.intl.formatMessage({id:'mediaPublish.thursday'}), value: 4 },
+                        { label: this.props.intl.formatMessage({id:'mediaPublish.friday'}), value: 5 }, { label:this.props.intl.formatMessage({id:'mediaPublish.saturday'}), value: 6 },
+                        { label: this.props.intl.formatMessage({id:'mediaPublish.sunday'}), value: 7 }],
                     defaultValue: week,
                     value: week
                 }
@@ -133,7 +136,7 @@ export default class PlayerPlan extends PureComponent{
                                placeholder={property.plan.placeholder} maxLength="16"
                                value={property.plan.value}
                                onChange={event => this.onChange("plan", event)} />
-                        <span className={prompt.plan ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.plan ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
@@ -182,7 +185,7 @@ export default class PlayerPlan extends PureComponent{
                     <div className="input-container">
                         <CheckboxGroup id="startTime" options={property.week.list} defaultValue={property.week.value}
                                        value={property.week.value} onChange={value => this.dateChange('week', value)} />
-                        <span className={"fixpos " + (prompt.week ? "prompt " : "prompt hidden")}>{"请选择工作日"}</span>
+                        <span className={"fixpos " + (prompt.week ? "prompt " : "prompt hidden")}><FormattedMessage id='mediaPublish.selectWeekday'/></span>
                         {/* {
                          property.week.list.map(item=>{
                          return <label>
@@ -196,9 +199,11 @@ export default class PlayerPlan extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => this.planClick('apply')}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={()=>this.planClick('reset')}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => this.planClick('apply')}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={()=>this.planClick('reset')}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(PlayerPlan)

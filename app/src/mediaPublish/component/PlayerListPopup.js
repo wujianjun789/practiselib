@@ -74,9 +74,9 @@ export default class PlayerListPopup extends PureComponent {
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row">
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="playerName"><FormattedMessage id='mediaPublish.planName' /></label>
+                        <label className="col-sm-3 control-label" htmlFor="playerName"><FormattedMessage id='mediaPublish.schemeName' /></label>
                         <div className="col-sm-9">
-                            <input type="text" className={ "form-control " } id="playerName" placeholder={this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'})}
+                            <input type="text" className={ "form-control " } id="playerName" placeholder={this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'})}
                                    maxLength="16" value={playerName} onChange={this.onChange}/>
                             <span className={prompt.playerName?"prompt ":"prompt hidden"}><FormattedMessage id='mediaPublish.prompt'/></span>
                         </div>

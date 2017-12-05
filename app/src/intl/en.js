@@ -34,6 +34,7 @@ export default {
         'button.finish': 'Finish',
         'button.modify':'Modify',
         'button.apply': 'apply',
+        'button.close':'Close',
 
         //地图
         'map.location': 'Map Location',
@@ -184,8 +185,8 @@ export default {
         'mediaPublish.manage': 'Publish Manage',
         'mediaPublish.playType':'play type',
         'mediaPublish.addPlan':'Add plan',
-        'mediaPublish.planName':'plan name',
-        'mediaPublish.inputPlanName':'please input plan name',
+        'mediaPublish.schemeName':'plan name',
+        'mediaPublish.inputSchemeName':'please input plan name',
         'mediaPublish.resolution':'resolution',
         'mediaPublish.playPlan':'play plan',
 
@@ -234,9 +235,36 @@ export default {
         'mediaPublish.timeZone':'timeZone',
         'mediaPublish.dateFormat':'dateFormat',
         'mediaPublish.timeFormat':'timeFormat',
-        
-
-
+        'mediaPublish.playingMode':'mode',
+        'mediaPublish.areaName':'area',
+        'mediaPublish.areaWidth':'width',
+        'mediaPublish.areaHeight':'height',
+        'mediaPublish.x':'X',
+        'mediaPublish.y':'Y',
+        'mediaPublish.playEnd':'play end',
+        'mediaPublish.planName':'plan name',
+        'mediaPublish.inputPlanName':'please input plan name',
+        'mediaPublish.startDate':'start date',
+        'mediaPublish.endDate':'end date',
+        'mediaPublish.startTime':'start time',
+        'mediaPublish.endTime':'end time',
+        'mediaPublish.weekday':'weekday',
+        'mediaPublish.monday':'Monday',
+        'mediaPublish.tuesday':'Tuesday',
+        'mediaPublish.wednesday':'Wednesday',
+        'mediaPublish.thursday':'Thursday',
+        'mediaPublish.friday':'Friday',
+        'mediaPublish.saturday':'Saturday',
+        'mediaPublish.sunday':'Sunday',
+        'mediaPublish.selectWeekday':'please select weekday',
+        'mediaPublish.uploadFile':'Upload file',
+        'mediaPublish.addMaterial':'Add material',
+        'mediaPublish.importMaterial':'import',
+        'mediaPublish.selectFilePath':'select file',
+        'mediaPublish.selectFilePrompt':'please select the corrent file',
+        'mediaPublish.inputNamePrompt':'please input the name',
+        'mediaPublish.uploading':'Uploading',
+        'mediaPublish.uploadProgress':'progress',
 
 
         //last

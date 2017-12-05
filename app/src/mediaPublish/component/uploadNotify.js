@@ -1,8 +1,10 @@
 import React,{Component} from 'react'
 
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
 import '../../../public/styles/uploadFile.less'
 
-export default class UploadNotify extends Component{
+class UploadNotify extends Component{
     handleClick=(e)=>{
         e.stopPropagation();
         this.props.showUploadFile()
@@ -10,9 +12,11 @@ export default class UploadNotify extends Component{
     render(){
         return(
             <div className='upload-show' style={{display:`${this.props.showUploadNotify?'block':'none'}`}} onClick={this.handleClick}>
-                <span>正在上传</span>
+                <span><FormattedMessage id='mediaPublish.uploading'/></span>
                 <span className='icon icon_file'></span>
             </div>
         )
     }
 }
+
+export default injectIntl(UploadNotify);

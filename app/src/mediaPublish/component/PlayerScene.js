@@ -7,16 +7,19 @@ import {getSceneById} from '../../api/mediaPublish';
 
 import lodash from 'lodash';
 import { NameValid,numbersValid } from '../../util/index';
-export default class PlayerScene extends PureComponent{
+
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
+class PlayerScene extends PureComponent{
     constructor(props){
         super(props);
         const {sceneName, playMode, playModeCount} = props;
         this.state = {
             property: {
                 //场景名称
-                sceneName: { key: "assetName", title: "素材名称", placeholder: '素材名称', defaultValue:sceneName?sceneName:"", value: sceneName?sceneName:"" },
-                playMode: { key: "playMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], defaultIndex: 0, index: 0, name: "按次播放" },
-                playModeCount: { key: "playModeCount", title: "播放次数", placeholder: '次', active: true,
+                sceneName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:sceneName?sceneName:"", value: sceneName?sceneName:"" },
+                playMode: { key: "playMode", title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], defaultIndex: 0, index: 0, name: "按次播放" },
+                playModeCount: { key: "playModeCount", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), active: true,
                     defaultValue: playModeCount?playModeCount:"", value: playModeCount?playModeCount:"",
                     defaultValue2: playModeCount?playModeCount:"", value2: playModeCount?playModeCount:""}
             },
@@ -170,7 +173,7 @@ export default class PlayerScene extends PureComponent{
                                placeholder={property.sceneName.placeholder} maxLength="8"
                                value={property.sceneName.value}
                                onChange={event => this.onChange("sceneName", event)} />
-                        <span className={prompt.sceneName ? "prompt " : "prompt hidden"}>{"请输入名称"}</span>
+                        <span className={prompt.sceneName ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
@@ -196,14 +199,16 @@ export default class PlayerScene extends PureComponent{
                     <div className={"input-container "}>
                         <input type="text" className={"form-control "} htmlFor={property.playModeCount.key} placeholder={property.playModeCount.placeholder} maxLength="8"
                                value={property.playMode.index==0?property.playModeCount.value:property.playModeCount.value2} onChange={event => this.onChange("playModeCount", event)} />
-                        <span className={prompt.playModeCount ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.playModeCount ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerSceneClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerSceneClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.playerSceneClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.playerSceneClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(PlayerScene)

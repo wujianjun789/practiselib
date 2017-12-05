@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 
 import Modal from 'antd/lib/modal'
 
+import { FormattedMessage, injectIntl } from 'react-intl';
+
 import '../../../public/styles/uploadFile.less'
 
-export default class PreviewFile extends Component {
+class PreviewFile extends Component {
     state = {
         name: '',
         path: '',
@@ -58,27 +60,27 @@ export default class PreviewFile extends Component {
         const { name, path, url, show } = this.state;
         const footer =
             <div>
-                <button type='button' className='btn ant-btn' onClick={this.props.hideModal}>取消</button>
-                <button type='button' disabled={(name && path) ? false : true} className='btn ant-btn ant-btn-primary' onClick={this.handleOk}>上传文件</button>
+                <button type='button' className='btn ant-btn' onClick={this.props.hideModal}><FormattedMessage id='button.cancel'/></button>
+                <button type='button' disabled={(name && path) ? false : true} className='btn ant-btn ant-btn-primary' onClick={this.handleOk}><FormattedMessage id='mediaPublish.uploadFile'/></button>
             </div>;
 
         return (
-            <Modal title='添加素材' visible={this.props.showModal}
-                onCancel={this.props.hideModal} footer={footer} okText='上传文件' maskClosable={false}>
+            <Modal title={this.props.intl.formatMessage({id:'mediaPublish.addMaterial'})} visible={this.props.showModal}
+                onCancel={this.props.hideModal} footer={footer}  maskClosable={false}>
                 <div className='material'>
                     <div className='import'>
-                        <span>导入素材</span>
+                        <span className='title-name'><FormattedMessage id='mediaPublish.importMaterial'/></span>
                         <div className='file-path'>
-                            {path ? path : '选择列表文件路径'}
+                            {path ? path : this.props.intl.formatMessage({id:'mediaPublish.selectFilePrompt'})}
                             <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
                             <input type="file" accept="image/*,video/*,text/plain" onChange={this.selectFile} />
-                            <span className={path ? "m-prompt m-hidden" : "m-prompt"}>请选择文件</span>
+                            <span className={path ? "m-prompt m-hidden" : "m-prompt"}><FormattedMessage id='mediaPublish.selectFilePath'/></span>
                         </div>
                     </div>
                     <div>
-                        <span>素材名称</span>
+                        <span className='title-name'><FormattedMessage id='mediaPublish.materialName'/></span>
                         <input type='text' value={name} onChange={this.changeName} />
-                        <span className={name ? "m-prompt m-hidden" : "m-prompt"}>请输入名称</span>
+                        <span className={name ? "m-prompt m-hidden" : "m-prompt"}><FormattedMessage id='mediaPublish.inputNamePrompt'/></span>
                     </div>
                     <div className='show'>
                         {show}
@@ -89,3 +91,5 @@ export default class PreviewFile extends Component {
         )
     }
 }
+
+export default injectIntl(PreviewFile)

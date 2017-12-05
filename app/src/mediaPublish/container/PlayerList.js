@@ -30,7 +30,7 @@ export class PlayerList extends Component {
                 { id: 2, value: `${this.props.intl.formatMessage({ id: 'mediaPublish.playType' })} 2` }],
                 index: 0, value: `${this.props.intl.formatMessage({ id: 'mediaPublish.playType' })} 1`
             }),
-            search: Immutable.fromJS({ placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), value: '' }),
+            search: Immutable.fromJS({ placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'}), value: '' }),
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
@@ -42,7 +42,7 @@ export class PlayerList extends Component {
             ])
         }
 
-        this.columns = [{ id: 1, field: "name", title:this.props.intl.formatMessage({id:'mediaPublish.planName'})},
+        this.columns = [{ id: 1, field: "name", title:this.props.intl.formatMessage({id:'mediaPublish.schemeName'})},
              { id: 2, field: "resolution", title: this.props.intl.formatMessage({id:'mediaPublish.resolution'})}];
 
         this.typeChange = this.typeChange.bind(this);
