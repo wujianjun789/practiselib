@@ -257,7 +257,9 @@ export default {
         'mediaPublish.inputNamePrompt':'请输入名称',
         'mediaPublish.uploading':'正在上传',
         'mediaPublish.uploadProgress':'上传进度',
-
+        'mediaPublish.waiting':'待上传',
+        'mediaPublish.completed':'已完成',
+        'mediaPublish.failed':'失败',
 
 
         //以前的

@@ -265,6 +265,9 @@ export default {
         'mediaPublish.inputNamePrompt':'please input the name',
         'mediaPublish.uploading':'Uploading',
         'mediaPublish.uploadProgress':'progress',
+        'mediaPublish.waiting':'Waiting',
+        'mediaPublish.completed':'Completed',
+        'mediaPublish.failed':'Failed',
 
 
         //last

@@ -701,13 +701,13 @@ export class PlayerArea extends Component {
 
     uploadComplete = (e) => {
         const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
-        list[key].progress = '已完成';
+        list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.completed'});
         this.setState({ uploadFileList: list })
 
         const nextKey = key + 1;
 
         for (let i = nextKey; i < list.length; i++) {
-            if (list[i] !== undefined && list[i].progress === '待上传') {
+            if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress==='Waiting')) {
                 const currentXhr = list[i].xhr;
                 currentXhr.open('POST', list[i].url, true);
                 currentXhr.send(list[i].form);
@@ -719,13 +719,13 @@ export class PlayerArea extends Component {
     }
     uploadFailed = (e) => {
         const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
-        list[key].progress = '失败';
+        list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.failed'});
         this.setState({ uploadFileList: list })
 
         const nextKey = key + 1;
 
         for (let i = nextKey; i < list.length; i++) {
-            if (list[i] !== undefined && list[i].progress === '待上传') {
+            if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress==='Waiting')) {
                 const currentXhr = list[i].xhr;
                 currentXhr.open('POST', list[i].url, true);
                 currentXhr.send(list[i].form);
@@ -805,7 +805,7 @@ export class PlayerArea extends Component {
             const list = this.state.uploadFileList;
             const nextKey = index + 1;
             for (let i = nextKey; i < list.length; i++) {
-                if (list[i] !== undefined && list[i].progress === '待上传') {
+                if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress==='Waiting')) {
                     const currentXhr = list[i].xhr;
                     currentXhr.open('POST', list[i].url, true);
                     currentXhr.send(list[i].form);

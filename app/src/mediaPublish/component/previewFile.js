@@ -44,13 +44,13 @@ class PreviewFile extends Component {
                 self.setState({ name:file.name,path: file.name, url: null, show: show, data: file })
             }
         } else {
-            alert('不支持该文件格式');
+            alert('The file format is not supported');
             return;
         }
     }
     handleOk = () => {
         const key = this.state.currentKey;
-        this.props.addUploadFile({ name: this.state.name, progress: '待上传', data: this.state.data, key: key })
+        this.props.addUploadFile({ name: this.state.name, progress: this.props.intl.formatMessage({id:'mediaPublish.waiting'}), data: this.state.data, key: key })
         this.props.hideModal();
         this.setState({ currentKey: key + 1 })
     }
