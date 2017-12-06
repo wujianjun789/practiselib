@@ -43,9 +43,9 @@ export class Xes extends Component{
         this.model = 'xes';
 
         this.columns = [
-            {accessor: 'name', title: '设备名称'},
-            {accessor: 'online', title: '在线状态'},
-            {accessor: 'fault', title: '故障状态'},
+            {accessor: 'name', title: this.formatIntl('app.device.name')},
+            {accessor: 'online', title: this.formatIntl('app.online.state')},
+            {accessor: 'fault', title: this.formatIntl('app.fault.state')},
         ];
         this.formatIntl = this.formatIntl.bind(this);
 
@@ -181,7 +181,7 @@ export class Xes extends Component{
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
-                                <span className="icon_select"></span>选中设备
+                                <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
                             </div>
                             <div className="panel-body">
                                 <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
