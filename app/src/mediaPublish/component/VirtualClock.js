@@ -9,7 +9,9 @@ import _virtualClock from '../config/virtualClock.js';
 import { SketchPicker, BlockPicker } from 'react-color';
 import '../../../public/styles/virtualClock.less';
 
- export default class VirtualClock extends Component {
+import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+
+class VirtualClock extends Component {
    constructor(props) {
      super(props);
      this.state = {
@@ -233,32 +235,32 @@ import '../../../public/styles/virtualClock.less';
        <div className='pro-container virtualClock' id='virtualClock'>
         <ul>
           <li>
-            <div>素材名称</div>
+            <div><FormattedMessage id='mediaPublish.materialName'/></div>
             <div className='input_form'>
               <input className='form-control' type='text' value={data.name} disabled/>
             </div>
           </li>
           <li>
             <div>
-              <div>时区</div>
+              <div><FormattedMessage id='mediaPublish.timeZone'/></div>
               {this.renderOptions('timeZone')}
             </div>
             <div>
-              <div>播放时长</div>
+              <div><FormattedMessage id='mediaPublish.playDuration'/></div>
               <div>
-                <input className='form-control' type='number' placeholder='秒' onChange={(e) => {this.submitDataChange(e, '', 'playTime')}} value={data.playTime}/>
+                <input className='form-control' type='number' placeholder='s' onChange={(e) => {this.submitDataChange(e, '', 'playTime')}} value={data.playTime}/>
                 <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
               </div>
             </div>
             <div>
-              <div>背景颜色</div>
+              <div><FormattedMessage id='mediaPublish.bgColor'/></div>
               <div className='color-picker' id='bg_color' onClick={() => {this.handleColorPicker('bg_color')}} style={{backgroundColor:data.bg_color,borderColor:data.bg_color}}>
                   {colorPicker.bg_color ? <SketchPicker color={data.bg_color} onChange={(color) => {this.handleColorChange('bg_color', color)} }/> : null}
               </div>
             </div>
           </li>
           <li>
-            <div>标题内容</div>
+            <div><FormattedMessage id='mediaPublish.titleContent'/></div>
             <div className='input_form'>
               <input className='form-control' type='number' value={data.textContent} onChange={(e) => {this.submitDataChange(e, '', 'textContent')}}/>
               <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入标题内容</span></div>
@@ -266,15 +268,15 @@ import '../../../public/styles/virtualClock.less';
           </li>
           <li>
             <div>
-              <div>标题字体</div>
+              <div><FormattedMessage id='mediaPublish.titleFont'/></div>
               {this.renderOptions('fontFamily', 'title')}
             </div>
             <div>
-              <div>标题大小</div>
+              <div><FormattedMessage id='mediaPublish.titleSize'/></div>
               {this.renderOptions('fontSize', 'title')}
             </div>
             <div>
-              <div>标题颜色</div>
+              <div><FormattedMessage id='mediaPublish.titleColor'/></div>
               <div className='color-picker' onClick={() => {this.handleColorPicker('title_color')}} style={{backgroundColor:data.title_color,borderColor:data.title_color}}>
                   {colorPicker.title_color ? <SketchPicker color={data.title_color} onChange={color => {this.handleColorChange('title_color', color)} }/> : null}
               </div>
@@ -282,18 +284,18 @@ import '../../../public/styles/virtualClock.less';
           </li>
           <li>
             <div>
-              <div>时标类型</div>
+              <div><FormattedMessage id='mediaPublish.timeScaleType'/></div>
               {this.renderOptions('type', 'scale')}
             </div>
             <div>
-              <div>时标宽度</div>
+              <div><FormattedMessage id='mediaPublish.timeScaleWidth'/></div>
               <div>
               <input className='form-control' type='number' value={data.scale_width} onChange={(e) => {this.submitDataChange(e, 'scale', 'width')}}/>
               <div className='notice'><span className={`${options.scale_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入时标宽度</span></div>
             </div>
             </div>
             <div>
-              <div>时标高度</div>
+              <div><FormattedMessage id='mediaPublish.timeScaleHeight'/></div>
               <div>
               <input className='form-control' type='number' value={data.scale_height} onChange={(e) => {this.submitDataChange(e, 'scale', 'height')}}/>
               <div className='notice'><span className={`${options.scale_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入时标高度</span></div>
@@ -302,15 +304,15 @@ import '../../../public/styles/virtualClock.less';
           </li>
           <li>
             <div>
-              <div>时标字体</div>
+              <div><FormattedMessage id='mediaPublish.timeScaleFont'/></div>
               {this.renderOptions('fontFamily', 'scale')}
             </div>
             <div>
-              <div>时标大小</div>
+              <div><FormattedMessage id='mediaPublish.timeScaleSize'/></div>
               {this.renderOptions('fontSize', 'scale')}
             </div>
             <div>
-              <div>时标颜色</div>
+              <div><FormattedMessage id='mediaPublish.timeScaleColor'/></div>
               <div className='color-picker' onClick={() => {this.handleColorPicker('scale_color')}} style={{backgroundColor:data.scale_color,borderColor:data.scale_color}}>
                   {colorPicker.scale_color ? <SketchPicker color={data.scale_color} onChange={color => {this.handleColorChange('scale_color', color)} }/> : null}
               </div>
@@ -318,18 +320,18 @@ import '../../../public/styles/virtualClock.less';
           </li>
             <li>
               <div>
-                <div>分标类型</div>
+                <div><FormattedMessage id='mediaPublish.markingType'/></div>
                 {this.renderOptions('type', 'split')}
               </div>
               <div>
-                <div>分标宽度</div>
+                <div><FormattedMessage id='mediaPublish.markingWidth'/></div>
                 <div>
                 <input className='form-control' type='number' value={data.split_width} onChange={(e) => {this.submitDataChange(e, 'split', 'width')}}/>
                 <div className='notice'><span className={`${options.split_width_noticeShow === true ? 'show' : 'hidden'}`}>请输入分标宽度</span></div>
               </div>
               </div>
               <div>
-                <div>分标高度</div>
+                <div><FormattedMessage id='mediaPublish.markingHeight'/></div>
                 <div>
                 <input className='form-control' type='number' value={data.split_height} onChange={(e) => {this.submitDataChange(e, 'split', 'height')}}/>
                 <div className='notice'><span className={`${options.split_height_noticeShow === true ? 'show' : 'hidden'}`}>请输入分标高度</span></div>
@@ -338,15 +340,15 @@ import '../../../public/styles/virtualClock.less';
             </li>
             <li>
               <div>
-                <div>分标字体</div>
+                <div><FormattedMessage id='mediaPublish.markingFont'/></div>
                 {this.renderOptions('fontFamily', 'split')}
               </div>
               <div>
-                <div>分标大小</div>
+                <div><FormattedMessage id='mediaPublish.markingSize'/></div>
                 {this.renderOptions('fontSize', 'split')}
               </div>
               <div>
-                <div>分标颜色</div>
+                <div><FormattedMessage id='mediaPublish.markingColor'/></div>
                 <div className='color-picker' onClick={() => {this.handleColorPicker('split_color')}} style={{backgroundColor:data.split_color,borderColor:data.split_color}}>
                     {colorPicker.split_color ? <SketchPicker color={data.split_color} onChange={color => {this.handleColorChange('split_color', color)} }/> : null}
                 </div>
@@ -354,25 +356,25 @@ import '../../../public/styles/virtualClock.less';
           </li>
           <li>
             <div>
-              <div>区域设置</div>
+              <div><FormattedMessage id='mediaPublish.areaSet'/></div>
               {this.renderOptions('location')}
             </div>
             <div>
-              <div>日期格式</div>
+              <div><FormattedMessage id='mediaPublish.dateFormat'/></div>
               {this.renderOptions('dateFormat')}
             </div>
         </li>
           <li>
             <div>
-              <div>日期字体</div>
+              <div><FormattedMessage id='mediaPublish.dateFont'/></div>
               {this.renderOptions('fontFamily', 'date')}
             </div>
             <div>
-              <div>日期大小</div>
+              <div><FormattedMessage id='mediaPublish.dateSize'/></div>
               {this.renderOptions('fontSize', 'date')}
             </div>
             <div>
-              <div>日期颜色</div>
+              <div><FormattedMessage id='mediaPublish.dateColor'/></div>
               <div className='color-picker' onClick={() => {this.handleColorPicker('date_color')}} style={{backgroundColor:data.date_color,borderColor:data.date_color}}>
                   {colorPicker.date_color ? <SketchPicker color={data.date_color} onChange={color => {this.handleColorChange('date_color', color)} }/> : null}
               </div>
@@ -380,15 +382,15 @@ import '../../../public/styles/virtualClock.less';
         </li>
         <li>
           <div>
-            <div>星期字体</div>
+            <div><FormattedMessage id='mediaPublish.weekFont'/></div>
             {this.renderOptions('fontFamily', 'weekend')}
           </div>
           <div>
-            <div>星期大小</div>
+            <div><FormattedMessage id='mediaPublish.weekSize'/></div>
             {this.renderOptions('fontSize', 'weekend')}
           </div>
           <div>
-            <div>星期颜色</div>
+            <div><FormattedMessage id='mediaPublish.weekColor'/></div>
             <div className='color-picker' onClick={() => {this.handleColorPicker('weekend_color')}} style={{backgroundColor:data.weekend_color,borderColor:data.weekend_color}}>
                 {colorPicker.weekend_color ? <SketchPicker color={data.weekend_color} onChange={color => {this.handleColorChange('weekend_color', color)} }/> : null}
             </div>
@@ -396,19 +398,19 @@ import '../../../public/styles/virtualClock.less';
       </li>
       <li>
         <div>
-          <div>时针颜色</div>
+          <div><FormattedMessage id='mediaPublish.hourHandColor'/></div>
           <div className='color-picker' onClick={() => {this.handleColorPicker('hour_color')}} style={{backgroundColor:data.hour_color,borderColor:data.hour_color}}>
               {colorPicker.hour_color ? <SketchPicker color={data.hour_color} onChange={color => {this.handleColorChange('hour_color', color)} }/> : null}
           </div>
         </div>
         <div>
-          <div>分针颜色</div>
+          <div><FormattedMessage id='mediaPublish.minuteHandColor'/></div>
           <div className='color-picker' onClick={() => {this.handleColorPicker('minute_color')}} style={{backgroundColor:data.minute_color,borderColor:data.minute_color}}>
               {colorPicker.minute_color ? <SketchPicker color={data.minute_color} onChange={color => {this.handleColorChange('minute_color', color)} }/> : null}
           </div>
         </div>
         <div>
-          <div>秒针颜色</div>
+          <div><FormattedMessage id='mediaPublish.secondHandColor'/></div>
           <div className='color-picker' onClick={() => {this.handleColorPicker('second_color')}} style={{backgroundColor:data.second_color,borderColor:data.second_color}}>
               {colorPicker.second_color ? <SketchPicker color={data.second_color} onChange={color => {this.handleColorChange('second_color', color)} }/> : null}
           </div>
@@ -416,8 +418,8 @@ import '../../../public/styles/virtualClock.less';
       </li>
           <li>
             <div>
-              <button className='btn btn-primary' onClick={this.resetData}>重置</button>
-              <button className='btn btn-primary' onClick={this.submitData}>应用</button>
+              <button className='btn btn-primary' onClick={this.resetData}><FormattedMessage id='mediaPublish.reset'/></button>
+              <button className='btn btn-primary' onClick={this.submitData}><FormattedMessage id='mediaPublish.apply'/></button>
             </div>
           </li>
         </ul>
@@ -425,3 +427,5 @@ import '../../../public/styles/virtualClock.less';
      )
    }
  }
+
+ export default injectIntl(VirtualClock);
