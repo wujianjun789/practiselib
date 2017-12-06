@@ -107,7 +107,7 @@
   "scripts": {
     "test": "jest --coverage",
     "dev:server": "cd server & node server --dev ",
-    "dev:client": "webpack-dev-server ",
+    "dev:client": "webpack-dev-server --public",
     "dev": "start npm run dev:server && start npm run dev:client ",
     "build:lib": "webpack --config ddl.config.js",
     "build:app": "webpack --config webpack.app.config.js",

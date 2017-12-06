@@ -234,7 +234,6 @@ export default {
         'mediaPublish.singleLine':'singleLine',
         'mediaPublish.lastDate':'last date',
         'mediaPublish.lastTime':'last time',
-        'mediaPublish.digitalClock':'clock',
         'mediaPublish.timeZone':'timeZone',
         'mediaPublish.dateFormat':'dateFormat',
         'mediaPublish.timeFormat':'timeFormat',

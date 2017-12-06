@@ -11,13 +11,12 @@ export default class ColorPicker extends Component{
 
     handleColorClick = (e) => {
         e.stopPropagation();
-  
-        if (this.fontTarget === undefined) {
-            this.fontTarget = e.target;
+        if (this.parentTarget === undefined) {
+            this.parentTarget = e.target;
             this.setState({ displayColorPicker: !this.state.displayColorPicker });
             return;
         } else {
-            if (this.fontTarget !== e.target) {
+            if (this.parentTarget !== e.target) {
                 return;
             }
         }
