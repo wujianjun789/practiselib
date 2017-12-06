@@ -91,11 +91,13 @@
 }
 
 .mediaPublish-playerArea {
+  overflow-y: hidden;
   overflow-x: hidden;
   .sidebar {
-    bottom: 115px;
+    bottom: 94px;
 
-    max-height: 626px;
+    //max-height: 626px;
+    min-height: 300px;
     .title {
       height: 40px;
       line-height: 40px;
@@ -326,7 +328,7 @@
 
       padding: 0;
 
-      min-height: 500px;
+      min-height: 200px;
 
       .addAnimation();
 
@@ -362,12 +364,13 @@
         left: 20px;
 
         background-color: #00ffff;
-        height: 502px;
+        min-height: 200px;
         overflow: scroll;
       }
       .control-container-bottom {
         position: absolute;
-        top: 565px;
+        //top: 565px;
+        bottom: 0;
         left: 535px;
         //bottom: 10px;
         min-width: 160px;

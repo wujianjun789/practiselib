@@ -282,7 +282,7 @@ export class PlayerArea extends Component {
             cleft = "535px";
         }
 
-        this.setState({ assetStyle: { "bottom": (height < 796 ? 0 : height - 796) + "px" }, controlStyle: { "left": cleft, "right": cright } });
+        this.setState({ /*assetStyle: { "bottom": (height < 796 ? 0 : height - 796) + "px" },*/ controlStyle: { "left": cleft, "right": cright } });
     }
 
     updatePlayerTree() {
