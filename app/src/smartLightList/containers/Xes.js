@@ -3,6 +3,9 @@
  */
 import '../../../public/styles/smartLightManage-list.less';
 import React,{Component} from 'react';
+
+import {injectIntl} from 'react-intl';
+
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
@@ -12,7 +15,7 @@ import Page from '../../components/Page';
 import {getDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount, getDeviceStatusByModelAndId} from '../../api/asset';
 
-export default class Xes extends Component{
+export class Xes extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +26,7 @@ export default class Xes extends Component{
             },
             search: {
                 value: '',
-                placeholder: '请输入设备名称',
+                placeholder: this.formatIntl('app.input.device.name'),
 
             },
             sidebarCollapse: false,
@@ -44,6 +47,7 @@ export default class Xes extends Component{
             {accessor: 'online', title: '在线状态'},
             {accessor: 'fault', title: '故障状态'},
         ];
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.collapseHandler = this.collapseHandler.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -66,6 +70,11 @@ export default class Xes extends Component{
 
     componentWillUnmount() {
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     initData() {
@@ -187,3 +196,4 @@ export default class Xes extends Component{
                             <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick} activeId={currentDevice == null ? '' : currentDevice.id}/>
  *
  */
+export default injectIntl(Xes);
