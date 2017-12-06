@@ -1520,6 +1520,7 @@ width:24px;
     font-size: 10px;
     color: #ff5c69;
     padding-left: 14px;
+    white-space: nowrap;
 }
 
 .inputCheck .control-label{

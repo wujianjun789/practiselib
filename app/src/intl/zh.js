@@ -52,7 +52,12 @@ export default {
         
         //提示
         'app.not.found':'没有找到结果',
-
+        'illegal':'不合法',
+        'import.format.error':'导入Excel格式有误',
+        'add.Domain':'请添加域',
+        'password.error':'密码只能为字母或数字',
+        'password.not.same':'两次密码不一致',
+        
         //删除弹框
         'delete.user':'是否删除选中用户？',
         'delete.device':'是否删除选中设备？',        
@@ -103,7 +108,6 @@ export default {
         'sysOperation.devices':'个设备',
         'sysOperation.input.device':'输入设备名称',
         'sysOperation.domain':'域',
-        'sysOperation.device':'设备名称',
         'sysOperation.type':'型号',
         'sysOperation.id':'设备编号',
         'sysOperation.dataOrigin':'数据源',

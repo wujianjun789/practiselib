@@ -133,14 +133,14 @@ export default class CentralizedControllerPopup extends Component {
                     <label htmlFor="id" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.id'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="id" placeholder="id" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' ? true : false }/>
-                      <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
+                      <span className={ prompt.id ? "prompt " : "prompt hidden" }><FormattedMessage id='illegal'/></span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
-                    <label htmlFor="name" className="fixed-width-left control-label"><FormattedMessage id='sysOperation.device'/>：</label>
+                    <label htmlFor="name" className="fixed-width-left control-label"><FormattedMessage id='name'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="name" placeholder="name" value={ name } maxLength={ 16 } onChange={ this.onChange }/>
-                      <span className={ prompt.name ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
+                      <span className={ prompt.name ? "prompt " : "prompt hidden" }><FormattedMessage id='illegal'/></span>
                     </div>
                   </div>
                   { this.renderHtmlForModel() }
@@ -149,21 +149,21 @@ export default class CentralizedControllerPopup extends Component {
                     <div className="fixed-width-right">
                       <Select id="domain" className="form-control" titleField={ domainList.titleField } valueField={ domainList.valueField } options={ domainList.options } value={ domain }
                         onChange={ this.onChange } />
-                      <span className={ !domainList || !domainList.options || domainList.options.length == 0 ? "prompt" : "prompt hidden" }>{ "请添加域" }</span>
+                      <span className={ !domainList || !domainList.options || domainList.options.length == 0 ? "prompt" : "prompt hidden" }><FormattedMessage id='add.Domain'/></span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
                     <label htmlFor="lng" className="fixed-width-left control-label"><FormattedMessage id='map.lng'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
-                      <span className={ prompt.lng ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
+                      <span className={ prompt.lng ? "prompt " : "prompt hidden" }><FormattedMessage id='illegal'/></span>
                     </div>
                   </div>
                   <div className="form-group clearfix">
                     <label htmlFor="lat" className="fixed-width-left control-label"><FormattedMessage id='map.lat'/>：</label>
                     <div className="fixed-width-right">
                       <input type="text" className={ "form-control " } id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
-                      <span className={ prompt.lat ? "prompt " : "prompt hidden" }>{ "不合法" }</span>
+                      <span className={ prompt.lat ? "prompt " : "prompt hidden" }><FormattedMessage id='illegal'/></span>
                     </div>
                   </div>
                   { footer }

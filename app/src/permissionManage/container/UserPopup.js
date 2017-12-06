@@ -71,14 +71,14 @@ export default class UserPopup extends Component{
                 :
                     this.setState({password:this.state.password.update(v=>{
                         return v.set('checked','fail')
-                                .set('reminder','密码只能为字母或数字')})})
+                                .set('reminder','password.error')})})
                 
                 break;
             case 'rePassword':
                 if(this.state.password.get('value')!==this.state.rePassword.get('value')){
                     this.setState({rePassword:this.state.rePassword.update(v=>{
                         return v.set('checked','fail')
-                                .set('reminder','两次密码不一致')})})
+                                .set('reminder','password.not.same')})})
                 }
                 else{
                     this.setState({rePassword:this.state.rePassword.update('checked',v=>'success')})

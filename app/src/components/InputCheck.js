@@ -30,7 +30,7 @@ export default class InputCheck extends PureComponent{
                 <div className = {`has-feedback ${checked=='success'?'has-success':checked=='fail'?'has-error':''}`}>
                     <input disabled={!!disabled} type={type} id = {id} className="form-control" placeholder={placeholder} value={value} onFocus={this.onFocus} onBlur={this.onBlur} onChange={this.onChange}/>
                     <span className={`glyphicon ${checked=='success'?'glyphicon-ok':checked=='fail'?'glyphicon-remove':''} form-control-feedback`} aria-hidden="true"></span>
-                    <span className="reminder">{reminder}</span>
+                    <span className="reminder">{reminder?<FormattedMessage id={reminder}/>:reminder}</span>
                 </div>
             </div>
         

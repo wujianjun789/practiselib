@@ -70,7 +70,7 @@ export class Xes extends Component {
         }
 
         this.columns =  [
-            {id: 0, field: "name", title: this.props.intl.formatMessage({id:"sysOperation.device"})},
+            {id: 0, field: "name", title: this.props.intl.formatMessage({id:"name"})},
             {id: 1, field:"domainName", title:this.props.intl.formatMessage({id:"sysOperation.domain"})},
             {id: 2, field: "id", title: this.props.intl.formatMessage({id:"sysOperation.id"})}
         ];
