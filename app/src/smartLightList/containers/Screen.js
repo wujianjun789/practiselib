@@ -53,7 +53,7 @@ export class Screen extends Component {
         this.model = 'screen';
 
         this.columns = [
-            {accessor: 'name', title: this.formatIntl('sysOperation.device')},
+            {accessor: 'name', title: this.formatIntl('app.device.name')},
             {accessor: 'online', title: this.formatIntl('app.online.state')},
             {accessor: 'fault', title: this.formatIntl('app.fault.state')},
             {accessor: 'brightness', title: this.formatIntl('app.current.brightness')},

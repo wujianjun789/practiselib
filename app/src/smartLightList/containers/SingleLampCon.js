@@ -3,8 +3,6 @@
  */
 import '../../../public/styles/smartLightManage-list.less';
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
@@ -282,16 +280,5 @@ export class SingleLampCon extends Component {
  *                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>
  */
-const mapStateToProps = (state) => {
-    return {
-    }
-}
 
-const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-    }, dispatch),
-})
-
-export default connect(
-    mapStateToProps, mapDispatchToProps
-)(injectIntl(SingleLampCon));
+export default injectIntl(SingleLampCon);

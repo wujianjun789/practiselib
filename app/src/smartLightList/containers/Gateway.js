@@ -3,8 +3,6 @@
  */
 import '../../../public/styles/smartLightManage-list.less';
 import React,{Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 
 import {injectIntl, FormattedMessage} from 'react-intl';
 
@@ -253,17 +251,5 @@ export class Gateway extends Component{
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>
  */
 
-const mapStateToProps = (state) => {
-    return {
-    }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({
-    }, dispatch),
-})
-
-export default connect(
-    mapStateToProps, mapDispatchToProps
-)(injectIntl(Gateway));
+export default injectIntl(Gateway);
 
