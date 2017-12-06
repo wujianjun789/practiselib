@@ -11,7 +11,6 @@ export default class ColorPicker extends Component{
 
     handleColorClick = (e) => {
         e.stopPropagation();
-        debugger
         if (this.parentTarget === undefined) {
             this.parentTarget = e.target;
             this.setState({ displayColorPicker: !this.state.displayColorPicker });
