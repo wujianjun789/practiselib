@@ -52,6 +52,11 @@ export default {
 
         //提示
         'app.not.found': 'Not Found',
+        'illegal':'Illegal',
+        'import.format.error':'Import Excel format is incorrect',        
+        'add.Domain':'Please add domain first',
+        'password.error':'The password can only be letters or number',
+        'password.not.same':'The two password is not same',       
 
         //删除弹框
         'delete.user': 'Are you sure to delete the seleted user ?',
@@ -103,7 +108,6 @@ export default {
         'sysOperation.devices':'devices',
         'sysOperation.input.device':'Input device name',
         'sysOperation.domain':'Domain',
-        'sysOperation.device':'DeviceName',
         'sysOperation.type':'Type',
         'sysOperation.id':'Id',
         'sysOperation.dataOrigin':'Data origin',
@@ -115,9 +119,8 @@ export default {
         'sysOperation.input.asset':'Please input asset name',
         'sysOperation.select.sensor':'Select sensor：',
         'sysOperation.label':'Label：', 
-        'sysOperation.input.id':'Input id to add',        
-
-
+        'sysOperation.input.id':'Input id to add',
+        
         //智慧路灯
 
         'app.map': 'map',

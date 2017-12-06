@@ -7,7 +7,7 @@ import Page from '../../components/Page';
 import {excelImport} from '../../util/excel'
 import Immutable from 'immutable';
 import NotifyPopup from '../../common/containers/NotifyPopup';
-import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
+import {addNotify} from '../../common/actions/notifyPopup'
 import {getModelTypesNameById } from '../../data/systemModel';
 import {getObjectByKeyObj} from '../../util/algorithm'
 import { FormattedMessage } from 'react-intl';
@@ -36,7 +36,7 @@ export default class ExcelPopup extends Component {
         excelImport(e,model,columns).then(([data, filename]) => {
             let domainId = true;
             if(data.length==0){
-                addNotify(0, '导入Excel格式有误');
+                addNotify(0, 'import.format.error');
                 target.value = '';
                 return;
             }
@@ -45,7 +45,7 @@ export default class ExcelPopup extends Component {
                 if(!domain) domainId = false;
             })
             if(!domainId){
-                addNotify(0, '请添加所需域');
+                addNotify(0, 'add.Domain');
                 target.value = '';            
                 return;
             }

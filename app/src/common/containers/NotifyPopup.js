@@ -9,6 +9,7 @@ import '../../../public/styles/notify.less';
 
 import { removeNotify } from '../actions/notifyPopup'
 import { getNotifyStateClass } from '../../util/index'
+import {FormattedMessage} from 'react-intl'
 export class NotifyPopup extends Component {
     constructor(props) {
         super(props);
@@ -29,7 +30,7 @@ export class NotifyPopup extends Component {
                        let ani = item.get("animation");
                    
                        return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
-                                <div className="notify-content">{ item.get("text") }</div>
+                                <div className="notify-content"><FormattedMessage id={item.get("text")} /></div>
                                 <span className="glyphicon glyphicon-remove" onClick={ () => this.onClick(id) }></span>
                               </li>
                    }) }

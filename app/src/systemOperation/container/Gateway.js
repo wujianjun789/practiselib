@@ -139,7 +139,7 @@ export class Gateway extends Component {
             {
                 id: 1,
                 field: "name",
-                title: this.props.intl.formatMessage({id:"sysOperation.device"})
+                title: this.props.intl.formatMessage({id:"name"})
             },
             {
                 id: 2,

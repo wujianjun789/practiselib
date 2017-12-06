@@ -929,7 +929,7 @@ export class PlayerArea extends Component {
                 break;
         }
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
-            <HeadBar moduleName={this.props.intl.formatMessage({id:'app.mediaPublish'})} router={router} />
+            <HeadBar moduleName='app.mediaPublish' router={router} />
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
                 onClick={this.areaClick} onToggle={this.onToggle} />
 
