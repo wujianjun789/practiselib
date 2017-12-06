@@ -10,6 +10,9 @@ import Content from '../../components/Content'
 import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults} from '../../data/assetModels'
 import Immutable from 'immutable';
 
+import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../../util/index';
+
 export class Xes extends Component {
     constructor(props) {
         super(props);
@@ -58,7 +61,7 @@ export class Xes extends Component {
         return (
             <Content>
                 <div className="row heading">
-                    <div className="property"><span></span>设备属性</div>
+                    <div className="property"><span></span>{this.props.intl.formatMessage({id:'asset.property'})}</div>
                     <ul className="property-list">
                         {
                             devicePro.map((item,index)=>{
@@ -68,7 +71,7 @@ export class Xes extends Component {
                     </ul>
                 </div>
                 <div className="row heading">
-                    <div className="type"><span></span>设备类别</div>
+                    <div className="type"><span></span>{this.props.intl.formatMessage({id:'asset.type'})}</div>
                     <table className="equipment">
                         <thead>
                         <tr>
@@ -95,7 +98,7 @@ export class Xes extends Component {
                     </table>
                 </div>
                 <div className="row heading">
-                    <div className="param"><span></span>默认参数</div>
+                    <div className="param"><span></span>{this.props.intl.formatMessage({id:'asset.param'})}</div>
                     <table className="equipment">
                         <thead>
                         <tr>
@@ -142,4 +145,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Xes);
+)(injectIntl(Xes));
