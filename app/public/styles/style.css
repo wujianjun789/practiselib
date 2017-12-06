@@ -6,6 +6,7 @@ body {
     font-family: 'Helvetica Neue','Hiragino Sans GB','Microsoft Yahei','WenQuanYi Micro Hei',sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x:hidden;
+    font-size:14px!important;
 
 }
 

@@ -226,7 +226,6 @@ export default {
         'mediaPublish.singleLine':'单行显示',
         'mediaPublish.lastDate':'截止日期',
         'mediaPublish.lastTime':'截止时间',
-        'mediaPublish.digitalClock':'数字时钟',
         'mediaPublish.timeZone':'时区',
         'mediaPublish.dateFormat':'日期格式',
         'mediaPublish.timeFormat':'时间格式',

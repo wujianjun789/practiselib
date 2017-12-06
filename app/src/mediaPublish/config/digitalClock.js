@@ -15,7 +15,7 @@
  */
 const _digitalClock = {
   property:{
-    materialName: 'mediaPublish.digitalClock',
+    materialName: 'mediaPublish.materialName',
     timeZone: 'mediaPublish.timeZone',
     playTime: 'mediaPublish.playDuration',
     bgColor: 'mediaPublish.bgColor',
