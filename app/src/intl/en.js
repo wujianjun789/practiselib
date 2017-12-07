@@ -21,6 +21,10 @@ export default {
         'sysOperation.selected.device':'Selected Device',
         'app.device.operation':'device operation',
 
+        'app.type':'type',
+        'app.unit':'unit',
+        'app.param':'param',
+
         //按钮
         ' ': ' ',
         'button.add': 'Add',
