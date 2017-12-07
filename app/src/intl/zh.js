@@ -57,7 +57,8 @@ export default {
         'add.Domain':'请添加域',
         'password.error':'密码只能为字母或数字',
         'password.not.same':'两次密码不一致',
-        
+        'no.empty':'不能为空',
+
         //删除弹框
         'delete.user':'是否删除选中用户？',
         'delete.device':'是否删除选中设备？',        

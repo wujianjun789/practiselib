@@ -7,7 +7,7 @@ import '../../../public/styles/permissionManage.less';
 import InputCheck from '../../components/InputCheck';
 import Select from '../../components/Select';
 import Immutable from 'immutable';
-import {PassWordValid} from '../../util/index';
+import {NameValid,PassWordValid} from '../../util/index';
 import {IsExitInArray} from '../../util/algorithm';
 import {FormattedMessage} from 'react-intl';
 
@@ -60,31 +60,59 @@ export default class UserPopup extends Component{
     }
 
     checkOut(id){
-        switch(id){
-            case 'username':
-            case 'lastName':
-            case 'firstName':
-                break;
-            case 'password':
-                PassWordValid(this.state.password.get('value'))?
-                    this.setState({password:this.state.password.update('checked',v=>'success')})
-                :
-                    this.setState({password:this.state.password.update(v=>{
-                        return v.set('checked','fail')
-                                .set('reminder','password.error')})})
-                
-                break;
-            case 'rePassword':
-                if(this.state.password.get('value')!==this.state.rePassword.get('value')){
-                    this.setState({rePassword:this.state.rePassword.update(v=>{
-                        return v.set('checked','fail')
-                                .set('reminder','password.not.same')})})
-                }
-                else{
-                    this.setState({rePassword:this.state.rePassword.update('checked',v=>'success')})
-                }
-                
+        if(!this.state[id].get('value')){
+            this.setState({[id]:this.state[id].update(v=>{
+                return v.set('checked','fail')
+                        .set('reminder','no.empty')})})
         }
+        else{
+            switch(id){
+                case 'username':
+                    NameValid(this.state.username.get('value'))?
+                        this.setState({username:this.state.username.update('checked',v=>'success')})
+                    :
+                        this.setState({username:this.state.username.update(v=>{
+                            return v.set('checked','fail')
+                                    .set('reminder','illegal')})})
+                    break;
+                case 'lastName':
+                    NameValid(this.state.lastName.get('value'))?
+                        this.setState({lastName:this.state.lastName.update('checked',v=>'success')})
+                    :
+                        this.setState({lastName:this.state.lastName.update(v=>{
+                            return v.set('checked','fail')
+                                    .set('reminder','illegal')})})
+                    break;
+                case 'firstName':
+                    NameValid(this.state.firstName.get('value'))?
+                        this.setState({firstName:this.state.firstName.update('checked',v=>'success')})
+                    :
+                        this.setState({firstName:this.state.firstName.update(v=>{
+                            return v.set('checked','fail')
+                                    .set('reminder','illegal')})})
+                    break;
+                case 'password':
+                    PassWordValid(this.state.password.get('value'))?
+                        this.setState({password:this.state.password.update('checked',v=>'success')})
+                    :
+                        this.setState({password:this.state.password.update(v=>{
+                            return v.set('checked','fail')
+                                    .set('reminder','password.error')})})
+                    
+                    break;
+                case 'rePassword':
+                    if(this.state.password.get('value')!==this.state.rePassword.get('value')){
+                        this.setState({rePassword:this.state.rePassword.update(v=>{
+                            return v.set('checked','fail')
+                                    .set('reminder','password.not.same')})})
+                    }
+                    else{
+                        this.setState({rePassword:this.state.rePassword.update('checked',v=>'success')})
+                    }
+                    
+            }
+        } 
+        
     }
 
     onFocus(id){
@@ -100,7 +128,8 @@ export default class UserPopup extends Component{
     render() {
         let {className = '',title = '',isEdit=false} = this.props;
         let {username,lastName,firstName,password,rePassword,toggle,domainList} = this.state;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        let valid = !!username.get('reminder') || !!lastName.get('reminder') || !!firstName.get('reminder') || !!password.get('reminder') || !!rePassword.get('reminder');
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className = 'form-group row basic-info'>
