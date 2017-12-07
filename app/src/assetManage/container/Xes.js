@@ -32,7 +32,8 @@ export class Xes extends Component {
             dataDefaultsValues: Immutable.fromJS([]),
         }
 
-        this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
+        // this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
+        this.columns = [{field:"type", title:intlFormat({en:'type',zh:'型号'})}, {field:"detail", title:intlFormat({en:'detail',zh:'描述'})}] 
 
         this.initTreeData = this.initTreeData.bind(this);
     }

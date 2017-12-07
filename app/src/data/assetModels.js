@@ -187,10 +187,11 @@ export function getModelTypes(id) {
 export function getModelDefaults(id) {
     let model = getModelById(id)
     let list = [];
-    list.push({field:"type", title:"型号"})
+    // list.push({field:"type", title:"型号"});
+    list.push({field:"type", title:intlFormat({en:'type',zh:'产品类别'})});
     for(var i in model.defaults.props) {
         let props = model.defaults.props[i]; 
-        list.push({field:props, title:intlFormat(model.intl.props[props])})
+    list.push({field:props, title:intlFormat(model.intl.props[props])})
     }
     return list;
 }
