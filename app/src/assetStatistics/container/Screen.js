@@ -22,6 +22,9 @@ import {getDomainList} from '../../api/domain'
 import {getDeviceTypeByModel} from '../../util/index'
 import {getObjectByKey} from '../../util/algorithm'
 
+import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../../util/index';
+
 import Immutable from 'immutable';
 export class Sensor extends Component {
     constructor(props) {
@@ -63,10 +66,15 @@ export class Sensor extends Component {
             },
         }
 
-        this.columns = [{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
-            {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
-            {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
-            {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}]
+        // this.columns = [{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
+        //  {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
+        //  {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
+        //  {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}]
+
+        this.columns = [{field:"domain", title:intlFormat({en:'domain',zh:'域'})}, {field:"name", title:intlFormat({en:'name',zh:'设备名称'})},
+        {field:"software", title:intlFormat({en:'software',zh:'软件版本'})}, {field:"system", title:intlFormat({en:'system',zh:'系统版本'})},
+        {field:"core_v", title:intlFormat({en:'core_v',zh:'内核版本'})}, {field:"hardware", title:intlFormat({en:'hardware',zh:'硬件版本'})},
+        {field:"vendor_info", title:intlFormat({en:'vendor_info',zh:'厂商信息'})}, {field:"typeName", title:intlFormat({en:'typeName',zh:'控制器类型'})}]
 
         this.collpseHandler = this.collpseHandler.bind(this);
         this.tableClick = this.tableClick.bind(this);
@@ -222,7 +230,7 @@ export class Sensor extends Component {
                 <SideBarInfo  mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <span className="icon_chart"></span>设备统计信息
+                            <span className="icon_chart"></span>{intlFormat({en:'asset information',zh:'设备统计信息'})}
                         </div>
                         <div className="panel-body view">
                             <div className="circle1">
@@ -256,4 +264,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Sensor);
+)(injectIntl(Screen));
