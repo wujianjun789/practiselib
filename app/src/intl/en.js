@@ -56,7 +56,8 @@ export default {
         'import.format.error':'Import Excel format is incorrect',        
         'add.Domain':'Please add domain first',
         'password.error':'The password can only be letters or number',
-        'password.not.same':'The two password is not same',       
+        'password.not.same':'The two password is not same', 
+        'no.empty':'Can not be empty',        
 
         //删除弹框
         'delete.user': 'Are you sure to delete the seleted user ?',
