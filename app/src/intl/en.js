@@ -186,6 +186,11 @@ export default {
         'app.device.state':'device state',
         'app.dimming.mode':'device mode',
 
+        'app.charge.state':'charge state',
+        'app.total.charge':'total charge',
+        'app.total.charge.time':'total charge time',
+        'app.last.charge.time':'last charge time',
+
         //media
         'mediaPublish.playList': 'Play List',
         'mediaPublish.manage': 'Publish Manage',

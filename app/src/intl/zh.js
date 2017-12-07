@@ -178,6 +178,11 @@ export default {
         'app.comm.state':'通信状态',
         'app.device.state':'设备状态',
         'app.dimming.mode':'设备模式',
+        
+        'app.charge.state':'充电状态',
+        'app.total.charge':'总充电量',
+        'app.total.charge.time':'总充电时长',
+        'app.last.charge.time':'最后一次充电时间',
 
 
         //多媒体

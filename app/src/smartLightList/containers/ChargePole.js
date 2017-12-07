@@ -3,6 +3,9 @@
  */
 import '../../../public/styles/smartLightManage-list.less';
 import React, { Component } from 'react';
+
+import {injectIntl} from 'react-intl';
+
 import Content from '../../components/Content';
 import Select from '../../components/Select.1';
 import SearchText from '../../components/SearchText';
@@ -10,7 +13,7 @@ import Table from '../../components/Table2';
 import Page from '../../components/Page';
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../api/asset'
-export default class ChargePole extends Component {
+export class ChargePole extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,7 +24,7 @@ export default class ChargePole extends Component {
             },
             search: {
                 value: '',
-                placeholder: '请输入设备名称',
+                placeholder: this.formatIntl('app.input.device.name'),
             },
             sidebarCollapse: false,
             currentDevice: null,
@@ -36,14 +39,16 @@ export default class ChargePole extends Component {
         //! 后端暂时没有充电桩api
         this.model = 'sensor';//暂时使用传感器代替
         this.columns = [
-            { field: 'name', title: '设备名称' },
-            { field: 'onlineStatus', title: '在线状态' },
-            { field: 'chargeStatus', title: '充电状态' },
-            { field: 'chargeSum', title: '总充电量' },
-            { field: 'chargeTime', title: '总充电时长' },
-            { filed: 'lastChargeTime', title: '最后一次充电时间' },
-            { field: 'updateTime', title: '状态更新时间' }
+            { field: 'name', title: this.formatIntl('app.device.name') },
+            { field: 'onlineStatus', title: this.formatIntl('app.online.state') },
+            { field: 'chargeStatus', title: this.formatIntl('app.charge.state') },
+            { field: 'chargeSum', title: this.formatIntl('app.total.charge') },
+            { field: 'chargeTime', title: this.formatIntl('app.total.charge.time') },
+            { filed: 'lastChargeTime', title: this.formatIntl('app.last.charge.time') },
+            { field: 'updateTime', title: this.formatIntl('app.update.time') }
         ]
+
+        this.formatIntl = this.formatIntl.bind(this);
     }
     componentWillMount() {
         this.mounted = true;//实例属性
@@ -52,6 +57,12 @@ export default class ChargePole extends Component {
     componentWillUnMount() {
         this.mounted = false;
     }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
+    }
+
     initData = () => {
         getDomainList(data => {
             console.log(1)
@@ -136,7 +147,7 @@ export default class ChargePole extends Component {
                 </div>
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
-                        <span className="icon_select"></span>选中设备
+                        <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
                             </div>
                     <div className="panel-body">
                         <span title={currentDevice === null ? '' : currentDevice.name}>{currentDevice === null ? '' : currentDevice.name}</span>
@@ -146,3 +157,5 @@ export default class ChargePole extends Component {
         </Content>
     }
 }
+
+export default injectIntl(ChargePole);
