@@ -3,6 +3,9 @@
  */
 import '../../../public/styles/smartLightManage-list.less';
 import React, { Component } from 'react';
+
+import {injectIntl} from 'react-intl';
+
 import Content from '../../components/Content';
 import Select from '../../components/Select.1'
 import SearchText from '../../components/SearchText'
@@ -12,13 +15,13 @@ import Page from '../../components/Page'
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, getModelSummariesByModelID } from '../../api/asset'
 import { getMomentDate, momentDateFormat } from '../../util/time'
-export default class Sensor extends Component {
+export class Sensor extends Component {
     constructor(props) {
         super(props);
         this.state = {
             search: {
                 value: '',
-                placeholder: '请输入设备名称'
+                placeholder: this.formatIntl('app.input.device.name')
             },
             page: {
                 total: 0,
@@ -38,8 +41,8 @@ export default class Sensor extends Component {
         this.model = 'sensor'
         this.sensorProps = null;
         this.columns = [
-            { accessor: 'name', title: '设备名称' },
-            { accessor(data) { return data.extend.type }, title: '类别' },
+            { accessor: 'name', title: this.formatIntl('app.device.name') },
+            { accessor(data) { return data.extend.type }, title: this.formatIntl('app.type') },
             {
                 accessor: (data) => {
                     // console.log(this)
@@ -47,15 +50,17 @@ export default class Sensor extends Component {
                     if (this.sensorProps) {
                         return this.sensorProps[data.extend.type].unit;
                     }
-                }, title: '单位'
+                }, title: this.formatIntl('app.unit')
             },
-            { accessor: 'value', title: '当前参数' },
+            { accessor: 'value', title: this.formatIntl('app.param') },
             {
                 accessor(data) {
                     return data.updated ? momentDateFormat(getMomentDate(data.updated, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm') : '';
-                }, title: '更新时间'
+                }, title: this.formatIntl('app.update.time')
             }
         ]
+
+        this.formatIntl = this.formatIntl.bind(this);
 
     }
     componentWillMount() {
@@ -70,6 +75,12 @@ export default class Sensor extends Component {
     componentWillUnmount() {
         this.mounted = false
     }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
+    }
+
     initData = () => {
         getDomainList(data => {
             this.mounted && this.updateDomainData(data);
@@ -170,7 +181,7 @@ export default class Sensor extends Component {
                 </div>
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
-                        <span className="icon_select"></span>选中设备
+                        <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
                     </div>
                     <div className="panel-body">
                         <span title={currentDevice === null ? '' : currentDevice.name}>{currentDevice === null ? '' : currentDevice.name}</span>
@@ -180,3 +191,5 @@ export default class Sensor extends Component {
         </Content>
     }
 }
+
+export default injectIntl(Sensor);

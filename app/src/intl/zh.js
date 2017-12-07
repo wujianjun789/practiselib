@@ -22,6 +22,10 @@ export default {
         'sysOperation.selected.device':'选中设备',
         'app.device.operation':'设备操作',
 
+        'app.type':'类别',
+        'app.unit':'单位',
+        'app.param':'当前参数',
+
         //按钮
         ' ':' ',
         'button.add': '添加',
