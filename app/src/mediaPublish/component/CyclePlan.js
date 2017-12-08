@@ -186,7 +186,7 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-name">
                     <label className="control-label"
                            htmlFor={property.cycleName.key}>{property.cycleName.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-1">
                         <input type="text" className="form-control" placeholder={property.cycleName.placeholder} value={property.cycleName.value} onChange={event => this.onChange("cycleName", event)} />
                         <span className={prompt.cycleName ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
@@ -196,7 +196,7 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-interval">
                     <label className="control-label"
                            htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-2">
                         <input type="text" className="form-control" placeholder={property.cycleInterval.placeholder} value={property.cycleInterval.value} onChange={event => this.onChange("cycleInterval", event)} />
                         <span className={prompt.cycleInterval ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
@@ -204,7 +204,7 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-pause">
                     <label className="control-label"
                            htmlFor={property.cyclePause.key}>{property.cyclePause.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-2">
                         <select className={"form-control"} value={property.cyclePause.name} onChange={event => this.onChange("cyclePause", event)}>
                             {
                                 property.cyclePause.list.map((option, index) => {
@@ -219,19 +219,19 @@ class CyclePlan extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <div className="form-group cycle-startDate">
+                <div className="form-group margin-right-1 cycle-startDate">
                     <label className="control-label"
                            htmlFor={property.cycleStartDate.key}>{property.cycleStartDate.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-3">
                         <DatePicker id="cycleStartDate" showTime format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: "100px" }}
                                     defaultValue={property.cycleStartDate.value} value={property.cycleStartDate.value} onChange={value => this.dateChange('cycleStartDate', value)} />
                         <div className={prompt.cycleStartDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
                     </div>
                 </div>
-                <div className="form-group cycle-endDate">
+                <div className="form-group margin-right-1 cycle-endDate">
                     <label className="control-label"
                            htmlFor={property.cycleEndDate.key}>{property.cycleEndDate.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-3">
                         <DatePicker id="cycleEndDate" showTime format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: "100px" }}
                                     defaultValue={property.cycleEndDate.value} value={property.cycleEndDate.value} onChange={value => this.dateChange('cycleEndDate', value)} />
                         <div className={prompt.cycleEndDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
@@ -240,25 +240,25 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-date">
                     <label className="control-label"
                            htmlFor={property.cycleDate.key}>{property.cycleDate.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-3">
                         <Checkbox checked={property.cycleDate.appoint} onChange={event => this.onChange("cycleDate", event)} />
                     </div>
                 </div>
             </div>
             <div className="row">
-                <div className="form-group cycle-startTime">
+                <div className="form-group margin-right-1 cycle-startTime">
                     <label className="control-label"
                            htmlFor={property.cycleStartTime.key}>{property.cycleStartTime.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-3">
                         <TimePicker size="large" placeholder={property.cycleStartTime.placeholder}  style={{ width: "100px" }} onChange={value => this.dateChange("cycleStartTime", value)}
                                     defaultValue={property.cycleStartTime.value} value={property.cycleStartTime.value} />
                         <div className={prompt.cycleStartTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
                     </div>
                 </div>
-                <div className="form-group cycle-endTime">
+                <div className="form-group margin-right-1 cycle-endTime">
                     <label className="control-label"
                            htmlFor={property.cycleEndTime.key}>{property.cycleEndTime.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-3">
                         <TimePicker  size="large" placeholder={property.cycleEndTime.placeholder} style={{ width: "100px" }} onChange={value => this.dateChange("cycleEndTime", value)}
                                      defaultValue={property.cycleEndTime.value}value={property.cycleEndTime.value} />
                         <div className={prompt.cycleEndTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
@@ -267,7 +267,7 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-time">
                     <label className="control-label"
                            htmlFor={property.cycleTime.key}>{property.cycleTime.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-3">
                         <Checkbox checked={property.cycleTime.appoint} onChange={event => this.onChange("cycleTime", event)} />
                     </div>
                 </div>
@@ -276,15 +276,16 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-week">
                     <label className="control-label"
                            htmlFor={property.cycleWeek.key}>{property.cycleWeek.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-1 input-container-week">
                         <CheckboxGroup id="cycleWeek" options={property.cycleWeek.list} defaultValue={property.cycleWeek.value} value={property.cycleWeek.value} onChange={value => this.dateChange('cycleWeek', value)} />
                         <span className={"fixpos " + (prompt.cycleWeek ? "prompt " : "prompt hidden")}><FormattedMessage id='mediaPublish.selectWeekday'/></span>
                     </div>
                 </div>
             </div>
+            <div className="row line"/>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.cyclePlanClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.cyclePlanClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.cyclePlanClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }

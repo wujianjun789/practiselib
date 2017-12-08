@@ -301,7 +301,7 @@ class TimingPlan extends PureComponent{
                 <div className="form-group timing-name">
                     <label className="control-label"
                            htmlFor={property.timingName.key}>{property.timingName.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-1">
                         <input type="text" className="form-control" placeholder={property.timingName.placeholder} value={property.timingName.value} onChange={event => this.onChange("timingName", event)} />
                         <span className={prompt.timingName ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
@@ -311,7 +311,7 @@ class TimingPlan extends PureComponent{
                 <div className="form-group timing-list">
                     <label className="control-label"
                            htmlFor={property.timingList.key}>{property.timingList.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-1">
                         <div className="edit-head">
                             <select value={property.timingList.sort.name} onChange={event => this.onChange("timingList-sort", event)}>
                                 {
@@ -347,7 +347,7 @@ class TimingPlan extends PureComponent{
                 <div className="form-group">
                     <label className="control-label"
                            htmlFor={property.timingPlayMode.key}>{property.timingPlayMode.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-2">
                         <select className={"form-control"} value={property.timingPlayMode.name} onChange={event => this.onChange("timingPlayMode", event)}>
                             {
                                 property.timingPlayMode.list.map((option, index) => {
@@ -362,7 +362,7 @@ class TimingPlan extends PureComponent{
                 </div>
                 <div className={"form-group  pull-right" + (property.timingPlayModeCount.active ? '' : 'hidden')}>
                     <label className="control-label">{property.timingPlayModeCount.title}</label>
-                    <div className={"input-container "}>
+                    <div className={"input-container input-w-2"}>
                         <input type="text" className={"form-control "} htmlFor={property.timingPlayModeCount.key} placeholder={property.timingPlayModeCount.placeholder} maxLength="8"
                                value={property.timingPlayMode.index==0?property.timingPlayModeCount.value:property.timingPlayModeCount.value2} onChange={event => this.onChange("timingPlayModeCount", event)} />
                         <span className={prompt.timingPlayModeCount ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
@@ -373,7 +373,7 @@ class TimingPlan extends PureComponent{
                 <div className="form-group timing-pause">
                     <label className="control-label"
                            htmlFor={property.timingPause.key}>{property.timingPause.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-2">
                         <select className={"form-control"} value={property.timingPause.name} onChange={event => this.onChange("timingPause", event)}>
                             {
                                 property.timingPause.list.map((option, index) => {
@@ -387,9 +387,10 @@ class TimingPlan extends PureComponent{
                     </div>
                 </div>
             </div>
+            <div className="row line"/>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.timingPlanClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.timingPlanClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.timingPlanClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
