@@ -20,6 +20,7 @@ class TimingPlanPopup extends PureComponent {
             startTime: startTime,
             startDate: startDate,
             endDate: endDate,
+            appoint: false,
             week: {
                 list: [
                     {label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1},
@@ -42,6 +43,7 @@ class TimingPlanPopup extends PureComponent {
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.dateChange = this.dateChange.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     componentWillMount() {
@@ -70,6 +72,12 @@ class TimingPlanPopup extends PureComponent {
         this.props.onCancel();
     }
 
+    onChange(id, event){
+        if(id == "appoint"){
+            this.setState({[id]:!this.state[id]})
+        }
+    }
+
     dateChange(id, value) {
         if (id == "week") {
             this.setState({[id]: Object.assign({}, this.state.week, {value: value}),
@@ -80,7 +88,7 @@ class TimingPlanPopup extends PureComponent {
     }
 
     render() {
-        let {startTime, startDate, endDate, week, prompt} = this.state;
+        let {startTime, startDate, endDate, appoint, week, prompt} = this.state;
 
         let valid = false;
             valid = prompt.startTime || prompt.startDate || prompt.endDate || prompt.week;
@@ -110,6 +118,10 @@ class TimingPlanPopup extends PureComponent {
                         <DatePicker id="endDate" showTime format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: "100px" }}
                                     defaultValue={endDate} onChange={value=>this.dateChange('endDate', value)}/>
                         <span className={prompt.endDate?"prompt ":"prompt hidden"}>{"请输入日期"}</span>
+                    </div>
+                    <label className="control-label">指定日期</label>
+                    <div className="input-container">
+                        <Checkbox checked={appoint} onChange={event => this.onChange("appoint", event)} />
                     </div>
                 </div>
                 <div className="form-group row week">

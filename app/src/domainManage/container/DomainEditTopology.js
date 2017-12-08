@@ -18,6 +18,9 @@ import {getDomainList,getDomainListByParentId, addDomain, updateDomainById, dele
 import Immutable from 'immutable';
 import {getStringlistByLanguage, validEnglishStr, validChinaStr} from '../../util/string'
 import {getLanguage, getObjectByKey, getIndexByKey, getElementOffwidth} from '../../util/index'
+import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../../util/index';
+
 class DomainEditTopology extends Component{
     constructor(props){
         super(props)
@@ -39,7 +42,8 @@ class DomainEditTopology extends Component{
                 parentId:null,
                 data: []
             },
-            search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
+            // search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
+            search: Immutable.fromJS({placeholder:intlFormat({en:'please input the name',zh:'输入域名称'}), value: ''}),
             domainList:[]
         }
 
@@ -369,7 +373,7 @@ class DomainEditTopology extends Component{
                 <div className="heading">
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
-                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
+                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>{this.props.intl.formatMessage({id:'button.add'})}</button>
                 </div>
                 <div className={"topology-mode "+language}>
                     {
@@ -386,12 +390,12 @@ class DomainEditTopology extends Component{
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <span className="icon_info"></span>域属性
+                            <span className="icon_info"></span>{this.props.intl.formatMessage({id:'domain.property'})}
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>
-                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>编辑</button>
-                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>删除</button>
+                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.edit'})}</button>
+                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.delete'})}</button>
                         </div>
                     </div>
                 </SideBarInfo>
@@ -417,4 +421,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DomainEditTopology);
+)(injectIntl(DomainEditTopology));

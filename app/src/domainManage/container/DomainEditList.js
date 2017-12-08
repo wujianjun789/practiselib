@@ -21,6 +21,8 @@ import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, upd
 
 import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
+import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../../util/index';
 
 export class DomainEditList extends Component {
     constructor(props) {
@@ -46,14 +48,14 @@ export class DomainEditList extends Component {
                 total: 0
             }),
 
-            search: Immutable.fromJS({placeholder: '输入域名称', value: ''}),
+            search: Immutable.fromJS({placeholder:intlFormat({en:'please input the name',zh:'输入域名称'}), value: ''}),
             data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
                 {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
             sidebarInfoStyle:{height:"100%"}
         }
 
-        this.columns = [{id: 1, field: "name", title: "域名称"}, {id:2, field: "parentName", title: "上级域"}]
+        this.columns = [{id: 1, field: "name", title:intlFormat({en:'domain name',zh:'域名称'})}, {id:2, field:"parentName", title: intlFormat({en:'parentName',zh:'上级域'})}]
         this.domainList = [];
 
         this.initTreeData = this.initTreeData.bind(this);
@@ -112,7 +114,7 @@ export class DomainEditList extends Component {
     }
 
     requestDomain(){
-        getDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:"无"});}});
+        getDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:intlFormat({en:'null',zh:'无'})});}});
     }
 
     requestSearch(){
@@ -132,7 +134,7 @@ export class DomainEditList extends Component {
 
     initDomainList(data){
         let list = data.map(domain=>{
-            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:"无"})
+            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'})})
         })
 
 
@@ -288,7 +290,7 @@ export class DomainEditList extends Component {
                 <div className="heading">
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
-                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>添加</button>
+                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>{this.props.intl.formatMessage({id:'button.add'})}</button>
                 </div>
                 <div ref="domainEditList" className="list-mode">
                     <div className="table-container">
@@ -301,12 +303,12 @@ export class DomainEditList extends Component {
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <span className="icon_info"></span>域属性
+                            <span className="icon_info"></span>{this.props.intl.formatMessage({id:'domain.property'})}
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>
-                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>编辑</button>
-                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>删除</button>
+                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.edit'})}</button>
+                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.delete'})}</button>
                         </div>
                     </div>
                 </SideBarInfo>
@@ -335,4 +337,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DomainEditList);
+)(injectIntl(DomainEditList));

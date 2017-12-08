@@ -4,7 +4,7 @@
 export const TreeData=[
     {
         "id": "domainEdit",
-        "name":"域编辑",
+        "name":"domain.edit",
         "toggled": false,
         "active": true,
         "link": "/domainManage/domainEdit/list",
@@ -12,14 +12,14 @@ export const TreeData=[
         "children": [
             {
                 "id": 'list',
-                "name":"列表模式",
+                "name":"domain.list",
                 "class":"icon_domain_list",
                 "active":false,
                 "link":"/domainManage/domainEdit/list"
             },
             {
                 "id": 'topology',
-                "name":"拓扑图",
+                "name":"domain.topology",
                 "class":"icon_branch",
                 "active":false,
                 "link":"/domainManage/domainEdit/topology"
@@ -28,7 +28,7 @@ export const TreeData=[
     },
     {
         "id": "mapPreview",
-        "name":"地图预览",
+        "name":"domain.map",
         "toggled": false,
         "active": true,
         "link": "/domainManage/mapPreview",

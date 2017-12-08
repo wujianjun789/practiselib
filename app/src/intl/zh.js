@@ -85,6 +85,13 @@ export default {
         'asset.property': '设备属性',
         'asset.type':'设备类别',
         'asset.param':'默认参数',
+        
+        //域管理
+        'domain.edit': '域编辑',
+        'domain.map': '地图预览',
+        'domain.list': '列表模式',
+        'domain.topology': '拓扑图',
+        'domain.property': '域属性',
 
         //权限管理
         'permission.username':'用户名称',

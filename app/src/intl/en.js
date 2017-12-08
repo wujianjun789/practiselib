@@ -86,6 +86,13 @@ export default {
         'asset.type':'asset types',
         'asset.param':'default params',
 
+        //域管理
+        'domain.edit': 'domain edit',
+        'domain.map': 'domain map',
+        'domain.list': 'domain list',
+        'domain.topology': 'topology',
+        'domain.property': 'domain property',
+
         //权限管理
         'permission.username': 'UserName',
         'permission.lastLoginDate': 'Last Login Date',
