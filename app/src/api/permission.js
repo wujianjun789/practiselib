@@ -2,7 +2,7 @@ import {httpRequest,HOST_IP,getHttpHeader} from '../util/network'
 
 export function requestUserData(offset=-1,limit,cb,username){
     let headers = getHttpHeader();
-    let obj = {"offset":offset,"limit":limit}
+    let obj = {"offset":offset,"limit":limit,include:["role"]}
     if(username){
         obj = Object.assign({"where":{username:{like:username}}}, obj);
     }
@@ -93,5 +93,15 @@ export function updateUserDomain(userId,domainIds,cb){
         body:JSON.stringify(domainIds)
     }, response=>{
         cb && cb()
+    })
+}
+
+export function requestRoles(cb){
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/Roles',{
+        headers: headers,
+        method: 'GET',
+    }, response=>{
+        cb && cb(response)
     })
 }

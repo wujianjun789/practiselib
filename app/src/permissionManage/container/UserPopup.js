@@ -8,8 +8,9 @@ import InputCheck from '../../components/InputCheck';
 import Select from '../../components/Select';
 import Immutable from 'immutable';
 import {NameValid,PassWordValid} from '../../util/index';
-import {IsExitInArray} from '../../util/algorithm';
+import {IsExitInArray,getObjectByKeyObj,getIndexByKey2} from '../../util/algorithm';
 import {FormattedMessage} from 'react-intl';
+import {requestRoles} from '../../api/permission';
 
 export default class UserPopup extends Component{
     constructor(props){
@@ -22,7 +23,7 @@ export default class UserPopup extends Component{
             firstName:Immutable.fromJS({value:isEdit?data.firstName:'',checked:'',reminder:''}),
             password:Immutable.fromJS({value:'',checked:'',reminder:''}),
             rePassword:Immutable.fromJS({value:'',checked:'',reminder:''}),
-            role:Immutable.fromJS({list:[{id:4, value:this.props.intl.formatMessage({id:'permission.guest'})},{id:3, value:this.props.intl.formatMessage({id:'permission.deviceOperator'})},{id:2, value:this.props.intl.formatMessage({id:'permission.deviceAdmin'})},{id:1, value:this.props.intl.formatMessage({id:'permission.admin'})}], index:isEdit?data.roleId.index:0, value:isEdit?data.roleId.value:this.props.intl.formatMessage({id:'permission.guest'})}),
+            role:Immutable.fromJS({list:[], index:0, value:'',placeholder:'无'}),
         }
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -30,6 +31,20 @@ export default class UserPopup extends Component{
         this.checkOut = this.checkOut.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onFocus = this.onFocus.bind(this);
+    }
+
+    componentWillMount(){
+        requestRoles((data)=>{
+            let list = data.map(item=>{
+                return {
+                    id:item.id,
+                    value:this.props.intl.formatMessage({id:"permission."+item.name})
+                }
+            })
+            let curRole = this.props.isEdit?getObjectByKeyObj(list,'id',this.props.data.roleId):list[0];
+            let curIndex = this.props.isEdit?getIndexByKey2(list,'id',this.props.data.roleId):0;
+            this.setState({role:this.state.role.update('list',v=>Immutable.fromJS(list)).update('index',v=>curIndex).update('value',v=>curRole.value)})
+        })
     }
 
     onCancel(){

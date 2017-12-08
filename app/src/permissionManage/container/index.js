@@ -37,7 +37,7 @@ export class PermissionManage extends Component{
                 modules:[]
             }
         }
-        this.columns = [{field:"role", title:" "}, {field:"username", title:"permission.username"},
+        this.columns = [{field:"roleLabel", title:" "}, {field:"username", title:"permission.username"},
             {field:"lastLoginDate", title:"permission.lastLoginDate"}
         ];
         this.onClick = this.onClick.bind(this);
@@ -103,25 +103,27 @@ export class PermissionManage extends Component{
 
     dataHandle(datas){
         let result = datas.map(item=>{
-            let roleName = ''
-            switch(item.roleId){
-                case 1:
-                    roleName = {title:'permission.admin',cls:"sysManage"};
-                    break;
-                case 2:
-                    roleName = {title:'permission.deviceAdmin',cls:"eqpManage"};
-                    break;
-                case 3:
-                    roleName = {title:'permission.deviceOperator',cls:"eqpOperate"};
-                    break;
-                case 4:
-                    roleName = {title:'permission.guest',cls:"guest"};
-                    break;
-                default:
-                    roleName = {title:'permission.guest',cls:"guest"};
+            if(item.role){
+                let roleName = ''
+                switch(item.role.name){
+                    case 'admin':
+                        roleName = {title:'permission.admin',cls:"sysManage"};
+                        break;
+                    case 'deviceAdmin':
+                        roleName = {title:'permission.deviceAdmin',cls:"eqpManage"};
+                        break;
+                    case 'deviceOperator':
+                        roleName = {title:'permission.deviceOperator',cls:"eqpOperate"};
+                        break;
+                    case 'guest':
+                        roleName = {title:'permission.guest',cls:"guest"};
+                        break;
+                    default:
+                        roleName = {title:'permission.guest',cls:"guest"};
+                }
+                item.roleLabel = <div className='role-icon'><span className={`icon btn-${roleName.cls}` }>{<FormattedMessage id={roleName.title}/>}</span></div>;
+                item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             }
-            item.role = <div className='role-icon'><span className={`icon btn-${roleName.cls}` }>{<FormattedMessage id={roleName.title}/>}</span></div>;
-            item.lastLoginDate = item.lastLoginDate?momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),'YYYY-MM-DD HH:mm:ss'):'';
             return item;
         })
         this.setState({datas:result})
@@ -129,22 +131,6 @@ export class PermissionManage extends Component{
 
     rowEdit(id){
         let popupInfo = getObjectByKeyObj(this.state.datas,'id',id);
-        switch(popupInfo.roleId){
-            case 1:
-                popupInfo.roleId = {index:3, value:this.props.intl.formatMessage({id:'permission.admin'})};
-                break;
-            case 2:
-                popupInfo.roleId = {index:2, value:this.props.intl.formatMessage({id:'permission.deviceOperator'})};
-                break;
-            case 3:
-                popupInfo.roleId = {index:1, value:this.props.intl.formatMessage({id:'permission.deviceOperator'})};            
-                break;
-            case 4:
-                popupInfo.roleId = {index:0, value:this.props.intl.formatMessage({id:'permission.guest'})};
-                break;
-            default:
-                popupInfo.roleId = {index:0, value:this.props.intl.formatMessage({id:'permission.guest'})};
-        }
         this.setState({popupInfo:Object.assign(this.state.popupInfo,popupInfo)},()=>this.props.action.overlayerShow(<UserPopup className='user-edit-popup' intl={this.props.intl} title={<FormattedMessage id='permission.userData'/>} data={this.state.popupInfo} isEdit onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>))
     }
 
