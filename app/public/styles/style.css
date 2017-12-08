@@ -1101,7 +1101,7 @@ width:24px;
 }
 
 .user-center > ul.user-list > li {
-    width: 120px;
+    width: 140px;
     height: 40px;
     line-height: 40px;
     border-bottom: 1px solid #f8f8f8;
@@ -1373,7 +1373,7 @@ width:24px;
 }
 
 .alter-pw-popup .modal-body {
-    padding: 35px 45px 0 0;
+    padding: 35px 45px 0 30px;
     font-size: 14px;
 }
 
@@ -1396,7 +1396,7 @@ width:24px;
     margin-bottom: 0;
 }
 .alter-pw-popup .modal-body .inputCheck .has-feedback{
-    width: 315px;
+    width: 270px;
 }
 
 .alter-pw-popup .modal-body .inputCheck .form-control {

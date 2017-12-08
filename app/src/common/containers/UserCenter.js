@@ -9,6 +9,8 @@ import {overlayerShow, overlayerHide} from '../actions/overlayer';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import AlterPwPopup from '../../components/AlterPwPopup';
 import {modifyPassword, confirmExit} from '../actions/userCenter';
+import {injectIntl} from 'react-intl';
+
 /**
  * @param {String} className  optional
  */
@@ -17,8 +19,8 @@ export class UserCenter extends Component{
         super(props);
         this.state = {
             list: [
-                {name: '修改密码', key: 'alter', path:'icon_password'},
-                {name: '退出管理系统', key: 'exit', path:'icon_exit'}
+                {name: this.props.intl.formatMessage({id:'update.password'}), key: 'alter', path:'icon_password'},
+                {name: this.props.intl.formatMessage({id:'exit'}), key: 'exit', path:'icon_exit'}
             ]
         }
         this.itemClick = this.itemClick.bind(this);
@@ -43,7 +45,7 @@ export class UserCenter extends Component{
         if(key == 'alter') {
             overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} modifyPassword={ this.props.actions.modifyPassword}/>);
         } else {
-            overlayerShow(<ConfirmPopup tips="是否退出？" iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
+            overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'sure.exit'})} iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
     }
 
@@ -78,4 +80,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(UserCenter);
+export default connect(null, mapDispatchToProps)(injectIntl(UserCenter));
