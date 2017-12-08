@@ -358,7 +358,7 @@ export default class TimingPlan extends PureComponent{
                         {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
                     </div>
                 </div>
-                <div className={"form-group " + (property.timingPlayModeCount.active ? '' : 'hidden')}>
+                <div className={"form-group  pull-right" + (property.timingPlayModeCount.active ? '' : 'hidden')}>
                     <label className="control-label">{property.timingPlayModeCount.title}</label>
                     <div className={"input-container "}>
                         <input type="text" className={"form-control "} htmlFor={property.timingPlayModeCount.key} placeholder={property.timingPlayModeCount.placeholder} maxLength="8"
