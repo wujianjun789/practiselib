@@ -193,10 +193,10 @@ class CyclePlan extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <div className="form-group cycle-interval">
+                <div className="form-group margin-right-1 cycle-interval">
                     <label className="control-label"
                            htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
-                    <div className="input-container input-w-2">
+                    <div className="input-container input-w-3">
                         <input type="text" className="form-control" placeholder={property.cycleInterval.placeholder} value={property.cycleInterval.value} onChange={event => this.onChange("cycleInterval", event)} />
                         <span className={prompt.cycleInterval ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
@@ -204,7 +204,7 @@ class CyclePlan extends PureComponent{
                 <div className="form-group cycle-pause">
                     <label className="control-label"
                            htmlFor={property.cyclePause.key}>{property.cyclePause.title}</label>
-                    <div className="input-container input-w-2">
+                    <div className="input-container input-w-3">
                         <select className={"form-control"} value={property.cyclePause.name} onChange={event => this.onChange("cyclePause", event)}>
                             {
                                 property.cyclePause.list.map((option, index) => {
