@@ -1031,8 +1031,8 @@ export class PlayerArea extends Component {
                                     onChange={value => this.onChange("assetSearch", value)}
                                     submit={this.searchSubmit}></SearchText>
                                 <div className={"btn-group " + (assetList.get('isEdit') ? '' : 'hidden')}>
-                                    <button className="btn btn-primary add" onClick={this.showModal}><FormattedMessage id='button.import'/></button>
                                     <button className="btn btn-gray" onClick={() => this.assetList('edit')}><FormattedMessage id='button.edit'/></button>
+                                    <button className="btn btn-primary add" onClick={this.showModal}><FormattedMessage id='button.import'/></button>
                                 </div>
                                 <div className={"btn-group " + (assetList.get('isEdit') ? 'hidden' : '')}>
                                     <button className="btn btn-gray" onClick={() => this.assetList('remove')}><FormattedMessage id='button.delete'/>
