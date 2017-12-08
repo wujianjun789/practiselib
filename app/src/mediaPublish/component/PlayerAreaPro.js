@@ -154,7 +154,7 @@ class PlayerAreaPro extends PureComponent{
                     <span className={prompt.width ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
-            <div className="form-group  height">
+            <div className="form-group  pull-right height">
                 <label className="col-sm-3 control-label"
                        htmlFor={property.height.key}>{property.height.title}</label>
                 <div className="input-container">
@@ -176,7 +176,7 @@ class PlayerAreaPro extends PureComponent{
                     <span className={prompt.axisX_a ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
-            <div className="form-group  axisY_a">
+            <div className="form-group  pull-right axisY_a">
                 <label className="col-sm-3 control-label"
                        htmlFor={property.axisY_a.key}>{property.axisY_a.title}</label>
                 <div className="input-container">

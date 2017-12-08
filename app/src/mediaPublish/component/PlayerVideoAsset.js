@@ -105,7 +105,7 @@ class PlayerPicAsset extends PureComponent{
                     <span className={prompt.playTimes ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="form-group pull-right">
                 <label className="control-label">{property.scaling.title}</label>
                 <div className="input-container">
                     <select className="form-control" value={property.scaling.name}
@@ -136,7 +136,7 @@ class PlayerPicAsset extends PureComponent{
                 </div>
             </div>
             {
-                property.playType.name == "片段播放" && (<div className="form-group clipsRage">
+                property.playType.name == "片段播放" && (<div className="form-group pull-right clipsRage">
                     <label className="control-label">{property.clipsRage.title}</label>
                     <div className="input-container">
                         <TimePicker size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />

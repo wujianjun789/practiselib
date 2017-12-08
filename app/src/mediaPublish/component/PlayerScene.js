@@ -194,7 +194,7 @@ class PlayerScene extends PureComponent{
                         {/*<span className={prompt.playMode?"prompt ": "prompt hidden"}>{"请输入正确参数"}</span>*/}
                     </div>
                 </div>
-                <div className={"form-group " + (property.playModeCount.active ? '' : 'hidden')}>
+                <div className={"form-group pull-right " + (property.playModeCount.active ? '' : 'hidden')}>
                     <label className="control-label">{property.playModeCount.title}</label>
                     <div className={"input-container "}>
                         <input type="text" className={"form-control "} htmlFor={property.playModeCount.key} placeholder={property.playModeCount.placeholder} maxLength="8"
