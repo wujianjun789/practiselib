@@ -202,7 +202,7 @@ class PlayerPlan extends PureComponent{
             </div>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => this.planClick('apply')}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={()=>this.planClick('reset')}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={()=>this.planClick('reset')}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
