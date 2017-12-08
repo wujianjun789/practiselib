@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 
+// import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../util/index';
+
 let round = Math.PI*2*160;
 let normalRound = round+round*3/4-round*14/360
 export default class Pie extends PureComponent {
@@ -96,13 +99,13 @@ export default class Pie extends PureComponent {
         let label;
         switch(data.type){
             case 'NOISE':
-                label = '设备总计';
+                label = intlFormat({en:'equipment total',zh:'设备总计'});
 
             baseCircle.attr('stroke','#00c6fe')
                 .attr("stroke-opacity", 0.25);
                 break;
             case 'TEMPS':
-                label = '完好率';
+                label = intlFormat({en:'availability',zh:'完好率'});
                 break;
             default:
                 label='';
