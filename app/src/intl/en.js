@@ -310,6 +310,7 @@ export default {
         'mediaPublish.secondHandColor':'secondHand color',
         'mediaPublish.timingPlay':'timing play',
         'mediaPublish.pauseSign':'pause sign',
+        'mediaPublish.addOrModifyPlan':'Add or modify timing play',
 
         //last
         'app.link.index': 'home',

@@ -14,7 +14,7 @@ import { NameValid, numbersValid } from '../../util/index';
 
 import {getPlayerById} from '../../api/mediaPublish';
 
-import { FormattedMessage, injectIntl, FormattedDate } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import moment from 'moment';
 import lodash from 'lodash';
@@ -204,7 +204,7 @@ class TimingPlan extends PureComponent{
 
     updateTimingPlanPopup(data) {
         const { actions } = this.props;
-        actions.overlayerShow(<TimingPlanPopup title="添加/修改插播计划" data={data}
+        actions.overlayerShow(<TimingPlanPopup title={this.props.intl.formatMessage({id:'mediaPublish.addOrModifyPlan'})} data={data}
                                    onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
         }} />)
     }
