@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Panel from './../../components/Panel';
 import PanelFooter from './../../components/PanelFooter';
 
-import {DatePicker, Checkbox} from 'antd';
+import {DatePicker, Checkbox, TimePicker} from 'antd';
 const CheckboxGroup = Checkbox.Group;
 import NotifyPopup from '../../common/containers/NotifyPopup'
 
@@ -89,32 +89,32 @@ export default class TimingPlanPopup extends PureComponent {
 
         return <div className="timingPlan-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel}>
-                <div className="form-group row">
-                    <label className="col-sm-2 control-label" htmlFor="startTime">开始时间：</label>
-                    <div className="col-sm-4">
-                        <DatePicker id="startTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间"
-                                    defaultValue={startTime} onChange={value=>this.dateChange('startTime', value)}/>
+                <div className="form-group row startTime">
+                    <label className="col-sm-2 control-label" htmlFor="startTime">开始时间</label>
+                    <div className="input-container">
+                        <TimePicker size="large" placeholder="点击选择开始时间"  style={{ width: "100px" }} onChange={value => this.dateChange("startTime", value)}
+                                    defaultValue={startTime} value={startTime} />
                         <span className={prompt.startTime?"prompt ":"prompt hidden"}>{"请输入日期"}</span>
                     </div>
                 </div>
-                <div className="form-group row">
-                    <label className="col-sm-2 control-label" htmlFor="startDate">开始日期：</label>
-                    <div className="col-sm-4">
-                        <DatePicker id="startDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期"
+                <div className="form-group row startEndDate">
+                    <label className="col-sm-2 control-label" htmlFor="startDate">开始日期</label>
+                    <div className="input-container">
+                        <DatePicker id="startDate" showTime format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: "100px" }}
                                     defaultValue={startDate} onChange={value=>this.dateChange('startDate', value)}/>
                         <span className={prompt.startDate?"prompt ":"prompt hidden"}>{"请输入日期"}</span>
                     </div>
-                    <label className="col-sm-2 control-label endDate" htmlFor="endDate">结束日期：</label>
-                    <div className="col-sm-4">
-                        <DatePicker id="endDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期"
+                    <label className="col-sm-2 control-label endDate" htmlFor="endDate">结束日期</label>
+                    <div className="input-container">
+                        <DatePicker id="endDate" showTime format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: "100px" }}
                                     defaultValue={endDate} onChange={value=>this.dateChange('endDate', value)}/>
                         <span className={prompt.endDate?"prompt ":"prompt hidden"}>{"请输入日期"}</span>
                     </div>
                 </div>
 
-                <div className="form-group row">
+                <div className="form-group row week">
                     <label className="col-sm-2 control-label" htmlFor="axisX">工作日：</label>
-                    <div className="col-sm-10">
+                    <div className="input-container">
                         <CheckboxGroup id="startTime" options={week.list} defaultValue={week.value}
                                        onChange={value=>this.dateChange('week', value)}/>
                         <span className={prompt.week?"prompt ":"prompt hidden"}>{"请选择工作日"}</span>

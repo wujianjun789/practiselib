@@ -1356,21 +1356,68 @@
   }
 
   .timingPlan-popup{
-    width: 530px;
+    width: 680px;
     .modal-body{
       .form-group{
         >label{
+          display: inline-block;
           width: 80px;
-          padding-right: 0;
-          margin-top: 4px;
+
+          padding: 0;
+          margin-right: 20px;
 
           text-align: right;
         }
 
-        .col-sm-4,.col-sm-10{
+        .input-container{
+          display: inline-block;
+
+          width: 100px;
           padding-left: 0;
         }
+        &.startTime{
+          label{
+            height: 40px;
+            line-height: 40px;
+          }
+          .input-container{
+            margin-right: 40px;
+            .ant-time-picker{
+              .ant-time-picker-icon{
+                display: none;
+              }
+              input{
+                height: 40px;
+              }
+            }
+          }
+        }
+        &.startEndDate{
+          label{
+            height: 40px;
+            line-height: 40px;
+            float: none;
+          }
+          .input-container{
+            margin-right: 40px;
+            .ant-calendar-picker{
+              .ant-calendar-picker-icon, .ant-calendar-picker-clear{
+                display: none;
+              }
 
+              input{
+                height: 40px;
+              }
+            }
+          }
+        }
+        &.week{
+          .input-container{
+            position: relative;
+
+            width: 540px;
+          }
+        }
         .prompt{
           position: absolute;
           top: 20px;
