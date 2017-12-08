@@ -126,7 +126,7 @@ class TimingPlanPopup extends PureComponent {
                 </div>
                 <div className="form-group row week">
                     <label className="col-sm-2 control-label" htmlFor="axisX"><FormattedMessage id='mediaPublish.weekday'/></label>
-                    <div className="input-container">
+                    <div className="input-container input-container-week">
                         <CheckboxGroup id="startTime" options={week.list} defaultValue={week.value}
                                        onChange={value=>this.dateChange('week', value)}/>
                         <span className={prompt.week?"prompt ":"prompt hidden"}><FormattedMessage id='mediaPublish.selectWeekday'/></span>
