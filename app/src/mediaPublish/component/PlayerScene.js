@@ -168,7 +168,7 @@ class PlayerScene extends PureComponent{
                 <div className="form-group  scene-name">
                     <label className="control-label"
                            htmlFor={property.sceneName.key}>{property.sceneName.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-1">
                         <input type="text" className={"form-control "}
                                placeholder={property.sceneName.placeholder} maxLength="8"
                                value={property.sceneName.value}
@@ -181,7 +181,7 @@ class PlayerScene extends PureComponent{
                 <div className="form-group">
                     <label className="control-label"
                            htmlFor={property.playMode.key}>{property.playMode.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-2">
                         <select className={"form-control"} value={property.playMode.name} onChange={event => this.onChange("playMode", event)}>
                             {
                                 property.playMode.list.map((option, index) => {
@@ -196,16 +196,17 @@ class PlayerScene extends PureComponent{
                 </div>
                 <div className={"form-group pull-right " + (property.playModeCount.active ? '' : 'hidden')}>
                     <label className="control-label">{property.playModeCount.title}</label>
-                    <div className={"input-container "}>
+                    <div className={"input-container input-w-2 "}>
                         <input type="text" className={"form-control "} htmlFor={property.playModeCount.key} placeholder={property.playModeCount.placeholder} maxLength="8"
                                value={property.playMode.index==0?property.playModeCount.value:property.playModeCount.value2} onChange={event => this.onChange("playModeCount", event)} />
                         <span className={prompt.playModeCount ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
+            <div className="row line"/>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.playerSceneClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerSceneClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerSceneClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
