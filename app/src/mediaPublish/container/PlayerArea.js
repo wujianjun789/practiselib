@@ -588,17 +588,17 @@ export class PlayerArea extends Component {
                     case "general":
                         type = "plan";
                         proType = "playerPlan";
-                        name = "播放计划新建";
+                        name = '播放计划新建';
                         break;
                     case "cycle":
                         type = "plan2";
                         proType = "cyclePlan";
-                        name = "周期插播计划";
+                        name = '周期插播计划'
                         break;
                     case "regular":
                         type = "plan3";
                         proType = "timingPlan";
-                        name = "定时插播计划";
+                        name = '定时插播计划';
                         break;
                 }
 
@@ -922,10 +922,10 @@ export class PlayerArea extends Component {
         let add_title = "";
         switch (curType) {
             case "cyclePlan":
-                add_title = '(周期插播计划)';
+                add_title = ` (${this.props.intl.formatMessage({id:'mediaPublish.cyclePlayPlan'})})`;
                 break;
             case "timingPlan":
-                add_title = '(定时插播计划)';
+                add_title = ` (${this.props.intl.formatMessage({id:'mediaPublish.timingPlayPlan'})})`;
                 break;
         }
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
