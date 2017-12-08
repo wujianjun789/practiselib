@@ -3,26 +3,26 @@ import { numbersValid } from '../../util/index'
 
 import ColorPicker from '../../components/ColorPicker'
 
-import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+import { FormattedMessage, injectIntl, FormattedDate } from 'react-intl';
 
 class PlayerText extends PureComponent {
     state = {
         property: {
-            assetName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: "" },
+            assetName: { key: "assetName", title: this.props.intl.formatMessage({ id: 'mediaPublish.materialName' }), placeholder: this.props.intl.formatMessage({ id: 'mediaPublish.materialName' }), value: "" },
 
-            textContent: { key: 'textContent', title: this.props.intl.formatMessage({id:'mediaPublish.textContent'}), value: '' },
-            fontType: { key: 'fontType', title: this.props.intl.formatMessage({id:'mediaPublish.selectFont'}), list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
-            alignment: { key: 'alignment', title: this.props.intl.formatMessage({id:'mediaPublish.alignment'}), list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
-            fontSize:{key:'fontSize',title:this.props.intl.formatMessage({id:'mediaPublish.fontSize'}),list:[{id:1,name:'12pt'},{id:2,name:'13pt'},{id:3,name:'14pt'},{id:4,name:'15pt'},{id:5,name:'16pt'},],index:0},
-            wordSpacing: { key: 'wordSpacing', title: this.props.intl.formatMessage({id:'mediaPublish.wordSpacing'}), placeholder: 'pt', value: '' },
-            lineSpacing: { key: 'lineSpacing', title:this.props.intl.formatMessage({id:'mediaPublish.lineSpacing'}), placeholder: 'pt', value: '' },
-            fontColor: { key: 'fontColor', title: this.props.intl.formatMessage({id:'mediaPublish.fontColor'}), value: '#456' },
-            bgColor: { key: 'bgColor', title: this.props.intl.formatMessage({id:'mediaPublish.bgColor'}), value: '#789' },
-            bgTransparent: { key: 'bgTransparent', title: this.props.intl.formatMessage({id:'mediaPublish.bgTransparent'}), value: false },
-            playDuration: { key: "playDuration", title: this.props.intl.formatMessage({id:'mediaPublish.playDuration'}), placeholder: 's', value: "" },
-            playSpeed: { key: "playSpeed", title: this.props.intl.formatMessage({id:'mediaPublish.playSpeed'}), placeholder: 'm/s', value: "" },
+            textContent: { key: 'textContent', title: this.props.intl.formatMessage({ id: 'mediaPublish.textContent' }), value: '' },
+            fontType: { key: 'fontType', title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 1, name: '微软雅黑' }, { id: 2, name: '宋体' }, { id: 3, name: 'serif' }, { id: 4, name: 'monospace' }], index: 0 },
+            alignment: { key: 'alignment', title: this.props.intl.formatMessage({ id: 'mediaPublish.alignment' }), list: [{ id: 1, name: '左上' }, { id: 2, name: '左中' }, { id: 3, name: '左下' }, { id: 4, name: '中上' }, { id: 5, name: '上下居中' }, { id: 6, name: '中下' }, { id: 7, name: '右上' }, { id: 8, name: '右中' }, { id: 9, name: '右下' },], index: 0 },
+            fontSize: { key: 'fontSize', title: this.props.intl.formatMessage({ id: 'mediaPublish.fontSize' }), list: [{ id: 1, name: '12pt' }, { id: 2, name: '13pt' }, { id: 3, name: '14pt' }, { id: 4, name: '15pt' }, { id: 5, name: '16pt' },], index: 0 },
+            wordSpacing: { key: 'wordSpacing', title: this.props.intl.formatMessage({ id: 'mediaPublish.wordSpacing' }), placeholder: 'pt', value: '' },
+            lineSpacing: { key: 'lineSpacing', title: this.props.intl.formatMessage({ id: 'mediaPublish.lineSpacing' }), placeholder: 'pt', value: '' },
+            fontColor: { key: 'fontColor', title: this.props.intl.formatMessage({ id: 'mediaPublish.fontColor' }), value: '#456' },
+            bgColor: { key: 'bgColor', title: this.props.intl.formatMessage({ id: 'mediaPublish.bgColor' }), value: '#789' },
+            bgTransparent: { key: 'bgTransparent', title: this.props.intl.formatMessage({ id: 'mediaPublish.bgTransparent' }), value: false },
+            playDuration: { key: "playDuration", title: this.props.intl.formatMessage({ id: 'mediaPublish.playDuration' }), placeholder: 's', value: "" },
+            playSpeed: { key: "playSpeed", title: this.props.intl.formatMessage({ id: 'mediaPublish.playSpeed' }), placeholder: 'm/s', value: "" },
             animation: {
-                key: "animation", title: this.props.intl.formatMessage({id:'mediaPublish.animation'}),
+                key: "animation", title: this.props.intl.formatMessage({ id: 'mediaPublish.animation' }),
                 list: [
                     { id: 1, name: '立即显示' }, { id: 2, name: '闪烁' }, { id: 3, name: '长串左移' },
                     { id: 4, name: '上移' }, { id: 5, name: '下移' }, { id: 6, name: '左移' }, { id: 7, name: '右移' },
@@ -46,7 +46,7 @@ class PlayerText extends PureComponent {
     }
     onChange = (id, value) => {
         console.log("id:", id);
-        if (id == "fontType" || id == "alignment" || id == "animation" || id=="fontSize") {
+        if (id == "fontType" || id == "alignment" || id == "animation" || id == "fontSize") {
             const curIndex = value.target.selectedIndex;
             this.setState({
                 property: Object.assign({}, this.state.property, {
@@ -56,7 +56,7 @@ class PlayerText extends PureComponent {
                     })
                 })
             })
-        }else if(id=='bgColor'||id=='fontColor'){
+        } else if (id == 'bgColor' || id == 'fontColor') {
             this.setState({
                 property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
             })
@@ -80,7 +80,7 @@ class PlayerText extends PureComponent {
         this.setState({ property: { ...this.state.property, bgTransparent: { ...this.state.property.bgTransparent, value: e.target.checked } } })
     }
     playerTextClick = (id) => {
-        const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, fontSize,playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
+        const { textContent, fontType, fontColor, bgColor, bgTransparent, alignment, fontSize, playDuration, animation, playSpeed, wordSpacing, lineSpacing } = this.state.property;
         switch (id) {
             case 'apply':
                 break;
@@ -93,7 +93,7 @@ class PlayerText extends PureComponent {
                         bgColor: Object.assign({}, bgColor),
                         bgTransparent: Object.assign({}, bgTransparent),
                         alignment: Object.assign({}, alignment, { index: 0, name: '左上' }),
-                        fontSize:Object.assign({},fontSize,{index:0,name:'12pt'}),
+                        fontSize: Object.assign({}, fontSize, { index: 0, name: '12pt' }),
                         animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),
                         playDuration: Object.assign({}, playDuration, { value: "" }),
                         playSpeed: Object.assign({}, playSpeed, { value: "" }),
@@ -136,9 +136,9 @@ class PlayerText extends PureComponent {
                     </select>
                 </div>
             </div>
-            <div className='form-group font-color'>
+            <div className='form-group pull-right font-right-margin'>
                 <label className='control-label'>{property.fontColor.title}</label>
-                <ColorPicker onChange={value=>this.onChange('fontColor',value)} value={property.fontColor.value}/>
+                <ColorPicker onChange={value => this.onChange('fontColor', value)} value={property.fontColor.value} />
             </div>
             <div className='form-group'>
                 <label className='control-label'>{property.fontSize.title}</label>
@@ -153,13 +153,15 @@ class PlayerText extends PureComponent {
                     </select>
                 </div>
             </div>
-            <div className='form-group font-color'>
-                <label className='control-label'>{property.bgColor.title}</label>
-                <ColorPicker onChange={value=>this.onChange('bgColor',value)} value={property.bgColor.value}/>
+            <div className='form-group pull-right'>
+                <div className='bg-right-margin'>
+                    <label className='control-label'>{property.bgColor.title}</label>
+                    <ColorPicker onChange={value => this.onChange('bgColor', value)} value={property.bgColor.value} />
+                </div>
                 <label className='control-label'>{property.bgTransparent.title}</label>
                 <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
             </div>
-            
+
             <div className='form-group'>
                 <label className='control-label'>{property.alignment.title}</label>
                 <div className='input-container'>
@@ -173,14 +175,14 @@ class PlayerText extends PureComponent {
                     </select>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="form-group pull-right">
                 <label className="col-sm-3 control-label">{property.playDuration.title}</label>
                 <div className="input-container">
                     <input type="text" className="form-control"
                         placeholder={property.playDuration.placeholder} maxLength="8"
                         value={property.playDuration.value}
                         onChange={event => this.onChange("playDuration", event)} />
-                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                 </div>
             </div>
             <div className="form-group">
@@ -198,14 +200,14 @@ class PlayerText extends PureComponent {
                     </select>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="form-group pull-right">
                 <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
                 <div className="input-container">
                     <input type="text" className="form-control"
                         placeholder={property.playSpeed.placeholder} maxLength="8"
                         value={property.playSpeed.value}
                         onChange={event => this.onChange("playSpeed", event)} />
-                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                 </div>
             </div>
             <div className="form-group">
@@ -215,22 +217,22 @@ class PlayerText extends PureComponent {
                         placeholder={property.lineSpacing.placeholder} maxLength="8"
                         value={property.lineSpacing.value}
                         onChange={event => this.onChange("lineSpacing", event)} />
-                    <span className={prompt.lineSpacing ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    <span className={prompt.lineSpacing ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                 </div>
             </div>
-            <div className="form-group">
+            <div className="form-group pull-right">
                 <label className="col-sm-3 control-label">{property.wordSpacing.title}</label>
                 <div className="input-container">
                     <input type="text" className="form-control"
                         placeholder={property.wordSpacing.placeholder} maxLength="8"
                         value={property.wordSpacing.value}
                         onChange={event => this.onChange("wordSpacing", event)} />
-                    <span className={prompt.wordSpacing ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    <span className={prompt.wordSpacing ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
             </div>
         </div>
     }
