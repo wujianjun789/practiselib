@@ -62,7 +62,7 @@ class PlayerProject extends PureComponent{
                 <div className="form-group project-name">
                     <label className="control-label"
                            htmlFor={property.project.key}>{property.project.title}</label>
-                    <div className="input-container">
+                    <div className="input-container input-w-1">
                         <input type="text" className={"form-control "}
                                placeholder={property.project.placeholder} maxLength="16"
                                value={property.project.value}
@@ -71,9 +71,10 @@ class PlayerProject extends PureComponent{
                     </div>
                 </div>
             </div>
+            <div className="row line"/>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.projectClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.projectClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.projectClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
