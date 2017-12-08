@@ -88,6 +88,7 @@ class PlayerPicAsset extends PureComponent{
     render(){
         const {property, prompt} = this.state;
         return <div className="pro-container playerVideoAsset">
+
             <div className="form-group">
                 <label className="control-label">{property.assetName.title}</label>
                 <div className="input-container">
@@ -95,6 +96,7 @@ class PlayerPicAsset extends PureComponent{
                         value={property.assetName.value} />
                 </div>
             </div>
+            <div className="row">
             <div className="form-group">
                 <label className="col-sm-3 control-label">{property.playTimes.title}</label>
                 <div className="input-container">
@@ -120,6 +122,8 @@ class PlayerPicAsset extends PureComponent{
                     </select>
                 </div>
             </div>
+                </div>
+            <div className="row">
             <div className="form-group">
                 <label className="control-label">{property.playType.title}</label>
                 <div className="input-container">
@@ -146,6 +150,7 @@ class PlayerPicAsset extends PureComponent{
                     </div>
                 </div>)
             }
+                </div>
             <div className="form-group volume">
                 <label className="control-label">{property.volume.title}</label>
                 <div className="input-container">
