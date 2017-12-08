@@ -304,6 +304,9 @@ export default {
         'mediaPublish.timingPlay':'定时插播',
         'mediaPublish.pauseSign':'暂停标志',
         'mediaPublish.addOrEditPlan':'添加/修改插播计划',
+        'mediaPublish.timeInterval':'时间间隔',
+        'mediaPublish.specifyDate':'指定日期',
+        'mediaPublish.specifyTime':'指定时间',
 
 
         //以前的

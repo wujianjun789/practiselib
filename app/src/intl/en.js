@@ -311,6 +311,9 @@ export default {
         'mediaPublish.timingPlay':'timing play',
         'mediaPublish.pauseSign':'pause sign',
         'mediaPublish.addOrModifyPlan':'Add or modify timing play',
+        'mediaPublish.timeInterval':'TimeInterval',
+        'mediaPublish.specifyDate':'specify date',
+        'mediaPublish.specifyTime':'specify time',
 
         //last
         'app.link.index': 'home',
