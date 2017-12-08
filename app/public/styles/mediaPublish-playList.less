@@ -491,437 +491,529 @@
       }
       .form-group {
         display: inline-block;
-        margin-bottom: 20px;
-        label {
-          text-align: right;
-          width: 80px;
-          line-height: 40px;
+        margin-bottom: 30px;
+        //&.action {
+        //  label {
+        //    width: 30px;
+        //    height: 40px;
+        //
+        //    line-height: 40px;
+        //    margin-right: 10px;
+        //    //float: left;
+        //  }
+        //
+        //  .input-container {
+        //    width: 360px;
+        //  }
+        //}
+        //
+        //&.position, &.speed, &.repeat, &.resTime, &.flicker {
+        //  label {
+        //    width: 60px;
+        //  }
+        //}
+        //
+        //&.repeat, &.flicker {
+        //  margin-right: 0;
+        //}
+        //
+        //&.position {
+        //  margin-right: 0;
+        //  .icon {
+        //    font-weight: bold;
+        //    font-size: 13px;
+        //    margin-right: 5px;
+        //    margin-left: 5px;
+        //
+        //    cursor: pointer;
+        //  }
+        //
+        //  .icon:nth-child(2) {
+        //    margin-left: 2px;
+        //  }
+        //  .icon:last-child {
+        //    margin-right: 0;
+        //  }
+        //}
+        //&.clipsRage{
+        //  .input-container {
+        //    position: relative;
+        //    vertical-align: top;
+        //    .ant-time-picker{
+        //      width:65px;
+        //      float: left;
+        //      >input{
+        //        height: 40px;
+        //      }
+        //    }
+        //    .text{
+        //      float: left;
+        //      width:50px;
+        //      line-height: 40px;
+        //      text-align: center;
+        //    }
+        //    .prompt{
+        //      top:40px;
+        //      left:0;
+        //    }
+        //  }
+        //}
+        //
+        //&.volume{
+        //  float: right;
+        //}
+      }
+      .margin-right-1{
+        margin-right: 20px;
+      }
+      .margin-right-2{
+        margin-right: 40px;
+      }
+      .margin-right-3{
+        margin-right: 60px;
+      }
+
+      .input-w-1{
+        width: 540px;
+      }
+      .input-w-2{
+        width: 200px;
+      }
+
+      .input-w-3{
+        width: 100px;
+      }
+
+      label {
+        width: 80px;
+
+        margin-right: 20px;
+        margin-bottom: 0;
+
+        padding: 0;
+
+        font-size: 14px;
+        color: #4d4d4d;
+
+        text-align: right;
+        line-height: 40px;
+
+        float: left;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .input-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .form-control {
+        height: 40px;
+        padding: 6px 10px;
+
+        font-size: 14px;
+        color: #4d4d4d;
+
+        &::-webkit-input-placeholder,&:-moz-placeholder,&::-moz-placeholder,&:-ms-input-placeholder{
+          font-size: 14px;
+          color: #b3b3b3;
+        }
+      }
+
+      .ant-calendar-picker, .ant-time-picker{
+        .ant-calendar-picker-clear, .ant-calendar-picker-icon, .ant-time-picker-icon{
+          display: none;
+        }
+        input{
+          height: 40px;
+          padding: 6px 10px;
+
+          font-size: 14px;
+          color: #4d4d4d;
+
+          &::-webkit-input-placeholder,&:-moz-placeholder,&::-moz-placeholder,&:-ms-input-placeholder{
+            font-size: 14px;
+            color: #b3b3b3;
+          }
+        }
+      }
+
+      .prompt {
+        position: absolute;
+        font-size: 10px;
+        color: #ff5c68;
+      }
+
+      .input-container-week{
+        height: 70px;
+
+        padding: 10px 20px;
+
+        label{
+          float: none;
+
           margin-right: 20px;
-          padding: 0;
-          //float: left;
-          margin-bottom: 0;
-        }
+          margin-bottom: 10px;
 
-        .input-container {
-          //position: relative;
-          display: inline-block;
-          width: 180px;
-          .form-control {
-            height: 40px;
+          line-height: 20px;
+          >span:first-child{
+            float: right;
+
+            margin-top: 4px;
+            margin-left: 20px;
           }
 
-          .prompt {
-            position: absolute;
-            font-size: 12px;
-            color: #ff5c68;
-          }
-        }
+          >span:last-child{
+              display: inline-block;
+              width: 40px;
 
-        &.action {
-          label {
-            width: 30px;
-            height: 40px;
+              padding: 0;
 
-            line-height: 40px;
-            margin-right: 10px;
-            //float: left;
-          }
-
-          .input-container {
-            width: 360px;
+              text-align: right;
           }
         }
 
-        &.position, &.speed, &.repeat, &.resTime, &.flicker {
-          label {
-            width: 60px;
-          }
-        }
-
-        &.repeat, &.flicker {
-          margin-right: 0;
-        }
-
-        &.position {
-          margin-right: 0;
-          .icon {
-            font-weight: bold;
-            font-size: 13px;
-            margin-right: 5px;
-            margin-left: 5px;
-
-            cursor: pointer;
-          }
-
-          .icon:nth-child(2) {
-            margin-left: 2px;
-          }
-          .icon:last-child {
+        .ant-checkbox-group{
+          :nth-child(5){
             margin-right: 0;
           }
         }
-        &.clipsRage{
-          .input-container {
-            position: relative;
-            vertical-align: top;
-            .ant-time-picker{
-              width:65px;
-              float: left;
-              >input{
-                height: 40px;
-              }
-            }
-            .text{
-              float: left;
-              width:50px;
-              line-height: 40px;
-              text-align: center;
-            }
-            .prompt{
-              top:40px;
-              left:0;
-            }
-          }
-        }
-
-        &.volume{
-          float: right;
-        }
       }
-
-      &.playerProject,&.playerArea,&.playerText,&.playerPicAsset,&.playerTimeAsset{
-        //padding-left: 0;
-        .form-group {
-          label {
-            width: 80px;
-            font-size: 14px;
-          }
-          &:first-child {
-            .input-container {
-              width: 540px;
-            }
-          }
-          .rc-color-picker-wrap{
-            height:40px;
-          }
-        }
-      }
-
-      &.playerProject,&.playerScene,&.playerText,&.playerPicAsset,&.playerVideoAsset,&.playerTimeAsset,&.cyclePlan,&.timingPlan,&.playerPlan,&.playerArea{
-        .row{
-          clear: both;
-          button{
-            margin-left: 15px;
-          }
-        }
-      }
-
-      &.playerText{
-        .label-alignment{
-          vertical-align: top;
-        }
-        .input-container{
-           &.text-container{
-             width:540px;
-           }
-           .text-content{
-             padding:10px;
-             border:none;
-             resize:none;
-             width:540px;
-             height:100px;
-          }
-        }
-        .font-right-margin{
-            margin-right:140px;
-        }
-        .bg-right-margin{
-          display: inline-block;
-          margin-right:27px;
-        }
-      }
-
-      &.playerTimeAsset{
-        .input-container{
-          width: 160px;
-        }
-        .datePicker,.timePicker{
-          width: 180px;
-          .ant-calendar-picker,.ant-time-picker{
-            width: 180px!important;
-            input{
-              height: 40px;
-              width: 180px;
-              font-size: 14px;
-            }
-          }
-        }
-        .textContent{
-          width: 540px;
-        }
-        #isRow{
-          vertical-align: middle;
-          height: 36px;
-          line-height: 36px;
-          margin: 0;
-        }
-      }
-
-      &.playerScene,&.cyclePlan,&.timingPlan{
-        //padding-left: 0;
-        .form-group{
-          label{
-            width: 80px;
-          }
-        }
-      }
-
-      &.cyclePlan{
-        .form-group{
-          margin-right: 40px;
-          .input-container{
-            width: 100px;
-          }
-        }
-
-        .cycle-name{
-          margin-right: 0;
-          .input-container {
-            width: 540px;
-          }
-        }
-
-        .cycle-startDate,.cycle-endDate,.cycle-startTime,.cycle-endTime{
-          .input-container{
-            width: 100px;
-            .ant-calendar-picker, .ant-time-picker{
-              width: 100%;
-              input{
-                //width: 180px;
-                height: 40px;
-                font-size: 14px;
-              }
-              .ant-calendar-picker-icon,.ant-calendar-picker-clear{
-                display: none;
-              }
-              .ant-time-picker-icon,.ant-time-picker-clear{
-                display: none;
-              }
-              .ant-calendar-picker-clear,.ant-calendar-picker-icon{
-                font-size: 14px;
-                width: 16px;
-                height: 16px;
-
-                margin-top: -6px;
-              }
-
-              .ant-calendar-picker-icon:after{
-                font-size: 14px;
-              }
-            }
-          }
-        }
-
-        .cycle-date,.cycle-time{
-          .input-container{
-            width: 20px;
-            label{
-              width: 20px;
-            }
-          }
-        }
-
-        .cycle-week{
-          margin-right: 0;
-          .input-container{
-            width: 540px;
-          }
-        }
-      }
-
-      &.timingPlan{
-        .timing-name,.timing-list{
-          .input-container{
-            width: 540px;
-          }
-        }
-
-        .timing-list{
-          .control-label{
-            vertical-align: top;
-          }
-          .input-container{
-            //padding: 10px 15px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: 250px;
-            background: #fff;
-            .edit-head{
-              margin-bottom: 10px;
-              padding: 10px 15px 5px 15px;
-              select{
-                width: 120px;
-                height: 30px;
-
-                vertical-align: top;
-              }
-
-              button{
-                margin-left: 15px;
-
-                vertical-align: top;
-              }
-            }
-
-            .edit-body{
-              ul li{
-                position: relative;
-
-                padding: 5px 15px;
-                color: #000;
-                cursor: pointer;
-                .background{
-                  position: absolute;
-                  top: 0;
-                  right: 0;
-                  bottom: 0;
-                  left: 0;
-
-                  background: #00d8ff;
-                  opacity: .1;
-
-                  z-index: 0;
-                  pointer-events: none;
-                }
-
-                .icon{
-                  cursor: pointer;
-                  z-index: 3;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      //播放计划样式
-      &.playerPlan {
-        //padding-left: 0;
-        font-size: 14px;
-        .form-group {
-          label {
-            width: 80px;
-          }
-        }
-        .startTime,.endTime{
-          .ant-time-picker{
-            width: 180px!important;
-            input{
-              height: 40px;
-              width: 180px;
-              font-size: 14px;
-            }
-
-            .ant-time-picker-icon, .ant-time-picker-clear{
-              display: none;
-            }
-          }
-        }
-        .input-container {
-          //margin-left: 10px;
-        }
-        .plan {
-          .input-container {
-            width: 540px;
-          }
-        }
-        .week {
-            //.control-label {
-            //  width: 80px;
-            //}
-            //label {
-            //  width: 65px;
-            //}
-          .input-container {
-            width: 540px;
-            label{
-              width: auto;
-              margin-right: 0;
-            }
-            //.ant-checkbox-group{
-            //  :nth-child(3){
-            //    width: 96px;
-            //  }
-            //
-            //  :nth-child(4),:nth-child(6){
-            //    width: 82px;
-            //  }
-            //}
-            .checkbox-inline {
-              min-width: 106px;
-              padding-right: 30px;
-              color: #808080;
-              font-size: 14px;
-              margin: 6px 0 14px 0
-            }
-          }
-          .fixpos{
-              margin-top: -13px
-          }
-        }
-        .startDate, .startTime, .endDate, .endTime {
-          .input-container {
-            width: 180px;
-            .ant-calendar-picker{
-              width: 100%;
-              input{
-                //width: 180px;
-                height: 40px;
-                font-size: 14px;
-              }
-              .ant-calendar-picker-icon,.ant-calendar-picker-clear{
-                display: none;
-              }
-
-              .ant-calendar-picker-clear,.ant-calendar-picker-icon{
-                font-size: 14px;
-                width: 16px;
-                height: 16px;
-
-                margin-top: -6px;
-              }
-
-              .ant-calendar-picker-icon:after{
-                font-size: 14px;
-              }
-            }
-          }
-        }
-        .bottom {
-          padding-top: 20px;
-          border-top: 1px solid #d6dbdf;
-          height: 45px;
-          .btn-group {
-            float:right;
-            .btn {
-              border-radius: 4px;
-              &.reset {
-                background-color: #495264;
-              }
-            }
-            button:first-child{
-              // visibility: hidden;
-              margin-right: 10px;
-              margin-left: 20px;
-              border: 0;
-            }
-            button:last-child{
-              margin-left: 10px;
-              margin-right: 1px;
-            }
-          }
-        }
-      }
+      //&.playerProject,&.playerArea,&.playerText,&.playerPicAsset,&.playerTimeAsset{
+      //  //padding-left: 0;
+      //  .form-group {
+      //    label {
+      //      width: 80px;
+      //      font-size: 14px;
+      //    }
+      //    &:first-child {
+      //      .input-container {
+      //        width: 540px;
+      //      }
+      //    }
+      //    .rc-color-picker-wrap{
+      //      height:40px;
+      //    }
+      //  }
+      //}
+      //
+      //&.playerProject,&.playerScene,&.playerText,&.playerPicAsset,&.playerVideoAsset,&.playerTimeAsset,&.cyclePlan,&.timingPlan,&.playerPlan,&.playerArea{
+      //  .row{
+      //    clear: both;
+      //    button{
+      //      margin-left: 15px;
+      //    }
+      //  }
+      //}
+      //
+      //&.playerText{
+      //  .label-alignment{
+      //    vertical-align: top;
+      //  }
+      //  .input-container{
+      //     &.text-container{
+      //       width:540px;
+      //     }
+      //     .text-content{
+      //       padding:10px;
+      //       border:none;
+      //       resize:none;
+      //       width:540px;
+      //       height:100px;
+      //    }
+      //  }
+      //  .font-right-margin{
+      //      margin-right:140px;
+      //  }
+      //  .bg-right-margin{
+      //    display: inline-block;
+      //    margin-right:27px;
+      //  }
+      //}
+      //
+      //&.playerTimeAsset{
+      //  .input-container{
+      //    width: 160px;
+      //  }
+      //  .datePicker,.timePicker{
+      //    width: 180px;
+      //    .ant-calendar-picker,.ant-time-picker{
+      //      width: 180px!important;
+      //      input{
+      //        height: 40px;
+      //        width: 180px;
+      //        font-size: 14px;
+      //      }
+      //    }
+      //  }
+      //  .textContent{
+      //    width: 540px;
+      //  }
+      //  #isRow{
+      //    vertical-align: middle;
+      //    height: 36px;
+      //    line-height: 36px;
+      //    margin: 0;
+      //  }
+      //}
+      //
+      //&.playerScene,&.cyclePlan,&.timingPlan{
+      //  //padding-left: 0;
+      //  .form-group{
+      //    label{
+      //      width: 80px;
+      //    }
+      //  }
+      //}
+      //
+      //&.cyclePlan{
+      //  .form-group{
+      //    margin-right: 40px;
+      //    .input-container{
+      //      width: 100px;
+      //    }
+      //  }
+      //
+      //  .cycle-name{
+      //    margin-right: 0;
+      //    .input-container {
+      //      width: 540px;
+      //    }
+      //  }
+      //
+      //  .cycle-startDate,.cycle-endDate,.cycle-startTime,.cycle-endTime{
+      //    .input-container{
+      //      width: 100px;
+      //      .ant-calendar-picker, .ant-time-picker{
+      //        width: 100%;
+      //        input{
+      //          //width: 180px;
+      //          height: 40px;
+      //          font-size: 14px;
+      //        }
+      //        .ant-calendar-picker-icon,.ant-calendar-picker-clear{
+      //          display: none;
+      //        }
+      //        .ant-time-picker-icon,.ant-time-picker-clear{
+      //          display: none;
+      //        }
+      //        .ant-calendar-picker-clear,.ant-calendar-picker-icon{
+      //          font-size: 14px;
+      //          width: 16px;
+      //          height: 16px;
+      //
+      //          margin-top: -6px;
+      //        }
+      //
+      //        .ant-calendar-picker-icon:after{
+      //          font-size: 14px;
+      //        }
+      //      }
+      //    }
+      //  }
+      //
+      //  .cycle-date,.cycle-time{
+      //    .input-container{
+      //      width: 20px;
+      //      label{
+      //        width: 20px;
+      //      }
+      //    }
+      //  }
+      //
+      //  .cycle-week{
+      //    margin-right: 0;
+      //    .input-container{
+      //      width: 540px;
+      //    }
+      //  }
+      //}
+      //
+      //&.timingPlan{
+      //  .timing-name,.timing-list{
+      //    .input-container{
+      //      width: 540px;
+      //    }
+      //  }
+      //
+      //  .timing-list{
+      //    .control-label{
+      //      vertical-align: top;
+      //    }
+      //    .input-container{
+      //      //padding: 10px 15px;
+      //      overflow-y: auto;
+      //      overflow-x: hidden;
+      //      height: 250px;
+      //      background: #fff;
+      //      .edit-head{
+      //        margin-bottom: 10px;
+      //        padding: 10px 15px 5px 15px;
+      //        select{
+      //          width: 120px;
+      //          height: 30px;
+      //
+      //          vertical-align: top;
+      //        }
+      //
+      //        button{
+      //          margin-left: 15px;
+      //
+      //          vertical-align: top;
+      //        }
+      //      }
+      //
+      //      .edit-body{
+      //        ul li{
+      //          position: relative;
+      //
+      //          padding: 5px 15px;
+      //          color: #000;
+      //          cursor: pointer;
+      //          .background{
+      //            position: absolute;
+      //            top: 0;
+      //            right: 0;
+      //            bottom: 0;
+      //            left: 0;
+      //
+      //            background: #00d8ff;
+      //            opacity: .1;
+      //
+      //            z-index: 0;
+      //            pointer-events: none;
+      //          }
+      //
+      //          .icon{
+      //            cursor: pointer;
+      //            z-index: 3;
+      //          }
+      //        }
+      //      }
+      //    }
+      //  }
+      //}
+      //
+      ////播放计划样式
+      //&.playerPlan {
+      //  //padding-left: 0;
+      //  font-size: 14px;
+      //  .form-group {
+      //    label {
+      //      width: 80px;
+      //    }
+      //  }
+      //  .startTime,.endTime{
+      //    .ant-time-picker{
+      //      width: 180px!important;
+      //      input{
+      //        height: 40px;
+      //        width: 180px;
+      //        font-size: 14px;
+      //      }
+      //
+      //      .ant-time-picker-icon, .ant-time-picker-clear{
+      //        display: none;
+      //      }
+      //    }
+      //  }
+      //  .input-container {
+      //    //margin-left: 10px;
+      //  }
+      //  .plan {
+      //    .input-container {
+      //      width: 540px;
+      //    }
+      //  }
+      //  .week {
+      //      //.control-label {
+      //      //  width: 80px;
+      //      //}
+      //      //label {
+      //      //  width: 65px;
+      //      //}
+      //    .input-container {
+      //      width: 540px;
+      //      label{
+      //        width: auto;
+      //        margin-right: 0;
+      //      }
+      //      //.ant-checkbox-group{
+      //      //  :nth-child(3){
+      //      //    width: 96px;
+      //      //  }
+      //      //
+      //      //  :nth-child(4),:nth-child(6){
+      //      //    width: 82px;
+      //      //  }
+      //      //}
+      //      .checkbox-inline {
+      //        min-width: 106px;
+      //        padding-right: 30px;
+      //        color: #808080;
+      //        font-size: 14px;
+      //        margin: 6px 0 14px 0
+      //      }
+      //    }
+      //    .fixpos{
+      //        margin-top: -13px
+      //    }
+      //  }
+      //  .startDate, .startTime, .endDate, .endTime {
+      //    .input-container {
+      //      width: 180px;
+      //      .ant-calendar-picker{
+      //        width: 100%;
+      //        input{
+      //          //width: 180px;
+      //          height: 40px;
+      //          font-size: 14px;
+      //        }
+      //        .ant-calendar-picker-icon,.ant-calendar-picker-clear{
+      //          display: none;
+      //        }
+      //
+      //        .ant-calendar-picker-clear,.ant-calendar-picker-icon{
+      //          font-size: 14px;
+      //          width: 16px;
+      //          height: 16px;
+      //
+      //          margin-top: -6px;
+      //        }
+      //
+      //        .ant-calendar-picker-icon:after{
+      //          font-size: 14px;
+      //        }
+      //      }
+      //    }
+      //  }
+      //  .bottom {
+      //    padding-top: 20px;
+      //    border-top: 1px solid #d6dbdf;
+      //    height: 45px;
+      //    .btn-group {
+      //      float:right;
+      //      .btn {
+      //        border-radius: 4px;
+      //        &.reset {
+      //          background-color: #495264;
+      //        }
+      //      }
+      //      button:first-child{
+      //        // visibility: hidden;
+      //        margin-right: 10px;
+      //        margin-left: 20px;
+      //        border: 0;
+      //      }
+      //      button:last-child{
+      //        margin-left: 10px;
+      //        margin-right: 1px;
+      //      }
+      //    }
+      //  }
+      //}
 
     }
 
