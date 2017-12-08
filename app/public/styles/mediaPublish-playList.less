@@ -648,60 +648,16 @@
         border-top: solid 1px #e6e6e6;
       }
       .input-container-week{
-        height: 70px;
+        .input-week();
+      }
 
-        padding: 10px 20px;
+      .color-picker{
+        width: 40px;
+        height: 40px;
+      }
 
-        label{
-          float: none;
+      .checkbox{
 
-          margin-right: 20px;
-          margin-bottom: 10px;
-
-          line-height: 20px;
-          >span:first-child{
-            float: right;
-
-            margin-top: 4px;
-            margin-left: 20px;
-          }
-
-          >span:last-child{
-              display: inline-block;
-              width: 40px;
-
-              padding: 0;
-
-              text-align: right;
-          }
-        }
-
-        label:after{
-          content: "";
-          height: 0;
-          line-height: 0;
-          display: block;
-          clear: both;
-          visibility: hidden;
-        }
-
-        .color-picker{
-          width: 40px;
-          height: 40px;
-        }
-
-        .checkbox{
-
-        }
-        .ant-checkbox-group{
-          :nth-child(5){
-            margin-right: 0;
-          }
-
-          :nth-child(6), :nth-child(7){
-            margin-bottom: 0;
-          }
-        }
       }
       //&.playerProject,&.playerArea,&.playerText,&.playerPicAsset,&.playerTimeAsset{
       //  //padding-left: 0;
@@ -1413,10 +1369,16 @@
   .timingPlan-popup{
     width: 680px;
     .modal-body{
+      padding: 20px;
       .form-group{
+        margin: 0;
+        margin-bottom: 30px;
         >label{
           display: inline-block;
           width: 80px;
+          height: 40px;
+
+          line-height: 40px;
 
           padding: 0;
           margin-right: 20px;
@@ -1429,59 +1391,44 @@
 
           width: 100px;
           padding-left: 0;
-        }
-        &.startTime{
-          label{
-            height: 40px;
-            line-height: 40px;
-          }
-          .input-container{
-            margin-right: 40px;
-            .ant-time-picker{
-              .ant-time-picker-icon{
-                display: none;
-              }
-              input{
-                height: 40px;
-              }
+
+          .ant-time-picker, .ant-calendar-picker{
+            input{
+              height: 40px;
+              padding: 6px 10px;
             }
           }
+          .ant-time-picker-icon, .ant-calendar-picker-icon, .ant-calendar-picker-clear{
+            display: none;
+          }
+        }
+        &.startTime{
+
         }
         &.startEndDate{
           label{
-            height: 40px;
-            line-height: 40px;
             float: none;
           }
           .input-container{
-            margin-right: 40px;
-            .ant-calendar-picker{
-              .ant-calendar-picker-icon, .ant-calendar-picker-clear{
-                display: none;
-              }
+            margin-right: 20px;
 
-              input{
-                height: 40px;
-              }
-            }
             &:last-child{
               margin-right: 0;
             }
           }
         }
         &.week{
-          .input-container{
-            position: relative;
-
+          .input-container-week{
             width: 540px;
+            .input-week();
           }
         }
-        .prompt{
-          position: absolute;
-          top: 20px;
+      }
 
-          color: #ff5c68;
-        }
+      .prompt {
+        position: absolute;
+        font-size: 10px;
+        color: #ff5c68;
       }
     }
   }
@@ -1499,4 +1446,44 @@
   -ms-transition: all @time;
   -o-transition: all @time;
   transition: all @time;
+}
+
+.input-week{
+  height: 70px;
+
+  padding: 10px 20px;
+
+  label{
+    float: none;
+
+    margin-right: 20px;
+    margin-bottom: 10px;
+
+    line-height: 20px;
+    >span:first-child{
+      float: right;
+
+      margin-top: 4px;
+      margin-left: 20px;
+    }
+
+    >span:last-child{
+      display: inline-block;
+      width: 40px;
+
+      padding: 0;
+
+      text-align: right;
+    }
+  }
+
+  .ant-checkbox-group{
+    :nth-child(5){
+      margin-right: 0;
+    }
+
+    :nth-child(6), :nth-child(7){
+      margin-bottom: 0;
+    }
+  }
 }
