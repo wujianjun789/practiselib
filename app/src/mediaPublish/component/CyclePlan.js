@@ -12,28 +12,31 @@ import lodash from 'lodash';
 
 import {getPlayerById} from '../../api/mediaPublish';
 import { NameValid, numbersValid } from '../../util/index';
-export default class CyclePlan extends PureComponent{
+
+import { FormattedMessage,injectIntl } from 'react-intl';
+
+class CyclePlan extends PureComponent{
     constructor(props){
         super(props);
         const {name, interval, pause, dateAppoint, startDate, endDate, timeAppoint, startTime, endTime, week}  = props;
         this.state = {
             property: {
                 //周期插播计划
-                cycleName: { key: "cycleName", title: "计划名称", placeholder: '请输入名称', defaultValue:name?name:"", value: name?name:"" },
-                cycleInterval: { key: "cycleInterval", title: "时间间隔", placeholder: '秒', defaultValue:interval?interval:5, value: interval?interval:5 },
-                cyclePause: { key: "cyclePause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], defaultIndex: 0, index: 0, name: "暂停" },
-                cycleDate: { key: "cycleDate", title: "指定日期", defaultAppoint:dateAppoint?dateAppoint:false, appoint: dateAppoint?dateAppoint:false },
-                cycleStartDate: { key: "cycleStartDate", title: "开始日期", placeholder: "点击选择开始日期", defaultValue:startDate?startDate:moment(),value: startDate?startDate:moment() },
-                cycleEndDate: { key: "cycleEndDate", title: "结束日期", placeholder: "点击选择结束日期", defaultValue:endDate?endDate:moment(),value: endDate?endDate:moment() },
-                cycleTime: { key: "cycleDate", title: "指定时间", defaultAppoint:timeAppoint?timeAppoint:false, appoint: timeAppoint?timeAppoint:false },
-                cycleStartTime: { key: "cycleStartTime", title: "开始时间", placeholder: "点击选择开始时间", defaultValue:startTime?startTime:moment(), value: startTime?startTime:moment() },
-                cycleEndTime: { key: "cycleEndTime", title: "结束时间", placeholder: "点击选择结束时间", defaultValue:endTime?endTime:moment(), value: endTime?endTime:moment() },
+                cycleName: { key: "cycleName", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:name?name:"", value: name?name:"" },
+                cycleInterval: { key: "cycleInterval", title: this.props.intl.formatMessage({id:'mediaPublish.timeInterval'}), placeholder: '秒', defaultValue:interval?interval:5, value: interval?interval:5 },
+                cyclePause: { key: "cyclePause", title:this.props.intl.formatMessage({id:'mediaPublish.pauseSign'}), list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }], defaultIndex: 0, index: 0, name: "暂停" },
+                cycleDate: { key: "cycleDate", title: this.props.intl.formatMessage({id:'mediaPublish.specifyDate'}), defaultAppoint:dateAppoint?dateAppoint:false, appoint: dateAppoint?dateAppoint:false },
+                cycleStartDate: { key: "cycleStartDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue:startDate?startDate:moment(),value: startDate?startDate:moment() },
+                cycleEndDate: { key: "cycleEndDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue:endDate?endDate:moment(),value: endDate?endDate:moment() },
+                cycleTime: { key: "cycleDate", title: this.props.intl.formatMessage({id:'mediaPublish.specifyTime'}), defaultAppoint:timeAppoint?timeAppoint:false, appoint: timeAppoint?timeAppoint:false },
+                cycleStartTime: { key: "cycleStartTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue:startTime?startTime:moment(), value: startTime?startTime:moment() },
+                cycleEndTime: { key: "cycleEndTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue:endTime?endTime:moment(), value: endTime?endTime:moment() },
                 cycleWeek: {
-                    key: "cycleWeek", title: "工作日",defaultValue: week?week:[], value: week?week:[],
-                    list: [{ label: "周一", value: 1 }, { label: "周二", value: 2 },
-                        { label: "周三", value: 3 }, { label: "周四", value: 4 },
-                        { label: "周五", value: 5 }, { label: "周六", value: 6 },
-                        { label: "周日", value: 7 }],
+                    key: "cycleWeek", title:this.props.intl.formatMessage({id:'mediaPublish.weekday'}),defaultValue: week?week:[], value: week?week:[],
+                    list: [{ label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1 }, { label: this.props.intl.formatMessage({id:'mediaPublish.tuesday'}), value: 2 },
+                        { label: this.props.intl.formatMessage({id:'mediaPublish.wednesday'}), value: 3 }, { label: this.props.intl.formatMessage({id:'mediaPublish.thursday'}), value: 4 },
+                        { label: this.props.intl.formatMessage({id:'mediaPublish.friday'}), value: 5 }, { label:this.props.intl.formatMessage({id:'mediaPublish.saturday'}), value: 6 },
+                        { label: this.props.intl.formatMessage({id:'mediaPublish.sunday'}), value: 7 }],
                 }
             },
             prompt: {
@@ -185,7 +188,7 @@ export default class CyclePlan extends PureComponent{
                            htmlFor={property.cycleName.key}>{property.cycleName.title}</label>
                     <div className="input-container">
                         <input type="text" className="form-control" placeholder={property.cycleName.placeholder} value={property.cycleName.value} onChange={event => this.onChange("cycleName", event)} />
-                        <span className={prompt.cycleName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.cycleName ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
@@ -195,7 +198,7 @@ export default class CyclePlan extends PureComponent{
                            htmlFor={property.cycleInterval.key}>{property.cycleInterval.title}</label>
                     <div className="input-container">
                         <input type="text" className="form-control" placeholder={property.cycleInterval.placeholder} value={property.cycleInterval.value} onChange={event => this.onChange("cycleInterval", event)} />
-                        <span className={prompt.cycleInterval ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.cycleInterval ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
                 <div className="form-group cycle-pause">
@@ -275,14 +278,16 @@ export default class CyclePlan extends PureComponent{
                            htmlFor={property.cycleWeek.key}>{property.cycleWeek.title}</label>
                     <div className="input-container">
                         <CheckboxGroup id="cycleWeek" options={property.cycleWeek.list} defaultValue={property.cycleWeek.value} value={property.cycleWeek.value} onChange={value => this.dateChange('cycleWeek', value)} />
-                        <span className={"fixpos " + (prompt.cycleWeek ? "prompt " : "prompt hidden")}>{"请选择工作日"}</span>
+                        <span className={"fixpos " + (prompt.cycleWeek ? "prompt " : "prompt hidden")}><FormattedMessage id='mediaPublish.selectWeekday'/></span>
                     </div>
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.cyclePlanClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.cyclePlanClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.cyclePlanClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.cyclePlanClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(CyclePlan)
