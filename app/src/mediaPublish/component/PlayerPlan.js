@@ -145,16 +145,16 @@ class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.startDate.key}>{property.startDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="startDate" format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{ width: "220px" }}
+                        <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: "180px" }}
                                     defaultValue={property.startDate.value} value={property.startDate.value} onChange={value => this.dateChange('startDate', value)} />
                         <div className={prompt.startDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
                     </div>
                 </div>
-                <div className="form-group endDate">
+                <div className="form-group pull-right endDate">
                     <label className="control-label"
                            htmlFor={property.endDate.key}>{property.endDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="endDate" format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{ width: "220px" }}
+                        <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: "180px" }}
                                     defaultValue={property.endDate.value} value={property.endDate.value} onChange={value => this.dateChange('endDate', value)} />
                         <div className={prompt.endDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
                     </div>
@@ -165,16 +165,16 @@ class PlayerPlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.startTime.key}>{property.startTime.title}</label>
                     <div className="input-container">
-                        <TimePicker size="large" placeholder={property.startTime.placeholder}  style={{ width: "220px" }}
+                        <TimePicker size="large" placeholder={property.startTime.placeholder}  style={{ width: "180px" }}
                                     onChange={value => this.dateChange("startTime", value)} defaultValue={property.startTime.value} value={property.startTime.value} />
                         <div className={prompt.startTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
                     </div>
                 </div>
-                <div className="form-group endTime">
+                <div className="form-group pull-right endTime">
                     <label className="control-label"
                            htmlFor={property.endTime.key}>{property.endTime.title}</label>
                     <div className="input-container">
-                        <TimePicker size="large" placeholder={property.endTime.placeholder} style={{ width: "220px" }}
+                        <TimePicker  size="large" placeholder={property.endTime.placeholder} style={{ width: "180px" }}
                                     onChange={value => this.dateChange("endTime", value)} defaultValue={property.endTime.value}value={property.endTime.value} />
                         <div className={prompt.endTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
                     </div>

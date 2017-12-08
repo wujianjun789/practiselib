@@ -694,14 +694,19 @@
         .cycle-startDate,.cycle-endDate,.cycle-startTime,.cycle-endTime{
           .input-container{
             width: 100px;
-            .ant-calendar-picker{
+            .ant-calendar-picker, .ant-time-picker{
               width: 100%;
               input{
                 //width: 180px;
                 height: 40px;
                 font-size: 14px;
               }
-
+              .ant-calendar-picker-icon,.ant-calendar-picker-clear{
+                display: none;
+              }
+              .ant-time-picker-icon,.ant-time-picker-clear{
+                display: none;
+              }
               .ant-calendar-picker-clear,.ant-calendar-picker-icon{
                 font-size: 14px;
                 width: 16px;
@@ -810,11 +815,15 @@
         }
         .startTime,.endTime{
           .ant-time-picker{
-            width: 220px!important;
+            width: 180px!important;
             input{
               height: 40px;
-              width: 220px;
+              width: 180px;
               font-size: 14px;
+            }
+
+            .ant-time-picker-icon, .ant-time-picker-clear{
+              display: none;
             }
           }
         }
@@ -862,13 +871,16 @@
         }
         .startDate, .startTime, .endDate, .endTime {
           .input-container {
-            width: 220px;
+            width: 180px;
             .ant-calendar-picker{
               width: 100%;
               input{
                 //width: 180px;
                 height: 40px;
                 font-size: 14px;
+              }
+              .ant-calendar-picker-icon,.ant-calendar-picker-clear{
+                display: none;
               }
 
               .ant-calendar-picker-clear,.ant-calendar-picker-icon{

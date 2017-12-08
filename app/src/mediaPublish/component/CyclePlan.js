@@ -3,7 +3,7 @@
  */
 import React,{ PureComponent } from 'react';
 
-import { DatePicker, Checkbox } from 'antd';
+import { DatePicker, Checkbox,TimePicker } from 'antd';
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -220,7 +220,7 @@ export default class CyclePlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.cycleStartDate.key}>{property.cycleStartDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="cycleStartDate" showTime format="YYYY-MM-DD" placeholder="点击选择开始日期" style={{ width: "100px" }}
+                        <DatePicker id="cycleStartDate" showTime format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: "100px" }}
                                     defaultValue={property.cycleStartDate.value} value={property.cycleStartDate.value} onChange={value => this.dateChange('cycleStartDate', value)} />
                         <div className={prompt.cycleStartDate ? "prompt " : "prompt hidden"}>{"请选择开始日期"}</div>
                     </div>
@@ -229,7 +229,7 @@ export default class CyclePlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.cycleEndDate.key}>{property.cycleEndDate.title}</label>
                     <div className="input-container">
-                        <DatePicker id="cycleEndDate" showTime format="YYYY-MM-DD" placeholder="点击选择结束日期" style={{ width: "100px" }}
+                        <DatePicker id="cycleEndDate" showTime format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: "100px" }}
                                     defaultValue={property.cycleEndDate.value} value={property.cycleEndDate.value} onChange={value => this.dateChange('cycleEndDate', value)} />
                         <div className={prompt.cycleEndDate ? "prompt " : "prompt hidden"}>{"请选择结束日期"}</div>
                     </div>
@@ -247,8 +247,8 @@ export default class CyclePlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.cycleStartTime.key}>{property.cycleStartTime.title}</label>
                     <div className="input-container">
-                        <DatePicker id="cycleStartTime" showTime format="HH:mm:ss" placeholder="点击选择开始时间" style={{ width: "100px" }}
-                                    defaultValue={property.cycleStartTime.value} value={property.cycleStartTime.value} onChange={value => this.dateChange('cycleStartTime', value)} />
+                        <TimePicker size="large" placeholder={property.cycleStartTime.placeholder}  style={{ width: "100px" }} onChange={value => this.dateChange("cycleStartTime", value)}
+                                    defaultValue={property.cycleStartTime.value} value={property.cycleStartTime.value} />
                         <div className={prompt.cycleStartTime ? "prompt " : "prompt hidden"}>{"请选择开始时间"}</div>
                     </div>
                 </div>
@@ -256,8 +256,8 @@ export default class CyclePlan extends PureComponent{
                     <label className="control-label"
                            htmlFor={property.cycleEndTime.key}>{property.cycleEndTime.title}</label>
                     <div className="input-container">
-                        <DatePicker id="cycleEndTime" showTime format="HH:mm:ss" placeholder="点击选择结束时间" style={{ width: "100px" }}
-                                    defaultValue={property.cycleEndTime.value} value={property.cycleEndTime.value} onChange={value => this.dateChange('cycleEndTime', value)} />
+                        <TimePicker  size="large" placeholder={property.cycleEndTime.placeholder} style={{ width: "100px" }} onChange={value => this.dateChange("cycleEndTime", value)}
+                                     defaultValue={property.cycleEndTime.value}value={property.cycleEndTime.value} />
                         <div className={prompt.cycleEndTime ? "prompt " : "prompt hidden"}>{"请选择结束时间"}</div>
                     </div>
                 </div>
