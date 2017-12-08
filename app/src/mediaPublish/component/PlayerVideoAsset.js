@@ -88,87 +88,88 @@ class PlayerPicAsset extends PureComponent{
     render(){
         const {property, prompt} = this.state;
         return <div className="pro-container playerVideoAsset">
-
-            <div className="form-group">
-                <label className="control-label">{property.assetName.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control" disabled="disabled"
-                        value={property.assetName.value} />
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label">{property.assetName.title}</label>
+                    <div className="input-container input-w-1">
+                        <input type="text" className="form-control" disabled="disabled"
+                            value={property.assetName.value} />
+                    </div>
+                </div>
+            </div>          
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label">{property.playTimes.title}</label>
+                    <div className="input-container input-w-2">
+                        <input type="text" className="form-control"
+                            placeholder={property.playTimes.placeholder} maxLength="8"
+                            value={property.playTimes.value}
+                            onChange={event => this.onChange("playTimes", event)} />
+                        <span className={prompt.playTimes ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    </div>
+                </div>
+                <div className="form-group pull-right">
+                    <label className="control-label">{property.scaling.title}</label>
+                    <div className="input-container input-w-2">
+                        <select className="form-control" value={property.scaling.name}
+                            onChange={event => this.onChange("scaling", event)}>
+                            {
+                                property.scaling.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
                 </div>
             </div>
             <div className="row">
-            <div className="form-group">
-                <label className="col-sm-3 control-label">{property.playTimes.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control"
-                        placeholder={property.playTimes.placeholder} maxLength="8"
-                        value={property.playTimes.value}
-                        onChange={event => this.onChange("playTimes", event)} />
-                    <span className={prompt.playTimes ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                <div className="form-group">
+                    <label className="control-label">{property.playType.title}</label>
+                    <div className="input-container input-w-2">
+                        <select className="form-control" value={property.playType.name}
+                            onChange={event => this.onChange("playType", event)}>
+                            {
+                                property.playType.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div className="form-group pull-right">
-                <label className="control-label">{property.scaling.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.scaling.name}
-                        onChange={event => this.onChange("scaling", event)}>
-                        {
-                            property.scaling.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
-                </div>
-            </div>
-                </div>
-            <div className="row">
-            <div className="form-group">
-                <label className="control-label">{property.playType.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.playType.name}
-                        onChange={event => this.onChange("playType", event)}>
-                        {
-                            property.playType.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
-                </div>
-            </div>
-            {
-                property.playType.name == "片段播放" && (<div className="form-group pull-right clipsRage">
+                <div className="form-group pull-right clipsRage">
                     <label className="control-label">{property.clipsRage.title}</label>
-                    <div className="input-container">
-                        <TimePicker size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
+                    <div className="input-container input-w-2">
+                        <TimePicker disabled={property.playType.name == "片段播放"?true:false} size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
                         <span className="text"><FormattedMessage id='mediaPublish.to'/></span>
-                        <TimePicker size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
+                        <TimePicker disabled={property.playType.name == "片段播放"?true:false} size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
                         <span className={prompt.clipsRage ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
-                </div>)
-            }
                 </div>
-            <div className="form-group volume">
-                <label className="control-label">{property.volume.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.volume.name}
-                        onChange={event => this.onChange("volume", event)}>
-                        {
-                            property.volume.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
+            </div> 
+            <div className="row">
+                <div className="form-group pull-right">
+                    <label className="control-label">{property.volume.title}</label>
+                    <div className="input-container input-w-2">
+                        <select className="form-control" value={property.volume.name}
+                            onChange={event => this.onChange("volume", event)}>
+                            {
+                                property.volume.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
                 </div>
             </div>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerVideoAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerVideoAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
