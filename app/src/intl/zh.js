@@ -301,6 +301,8 @@ export default {
         'mediaPublish.hourHandColor':'时针颜色',
         'mediaPublish.minuteHandColor':'分针颜色',
         'mediaPublish.secondHandColor':'秒针颜色',
+        'mediaPublish.timingPlay':'定时插播',
+        'mediaPublish.pauseSign':'暂停标志',
 
 
         //以前的

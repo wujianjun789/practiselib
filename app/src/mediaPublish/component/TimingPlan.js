@@ -14,9 +14,11 @@ import { NameValid, numbersValid } from '../../util/index';
 
 import {getPlayerById} from '../../api/mediaPublish';
 
+import { FormattedMessage, injectIntl, FormattedDate } from 'react-intl';
+
 import moment from 'moment';
 import lodash from 'lodash';
-export default class TimingPlan extends PureComponent{
+class TimingPlan extends PureComponent{
     constructor(props){
         super(props);
         const {name="", timingList= [{ id: 1, startTime: moment(), startDate: moment(), endDate: moment(), appointDate: false, week: [1, 2, 5] },
@@ -24,20 +26,20 @@ export default class TimingPlan extends PureComponent{
         this.state = {
             property: {
                 //定时插播计划
-                timingName: { key: "timingName", title: "计划名称", placeholder: '请输入名称', defaultValue:name?name:"", value: name?name:"" },
+                timingName: { key: "timingName", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:name?name:"", value: name?name:"" },
                 timingList: {
-                    key: "timingList", title: "定时插播",
+                    key: "timingList", title: this.props.intl.formatMessage({id:'mediaPublish.timingPlay'}),
                     list:timingList?DeepCopy(timingList):[],
                     index: 0, id: 1,
                     defaultList:timingList?timingList:[],
                     sort: { list: [{ id: 1, name: "时间排序" }, { id: 2, name: "日期排序" }], index: 0, name: "时间排序" },
                 },
-                timingPlayMode: { key: "timingPlayMode", title: "播放方式", list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }],
+                timingPlayMode: { key: "timingPlayMode", title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }],
                     defaultIndex: 0, index: 0, name: "按次播放" },
-                timingPlayModeCount: { key: "timingPlayModeCount", title: "播放次数", placeholder: '次',active: true,
+                timingPlayModeCount: { key: "timingPlayModeCount", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}),active: true,
                     defaultValue:playModeCount?playModeCount:"", value: playModeCount?playModeCount:"",
                     defaultValue2:playTimeCount?playTimeCount:"", value2: playTimeCount?playTimeCount:""},
-                timingPause: { key: "timingPause", title: "暂停标志", list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }],
+                timingPause: { key: "timingPause", title: this.props.intl.formatMessage({id:'mediaPublish.pauseSign'}), list: [{ id: '1', name: '暂停' }, { id: '2', name: '不暂停' }],
                     defaultIndex: 0,index: 0, name: "暂停" },
             },
             prompt: {
@@ -236,14 +238,14 @@ export default class TimingPlan extends PureComponent{
             const curIndex = value.target.selectedIndex;
             console.log("correct", curIndex);
             let title = "播放次数";
-            let placeholder = '次';
+            let placeholder = this.props.intl.formatMessage({id:'mediaPublish.number'});
             let active = true;
             let updateId =  "timingPlayModeCount";
             let prompt = false;
             switch (curIndex) {
                 case 0:
                     title = "播放次数";
-                    placeholder = "次";
+                    placeholder = this.props.intl.formatMessage({id:'mediaPublish.number'});
                     if(!numbersValid(this.state.property.timingPlayModeCount.value)){
                         prompt = true;
                     }
@@ -301,7 +303,7 @@ export default class TimingPlan extends PureComponent{
                            htmlFor={property.timingName.key}>{property.timingName.title}</label>
                     <div className="input-container">
                         <input type="text" className="form-control" placeholder={property.timingName.placeholder} value={property.timingName.value} onChange={event => this.onChange("timingName", event)} />
-                        <span className={prompt.timingName ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.timingName ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
@@ -320,8 +322,8 @@ export default class TimingPlan extends PureComponent{
                                         </option>
                                     })}
                             </select>
-                            <button className="btn btn-primary timing-sort-add" onClick={() => { this.timingPlanClick('sort-add') }}>添加</button>
-                            <button className="btn btn-gray timing-sort-edit" onClick={() => { this.timingPlanClick('sort-edit') }}>编辑</button>
+                            <button className="btn btn-primary timing-sort-add" onClick={() => { this.timingPlanClick('sort-add') }}><FormattedMessage id='button.add'/></button>
+                            <button className="btn btn-gray timing-sort-edit" onClick={() => { this.timingPlanClick('sort-edit') }}><FormattedMessage id='button.edit'/></button>
                         </div>
                         <div className="edit-body">
                             <ul>
@@ -363,7 +365,7 @@ export default class TimingPlan extends PureComponent{
                     <div className={"input-container "}>
                         <input type="text" className={"form-control "} htmlFor={property.timingPlayModeCount.key} placeholder={property.timingPlayModeCount.placeholder} maxLength="8"
                                value={property.timingPlayMode.index==0?property.timingPlayModeCount.value:property.timingPlayModeCount.value2} onChange={event => this.onChange("timingPlayModeCount", event)} />
-                        <span className={prompt.timingPlayModeCount ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                        <span className={prompt.timingPlayModeCount ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
             </div>
@@ -386,9 +388,11 @@ export default class TimingPlan extends PureComponent{
                 </div>
             </div>
             <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.timingPlanClick('apply') }}>应用</button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.timingPlanClick('reset') }}>重置</button>
+                <button className="btn btn-primary pull-right" onClick={() => { this.timingPlanClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
+                <button className="btn btn-gray pull-right" onClick={() => { this.timingPlanClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }
 }
+
+export default injectIntl(TimingPlan);
