@@ -40,6 +40,13 @@ export default {
         'button.apply': '应用',
         'button.close':'关闭',
 
+        //用户中心
+        'update.password':'修改密码',
+        'exit':'退出管理系统',
+        'sure.exit':'确认退出？',
+        'new.password':'新密码',
+        'old.password':'旧密码',
+
         //地图
         'map.location':'地图位置',
         'map.lng':'经度',

@@ -3,7 +3,7 @@ import Panel from './Panel';
 import PanelFooter from './PanelFooter';
 import InputCheck from './InputCheck';
 import {PassWordValid} from '../util/index';
-
+import {FormattedMessage} from 'react-intl';
 export default class AlterPwPopup extends PureComponent {
     constructor(props) {
         super(props);
@@ -53,16 +53,16 @@ export default class AlterPwPopup extends PureComponent {
                     checked = 'success';
                 } else {
                     checked = 'fail';
-                    reminder = '密码只能为字母、数字';
+                    reminder = 'password.error';
                 }
                 break;
             case 'repPw':
                 if( !PassWordValid(this.state[id]) ) {
                     checked = 'fail';
-                    reminder = '密码只能为字母、数字';
+                    reminder = 'password.error';
                 } else if ( this.state.newPw !== this.state.repPw ) {
                     checked = 'fail';
-                    reminder = '两次密码不一致';
+                    reminder = 'password.not.same';
                 } else {
                     checked = 'success';
                 }
@@ -92,13 +92,13 @@ export default class AlterPwPopup extends PureComponent {
         let {className=''} = this.props;
         let {oldPw, newPw, repPw, checkStatus: {oldPw:_oldPw, newPw: _newPw, repPw: _repPw}} = this.state;
         let _disabled = this.isSubmitBtnDisabled();
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, _disabled]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
-        return <Panel className={className} title='修改密码'  footer={footer} closeBtn={true} closeClick={this.onCancel}>
-            <InputCheck label='旧密码' id='oldPw' type='password' placeholder='输入旧密码' value={oldPw} 
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, _disabled]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        return <Panel className={className} title={<FormattedMessage id='update.password'/>}  footer={footer} closeBtn={true} closeClick={this.onCancel}>
+            <InputCheck label='old.password' id='oldPw' type='password' value={oldPw} 
                 checked={_oldPw.checked} reminder={_oldPw.reminder} onBlur={this.checkOut} onFocus={this.onFocus} onChange={this.onChange}/>
-            <InputCheck label='新密码' id='newPw' type='password' placeholder='输入新密码' value={newPw} 
+            <InputCheck label='new.password' id='newPw' type='password' value={newPw} 
                 checked={_newPw.checked} reminder={_newPw.reminder} onBlur={this.checkOut} onFocus={this.onFocus} onChange={this.onChange}/>
-            <InputCheck label='重复密码' id='repPw' type='password' placeholder='请再次输入密码' value={repPw} 
+            <InputCheck label='permission.repassword' id='repPw' type='password' value={repPw} 
                 checked={_repPw.checked} reminder={_repPw.reminder} onBlur={this.checkOut} onFocus={this.onFocus} onChange={this.onChange}/>
         </Panel>
     }
