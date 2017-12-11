@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {loginHandler} from '../action/index'
 
+import {FormattedMessage} from 'react-intl';
+
 import '../../../public/styles/login.less';
 import {getCookie} from '../../util/cache';
 import {getLanguage} from '../../util/index';
@@ -114,7 +116,7 @@ console.log(language);
                 <div className="container-mid">
                     <div className="bg-cover"></div>
                     <div className="login-right pull-right">
-                        <p>用户登录</p>
+                        <p><FormattedMessage id="login.form.title"/></p>
                         <div className="form-group has-feedback">
                             <input id = 'username' type="text" className="form-control" value={this.state.user.username} onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
                             <span className = "login_user form-control-feedback"></span>
@@ -123,8 +125,8 @@ console.log(language);
                             <input id = 'password' type="password" className="form-control" value={this.state.user.password} onFocus={this.onFocus} onChange = {(event) => this.onChange('password',event.target.value)}/>
                             <span className = "login_password form-control-feedback"></span>
                         </div>
-                        <p style={style}>用户名或密码错误</p>
-                        <button type="button" className="btn btn-block btn-login" onClick={this.handleClick}>登录</button>
+                        <p style={style}><FormattedMessage id="login.alert"/></p>
+                        <button type="button" className="btn btn-block btn-login" onClick={this.handleClick}><FormattedMessage id="login.button"/></button>
                     </div>
                 </div>
                 <footer>{language=="zh"?"Copyright © 2018 上海三思电子工程有限公司":"Copyright © 2018 Shanghai Sansi Technology Co.,Ltd"}</footer>

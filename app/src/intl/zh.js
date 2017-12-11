@@ -73,6 +73,10 @@ export default {
         //删除弹框
         'delete.user':'是否删除选中用户？',
         'delete.device':'是否删除选中设备？',        
+//登录
+        'login.form.title':'用户登录',
+        'login.button':'登录',
+        'login.alert':"用户名或密码错误",
 
         //首页
         'app.title':'智慧路灯管理系统',

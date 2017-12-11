@@ -73,6 +73,10 @@ export default {
         //删除弹框
         'delete.user': 'Are you sure to delete the seleted user ?',
         'delete.device': 'Are you sure to delete the seleted device ?',
+//登录
+        'login.form.title':'User Login',
+        'login.button':'Login',
+        'login.alert':"Error Incorrect username or password",
 
         //首页
         'app.title': 'Smart Light Manage System',
