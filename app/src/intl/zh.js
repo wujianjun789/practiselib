@@ -99,7 +99,10 @@ export default {
         'domain.list': '列表模式',
         'domain.topology': '拓扑图',
         'domain.property': '域属性',
-
+        'domain.name':'域名称',
+        'domain.lng':'经度',
+        'domain.lat':'纬度',
+        'domain.superior':'上级域',
         //权限管理
         'permission.username':'用户名称',
         'permission.lastLoginDate':'最后登录时间',
