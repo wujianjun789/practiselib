@@ -80,7 +80,6 @@ export class Login extends Component{
     render() {
         const {language} = this.state;
         const style = this.state.style?this.state.style:{ visibility: 'hidden' };
-console.log(language);
         return (
             <div className="container-login" onKeyDown={this.onKeyDown}>
                 <header>

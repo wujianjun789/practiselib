@@ -20,7 +20,6 @@ export function getLanguage() {
             }
         }
     }
-console.log(language);
     return language;
 }
 
