@@ -61,7 +61,7 @@ export class App extends Component{
                     <UserCenter />
                     <LanguageSwitch/>
                     <div className="header-right clearfix">
-                        <span className="name">{this.props.intl.formatMessage({id:name})}</span>
+                        <span className="name">{/*this.props.intl.formatMessage({id:name})*/'智慧路灯管理系统'}</span>
                     </div>
                 </div>
                 <div className="cont">
