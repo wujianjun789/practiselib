@@ -240,7 +240,7 @@ class PlayerText extends PureComponent {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label>{property.wordSpacing.title}</label>
+                    <label title={property.wordSpacing.title}>{property.wordSpacing.title}</label>
                     <div className="input-container input-w-2">
                         <input type="text" className="form-control"
                             placeholder={property.wordSpacing.placeholder} maxLength="8"
