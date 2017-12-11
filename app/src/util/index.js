@@ -5,21 +5,22 @@ import { getLocalStorage, setLocalStorage} from './cache'
 const _ = require('lodash');
 let language = "";
 export function getLanguage() {
-    // if (!language) {
-    //     language = navigator.language;
-    // }
-    //
-    // if (!language) {
-    //     language = navigator.browserLanguage;
-    // }
-    //
-    // if (language) {
-    //     let lans = language.split('-')
-    //     if (lans.length > 1) {
-    //         language = lans[0]
-    //     }
-    // }
     language = getLocalStorage("appLanguage");
+    if(!language) {
+        language = navigator.language;
+
+        if (!language) {
+            language = navigator.browserLanguage;
+        }
+
+        if (language) {
+            let lans = language.split('-')
+            if (lans.length > 1) {
+                language = lans[0]
+            }
+        }
+    }
+console.log(language);
     return language;
 }
 

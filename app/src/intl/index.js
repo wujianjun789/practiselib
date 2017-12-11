@@ -1,11 +1,12 @@
 import enLocaleData from 'react-intl/locale-data/en';
 import zhLocaleData from 'react-intl/locale-data/zh';
 import { addLocaleData } from 'react-intl';
+import {getLanguage} from '../util/index'
 import { getLocalStorage, setLocalStorage} from '../util/cache'
 addLocaleData(enLocaleData);
 addLocaleData(zhLocaleData);
 const intl = {
-    defaultLocale: 'zh',
+    defaultLocale: getLanguage(),
 }
 function getIntl(lang) {
     intl.locale = lang.locale;
@@ -14,7 +15,7 @@ function getIntl(lang) {
 }
 export function getDefaultIntl(cb) {
     let appLanguage = getLocalStorage("appLanguage");
-    let newLanguage = appLanguage || 'zh';
+    let newLanguage = appLanguage || intl.defaultLocale;
     setLocalStorage("appLanguage", newLanguage);
     getTargetIntl(newLanguage, cb);
 }

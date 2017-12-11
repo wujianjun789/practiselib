@@ -8,10 +8,12 @@ import {loginHandler} from '../action/index'
 
 import '../../../public/styles/login.less';
 import {getCookie} from '../../util/cache';
+import {getLanguage} from '../../util/index';
 export class Login extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            language: 'en',
             style: { visibility: 'hidden' },
             user: { 
                 username: '',
@@ -37,6 +39,9 @@ export class Login extends Component{
     //     if (this.changeHack) 
     //         this.refs.username.removeEventListener('change', this.changeHack);
     // }
+    componentWillMount(){
+        this.setState({language:getLanguage()});
+    }
 
     onChange(id,value){
         this.setState({user:Object.assign({},this.state.user,{[id]:value})});
@@ -71,8 +76,9 @@ export class Login extends Component{
     }
     
     render() {
+        const {language} = this.state;
         const style = this.state.style?this.state.style:{ visibility: 'hidden' };
-
+console.log(language);
         return (
             <div className="container-login" onKeyDown={this.onKeyDown}>
                 <header>
@@ -121,7 +127,7 @@ export class Login extends Component{
                         <button type="button" className="btn btn-block btn-login" onClick={this.handleClick}>登录</button>
                     </div>
                 </div>
-                <footer>Copyright © 2017 SANSITECH.All rights reserverd.</footer>
+                <footer>{language=="zh"?"Copyright © 2018 上海三思电子工程有限公司":"Copyright © 2018 Shanghai Sansi Technology Co.,Ltd"}</footer>
             </div>
         )
     }
