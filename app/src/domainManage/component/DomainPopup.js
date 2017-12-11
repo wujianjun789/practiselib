@@ -36,10 +36,14 @@ export default class DomainPopup extends PureComponent {
             lat: lat,
             prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:""),
             prompt:{
-                domainName:!Boolean(domainName),
-                lng: !Boolean(lng),
-                lat: !Boolean(lat)
-            }
+                // domainName:Boolean(domainName),
+                // lng: Boolean(lng),
+                // lat: Boolean(lat)
+                domainName:false,
+                lng: false,
+                lat: false
+            },
+            addFirstTime:this.props.idAdd//如果是add并且是第一次加载页面，不提示非法输入
         }
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -121,10 +125,7 @@ export default class DomainPopup extends PureComponent {
             }
         }
 
-        // 'domain.name':'域名称',
-        // 'domain.lng':'经度',
-        // 'domain.lat':'纬度',
-        // 'domain.superior':'上级域',
+            
 
         return <div className="domain-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
