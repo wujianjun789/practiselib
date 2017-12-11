@@ -1,139 +1,32 @@
+@default-background-color: #495264;
+@default-border-color: #D6DBDF;
+
 #digitalClock {
-  padding-left: 20px;
-  .notice{
-    color: #FF5C68;
-    line-height: 14px;
-    font-size: 10px;
-    height: 14px;
-    margin-top: 5px;
-    margin-left: 20px;
-  }
-  .show{
-    display: inline-block;
-  }
-  .hidden{
-    display: none;
-  }
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
     margin: 0;
   }
-  ul {
-    select {
-      width: 180px;
-      height: 40px;
-      margin-left: 10px;
-      outline: none;
-      font-weight: normal;
+
+  footer{
+    text-align: right;
+    border-top: 1px solid @default-border-color;
+    padding-top: 20px;
+    #reset-btn {
+      margin-right: 20px;
+      border-color: @default-background-color;
+      background-color: @default-background-color;
     }
-    input {
-      margin-left: 10px;
-      font-weight: normal;
-      height: 40px;
-    }
-    li {
-      margin: 30px 0;
-    }
-    li:first-child{
-      margin-top: 0px;
-    }
-    li:nth-child(6) {
-      margin-bottom: 0px;
-    }
-    li:first-child,li:nth-child(3){
-      display: flex;
-      justify-content:flex-start;
-      div:first-child {
-        font-size: 14px;
-        line-height: 40px;
-        font-weight: bold;
-      }
-      .input_form {
-        input {
-          height: 40px;
-          width: 574px;
-          outline: none;
-        }
-        input:focus {
-          background-color: white;
-        }
-        div {
-          color: red;
-        }
-      }
-    }
-    li:nth-child(2) {
-      margin-bottom: 16px;
-      >div:first-child{
-        >div:first-child{
-          width: 56px;
-          text-align: right;
-        }
-      }
-    }
-    li:nth-child(2), li:nth-child(6) {
-      input[type='text'], input[type='number']{
-        width: 180px;
-        //font-weight: normal;
-      }
-      input[type='number']::-webkit-input-placeholder{
-        color: #B3B3B3;
-        font-size: 14px;
-      }
-      input[type='checkbox']{
-        margin-top: 0px;
-        height: 40px;
-        background-color: white;
-        outline: none;
-      }
-    }
-    li:nth-child(2), li:nth-child(4) {
-      .color-picker{
-        height: 40px;
-        width: 40px;
-        margin-left: 10px;
-        border: 1px solid red;
-      }
-    }
-    li:nth-child(2), li:nth-child(4), li:nth-child(5), li:nth-child(6){
-      display: flex;
-      justify-content: flex-start;
-      >div{
-        display: flex;
-        justify-content: flex-start;
-        font-size: 14px;
-        line-height: 40px;
-        font-weight: bold;
-      }
-    }
-    li:nth-child(2), li:nth-child(4),li:nth-child(6) {
-      > div:nth-child(2), > div:nth-child(3) {
-        margin-left: 20px;
-      }
-    }
-    li:nth-child(3){
-      margin-top: 0px;
-      margin-bottom: 16px;
-    }
-    li:nth-child(4){
-      margin-top: 0px;
-    }
-    li:nth-child(7) {
-      border-top: 1px solid #D6DBDF;
-      > div{
-        float: right;
-        margin: 20px 0px;
-        button:first-child{
-          margin-right: 20px;
-          background-color: #495264;
-          border-color: #495264;
-        }
-      }
-    }
-    .sketch-picker{
-      position: relative;
-      right: 223px;
-    }
+  }
+
+  .bgColor-pick{
+   position: absolute;
+   top:160px;
+   right:123px;
+  }
+  .fontColor-pick{
+    position: absolute;
+    top:320px;
+    right: 123px;
   }
 }

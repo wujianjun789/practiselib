@@ -184,82 +184,134 @@ class DigitalClock extends Component {
      const dateFormat = _propertyOptions[_propertyArray.indexOf('dateFormat')];
      return(
        <div className='pro-container digitalClock' id='digitalClock'>
-        <ul>
-          <li>
-            <div>{this.props.intl.formatMessage({id:property.materialName})}</div>
-            <div className='input_form'>
-              <input className='form-control' type='text' value={data.name} disabled/>
+          <div className='row'>
+            <div className='form-group'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.materialName})}
+              </label>
+              <div className='input-container input-w-1'>
+                <input className='form-control' type='text' value={data.name} disabled/>
+              </div>
             </div>
-          </li>
-          <li>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.timeZone})}</div>
+          </div>
+
+          <div className='row'>
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.timeZone})}
+                </label>
+              <div className='input-container input-w-3'>
                 {timeZone}
+              </div>
             </div>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.playTime})}</div>
-              <div>
+
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.playTime})}
+              </label>
+              <div className='input-container input-w-3'>
                 <input className='form-control' type='number' placeholder='s' onChange={(e) => {this.handleDataChange(e, '', 'playTime')}} value={data.playTime}/>
-                <div className='notice'><span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span></div>
+                <span className='prompt'>
+                  <span className={`${options.playTime_noticeShow === true ? 'show' : 'hidden'}`}>请输入播放时间</span>
+                </span>
               </div>
             </div>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.bgColor})}</div>
-              <div className='color-picker' id='bgColor' onClick={() => {this.handleColorPicker('bgColor')}} style={{backgroundColor:data.bgColor,borderColor:data.bgColor}}>
-                  {colorPicker.bgColor ? <SketchPicker color={data.bgColor} onChange={(color) => {this.handleColorChange('bgColor', color)} }/> : null}
+
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.bgColor})}
+              </label>
+              <div className='color-picker input-container input-w-3' id='bgColor' onClick={() => {this.handleColorPicker('bgColor')}} style={{backgroundColor:data.bgColor,borderColor:data.bgColor}}>
+
               </div>
             </div>
-          </li>
-          <li>
-            <div>{this.props.intl.formatMessage({id:property.textContent})}</div>
-            <div className='input_form'>
-              <input className='form-control' type='text' onChange={(e) => {this.handleDataChange(e, '', 'textContent')}} value={data.textContent}/>
-              <div className='notice'><span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入文字内容</span></div>
+            
+          </div>
+
+          <div className='row'>
+            <div className='form-group'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.textContent})}
+              </label>
+              <div className='input-container input-w-1'>
+                <input className='form-control' type='text' onChange={(e) => {this.handleDataChange(e, '', 'textContent')}} value={data.textContent}/>
+                <span className='prompt'>
+                  <span className={`${options.textContent_noticeShow === true ? 'show' : 'hidden'}`}>请输入文字内容</span>
+                </span>
+              </div>
             </div>
-          </li>
-          <li>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.fontFamily})}</div>
+          </div>
+
+          <div className='row'>
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.fontFamily})}
+              </label>
+              <div className='input-container input-w-3'>
                 {fontFamily}
-            </div>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.fontSize})}</div>
-                {fontSize}
-            </div>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.fontColor})}</div>
-              <div className='color-picker' id='fontColor' onClick={() => {this.handleColorPicker('fontColor')}} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
-                  {colorPicker.fontColor ? <SketchPicker color={data.fontColor} onChange={color => {this.handleColorChange('fontColor', color)} }/> : null}
               </div>
             </div>
-          </li>
-          <li>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.locationSet})}</div>
-                {location}
+            
+            <div className='form-group margin-right-1'> 
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.fontSize})}
+              </label>
+              <div className='input-container input-w-3'>
+                {fontSize}
+              </div>
             </div>
-          </li>
-          <li>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.dateFormat})}</div>
-                {dateFormat}
+
+            <div className='form-group'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.fontColor})}
+              </label>
+              <div className='color-picker input-container input-w-3' id='fontColor' onClick={() => {this.handleColorPicker('fontColor')}} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
+                  
+              </div>
             </div>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.timeFormat})}</div>
-                {timeFormat}
+          </div>
+
+          <div className='row'>
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.locationSet})}
+              </label>
+              <div className='input-container input-w-3'>{location}</div>
             </div>
-            <div>
-              <div>{this.props.intl.formatMessage({id:property.singleShow})}</div>
-              <div><input type='checkbox' checked={data.singleShow} onClick={this.handleSingleShow}/></div>
+          </div>
+
+          <div className='row'>
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>
+                {this.props.intl.formatMessage({id:property.dateFormat})}
+              </label>
+              <div className='input-container input-w-3'>{dateFormat}</div>
             </div>
-          </li>
-          <li>
-            <div>
-              <button className='btn btn-primary' onClick={this.resetData}>{this.props.intl.formatMessage({id:property.resetBtn})}</button>
-              <button className='btn btn-primary' onClick={this.submitData}>{this.props.intl.formatMessage({id:property.confirmBtn})}</button>
+
+            <div className='form-group margin-right-1'>
+              <label className='form-label'>{this.props.intl.formatMessage({id:property.timeFormat})}</label>
+              <div className='input-container input-w-3'>{timeFormat}</div>
             </div>
-          </li>
-        </ul>
+
+            <div className='form-group'>
+              <label className='form-label'>{this.props.intl.formatMessage({id:property.singleShow})}</label>
+              <div className='input-container input-w-3'>
+                <input type='checkbox' checked={data.singleShow} onClick={this.handleSingleShow}/>
+              </div>
+            </div>
+          </div>
+
+          <footer>
+              <button id='reset-btn' className='btn btn-primary' onClick={this.resetData}>{this.props.intl.formatMessage({id:property.resetBtn})}</button>
+              <button id='confirm-btn' className='btn btn-primary' onClick={this.submitData}>{this.props.intl.formatMessage({id:property.confirmBtn})}</button>
+          </footer>
+
+                <div className='bgColor-pick'>
+                  {colorPicker.bgColor ? <SketchPicker color={data.bgColor} onChange={(color) => {this.handleColorChange('bgColor', color)} }/> : null}
+                </div>
+                <div className='fontColor-pick'>
+                  {colorPicker.fontColor ? <SketchPicker color={data.fontColor} onChange={color => {this.handleColorChange('fontColor', color)} }/> : null}
+                </div>
        </div>
      )
    }

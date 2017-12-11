@@ -42,7 +42,6 @@ class VirtualClock extends Component {
         split_color: '#778899',
         date_color: '#228877',
         weekend_color: '#445533',
-        weekend_color: '#445533',
         hour_color: '#0C80F3',
         minute_color: '#29E629',
         second_color: '#E207E2',
@@ -270,7 +269,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.bgColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' id='bg_color' onClick={() => { this.handleColorPicker('bg_color') }} style={{ backgroundColor: data.bg_color, borderColor: data.bg_color }}>
-              {colorPicker.bg_color ? <SketchPicker color={data.bg_color} onChange={(color) => { this.handleColorChange('bg_color', color) }} /> : null}
+              
             </div>
           </div>
         </div>
@@ -348,7 +347,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.timeScaleColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('scale_color') }} style={{ backgroundColor: data.scale_color, borderColor: data.scale_color }}>
-              {colorPicker.scale_color ? <SketchPicker color={data.scale_color} onChange={color => { this.handleColorChange('scale_color', color) }} /> : null}
+              
             </div>
           </div>
         </div>
@@ -410,7 +409,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.markingColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('split_color') }} style={{ backgroundColor: data.split_color, borderColor: data.split_color }}>
-              {colorPicker.split_color ? <SketchPicker color={data.split_color} onChange={color => { this.handleColorChange('split_color', color) }} /> : null}
+             
             </div>
           </div>
 
@@ -459,7 +458,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.dateColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('date_color') }} style={{ backgroundColor: data.date_color, borderColor: data.date_color }}>
-              {colorPicker.date_color ? <SketchPicker color={data.date_color} onChange={color => { this.handleColorChange('date_color', color) }} /> : null}
+              
             </div>
           </div>
         </div>
@@ -488,7 +487,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.weekColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('weekend_color') }} style={{ backgroundColor: data.weekend_color, borderColor: data.weekend_color }}>
-              {colorPicker.weekend_color ? <SketchPicker color={data.weekend_color} onChange={color => { this.handleColorChange('weekend_color', color) }} /> : null}
+              
             </div>
           </div>
         </div>
@@ -499,7 +498,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.hourHandColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('hour_color') }} style={{ backgroundColor: data.hour_color, borderColor: data.hour_color }}>
-              {colorPicker.hour_color ? <SketchPicker color={data.hour_color} onChange={color => { this.handleColorChange('hour_color', color) }} /> : null}
+              
             </div>
           </div>
           <div className='form-group'>
@@ -507,7 +506,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.minuteHandColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('minute_color') }} style={{ backgroundColor: data.minute_color, borderColor: data.minute_color }}>
-              {colorPicker.minute_color ? <SketchPicker color={data.minute_color} onChange={color => { this.handleColorChange('minute_color', color) }} /> : null}
+              
             </div>
           </div>
           <div className='form-group'>
@@ -515,7 +514,7 @@ class VirtualClock extends Component {
               <FormattedMessage id='mediaPublish.secondHandColor' />
             </label>
             <div className='color-picker input-container input-s-w-3' onClick={() => { this.handleColorPicker('second_color') }} style={{ backgroundColor: data.second_color, borderColor: data.second_color }}>
-              {colorPicker.second_color ? <SketchPicker color={data.second_color} onChange={color => { this.handleColorChange('second_color', color) }} /> : null}
+              
             </div>
           </div>
         </div>
@@ -525,6 +524,39 @@ class VirtualClock extends Component {
             <button id='confirm-btn' className='btn btn-primary' onClick={this.submitData}><FormattedMessage id='mediaPublish.apply' /></button>
           </div>
         </footer>
+        
+        <div className='bg_color-pick'>
+          {colorPicker.bg_color ? <SketchPicker color={data.bg_color} onChange={(color) => { this.handleColorChange('bg_color', color) }} /> : null}
+        </div>
+        
+        <div className='scale_color-pick'>
+          {colorPicker.scale_color ? <SketchPicker color={data.scale_color} onChange={color => { this.handleColorChange('scale_color', color) }} /> : null}
+        </div>
+
+        <div className='split_color-pick'>
+           {colorPicker.split_color ? <SketchPicker color={data.split_color} onChange={color => { this.handleColorChange('split_color', color) }} /> : null}
+        </div>
+
+        <div className='date_color-pick'>
+          {colorPicker.date_color ? <SketchPicker color={data.date_color} onChange={color => { this.handleColorChange('date_color', color) }} /> : null}
+        </div>
+
+        <div className='weekend_color-pick'>
+          {colorPicker.weekend_color ? <SketchPicker color={data.weekend_color} onChange={color => { this.handleColorChange('weekend_color', color) }} /> : null}
+        </div>
+
+        <div className='hour_color-pick'>
+          {colorPicker.hour_color ? <SketchPicker color={data.hour_color} onChange={color => { this.handleColorChange('hour_color', color) }} /> : null}
+        </div>
+
+        <div className='minute_color-pick'>
+          {colorPicker.minute_color ? <SketchPicker color={data.minute_color} onChange={color => { this.handleColorChange('minute_color', color) }} /> : null}
+        </div>
+
+        <div className='second_color-pick'>
+          {colorPicker.second_color ? <SketchPicker color={data.second_color} onChange={color => { this.handleColorChange('second_color', color) }} /> : null}
+        </div>
+
       </div>
     )
   }
