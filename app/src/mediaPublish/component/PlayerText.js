@@ -167,10 +167,13 @@ class PlayerText extends PureComponent {
                     <div className='input-container'>
                         <ColorPicker onChange={value => this.onChange('bgColor', value)} value={property.bgColor.value} />
                     </div>
+                </div>
+                <div className='form-group'>
                     <label>{property.bgTransparent.title}</label>
                     <div className='input-container'>
                         <input type='checkbox' onClick={this.handleBgTransparent} checked={property.bgTransparent.value} />
                     </div>
+
                 </div>
             </div>
             <div class='row'>
