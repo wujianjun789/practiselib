@@ -252,7 +252,7 @@ class PlayerText extends PureComponent {
             </div>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.playerTextClick('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerTextClick('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
+                <button className="btn btn-gray pull-right margin-right-1" onClick={() => { this.playerTextClick('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
             </div>
         </div>
     }
