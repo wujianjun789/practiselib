@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import PanelFooter from '../../components/PanelFooter.js';
 import _digitalClock from '../config/digitalClock.js';
 import { SketchPicker, BlockPicker } from 'react-color';
+import ColorPicker from '../../components/ColorPicker';
 import '../../../public/styles/digitalClock.less';
 
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
@@ -122,7 +123,7 @@ class DigitalClock extends Component {
     this.setState({
       data:{
         ...this.state.data,
-        [colorPicker_id]: color.hex
+        [colorPicker_id]: color
       }
     });
   }
@@ -221,8 +222,8 @@ class DigitalClock extends Component {
               <label className='form-label'>
                 {this.props.intl.formatMessage({id:property.bgColor})}
               </label>
-              <div className='color-picker input-container input-w-3' id='bgColor' onClick={() => {this.handleColorPicker('bgColor')}} style={{backgroundColor:data.bgColor,borderColor:data.bgColor}}>
-
+              <div className='color-picker input-container input-w-3' id='bgColor'>
+                <ColorPicker value={data.bgColor} onChange={(color) => {this.handleColorChange('bgColor', color)}}/>
               </div>
             </div>
             
@@ -265,8 +266,8 @@ class DigitalClock extends Component {
               <label className='form-label'>
                 {this.props.intl.formatMessage({id:property.fontColor})}
               </label>
-              <div className='color-picker input-container input-w-3' id='fontColor' onClick={() => {this.handleColorPicker('fontColor')}} style={{backgroundColor:data.fontColor,borderColor:data.fontColor}}>
-                  
+              <div className='color-picker input-container input-w-3'>
+                   <ColorPicker value={data.fontColor} onChange={(color) => {this.handleColorChange('fontColor', color)}}/>
               </div>
             </div>
           </div>
@@ -305,13 +306,6 @@ class DigitalClock extends Component {
               <button id='reset-btn' className='btn btn-primary' onClick={this.resetData}>{this.props.intl.formatMessage({id:property.resetBtn})}</button>
               <button id='confirm-btn' className='btn btn-primary' onClick={this.submitData}>{this.props.intl.formatMessage({id:property.confirmBtn})}</button>
           </footer>
-
-                <div className='bgColor-pick'>
-                  {colorPicker.bgColor ? <SketchPicker color={data.bgColor} onChange={(color) => {this.handleColorChange('bgColor', color)} }/> : null}
-                </div>
-                <div className='fontColor-pick'>
-                  {colorPicker.fontColor ? <SketchPicker color={data.fontColor} onChange={color => {this.handleColorChange('fontColor', color)} }/> : null}
-                </div>
        </div>
      )
    }
