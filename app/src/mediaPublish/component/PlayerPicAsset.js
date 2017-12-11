@@ -90,66 +90,72 @@ class PlayerPicAsset extends PureComponent{
     render(){
         const {property, prompt} = this.state;
         return <div className="pro-container playerPicAsset">
-            <div className="form-group">
-                <label className="control-label">{property.assetName.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control" disabled="disabled"
-                        value={property.assetName.value} />
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label">{property.assetName.title}</label>
+                    <div className="input-container input-w-1">
+                        <input type="text" className="form-control" disabled="disabled"
+                            value={property.assetName.value} />
+                    </div>
                 </div>
             </div>
-            <div className="form-group">
-                <label className="control-label">{property.displayMode.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.displayMode.name}
-                        onChange={event => this.onChange("displayMode", event)}>
-                        {
-                            property.displayMode.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label">{property.displayMode.title}</label>
+                    <div className="input-container input-w-2">
+                        <select className="form-control" value={property.displayMode.name}
+                            onChange={event => this.onChange("displayMode", event)}>
+                            {
+                                property.displayMode.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
+                </div>
+                <div className="form-group pull-right">
+                    <label className="control-label">{property.animation.title}</label>
+                    <div className="input-container">
+                        <select className="form-control input-w-2" value={property.animation.name}
+                            onChange={event => this.onChange("animation", event)}>
+                            {
+                                property.animation.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div className="form-group">
-                <label className="control-label">{property.animation.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.animation.name}
-                        onChange={event => this.onChange("animation", event)}>
-                        {
-                            property.animation.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label">{property.playDuration.title}</label>
+                    <div className="input-container input-w-2">
+                        <input type="text" className="form-control"
+                            placeholder={property.playDuration.placeholder} maxLength="8"
+                            value={property.playDuration.value}
+                            onChange={event => this.onChange("playDuration", event)} />
+                        <span className={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    </div>
                 </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-3 control-label">{property.playDuration.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control"
-                        placeholder={property.playDuration.placeholder} maxLength="8"
-                        value={property.playDuration.value}
-                        onChange={event => this.onChange("playDuration", event)} />
-                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control"
-                        placeholder={property.playSpeed.placeholder} maxLength="8"
-                        value={property.playSpeed.value}
-                        onChange={event => this.onChange("playSpeed", event)} />
-                    <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                <div className="form-group pull-right">
+                    <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
+                    <div className="input-container input-w-2">
+                        <input type="text" className="form-control"
+                            placeholder={property.playSpeed.placeholder} maxLength="8"
+                            value={property.playSpeed.value}
+                            onChange={event => this.onChange("playSpeed", event)} />
+                        <span className={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
+                    </div>
                 </div>
             </div>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerPicAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerPicAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }

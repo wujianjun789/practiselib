@@ -219,7 +219,7 @@ class DomainEditTopology extends Component{
         const {actions} = this.props;
         switch(id){
             case 'add':
-                actions.overlayerShow(<DomainPopup title={"添加域"} data={{domainId:"", domainName:"",
+                actions.overlayerShow(<DomainPopup title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                                    onConfirm={(data)=>{
@@ -251,7 +251,7 @@ class DomainEditTopology extends Component{
                     updateId = data.id;
                     name = data.name;
                 }
-                actions.overlayerShow(<DomainPopup title={"修改域属性"} data={{domainId:updateId, domainName:name,
+                actions.overlayerShow(<DomainPopup title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                                    onConfirm={(data)=>{
@@ -277,7 +277,7 @@ class DomainEditTopology extends Component{
                     let data = selectDomain.data[0];
                     curId = data.id;
                 }
-                actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中域？"}
+                actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
                                                     cancel={()=>{actions.overlayerHide()}}
                                                     confirm={()=>{deleteDomainById(curId,()=>{
                                                             actions.overlayerHide();

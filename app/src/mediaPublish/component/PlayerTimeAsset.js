@@ -79,137 +79,149 @@ class PlayerTimeAsset extends PureComponent{
         const {property, prompt} = this.state;
         console.log(property.stopDate.value)
         return <div className="pro-container playerTimeAsset">
-            <div className="form-group">
-                <label className="control-label">{property.assetName.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control" disabled="disabled"
-                        value={property.assetName.value} />
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="control-label">{property.timing.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.timing.name}
-                        onChange={event => this.onChange("timing", event)}>
-                        {
-                            property.timing.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
-                </div>
-            </div>
-            <div className="form-group">
-                <label className="control-label">{property.playDuration.title}</label>
-                <div className="input-container">
-                    <input type="text" className="form-control"
-                        placeholder={property.playDuration.placeholder} maxLength="8"
-                        value={property.playDuration.value}
-                        onChange={event => this.onChange("playDuration", event)} />
-                    <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
-                </div>
-            </div>
-            <div className='form-group'>
-                <label className='control-label'>{property.bgColor.title}</label>
-                <ColorPicker onChange={value=>this.onChange("bgColor",value)} value={property.bgColor.value}/>
-            </div>
-            <div className='form-group'>
-                    <label className='control-label'>{property.textContent.title}</label>
-                    <div className="input-container textContent">
-                        <input type="text" className="form-control"
-                            placeholder={property.textContent.placeholder}
-                            value={property.textContent.value}
-                            onChange={event => this.onChange("textContent", event)} />
+            <div className="row">
+                <div className="form-group">
+                    <label className="control-label">{property.assetName.title}</label>
+                    <div className="input-container input-w-1">
+                        <input type="text" className="form-control" disabled="disabled"
+                            value={property.assetName.value} />
                     </div>
-            </div>
-            <div className="form-group">
-                <label className="control-label">{property.fontType.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.fontType.name}
-                        onChange={event => this.onChange("fontType", event)}>
-                        {
-                            property.fontType.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
                 </div>
             </div>
-            <div className="form-group">
-                <label className="control-label">{property.fontSize.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.fontSize.name}
-                        onChange={event => this.onChange("fontSize", event)}>
-                        {
-                            property.fontSize.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
+            <div className="row">            
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.timing.title}</label>
+                    <div className="input-container input-w-3">
+                        <select className="form-control" value={property.timing.name}
+                            onChange={event => this.onChange("timing", event)}>
+                            {
+                                property.timing.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
+                </div>
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.playDuration.title}</label>
+                    <div className="input-container input-w-3">
+                        <input type="text" className="form-control"
+                            placeholder={property.playDuration.placeholder} maxLength="8"
+                            value={property.playDuration.value}
+                            onChange={event => this.onChange("playDuration", event)} />
+                        <span className={prompt.playDuration ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    </div>
+                </div>
+                <div className='form-group'>
+                    <label className='control-label'>{property.bgColor.title}</label>
+                    <ColorPicker onChange={value=>this.onChange("bgColor",value)} value={property.bgColor.value}/>
                 </div>
             </div>
-            <div className='form-group'>
-                <label className='control-label'>{property.fontColor.title}</label>
-                <ColorPicker onChange={value=>this.onChange("fontColor",value)} value={property.fontColor.value}/>
-            </div>
-            <div className="form-group">
-                <label className="control-label">{property.area.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.area.name}
-                        onChange={event => this.onChange("area", event)}>
-                        {
-                            property.area.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
+            <div className="row"> 
+                <div className='form-group'>
+                        <label className='control-label'>{property.textContent.title}</label>
+                        <div className="input-container input-w-1 textContent">
+                            <input type="text" className="form-control"
+                                placeholder={property.textContent.placeholder}
+                                value={property.textContent.value}
+                                onChange={event => this.onChange("textContent", event)} />
+                        </div>
                 </div>
             </div>
-            <div className="form-group">
-                <label className="control-label">{property.format.title}</label>
-                <div className="input-container">
-                    <select className="form-control" value={property.format.name}
-                        onChange={event => this.onChange("format", event)}>
-                        {
-                            property.format.list.map((option, index) => {
-                                let value = option.name;
-                                return <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            })}
-                    </select>
+            <div className="row"> 
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.fontType.title}</label>
+                    <div className="input-container input-w-3">
+                        <select className="form-control" value={property.fontType.name}
+                            onChange={event => this.onChange("fontType", event)}>
+                            {
+                                property.fontType.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
+                </div>
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.fontSize.title}</label>
+                    <div className="input-container input-w-3">
+                        <select className="form-control" value={property.fontSize.name}
+                            onChange={event => this.onChange("fontSize", event)}>
+                            {
+                                property.fontSize.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
+                </div>
+                <div className='form-group'>
+                    <label className='control-label'>{property.fontColor.title}</label>
+                    <ColorPicker onChange={value=>this.onChange("fontColor",value)} value={property.fontColor.value}/>
                 </div>
             </div>
-            <div className="form-group">
-                <label className="control-label" htmlFor="isRow"><FormattedMessage id='mediaPublish.singleLine'/></label>
-                <input id="isRow" type="checkbox"/>
-            </div>
-            <div className="form-group">
-                <label className="control-label">{property.stopDate.title}</label>
-                <div className="input-container datePicker">
-                    <DatePicker id="stopDate" format="YYYY-MM-DD" placeholder={property.stopDate.placeholder}
-                                defaultValue={moment()} value={property.stopDate.value} onChange={value => this.onChange('stopDate',value)} />
-                    <span className={prompt.stopDate ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+            <div className="row"> 
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.area.title}</label>
+                    <div className="input-container input-w-3">
+                        <select className="form-control" value={property.area.name}
+                            onChange={event => this.onChange("area", event)}>
+                            {
+                                property.area.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
+                </div>
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.format.title}</label>
+                    <div className="input-container input-w-3">
+                        <select className="form-control" value={property.format.name}
+                            onChange={event => this.onChange("format", event)}>
+                            {
+                                property.format.list.map((option, index) => {
+                                    let value = option.name;
+                                    return <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                })}
+                        </select>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="control-label" htmlFor="isRow"><FormattedMessage id='mediaPublish.singleLine'/></label>
+                    <input id="isRow" type="checkbox"/>
                 </div>
             </div>
-            <div className="form-group">
-                <label className="control-label">{property.stopTime.title}</label>
-                <div className="input-container timePicker">
-                    <TimePicker size="large" onChange={value => this.onChange("stopTime", value)} defaultValue={moment()} value={property.stopTime.value} placeholder={property.stopTime.placeholder}/> 
-                    <span className={prompt.stopTime ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+            <div className="row"> 
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.stopDate.title}</label>
+                    <div className="input-container input-w-2 datePicker">
+                        <DatePicker id="stopDate" format="YYYY-MM-DD" placeholder={property.stopDate.placeholder}
+                                    defaultValue={moment()} value={property.stopDate.value} onChange={value => this.onChange('stopDate',value)} />
+                        <span className={prompt.stopDate ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    </div>
+                </div>
+                <div className="form-group margin-right-1">
+                    <label className="control-label">{property.stopTime.title}</label>
+                    <div className="input-container input-w-2 timePicker">
+                        <TimePicker size="large" style={{ width: "200px" }} onChange={value => this.onChange("stopTime", value)} defaultValue={moment()} value={property.stopTime.value} placeholder={property.stopTime.placeholder}/> 
+                        <span className={prompt.stopTime ? "prompt " : "prompt hidden"}>{"请输入正确参数"}</span>
+                    </div>
                 </div>
             </div>
             <div className="row">
                 <button className="btn btn-primary pull-right" onClick={() => { this.playerTimeAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray pull-right" onClick={() => { this.playerTimeAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
+                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerTimeAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
             </div>
         </div>
     }

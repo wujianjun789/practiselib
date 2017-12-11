@@ -99,6 +99,11 @@ export default {
         'domain.list': 'domain list',
         'domain.topology': 'topology',
         'domain.property': 'domain property',
+        'domain.name':'Name',
+        'domain.lng':'Lng',
+        'domain.lat':'Lat',
+        'domain.superior':'Superior',
+
 
         //权限管理
         'permission.username': 'UserName',

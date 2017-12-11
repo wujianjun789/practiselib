@@ -19,6 +19,9 @@ import NotifyPopup from '../../common/containers/NotifyPopup'
 
 import MapView from './../../components/MapView'
 
+import {FormattedMessage,injectIntl} from 'react-intl';
+import { intlFormat } from '../../util/index';
+
 import {Name2Valid, latlngValid, lngValid, latValid} from '../../util/index'
 export default class DomainPopup extends PureComponent {
     constructor(props) {
@@ -33,10 +36,14 @@ export default class DomainPopup extends PureComponent {
             lat: lat,
             prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:""),
             prompt:{
-                domainName:!Boolean(domainName),
-                lng: !Boolean(lng),
-                lat: !Boolean(lat)
-            }
+                // domainName:Boolean(domainName),
+                // lng: Boolean(lng),
+                // lat: Boolean(lat)
+                domainName:false,
+                lng: false,
+                lat: false
+            },
+            addFirstTime:this.props.idAdd//如果是add并且是第一次加载页面，不提示非法输入
         }
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
@@ -118,37 +125,39 @@ export default class DomainPopup extends PureComponent {
             }
         }
 
+            
+
         return <div className="domain-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
                 <div className="row">
                     <div className="col-sm-6 col-xs-6 popup-left">
                         <div className="form-group row">
-                            <label className="fixed-width-left control-label" htmlFor="domainName">域名称：</label>
+                            <label className="fixed-width-left control-label" htmlFor="domainName"><FormattedMessage id='domain.name'/>：</label>
                             <div className="fixed-width-right">
-                                <input type="text" className={ "form-control " } id="domainName" placeholder="输入域名称" maxLength="16" value={domainName}
+                                <input type="text" className={ "form-control " } id="domainName" placeholder={intlFormat({en:'please input the name',zh:'输入域名称'})} maxLength="16" value={domainName}
                                        onChange={this.onChange}/>
-                                <span className={prompt.domainName?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                <span className={prompt.domainName?"prompt ":"prompt hidden"}>{intlFormat({en:'illegal',zh:'仅能使用字母、数字或下划线'})}</span>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label className="fixed-width-left control-label " htmlFor="lng">经　度：</label>
+                            <label className="fixed-width-left control-label " htmlFor="lng"><FormattedMessage id='domain.lng'/>：</label>
                             <div className="fixed-width-right">
-                                <input type="email" className={ "form-control " } id="lng" placeholder="输入GPS坐标" value={lng}
+                                <input type="email" className={ "form-control " } id="lng" placeholder={intlFormat({en:'please input the GPS',zh:'输入GPS坐标'})} value={lng}
                                         onChange={this.onChange}/>
-                                <span className={prompt.lng?"prompt ":"prompt hidden"}>{"经度数不合法"}</span>
+                                <span className={prompt.lng?"prompt ":"prompt hidden"}>{intlFormat({en:'illegal',zh:'经度数不合法'})}</span>
                             </div>
                         </div> 
                         <div className="form-group row">   
-                            <label className="fixed-width-left control-label" htmlFor="lat">纬　度：</label>
+                            <label className="fixed-width-left control-label" htmlFor="lat"><FormattedMessage id='domain.lat'/>：</label>
                             <div className="fixed-width-right">
-                                <input type="email" className={ "form-control " } id="lat" placeholder="输入GPS坐标" value={lat} onChange={this.onChange}/>
-                                <span className={prompt.lat?"prompt ":"prompt hidden"}>{"纬度数不合法"}</span>
+                                <input type="email" className={ "form-control " } id="lat" placeholder={intlFormat({en:'please input the GPS',zh:'输入GPS坐标'})} value={lat} onChange={this.onChange}/>
+                                <span className={prompt.lat?"prompt ":"prompt hidden"}>{intlFormat({en:'illegal',zh:'纬度数不合法'})}</span>
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label className="fixed-width-left control-label" htmlFor="prevDomain">上级域：</label>
+                            <label className="fixed-width-left control-label" htmlFor="prevDomain"><FormattedMessage id='domain.superior'/>：</label>
                             <div className="fixed-width-right">
-                                <select className="form-control" id="prevDomain" placeholder="选择上级域" value={curDomain?curDomain.name:"无"} onChange={this.onChange}>
+                                <select className="form-control" id="prevDomain" placeholder={intlFormat({en:'please input the superior domain',zh:'输入GPS坐标'})} value={curDomain?curDomain.name:intlFormat({en:'null',zh:'无'})} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }
