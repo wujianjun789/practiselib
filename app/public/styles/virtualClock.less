@@ -1,186 +1,31 @@
+@default-background-color: #495264;
+@default-border-color: #d6dbdf;
+
 #virtualClock {
-  padding-left: 20px;
-  .sketch-picker{
-    position: relative;
-    right: 223px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 500px;
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
   }
-  .color-picker{
-    height: 40px;
-    width: 40px;
-    margin-left: 10px;
-    border: 1px solid red;
-  }
-  .notice{
-    color: #FF5C68;
-    line-height: 14px;
-    font-size: 10px;
-    height: 14px;
-    margin-top: 5px;
-    margin-left: 20px;
-  }
-  .show{
-    display: inline-block;
-  }
-  .hidden{
-    display: none;
+  > div:nth-child(4), >div:nth-child(6), >div:nth-child(8){
+    border-bottom: 1px solid @default-border-color;
+  };
+
+  >div:nth-child(5), > div:nth-child(7), >div:nth-child(9){
+    padding-top: 20px;
   }
 
-  ul {
-    select {
-      width: 180px;
-      height: 40px;
-      margin-left: 10px;
-      outline: none;
-      font-weight: normal;
+  footer{
+    text-align: right;
+    border-top: 1px solid @default-border-color;
+    padding-top: 20px;
+    #reset-btn {
+      margin-right: 20px;
+      border-color: @default-background-color;
+      background-color: @default-background-color;
     }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input {
-      margin-left: 10px;
-      font-weight: normal;
-    }
-    li {
-      margin: 30px 0;
-      display: flex;
-      justify-content: flex-start;
-    }
-    li:first-child{
-      margin-top: 0px;
-    }
-    li:first-child,li:nth-child(3){
-      display: flex;
-      justify-content:flex-start;
-      div:first-child {
-        font-size: 14px;
-        line-height: 40px;
-        font-weight: bold;
-      }
-      .input_form {
-        input {
-          height: 40px;
-          width: 574px;
-          outline: none;
-        }
-        input:focus {
-          background-color: white;
-        }
-        div {
-          color: red;
-        }
-      }
-    }
-    li:nth-child(2) {
-      margin-bottom: 16px;
-      >div:first-child{
-        >div:first-child{
-          width: 56px;
-          text-align: right;
-        }
-      }
-      >div:nth-child(2){
-        .notice{
-          color: #FF5C68;
-          line-height: 14px;
-          font-size: 10px;
-          height: 14px;
-          margin-top: 5px;
-          margin-left: 20px;
-        }
-        .show{
-          display: inline-block;
-        }
-        .hidden{
-          display: none;
-        }
-      }
-    }
-    li:nth-child(2) {
-      input[type='text'], input[type='number']{
-        width: 180px;
-        //font-weight: normal;
-      }
-      // input[type='number']::-webkit-input-placeholder{
-      //   color: #B3B3B3;
-      //   font-size: 14px;
-      //   //font-weight: normal;
-      // }
-      // input[type='checkbox']{
-      //   margin-top: 0px;
-      //   height: 40px;
-      //   background-color: white;
-      //   outline: none;
-      // }
-    }
-
-    li:nth-child(2), li:nth-child(4), li:nth-child(6), li:nth-child(8), li:nth-child(9), li:nth-child(10), li:nth-child(11), li:nth-child(12){
-      display: flex;
-      justify-content: flex-start;
-      >div{
-        display: flex;
-        justify-content: flex-start;
-        font-size: 14px;
-        line-height: 40px;
-        font-weight: bold;
-      }
-    }
-    li:nth-child(2), li:nth-child(4), li:nth-child(6), li:nth-child(8), li:nth-child(9), li:nth-child(10), li:nth-child(11), li:nth-child(12) {
-      > div:nth-child(2), > div:nth-child(3) {
-        margin-left: 20px;
-      }
-    }
-    li:nth-child(3){
-      margin-top: 0px;
-    }
-    li:nth-child(4), li:nth-child(6), li:nth-child(8), li:nth-child(11){
-      padding-bottom: 30px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      border-bottom: 1px solid #D6DBDF;
-    }
-    li:nth-child(5), li:nth-child(7){
-      > div{
-        display: flex;
-        justify-content: flex-start;
-        font-size: 14px;
-        line-height: 40px;
-        font-weight: bold;
-      }
-      > div:first-child{
-        > div:first-child{
-          width: 56px;
-          text-align: right;
-        }
-      }
-      > div:nth-child(2), > div:nth-child(3) {
-        margin-left: 20px;
-      }
-      input[type='text'], input[type='number']{
-        width: 105px;
-        height: 40px;
-      }
-    }
-    li:nth-child(3), li:nth-child(5), li:nth-child(7) {
-      margin-bottom: 16px;
-    }
-    li:nth-child(12) {
-
-    }
-    li:nth-child(13) {
-      display: block;
-      > div{
-        float: right;
-        margin: 20px 0px;
-        margin-top: 0px;
-        button:first-child{
-          margin-right: 20px;
-          background-color: #495264;
-          border-color: #495264;
-        }
-      }
-    }
-
   }
 }
