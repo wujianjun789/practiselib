@@ -55,7 +55,7 @@ export class DomainEditList extends Component {
             sidebarInfoStyle:{height:"100%"}
         }
 
-        this.columns = [{id: 1, field: "name", title:intlFormat({en:'domain name',zh:'域名称'})}, {id:2, field:"parentName", title: intlFormat({en:'parentName',zh:'上级域'})}]
+        this.columns = [{id: 1, field: "name", title:intlFormat({en:'domainName',zh:'域名称'})}, {id:2, field:"parentName", title: intlFormat({en:'parentName',zh:'上级域'})}]
         this.domainList = [];
 
         this.initTreeData = this.initTreeData.bind(this);
