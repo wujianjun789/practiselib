@@ -16,7 +16,7 @@ export const statusCode = {
 }
 
 const errorCode = {
-    "http://localhost:3000/api/users/login": 1
+    [HOST_IP+"/users/login"]: 1
 }
 /**
  *  url 请求路径
