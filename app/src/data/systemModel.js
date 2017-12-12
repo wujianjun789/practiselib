@@ -29,7 +29,7 @@ export const TreeData = [
     ]
   }, {
     "id": "strategy",
-    "name": "控制策略",
+    "name": "sysOperation.control.strategy",
     "toggled": false,
     "active": true,
     "link": "/systemOperation/strategy/timeTable",
@@ -37,19 +37,19 @@ export const TreeData = [
     "children": [
       {
         "id": 'timeTable',
-        "name": "时间表",
+        "name": "app.timetable",
         "class": "icon_calendar",
         "active": false,
         "link": "/systemOperation/strategy/timeTable"
       }, {
         "id": 'sensor',
-        "name": "传感器",
+        "name": "app.sensor",
         "class": "icon_sensor",
         "active": false,
         "link": "/systemOperation/strategy/sensor"
       }, {
         "id": 'latlng',
-        "name": "经纬度",
+        "name": "app.latlng",
         "class": "icon_latlng",
         "active": false,
         "link": "/systemOperation/strategy/latlng"
@@ -58,7 +58,7 @@ export const TreeData = [
 
   }, {
     "id": "serviceMonitor",
-    "name": "服务监控",
+    "name": "sysOperation.service.monitoring",
     "toggled": false,
     "active": true,
     "link": "/systemOperation/serviceMonitor/systemRunningState",
@@ -81,7 +81,7 @@ export const TreeData = [
     ]
   }, {
     "id": "systemConfig",
-    "name": "系统配置",
+    "name": "sysOperation.system.config",
     "toggled": false,
     "active": true,
     "link": "/systemOperation/systemConfig/sysConfigSmartLight",
@@ -104,7 +104,7 @@ export const TreeData = [
     ]
   }, {
     "id": "deviceMonitor",
-    "name": "设备监控",
+    "name": "sysOperation.device.monitoring",
     "toggled": false,
     "active": true,
     "link": "/systemOperation/deviceMonitor/deviceState",
@@ -127,7 +127,7 @@ export const TreeData = [
     ]
   }, {
     "id": "deviceMaintenance",
-    "name": "设备维护",
+    "name": "sysOperation.device.maintenance",
     "toggled": false,
     "active": true,
     "link": "/systemOperation/deviceMaintenance/deviceReplace",

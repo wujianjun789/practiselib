@@ -10,6 +10,8 @@ import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
 import Page from '../../components/Page'
 
+import {injectIntl} from 'react-intl';
+
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import TimeStrategyPopup from '../component/TimeStrategyPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
@@ -30,7 +32,7 @@ class TimeStrategy extends Component{
         this.state = {
             model:'time',
             search: Immutable.fromJS({
-                placeholder: '输入策略名称',
+                placeholder: this.formatIntl('app.input.strategy.name'),
                 value: ''
             }),
             selectStrategy:{
@@ -48,8 +50,8 @@ class TimeStrategy extends Component{
         }
         this.deviceDefault = [/*"lc", "screen"*/]
         this.columns =  [
-            {id: 0, field:"name", title:"策略名称"},
-            {id: 1, field: "timeRange", title: "时间范围"}
+            {id: 0, field:"name", title:this.formatIntl('app.strategy.name')},
+            {id: 1, field: "timeRange", title: this.formatIntl('app.time.range')}
         ];
 
         this.searchChange = this.searchChange.bind(this);
@@ -65,6 +67,8 @@ class TimeStrategy extends Component{
         this.initResult = this.initResult.bind(this);
         this.initStrategyList = this.initStrategyList.bind(this);
         this.initDeviceList = this.initDeviceList.bind(this);
+
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
@@ -80,6 +84,11 @@ class TimeStrategy extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     requestSearch() {
@@ -149,7 +158,7 @@ class TimeStrategy extends Component{
             device:deviceList.options.length?deviceList.options[0]:null
         }
 
-        actions.overlayerShow(<TimeStrategyPopup title="新建策略" data={initData} deviceList={deviceList} strategyList={strategyList}
+        actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title={this.formatIntl('app.add.strategy')} data={initData} deviceList={deviceList} strategyList={strategyList}
                                                  onConfirm={(data)=>{
                                                     let weekList = data.workTime.map(day=>{
                                                             return day.get("active")?1:0
@@ -321,7 +330,7 @@ class TimeStrategy extends Component{
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button  className="btn btn-primary add-strategy" onClick={this.addHandler}>添加</button>
+                <button  className="btn btn-primary add-strategy" onClick={this.addHandler}>{this.formatIntl('button.add')}</button>
             </div>
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={data} activeId={selectDevice && selectDevice.id}
@@ -350,4 +359,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TimeStrategy);
+)(injectIntl(TimeStrategy));

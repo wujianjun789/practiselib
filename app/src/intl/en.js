@@ -4,6 +4,11 @@ export default {
         //公共
         'name': 'Name',
         'id': 'Id',
+
+        'app.year':'year',
+        'app.month':'month',
+        'app.day':'day',
+
         'app.map': 'map',
         'app.list': 'list',
         'app.control': 'control',
@@ -25,6 +30,22 @@ export default {
         'app.unit':'unit',
         'app.param':'param',
 
+        'app.timetable':'Timetable',
+        'app.sensor':'Sensor',
+        'app.latlng':'LatLng',
+        'app.time.range':'time range',
+        'app.date.range':'date range',
+        'app.date.error':'date error',
+        'app.control.device':'control device',
+
+        'app.work.day.select':'work day select',
+        'app.chart':'chart',
+        'app.set.brightness':'set brightness',
+        'app.add.node':'add node',
+        'app.please.add.timetable':'please add timetable',
+        'app.add.strategy':'new strategy',
+        '':'',
+
         //按钮
         ' ': ' ',
         'button.add': 'Add',
@@ -39,6 +60,7 @@ export default {
         'button.modify':'Modify',
         'button.apply': 'apply',
         'button.close':'Close',
+        'button.save':'Save',
 
         //用户中心
         'update.password':'Update password',
@@ -148,7 +170,17 @@ export default {
         'sysOperation.select.sensor':'Select sensor：',
         'sysOperation.label':'Label：', 
         'sysOperation.input.id':'Input id to add',
-        
+
+        'sysOperation.control.strategy':'Control Strategy',
+        'sysOperation.service.monitoring':'Service Monitoring',
+        'sysOperation.system.config':'System Config',
+        'sysOperation.device.monitoring':'Device Monitoring',
+        'sysOperation.device.maintenance':'Device Maintenance',
+        '':'',
+        '':'',
+        '':'',
+        '':'',
+        '':'',
         //智慧路灯
 
         'app.map': 'map',

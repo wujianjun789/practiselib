@@ -5,6 +5,10 @@ export default {
         'name':'名称',
         'id':'编号',
 
+        'app.year':'年',
+        'app.month':'月',
+        'app.day':'日',
+
         'app.map': '地图',
         'app.list': '列表',
         'app.control': '控制',
@@ -26,6 +30,21 @@ export default {
         'app.unit':'单位',
         'app.param':'当前参数',
 
+        'app.timetable':'时间表',
+        'app.sensor':'传感器',
+        'app.latlng':'经纬度',
+        'app.time.range':'时间范围',
+        'app.date.range':'日期范围',
+        'app.date.error':'日期错误',
+        'app.control.device':'控制设备',
+
+        'app.work.day.select':'工作日选择',
+        'app.chart':'图表',
+        'app.set.brightness':'设置亮度',
+        'app.add.node':'添加节点',
+        'app.please.add.timetable':'请添加时间亮度表',
+        'app.add.strategy':'新建策略',
+
         //按钮
         ' ':' ',
         'button.add': '添加',
@@ -39,6 +58,7 @@ export default {
         'button.modify':'修改',
         'button.apply': '应用',
         'button.close':'关闭',
+        'button.save':'保存',
 
         //用户中心
         'update.password':'修改密码',
@@ -146,6 +166,17 @@ export default {
         'sysOperation.select.sensor':'选择传感器：',
         'sysOperation.label':'标签：',
         'sysOperation.input.id':'输入编号添加',
+
+        'sysOperation.control.strategy':'控制策略',
+        'sysOperation.service.monitoring':'服务监控',
+        'sysOperation.system.config':'系统配置',
+        'sysOperation.device.monitoring':'设备监控',
+        'sysOperation.device.maintenance':'设备维护',
+        '':'',
+        '':'',
+        '':'',
+        '':'',
+        '':'',
 
         //智慧路灯
         'app.search.placeholder.name': "搜索名称或域",

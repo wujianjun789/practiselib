@@ -38,9 +38,9 @@ export default class TimeStrategyPopup extends Component{
                 month:Immutable.fromJS({value:"1", list:[]}),
                 date:Immutable.fromJS({value:"1", list:[]})
             },
-            workTime:Immutable.fromJS([{id:1, name:"周一", active:1},{id:2, name:"周二", active:1}, {id:3, name:"周三", active:1},
-                    {id:4, name:"周四",active:1},{id:5, name:"周五",active:1},{id:6, name:"周六", active:1},
-                    {id:7, name:"周日", active:1}]),
+            workTime:Immutable.fromJS([{id:1, name:"mediaPublish.monday", active:1},{id:2, name:"mediaPublish.tuesday", active:1}, {id:3, name:"mediaPublish.wednesday", active:1},
+                    {id:4, name:"mediaPublish.thursday",active:1},{id:5, name:"mediaPublish.friday",active:1},{id:6, name:"mediaPublish.saturday", active:1},
+                    {id:7, name:"mediaPublish.sunday", active:1}]),
             time:getCurHM(),
             light:Immutable.fromJS({
                 list:[
@@ -76,7 +76,7 @@ export default class TimeStrategyPopup extends Component{
         this.workTimeValid = this.workTimeValid.bind(this);
         this.getDatesList = this.getDatesList.bind(this);
         this.timeValid = this.timeValid.bind(this);
-
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
@@ -84,7 +84,7 @@ export default class TimeStrategyPopup extends Component{
         getLightLevelConfig((data)=>{
             this.setState({light:this.state.light.update("list", v=>{
                  let newList = data.map((key, index)=>{
-                    return {id:index, value:key, title:key=="关"?key:"亮度"+key};
+                    return {id:index, value:key, title:key=="关"?this.formatIntl('app.close'):this.formatIntl('app.brightness')+' '+key};
                  })
 
                 return Immutable.fromJS(newList);
@@ -96,11 +96,11 @@ export default class TimeStrategyPopup extends Component{
         let date = [];
         year.push({id:0, value:0, name:date_year})
         for(let i=2015;i<=2035;i++){
-            year.push({id:i, value:i, name:i+"年"});
+            year.push({id:i, value:i, name:i+' '+this.formatIntl('app.year')});
         }
 
         for(let j=1;j<=12;j++){
-            month.push({id:j, value:(dateAddZero(j)), name:j+"月"});
+            month.push({id:j, value:(dateAddZero(j)), name:j+' '+this.formatIntl('app.month')});
         }
 
         date = this.getDatesList(getDaysByYearMonth(0, 1));
@@ -165,10 +165,15 @@ export default class TimeStrategyPopup extends Component{
         }
     }
 
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
+    }
+
     getDatesList(dates){
         let date = [];
         for(let i=1;i<=dates;i++){
-            date.push({id:i, value:(i<10?"0"+i:i), name:i+"日"});
+            date.push({id:i, value:(i<10?"0"+i:i), name:i+' '+this.formatIntl('app.day')});
         }
 
         return date;
@@ -350,7 +355,7 @@ export default class TimeStrategyPopup extends Component{
         let {titleKey, valueKey, options} = deviceList;
         let valid = !prompt.name || !options.length || prompt.workTime || prompt.time || !strategyList.length;
 
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','保存']}
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.save']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>
         return <div className="time-strategy-popup">
@@ -358,25 +363,25 @@ export default class TimeStrategyPopup extends Component{
                 <div className="row name-container">
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="name">策略名称：</label>
+                            <label className="col-sm-3 control-label" htmlFor="name" title={this.formatIntl('app.strategy.name')}>{this.formatIntl('app.strategy.name')}</label>
                             <div className="col-sm-9">
-                                <input type="text" className="form-control" id="name" placeholder="输入策略名称"
+                                <input type="text" className="form-control" id="name" placeholder={this.formatIntl('app.input.strategy.name')}
                                        maxLength={STRATEGY_NAME_LENGTH} value={name} onChange={this.onChange}/>
-                                <span className={!prompt.name?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                <span className={!prompt.name?"prompt ":"prompt hidden"}>{this.formatIntl('mediaPublish.prompt')}</span>
                             </div>
 
                         </div>
                     </div>
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="device">控制设备：</label>
+                            <label className="col-sm-3 control-label" htmlFor="device" title={this.formatIntl('app.control.device')}>{this.formatIntl('app.control.device')}</label>
                             <div className="col-sm-9">
-                                <select className="form-control" id="device" placeholder="选择设备" value={device?device[valueKey]:""} onChange={this.onChange}>
+                                <select className="form-control" id="device" value={device?device[valueKey]:""} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }
                                 </select>
-                                <span className={options.length==0?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>
+                                {/*<span className={options.length==0?"prompt ":"prompt hidden"}>{"仅能使用字母、数字或下划线"}</span>*/}
                             </div>
 
                         </div>
@@ -385,7 +390,7 @@ export default class TimeStrategyPopup extends Component{
                 <div className="row date-range">
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="startTime">日期范围：</label>
+                            <label className="col-sm-3 control-label" htmlFor="startTime">{this.formatIntl('app.date.range')}</label>
                             <div className="col-sm-9">
                                 <div className="col-sm-5 select-container">
                                     <Select className="form-control" id="startYear" valueKey="value" titleKey="name" data={startTime.year} onChange={selectIndex=>this.dateOnChange("startTime","year", selectIndex)}/>
@@ -397,12 +402,12 @@ export default class TimeStrategyPopup extends Component{
                                     <Select className="form-control" id="startDate" valueKey="value" titleKey="name" data={startTime.date} onChange={selectIndex=>this.dateOnChange("startTime", "date", selectIndex)}/>
                                 </div>
                             </div>
-                            <span className={prompt.time?"prompt date ":"prompt date hidden"}>{"日期错误"}</span>
+                            <span className={prompt.time?"prompt date ":"prompt date hidden"}>{this.formatIntl('app.date.error')}</span>
                         </div>
                     </div>
                     <div className="col-sm-6">
                         <div className="form-group row">
-                            <label className="col-sm-3 control-label" htmlFor="startTime">至：</label>
+                            <label className="col-sm-3 control-label" htmlFor="startTime">{this.formatIntl('mediaPublish.to')}</label>
                             <div className="col-sm-9">
                                 <div className="col-sm-5 select-container">
                                     <Select className="form-control" id="endYear" valueKey="value" titleKey="name" data={endTime.year} onChange={selectIndex=>this.dateOnChange("endTime", "year", selectIndex)}/>
@@ -419,24 +424,24 @@ export default class TimeStrategyPopup extends Component{
                 </div>
                 <div className="row work-day">
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="startTime">工作日选择：</label>
+                        <label className="col-sm-3 control-label" htmlFor="startTime" title={this.formatIntl('app.work.day.select')}>{this.formatIntl('app.work.day.select')}</label>
                         <div className="col-sm-9">
                             <div className="">
                                 {
                                     workTime.map(date=>{
                                         return <label key={date.get('id')} className="checkbox-inline" onChange={this.checkOnChange}>
                                             <input id={date.get('id')} type="checkbox" checked={date.get('active')}
-                                            onChange={()=>{}}/>{date.get('name')}</label>
+                                            onChange={()=>{}}/>{this.formatIntl(date.get('name'))}</label>
                                     })
                                 }
                             </div>
-                            <span className={prompt.workTime?"prompt ":"prompt hidden"}>{"请选择工作日"}</span>
+                            <span className={prompt.workTime?"prompt ":"prompt hidden"}>{this.formatIntl('mediaPublish.selectWeekday')}</span>
                         </div>
                     </div>
                 </div>
                 <div className="row chart">
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="startTime">图表：</label>
+                        <label className="col-sm-3 control-label" htmlFor="startTime">{this.formatIntl('app.chart')}</label>
                         <div className="col-sm-9">
                             <div className="time-strategy-chart" id="timeStrategy" ref={this.renderChart}>
 
@@ -446,10 +451,10 @@ export default class TimeStrategyPopup extends Component{
                 </div>
                 <div className="row set-light">
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="startTime">设置亮度：</label>
+                        <label className="col-sm-3 control-label" htmlFor="startTime" title={this.formatIntl('app.set.brightness')}>{this.formatIntl('app.set.brightness')}</label>
                         <div className="col-sm-9 right">
                             <div className="form-group row">
-                                <button className="btn btn-default" onClick={this.onClick}>添加节点</button>
+                                <button className="btn btn-default" onClick={this.onClick}>{this.formatIntl('app.add.node')}</button>
                                 <div className="col-sm-4 select-container">
                                     <input className="form-control" id="time" type="time" value={time} onChange={this.onChange}/>
                                 </div>
@@ -467,7 +472,7 @@ export default class TimeStrategyPopup extends Component{
                                         </div>
                                     })
                                 }
-                                <span className={!strategyList.length ?"prompt ":"prompt hidden"}>{"请添加时间亮度表"}</span>
+                                <span className={!strategyList.length ?"prompt ":"prompt hidden"}>{this.formatIntl('app.please.add.timetable')}</span>
                             </div>
                         </div>
                     </div>
