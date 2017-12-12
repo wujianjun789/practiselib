@@ -15,6 +15,9 @@ export const statusCode = {
     1000: 'network_status_code_1000'
 }
 
+const errorCode = {
+    "http://localhost:3000/api/users/login": 1
+}
 /**
  *  url 请求路径
  *  option 头信息、请求类型等
@@ -73,7 +76,10 @@ function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return response
     } else {
-        alertPopup(response);
+        if(!errorCode[response.url]){
+            alertPopup(response);
+        }
+
         return parseJSON(response).then(({json,response}) => {
             var error = new Error(json && json.message || response.status);
             throw error;
