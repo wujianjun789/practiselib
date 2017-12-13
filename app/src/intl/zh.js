@@ -44,6 +44,24 @@ export default {
         'app.add.node':'添加节点',
         'app.please.add.timetable':'请添加时间亮度表',
         'app.add.strategy':'新建策略',
+        'app.edit.strategy':'修改策略',
+
+        'app.screen':'屏幕',
+        'app.lamp':'灯',
+        'app.sensor.type':'传感器类型',
+
+        'app.sensor.noise': '噪声传感器',
+        'app.sensor.pm25': 'PM2.5 传感器',
+        'app.sensor.pa': '大气压传感器',
+        'app.sensor.humis': '湿度传感器',
+        'app.sensor.temps': '温度传感器',
+        'app.sensor.winds': '风速传感器',
+        'app.sensor.winddir': '风向传感器',
+        'app.sensor.co': '一氧化碳传感器',
+        'app.sensor.o2': '氧气传感器',
+        'app.sensor.ch4': '甲烷传感器',
+        'app.sensor.ch2o': '甲醛传感器',
+        'app.sensor.lx': '照度传感器',
 
         //按钮
         ' ':' ',
@@ -92,7 +110,8 @@ export default {
 
         //删除弹框
         'delete.user':'是否删除选中用户？',
-        'delete.device':'是否删除选中设备？',        
+        'delete.device':'是否删除选中设备？',
+        'delete.strategy':'是否删除选中策略？',
 //登录
         'login.form.title':'用户登录',
         'login.button':'登录',
@@ -172,8 +191,8 @@ export default {
         'sysOperation.system.config':'系统配置',
         'sysOperation.device.monitoring':'设备监控',
         'sysOperation.device.maintenance':'设备维护',
-        '':'',
-        '':'',
+        'sysOperation.strategy.alert':'请添加策略名称',
+        'sysOperation.set.param':'请设置参数',
         '':'',
         '':'',
         '':'',

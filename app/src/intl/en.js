@@ -44,6 +44,24 @@ export default {
         'app.add.node':'add node',
         'app.please.add.timetable':'please add timetable',
         'app.add.strategy':'new strategy',
+        'app.edit.strategy':'edit strategy',
+
+        'app.screen':'screen',
+        'app.lamp':'lamp',
+        'app.sensor.type':'sensor type',
+
+        'app.sensor.noise': 'SENSOR NOISE',
+        'app.sensor.pm25': 'SENSOR PM25',
+        'app.sensor.pa': 'SENSOR PA',
+        'app.sensor.humis': 'SENSOR HUMIS',
+        'app.sensor.temps': 'SENSOR TEMPS',
+        'app.sensor.winds': 'SENSOR WINDS',
+        'app.sensor.winddir': 'SENSOR WINDDIR',
+        'app.sensor.co': 'SENSOR CO',
+        'app.sensor.o2': 'SENSOR O2',
+        'app.sensor.ch4': 'SENSOR CH4',
+        'app.sensor.ch2o': 'SENSOR CH2O',
+        'app.sensor.lx': 'SENSOR LX',
         '':'',
 
         //按钮
@@ -95,6 +113,7 @@ export default {
         //删除弹框
         'delete.user': 'Are you sure to delete the seleted user ?',
         'delete.device': 'Are you sure to delete the seleted device ?',
+        'delete.strategy':'Are you sure to delete the seleted strategy ?',
 //登录
         'login.form.title':'User Login',
         'login.button':'Login',
@@ -176,6 +195,8 @@ export default {
         'sysOperation.system.config':'System Config',
         'sysOperation.device.monitoring':'Device Monitoring',
         'sysOperation.device.maintenance':'Device Maintenance',
+        'sysOperation.strategy.alert':'please input strategy name',
+        'sysOperation.set.param':'please set param',
         '':'',
         '':'',
         '':'',

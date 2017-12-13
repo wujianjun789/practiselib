@@ -248,7 +248,7 @@ class TimeStrategy extends Component{
             exeRList = exeR.get(1).split("-");
             endTime = {year:0, month:exeRList[0], date:exeRList[1]};
         }
-        actions.overlayerShow(<TimeStrategyPopup title="修改策略" data={initData} deviceList={deviceList} strategyList={strategyList}
+        actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title="修改策略" data={initData} deviceList={deviceList} strategyList={strategyList}
                                                  workTime={row.get("week")} startTime={startTime} endTime={endTime}
                     onConfirm={(data)=>{
                         let weekList = data.workTime.map(day=>{
@@ -291,7 +291,7 @@ class TimeStrategy extends Component{
     tableDelete(rowId){
         const {actions} = this.props;
 
-        actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{
+        actions.overlayerShow(<ConfirmPopup tips={this.formatIntl('delete.strategy')} iconClass="icon_popup_delete" cancel={()=>{
             actions.overlayerHide();
         }} confirm={()=>{
             delStrategy(rowId, ()=>{

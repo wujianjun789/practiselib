@@ -5,6 +5,8 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
+import {injectIntl} from 'react-intl';
+
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
@@ -25,7 +27,7 @@ export class SensorStrategy extends Component{
         this.state = {
             data: [],
             search: {
-                placeholder: '输入策略名称',
+                placeholder: this.formatIntl('app.input.strategy.name'),
                 value: ''
             },
             page: {
@@ -43,8 +45,8 @@ export class SensorStrategy extends Component{
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    {value: 'screen', title: '屏幕'},
-                    {value: 'lc', title: '灯'}
+                    {value: 'screen', title: this.formatIntl('app.screen')},
+                    {value: 'lc', title: this.formatIntl('app.lamp')}
                 ]
             },
             brightnessList: {
@@ -69,8 +71,8 @@ export class SensorStrategy extends Component{
         }
 
         this.columns = [
-            {field: 'name', title: '策略名称'},
-            {field: 'sensorType', title: '传感器类型'}
+            {field: 'name', title: this.formatIntl('app.strategy.name')},
+            {field: 'sensorType', title: this.formatIntl('app.sensor.type')}
         ];
 
         this.searchChange = this.searchChange.bind(this);
@@ -89,7 +91,7 @@ export class SensorStrategy extends Component{
         this.generateSensorTypesData = this.generateSensorTypesData.bind(this);
 
         this.getSensorTypeFromStrategy = this.getSensorTypeFromStrategy.bind(this);
-
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount() {
@@ -102,6 +104,11 @@ export class SensorStrategy extends Component{
 
     componentWillUnmount() {
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     updateSensorTypeList(data) {
@@ -127,9 +134,9 @@ export class SensorStrategy extends Component{
         data.forEach(value => {
             let title = '';
             if(value == 'lc') {
-                title = '灯';
+                title = this.formatIntl('app.lamp');
             } else if (value == 'screen') {
-                title = '屏幕';
+                title = this.formatIntl('app.screen');
             }
             opt.push({title, value});
         })
@@ -141,10 +148,10 @@ export class SensorStrategy extends Component{
         let opt = [];
         data.forEach(value => {
             let val = value;
-            let title = `亮度${val}`;
+            let title = `${this.formatIntl('app.brightness')}' '${val}`;
             if(value == '关') {
                 val = 'off';
-                title = '关';
+                title = this.formatIntl('app.close');
             }
             opt.push({value: val, title});
         });
@@ -154,18 +161,18 @@ export class SensorStrategy extends Component{
     generateSensorTypesData(types) {
         let list = [];
         const sensorTitles = {
-            SENSOR_NOISE: '噪声传感器',
-            SENSOR_PM25: 'PM2.5 传感器',
-            SENSOR_PA: '大气压传感器',
-            SENSOR_HUMIS: '湿度传感器',
-            SENSOR_TEMPS: '温度传感器',
-            SENSOR_WINDS: '风速传感器',
-            SENSOR_WINDDIR: '风向传感器',
-            SENSOR_CO: '一氧化碳传感器',
-            SENSOR_O2: '氧气传感器',
-            SENSOR_CH4: '甲烷传感器',
-            SENSOR_CH2O: '甲醛传感器',
-            SENSOR_LX: '照度传感器'
+            SENSOR_NOISE: this.formatIntl('app.sensor.noise'),
+            SENSOR_PM25: this.formatIntl('app.sensor.pm25'),
+            SENSOR_PA: this.formatIntl('app.sensor.pa'),
+            SENSOR_HUMIS: this.formatIntl('app.sensor.humis'),
+            SENSOR_TEMPS: this.formatIntl('app.sensor.temps'),
+            SENSOR_WINDS: this.formatIntl('app.sensor.winds'),
+            SENSOR_WINDDIR: this.formatIntl('app.sensor.winddir'),
+            SENSOR_CO: this.formatIntl('app.sensor.co'),
+            SENSOR_O2: this.formatIntl('app.sensor.o2'),
+            SENSOR_CH4: this.formatIntl('app.sensor.ch4'),
+            SENSOR_CH2O: this.formatIntl('app.sensor.ch2o'),
+            SENSOR_LX: this.formatIntl('app.sensor.lx')
         }
         types.forEach(val => {
             list.push({value: val, title: sensorTitles[val]});
@@ -190,7 +197,7 @@ export class SensorStrategy extends Component{
             controlDevice: data.asset,
             sensorParamsList: data.strategy
         };
-        this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='edit' title="修改策略" data={initData}
+        this.props.actions.overlayerShow(<SensorStrategyPopup intl={this.props.intl} className='sensor-strategy-popup' popupId='edit' title={this.formatIntl('app.edit.strategy')} data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
             controlDeviceList={this.state.controlDeviceList} brightnessList={this.state.brightnessList}
             overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}
@@ -198,7 +205,7 @@ export class SensorStrategy extends Component{
     }
 
     tableRowDelete(id) {
-        this.props.actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete"
+        this.props.actions.overlayerShow(<ConfirmPopup tips={this.formatIntl('delete.strategy')} iconClass="icon_popup_delete"
             cancel={ this.props.actions.overlayerHide } confirm={ () => {
                 delStrategy(id,()=>{
                     this.props.actions.overlayerHide && this.props.actions.overlayerHide();
@@ -221,7 +228,7 @@ export class SensorStrategy extends Component{
             id: '',
             sensorType: this.state.sensorTypeList.options[0]&&this.state.sensorTypeList.options[0][this.state.sensorTypeList.valueField],
         };
-        id=='add-sensor' && this.props.actions.overlayerShow(<SensorStrategyPopup className='sensor-strategy-popup' popupId='add' title="新建策略" data={initData}
+        id=='add-sensor' && this.props.actions.overlayerShow(<SensorStrategyPopup intl={this.props.intl} className='sensor-strategy-popup' popupId='add' title={this.formatIntl('app.add.strategy')} data={initData}
             sensorTypeList={this.state.sensorTypeList} sensorsProps={this.state.sensorsProps}
             controlDeviceList={this.state.controlDeviceList} brightnessList={this.state.brightnessList}
             overlayerHide={this.props.actions.overlayerHide} updateSensorStrategyList={this.initData}
@@ -260,7 +267,7 @@ export class SensorStrategy extends Component{
         return <Content className="sensor-strategy">
             <div className="content-title">
                 <SearchText placeholder={search.placeholder} value={search.value} onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button id="add-sensor" className="btn btn-primary" onClick={this.addStrategy}>添加</button>
+                <button id="add-sensor" className="btn btn-primary" onClick={this.addStrategy}>{this.formatIntl('button.add')}</button>
             </div>
             <div className="content-body">
                 <Table columns={this.columns} keyField='id' data={Immutable.fromJS(data)} isEdit rowEdit={this.tableRowEdit} rowDelete={this.tableRowDelete} />
@@ -280,4 +287,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(SensorStrategy);
+export default connect(null, mapDispatchToProps)(injectIntl(SensorStrategy));

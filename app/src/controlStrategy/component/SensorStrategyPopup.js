@@ -30,8 +30,8 @@ export default class SensorStrategyPopup extends Component {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    {value: 'on', title: '屏幕开'},
-                    {value: 'off', title: '屏幕关'}
+                    {value: 'on', title: this.formatIntl('app.open')},
+                    {value: 'off', title: this.formatIntl('app.close')}
                 ]
             },
             sensorParamsList: sensorParamsList,
@@ -67,6 +67,12 @@ export default class SensorStrategyPopup extends Component {
 
         this.addStrategy = this.addStrategy.bind(this);
         this.updateStrategy = this.updateStrategy.bind(this);
+        this.formatIntl = this.formatIntl.bind(this);
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     onChange(e) {
@@ -121,13 +127,13 @@ export default class SensorStrategyPopup extends Component {
         if(controlDevice=='lc') {
             value = brightness;
             if(value == 'off') {
-                title = '关';
+                title = this.formatIntl('app.close');
             } else {
-                title = `亮度${value}`;
+                title = `${this.formatIntl('app.brightness')}' '${value}`;
             }
         } else {
             value = screenSwitch;
-            title = value == 'off'?'屏幕关':'屏幕开';
+            title = value == 'off'?this.formatIntl('app.close'):this.formatIntl('app.open');
         }
         const data = {value: value, title: title};
         let sensorParamsList = Object.assign([], this.state.sensorParamsList);
@@ -143,8 +149,8 @@ export default class SensorStrategyPopup extends Component {
         const {data: {strategyName}, sensorParamsList} = this.state;
         const {addNotify} = this.props;
         const notifyText = {
-            strategyName: '请添加策略名称',
-            sensorParamsList: '请设置参数'
+            strategyName: this.formatIntl('sysOperation.strategy.alert'),
+            sensorParamsList: this.formatIntl('sysOperation.set.param')
         }
         if(strategyName === '') {
             addNotify(0, notifyText.strategyName);
@@ -204,7 +210,7 @@ export default class SensorStrategyPopup extends Component {
         const {controlDeviceList, screenSwitchList, brightnessList, sensorParamsList, data, data: {strategyName, sensorType, controlDevice, screenSwitch, sensorParam, brightness}, checkStatus} = this.state;
         const {sensorTypeList, sensorsProps, popupId} = this.props;
         const {className, title} = this.props;
-        const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']}
+        const footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']}
                                   btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
                                   onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
