@@ -29,6 +29,7 @@ export default {
         'app.type':'类别',
         'app.unit':'单位',
         'app.param':'当前参数',
+        'app.set.param':'设置参数',
 
         'app.timetable':'时间表',
         'app.sensor':'传感器',
@@ -49,6 +50,7 @@ export default {
         'app.screen':'屏幕',
         'app.lamp':'灯',
         'app.sensor.type':'传感器类型',
+        'app.sensor.input.placeholder':'输入传感器参数',
 
         'app.sensor.noise': '噪声传感器',
         'app.sensor.pm25': 'PM2.5 传感器',
@@ -193,8 +195,8 @@ export default {
         'sysOperation.device.maintenance':'设备维护',
         'sysOperation.strategy.alert':'请添加策略名称',
         'sysOperation.set.param':'请设置参数',
-        '':'',
-        '':'',
+        'sysOperation.select.sensor':'请选择传感器',
+        'sysOperation.select.device':'请选择设备',
         '':'',
 
         //智慧路灯

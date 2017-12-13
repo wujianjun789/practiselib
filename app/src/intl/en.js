@@ -29,6 +29,7 @@ export default {
         'app.type':'type',
         'app.unit':'unit',
         'app.param':'param',
+        'app.set.param':'set param',
 
         'app.timetable':'Timetable',
         'app.sensor':'Sensor',
@@ -49,6 +50,7 @@ export default {
         'app.screen':'screen',
         'app.lamp':'lamp',
         'app.sensor.type':'sensor type',
+        'app.sensor.input.placeholder':'input sensor param',
 
         'app.sensor.noise': 'SENSOR NOISE',
         'app.sensor.pm25': 'SENSOR PM25',
@@ -197,8 +199,8 @@ export default {
         'sysOperation.device.maintenance':'Device Maintenance',
         'sysOperation.strategy.alert':'please input strategy name',
         'sysOperation.set.param':'please set param',
-        '':'',
-        '':'',
+        'sysOperation.select.sensor':'please select sensor',
+        'sysOperation.select.device':'please select device',
         '':'',
         '':'',
         '':'',

@@ -216,44 +216,44 @@ export default class SensorStrategyPopup extends Component {
         return (
             <Panel className={className} title={title} footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="form-group">
-                    <label htmlFor="strategyName" className="control-label">策略名称：</label>
+                    <label htmlFor="strategyName" className="control-label">{this.formatIntl('app.strategy.name')}</label>
                     <div className="form-group-right">
-                        <input type="text" className="form-control" id="strategyName" placeholder="传感器使用策略" value={strategyName}
+                        <input type="text" className="form-control" id="strategyName" placeholder={this.formatIntl('app.sensor.strategy')} value={strategyName}
                             onChange={this.onChange}/>
-                        <span style={{visibility: checkStatus.strategyName ? 'visible' : 'hidden'}}>仅能使用数字、字母、下划线，必须以字母或下划线开头</span>
+                        <span style={{visibility: checkStatus.strategyName ? 'visible' : 'hidden'}}>{this.formatIntl('mediaPublish.prompt')}</span>
                     </div>
                 </div>
                 <div className="inline-group">
                     <div className="form-group">
-                        <label htmlFor="sensorType" className="control-label">传感器类型：</label>
+                        <label htmlFor="sensorType" className="control-label">{this.formatIntl('app.sensor.type')}</label>
                         <div className="form-group-right">
                             <Select id="sensorType" className="form-control" titleField={sensorTypeList.titleField}
                                     valueField={sensorTypeList.valueField} options={sensorTypeList.options} value={sensorType}
                                     onChange={this.onChange} disabled={popupId=='add' ? false : true}/>
-                            <span style={{visibility: checkStatus.sensorType ? 'visible' : 'hidden'}}>请选择传感器</span>
+                            <span style={{visibility: checkStatus.sensorType ? 'visible' : 'hidden'}}>{this.formatIntl('sysOperation.select.sensor')}</span>
                         </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="controlDevice" className="control-label">控制设备：</label>
+                        <label htmlFor="controlDevice" className="control-label">{this.formatIntl('app.control.device')}</label>
                         <div className="form-group-right">
                             <Select id="controlDevice" className="form-control" titleField={controlDeviceList.titleField}
                                     valueField={controlDeviceList.valueField} options={controlDeviceList.options} value={controlDevice}
                                     onChange={this.onChange} disabled={popupId=='add' ? false : true}/>
-                            <span style={{visibility: checkStatus.controlDevice ? 'visible' : 'hidden'}}>请选择设备</span>
+                            <span style={{visibility: checkStatus.controlDevice ? 'visible' : 'hidden'}}>{this.formatIntl('sysOperation.select.device')}</span>
                         </div>
                     </div>
                 </div>
                 <div className="form-group chart">
-                    <label className="control-label">图表：</label>
+                    <label className="control-label">{this.formatIntl('app.chart')}</label>
                     <LineChart sensorParamsList={sensorParamsList} data={data} sensorsProps={sensorsProps} sensorTransform={this.sensorTransform}/>
                 </div>
                 <div className="form-group">
-                    <label className="control-label">设置参数：</label>
+                    <label className="control-label">{this.formatIntl('app.set.param')}</label>
                     <div className="form-group-right lightness">
-                        <button className="btn btn-primary" onClick={this.addSensorParam} disabled={checkStatus.sensorParam}>添加节点</button>
+                        <button className="btn btn-primary" onClick={this.addSensorParam} disabled={checkStatus.sensorParam}>{this.formatIntl('app.add.node')}</button>
                         <div className="lightness-right">
                             <div>
-                                <input id="sensorParam" type='text' className='form-control' placeholder="输入传感器参数" value={sensorParam} onChange={this.onChange}/>
+                                <input id="sensorParam" type='text' className='form-control' placeholder={this.formatIntl('app.sensor.input.placeholder')} value={sensorParam} onChange={this.onChange}/>
                                 {
                                     controlDevice != 'lc' ?
                                     <Select id="screenSwitch" className="form-control" titleField={screenSwitchList.titleField}
