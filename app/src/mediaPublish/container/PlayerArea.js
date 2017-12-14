@@ -701,7 +701,11 @@ export class PlayerArea extends Component {
 
     uploadComplete = (e) => {
         const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
-        list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.completed'});
+        if(e.target.status===200){
+            list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.completed'});
+        }else{
+            list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.failed'});
+        }
         this.setState({ uploadFileList: list })
 
         const nextKey = key + 1;
