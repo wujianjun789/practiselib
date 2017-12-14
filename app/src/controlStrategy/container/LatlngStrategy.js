@@ -5,6 +5,8 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 
+import {injectIntl} from 'react-intl';
+
 import Content from '../../components/Content'
 import SearchText from '../../components/SearchText'
 import Table from '../../components/Table'
@@ -23,7 +25,7 @@ export class Latlngtrategy extends Component{
         super(props);
         this.state = {
             search: Immutable.fromJS({
-                placeholder: '输入策略名称',
+                placeholder: this.formatIntl('app.input.strategy.name'),
                 value: ''
             }),
             page: {
@@ -36,17 +38,17 @@ export class Latlngtrategy extends Component{
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    {value: 'screen', title: '屏幕'},
-                    {value: 'lc', title: '灯'}
+                    {value: 'screen', title: this.formatIntl('app.screen')},
+                    {value: 'lc', title: this.formatIntl('app.lamp')}
                 ]
             },
             orderList:{
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    {value: 0, title: '关闭'},
-                    {value: 50, title: '亮度50'},
-                    {value: 100, title: '亮度100'}
+                    {value: 0, title: this.formatIntl('app.close')},
+                    {value: 50, title: this.formatIntl('app.brightness')+'50'},
+                    {value: 100, title: this.formatIntl('app.brightness')+'100'}
                 ]
             },          
             popupInfo:{
@@ -55,10 +57,13 @@ export class Latlngtrategy extends Component{
         }
 
         this.columns =  [
-            {id: 0, field:"name", title:"策略名称"},
-            {id: 1, field: "lng", title: "经度"},
-            {id: 2, field: "lat", title: "纬度"}
+            {id: 0, field:"name", title:this.formatIntl('app.strategy.name')},
+            {id: 1, field: "lng", title: this.formatIntl('map.lng')},
+            {id: 2, field: "lat", title: this.formatIntl('map.lat')}
         ];
+
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
         this.requestData = this.requestData.bind(this);
@@ -80,6 +85,11 @@ export class Latlngtrategy extends Component{
     componentWillUnmount(){
         this.mounted = false;
         this.props.actions.removeAllNotify();        
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
     }
 
     // initDeviceList(data){
@@ -121,18 +131,18 @@ export class Latlngtrategy extends Component{
     }
 
     onClick(){
-        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="新建策略" deviceList={this.state.deviceList} orderList={this.state.orderList} 
+        this.props.actions.overlayerShow(<LatlngStrategyPopup intl={this.props.intl} className='latlng-strategy-popup' title={this.formatIntl('app.add.strategy')} deviceList={this.state.deviceList} orderList={this.state.orderList}
         onConfirm={this.confirmClick} onCancel={()=>{this.props.actions.overlayerHide();this.props.actions.removeAllNotify()}}/>);
     }
 
     rowEdit(id){
         let popupInfo = getObjectByKey(this.state.datas,'id',id);
-        this.props.actions.overlayerShow(<LatlngStrategyPopup className='latlng-strategy-popup' title="修改策略" isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} orderList={this.state.orderList} 
+        this.props.actions.overlayerShow(<LatlngStrategyPopup intl={this.props.intl} className='latlng-strategy-popup' title={this.formatIntl('app.edit.strategy')} isEdit data={popupInfo.toJS()} deviceList={this.state.deviceList} orderList={this.state.orderList}
         onConfirm={this.confirmClick} onCancel={()=>{this.props.actions.overlayerHide();this.props.actions.removeAllNotify()}}/>);
     }
 
     rowDelete(id){
-        this.props.actions.overlayerShow(<ConfirmPopup tips="是否删除选中策略？" iconClass="icon_popup_delete" cancel={()=>{this.props.actions.overlayerHide()}} confirm={()=>{
+        this.props.actions.overlayerShow(<ConfirmPopup tips={this.formatIntl('delete.strategy')} iconClass="icon_popup_delete" cancel={()=>{this.props.actions.overlayerHide()}} confirm={()=>{
             this.props.actions.overlayerHide()
             let page = Object.assign(this.state.page,{current:1});
             this.setState({page:page},delStrategy(id,this.requestData))
@@ -147,13 +157,13 @@ export class Latlngtrategy extends Component{
     confirmClick(datas,isEdit){
         if(isEdit){
             updateStrategy(datas,()=>{
-                this.props.actions.addNotify(1, "编辑域成功");
+                this.props.actions.addNotify(1, this.formatIntl('sysOperation.domain.edit.success'));
                 this.requestData();
             })
         }
         else{
             this.setState({page:Object.assign({}, this.state.page, {current: 1})},addStrategy(datas,()=>{
-                this.props.actions.addNotify(1, "添加域成功");            
+                this.props.actions.addNotify(1, this.formatIntl('sysOperation.domain.add.success'));
                 this.requestData();
             }))
         }
@@ -166,7 +176,7 @@ export class Latlngtrategy extends Component{
         return <Content className="latlng-strategy">
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit}/>
-                <button className="btn btn-primary" onClick={this.onClick}>添加</button>
+                <button className="btn btn-primary" onClick={this.onClick}>{this.formatIntl('button.add')}</button>
             </div>
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={datas} rowDelete={this.rowDelete} rowEdit={this.rowEdit}/>
@@ -193,4 +203,4 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
     }
 }
 
-export default connect(mapStateToprops, mapDispatchToProps)(Latlngtrategy) 
+export default connect(mapStateToprops, mapDispatchToProps)(injectIntl(Latlngtrategy))

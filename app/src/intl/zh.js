@@ -31,6 +31,9 @@ export default {
         'app.param':'当前参数',
         'app.set.param':'设置参数',
 
+        'app.input.minute':'输入分钟数',
+        '':'',
+
         'app.timetable':'时间表',
         'app.sensor':'传感器',
         'app.latlng':'经纬度',
@@ -64,6 +67,9 @@ export default {
         'app.sensor.ch4': '甲烷传感器',
         'app.sensor.ch2o': '甲醛传感器',
         'app.sensor.lx': '照度传感器',
+        
+        'app.input.numbers':'仅能输入数字',
+        'app.exceed.maximum.support':'超过最大支持',
 
         //按钮
         ' ':' ',
@@ -197,6 +203,15 @@ export default {
         'sysOperation.set.param':'请设置参数',
         'sysOperation.select.sensor':'请选择传感器',
         'sysOperation.select.device':'请选择设备',
+        'sysOperation.select.instruction':'请选择指令',
+
+        'sysOperation.domain.edit.success':'编辑域成功',
+        'sysOperation.domain.add.success':'添加域成功',
+        'app.sunrise': '日出',
+        'app.sunrise.time.difference': '日出时间差',
+        'app.sunset': '日落',
+        'app.sunset.time.difference': '日落时间差',
+        'app.strategy.name.used':'策略名已使用',
         '':'',
 
         //智慧路灯

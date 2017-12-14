@@ -9,16 +9,7 @@ import Immutable from 'immutable';
 import {NameValid,numbersValid} from '../../util/index';
 import NotifyPopup from '../../common/containers/NotifyPopup'
 
-let options = (function generateLampLightnessList() {
-    let opt = [];
-    for(let i=0; i<11; i++){
-        let val = i*10;
-        opt.push({value: val, title: `亮度${val}`});
-    }
-    opt.unshift({value: 'off', title: '关'});
-    // opt.unshift({value: '', title: '选择灯亮度'});
-    return opt;
-})();
+import {getLightLevelConfig, getStrategyDeviceConfig} from '../../util/network';
 
 export default class LatlngStrategyPopup extends Component{
     constructor(props){
@@ -45,39 +36,85 @@ export default class LatlngStrategyPopup extends Component{
             sunriseTime:sunriseTime,
             sunsetTime:sunsetTime,
             prompt:{
-                name:{hidden:true,text:'策略名已使用'},
-                device:{hidden:true,text:'请选择设备'},
-                sunrise:{hidden:true,text:'请选择指令'},
-                sunset:{hidden:true,text:'请选择指令'},
-                sunriseTime:{hidden:true,text:'仅能输入数字'},
-                sunsetTime:{hidden:true,text:'仅能输入数字'},
+                name:{hidden:true,text:this.formatIntl('app.strategy.name.userd')},
+                device:{hidden:true,text:this.formatIntl('sysOperation.select.device')},
+                sunrise:{hidden:true,text:this.formatIntl('sysOperation.select.instruction')},
+                sunset:{hidden:true,text:this.formatIntl('sysOperation.select.instruction')},
+                sunriseTime:{hidden:true,text:this.formatIntl('app.input.numbers')},
+                sunsetTime:{hidden:true,text:this.formatIntl('app.input.numbers')},
             },
             deviceList: {
                 titleField: 'title',
                 valueField: 'value',
-                options: [
-                    {value: 'lc', title: '灯'},                    
-                    {value: 'screen', title: '屏幕'}
-                ]
+                // options: [
+                //     {value: 'lc', title: this.formatIntl('app.lamp')},
+                //     {value: 'screen', title: this.formatIntl('app.screen')}
+                // ]
             },
             brightnessList: {
                 titleField: 'title',
                 valueField: 'value',
-                options: options
+                options: []
             },
             screenSwitchList: {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
                     // {value: '', title: '选择屏幕开关'},
-                    {value: 'off', title: '屏幕关'},
-                    {value: 'on', title: '屏幕开'}
+                    {value: 'off', title: this.formatIntl('app.close')},
+                    {value: 'on', title: this.formatIntl('app.open')}
                 ]
             },
         }
+
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.onChange = this.onChange.bind(this);
+
+        this.updateControlDeviceList = this.updateControlDeviceList.bind(this);
+        this.updateBrightnessList = this.updateBrightnessList.bind(this);
+    }
+
+    componentWillMount(){
+        getStrategyDeviceConfig(this.updateControlDeviceList);
+        getLightLevelConfig(this.updateBrightnessList);
+    }
+
+    formatIntl(formatId){
+        return this.props.intl.formatMessage({id:formatId});
+        // return formatId;
+    }
+
+    updateControlDeviceList(data) {
+        // ["lc", "screen"]
+        let opt = [];
+        data.forEach(value => {
+            let title = '';
+            if(value == 'lc') {
+                title = this.formatIntl('app.lamp');
+            } else if (value == 'screen') {
+                title = this.formatIntl('app.screen');
+            }
+            opt.push({title, value});
+        })
+        this.setState({deviceList: Object.assign({}, this.state.deviceList, {options: opt} )});
+    }
+
+    updateBrightnessList(data){
+        console.log("data:", data);
+        let opt = [];
+        data.forEach(value => {
+            let val = value;
+            let title = `${this.formatIntl('app.brightness')} ${val}`;
+            if(value == '关') {
+                val = 'off';
+                title = this.formatIntl('app.close');
+            }
+            opt.push({value: val, title});
+        });
+        this.setState({brightnessList: Object.assign({}, this.state.brightnessList, {options: opt})});
     }
 
     onCancel(){
@@ -129,14 +166,14 @@ export default class LatlngStrategyPopup extends Component{
             switch(id){
                 case'name':
                     if(value&&!NameValid(value))
-                        prompt={hidden:false,text:'仅能使用字母、数字或下划线且首个不能为数字'};
+                        prompt={hidden:false,text:this.formatIntl('mediaPublish.prompt')};
                     break;
                 case'sunriseTime':
                 case'sunsetTime': 
                     if(value&&!numbersValid(value))
-                        prompt={hidden:false,text:'仅能输入数字'};
+                        prompt={hidden:false,text:this.formatIntl('app.input.numbers')};
                     if(value&&value>1440)
-                        prompt={hidden:false,text:'超过最大支持范围'};
+                        prompt={hidden:false,text:this.formatIntl('app.exceed.maximum.support')};
                     break;
             }
             this.setState({[id]:event.target.value,prompt:Object.assign(this.state.prompt,{[id]:prompt})});
@@ -147,20 +184,21 @@ export default class LatlngStrategyPopup extends Component{
         let {className = '',title = '',isEdit=false} = this.props;
         let {name, device, sunrise, sunset, sunriseTime, sunsetTime,prompt,deviceList,brightnessList,screenSwitchList} = this.state;
         const disabled = (sunriseTime === '' || sunsetTime === ''|| deviceList.length == 0) ? true : false;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} 
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']}
         btnDisabled={[false, disabled]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+        console.log(brightnessList);
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className="form-group">
-                    <label htmlFor="name" className="control-label">策略名称：</label>
+                    <label htmlFor="name" className="control-label" title={this.formatIntl('app.strategy.name')}>{this.formatIntl('app.strategy.name')}</label>
                     <div className="form-group-input">
-                        <input type="text" className="form-control" id="name" placeholder="请输入策略名" value={name} maxLength = {16}
+                        <input type="text" className="form-control" id="name" placeholder={this.formatIntl('app.latlng.strategy')} value={name} maxLength = {16}
                                 onChange={this.onChange}/>
                         <span className={prompt.name.hidden?"prompt hidden":"prompt"}>{prompt.name.text}</span>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="device" className="control-label">控制设备：</label>
+                    <label htmlFor="device" className="control-label">{this.formatIntl('app.control.device')}</label>
                     <div className="form-group-input">
                         <Select id="device" onChange={this.onChange} titleField={deviceList.titleField}
                                 valueField={deviceList.valueField} options={deviceList.options} value={device}/>
@@ -168,7 +206,7 @@ export default class LatlngStrategyPopup extends Component{
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="sunrise" className="control-label">日出：</label>
+                    <label htmlFor="sunrise" className="control-label">{this.formatIntl('app.sunrise')}</label>
                     <div className="form-group-input">
                         {
                             device == 'lc' ?
@@ -182,15 +220,15 @@ export default class LatlngStrategyPopup extends Component{
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="sunriseTime" className="control-label">日出时间差：</label>
+                    <label htmlFor="sunriseTime" className="control-label" title={this.formatIntl('app.sunrise.time.difference')}>{this.formatIntl('app.sunrise.time.difference')}</label>
                     <div className="form-group-input">
-                        <input type="text" className="form-control" id="sunriseTime" placeholder="输入分钟数（日出后为正数）" value={sunriseTime} maxLength = {16}
+                        <input type="text" className="form-control" id="sunriseTime" placeholder={this.formatIntl('app.input.minute')} value={sunriseTime} maxLength = {16}
                                 onChange={this.onChange}/>
                         <span className={prompt.sunriseTime.hidden?"prompt hidden":"prompt"}>{prompt.sunriseTime.text}</span>
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="sunset" className="control-label">日落：</label>
+                    <label htmlFor="sunset" className="control-label">{this.formatIntl('app.sunset')}</label>
                     <div className="form-group-input">
                         {
                             device == 'lc' ?
@@ -204,9 +242,9 @@ export default class LatlngStrategyPopup extends Component{
                     </div>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="sunsetTime" className="control-label">日落时间差：</label>
+                    <label htmlFor="sunsetTime" className="control-label" title={this.formatIntl('app.sunset.time.difference')}>{this.formatIntl('app.sunset.time.difference')}</label>
                     <div className="form-group-input">
-                        <input type="text" className="form-control" id="sunsetTime" placeholder="输入分钟数（日落后为正数）" value={sunsetTime} maxLength = {16}
+                        <input type="text" className="form-control" id="sunsetTime" placeholder={this.formatIntl('app.input.minute')} value={sunsetTime} maxLength = {16}
                                 onChange={this.onChange}/>
                         <span className={prompt.sunsetTime.hidden?"prompt hidden":"prompt"}>{prompt.sunsetTime.text}</span>
                     </div>

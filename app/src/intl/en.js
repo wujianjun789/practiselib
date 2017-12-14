@@ -31,6 +31,8 @@ export default {
         'app.param':'param',
         'app.set.param':'set param',
 
+        'app.input.minute':'input minute',
+
         'app.timetable':'Timetable',
         'app.sensor':'Sensor',
         'app.latlng':'LatLng',
@@ -64,6 +66,9 @@ export default {
         'app.sensor.ch4': 'SENSOR CH4',
         'app.sensor.ch2o': 'SENSOR CH2O',
         'app.sensor.lx': 'SENSOR LX',
+
+        'app.input.numbers':'only input numbers',
+        'app.exceed.maximum.support':'exceed maximum support',
         '':'',
 
         //按钮
@@ -201,9 +206,17 @@ export default {
         'sysOperation.set.param':'please set param',
         'sysOperation.select.sensor':'please select sensor',
         'sysOperation.select.device':'please select device',
-        '':'',
-        '':'',
-        '':'',
+        'sysOperation.select.instruction':'please select instruction',
+
+        'sysOperation.domain.edit.success':'domain edit success',
+        'sysOperation.domain.add.success':'domain add success',
+        'app.sunrise': 'sunrise',
+        'app.sunrise.time.difference': 'sunrise time difference',
+        'app.sunset': 'sunset',
+        'app.sunset.time.difference': 'sunset time difference',
+
+        'app.strategy.name.userd':'strategy name used',
+
         //智慧路灯
 
         'app.map': 'map',

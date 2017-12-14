@@ -148,7 +148,7 @@ export class SensorStrategy extends Component{
         let opt = [];
         data.forEach(value => {
             let val = value;
-            let title = `${this.formatIntl('app.brightness')}' '${val}`;
+            let title = `${this.formatIntl('app.brightness')} ${val}`;
             if(value == '关') {
                 val = 'off';
                 title = this.formatIntl('app.close');
