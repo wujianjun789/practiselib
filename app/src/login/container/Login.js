@@ -108,8 +108,8 @@ export class Login extends Component{
                         <h3 >StarRiver</h3>
                     </div>
                     <div className="sub-title">
-                        <p>智慧路灯管理系统</p>
-                        <p>Smart Pole Control System</p>
+                        <p><FormattedMessage id="app.title"/></p>
+                        {/*<p>Smart Pole Control System</p>*/}
                     </div>
                 </header>
                 <div className="container-mid">
