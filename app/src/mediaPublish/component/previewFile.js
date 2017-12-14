@@ -23,7 +23,11 @@ class PreviewFile extends Component {
         if (!file) {
             return;
         }
-
+        const isLt100M=file.size/1024/1024<100;
+        if(!isLt100M){
+            alert('文件大小超过限制(100M)');
+            return;
+        }
         if (/^image\/.+$/.test(file.type)) {
             const url = URL.createObjectURL(file);
             const show = <img src={url} />
