@@ -23,29 +23,28 @@ class PreviewFile extends Component {
         if (!file) {
             return;
         }
-        const isLt100M=file.size/1024/1024<100;
-        if(!isLt100M){
+        const isLt100M = file.size / 1024 / 1024 < 100;
+        if (!isLt100M) {
             alert('文件大小超过限制(100M)');
             return;
         }
         if (/^image\/.+$/.test(file.type)) {
             const url = URL.createObjectURL(file);
             const show = <img src={url} />
-            this.setState({ name:file.name,path: file.name, url: url, show: show, data: file })
+            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file })
         }
         else if (/^video\/.+$/.test(file.type)) {
             const url = URL.createObjectURL(file);
             const show = <video src={url} controls loop />;
-            this.setState({ name:file.name,path: file.name, url: url, show: show, data: file })
+            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file })
         }
         else if (/^text\/plain$/.test(file.type)) {
-            const self = this;
             const reader = new FileReader();
             reader.readAsText(file);
-            reader.onload = function (e) {
-                const data = this.result;
+            reader.onload = (e) => {
+                const data = e.target.result;
                 const show = <textarea value={data} readOnly></textarea>
-                self.setState({ name:file.name,path: file.name, url: null, show: show, data: file })
+                this.setState({ name: file.name, path: file.name, url: null, show: show, data: file })
             }
         } else {
             alert('The file format is not supported');
@@ -54,7 +53,7 @@ class PreviewFile extends Component {
     }
     handleOk = () => {
         const key = this.state.currentKey;
-        this.props.addUploadFile({ name: this.state.name, progress: this.props.intl.formatMessage({id:'mediaPublish.waiting'}), data: this.state.data, key: key })
+        this.props.addUploadFile({ name: this.state.name, progress: this.props.intl.formatMessage({ id: 'mediaPublish.waiting' }), data: this.state.data, key: key })
         this.props.hideModal();
         this.setState({ currentKey: key + 1 })
     }
@@ -64,27 +63,27 @@ class PreviewFile extends Component {
         const { name, path, url, show } = this.state;
         const footer =
             <div>
-                <button type='button' className='btn ant-btn' onClick={this.props.hideModal}><FormattedMessage id='button.cancel'/></button>
-                <button type='button' disabled={(name && path) ? false : true} className='btn ant-btn ant-btn-primary' onClick={this.handleOk}><FormattedMessage id='mediaPublish.uploadFile'/></button>
+                <button type='button' className='btn ant-btn' onClick={this.props.hideModal}><FormattedMessage id='button.cancel' /></button>
+                <button type='button' disabled={(name && path) ? false : true} className='btn ant-btn ant-btn-primary' onClick={this.handleOk}><FormattedMessage id='mediaPublish.uploadFile' /></button>
             </div>;
 
         return (
-            <Modal title={this.props.intl.formatMessage({id:'mediaPublish.addMaterial'})} visible={this.props.showModal}
-                onCancel={this.props.hideModal} footer={footer}  maskClosable={false}>
+            <Modal title={this.props.intl.formatMessage({ id: 'mediaPublish.addMaterial' })} visible={this.props.showModal}
+                onCancel={this.props.hideModal} footer={footer} maskClosable={false}>
                 <div className='material'>
                     <div className='import'>
-                        <span className='title-name'><FormattedMessage id='mediaPublish.importMaterial'/></span>
+                        <span className='title-name'><FormattedMessage id='mediaPublish.importMaterial' /></span>
                         <div className='file-path'>
-                            {path ? path : this.props.intl.formatMessage({id:'mediaPublish.selectFilePrompt'})}
+                            {path ? path : this.props.intl.formatMessage({ id: 'mediaPublish.selectFilePrompt' })}
                             <label htmlFor='select-file' className='glyphicon glyphicon-link'></label>
                             <input type="file" accept="image/*,video/*,text/plain" onChange={this.selectFile} />
-                            <span className={path ? "m-prompt m-hidden" : "m-prompt"}><FormattedMessage id='mediaPublish.selectFilePath'/></span>
+                            <span className={path ? "m-prompt m-hidden" : "m-prompt"}><FormattedMessage id='mediaPublish.selectFilePath' /></span>
                         </div>
                     </div>
                     <div>
-                        <span className='title-name'><FormattedMessage id='mediaPublish.materialName'/></span>
+                        <span className='title-name'><FormattedMessage id='mediaPublish.materialName' /></span>
                         <input type='text' value={name} onChange={this.changeName} />
-                        <span className={name ? "m-prompt m-hidden" : "m-prompt"}><FormattedMessage id='mediaPublish.inputNamePrompt'/></span>
+                        <span className={name ? "m-prompt m-hidden" : "m-prompt"}><FormattedMessage id='mediaPublish.inputNamePrompt' /></span>
                     </div>
                     <div className='show'>
                         {show}
