@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {loginHandler} from '../action/index'
 
+import LanguageSwitch from '../../common/containers/LanguageSwitch'
 import {FormattedMessage} from 'react-intl';
 
 import '../../../public/styles/login.less';
@@ -111,6 +112,7 @@ export class Login extends Component{
                         <p><FormattedMessage id="app.title"/></p>
                         {/*<p>Smart Pole Control System</p>*/}
                     </div>
+                    <LanguageSwitch />
                 </header>
                 <div className="container-mid">
                     <div className="bg-cover"></div>

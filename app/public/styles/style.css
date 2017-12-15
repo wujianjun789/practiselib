@@ -935,13 +935,13 @@ ul {
     cursor: pointer;
 }
 
-.language-switch .lanauage-icon{
+.language-switch .language-icon{
     padding: 20px 20px 19px 20px;
     height:60px;
     width:60px;
 }
 
-.language-switch .lanauage-icon span{
+.language-switch .language-icon span{
     font-size: 36px;
     width:36px;
     height:36px;
@@ -951,7 +951,7 @@ ul {
     color:#fff;
 }
 
-.lanauage-switch .lanauage-icon span:before{
+.lanauage-switch .language-icon span:before{
     color: #fff;
 }
 

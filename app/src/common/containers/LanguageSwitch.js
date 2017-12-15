@@ -35,7 +35,7 @@ export default class LanguageSwitch extends Component{
         const {className=''} = this.props;
         const {curLan, list} = this.state;
         return <div className={"language-switch "+className}>
-                <div className="lanauage-icon">
+                <div className="language-icon">
                     <span className={curLan.path}></span>
                 </div>
                 <ul className="list-group">
