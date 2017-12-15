@@ -127,6 +127,7 @@ export default {
 
         //首页
         'app.title':'智慧路灯管理系统',
+        'app.copyright':'Copyright © 2018 上海三思电子工程有限公司',
         'app.asset.manage':'资产管理',
         'app.permission.manage':'权限管理',
         'app.system.operation':'系统运维',

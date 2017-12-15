@@ -130,7 +130,7 @@ export class Login extends Component{
                         <button type="button" className="btn btn-block btn-login" onClick={this.handleClick}><FormattedMessage id="login.button"/></button>
                     </div>
                 </div>
-                <footer>{language=="zh"?"Copyright © 2018 上海三思电子工程有限公司":"Copyright © 2018 Shanghai Sansi Technology Co.,Ltd"}</footer>
+                <footer><FormattedMessage id="app.copyright"/></footer>
             </div>
         )
     }

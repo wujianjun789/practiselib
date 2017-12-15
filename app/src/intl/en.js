@@ -128,6 +128,7 @@ export default {
 
         //首页
         'app.title': 'Smart Light Manage System',
+        'app.copyright':'Copyright © 2018 Shanghai Sansi Technology Co.,Ltd',
         'app.asset.manage': 'Asset Manage',
         'app.permission.manage': 'Permission',
         'app.system.operation': 'System Operate',
