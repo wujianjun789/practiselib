@@ -43,7 +43,16 @@ export class Login extends Component{
     //         this.refs.username.removeEventListener('change', this.changeHack);
     // }
     componentWillMount(){
+        this.mounted = true;
         this.setState({language:getLanguage()});
+    }
+
+    componentDidMount() {
+
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
     }
 
     onChange(id,value){
@@ -63,10 +72,6 @@ export class Login extends Component{
         this.props.actions.loginHandler(this.state.user.username, this.state.user.password, this.loginFail);
     }
 
-    componentDidMount() {
-        
-    }
-
     onKeyDown(event) {
         if (event.key == 'Enter') {
             this.submitHandler();
@@ -75,7 +80,7 @@ export class Login extends Component{
     }
 
     loginFail(){
-        this.setState({style:{visibility: 'visible'}})
+        this.mounted && this.setState({style:{visibility: 'visible'}})
     }
     
     render() {
