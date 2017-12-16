@@ -29,11 +29,17 @@ class PreviewFile extends Component {
             return;
         }
         if (/^image\/.+$/.test(file.type)) {
+            if (this.state.url) {
+                URL.revokeObjectURL(this.state.url)
+            }
             const url = URL.createObjectURL(file);
             const show = <img src={url} />
             this.setState({ name: file.name, path: file.name, url: url, show: show, data: file })
         }
         else if (/^video\/.+$/.test(file.type)) {
+            if (this.state.url) {
+                URL.revokeObjectURL(this.state.url)
+            }
             const url = URL.createObjectURL(file);
             const show = <video src={url} controls loop />;
             this.setState({ name: file.name, path: file.name, url: url, show: show, data: file })
@@ -57,8 +63,11 @@ class PreviewFile extends Component {
         this.props.hideModal();
         this.setState({ currentKey: key + 1 })
     }
-
-
+    componentWillUnmount(){
+        if (this.state.url) {
+            URL.revokeObjectURL(this.state.url)
+        }
+    }
     render() {
         const { name, path, url, show } = this.state;
         const footer =
