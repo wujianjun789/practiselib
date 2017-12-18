@@ -3,6 +3,7 @@ jest.mock('../../../src/common/actions/userCenter.js');
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
 import configureStore from '../../../src/store/configureStore';
 import UserCenter from '../../../src/common/containers/UserCenter';
 import {initialState as state} from '../../../src/app/reducer';
@@ -12,10 +13,12 @@ const store = configureStore();
 describe('<UserCenter /> HOC', () => {
     function setup() {
         const root = mount(<Provider store={store}>
-            <div>
-                <UserCenter />
-                <Overlayer />
-            </div>
+            <IntlProvider>
+                <div>
+                    <UserCenter />
+                    <Overlayer />
+                </div>
+            </IntlProvider>
         </Provider>);
 
         return {

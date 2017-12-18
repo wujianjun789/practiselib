@@ -24,6 +24,8 @@ export default class PlayerListPopup extends PureComponent {
                 height: !Boolean(height)
             }
         }
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -35,6 +37,12 @@ export default class PlayerListPopup extends PureComponent {
 
     componentWillUnmout() {
         this.mounted = true;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     onConfirm() {
@@ -66,7 +74,7 @@ export default class PlayerListPopup extends PureComponent {
         let {playerId, playerName, width, height, prompt} = this.state;
 
         let valid = prompt.playerName || prompt.width || prompt.height;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={[this.props.intl.formatMessage({id:'button.cancel'}),this.props.intl.formatMessage({id:'button.confirm'})]}
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={[this.formatIntl('button.cancel'),this.formatIntl('button.confirm')]}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
@@ -76,7 +84,7 @@ export default class PlayerListPopup extends PureComponent {
                     <div className="form-group row">
                         <label className="col-sm-3 control-label" htmlFor="playerName"><FormattedMessage id='mediaPublish.schemeName' /></label>
                         <div className="col-sm-9">
-                            <input type="text" className={ "form-control " } id="playerName" placeholder={this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'})}
+                            <input type="text" className={ "form-control " } id="playerName" placeholder={this.formatIntl('mediaPublish.inputSchemeName')}
                                    maxLength="16" value={playerName} onChange={this.onChange}/>
                             <span className={prompt.playerName?"prompt ":"prompt hidden"}><FormattedMessage id='mediaPublish.prompt'/></span>
                         </div>

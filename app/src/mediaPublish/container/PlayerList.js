@@ -37,13 +37,14 @@ export class PlayerList extends Component {
                 total: 2
             }),
             data: Immutable.fromJS([
-                { id: 1, icon: "", name: `${this.props.intl.formatMessage({id:'mediaPublish.playPlan'})} 1`, resolution: "1920X1080", width: 1920, height: 1080 },
-                { id: 2, icon: "", name: `${this.props.intl.formatMessage({id:'mediaPublish.playPlan'})} 2`, resolution: "1920X1080", width: 1920, height: 1080 }
+                { id: 1, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 1`, resolution: "1920X1080", width: 1920, height: 1080 },
+                { id: 2, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 2`, resolution: "1920X1080", width: 1920, height: 1080 }
             ])
         }
 
-        this.columns = [{ id: 1, field: "name", title:this.props.intl.formatMessage({id:'mediaPublish.schemeName'})},
-             { id: 2, field: "resolution", title: this.props.intl.formatMessage({id:'mediaPublish.resolution'})}];
+        this.columns = [{ id: 1, field: "name", title:this.formatIntl('mediaPublish.schemeName')},
+             { id: 2, field: "resolution", title: this.formatIntl('mediaPublish.resolution')}];
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.typeChange = this.typeChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -58,6 +59,12 @@ export class PlayerList extends Component {
         this.removeHandler = this.removeHandler.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     requestSearch() {
@@ -98,7 +105,7 @@ export class PlayerList extends Component {
             height: 1080
         }
 
-        actions.overlayerShow(<PlayerListPopup intl={this.props.intl} title={this.props.intl.formatMessage({id:'mediaPublish.addPlan'})} data={data}
+        actions.overlayerShow(<PlayerListPopup intl={this.props.intl} title={this.formatIntl('mediaPublish.addPlan')} data={data}
 
             onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
                 actions.overlayerHide();

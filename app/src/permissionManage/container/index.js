@@ -40,6 +40,9 @@ export class PermissionManage extends Component{
         this.columns = [{field:"roleLabel", title:" "}, {field:"username", title:"permission.username"},
             {field:"lastLoginDate", title:"permission.lastLoginDate"}
         ];
+
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -65,6 +68,12 @@ export class PermissionManage extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     onClick(){
@@ -135,7 +144,7 @@ export class PermissionManage extends Component{
     }
 
     rowDelete(id){
-        this.props.action.overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'delete.user'})} iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
+        this.props.action.overlayerShow(<ConfirmPopup tips={this.formatIntl('delete.user')} iconClass="icon_popup_delete" cancel={()=>{this.props.action.overlayerHide()}} confirm={()=>{
             this.props.action.overlayerHide()
             let page = Object.assign(this.state.page,{current:1});
             this.setState({page:page},deleteUser(id,this.requestData))
@@ -167,7 +176,7 @@ export class PermissionManage extends Component{
                 <HeadBar moduleName='app.permission.manage' router={this.props.router}/>
                 <div className = 'content '>
                     <div className = 'heading'>
-                        <SearchText className="search" placeholder={ this.props.intl.formatMessage({id:search.get('placeholder')})} value={search.get('value')} onChange={(value)=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>                        
+                        <SearchText className="search" placeholder={ this.formatIntl(search.get('placeholder'))} value={search.get('value')} onChange={(value)=>this.searchChange(value)} submit={()=>this.searchSubmit()}/>
                         <button className='btn btn-primary' onClick={this.onClick}><FormattedMessage id="button.add"/></button>
                     </div>
                     <div className="table-container">

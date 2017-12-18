@@ -28,6 +28,8 @@ export class DomainPopup extends Component{
             tree:[],
             nodes:Immutable.fromJS([])
         }
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.toggleOpen = this.toggleOpen.bind(this);
@@ -49,6 +51,12 @@ export class DomainPopup extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     domainHandle(response){
@@ -174,7 +182,7 @@ export class DomainPopup extends Component{
                     <label className="control-label"><FormattedMessage id='permission.domain'/>:</label>
                     <div className="domain-content">
                         <div className='domain-tree'>
-                                <SearchText className="search" placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/> 
+                                <SearchText className="search" placeholder={this.formatIntl(search.get('placeholder'))} value={search.get('value')} onChange={(value)=>this.searchChange(value)}/>
                                 <div className='domain-tree-list'>
                                 {
                                     tree && tree.map((node)=>{

@@ -14,11 +14,11 @@ describe('<ConfirmPopup />', () => {
         let txt = cmp.find('.tips');
         expect(txt.text()).toBe('tips');
 
-        let btnCancel = cmp.find('.btn.btn-default');
-        expect(btnCancel.text()).toBe('取消');
-
-        let btnConfirm = cmp.find('.btn.btn-primary');
-        expect(btnConfirm.text()).toBe('确认');
+        // let btnCancel = cmp.find('.btn.btn-default');
+        // expect(btnCancel.text()).toBe('取消');
+        //
+        // let btnConfirm = cmp.find('.btn.btn-primary');
+        // expect(btnConfirm.text()).toBe('确认');
     });
 
     it('click simulate', () => {

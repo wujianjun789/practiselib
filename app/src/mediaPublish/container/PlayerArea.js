@@ -185,6 +185,8 @@ export class PlayerArea extends Component {
 
         this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }]
 
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.onToggle = this.onToggle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
@@ -242,6 +244,12 @@ export class PlayerArea extends Component {
         // window.addEventListener("mousemove", this.handleMouseMove, true);
         // window.addEventListener("mouseup", this.handleMouseUp, true);
         console.log(this.props.router);
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     handleMouseMove({ pageX, pageY }) {
@@ -702,9 +710,9 @@ export class PlayerArea extends Component {
     uploadComplete = (e) => {
         const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
         if(e.target.status===200){
-            list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.completed'});
+            list[key].progress = this.formatIntl('mediaPublish.completed');
         }else{
-            list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.failed'});
+            list[key].progress = this.formatIntl('mediaPublish.failed');
         }
         this.setState({ uploadFileList: list })
 
@@ -723,7 +731,7 @@ export class PlayerArea extends Component {
     }
     uploadFailed = (e) => {
         const list = this.state.uploadFileList, key = e.target.key, xhr = list[key].xhr;
-        list[key].progress = this.props.intl.formatMessage({id:'mediaPublish.failed'});
+        list[key].progress = this.formatIntl('mediaPublish.failed');
         this.setState({ uploadFileList: list })
 
         const nextKey = key + 1;
@@ -926,10 +934,10 @@ export class PlayerArea extends Component {
         let add_title = "";
         switch (curType) {
             case "cyclePlan":
-                add_title = ` (${this.props.intl.formatMessage({id:'mediaPublish.cyclePlayPlan'})})`;
+                add_title = ` (${this.formatIntl('mediaPublish.cyclePlayPlan')})`;
                 break;
             case "timingPlan":
-                add_title = ` (${this.props.intl.formatMessage({id:'mediaPublish.timingPlayPlan'})})`;
+                add_title = ` (${this.formatIntl('mediaPublish.timingPlayPlan')})`;
                 break;
         }
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
@@ -1000,7 +1008,7 @@ export class PlayerArea extends Component {
                 <div className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_info" :
-                            "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{`${this.props.intl.formatMessage({id:'mediaPublish.property'})}${add_title}`}
+                            "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{`${this.formatIntl('mediaPublish.property')}${add_title}`}
                     </div>
                     <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
                         {curType == 'playerProject' && <PlayerProject />}

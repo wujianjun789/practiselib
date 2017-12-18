@@ -39,7 +39,7 @@ exports[`test TreeView renders 1`] = `
               <span
                 className="icon glyphicon-list-alt" />
               <span>
-                灯集中控制器灯集中控
+                灯集中控制器...
               </span>
             </div>
           </a>
