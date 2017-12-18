@@ -28,8 +28,8 @@ const errorCode = {
  *  unresolved 代表需要用户手动处理,返回response
  */
 export function httpRequest(url, option, responseCall, responseParam, errorCall, errorParam) {
-
-    var args = Array.prototype.slice.call(arguments);
+    let IsHandle = false;
+    let args = Array.prototype.slice.call(arguments);
     if (option) {
         // option.redirect = !!option.redirect?option.redirect:'same-origin';
         option.mode = !!option.mode ? option.mode : 'cors';
@@ -44,32 +44,45 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
         }
     }
 
-    if(args.indexOf('unresolved') > -1){
-        return fetch(url, option).then((response)=>{
-            responseCall && responseCall.apply(null, [response]);
-        }).catch((error)=>{
-            alertPopup(error);
-            errorCall && errorCall.apply(null, [error, errorParam]);
+    Promise.race([new Promise((resolve, reject)=>{
+        if(args.indexOf('unresolved') > -1){
+            return fetch(url, option).then((response)=>{
+                responseCall && responseCall.apply(null, [response]);
+            }).catch((error)=>{
+                alertPopup(error);
+                errorCall && errorCall.apply(null, [error, errorParam]);
+            })
+        }
+
+        fetch(url, option)
+            .then(checkStatus)
+            .then(parseJSON)
+            .then(({
+                json,
+                response
+            }) => {
+                IsHandle = true;
+                // if (!response.ok) {
+                //     return Promise.reject(json)
+                // }
+                responseCall && responseCall.apply(null, [json, response, responseParam]);
+
+            }).catch(function (error) {
+                IsHandle = true;
+                errorCall && errorCall.apply(null, [error, errorParam]);
         })
-    }
+    }), new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            let err = {"statusCode": 408,"name":"Error", "message":"Request Timeout"}
+            !IsHandle && console.log(err);
+            !IsHandle && alertPopup(err.message);
+            !IsHandle && errorCall && errorCall.apply(null, [err]);
+        }, 300)
+    })]).then(resolve=>{
 
-     fetch(url, option)
-        .then(checkStatus)
-        .then(parseJSON)
-        .then(({
-            json,
-            response
-        }) => {
-            if (!response.ok) {
-                return Promise.reject(json)
-            }
+    }, reject=>{
 
-            responseCall && responseCall.apply(null, [json, response, responseParam]);
-
-        }).catch(function (error) {
-
-            errorCall && errorCall.apply(null, [error, errorParam]);
-        })
+    })
 }
 
 function checkStatus(response) {
@@ -142,9 +155,9 @@ export function getToken() {
         //         location.href="http://"+location.hostname+":8080/login"
         //     }
 
-            return null            
+            return null
     }
-    
+
 }
 
 export function alertPopup(response) {
