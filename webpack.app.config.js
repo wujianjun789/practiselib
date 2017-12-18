@@ -1,14 +1,14 @@
 const path = require('path');
 const webpack = require('webpack')
-// const UglifyJsPlugin=require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin=require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
 module.exports = {
-    entry: path.resolve(__dirname,'app/src/root/index.js'),
+    entry: path.resolve(__dirname, 'app/src/root/index.js'),
     output: {
-        path: path.resolve(__dirname, 'dist','app', 'public'),
+        path: path.resolve(__dirname, 'dist', 'app', 'public'),
         filename: '[name].bundle.js',
         publicPath: '/',
         chunkFilename: '[name].[chunkhash].chunk.js',
@@ -25,12 +25,29 @@ module.exports = {
             {
                 test: /\.css|\.less$/,
                 use: ExtractTextPlugin.extract({
-                      fallback: 'style-loader',
-                      use: [ {
-                         loader:'css-loader',
-                      },'less-loader']
-                  })
-            }
+                    fallback: 'style-loader',
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                minimize: true,
+                            }
+                        },
+                        'less-loader'
+                    ]
+                })
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-loader',
+                        options: {
+                            minimize: true,
+                        }
+                    }
+                ],
+            },
         ]
 
     },
@@ -38,12 +55,12 @@ module.exports = {
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DllReferencePlugin({
-           context: __dirname,
+            context: __dirname,
             manifest: require('./manifest.json'),
         }),
         new webpack.optimize.CommonsChunkPlugin({
-            name:'commons',
-            filename:'commons.js'
+            name: 'commons',
+            filename: 'commons.js'
         }),
         new webpack.DefinePlugin({
             "process.env": {
@@ -56,16 +73,16 @@ module.exports = {
             inject: true,
             hash: true
         }),
-        // new UglifyJsPlugin({
-        //     uglifyOptions:{
-        //         output:{
-        //             comments:false,
-        //             beautify:false,
-                    
-        //         },
-        //         warnings:false
-        //     }
-        // }),
+        new UglifyJsPlugin({
+            uglifyOptions: {
+                output: {
+                    comments: false,
+                    beautify: false,
+
+                },
+                warnings: false
+            }
+        }),
         new ExtractTextPlugin('styles.css'),
     ]
 };
