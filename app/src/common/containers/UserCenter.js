@@ -19,15 +19,21 @@ export class UserCenter extends Component{
         super(props);
         this.state = {
             list: [
-                {name: this.props.intl.formatMessage({id:'update.password'}), key: 'alter', path:'icon_password'},
-                {name: this.props.intl.formatMessage({id:'exit'}), key: 'exit', path:'icon_exit'}
+                {name: this.formatIntl('update.password'), key: 'alter', path:'icon_password'},
+                {name: this.formatIntl('exit'), key: 'exit', path:'icon_exit'}
             ]
         }
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.itemClick = this.itemClick.bind(this);
         this.cancel = this.cancel.bind(this);
         this.confirm = this.confirm.bind(this);
     }
-
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
+    }
     cancel() {
         this.props.actions.overlayerHide();
     }
@@ -45,7 +51,7 @@ export class UserCenter extends Component{
         if(key == 'alter') {
             overlayerShow(<AlterPwPopup className='alter-pw-popup' overlayerShow={overlayerShow} overlayerHide={overlayerHide} modifyPassword={ this.props.actions.modifyPassword}/>);
         } else {
-            overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'sure.exit'})} iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
+            overlayerShow(<ConfirmPopup tips={this.formatIntl('sure.exit')} iconClass="icon-popup-exit" cancel={this.cancel} confirm={this.confirm}/>);
         }
     }
 

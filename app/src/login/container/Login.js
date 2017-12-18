@@ -10,7 +10,6 @@ import LanguageSwitch from '../../common/containers/LanguageSwitch'
 import {FormattedMessage} from 'react-intl';
 
 import '../../../public/styles/login.less';
-import {getCookie} from '../../util/cache';
 import {getLanguage} from '../../util/index';
 export class Login extends Component{
     constructor(props) {

@@ -86,7 +86,7 @@ export class TreeView extends Component{
             {
                 datalist.map((node, index)=> {
                     let count = this.state.language=='zh'?6:12;
-                    let intlMessage = intl.messages[node.name];
+                    let intlMessage = intl?intl.messages[node.name]:null;
                     let name = intlMessage?intlMessage:node.name;
                     let value = name.slice(0, count)+(name.length>count?'...':'');
                     if(!(node.children)){

@@ -276,7 +276,8 @@ console.log("%%%%%%%")
     }
 
     formatIntl(formatId){
-        return this.props.intl.formatMessage({id:formatId});
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
         // return formatId;
     }
 

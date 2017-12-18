@@ -22,13 +22,18 @@ import {getModule} from '../action/index'
 export class App extends Component{
     constructor(props){
         super(props);
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
         const {actions} = this.props;
         actions && actions.getModule();
     }
-
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
+    }
     render(){
         const {title="StarRiver", name="智慧路灯管理系统", items} = this.props;
         return (
@@ -61,12 +66,12 @@ export class App extends Component{
                     <UserCenter />
                     <LanguageSwitch/>
                     <div className="header-right clearfix">
-                        <span className="name">{this.props.intl.formatMessage({id:name})}</span>
+                        <span className="name">{this.formatIntl(name)}</span>
                     </div>
                 </div>
                 <div className="cont">
                     <ul className="clearfix">
-                        {items.map((item, index)=><li key={item.key}><Card _key={item.key} title={this.props.intl.formatMessage({id:item.title})} link={item.link}/></li>)}
+                        {items.map((item, index)=><li key={item.key}><Card _key={item.key} title={this.formatIntl(item.title)} link={item.link}/></li>)}
                     </ul>
                 </div>
                 <Overlayer />
