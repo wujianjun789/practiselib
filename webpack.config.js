@@ -38,6 +38,7 @@ module.exports = {
                             minimize: true,
                         }
                     },
+                    'postcss-loader',
                     'less-loader'
                 ]
             },
