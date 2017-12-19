@@ -33,8 +33,10 @@ export class SingleLamp extends Component {
         }
 
         // this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
-        this.columns = [{field:"type", title:intlFormat({en:'type',zh:'型号'})}, {field:"detail", title:intlFormat({en:'detail',zh:'描述'})}]  
+        this.columns = [{field:"type", title:intlFormat({en:'type',zh:'型号'})}, {field:"detail", title:intlFormat({en:'detail',zh:'描述'})}]
+
         this.initTreeData = this.initTreeData.bind(this);
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
@@ -44,6 +46,12 @@ export class SingleLamp extends Component {
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     initTreeData(){
@@ -61,7 +69,7 @@ export class SingleLamp extends Component {
         return (
             <Content>
                 <div className="row heading">
-                    <div className="property"><span></span>{this.props.intl.formatMessage({id:'asset.property'})}</div>
+                    <div className="property"><span></span>{this.formatIntl('asset.property')}</div>
                     <ul className="property-list">
                         {
                             devicePro.map((item,index)=>{
@@ -71,7 +79,7 @@ export class SingleLamp extends Component {
                     </ul>
                 </div>
                 <div className="row heading">
-                    <div className="type"><span></span>{this.props.intl.formatMessage({id:'asset.type'})}</div>
+                    <div className="type"><span></span>{this.formatIntl('asset.type')}</div>
                     <table className="equipment">
                         <thead>
                         <tr>
@@ -98,7 +106,7 @@ export class SingleLamp extends Component {
                     </table>
                 </div>
                 <div className="row heading">
-                    <div className="param"><span></span>{this.props.intl.formatMessage({id:'asset.param'})}</div>
+                    <div className="param"><span></span>{this.formatIntl('asset.param')}</div>
                     <table className="equipment">
                         <thead>
                         <tr>

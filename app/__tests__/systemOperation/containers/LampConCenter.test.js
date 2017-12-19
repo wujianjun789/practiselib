@@ -3,6 +3,7 @@ jest.mock('../../../src/data/systemModel.js');
 import React from 'react';
 import {mount, shallow} from 'enzyme';
 import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
 import configureStore from '../../../src/store/configureStore';
 import Gateway from '../../../src/systemOperation/container/Gateway';
 import Overlayer from '../../../src/common/containers/Overlayer';
@@ -19,10 +20,12 @@ describe('<Gateway /> HOC', () => {
 
     it('simulate click', done => {
         const root = mount(<Provider store={store}>
-            <div>
-                <Gateway />
-                <Overlayer />
-            </div>
+            <IntlProvider>
+                <div>
+                    <Gateway />
+                    <Overlayer />
+                </div>
+            </IntlProvider>
         </Provider>);
 
         const cmp = root.childAt(0).childAt(0);

@@ -12,7 +12,9 @@ exports[`<PermissionManage /> snapshot 1`] = `
     </div>
     <span
       className="title">
-      权限管理
+      <span>
+        app.permission.manage
+      </span>
     </span>
     <div
       className="user-center ">
@@ -29,7 +31,7 @@ exports[`<PermissionManage /> snapshot 1`] = `
           <span
             className="icon_password" />
           <span>
-            修改密码
+            update.password
           </span>
         </li>
         <li
@@ -37,7 +39,7 @@ exports[`<PermissionManage /> snapshot 1`] = `
           <span
             className="icon_exit" />
           <span>
-            退出管理系统
+            exit
           </span>
         </li>
       </ul>
@@ -45,7 +47,7 @@ exports[`<PermissionManage /> snapshot 1`] = `
     <div
       className="language-switch ">
       <div
-        className="lanauage-icon">
+        className="language-icon">
         <span
           className="icon_chinese" />
       </div>
@@ -84,7 +86,7 @@ exports[`<PermissionManage /> snapshot 1`] = `
         <input
           className="form-control"
           onChange={[Function]}
-          placeholder="输入用户名称"
+          placeholder={null}
           type="search"
           value="" />
         <ul
@@ -96,7 +98,9 @@ exports[`<PermissionManage /> snapshot 1`] = `
       <button
         className="btn btn-primary"
         onClick={[Function]}>
-        添加
+        <span>
+          button.add
+        </span>
       </button>
     </div>
     <div
@@ -115,13 +119,19 @@ exports[`<PermissionManage /> snapshot 1`] = `
                   type="checkbox" />
               </th>
               <th>
-                 
+                <span>
+                   
+                </span>
               </th>
               <th>
-                用户名称
+                <span>
+                  permission.username
+                </span>
               </th>
               <th>
-                最后登录时间
+                <span>
+                  permission.lastLoginDate
+                </span>
               </th>
               <th />
             </tr>

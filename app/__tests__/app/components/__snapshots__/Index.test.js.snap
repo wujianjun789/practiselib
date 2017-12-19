@@ -70,7 +70,7 @@ exports[`<app /> snapshot 1`] = `
           <span
             className="icon_password" />
           <span>
-            修改密码
+            update.password
           </span>
         </li>
         <li
@@ -78,7 +78,7 @@ exports[`<app /> snapshot 1`] = `
           <span
             className="icon_exit" />
           <span>
-            退出管理系统
+            exit
           </span>
         </li>
       </ul>
@@ -86,7 +86,7 @@ exports[`<app /> snapshot 1`] = `
     <div
       className="language-switch ">
       <div
-        className="lanauage-icon">
+        className="language-icon">
         <span
           className="icon_chinese" />
       </div>
@@ -115,9 +115,7 @@ exports[`<app /> snapshot 1`] = `
     <div
       className="header-right clearfix">
       <span
-        className="name">
-        智慧照明
-      </span>
+        className="name" />
     </div>
   </div>
   <div
@@ -136,9 +134,7 @@ exports[`<app /> snapshot 1`] = `
                 className="icon icon-asset" />
             </div>
             <div
-              className="title">
-              资产管理
-            </div>
+              className="title" />
           </div>
         </a>
       </li>
@@ -154,9 +150,7 @@ exports[`<app /> snapshot 1`] = `
                 className="icon icon-permission" />
             </div>
             <div
-              className="title">
-              权限管理
-            </div>
+              className="title" />
           </div>
         </a>
       </li>
@@ -244,7 +238,7 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
           <span
             className="icon_password" />
           <span>
-            修改密码
+            update.password
           </span>
         </li>
         <li
@@ -252,7 +246,7 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
           <span
             className="icon_exit" />
           <span>
-            退出管理系统
+            exit
           </span>
         </li>
       </ul>
@@ -260,7 +254,7 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
     <div
       className="language-switch ">
       <div
-        className="lanauage-icon">
+        className="language-icon">
         <span
           className="icon_chinese" />
       </div>
@@ -289,9 +283,7 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
     <div
       className="header-right clearfix">
       <span
-        className="name">
-        智慧路灯管理系统
-      </span>
+        className="name" />
     </div>
   </div>
   <div
@@ -310,9 +302,7 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
                 className="icon icon-asset" />
             </div>
             <div
-              className="title">
-              资产管理
-            </div>
+              className="title" />
           </div>
         </a>
       </li>
@@ -328,9 +318,7 @@ exports[`<app /> snapshot with props.title=undefined, props.name=undefined 1`] =
                 className="icon icon-permission" />
             </div>
             <div
-              className="title">
-              权限管理
-            </div>
+              className="title" />
           </div>
         </a>
       </li>

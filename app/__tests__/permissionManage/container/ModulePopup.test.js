@@ -2,12 +2,14 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
 import ModulePopup from '../../../src/permissionManage/container/ModulePopup';
-// import {Provider} from 'react-redux';
+import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
+import configureStore from '../../../src/store/configureStore';
 import Immutable from 'immutable';
-// import configureStore from '../../../src/store/configureStore';
 
+const store = configureStore();
 describe('<ModulePopup',()=>{
-    // const store = configureStore();
+
     const className = 'user-module-edit-popup';
     const title = '模块权限管理';
     const modules = [
@@ -22,7 +24,13 @@ describe('<ModulePopup',()=>{
     ];
     const rowModules = ['permission','maintenance'];
     it('render normal',()=>{
-        const cmp = shallow(<ModulePopup className={className} title={title} modules={modules} data = {rowModules}/>);
+        const root = shallow(<Provider store={store}>
+            <IntlProvider>
+                <ModulePopup className={className} title={title} modules={modules} data = {rowModules}/>
+            </IntlProvider>
+        </Provider>);
+        const cmp = root.find('ModulePopup');
+        
         const container = cmp.find(`.${className}`);
         expect(container.length).toBe(1);
 
@@ -38,7 +46,11 @@ describe('<ModulePopup',()=>{
     })
 
     it('snapshot', () => {
-        const cmp = renderer.create(<ModulePopup className={className} title={title} modules={modules} data = {rowModules}/>);
+        const cmp = renderer.create(<Provider store={store}>
+            <IntlProvider>
+                <ModulePopup className={className} title={title} modules={modules} data = {rowModules}/>
+            </IntlProvider>
+        </Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

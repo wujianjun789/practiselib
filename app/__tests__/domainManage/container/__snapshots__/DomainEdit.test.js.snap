@@ -11,7 +11,7 @@ exports[`test DomainEdit renders 1`] = `
       <input
         className="form-control"
         onChange={[Function]}
-        placeholder="输入域名称"
+        placeholder="please input the name"
         type="search"
         value="" />
       <ul
@@ -22,9 +22,7 @@ exports[`test DomainEdit renders 1`] = `
     </div>
     <button
       className="btn btn-primary add-domain"
-      onClick={[Function]}>
-      添加
-    </button>
+      onClick={[Function]} />
   </div>
   <div
     className="list-mode">
@@ -44,10 +42,10 @@ exports[`test DomainEdit renders 1`] = `
                   type="checkbox" />
               </th>
               <th>
-                域名称
+                domainName
               </th>
               <th>
-                上级域
+                parentName
               </th>
             </tr>
           </thead>
@@ -104,7 +102,6 @@ exports[`test DomainEdit renders 1`] = `
         className="panel-heading">
         <span
           className="icon_info" />
-        域属性
       </div>
       <div
         className="panel-body domain-property">
@@ -115,15 +112,11 @@ exports[`test DomainEdit renders 1`] = `
         <button
           className="btn btn-primary pull-right"
           disabled={true}
-          onClick={[Function]}>
-          编辑
-        </button>
+          onClick={[Function]} />
         <button
           className="btn btn-danger pull-right"
           disabled={true}
-          onClick={[Function]}>
-          删除
-        </button>
+          onClick={[Function]} />
       </div>
     </div>
     <div
@@ -132,7 +125,9 @@ exports[`test DomainEdit renders 1`] = `
         className="panel-heading">
         <span
           className="icon_map" />
-        地图位置
+        <span>
+          map.location
+        </span>
       </div>
       <div
         className="map-container panel-body">

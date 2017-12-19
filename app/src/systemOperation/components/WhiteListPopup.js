@@ -24,6 +24,7 @@ export default class WhiteListPopup extends Component {
             {field: "name", title: "name"},
             {field: "id", title: "id"},
         ];
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -48,6 +49,12 @@ export default class WhiteListPopup extends Component {
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     initWhiteList() {
@@ -134,9 +141,9 @@ export default class WhiteListPopup extends Component {
         let footer = <div className='modal-footer'><button type="button" className='btn btn-primary' onClick={this.onConfirm}><FormattedMessage id='button.finish'/></button></div>
             
         return <div className={className}>
-            <Panel title={this.props.intl.formatMessage({id:'sysOperation.whiteList'})} footer={footer} closeBtn={true} closeClick={this.onCancel}>
+            <Panel title={this.formatIntl('sysOperation.whiteList')} footer={footer} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row search-group">
-                    <SearchText IsTip={true} datalist = {datalist} placeholder={this.props.intl.formatMessage({id:search.placeholder})}  value={search.value} onChange={this.searchChange}/>
+                    <SearchText IsTip={true} datalist = {datalist} placeholder={this.formatIntl(search.placeholder)}  value={search.value} onChange={this.searchChange}/>
                     <button className="btn btn-primary" onClick={this.onAdd}><FormattedMessage id = 'button.add'/></button>
                 </div>
                 <div className="table-list">

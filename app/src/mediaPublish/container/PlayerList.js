@@ -26,11 +26,11 @@ export class PlayerList extends Component {
         super(props);
         this.state = {
             type: Immutable.fromJS({
-                list: [{ id: 1, value: `${this.props.intl.formatMessage({ id: 'mediaPublish.playType' })} 1` },
-                { id: 2, value: `${this.props.intl.formatMessage({ id: 'mediaPublish.playType' })} 2` }],
-                index: 0, value: `${this.props.intl.formatMessage({ id: 'mediaPublish.playType' })} 1`
+                list: [{ id: 1, value: `${this.formatIntl('mediaPublish.playType')} 1` },
+                { id: 2, value: `${this.formatIntl('mediaPublish.playType' )} 2` }],
+                index: 0, value: `${this.formatIntl('mediaPublish.playType')} 1`
             }),
-            search: Immutable.fromJS({ placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'}), value: '' }),
+            search: Immutable.fromJS({ placeholder: this.formatIntl('mediaPublish.inputSchemeName'), value: '' }),
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
@@ -155,7 +155,7 @@ export class PlayerList extends Component {
 
     removeHandler(id) {
         const { actions } = this.props;
-        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.props.intl.formatMessage({id:'mediaPublish.isDeleteList'})}
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.isDeleteList')}
 
             cancel={() => { actions.overlayerHide() }} confirm={() => {
             }} />);

@@ -27,7 +27,7 @@ exports[`<Screen /> default render snapshot 1`] = `
         <input
           className="form-control"
           onChange={[Function]}
-          placeholder="请输入设备名称"
+          placeholder="app.input.device.name"
           type="search"
           value="" />
         <ul
@@ -46,22 +46,22 @@ exports[`<Screen /> default render snapshot 1`] = `
           <thead>
             <tr>
               <th>
-                设备名称
+                app.device.name
               </th>
               <th>
-                在线状态
+                app.online.state
               </th>
               <th>
-                故障状态
+                app.fault.state
               </th>
               <th>
-                当前亮度
+                app.current.brightness
               </th>
               <th>
-                亮度模式
+                app.brightness.mode
               </th>
               <th>
-                更新时间
+                app.update.time
               </th>
             </tr>
           </thead>
@@ -113,7 +113,7 @@ exports[`<Screen /> default render snapshot 1`] = `
         className="panel-heading">
         <span
           className="icon_select" />
-        选中设备
+        sysOperation.selected.device
       </div>
       <div
         className="panel-body">
@@ -129,14 +129,14 @@ exports[`<Screen /> default render snapshot 1`] = `
         className="panel-heading">
         <span
           className="icon_touch" />
-        设备操作
+        app.device.operation
       </div>
       <div
         className="panel-body">
         <div>
           <span
             className="tit">
-            设备开关：
+            app.device.switch
           </span>
           <select
             className="form-control select "
@@ -146,11 +146,11 @@ exports[`<Screen /> default render snapshot 1`] = `
             value="on">
             <option
               value="on">
-              开启
+              app.open
             </option>
             <option
               value="off">
-              关闭
+              app.close
             </option>
           </select>
           <button
@@ -158,7 +158,7 @@ exports[`<Screen /> default render snapshot 1`] = `
             disabled={true}
             id="deviceSwitch_btn"
             onClick={[Function]}>
-            应用
+            button.apply
           </button>
         </div>
       </div>

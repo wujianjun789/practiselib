@@ -4,6 +4,7 @@
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
 import configureStore from '../../../src/store/configureStore';
 
 
@@ -14,9 +15,9 @@ const store = configureStore();
 it('PlayerArea renders', ()=>{
     const root = mount(
         <Provider store={store}>
-            <div>
+            <IntlProvider>
                 <PlayerArea />
-            </div>
+            </IntlProvider>
         </Provider>
     );
 

@@ -1,11 +1,20 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import {Login} from '../../../src/login/container/Login';
+import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
+import Login from '../../../src/login/container/Login';
+import configureStore from '../../../src/store/configureStore';
 import {loginHandler} from '../../../src/login/action/index';
-import {login} from '../../../src/util/network'
+import {login} from '../../../src/util/network';
+
+const store = configureStore();
 describe('<Login />',() => {
-    const login = shallow(<Login/>);
+    const login = shallow(<Provider store={store}>
+        <IntlProvider>
+            <Login />
+        </IntlProvider>
+    </Provider>);
 
     it('input change',() =>{
         let username = login.find('#username');
@@ -27,7 +36,11 @@ describe('<Login />',() => {
     })
 
     it('snapshot', () => {
-        const cmp = renderer.create(<Login/>);
+        const cmp = renderer.create(<Provider store={store}>
+            <IntlProvider>
+                <Login />
+            </IntlProvider>
+        </Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

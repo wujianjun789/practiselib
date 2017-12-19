@@ -43,28 +43,28 @@ exports[`test AssetStatistics renders 1`] = `
                 type="checkbox" />
             </th>
             <th>
-              域
+              domain
             </th>
             <th>
-              设备名称
+              name
             </th>
             <th>
-              软件版本
+              software
             </th>
             <th>
-              系统版本
+              system
             </th>
             <th>
-              内核版本
+              core_v
             </th>
             <th>
-              硬件版本
+              hardware
             </th>
             <th>
-              厂商信息
+              vendor_info
             </th>
             <th>
-              控制器类型
+              typeName
             </th>
           </tr>
         </thead>
@@ -116,7 +116,7 @@ exports[`test AssetStatistics renders 1`] = `
         className="panel-heading">
         <span
           className="icon_chart" />
-        设备统计信息
+        asset information
       </div>
       <div
         className="panel-body view">
@@ -232,7 +232,9 @@ exports[`test AssetStatistics renders 1`] = `
         className="panel-heading">
         <span
           className="icon_map" />
-        地图位置
+        <span>
+          map.location
+        </span>
       </div>
       <div
         className="map-container panel-body">

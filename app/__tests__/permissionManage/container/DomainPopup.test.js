@@ -1,36 +1,43 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
+
 import {DomainPopup} from '../../../src/permissionManage/container/DomainPopup';
 import {Provider} from 'react-redux';
-import Immutable from 'immutable';
+import {IntlProvider} from 'react-intl-redux';
 import configureStore from '../../../src/store/configureStore';
+import Immutable from 'immutable';
 
+const store = configureStore();
 describe('<DomainPopup',()=>{
-    // const store = configureStore();
+
     const className = 'user-domain-edit-popup';
     const title = '用户域管理';
     
     it('render normal',()=>{
         const onClick = jest.fn();
-        const cmp = shallow(<DomainPopup className={className} title={title} onClick={onClick}/>);
+        const root = shallow(<Provider store={store}>
+            <IntlProvider>
+                <DomainPopup className={className} title={title} onClick={onClick}/>
+            </IntlProvider>
+        </Provider>);
+        const cmp = root.find('DomainPopup')
         const container = cmp.find(`.${className}`);
         expect(container.length).toBe(1);
 
-        const panel = cmp.find('Panel');
-        expect(panel.length).toBe(1);
-        expect(panel.prop('title')).toBe(title);
+        expect(cmp.length).toBe(1);
+        expect(cmp.prop('title')).toBe(title);
         
-        const domainPer = panel.find('.domain-per');
+        const domainPer = cmp.find('.domain-per');
         expect(domainPer.length).toBe(1);
 
-        const domainContent = panel.find('.domain-content');
+        const domainContent = cmp.find('.domain-content');
         expect(domainContent.length).toBe(1);
 
-        const domainTree = panel.find('.domain-tree');
+        const domainTree = cmp.find('.domain-tree');
         expect(domainTree.length).toBe(1);
 
-        const domainList = panel.find('.domain-list');
+        const domainList = cmp.find('.domain-list');
         expect(domainList.length).toBe(1);
         
         const searchText = domainTree.find('SearchText');
@@ -43,7 +50,11 @@ describe('<DomainPopup',()=>{
     })
 
     it('snapshot',() => {
-        const cmp = renderer.create(<DomainPopup />);
+        const cmp = renderer.create(<Provider store={store}>
+            <IntlProvider>
+                <DomainPopup />
+            </IntlProvider>
+        </Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     })

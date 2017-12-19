@@ -25,7 +25,10 @@ exports[`<DomainPopup snapshot 1`] = `
       className="form-group row domain-per">
       <label
         className="control-label">
-        域权限:
+        <span>
+          permission.domain
+        </span>
+        :
       </label>
       <div
         className="domain-content">
@@ -39,7 +42,7 @@ exports[`<DomainPopup snapshot 1`] = `
             <input
               className="form-control"
               onChange={[Function]}
-              placeholder="输入域名称"
+              placeholder={null}
               type="search"
               value="" />
             <ul
@@ -65,14 +68,18 @@ exports[`<DomainPopup snapshot 1`] = `
       disabled={false}
       onClick={[Function]}
       type="button">
-      取消
+      <span>
+        button.cancel
+      </span>
     </button>
     <button
       className="btn btn-primary"
       disabled={false}
       onClick={[Function]}
       type="button">
-      确认
+      <span>
+        button.confirm
+      </span>
     </button>
   </div>
 </div>

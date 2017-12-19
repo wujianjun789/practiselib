@@ -3,7 +3,9 @@ exports[`<InputCheck /> snapshot 1`] = `
   className="inputCheck ">
   <label
     className="control-label">
-    用户名
+    <span>
+      用户名
+    </span>
     :
   </label>
   <div
@@ -23,7 +25,9 @@ exports[`<InputCheck /> snapshot 1`] = `
       className="glyphicon glyphicon-remove form-control-feedback" />
     <span
       className="reminder">
-      用户名已存在
+      <span>
+        用户名已存在
+      </span>
     </span>
   </div>
 </div>

@@ -27,7 +27,9 @@ exports[`<UserPopup add snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          用户名
+          <span>
+            permission.username
+          </span>
           :
         </label>
         <div
@@ -39,7 +41,7 @@ exports[`<UserPopup add snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入用户名"
+            placeholder=""
             type="text"
             value="" />
           <span
@@ -55,7 +57,10 @@ exports[`<UserPopup add snapshot 1`] = `
         className="inputCheck">
         <label
           className="control-label">
-          用户等级:
+          <span>
+            permission.grade
+          </span>
+          :
         </label>
         <div
           className="has-feedback">
@@ -63,25 +68,8 @@ exports[`<UserPopup add snapshot 1`] = `
             className="select role form-control"
             id=""
             onChange={[Function]}
-            placeholder={undefined}
-            value="访客">
-            <option
-              value="访客">
-              访客
-            </option>
-            <option
-              value="设备操作员">
-              设备操作员
-            </option>
-            <option
-              value="设备管理员">
-              设备管理员
-            </option>
-            <option
-              value="系统管理员">
-              系统管理员
-            </option>
-          </select>
+            placeholder="无"
+            value="" />
           <span
             aria-hidden="true"
             className="glyphicon  form-control-feedback" />
@@ -93,7 +81,9 @@ exports[`<UserPopup add snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          姓氏
+          <span>
+            permission.lastname
+          </span>
           :
         </label>
         <div
@@ -105,7 +95,7 @@ exports[`<UserPopup add snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入姓氏"
+            placeholder=""
             type="text"
             value="" />
           <span
@@ -121,7 +111,9 @@ exports[`<UserPopup add snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          名字
+          <span>
+            permission.firstname
+          </span>
           :
         </label>
         <div
@@ -133,7 +125,7 @@ exports[`<UserPopup add snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入名字"
+            placeholder=""
             type="text"
             value="" />
           <span
@@ -149,7 +141,9 @@ exports[`<UserPopup add snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          密码
+          <span>
+            permission.password
+          </span>
           :
         </label>
         <div
@@ -161,7 +155,7 @@ exports[`<UserPopup add snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入密码"
+            placeholder=""
             type="password"
             value="" />
           <span
@@ -177,7 +171,9 @@ exports[`<UserPopup add snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          重复密码
+          <span>
+            permission.repassword
+          </span>
           :
         </label>
         <div
@@ -189,7 +185,7 @@ exports[`<UserPopup add snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请再次输入密码"
+            placeholder=""
             type="password"
             value="" />
           <span
@@ -210,14 +206,18 @@ exports[`<UserPopup add snapshot 1`] = `
       disabled={false}
       onClick={[Function]}
       type="button">
-      取消
+      <span>
+        button.cancel
+      </span>
     </button>
     <button
       className="btn btn-primary"
       disabled={false}
       onClick={[Function]}
       type="button">
-      确认
+      <span>
+        button.confirm
+      </span>
     </button>
   </div>
 </div>
@@ -252,7 +252,9 @@ exports[`<UserPopup edit snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          用户名
+          <span>
+            permission.username
+          </span>
           :
         </label>
         <div
@@ -264,7 +266,7 @@ exports[`<UserPopup edit snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入用户名"
+            placeholder=""
             type="text"
             value="" />
           <span
@@ -280,7 +282,10 @@ exports[`<UserPopup edit snapshot 1`] = `
         className="inputCheck">
         <label
           className="control-label">
-          用户等级:
+          <span>
+            permission.grade
+          </span>
+          :
         </label>
         <div
           className="has-feedback">
@@ -288,25 +293,8 @@ exports[`<UserPopup edit snapshot 1`] = `
             className="select role form-control"
             id=""
             onChange={[Function]}
-            placeholder={undefined}
-            value="访客">
-            <option
-              value="访客">
-              访客
-            </option>
-            <option
-              value="设备操作员">
-              设备操作员
-            </option>
-            <option
-              value="设备管理员">
-              设备管理员
-            </option>
-            <option
-              value="系统管理员">
-              系统管理员
-            </option>
-          </select>
+            placeholder="无"
+            value="" />
           <span
             aria-hidden="true"
             className="glyphicon  form-control-feedback" />
@@ -318,7 +306,9 @@ exports[`<UserPopup edit snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          姓氏
+          <span>
+            permission.lastname
+          </span>
           :
         </label>
         <div
@@ -330,7 +320,7 @@ exports[`<UserPopup edit snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入姓氏"
+            placeholder=""
             type="text"
             value="" />
           <span
@@ -346,7 +336,9 @@ exports[`<UserPopup edit snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          名字
+          <span>
+            permission.firstname
+          </span>
           :
         </label>
         <div
@@ -358,7 +350,7 @@ exports[`<UserPopup edit snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入名字"
+            placeholder=""
             type="text"
             value="" />
           <span
@@ -374,7 +366,9 @@ exports[`<UserPopup edit snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          密码
+          <span>
+            permission.password
+          </span>
           :
         </label>
         <div
@@ -386,7 +380,7 @@ exports[`<UserPopup edit snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请输入密码"
+            placeholder=""
             type="password"
             value="" />
           <span
@@ -402,7 +396,9 @@ exports[`<UserPopup edit snapshot 1`] = `
         className="inputCheck ">
         <label
           className="control-label">
-          重复密码
+          <span>
+            permission.repassword
+          </span>
           :
         </label>
         <div
@@ -414,7 +410,7 @@ exports[`<UserPopup edit snapshot 1`] = `
             onBlur={[Function]}
             onChange={[Function]}
             onFocus={[Function]}
-            placeholder="请再次输入密码"
+            placeholder=""
             type="password"
             value="" />
           <span
@@ -435,14 +431,18 @@ exports[`<UserPopup edit snapshot 1`] = `
       disabled={false}
       onClick={[Function]}
       type="button">
-      取消
+      <span>
+        button.cancel
+      </span>
     </button>
     <button
       className="btn btn-primary"
       disabled={false}
       onClick={[Function]}
       type="button">
-      确认
+      <span>
+        button.confirm
+      </span>
     </button>
   </div>
 </div>

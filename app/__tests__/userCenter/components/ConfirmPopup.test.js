@@ -1,13 +1,24 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
+
+import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
+import configureStore from '../../../src/store/configureStore';
+
 import ConfirmPopup from '../../../src/components/ConfirmPopup';
 
+const store = configureStore();
 describe('<ConfirmPopup />', () => {
     it('default render', () => {
         const click = jest.fn();
-        const cmp = shallow(<ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
-
+        const root = shallow(<Provider store={store}>
+                <IntlProvider>
+                    <ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>
+                </IntlProvider>
+        </Provider>
+        );
+        const cmp = root.find('ConfirmPopup');
         let icon = cmp.find('.icon.icon-class');
         expect(icon.length).toBe(1);
 
@@ -23,7 +34,11 @@ describe('<ConfirmPopup />', () => {
 
     it('click simulate', () => {
         const click = jest.fn();
-        const cmp = shallow(<ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
+        const cmp = shallow(<Provider store={store}>
+            <IntlProvider>
+                <ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>
+            </IntlProvider>
+        </Provider>);
 
         let btnCancel = cmp.find('.btn.btn-default');
         btnCancel.simulate('click');
@@ -36,7 +51,11 @@ describe('<ConfirmPopup />', () => {
 
     it('snapshot', () => {
         const click = jest.fn();
-        const cmp = renderer.create(<ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>);
+        const cmp = renderer.create(<Provider store={store}>
+            <IntlProvider>
+                <ConfirmPopup tips='tips' iconClass='icon-class' cancel={click} confirm={click}/>
+            </IntlProvider>
+        </Provider>);
         let tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

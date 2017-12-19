@@ -7,14 +7,25 @@ jest.mock('../../../src/api/domain.js');
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
-import Gateway from '../../../src/smartLightList/containers/Gateway';
 
+import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
+import configureStore from '../../../src/store/configureStore';
+
+import Gateway from '../../../src/smartLightList/containers/Gateway';
+import { getDefaultIntl } from '../../../src/intl/index'
+
+getDefaultIntl();
+const store = configureStore();
 describe('<Gateway />', () => {
 	it('default render', () => {
-		const cmp = shallow(<Gateway />);
-
-		const content = cmp.find('Content');
-		expect(!content.hasClass('collapse')).toBeTruthy();
+		const root = mount(<Provider store={store}>
+			<IntlProvider>
+				<Gateway />
+			</IntlProvider>
+		</Provider>);
+		const cmp = root.find('Gateway');
+		expect(!cmp.hasClass('collapse')).toBeTruthy();
 
 		const select = cmp.find('#domain');
 		const domainList_state = cmp.state('domainList');
@@ -87,7 +98,13 @@ describe('<Gateway />', () => {
 	});
 
 	it('simulate event', () => {
-		const cmp = mount(<Gateway />);
+		const root = mount(<Provider store={store}>
+			<IntlProvider>
+				<Gateway />
+			</IntlProvider>
+		</Provider>);
+		const cmp = root.find('Gateway');
+		console.log('cmp:', cmp);
 		let content = cmp.find('Content');
 		expect(!content.hasClass('collapse')).toBeTruthy();
 		content.find('.sidebar-info .collapse-container').simulate('click');
@@ -103,7 +120,7 @@ describe('<Gateway />', () => {
 			valueField: 'name',
 			options: [{id: 1, name: '域一'},{id: 2, name: '域二'}]
 		}
-		cmp.setState({domainList});
+		root.setState({domainList});
 		const _select = cmp.find('#domain');
 		let event = {target: {id: 'domain', selectedIndex: 0}};
 		_select.find('select').simulate('change', event);
@@ -119,9 +136,10 @@ describe('<Gateway />', () => {
 			{id: 1, name: '设备2', online: false}
 		];
 		const currentDevice = deviceList[0];
-		cmp.setState({deviceList, currentDevice});
+		root.setState({deviceList, currentDevice});
 		const tableTrs = cmp.find('TableTr');
-		tableTrs.at(1).find('tr').simulate('click');
+		console.log('tableTrs:', tableTrs);
+		// tableTrs.at(1).find('tr').simulate('click');
 		expect(cmp.state('currentDevice')).toEqual(deviceList[1]);
 
 		let controlMode = cmp.find('#controlMode');
@@ -132,7 +150,12 @@ describe('<Gateway />', () => {
 	});
 
 	it('default render snapshot', () => {
-		const cmp = renderer.create(<Gateway />);
+		const cmp = renderer.create(<Provider store={store}>
+			<IntlProvider>
+				<Gateway />
+			</IntlProvider>
+		</Provider>);
+
 		expect(cmp.toJSON()).toMatchSnapshot();
 	})
 })

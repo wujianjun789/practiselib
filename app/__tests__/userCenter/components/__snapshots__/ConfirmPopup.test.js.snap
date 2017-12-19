@@ -16,7 +16,9 @@ exports[`<ConfirmPopup /> snapshot 1`] = `
       <button
         className="btn btn-default"
         onClick={[Function]}>
-        取消
+        <span>
+          button.cancel
+        </span>
       </button>
     </div>
     <div
@@ -24,7 +26,9 @@ exports[`<ConfirmPopup /> snapshot 1`] = `
       <button
         className="btn btn-primary"
         onClick={[Function]}>
-        确认
+        <span>
+          button.confirm
+        </span>
       </button>
     </div>
   </div>

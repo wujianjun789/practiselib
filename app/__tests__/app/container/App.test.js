@@ -2,6 +2,7 @@ jest.mock('../../../src/util/cache.js');
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
 import configureStore from '../../../src/store/configureStore';
 import App from '../../../src/app/container';
 import {initialState as state} from '../../../src/app/reducer';
@@ -10,7 +11,9 @@ describe('<app /> HOC', () => {
     const store = configureStore();
     it('render normal', () => {
         const root = mount(<Provider store={store}>
-            <App />
+            <IntlProvider>
+                <App />
+            </IntlProvider>
         </Provider>);
 
         const app = root.find('App');

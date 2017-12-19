@@ -30,7 +30,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="id">
-            设备编号：
+            <span>
+              sysOperation.id
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -45,7 +48,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               value="sdf" />
             <span
               className="prompt hidden">
-              不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -54,7 +59,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="name">
-            名称：
+            <span>
+              name
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -68,7 +76,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               value="name01" />
             <span
               className="prompt hidden">
-              不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -77,7 +87,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="model">
-            型号：
+            <span>
+              sysOperation.type
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -123,7 +136,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="domain">
-            域：
+            <span>
+              sysOperation.domain
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -163,7 +179,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             </select>
             <span
               className="prompt hidden">
-              请添加域
+              <span>
+                add.Domain
+              </span>
             </span>
           </div>
         </div>
@@ -172,7 +190,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lng">
-            经度：
+            <span>
+              map.lng
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -185,7 +206,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               value={121.49971691534425} />
             <span
               className="prompt hidden">
-              经度数不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -194,7 +217,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lat">
-            纬度：
+            <span>
+              map.lat
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -207,7 +233,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
               value={31.239658843127756} />
             <span
               className="prompt hidden">
-              纬度数不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -218,14 +246,18 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="add" 1`] = `
             disabled={false}
             onClick={[Function]}
             type="button">
-            取消
+            <span>
+              button.cancel
+            </span>
           </button>
           <button
             className="btn btn-primary"
             disabled={false}
             onClick={[Function]}
             type="button">
-            确认
+            <span>
+              button.confirm
+            </span>
           </button>
         </div>
       </div>
@@ -272,13 +304,16 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="id">
-            设备编号：
+            <span>
+              sysOperation.id
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
             <input
               className="form-control "
-              disabled={true}
+              disabled={false}
               id="id"
               maxLength={16}
               onChange={[Function]}
@@ -287,7 +322,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               value="sdf" />
             <span
               className="prompt hidden">
-              不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -296,7 +333,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="name">
-            名称：
+            <span>
+              name
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -310,7 +350,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               value="name01" />
             <span
               className="prompt hidden">
-              不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -319,7 +361,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="model">
-            型号：
+            <span>
+              sysOperation.type
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -365,7 +410,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="domain">
-            域：
+            <span>
+              sysOperation.domain
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -405,7 +453,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             </select>
             <span
               className="prompt hidden">
-              请添加域
+              <span>
+                add.Domain
+              </span>
             </span>
           </div>
         </div>
@@ -414,7 +464,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lng">
-            经度：
+            <span>
+              map.lng
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -427,7 +480,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               value={121.49971691534425} />
             <span
               className="prompt hidden">
-              经度数不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -436,7 +491,10 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
           <label
             className="fixed-width-left control-label"
             htmlFor="lat">
-            纬度：
+            <span>
+              map.lat
+            </span>
+            ：
           </label>
           <div
             className="fixed-width-right">
@@ -449,7 +507,9 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
               value={31.239658843127756} />
             <span
               className="prompt hidden">
-              纬度数不合法
+              <span>
+                illegal
+              </span>
             </span>
           </div>
         </div>
@@ -460,14 +520,18 @@ exports[`<CentralizedControllerPopup /> snapshot with popId="edit" 1`] = `
             disabled={false}
             onClick={[Function]}
             type="button">
-            取消
+            <span>
+              button.cancel
+            </span>
           </button>
           <button
             className="btn btn-primary"
             disabled={false}
             onClick={[Function]}
             type="button">
-            确认
+            <span>
+              button.confirm
+            </span>
           </button>
         </div>
       </div>

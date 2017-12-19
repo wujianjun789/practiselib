@@ -17,9 +17,7 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
         </span>
       </button>
       <h4
-        className="modal-title">
-        白名单
-      </h4>
+        className="modal-title" />
     </div>
     <div
       className="modal-body">
@@ -33,7 +31,7 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
           <input
             className="form-control"
             onChange={[Function]}
-            placeholder="输入素材名称"
+            placeholder={null}
             type="search"
             value="" />
           <ul
@@ -45,7 +43,9 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
         <button
           className="btn btn-primary"
           onClick={[Function]}>
-          添加
+          <span>
+            button.add
+          </span>
         </button>
       </div>
       <div
@@ -54,11 +54,15 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
           className="table-header">
           <li
             className="tables-cell">
-            名称
+            <span>
+              name
+            </span>
           </li>
           <li
             className="tables-cell">
-            编号
+            <span>
+              id
+            </span>
           </li>
           <li
             className="tables-cell" />
@@ -75,7 +79,9 @@ exports[`<WhiteListPopup /> snapshot 1`] = `
         className="btn btn-primary"
         onClick={[Function]}
         type="button">
-        完成
+        <span>
+          button.finish
+        </span>
       </button>
     </div>
   </div>

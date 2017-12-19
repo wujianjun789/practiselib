@@ -6,7 +6,6 @@ exports[`test AssetManage renders 1`] = `
     <div
       className="property">
       <span />
-      设备属性
     </div>
     <ul
       className="property-list">
@@ -26,17 +25,16 @@ exports[`test AssetManage renders 1`] = `
     <div
       className="type">
       <span />
-      设备类别
     </div>
     <table
       className="equipment">
       <thead>
         <tr>
           <th>
-            型号
+            type
           </th>
           <th>
-            描述
+            detail
           </th>
         </tr>
       </thead>
@@ -73,7 +71,6 @@ exports[`test AssetManage renders 1`] = `
     <div
       className="param">
       <span />
-      默认参数
     </div>
     <table
       className="equipment">

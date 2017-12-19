@@ -7,15 +7,15 @@ exports[`test renders Scene 1`] = `
       className="select sort form-control"
       id=""
       onChange={[Function]}
-      placeholder="排序"
-      value="场景序号">
+      placeholder={undefined}
+      value="app.scene.order">
       <option
-        value="场景序号">
-        场景序号
+        value="app.scene.order">
+        app.scene.order
       </option>
       <option
-        value="设备多少">
-        设备多少
+        value="app.device.number">
+        app.device.number
       </option>
     </select>
     <div
@@ -26,7 +26,7 @@ exports[`test renders Scene 1`] = `
       <input
         className="form-control"
         onChange={[Function]}
-        placeholder="输入场景名称"
+        placeholder="app.input.scene.name"
         type="search"
         value="" />
       <ul

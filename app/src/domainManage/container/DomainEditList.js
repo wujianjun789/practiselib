@@ -58,6 +58,8 @@ export class DomainEditList extends Component {
         this.columns = [{id: 1, field: "name", title:intlFormat({en:'domainName',zh:'域名称'})}, {id:2, field:"parentName", title: intlFormat({en:'parentName',zh:'上级域'})}]
         this.domainList = [];
 
+        this.formatIntl = this.formatIntl.bind(this);
+
         this.initTreeData = this.initTreeData.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -96,6 +98,12 @@ export class DomainEditList extends Component {
         }
 
         this.props.actions.removeAllNotify();
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     setSize(){
@@ -290,7 +298,7 @@ export class DomainEditList extends Component {
                 <div className="heading">
                     <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                                 onChange={this.searchChange} submit={this.searchSubmit}/>
-                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>{this.props.intl.formatMessage({id:'button.add'})}</button>
+                    <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>{this.formatIntl('button.add')}</button>
                 </div>
                 <div ref="domainEditList" className="list-mode">
                     <div className="table-container">
@@ -303,12 +311,12 @@ export class DomainEditList extends Component {
                 <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading">
-                            <span className="icon_info"></span>{this.props.intl.formatMessage({id:'domain.property'})}
+                            <span className="icon_info"></span>{this.formatIntl('domain.property')}
                         </div>
                         <div className="panel-body domain-property">
                             <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>
-                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.edit'})}</button>
-                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.delete'})}</button>
+                            <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>{this.formatIntl('button.edit')}</button>
+                            <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>{this.formatIntl('button.delete')}</button>
                         </div>
                     </div>
                 </SideBarInfo>

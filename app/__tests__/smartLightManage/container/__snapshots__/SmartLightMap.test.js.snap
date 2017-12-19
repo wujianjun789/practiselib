@@ -14,7 +14,7 @@ exports[`test renders smartLightMap 1`] = `
       <input
         className="form-control"
         onChange={[Function]}
-        placeholder="搜索名称或域"
+        placeholder="app.search.placeholder.name"
         type="search"
         value="" />
       <ul
@@ -22,18 +22,18 @@ exports[`test renders smartLightMap 1`] = `
         <li
           className="active"
           onClick={[Function]}
-          value="设备">
+          value="app.device">
           <span>
-            设备
+            app.device
           </span>
           
         </li>
         <li
           className=""
           onClick={[Function]}
-          value="域">
+          value="app.domain">
           <span>
-            域
+            app.domain
           </span>
           
         </li>
@@ -109,7 +109,7 @@ exports[`test renders smartLightMap 1`] = `
         className="glyphicon glyphicon-menu-left padding-left padding-right" />
       <span
         className="name">
-        返回搜索结果
+        app.search.list
       </span>
     </div>
     <div
@@ -179,7 +179,7 @@ exports[`test renders smartLightMap 1`] = `
             <div
               className="pro">
               <span>
-                width
+                app.width
                 :
               </span>
               192
@@ -189,23 +189,23 @@ exports[`test renders smartLightMap 1`] = `
             <div
               className="pro">
               <span>
-                online
+                app.online
                 :
               </span>
-              在线
+              app.online
             </div>
             <div
               className="pro">
               <span>
-                brightness_mode
+                app.brightness_mode
                 :
               </span>
-              manual
+              app.manual
             </div>
             <div
               className="pro">
               <span>
-                brightness
+                app.brightness
                 :
               </span>
               100
@@ -214,7 +214,7 @@ exports[`test renders smartLightMap 1`] = `
               className="fault-container">
               <span
                 className="name">
-                fault
+                app.fault
                 :
               </span>
               <span
@@ -232,7 +232,7 @@ exports[`test renders smartLightMap 1`] = `
                 className="panel-heading">
                 <h3
                   className="panel-title">
-                  fault_info
+                  app.fault_info
                 </h3>
                 <button
                   className="close"
@@ -246,7 +246,7 @@ exports[`test renders smartLightMap 1`] = `
               <div
                 className="panel-body">
                 <div>
-                  sys_fault
+                  app.sys_fault
                 </div>
               </div>
             </div>
@@ -278,7 +278,7 @@ exports[`test renders smartLightMap 1`] = `
         }>
         <h3
           className="panel-title ">
-          设备控制
+          app.device.control
         </h3>
         <span
           className="glyphicon glyphicon-triangle-bottom "
@@ -299,30 +299,30 @@ exports[`test renders smartLightMap 1`] = `
             className="col-sm-12 form-group switch">
             <label
               className="col-sm-4">
-              显示屏开关:
+              app.led.control
             </label>
             <select
               className="col-sm-4"
               onChange={[Function]}
-              value="关">
+              value="app.close">
               <option>
                 关
               </option>
               <option>
-                开
+                app.open
               </option>
             </select>
             <button
               className="col-sm-3 btn btn-primary padding-left"
               onClick={[Function]}>
-              应用
+              button.apply
             </button>
           </div>
           <div
             className="col-sm-12 form-group time-table">
             <label
               className="col-sm-4">
-              时间表1
+              app.schedule
             </label>
             <select
               className="col-sm-4"
@@ -338,7 +338,7 @@ exports[`test renders smartLightMap 1`] = `
             <button
               className="col-sm-3 btn btn-primary"
               onClick={[Function]}>
-              应用
+              button.apply
             </button>
           </div>
         </div>

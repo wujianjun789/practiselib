@@ -6,6 +6,7 @@ import renderer from 'react-test-renderer';
 
 import {shallow, mount} from 'enzyme'
 import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
 import configureStore from '../../../src/store/configureStore'
 
 import '../../../public/js/jquery-3.1.1.min';
@@ -17,7 +18,9 @@ const store = configureStore();
 test('renders smartLightMap', ()=>{
     const wrapper = renderer.create(
         <Provider store={store}>
-            <SmartLightMap />
+            <IntlProvider>
+                <SmartLightMap />
+            </IntlProvider>
         </Provider>
     ).toJSON();
 
@@ -27,7 +30,9 @@ test('renders smartLightMap', ()=>{
 test('renders smartLightMap data', ()=>{
     const wrapper = mount(
         <Provider store={store}>
-            <SmartLightMap />
+            <IntlProvider>
+                <SmartLightMap />
+            </IntlProvider>
         </Provider>
     );
 

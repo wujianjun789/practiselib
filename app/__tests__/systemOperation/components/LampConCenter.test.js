@@ -1,12 +1,22 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import renderer from 'react-test-renderer';
+
+import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
+import configureStore from '../../../src/store/configureStore';
+
 import {Gateway} from '../../../src/systemOperation/container/Gateway';
 import Immutable from 'immutable';
 
+const store = configureStore();
 describe('<Gateway /> component', () => {
     it('render normal', () => {
-        const cmp = shallow(<Gateway />);
+        const cmp = shallow(<Provider store={store}>
+                <IntlProvider>
+                    <Gateway />
+                </IntlProvider>
+            </Provider>);
         const header = cmp.find('.heading');
         const select = header.find('Select');
         const domainList = cmp.state('domainList');
@@ -41,7 +51,11 @@ describe('<Gateway /> component', () => {
     });
 
     it('snapshot', () => {
-        const cmp = renderer.create(<Gateway />);
+        const cmp = renderer.create(<Provider store={store}>
+            <IntlProvider>
+                <Gateway />
+            </IntlProvider>
+        </Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

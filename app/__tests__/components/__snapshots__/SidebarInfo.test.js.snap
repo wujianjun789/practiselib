@@ -14,7 +14,9 @@ exports[`test SidebarInfo renders 1`] = `
       className="panel-heading">
       <span
         className="icon_map" />
-      地图位置
+      <span>
+        map.location
+      </span>
     </div>
     <div
       className="map-container panel-body">

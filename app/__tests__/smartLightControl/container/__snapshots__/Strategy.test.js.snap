@@ -7,34 +7,34 @@ exports[`test renders Strategy 1`] = `
       className="select sort form-control"
       id=""
       onChange={[Function]}
-      placeholder="排序"
-      value="场景序号">
+      placeholder={undefined}
+      value="app.device.number">
       <option
-        value="场景序号">
-        场景序号
+        value="app.scene.order">
+        app.scene.order
       </option>
       <option
-        value="设备多少">
-        设备多少
+        value="app.device.number">
+        app.device.number
       </option>
     </select>
     <select
       className="select strategy form-control"
       id=""
       onChange={[Function]}
-      placeholder="策略类型"
-      value="时间策略">
+      placeholder={undefined}
+      value="app.time.strategy">
       <option
-        value="时间策略">
-        时间策略
+        value="app.time.strategy">
+        app.time.strategy
       </option>
       <option
-        value="传感器策略">
-        传感器策略
+        value="app.sensor.strategy">
+        app.sensor.strategy
       </option>
       <option
-        value="经纬度策略">
-        经纬度策略
+        value="app.latlng.strategy">
+        app.latlng.strategy
       </option>
     </select>
     <div
@@ -45,7 +45,7 @@ exports[`test renders Strategy 1`] = `
       <input
         className="form-control"
         onChange={[Function]}
-        placeholder="输入策略名称"
+        placeholder="app.input.strategy.name"
         type="search"
         value="" />
       <ul
@@ -71,16 +71,16 @@ exports[`test renders Strategy 1`] = `
                 type="checkbox" />
             </th>
             <th>
-              策略名称
+              app.strategy.name
             </th>
             <th>
-              策略类型
+              app.strategy.type
             </th>
             <th>
-              设备种类
+              app.device.type
             </th>
             <th>
-              设定状态
+              app.set.state
             </th>
           </tr>
         </thead>
@@ -132,7 +132,9 @@ exports[`test renders Strategy 1`] = `
         className="panel-heading">
         <span
           className="icon_select" />
-        选中设备
+        <span>
+          sysOperation.selected.device
+        </span>
       </div>
       <div
         className="panel-body strategy-property">
@@ -143,7 +145,9 @@ exports[`test renders Strategy 1`] = `
           disabled={true}
           id="sys-update"
           onClick={[Function]}>
-          设定
+          <span>
+            button.set
+          </span>
         </button>
       </div>
     </div>
@@ -153,7 +157,9 @@ exports[`test renders Strategy 1`] = `
         className="panel-heading">
         <span
           className="icon_list" />
-        策略参数
+        <span>
+          app.strategy.param
+        </span>
       </div>
       <div
         className="panel-body strategy-chart"
@@ -165,7 +171,9 @@ exports[`test renders Strategy 1`] = `
         className="panel-heading">
         <span
           className="icon_device_list" />
-        包含目标设备
+        <span>
+          app.include.target.devices
+        </span>
       </div>
       <div
         className="panel-body">

@@ -25,7 +25,10 @@ exports[`<ModulePopup snapshot 1`] = `
       className="form-group row module-per">
       <label
         className="control-label">
-        模块权限:
+        <span>
+          permission.module
+        </span>
+        :
       </label>
       <div
         className="module-content">
@@ -36,51 +39,71 @@ exports[`<ModulePopup snapshot 1`] = `
               <span
                 className="glyphicon glyphicon-plus"
                 onClick={[Function]} />
-              资产管理
+              <span>
+                资产管理
+              </span>
             </li>
             <li>
               <span
                 className="list-node-add">
-                已添加
+                <span>
+                  permission.added
+                </span>
               </span>
-              权限管理
+              <span>
+                权限管理
+              </span>
             </li>
             <li>
               <span
                 className="list-node-add">
-                已添加
+                <span>
+                  permission.added
+                </span>
               </span>
-              系统运维
+              <span>
+                系统运维
+              </span>
             </li>
             <li>
               <span
                 className="glyphicon glyphicon-plus"
                 onClick={[Function]} />
-              系统控制
+              <span>
+                系统控制
+              </span>
             </li>
             <li>
               <span
                 className="glyphicon glyphicon-plus"
                 onClick={[Function]} />
-              报表管理
+              <span>
+                报表管理
+              </span>
             </li>
             <li>
               <span
                 className="glyphicon glyphicon-plus"
                 onClick={[Function]} />
-              媒体发布
+              <span>
+                媒体发布
+              </span>
             </li>
             <li>
               <span
                 className="glyphicon glyphicon-plus"
                 onClick={[Function]} />
-              可视化
+              <span>
+                可视化
+              </span>
             </li>
             <li>
               <span
                 className="glyphicon glyphicon-plus"
                 onClick={[Function]} />
-              域管理
+              <span>
+                域管理
+              </span>
             </li>
           </ul>
         </div>
@@ -91,13 +114,17 @@ exports[`<ModulePopup snapshot 1`] = `
               <span
                 className="icon-table-delete"
                 onClick={[Function]} />
-              权限管理
+              <span>
+                权限管理
+              </span>
             </li>
             <li>
               <span
                 className="icon-table-delete"
                 onClick={[Function]} />
-              系统运维
+              <span>
+                系统运维
+              </span>
             </li>
           </ul>
         </div>
@@ -111,14 +138,18 @@ exports[`<ModulePopup snapshot 1`] = `
       disabled={false}
       onClick={[Function]}
       type="button">
-      取消
+      <span>
+        button.cancel
+      </span>
     </button>
     <button
       className="btn btn-primary"
       disabled={false}
       onClick={[Function]}
       type="button">
-      确认
+      <span>
+        button.confirm
+      </span>
     </button>
   </div>
 </div>

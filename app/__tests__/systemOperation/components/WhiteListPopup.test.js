@@ -1,8 +1,14 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 import renderer from 'react-test-renderer';
+
+import {Provider} from 'react-redux';
+import {IntlProvider} from 'react-intl-redux';
+import configureStore from '../../../src/store/configureStore';
+
 import WhiteListPopup from '../../../src/systemOperation/components/WhiteListPopup';
 
+const store = configureStore();
  describe('<WhiteListPopup />', () => {
     let className="white-popup";
     let data = [
@@ -10,8 +16,13 @@ import WhiteListPopup from '../../../src/systemOperation/components/WhiteListPop
             {id: '00158D0000CABAD5',name:'xxx2'},
         ]
     it('render normal', () => {
-        const cmp = shallow(<WhiteListPopup className={className}/>);
-        cmp.setState({whiteList:data});
+        const root = shallow(<Provider store={store}>
+                <IntlProvider>
+                    <WhiteListPopup className={className}/>
+                </IntlProvider>
+            </Provider>);
+        const cmp = root.find('WhiteListPopup');
+        root.setState({whiteList:data});
         const {columns} = cmp.instance();
         expect(cmp.find(`.${className}`).length).toBe(1);
 
@@ -44,7 +55,11 @@ import WhiteListPopup from '../../../src/systemOperation/components/WhiteListPop
     it('Behavior interaction', () => {
         let fn = jest.fn();
         let overlayerHide = jest.fn();
-        const cmp = mount(<WhiteListPopup overlayerHide={overlayerHide} />);
+        const cmp = mount(<Provider store={store}>
+            <IntlProvider>
+                <WhiteListPopup overlayerHide={overlayerHide} />
+            </IntlProvider>
+        </Provider>);
 
         let searchText = cmp.find('SearchText');
         let searchInput = searchText.find('input');
@@ -54,7 +69,11 @@ import WhiteListPopup from '../../../src/systemOperation/components/WhiteListPop
     });
 
     it('snapshot', () => {
-        const cmp = renderer.create(<WhiteListPopup className={className} />);
+        const cmp = renderer.create(<Provider store={store}>
+                <IntlProvider>
+                    <WhiteListPopup className={className} />
+                </IntlProvider>
+            </Provider>);
         const tree = cmp.toJSON();
         expect(tree).toMatchSnapshot();
     });

@@ -6,14 +6,18 @@ exports[`<PanelFooter /> snapshot with funcNames=["onCancel","onConfirm"], btnTi
     disabled={false}
     onClick={undefined}
     type="button">
-    Cancel
+    <span>
+      Cancel
+    </span>
   </button>
   <button
     className="btn btn-primary"
     disabled={false}
     onClick={undefined}
     type="button">
-    Confirm
+    <span>
+      Confirm
+    </span>
   </button>
 </div>
 `;
@@ -22,18 +26,22 @@ exports[`<PanelFooter /> snapshot with funcNames=["onCancel","onConfirm"], btnTi
 <div
   className="modal-footer">
   <button
-    className="btn btn-custom1"
-    disabled={true}
+    className="btn btn-default"
+    disabled={false}
     onClick={undefined}
     type="button">
-    Cancel
+    <span>
+      Cancel
+    </span>
   </button>
   <button
-    className="btn btn-custom2"
-    disabled={true}
+    className="btn btn-primary"
+    disabled={false}
     onClick={undefined}
     type="button">
-    Confirm
+    <span>
+      Confirm
+    </span>
   </button>
 </div>
 `;
