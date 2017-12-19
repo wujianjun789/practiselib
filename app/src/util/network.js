@@ -77,7 +77,7 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
             !IsHandle && console.log(err);
             !IsHandle && alertPopup(err.message);
             !IsHandle && errorCall && errorCall.apply(null, [err]);
-        }, 3000)
+        }, 30000)
     })]).then(resolve=>{
 
     }, reject=>{
