@@ -76,14 +76,18 @@ exports[`test renders StrategySetPopup 1`] = `
       disabled={false}
       onClick={[Function]}
       type="button">
-      取消
+      <span>
+        取消
+      </span>
     </button>
     <button
       className="btn btn-primary"
       disabled={false}
       onClick={[Function]}
       type="button">
-      保存
+      <span>
+        保存
+      </span>
     </button>
   </div>
 </div>

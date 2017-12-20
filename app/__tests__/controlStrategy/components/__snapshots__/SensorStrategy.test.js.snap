@@ -1,172 +1,189 @@
 exports[`<SensorStrategy /> default render snapshot 1`] = `
-<div
-  className="content sensor-strategy">
+<div>
   <div
-    className="content-title">
+    className="content sensor-strategy">
     <div
-      className="searchText "
-      onBlur={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}>
-      <input
-        className="form-control"
-        onChange={[Function]}
-        placeholder="输入策略名称"
-        type="search"
-        value="" />
-      <ul
-        className="" />
-      <span
-        className="glyphicon glyphicon-search"
-        onClick={[Function]} />
+      className="content-title">
+      <div
+        className="searchText "
+        onBlur={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}>
+        <input
+          className="form-control"
+          onChange={[Function]}
+          placeholder="app.input.strategy.name"
+          type="search"
+          value="" />
+        <ul
+          className="" />
+        <span
+          className="glyphicon glyphicon-search"
+          onClick={[Function]} />
+      </div>
+      <button
+        className="btn btn-primary"
+        id="add-sensor"
+        onClick={[Function]}>
+        button.add
+      </button>
     </div>
-    <button
-      className="btn btn-primary"
-      id="add-sensor"
-      onClick={[Function]}>
-      添加
-    </button>
+    <div
+      className="content-body">
+      <div
+        className="table-responsive ">
+        <table
+          className="table table-hover">
+          <thead>
+            <tr>
+              <th
+                className="hidden">
+                <input
+                  checked={undefined}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </th>
+              <th>
+                app.strategy.name
+              </th>
+              <th>
+                app.sensor.type
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              className=""
+              onClick={[Function]}>
+              <td
+                className="hidden">
+                <input
+                  checked={false}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </td>
+              <td>
+                风速传感器1
+              </td>
+              <td>
+                SENSOR_WINDS
+              </td>
+              <td
+                className="edit">
+                <a
+                  className="btn"
+                  onClick={[Function]}>
+                  <span
+                    className="icon_edit" />
+                  <span
+                    className="update">
+                    <span>
+                      button.modify
+                    </span>
+                  </span>
+                </a>
+                <a
+                  className="btn"
+                  onClick={[Function]}>
+                  <span
+                    className="icon_delete" />
+                  <span
+                    className="del">
+                    <span>
+                      button.delete
+                    </span>
+                  </span>
+                </a>
+              </td>
+            </tr>
+            <tr
+              className=""
+              onClick={[Function]}>
+              <td
+                className="hidden">
+                <input
+                  checked={false}
+                  onChange={[Function]}
+                  type="checkbox" />
+              </td>
+              <td>
+                风速传感器2
+              </td>
+              <td>
+                SENSOR_WINDS
+              </td>
+              <td
+                className="edit">
+                <a
+                  className="btn"
+                  onClick={[Function]}>
+                  <span
+                    className="icon_edit" />
+                  <span
+                    className="update">
+                    <span>
+                      button.modify
+                    </span>
+                  </span>
+                </a>
+                <a
+                  className="btn"
+                  onClick={[Function]}>
+                  <span
+                    className="icon_delete" />
+                  <span
+                    className="del">
+                    <span>
+                      button.delete
+                    </span>
+                  </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div
+        className="pagination">
+        <ul
+          className="rc-pagination hidden"
+          style={Object {}}
+          unselectable="unselectable">
+          <li
+            aria-disabled={true}
+            className="rc-pagination-disabled rc-pagination-prev"
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            tabIndex="0"
+            title="上一页">
+            <a>
+              
+            </a>
+          </li>
+          <li
+            aria-disabled={true}
+            className="rc-pagination-disabled rc-pagination-next"
+            onClick={[Function]}
+            onKeyPress={[Function]}
+            tabIndex="0"
+            title="下一页">
+            <a>
+              
+            </a>
+          </li>
+          <div
+            className="rc-pagination-options" />
+        </ul>
+      </div>
+    </div>
   </div>
   <div
-    className="content-body">
+    className="overlayer "
+    onClick={[Function]}>
     <div
-      className="table-responsive ">
-      <table
-        className="table table-hover">
-        <thead>
-          <tr>
-            <th
-              className="hidden">
-              <input
-                checked={undefined}
-                onChange={[Function]}
-                type="checkbox" />
-            </th>
-            <th>
-              策略名称
-            </th>
-            <th>
-              传感器类型
-            </th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            className=""
-            onClick={[Function]}>
-            <td
-              className="hidden">
-              <input
-                checked={false}
-                onChange={[Function]}
-                type="checkbox" />
-            </td>
-            <td>
-              风速传感器1
-            </td>
-            <td>
-              SENSOR_WINDS
-            </td>
-            <td
-              className="edit">
-              <a
-                className="btn"
-                onClick={[Function]}>
-                <span
-                  className="icon_edit" />
-                <span
-                  className="update">
-                  修改
-                </span>
-              </a>
-              <a
-                className="btn"
-                onClick={[Function]}>
-                <span
-                  className="icon_delete" />
-                <span
-                  className="del">
-                  删除
-                </span>
-              </a>
-            </td>
-          </tr>
-          <tr
-            className=""
-            onClick={[Function]}>
-            <td
-              className="hidden">
-              <input
-                checked={false}
-                onChange={[Function]}
-                type="checkbox" />
-            </td>
-            <td>
-              风速传感器2
-            </td>
-            <td>
-              SENSOR_WINDS
-            </td>
-            <td
-              className="edit">
-              <a
-                className="btn"
-                onClick={[Function]}>
-                <span
-                  className="icon_edit" />
-                <span
-                  className="update">
-                  修改
-                </span>
-              </a>
-              <a
-                className="btn"
-                onClick={[Function]}>
-                <span
-                  className="icon_delete" />
-                <span
-                  className="del">
-                  删除
-                </span>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div
-      className="pagination">
-      <ul
-        className="rc-pagination hidden"
-        style={Object {}}
-        unselectable="unselectable">
-        <li
-          aria-disabled={true}
-          className="rc-pagination-disabled rc-pagination-prev"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title="上一页">
-          <a>
-            
-          </a>
-        </li>
-        <li
-          aria-disabled={true}
-          className="rc-pagination-disabled rc-pagination-next"
-          onClick={[Function]}
-          onKeyPress={[Function]}
-          tabIndex="0"
-          title="下一页">
-          <a>
-            
-          </a>
-        </li>
-        <div
-          className="rc-pagination-options" />
-      </ul>
-    </div>
+      className=""
+      id="animate" />
   </div>
 </div>
 `;

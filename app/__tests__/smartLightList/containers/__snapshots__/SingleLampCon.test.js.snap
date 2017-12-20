@@ -27,7 +27,7 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
         <input
           className="form-control"
           onChange={[Function]}
-          placeholder="请输入设备名称"
+          placeholder="app.input.device.name"
           type="search"
           value="" />
         <ul
@@ -46,31 +46,31 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
           <thead>
             <tr>
               <th>
-                设备名称
+                app.device.name
               </th>
               <th>
-                在线状态
+                app.online.state
               </th>
               <th>
-                灯状态
+                app.light.state
               </th>
               <th>
-                开关状态
+                app.switch.state
               </th>
               <th>
-                亮度
+                app.brightness
               </th>
               <th>
-                电压
+                app.voltage
               </th>
               <th>
-                电流
+                app.electric.current
               </th>
               <th>
-                功率
+                app.power
               </th>
               <th>
-                更新时间
+                app.update.time
               </th>
             </tr>
           </thead>
@@ -122,7 +122,9 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
         className="panel-heading">
         <span
           className="icon_select" />
-        选中设备
+        <span>
+          sysOperation.selected.device
+        </span>
       </div>
       <div
         className="panel-body">
@@ -138,14 +140,16 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
         className="panel-heading">
         <span
           className="icon_touch" />
-        设备操作
+        <span>
+          app.device.operation
+        </span>
       </div>
       <div
         className="panel-body">
         <div>
           <span
             className="tit">
-            设备开关：
+            app.device.switch
           </span>
           <select
             className="form-control select "
@@ -155,11 +159,11 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
             value="on">
             <option
               value="on">
-              开启
+              app.open
             </option>
             <option
               value="off">
-              关闭
+              app.close
             </option>
           </select>
           <button
@@ -167,13 +171,17 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
             disabled={true}
             id="deviceSwitch_btn"
             onClick={[Function]}>
-            应用
+            <span>
+              button.apply
+            </span>
           </button>
         </div>
         <div>
           <span
             className="tit">
-            调光：
+            <span>
+              app.dimming
+            </span>
           </span>
           <select
             className="form-control select "
@@ -231,7 +239,9 @@ exports[`<SingleLampCon /> default render snapshot 1`] = `
             disabled={true}
             id="dimming_btn"
             onClick={[Function]}>
-            应用
+            <span>
+              button.apply
+            </span>
           </button>
         </div>
       </div>

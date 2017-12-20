@@ -134,34 +134,36 @@ export class Gateway extends Component {
             {
                 id: 0,
                 field: "domainName",
-                title: this.props.intl.formatMessage({id:"sysOperation.domain"})
+                title: this.formatIntl("sysOperation.domain")
             },
             {
                 id: 1,
                 field: "name",
-                title: this.props.intl.formatMessage({id:"name"})
+                title: this.formatIntl("name")
             },
             {
                 id: 2,
                 field: "typeName",
-                title: this.props.intl.formatMessage({id:"sysOperation.type"})
+                title: this.formatIntl("sysOperation.type")
             },
             {
                 id: 3,
                 field: "id",
-                title: this.props.intl.formatMessage({id:"sysOperation.id"})
+                title: this.formatIntl("sysOperation.id")
             },
             {
                 id: 5,
                 field: "lng",
-                title: this.props.intl.formatMessage({id:"map.lng"})
+                title: this.formatIntl("map.lng")
             },
             {
                 id: 6,
                 field: "lat",
-                title: this.props.intl.formatMessage({id:"map.lat"})
+                title: this.formatIntl("map.lat")
             },
         ];
+
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.collpseHandler = this.collpseHandler.bind(this);
         this.searchChange = this.searchChange.bind(this);
@@ -210,6 +212,12 @@ export class Gateway extends Component {
 
     componentWillUnmount() {
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     requestSearch() {
@@ -323,7 +331,7 @@ export class Gateway extends Component {
                     lat: ""
                 };
 
-                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.addDevice'})} model={ this.state.model } data={ dataInit } domainList={ domainList }
+                overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.formatIntl('sysOperation.addDevice')} model={ this.state.model } data={ dataInit } domainList={ domainList }
                                 modelList={ modelList } overlayerHide={ overlayerHide } onConfirm={ (data) => {
                                                                                                         postAssetsByModel(model, data, () => {
                                                                                                             this.requestSearch();
@@ -346,7 +354,7 @@ export class Gateway extends Component {
                     lng: latlng.lng,
                     lat: latlng.lat
                 }
-                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.gateway'})} data={ dataInit2 } domainList={ domainList } modelList={ modelList }
+                overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup" title={this.formatIntl('sysOperation.gateway')} data={ dataInit2 } domainList={ domainList } modelList={ modelList }
                                 overlayerHide={ overlayerHide } onConfirm={ data => {
                                                                                 updateAssetsByModel(model, data, (data) => {
                                                                                     this.requestSearch();
@@ -355,7 +363,7 @@ export class Gateway extends Component {
                                                                             } } />);
                 break;
             case 'sys-delete':
-                overlayerShow(<ConfirmPopup tips={this.props.intl.formatMessage({id:'delete.device'})} iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
+                overlayerShow(<ConfirmPopup tips={this.formatIntl('delete.device')} iconClass="icon_popup_delete" cancel={ this.popupCancel } confirm={ this.popupConfirm } />)
                 break;
             case 'sys-whitelist':
                 let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
@@ -450,9 +458,9 @@ export class Gateway extends Component {
                 
                  <div className="heading">
                    <Select id="domain" titleField={ domainList.valueField } valueField={ domainList.valueField } options={ domainList.options } value={ domainList.value } onChange={ this.domainSelect }/>
-                   <SearchText placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})} value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
-                   <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>{this.props.intl.formatMessage({id:'button.add'})}</button>
-                   <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>{this.props.intl.formatMessage({id:'button.import'})}</button>
+                   <SearchText placeholder={this.formatIntl(search.get('placeholder'))} value={ search.get('value') } onChange={ this.searchChange } submit={ this.searchSubmit } />
+                   <button id="sys-add" className="btn btn-primary add-domain" onClick={ this.domainHandler }>{this.formatIntl('button.add')}</button>
+                   <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>{this.formatIntl('button.import')}</button>
                  </div>
                 <div className="table-container">
                     <Table columns={ this.columns } data={ data } activeId={ selectDevice.data.length && selectDevice.data[0].id } rowClick={ this.tableClick } />
@@ -461,24 +469,24 @@ export class Gateway extends Component {
                  <SideBarInfo mapDevice={ selectDevice } collpseHandler={ this.collpseHandler }>
                    <div className="panel panel-default device-statics-info">
                      <div className="panel-heading">
-                       <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
+                       <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
                      </div>
                      <div className="panel-body domain-property">
                        <span className="domain-name" title = {selectDevice.data.length?selectDevice.data[0].name:''}>{ selectDevice.data.length ? selectDevice.data[0].name : '' }</span>
-                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>{this.props.intl.formatMessage({id:'button.edit'})}
+                       <button id="sys-update" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>{this.formatIntl('button.edit')}
                        </button>
-                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>{this.props.intl.formatMessage({id:'button.delete'})}
+                       <button id="sys-delete" className="btn btn-danger pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>{this.formatIntl('button.delete')}
                        </button>
                      </div>
                    </div>
                    <div className="panel panel-default device-statics-info whitelist">
                      <div className="panel-heading">
-                       <span className="icon_device_list"></span>{this.props.intl.formatMessage({id:'sysOperation.whiteList'})}
+                       <span className="icon_device_list"></span>{this.formatIntl('sysOperation.whiteList')}
                      </div>
                      <div className="panel-body domain-property">
-                       <span className="domain-name">{ `${this.props.intl.formatMessage({id:'sysOperation.include'})}:${selectDevice.whiteCount} ${this.props.intl.formatMessage({id:'sysOperation.devices'})}` }</span>
+                       <span className="domain-name">{ `${this.formatIntl('sysOperation.include')}:${selectDevice.whiteCount} ${this.formatIntl('sysOperation.devices')}` }</span>
                        <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={ this.domainHandler } disabled={ data.size == 0 ? true : false }>
-                       {this.props.intl.formatMessage({id:'button.edit'})}
+                       {this.formatIntl('button.edit')}
                        </button>
                      </div>
                    </div>

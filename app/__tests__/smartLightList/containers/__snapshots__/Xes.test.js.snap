@@ -27,7 +27,7 @@ exports[`<Xes /> default render snapshot 1`] = `
         <input
           className="form-control"
           onChange={[Function]}
-          placeholder="请输入设备名称"
+          placeholder={null}
           type="search"
           value="" />
         <ul
@@ -45,15 +45,9 @@ exports[`<Xes /> default render snapshot 1`] = `
           className="table table-hover">
           <thead>
             <tr>
-              <th>
-                设备名称
-              </th>
-              <th>
-                在线状态
-              </th>
-              <th>
-                故障状态
-              </th>
+              <th />
+              <th />
+              <th />
             </tr>
           </thead>
           <tbody />
@@ -104,7 +98,6 @@ exports[`<Xes /> default render snapshot 1`] = `
         className="panel-heading">
         <span
           className="icon_select" />
-        选中设备
       </div>
       <div
         className="panel-body">

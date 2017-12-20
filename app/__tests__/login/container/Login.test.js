@@ -10,7 +10,7 @@ import {login} from '../../../src/util/network';
 
 const store = configureStore();
 describe('<Login />',() => {
-    const login = shallow(<Provider store={store}>
+    const login = mount(<Provider store={store}>
         <IntlProvider>
             <Login />
         </IntlProvider>

@@ -16,7 +16,7 @@ describe('<DomainPopup',()=>{
     
     it('render normal',()=>{
         const onClick = jest.fn();
-        const root = shallow(<Provider store={store}>
+        const root = mount(<Provider store={store}>
             <IntlProvider>
                 <DomainPopup className={className} title={title} onClick={onClick}/>
             </IntlProvider>

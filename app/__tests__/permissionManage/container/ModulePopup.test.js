@@ -24,7 +24,7 @@ describe('<ModulePopup',()=>{
     ];
     const rowModules = ['permission','maintenance'];
     it('render normal',()=>{
-        const root = shallow(<Provider store={store}>
+        const root = mount(<Provider store={store}>
             <IntlProvider>
                 <ModulePopup className={className} title={title} modules={modules} data = {rowModules}/>
             </IntlProvider>
