@@ -143,9 +143,9 @@ class PlayerPicAsset extends PureComponent{
                 <div className="form-group pull-right clipsRage">
                     <label className="control-label">{property.clipsRage.title}</label>
                     <div className="input-container input-w-2">
-                        <TimePicker disabled={property.playType.name == "片段播放"?true:false} size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
+                        <TimePicker disabled={property.playType.name == "完整播放"?true:false} size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
                         <span className="text"><FormattedMessage id='mediaPublish.to'/></span>
-                        <TimePicker disabled={property.playType.name == "片段播放"?true:false} size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
+                        <TimePicker disabled={property.playType.name == "完整播放"?true:false} size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
                         <span className={prompt.clipsRage ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
                     </div>
                 </div>
