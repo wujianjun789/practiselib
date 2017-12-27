@@ -106,21 +106,22 @@ export default class CentralizedControllerPopup extends Component {
     }
 
     mapDragend(data) {
-        for (let key in data.latlng) {
-            let value = data.latlng[key];
-            let newValue = value;
-            this.setState({
-                [key]: newValue,
-                prompt: Object.assign({}, this.state.prompt, {
-                    [key]: false
-                })
-            });
+        let obj = {};
+        let prompt = {};
+        if(data.zoom){
+            obj = Object.assign({}, {zoom:data.zoom});
         }
+
+        if(data.latlng){
+            obj = Object.assign({}, obj, {lng:data.latlng.lng}, {lat:data.latlng.lat})
+            prompt = Object.assign({}, {lng:false}, {lat:false});
+        }
+        this.setState(Object.assign({}, this.state, obj, {prompt: Object.assign({}, this.state.prompt, prompt)}));
     }
 
     render() {
         const {className, title, domainList, modelList, popId} = this.props;
-        const {id, name, model, domain, lng, lat, prompt} = this.state;
+        const {id, name, model, domain, zoom, lng, lat, prompt} = this.state;
         let valid = prompt.id || prompt.name || !domainList || !domainList.options.length || prompt.lng || prompt.lat || !id || !name || !lng || !lat;
 
         const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={['button.cancel','button.confirm']} btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
@@ -169,7 +170,7 @@ export default class CentralizedControllerPopup extends Component {
                   { footer }
                 </div>
                 <div className="popup-map">
-                  <MapView option={ { mapZoom: false } } mapData={ { id: "CentralizedPopup", latlng: { lng: lng, lat: lat },
+                  <MapView option={ { mapZoom: false, zoom:zoom } } mapData={ { id: "CentralizedPopup", latlng: { lng: lng, lat: lat },
  position: [{ "device_id": id, "device_type": "DEVICE", lng: lng, lat: lat }], data: [{ id: id, name: name }] } } mapCallFun={ { mapDragendHandler: this.mapDragend } } />
                 </div>
               </Panel>

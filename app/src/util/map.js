@@ -3,7 +3,7 @@
  */
 import {getMapConfig} from '../util/network';
 
-var mapObject = {
+let mapObject = {
     callFun:null,
     deviceList:{},
     options:{
@@ -11,6 +11,7 @@ var mapObject = {
     }
 };
 
+let pattern = /[^\d{1,}\.\d{1,}|\d{1,}]/g;
 export default class Map{
     constructor(){
         this.id = "";
@@ -42,12 +43,12 @@ export default class Map{
     }
 
     updateMap(data, option, callFun) {
+
         var options = mapObject.options;
 
         options = Object.assign({}, options, option);
 
         if (options.hasOwnProperty("mapOffline") && options.hasOwnProperty("mapType")) {
-
         }else {
             getMapConfig(response=>{
                 mapObject.options = Object.assign({}, mapObject.options, response);
@@ -61,7 +62,6 @@ export default class Map{
         if(option && option.hasOwnProperty("markerDraggable")) {
             this.markerDraggable = option.markerDraggable;
         }
-
         if (!document.getElementById(data.id)) {
             return;
         }
@@ -69,7 +69,7 @@ export default class Map{
         if (!data || !data.latlng || !data.latlng.lat || !data.latlng.lng) {
             this.latlng = options.center;
         } else {
-            if(data.latlng.lat.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'') && data.latlng.lng.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')){
+            if(data.latlng.lat.toString().replace(pattern,'') && data.latlng.lng.toString().replace(pattern,'')){
                 this.latlng = [data.latlng.lat, data.latlng.lng];
             }else{
                 this.latlng = options.center;
@@ -149,10 +149,14 @@ export default class Map{
         }
 
         this.map.on('dragend', mapMoveEnd);
+        this.map.on('zoomend', function (event) {
+            var map = event.target;
+            // console.log(map.getZoom());
+            // console.log(map.getBounds());
+        })
     }
 
     setMapView(data, options) {
-
         if (this.map != null) {
             switch (options.mapOffline) {
                 case 0:
@@ -367,7 +371,7 @@ export default class Map{
                 //     // removeMarker(marker)
                 //     // markerList.splice(markerIndex);
             } else {
-                if(data.lat && data.lng && data.lat.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'') && data.lng.toString().replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')){
+                if(data.lat && data.lng && data.lat.toString().replace(pattern,'') && data.lng.toString().replace(pattern,'')){
                     _this.markerPosList.push(data);
                     var device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
                     var labelInfo = device ? device.name : '';
@@ -375,7 +379,6 @@ export default class Map{
                     if (newMarker) {
                         _this.loadMarkerLabel(newMarker, labelInfo);
                         _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
-
                     }
                 }
             }
@@ -445,8 +448,11 @@ export default class Map{
             digital: digital,
             riseOnHover: true,
             draggable: this.markerDraggable
-        })
-        // item.getLatLng();
+        });
+
+        //  marker = L.circleMarker(position,{
+        //      radius:200
+        //  });
         return marker;
     }
 
@@ -715,7 +721,9 @@ function mapMoveEnd(event) {
 
     mapDragendHandler({
         mapId:map.options.id,
-        latlng:map.getCenter()
+        latlng:map.getCenter(),
+        zoom: map.getZoom(),
+        bounds: map.getBounds()
     });
 }
 

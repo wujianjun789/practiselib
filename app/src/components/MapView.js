@@ -16,10 +16,12 @@ export default class MapView extends Component {
         this.renderMap = this.renderMap.bind(this);
     }
 
-    componentDidUpdate() {
-        this.initMap();
+    componentWillMount(){
+    }
 
+    componentDidUpdate() {
         const {mapData, panLatlng, panCallFun} = this.props;
+        this.initMap();
         if (panLatlng) {
             this.state[mapData.id].mapPanTo(panLatlng);
             // panCallFun && panCallFun()
@@ -27,7 +29,6 @@ export default class MapView extends Component {
     }
 
     componentWillUnmount() {
-        const {mapData}  = this.props;
         for (let key in this.state) {
             this.state[key].destroy();
         }
