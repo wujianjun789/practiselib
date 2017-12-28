@@ -6,49 +6,63 @@ import PropTypes from 'prop-types';
 
 import Map from '../util/map'
 import {transformDeviceType} from '../util/index'
+import {getMapConfig} from '../util/network'
 
 export default class MapView extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
-        this.cur = {}
+        this.state = {
+            zoom: "",
+            map:{}
+        }
         this.initMap = this.initMap.bind(this);
         this.renderMap = this.renderMap.bind(this);
     }
 
     componentWillMount(){
+        getMapConfig(response=>{
+            this.setState({zoom:response.zoom})
+        }, error=>{
+            throw error;
+        })
     }
 
     componentDidUpdate() {
         const {mapData, panLatlng, panCallFun} = this.props;
         this.initMap();
         if (panLatlng) {
-            this.state[mapData.id].mapPanTo(panLatlng);
+            this.state.map[mapData.id].mapPanTo(panLatlng);
             // panCallFun && panCallFun()
         }
     }
 
     componentWillUnmount() {
-        for (let key in this.state) {
-            this.state[key].destroy();
+        for (let key in this.state.map) {
+            this.state.map[key].destroy();
         }
     }
 
     initMap() {
         const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
-        let {latlng={lat: null, lng: null}} = mapData
+        const {zoom} = this.state;
+        let {latlng={lat: null, lng: null}} = mapData;
+
+        if( option && !option.zoom){
+            option.zoom = zoom;
+        }
+
         if (mapData) {
-            if (!this.state[mapData.id]) {
-                this.state[mapData.id] = new Map();
+            if (!this.state.map[mapData.id]) {
+                this.state.map[mapData.id] = new Map();
             }
-            this.state[mapData.id].clearMarker();
-            this.state[mapData.id].updateMap({
+            this.state.map[mapData.id].clearMarker();
+            this.state.map[mapData.id].updateMap({
                 id: mapData.id,
                 latlng: latlng
             }, option, mapCallFun);
             if (mapData.position && mapData.position.length) {
                 let key = transformDeviceType(mapData.position[0]["device_type"]);
-                this.state[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
+                this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
             }
         }
     }

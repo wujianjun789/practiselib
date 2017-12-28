@@ -256,15 +256,18 @@ export class SingleLampCon extends Component {
         let curType = modelList.options.length?modelList.options[0]:null;
         switch (id) {
             case 'sys-add':
+                console.log(domainList);
+                const curDomain = domainList.index<domainList.options.length?domainList.options[domainList.index]:null;
+                const addLatlng = curDomain?curDomain.geoPoint:null;
                 const dataInit = {
                     id: '',
                     name: '',
                     model: curType?curType.title:"",
                     modelId: curType?curType.id:"",
                     domain: domainList.value,
-                    domainId: domainList.options.length?domainList.options[domainList.index].id:"",
-                    lng: "",
-                    lat: ""
+                    domainId: curDomain?curDomain.id:"",
+                    lng: addLatlng?addLatlng.lng:"",
+                    lat: addLatlng?addLatlng.lat:""
                 };
 
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.addDevice'})} model={this.state.model}

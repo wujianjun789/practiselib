@@ -50,6 +50,7 @@ export default class Map{
 
         if (options.hasOwnProperty("mapOffline") && options.hasOwnProperty("mapType")) {
         }else {
+            console.log('mapConfig:');
             getMapConfig(response=>{
                 mapObject.options = Object.assign({}, mapObject.options, response);
                 this.updateMap(data, option, callFun)

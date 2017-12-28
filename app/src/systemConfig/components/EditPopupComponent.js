@@ -12,7 +12,7 @@ export default class EditPopupComponet extends Component {
     const props = this.props;
     console.log(props)
     const {equipmentSelectList, allPoleEquipmentsData, allEquipmentsData, search, onChange, itemClick, deleteClick, searchTextOnChange, value, searchAssets} = props;
-    const footer = <PanelFooter funcNames={ [null, 'onConfirmed'] } btnTitles={ [null, '完成'] } {...props}/>;
+    const footer = <PanelFooter funcNames={ ["cancel", 'onConfirmed'] } btnTitles={ ["button.cancel", "button.finish"] } {...props}/>;
     return (<div id='edit-popup' className='clearfix'>
               <span className='equipmentName'>选择设备:</span>
               <div className='edit_selectdevice-content clearfix'>
