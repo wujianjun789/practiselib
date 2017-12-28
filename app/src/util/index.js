@@ -152,6 +152,14 @@ export function getNotifyStateClass(state) {
     }
 }
 
+export function IsMapCircleMarker(domainLevel, map){
+    if(!domainLevel || !map){
+        return false;
+    }
+    
+    return domainLevel < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
+}
+
 export const DOMAIN_NAME_LENGTH = 16;
 export const DEVICE_ID_LENGTH = 16;
 export const DEVICE_NAME_LENGTH = 16;

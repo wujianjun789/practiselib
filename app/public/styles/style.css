@@ -877,29 +877,29 @@ ul {
     background-size: 100% 100%;
 }
 
-.icon.icon_pole_hover .icon_pole:before{
-    color:#fff;
-}
+/*.icon.icon_pole_hover .icon_pole:before{*/
+    /*color:#fff;*/
+/*}*/
 
-.icon.icon_screen_hover .icon_screen:before{
-    color:#fff;
-}
+/*.icon.icon_screen_hover .icon_screen:before{*/
+    /*color:#fff;*/
+/*}*/
 
-.icon.icon_camera_hover .icon_camera:before{
-    color:#fff;
-}
+/*.icon.icon_camera_hover .icon_camera:before{*/
+    /*color:#fff;*/
+/*}*/
 
-.icon.icon_lc_hover .icon_lc:before{
-    color:#fff;
-}
+/*.icon.icon_lc_hover .icon_lc:before{*/
+    /*color:#fff;*/
+/*}*/
 
-.icon.icon_charge_pole_hover .icon_charge_pole:before{
-    color:#fff;
-}
+/*.icon.icon_charge_pole_hover .icon_charge_pole:before{*/
+    /*color:#fff;*/
+/*}*/
 
-.icon.icon_collect_hover .icon_collect:before{
-    color:#fff;
-}
+/*.icon.icon_collect_hover .icon_collect:before{*/
+    /*color:#fff;*/
+/*}*/
 /*
 .icon.icon_pole{
     background: url("../images/smartLight/icon_pole.png");

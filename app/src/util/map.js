@@ -50,7 +50,6 @@ export default class Map{
 
         if (options.hasOwnProperty("mapOffline") && options.hasOwnProperty("mapType")) {
         }else {
-            console.log('mapConfig:');
             getMapConfig(response=>{
                 mapObject.options = Object.assign({}, mapObject.options, response);
                 this.updateMap(data, option, callFun)
@@ -150,11 +149,7 @@ export default class Map{
         }
 
         this.map.on('dragend', mapMoveEnd);
-        this.map.on('zoomend', function (event) {
-            var map = event.target;
-            // console.log(map.getZoom());
-            // console.log(map.getBounds());
-        })
+        this.map.on('zoomend', mapZoomEnd);
     }
 
     setMapView(data, options) {
@@ -376,7 +371,7 @@ export default class Map{
                     _this.markerPosList.push(data);
                     var device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
                     var labelInfo = device ? device.name : '';
-                    var newMarker = _this.drawMarker(data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
+                    var newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
                     if (newMarker) {
                         _this.loadMarkerLabel(newMarker, labelInfo);
                         _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
@@ -439,21 +434,25 @@ export default class Map{
          this.markerPosList.push(data)
     }
 
-     drawMarker(type, id, position, icon, digital) {
+     drawMarker(IsCircleMarker, type, id, position, icon, digital) {
         // position = L.latLng(-100, 100)
-        var marker = L.marker(position, {
-            icon: icon,
-            type: type,
-            mapId:this.id,
-            id: id,
-            digital: digital,
-            riseOnHover: true,
-            draggable: this.markerDraggable
-        });
+         let marker = null;
+         if(IsCircleMarker){
+              marker = L.circleMarker(position,{
+                  radius:50
+              });
+         }else{
+             marker = L.marker(position, {
+                 icon: icon,
+                 type: type,
+                 mapId:this.id,
+                 id: id,
+                 digital: digital,
+                 riseOnHover: true,
+                 draggable: this.markerDraggable
+             });
+         }
 
-        //  marker = L.circleMarker(position,{
-        //      radius:200
-        //  });
         return marker;
     }
 
@@ -728,6 +727,14 @@ function mapMoveEnd(event) {
     });
 }
 
+function mapZoomEnd(event) {
+    var map = event.target;
+    mapZoomendHandler({
+        mapId: map.options.id,
+        latlng:map.getCenter(),
+        zoom: map.getZoom()
+    })
+}
 function markerOver(event) {
     var marker = event.target;
     marker.off("mouseover", markerOver);
@@ -886,6 +893,12 @@ function initCallFun(key, callFun) {
         }
     }else{
         mapObject.callFun = {[key]:callFun}
+    }
+}
+
+function mapZoomendHandler(data) {
+    if(mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].mapZoomendHandler){
+        mapObject.callFun[data.mapId].mapZoomendHandler.call(null, data);
     }
 }
 

@@ -17,17 +17,21 @@ import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 import Immutable from 'immutable';
 import {injectIntl} from 'react-intl'
 
-import {getLightLevelConfig} from '../../util/network'
+import {getMapConfig,getLightLevelConfig} from '../../util/network'
 import {getDomainList} from '../../api/domain'
 import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
 
 import {getIndexByKey} from '../../util/algorithm'
-import {getObjectByKey} from '../../util/index'
+import {getObjectByKey, IsMapCircleMarker} from '../../util/index'
 import {keyboard_key_up, keyboard_key_down, keyboard_key_enter} from '../../util/keyboard'
 export class SmartLightMap extends Component{
     constructor(props){
         super(props);
         this.state = {
+            domainLevel: 4,
+            map:{
+                center:{lng: 121.49971691534425, lat: 31.239658843127756}
+            },
             model:"pole",
             IsSearch: true,
 
@@ -40,7 +44,7 @@ export class SmartLightMap extends Component{
             }),
             curId:"screen",
             search:Immutable.fromJS({id:"search", value:''}),
-            mapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
+            // mapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
             panLatlng:null,
             positionList:[/*{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}*/],
             searchList:Immutable.fromJS([
@@ -122,10 +126,19 @@ export class SmartLightMap extends Component{
         this.requestPoleAsset = this.requestPoleAsset.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
         this.updatePoleAsset = this.updatePoleAsset.bind(this);
+
+        this.mapDragend = this.mapDragend.bind(this);
+        this.mapZoomend = this.mapZoomend.bind(this);
     }
 
     componentWillMount(){
         this.mounted = true;
+        getMapConfig(data=>{
+            if(this.mounted){
+                console.log("map:",data);
+                this.setState({map:Object.assign({}, this.state.map, data)});
+            }
+        })
         getLightLevelConfig(data=>{
             if(this.mounted){
                 this.lightList.options = data.map((key, index)=>{
@@ -202,21 +215,27 @@ console.log("%%%%%%%")
     }
 
     updateSearch(data, IsSearch){
-        console.log(data);
+        const {domainLevel, map} = this.state;
         if(IsSearch && (!data || data.length==0)){
             this.props.actions.addNotify(0, this.formatIntl('app.not.found'));
         }
 
+        // let dataClone;
+        // if(IsMapCircleMarker(domainLevel, map)){
+        //     dataClone = data.map(pole=>{
+        //         return Object.assign({}, pole, {IsCircleMarker:true});
+        //     })
+        // }
         let searchList = Immutable.fromJS(data);
         let positionList = data.map((pole)=>{
             let latlng = pole.geoPoint;
-            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE'}, latlng)
+            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE', IsCircleMarker:IsMapCircleMarker(domainLevel, map)}, latlng)
         });
 
         if(data && data.length){
             let fPole = data[0];
             let flatlng = fPole.geoPoint;
-            this.setState({searchList:searchList, mapLatlng:flatlng,positonList:positionList}, ()=>{
+            this.setState({searchList:searchList, map:Object.assign({}, this.state.map, {center:flatlng}),positionList:positionList}, ()=>{
                 this.requestPoleAsset(data);
             });
         }else{
@@ -425,6 +444,16 @@ console.log("tableIndex:",tableIndex)
     closeClick(){
         this.setState({IsOpenFault:false});
     }
+
+    mapDragend(data){
+        this.setState({map:Object.assign({}, this.state.map, {center:data.latlng})});
+    }
+
+    mapZoomend(data){
+        console.log(data);
+        this.setState({map:Object.assign({}, this.state.map, {zoom:data.zoom})});
+    }
+
     transformState(key, sf){
         if(key == 'wind-direction'){
             // return this.formatIntl('app.'+sf);
@@ -695,18 +724,18 @@ console.log("tableIndex:",tableIndex)
      </div>*/
     
     render(){
-        const {model, search, IsSearch, interactive,tableIndex,IsSearchResult, curDevice, curId, mapLatlng, panLatLng, positionList,searchList,
+        const {map, model, search, IsSearch, interactive,tableIndex,IsSearchResult, curDevice, curId, panLatLng, positionList,searchList,
             listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl} = this.state;
 
         let IsControl = false;
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
-
-console.log("searchList:",searchList.toJS());
+console.log(searchList.toJS());
         return (
             <Content>
-                <MapView mapData={{id:"smartLightMap", latlng:mapLatlng, position:positionList, data:searchList.toJS()}} panLatlng={panLatLng}/>
+                <MapView mapData={{id:"smartLightMap", latlng:map.center, position:positionList, data:searchList.toJS()}} panLatlng={panLatLng}
+                         mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}}/>
                 <div className="search-container">
                     <div className={"searchText smartLight-map"} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={this.onkeydown}>
                         <input type="search" className="form-control" placeholder={this.formatIntl("app.search.placeholder.name")} value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>
@@ -748,11 +777,11 @@ console.log("searchList:",searchList.toJS());
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className={"btn-group "+(model=="pole"?"":"hidden")}>
-                                {curDevice.getIn(["asset","screen"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"+(curId=="screen"?"_hover":"")}></span></li>}
-                                {curDevice.getIn(["asset","lamp"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lc"+(curId=="lamp"?"_hover":"")}></span></li>}
-                                {curDevice.getIn(["asset","camera"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"+(curId=="camera"?"_hover":"")}></span></li>}
-                                {curDevice.getIn(["asset","charge"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge_pole"+(curId=="charge"?"_hover":"")}></span></li>}
-                                {curDevice.getIn(["asset","collect"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"+(curId=="collect"?"_hover":"")}></span></li>}
+                                {curDevice.getIn(["asset","screen"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"active":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className={"icon icon_screen"}></span></li>}
+                                {curDevice.getIn(["asset","lamp"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"active":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"icon icon_lc"}></span></li>}
+                                {curDevice.getIn(["asset","camera"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"active":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"icon icon_camera"}></span></li>}
+                                {curDevice.getIn(["asset","charge"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"active":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"icon icon_charge_pole"}></span></li>}
+                                {curDevice.getIn(["asset","collect"]) && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"active":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"icon icon_collect"}></span></li>}
                             </ul>
                             {
                                 this.renderInfo(curId,this.state[curId])
@@ -779,7 +808,7 @@ console.log("searchList:",searchList.toJS());
                     <ul className="btn-group">
                         {
                             this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(model==device.id?"active":"")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={"icon "+(model==device.id?device.className+"_hover":"")}><span className={device.className}></span></span></li>
+                                return <li key={device.id} className={"btn "+(model==device.id?"active":"")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={"icon "+device.className}></span></li>
                             })
                         }
                     </ul>
