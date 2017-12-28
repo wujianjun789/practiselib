@@ -32,6 +32,7 @@ export default class DomainPopup extends PureComponent {
         this.state = {
             domainId: domainId,
             domainName: domainName,
+            zoom: 16,
             lng: lng,
             lat: lat,
             prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:""),
@@ -100,16 +101,22 @@ export default class DomainPopup extends PureComponent {
     }
 
     mapDragend(data){
-        for(let key in data.latlng){
-            let value = data.latlng[key];
-            let newValue = value;
-            let prompt = Object.assign({}, this.state.prompt, {[key]:false});
-            this.setState({[key]:newValue, prompt:prompt});
+        console.log(data.bounds);
+        let obj = {};
+        let prompt = {};
+        if(data.zoom){
+            obj = Object.assign({}, {zoom:data.zoom});
         }
+
+        if(data.latlng){
+            obj = Object.assign({}, obj, {lng:data.latlng.lng}, {lat:data.latlng.lat})
+            prompt = Object.assign({}, {lng:false}, {lat:false});
+        }
+        this.setState(Object.assign({}, this.state, obj, {prompt: Object.assign({}, this.state.prompt, prompt)}));
     }
 
     render() {
-         let {domainId, domainName, lng, lat, prevDomain, prompt} = this.state;
+         let {domainId, domainName, zoom, lng, lat, prevDomain, prompt} = this.state;
          let {titleKey, valueKey, options} = this.props.domainList;
 
         let valid = prompt.domainName || prompt.lng || prompt.lat;
@@ -124,8 +131,6 @@ export default class DomainPopup extends PureComponent {
                 break;
             }
         }
-
-            
 
         return <div className="domain-popup">
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
@@ -168,7 +173,7 @@ export default class DomainPopup extends PureComponent {
                     </div>
                     <div className="col-sm-6 col-xs-6 popup-map">
 
-                            <MapView option={{mapZoom:false, markerDraggable:true}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
+                            <MapView option={{zoom:zoom, mapZoom:false, markerDraggable:true}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
                         position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}
                                      mapCallFun={{mapDragendHandler:this.mapDragend}} markerCallFun={{markerDragendHandler:this.mapDragend}}/>
                     </div>
