@@ -28,10 +28,6 @@ export class SmartLightMap extends Component{
     constructor(props){
         super(props);
         this.state = {
-            domainLevel: 4,
-            map:{
-                center:{lng: 121.49971691534425, lat: 31.239658843127756}
-            },
             model:"pole",
             IsSearch: true,
 
@@ -100,6 +96,12 @@ export class SmartLightMap extends Component{
 
         this.domainList = [];
 
+        this.domainLevel = 4;
+        this.map = {
+            center:{lng: 121.49971691534425, lat: 31.239658843127756}
+        };
+        this.mapTimeOut = null;
+
         this.renderInfo = this.renderInfo.bind(this);
         this.renderState = this.renderState.bind(this);
         this.renderControl = this.renderControl.bind(this);
@@ -136,7 +138,7 @@ export class SmartLightMap extends Component{
         getMapConfig(data=>{
             if(this.mounted){
                 console.log("map:",data);
-                this.setState({map:Object.assign({}, this.state.map, data)});
+                this.map = Object.assign({}, this.map, data);
             }
         })
         getLightLevelConfig(data=>{
@@ -197,7 +199,7 @@ export class SmartLightMap extends Component{
 
     requestSearch(IsSearch=true){
         const {model, search, tableIndex} = this.state;
-console.log(tableIndex);
+console.log('tableIndex:',tableIndex);
         let searchType = this.searchPromptList[tableIndex].id;
         console.log(this.domainList);
         if(searchType=="domain"){
@@ -210,32 +212,27 @@ console.log(tableIndex);
             }
             return;
         }
-console.log("%%%%%%%")
-        getPoleListByModelWithName(searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
+        getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
     }
 
     updateSearch(data, IsSearch){
-        const {domainLevel, map} = this.state;
+        console.log('pole:',data);
         if(IsSearch && (!data || data.length==0)){
             this.props.actions.addNotify(0, this.formatIntl('app.not.found'));
         }
 
-        // let dataClone;
-        // if(IsMapCircleMarker(domainLevel, map)){
-        //     dataClone = data.map(pole=>{
-        //         return Object.assign({}, pole, {IsCircleMarker:true});
-        //     })
-        // }
         let searchList = Immutable.fromJS(data);
         let positionList = data.map((pole)=>{
             let latlng = pole.geoPoint;
-            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE', IsCircleMarker:IsMapCircleMarker(domainLevel, map)}, latlng)
+            console.log('mapCircle:',IsMapCircleMarker(this.domainLevel, this.map))
+            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE', IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)}, latlng)
         });
 
         if(data && data.length){
             let fPole = data[0];
             let flatlng = fPole.geoPoint;
-            this.setState({searchList:searchList, map:Object.assign({}, this.state.map, {center:flatlng}),positionList:positionList}, ()=>{
+            this.map.center = flatlng;
+            this.setState({searchList:searchList, positionList:positionList}, ()=>{
                 this.requestPoleAsset(data);
             });
         }else{
@@ -264,7 +261,7 @@ console.log("%%%%%%%")
         if(!asset){
             asset = {}
         }
-
+console.log('asset:', data);
         data.map(ass=>{
             //extendType:: screen:23, charge:45, camera:56, lamp:89, collect:99
             let key = "";
@@ -273,7 +270,7 @@ console.log("%%%%%%%")
             }else if(ass.extendType == "xes"){
                 key = "collect"
             }else{
-                key == ass.extendType;
+                key = ass.extendType;
             }
             asset = Object.assign({}, asset, {[key]:ass})
         })
@@ -360,15 +357,18 @@ console.log("%%%%%%%")
 
     itemClick(asset){
         const {model} = this.state
+        console.log('asset:', asset);
+        let latlng = asset.get('geoPoint').toJS();
+        this.map.center = latlng;
         if(model == "pole"){
             let keys = asset.get("asset").keys();
             let curId = keys && keys.length?keys.length[0]:"";
-            this.setState({curDevice:asset, curId:curId, panLatlng:asset.geoPoint,IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+            this.setState({curDevice:asset, curId:curId, panLatlng:latlng,IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
                 this.setSize();
             });
 
         }else{
-            this.setState({curDevice:asset, panLatlng:asset.geoPoint, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+            this.setState({curDevice:asset, panLatlng:latlng, IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
                 this.setSize();
             });
         }
@@ -446,12 +446,16 @@ console.log("tableIndex:",tableIndex)
     }
 
     mapDragend(data){
-        this.setState({map:Object.assign({}, this.state.map, {center:data.latlng})});
+        this.map = Object.assign({}, this.map, {center:data.latlng})
+        this.setState(this.map);
     }
 
     mapZoomend(data){
-        console.log(data);
-        this.setState({map:Object.assign({}, this.state.map, {zoom:data.zoom})});
+        console.log('zoom:',data.zoom);
+        this.map = Object.assign({}, this.map, {zoom:data.zoom});
+        this.mapTimeOut && clearTimeout(this.mapTimeOut);
+        // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
+        this.requestSearch();
     }
 
     transformState(key, sf){
@@ -565,11 +569,11 @@ console.log("tableIndex:",tableIndex)
                             {this.renderState(props, "online", "online", true)}
                             {this.renderState(props, "brightness", "brightness")}
                             {
-                                <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                                <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
                             }
                             {
                                 faultList.length>0 &&
-                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
+                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('app.fault_info')} closeBtn={true}
                                        closeClick={this.closeClick}>
                                     {
                                         faultList.map(key=>{
@@ -724,17 +728,18 @@ console.log("tableIndex:",tableIndex)
      </div>*/
     
     render(){
-        const {map, model, search, IsSearch, interactive,tableIndex,IsSearchResult, curDevice, curId, panLatLng, positionList,searchList,
+        const {model, search, IsSearch, interactive,tableIndex,IsSearchResult, curDevice, curId, panLatLng, positionList,searchList,
             listStyle, infoStyle, controlStyle, IsOpenPoleInfo, IsOpenPoleControl} = this.state;
 
         let IsControl = false;
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
-console.log(searchList.toJS());
+console.log("render:", this.map.zoom, this.map.center, curDevice.toJS());
+        /*panLatlng={panLatLng}*/
         return (
             <Content>
-                <MapView mapData={{id:"smartLightMap", latlng:map.center, position:positionList, data:searchList.toJS()}} panLatlng={panLatLng}
+                <MapView option={{zoom:this.map.zoom}} mapData={{id:"smartLightMap", latlng:this.map.center, position:positionList, data:searchList.toJS()}}
                          mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}}/>
                 <div className="search-container">
                     <div className={"searchText smartLight-map"} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={this.onkeydown}>

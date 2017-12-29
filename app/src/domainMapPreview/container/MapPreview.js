@@ -58,10 +58,11 @@ export default class MapPreview extends Component{
 
     searchSubmit(){
         const {domainList, search} = this.state;
-        for(var key in domainList){
-            let item = domainList[key];
+        for(let i=0;i<domainList.length;i++){
+            let item = domainList[i];
             if(!search.value || item.name.indexOf(search.value)>-1){
-                this.setState({panLatlng:item.geoPoint});
+                console.log('item:', item);
+                this.setState({curDomain:i, panLatlng:item.geoPoint});
                 break;
             }
         }
@@ -89,7 +90,7 @@ export default class MapPreview extends Component{
 
         let domain = domainList && domainList.length  ? domainList[curDomain]:null;
         let latlng = domain && domain.geoPoint ? domain.geoPoint : null;
-
+console.log('domain:',domain);
         return <Content className="map-preview">
             <MapView mapData={{id:mapId, latlng:latlng, position:positionList, data:domainList}}
                      panLatlng={panLatlng} panCallFun={this.panCallFun}/>

@@ -40,6 +40,8 @@ export default class Map{
         this.activeBtn = null;
 
         this.markerDraggable = false;
+
+        this.mapZoomendTimeout = 0;
     }
 
     updateMap(data, option, callFun) {
@@ -108,7 +110,7 @@ export default class Map{
         if (!latlng || !latlng.lat || !latlng.lng) {
             return;
         }
-
+console.log('mapPanTo:');
         this.map.panTo([latlng.lat, latlng.lng]);
     }
 
@@ -373,7 +375,7 @@ export default class Map{
                     var labelInfo = device ? device.name : '';
                     var newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
                     if (newMarker) {
-                        _this.loadMarkerLabel(newMarker, labelInfo);
+                        _this.loadMarkerLabel(newMarker, labelInfo, data.IsCircleMarker);
                         _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
                     }
                 }
@@ -439,7 +441,10 @@ export default class Map{
          let marker = null;
          if(IsCircleMarker){
               marker = L.circleMarker(position,{
-                  radius:50
+                  radius: 50,
+                  stroke: false,
+                  fillColor: '#00bcff',
+                  fillOpacity: 0.7
               });
          }else{
              marker = L.marker(position, {
@@ -470,7 +475,7 @@ export default class Map{
     }
 
 
-     loadMarkerLabel(marker, labelInfo) {
+     loadMarkerLabel(marker, labelInfo, IsCircleMarker) {
         if (marker == null) {
             return;
         }
@@ -480,8 +485,12 @@ export default class Map{
         this.loadMarkerPopup(marker);
         this.loadMarkerMouseover(marker);
          this.loadMarkerDrag(marker);
-        if (!!labelInfo) {
-            this.drawItems && marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
+        if (!!labelInfo && this.drawItems) {
+            if(IsCircleMarker){
+                marker.bindLabel(labelInfo, {noHide: true, direction: 'center', className: 'circle-marker-label', offset:[-26,-15]}).addTo(this.drawItems).showLabel();
+            }else{
+                marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
+            }
         }
     }
 
@@ -729,11 +738,15 @@ function mapMoveEnd(event) {
 
 function mapZoomEnd(event) {
     var map = event.target;
-    mapZoomendHandler({
-        mapId: map.options.id,
-        latlng:map.getCenter(),
-        zoom: map.getZoom()
-    })
+
+    this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
+    this.mapZoomendTimeout = setTimeout(()=>{
+        mapZoomendHandler({
+            mapId: map.options.id,
+            latlng:map.getCenter(),
+            zoom: map.getZoom()
+        })
+    }, 66)
 }
 function markerOver(event) {
     var marker = event.target;

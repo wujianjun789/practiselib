@@ -31,8 +31,9 @@ export default class MapView extends Component {
         const {mapData, panLatlng, panCallFun} = this.props;
         this.initMap();
         if (panLatlng) {
+            console.log('panLanlng:', panLatlng);
             this.state.map[mapData.id].mapPanTo(panLatlng);
-            // panCallFun && panCallFun()
+            setTimeout(()=>{panCallFun && panCallFun();}, 66);
         }
     }
 

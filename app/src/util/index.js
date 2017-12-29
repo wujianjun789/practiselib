@@ -157,7 +157,7 @@ export function IsMapCircleMarker(domainLevel, map){
         return false;
     }
     
-    return domainLevel < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
+    return map.zoom < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
 }
 
 export const DOMAIN_NAME_LENGTH = 16;
