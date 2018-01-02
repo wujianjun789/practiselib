@@ -44,6 +44,7 @@ export default class MapPreview extends Component{
         this.requestCurDomain = this.requestCurDomain.bind(this);
         this.mapDragend = this.mapDragend.bind(this);
         this.mapZoomend = this.mapZoomend.bind(this);
+        this.markerClick = this.markerClick.bind(this);
     }
 
     componentWillMount(){
@@ -135,11 +136,15 @@ export default class MapPreview extends Component{
         this.requestCurDomain();
     }
 
+    markerClick(data){
+        console.log('markerClick:');
+    }
+
     render(){
-        const {mapId, domainList, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
+        const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
         return <Content className="map-preview">
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
-                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
+                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
             <SearchText IsTip={true} datalist={placeholderList} placeholder={search.placeholder} value={search.value}
                         onChange={this.onChange} itemClick={this.itemClick} submit={this.searchSubmit}/>
             </Content>

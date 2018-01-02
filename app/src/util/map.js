@@ -441,6 +441,9 @@ console.log('mapPanTo:');
          let marker = null;
          if(IsCircleMarker){
               marker = L.circleMarker(position,{
+                  type: type,
+                  mapId: this.id,
+                  id: id,
                   radius: 50,
                   stroke: false,
                   fillColor: '#00bcff',
@@ -775,6 +778,7 @@ function markerOut(event) {
 }
 
 function markerClick(event) {
+    console.log(event.target);
     var marker = event.target;
     markerClickHandler({
         mapId: marker.options.mapId,
@@ -917,36 +921,36 @@ function mapZoomendHandler(data) {
 
 function mapDragendHandler(data){
     if(mapObject.callFun  && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].mapDragendHandler){
-        mapObject.callFun[data.mapId].mapDragendHandler(data);
+        mapObject.callFun[data.mapId].mapDragendHandler.call(null, data);
     }
 }
 
 function markerDragendHandler(data) {
     if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerDragendHandler) {
-        mapObject.callFun[data.mapId].markerDragendHandler(data);
+        mapObject.callFun[data.mapId].markerDragendHandler.call(null, data);
     }
 }
 
 function markerMouseOverHandler(data) {
     if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerMouseOverHandler) {
-        mapObject.callFun[data.mapId].markerMouseOverHandler(data);
+        mapObject.callFun[data.mapId].markerMouseOverHandler.call(null, data);
     }
 }
 
 function markerMouseOutHandler(data) {
     if (mapObject.callFun  && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerMouseOutHandler) {
-        mapObject.callFun[data.mapId].markerMouseOutHandler(data);
+        mapObject.callFun[data.mapId].markerMouseOutHandler.call(null, data);
     }
 }
 
 function markerClickHandler(data) {
     if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerClickHandler) {
-        mapObject.callFun[data.mapId].markerClickHandler(data);
+        mapObject.callFun[data.mapId].markerClickHandler.call(null, data);
     }
 }
 
 function markerHandler(mapId, id, data) {
     if (mapObject.callFun && mapObject.callFun[mapId] && mapObject.callFun[mapId].markerHandler) {
-        mapObject.callFun.markerHandler(id, data)
+        mapObject.callFun.markerHandler.apply(null, [id, data])
     }
 }
