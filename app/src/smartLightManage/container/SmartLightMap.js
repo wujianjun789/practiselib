@@ -131,6 +131,7 @@ export class SmartLightMap extends Component{
 
         this.mapDragend = this.mapDragend.bind(this);
         this.mapZoomend = this.mapZoomend.bind(this);
+        this.panCallFun = this.panCallFun.bind(this);
     }
 
     componentWillMount(){
@@ -206,7 +207,7 @@ export class SmartLightMap extends Component{
             if(curDomain){
                 getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
             }else{
-                this.props.actions.addNotify(0, this.formatIntl('app.not.found'));
+                this.props.actions.addNotify(0, 'app.not.found');
                 this.setState({IsSearchResult:false});
             }
             return;
@@ -217,7 +218,7 @@ export class SmartLightMap extends Component{
     updateSearch(data, IsSearch){
 
         if(IsSearch && (!data || data.length==0)){
-            this.props.actions.addNotify(0, this.formatIntl('app.not.found'));
+            this.props.actions.addNotify(0, 'app.not.found');
         }
 
         let searchList = Immutable.fromJS(data);
@@ -444,15 +445,20 @@ export class SmartLightMap extends Component{
     }
 
     mapDragend(data){
-        this.map = Object.assign({}, this.map, {center:data.latlng})
+        console.log('mapDrag:',data.latlng);
+        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}});
         this.setState(this.map);
     }
 
     mapZoomend(data){
-        this.map = Object.assign({}, this.map, {zoom:data.zoom});
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
         this.mapTimeOut && clearTimeout(this.mapTimeOut);
         // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
         this.requestSearch();
+    }
+
+    panCallFun(){
+        this.setState({panLatLng:null});
     }
 
     transformState(key, sf){
@@ -734,10 +740,11 @@ export class SmartLightMap extends Component{
         }
 
         /*panLatlng={panLatLng}*/
+        // console.log('render:', this.map.center);
         return (
             <Content>
                 <MapView option={{zoom:this.map.zoom}} mapData={{id:"smartLightMap", latlng:this.map.center, position:positionList, data:searchList.toJS()}}
-                         mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}}/>
+                         mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}} panLatlng={panLatLng} panCallFun={this.panCallFun}/>
                 <div className="search-container">
                     <div className={"searchText smartLight-map"} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={this.onkeydown}>
                         <input type="search" className="form-control" placeholder={this.formatIntl("app.search.placeholder.name")} value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>

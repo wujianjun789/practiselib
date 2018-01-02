@@ -101,7 +101,7 @@ export default class DomainPopup extends PureComponent {
     }
 
     mapDragend(data){
-        console.log(data.bounds);
+        // console.log(data.bounds);
         let obj = {};
         let prompt = {};
         if(data.zoom){

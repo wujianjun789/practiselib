@@ -12,6 +12,16 @@ export function getDomainList(cb) {
     })
 }
 
+export function getDomainByCenter(center, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: {near: center, maxDistance:2,unit:'kilometers'}}})),{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
 export function getDomainById(id,cb){
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains/'+id, {
