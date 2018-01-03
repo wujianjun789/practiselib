@@ -146,10 +146,10 @@ export function getAssetsBaseByModelWithDomain(model, domainId, cb) {
 
 export function getAssetsBaseByDomain(domainId, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"where":{"domainId":domainId}})), {
+    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({ "where": { "domainId": domainId } })), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }

@@ -164,13 +164,13 @@ export default class Gateway extends Component {
     apply = () => {
         const { id } = this.state.currentDevice;
         const { currentControlMode } = this.state;
-        console.log(id,currentControlMode)
+        console.log(id, currentControlMode)
         fetch(`/${id}/${currentControlMode}`)
-        .then(res=>{
+            .then(res => {
 
-        })
+            })
     }
-    checkTime=()=>{
+    checkTime = () => {
         console.log('校验时间操作')
     }
     render() {

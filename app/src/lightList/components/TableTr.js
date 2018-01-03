@@ -1,7 +1,7 @@
 /**
  * Created by Azrael on 2017/9/15.
  */
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 /**
  * 这里是注释
@@ -15,7 +15,7 @@ export default class TableTr extends PureComponent {
         columns: PropTypes.arrayOf(PropTypes.shape({
             accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
             title: PropTypes.string.isRequired
-        }) ),
+        })),
         willMountFuncs: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.func),
             PropTypes.func
@@ -26,7 +26,7 @@ export default class TableTr extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            data: {...props.data},
+            data: { ...props.data },
         };
 
         this.onClick = this.onClick.bind(this);
@@ -35,9 +35,9 @@ export default class TableTr extends PureComponent {
 
     componentWillMount() {
         this.mounted = true;
-        const {willMountFuncs} = this.props;
+        const { willMountFuncs } = this.props;
         if (Array.isArray(willMountFuncs)) {
-            willMountFuncs.forEach(func => {func(this.updateData)});
+            willMountFuncs.forEach(func => { func(this.updateData) });
         } else if (typeof willMountFuncs == 'function') {
             willMountFuncs(this.updateData);
         }
@@ -48,7 +48,7 @@ export default class TableTr extends PureComponent {
     }
 
     updateData(data) {
-        this.mounted && this.setState({data: {...this.state.data, ...data}});
+        this.mounted && this.setState({ data: { ...this.state.data, ...data } });
     }
 
     onClick() {
@@ -56,21 +56,21 @@ export default class TableTr extends PureComponent {
     }
 
     render() {
-        const {data, data:{id}} = this.state;
-        const {activeId, columns} = this.props;
+        const { data, data: { id } } = this.state;
+        const { activeId, columns } = this.props;
         return (
-            <tr className={(activeId || (typeof activeId == 'number' && activeId == 0) ) && activeId==id ? 'active':''} onClick={this.onClick}>
-            {
-                columns.map((item, index) => {
-                    if(typeof item.accessor === 'function') {
-                        return <td key={index}>{item.accessor(data)}</td>
-                    } else if(typeof item.accessor === ('string'||'number')) {
-                        return <td key={index}>{data[item.accessor]}</td>
-                    } else {
-                        return <td key={index}></td>
-                    }
-                })
-            }
+            <tr className={(activeId || (typeof activeId == 'number' && activeId == 0)) && activeId == id ? 'active' : ''} onClick={this.onClick}>
+                {
+                    columns.map((item, index) => {
+                        if (typeof item.accessor === 'function') {
+                            return <td key={index}>{item.accessor(data)}</td>
+                        } else if (typeof item.accessor === ('string' || 'number')) {
+                            return <td key={index}>{data[item.accessor]}</td>
+                        } else {
+                            return <td key={index}></td>
+                        }
+                    })
+                }
             </tr>
         )
     }
