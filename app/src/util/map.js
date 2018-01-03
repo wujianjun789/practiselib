@@ -786,7 +786,6 @@ function markerOut(event) {
 }
 
 function markerClick(event) {
-    console.log(event.target);
     var marker = event.target;
     markerClickHandler({
         mapId: marker.options.mapId,

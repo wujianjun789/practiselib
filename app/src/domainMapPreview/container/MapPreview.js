@@ -34,7 +34,7 @@ export default class MapPreview extends Component{
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
-        this.domainLevel = 4;
+        this.domainLevel = 5;
         this.domainCurLevel = 0;
 
         this.onChange = this.onChange.bind(this);
@@ -54,7 +54,7 @@ export default class MapPreview extends Component{
         this.mounted = true;
         getMapConfig(data=>{
             if(this.mounted){
-                this.map = Object.assign({}, this.map, data);
+                this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
                 this.map.zoom = 15
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
             }
@@ -152,8 +152,10 @@ export default class MapPreview extends Component{
     }
 
     markerClick(data){
-        this.map = Object.assign({}, this.map, {zoom:this.map.zoom-1, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-        this.requestCurDomain();
+        if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
+            this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+            this.requestCurDomain();
+        }
     }
 
     render(){
