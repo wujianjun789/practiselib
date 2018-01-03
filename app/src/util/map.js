@@ -360,7 +360,7 @@ console.log('mapPanTo:');
         }
 
         // markerPosList.concat(list);
-         var _this = this
+         let _this = this
         list.map(function (data) {
             let marker = _this.getMarkerById(data.device_type, data.device_id);
             // let markerIndex = getMarkerIndexById(data.device_type, data.device_id)
@@ -371,9 +371,14 @@ console.log('mapPanTo:');
             } else {
                 if(data.lat && data.lng && data.lat.toString().replace(pattern,'') && data.lng.toString().replace(pattern,'')){
                     _this.markerPosList.push(data);
-                    var device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
-                    var labelInfo = device ? device.name : '';
-                    var newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
+                    let device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
+                    let labelInfo = '';
+                    if(data.IsCircleMarker && device){
+                        labelInfo = device.detail;
+                    }else if(device){
+                        labelInfo = device.name;
+                    }
+                    let newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
                     if (newMarker) {
                         _this.loadMarkerLabel(newMarker, labelInfo, data.IsCircleMarker);
                         _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
@@ -742,7 +747,6 @@ function mapMoveEnd(event) {
 
 function mapZoomEnd(event) {
     let map = event.target;
-console.log('bounds:',map.getBounds());
     let bounds = map.getBounds();
     this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
     this.mapZoomendTimeout = setTimeout(()=>{
@@ -789,7 +793,8 @@ function markerClick(event) {
         type: marker.options.type,
         id: marker.options.id,
         x: event.originalEvent.clientX,
-        y: event.originalEvent.clientY
+        y: event.originalEvent.clientY,
+        latlng: marker.getLatLng()
     });
 }
 

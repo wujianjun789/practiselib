@@ -11,8 +11,10 @@ import SearchText from '../../components/SearchText';
 
 import {getMapConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
+import {getAssetsBaseByDomain} from '../../api/asset';
 
 import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index';
+import lodash from 'lodash';
 export default class MapPreview extends Component{
     constructor(props){
         super(props)
@@ -55,7 +57,6 @@ export default class MapPreview extends Component{
                 this.map = Object.assign({}, this.map, data);
                 this.map.zoom = 15
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
-                console.log('domainCurLevel:', this.domainCurLevel);
             }
         })
 
@@ -99,9 +100,19 @@ export default class MapPreview extends Component{
     }
 
     requestCurDomain(){
-        console.log('center:',this.map.center);
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
             let positionList = data.map(item=>{
+                getAssetsBaseByDomain(item.id, asset=>{
+                    let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
+                        return domain.id == item.id
+                    })
+
+                    if(curIndex>-1 && curIndex<this.state.curDomainList.length){
+                        this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+                        this.setState({curDomainList: this.state.curDomainList});
+                    }
+
+                })
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
             })
@@ -141,7 +152,8 @@ export default class MapPreview extends Component{
     }
 
     markerClick(data){
-        console.log('markerClick:', data);
+        this.map = Object.assign({}, this.map, {zoom:this.map.zoom-1, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        this.requestCurDomain();
     }
 
     render(){
