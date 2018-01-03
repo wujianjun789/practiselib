@@ -10,9 +10,9 @@ import MapView from '../../components/MapView';
 import SearchText from '../../components/SearchText';
 
 import {getMapConfig} from '../../util/network';
-import {getDomainList, getDomainByCenter} from '../../api/domain';
+import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
 
-import {IsMapCircleMarker} from '../../util/index';
+import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index';
 export default class MapPreview extends Component{
     constructor(props){
         super(props)
@@ -33,6 +33,7 @@ export default class MapPreview extends Component{
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
         this.domainLevel = 4;
+        this.domainCurLevel = 0;
 
         this.onChange = this.onChange.bind(this);
         this.updatePlaceholder = this.updatePlaceholder.bind(this);
@@ -52,6 +53,9 @@ export default class MapPreview extends Component{
         getMapConfig(data=>{
             if(this.mounted){
                 this.map = Object.assign({}, this.map, data);
+                this.map.zoom = 15
+                this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+                console.log('domainCurLevel:', this.domainCurLevel);
             }
         })
 
@@ -96,7 +100,7 @@ export default class MapPreview extends Component{
 
     requestCurDomain(){
         console.log('center:',this.map.center);
-        getDomainByCenter(this.map.center, (data)=>{
+        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -126,18 +130,18 @@ export default class MapPreview extends Component{
     }
 
     mapDragend(data){
-        this.map.center = {lng:data.latlng.lng, lat:data.latlng.lat};
-        // this.setState(this.map);
+        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+
         this.requestCurDomain();
     }
 
     mapZoomend(data){
-        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.requestCurDomain();
     }
 
     markerClick(data){
-        console.log('markerClick:');
+        console.log('markerClick:', data);
     }
 
     render(){

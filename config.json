@@ -26,7 +26,7 @@
       "center": [31.239658843127756, 121.49971691534425],
       "zoomDetail":"当前等级",
       "zoom": 16,
-      "minZoom": 10,
+      "minZoom": 5,
       "maxZoom": 18,
       "maxClusterRadius": 50
     },

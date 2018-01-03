@@ -490,7 +490,7 @@ console.log('mapPanTo:');
          this.loadMarkerDrag(marker);
         if (!!labelInfo && this.drawItems) {
             if(IsCircleMarker){
-                marker.bindLabel(labelInfo, {noHide: true, direction: 'center', className: 'circle-marker-label', offset:[-26,-15]}).addTo(this.drawItems).showLabel();
+                marker.bindLabel(labelInfo, {noHide: true, direction: 'center', className: 'circle-marker-label', offset:[-48,-26]}).addTo(this.drawItems).showLabel();
             }else{
                 marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
             }
@@ -728,26 +728,30 @@ console.log('mapPanTo:');
 }
 
 function mapMoveEnd(event) {
-    var map = event.target;
+    let map = event.target;
     map.off("dragend", mapMoveEnd);
-
+    let bounds = map.getBounds();
     mapDragendHandler({
         mapId:map.options.id,
         latlng:map.getCenter(),
         zoom: map.getZoom(),
-        bounds: map.getBounds()
+        bounds: bounds,
+        distance: bounds._southWest.distanceTo(bounds._northEast)
     });
 }
 
 function mapZoomEnd(event) {
-    var map = event.target;
-
+    let map = event.target;
+console.log('bounds:',map.getBounds());
+    let bounds = map.getBounds();
     this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
     this.mapZoomendTimeout = setTimeout(()=>{
         mapZoomendHandler({
             mapId: map.options.id,
             latlng:map.getCenter(),
-            zoom: map.getZoom()
+            zoom: map.getZoom(),
+            bounds: bounds,
+            distance: bounds._southWest.distanceTo(bounds._northEast)
         })
     }, 66)
 }

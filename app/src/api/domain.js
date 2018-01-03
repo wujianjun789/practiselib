@@ -12,9 +12,15 @@ export function getDomainList(cb) {
     })
 }
 
-export function getDomainByCenter(center, cb) {
+export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: {near: center, maxDistance:2,unit:'kilometers'}}})),{
+    let nearParam = {maxDistance: map.distance/2000,unit:'kilometers'}
+    if(domainLevel==1){
+        nearParam = {};
+    }
+
+    if(domainLevel)
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam)}})),{
         headers: headers,
         method: 'GET'
     }, response=>{
