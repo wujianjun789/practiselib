@@ -58,14 +58,13 @@ export default class TableTr extends PureComponent {
     render() {
         const {data, data:{id}} = this.state;
         const {activeId, columns} = this.props;
-
         return (
             <tr className={(activeId || (typeof activeId == 'number' && activeId == 0) ) && activeId==id ? 'active':''} onClick={this.onClick}>
             {
                 columns.map((item, index) => {
                     if(typeof item.accessor === 'function') {
                         return <td key={index}>{item.accessor(data)}</td>
-                    } else if(typeof item.accessor === 'string') {
+                    } else if(typeof item.accessor === ('string'||'number')) {
                         return <td key={index}>{data[item.accessor]}</td>
                     } else {
                         return <td key={index}></td>

@@ -35,7 +35,7 @@ export default class SingleLampCon extends Component {
                 valueField: 'name',
                 options: []
             },
-            currentSwitchStatus: '',
+            currentSwitchStatus: 'on',
             deviceSwitchList: {
                 titleField: 'title',
                 valueField: 'value',
@@ -44,7 +44,7 @@ export default class SingleLampCon extends Component {
                     {value: 'off', title: '关闭'}
                 ]
             },
-            currentBrightness: '',
+            currentBrightness: 0,
             brightnessList: {
                 titleField: 'title',
                 valueField: 'value',
@@ -57,15 +57,18 @@ export default class SingleLampCon extends Component {
         this.columns = [
             {accessor: 'name', title: '设备名称'},
             {accessor: 'online', title: '在线状态'},
-            {accessor: 'device', title: '灯状态'},
+            {accessor: 'device', title: '灯状态  '},
             {accessor: 'switch', title: '开关状态'},
-            {accessor: 'brightness', title: '亮度'},
-            {accessor: 'voltage', title: '电压'},
-            {accessor: 'current', title: '电流'},
-            {accessor: 'power', title: '功率'},
+            {accessor: 'brightness', title: '亮度    '},
+            {accessor: 'voltage', title: '电压    '},
+            {accessor: 'current', title: '电流    '},
+            {accessor: 'power', title: '功率    '},
+            {accessor:'totalPower',title:'总电能  '},
+            {accessor:'runningTime',title:'运行时间'},
+            {accessor:'lightTime',title:'亮灯时间'},
             {
                 accessor(data) {
-                    return data.updated?momentDateFormat(getMomentDate(data.updated,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm'):'';
+                    return data.updateTime?momentDateFormat(getMomentDate(data.updateTime,'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm'):'';
                 },
                 title: '更新时间'
             }
@@ -187,14 +190,23 @@ export default class SingleLampCon extends Component {
     tableClick(currentDevice) {
         this.setState({currentDevice});
     }
-
+    switchApply=()=>{
+        const {id}=this.state.currentDevice;
+        const {currentSwitchStatus}=this.state;
+        console.log(id,currentSwitchStatus)
+    }
+    dimmingApply=()=>{
+        const {id}=this.state.currentDevice;
+        const {currentBrightness}=this.state;
+        console.log(id,currentBrightness)
+    }
     render() {
         const {page: {total, current, limit}, sidebarCollapse, currentDevice, deviceList,
                 search: {value, placeholder}, currentDomain, domainList, deviceSwitchList,
                 brightnessList, currentSwitchStatus, currentBrightness} = this.state;
 
         const disabled = deviceList.length == 0 ? true : false;
-
+        console.log(currentDevice)
         return <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                     <div className="content-left">
                         <div className="heading">
@@ -235,13 +247,13 @@ export default class SingleLampCon extends Component {
                                     <span className="tit">设备开关：</span>
                                     <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField}
                                         options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
-                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                    <button className="btn btn-primary" disabled={disabled} onClick={this.switchApply}>应用</button>
                                 </div>
                                 <div>
                                     <span className="tit">调光：</span>
                                     <Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField}
                                         options={brightnessList.options}  value={currentBrightness} onChange={this.onChange} disabled={disabled} />
-                                    <button className="btn btn-primary" disabled={disabled}>应用</button>
+                                    <button className="btn btn-primary" disabled={disabled} onClick={this.dimmingApply}>应用</button>
                                 </div>
                             </div>
                         </div>

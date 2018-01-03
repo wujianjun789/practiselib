@@ -1,14 +1,14 @@
 /**
  * Created by a on 2017/7/26.
  */
-import {HOST_IP, getHttpHeader, httpRequest} from '../util/network'
+import { HOST_IP, getHttpHeader, httpRequest } from '../util/network'
 
 export function getAssetModelList(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/model-summaries', {
+    httpRequest(HOST_IP + '/model-summaries', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -20,7 +20,7 @@ export function getAssetModelList(cb) {
  * @return {Object}
  */
 export function getModelSummariesByModelID(modelID, cb) {
-    httpRequest(`${HOST_IP}/model-summaries/${modelID}`,{
+    httpRequest(`${HOST_IP}/model-summaries/${modelID}`, {
         headers: getHttpHeader(),
         method: 'GET'
     }, response => {
@@ -30,10 +30,10 @@ export function getModelSummariesByModelID(modelID, cb) {
 
 export function getAssetList(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/assets',{
+    httpRequest(HOST_IP + '/assets', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -41,12 +41,12 @@ export function getAssetList(cb) {
 export function getSearchAssets(domainId, model, name, offset, limit, cb) {
     let headers = getHttpHeader();
 
-    let paramStr = JSON.stringify({"include":["extend"],"where":getSearchParam(domainId, model, name),"offset":offset,"limit":limit})
+    let paramStr = JSON.stringify({ "include": ["extend"], "where": getSearchParam(domainId, model, name), "offset": offset, "limit": limit })
 
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
+    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -56,24 +56,24 @@ export function getSearchCount(domainId, model, name, cb) {
 
     let paramStr = JSON.stringify(getSearchParam(domainId, model, name))
 
-    httpRequest(HOST_IP+'/assets/count?where='+encodeURIComponent(paramStr), {
+    httpRequest(HOST_IP + '/assets/count?where=' + encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 function getSearchParam(domainId, model, name) {
     let param = {}
-    if(domainId){
-        Object.assign(param, {"domainId":domainId})
+    if (domainId) {
+        Object.assign(param, { "domainId": domainId })
     }
-    if(model){
-        Object.assign(param, {"extendType":model})
+    if (model) {
+        Object.assign(param, { "extendType": model })
     }
-    if(name){
-        Object.assign(param, {"name":{"like":name}})
+    if (name) {
+        Object.assign(param, { "name": { "like": name } })
     }
 
     return param;
@@ -81,10 +81,10 @@ function getSearchParam(domainId, model, name) {
 
 export function getAssetsCount(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/assets/count', {
+    httpRequest(HOST_IP + '/assets/count', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -93,35 +93,35 @@ export function getAssetsCount(cb) {
  *
  * @param model(资产模型类型)
  */
-export function getAssetsByModel(model, cb){
+export function getAssetsByModel(model, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/'+model+'s', {
+    httpRequest(HOST_IP + '/' + model + 's', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response)
     })
 }
 
-export function getAssetsBaseByModel(model, cb){
+export function getAssetsBaseByModel(model, cb) {
     let headers = getHttpHeader();
 
-    let paramStr = JSON.stringify({"where":getSearchParam('', model, "")})
+    let paramStr = JSON.stringify({ "where": getSearchParam('', model, "") })
 
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
+    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function getAssetsBaseById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/assets/'+id,{
+    httpRequest(HOST_IP + '/assets/' + id, {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -131,15 +131,15 @@ export function getAssetsBaseById(id, cb) {
  * @param name
  * @param cb
  */
-export function getAssetsBaseByModelWithDomain(model, domainId, cb){
+export function getAssetsBaseByModelWithDomain(model, domainId, cb) {
     let headers = getHttpHeader();
 
-    let paramStr = JSON.stringify({"where":getSearchParam(domainId, model, "")})
+    let paramStr = JSON.stringify({ "where": getSearchParam(domainId, model, "") })
 
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
+    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -147,12 +147,12 @@ export function getAssetsBaseByModelWithDomain(model, domainId, cb){
  *
  * @param model(资产模型类型)
  */
-export function getAssetsCountByModel(model, cb){
+export function getAssetsCountByModel(model, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/'+model+'s/count', {
+    httpRequest(HOST_IP + '/' + model + 's/count', {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response)
     })
 }
@@ -165,11 +165,11 @@ export function getAssetsCountByModel(model, cb){
  */
 export function getAssetsBaseByModelWithName(model, name, cb) {
     let headers = getHttpHeader();
-    let paramStr = JSON.stringify({"where":getSearchParam("", model, name)})
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(paramStr), {
+    let paramStr = JSON.stringify({ "where": getSearchParam("", model, name) })
+    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -177,14 +177,14 @@ export function getAssetsBaseByModelWithName(model, name, cb) {
  * param data({modelId:设备型号})
  *
  */
-export function postAssetsByModel(model, data, cb){
+export function postAssetsByModel(model, data, cb) {
     let headers = getHttpHeader();
-    let dat = {id:data.id, type:data.modelId, base:{name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:model, domainId:data.domainId}};
-    httpRequest(HOST_IP+'/'+model+'s', {
+    let dat = { id: data.id, type: data.modelId, base: { name: data.name, geoPoint: { lat: data.lat, lng: data.lng }, extendType: model, domainId: data.domainId } };
+    httpRequest(HOST_IP + '/' + model + 's', {
         headers: headers,
         method: 'POST',
-        body:JSON.stringify(dat)
-    }, response=>{
+        body: JSON.stringify(dat)
+    }, response => {
         cb && cb(response);
     })
 }
@@ -193,14 +193,14 @@ export function postAssetsByModel(model, data, cb){
  * param data({modelId:设备型号})
  *
  */
-export function postXes(model, data, cb){
+export function postXes(model, data, cb) {
     let headers = getHttpHeader();
-    let dat = {id:data.id, type:data.modelId, base:{name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:model, domainId:data.domainId}};
-    httpRequest(HOST_IP+'/xes', {
+    let dat = { id: data.id, type: data.modelId, base: { name: data.name, geoPoint: { lat: data.lat, lng: data.lng }, extendType: model, domainId: data.domainId } };
+    httpRequest(HOST_IP + '/xes', {
         headers: headers,
         method: 'POST',
-        body:JSON.stringify(dat)
-    }, response=>{
+        body: JSON.stringify(dat)
+    }, response => {
         cb && cb(response);
     })
 }
@@ -211,70 +211,70 @@ export function postXes(model, data, cb){
  */
 export function updateAssetsByModel(model, data, cb) {
     let headers = getHttpHeader();
-    let dat = {type:data.modelId};
-    httpRequest(HOST_IP+'/'+model+'s/'+data.id, {
+    let dat = { type: data.modelId };
+    httpRequest(HOST_IP + '/' + model + 's/' + data.id, {
         headers: headers,
         method: 'PATCH',
-        body:JSON.stringify(dat)
-    }, response=>{
-        updateAssetsById(response.id, {name:data.name, geoPoint:{lat:data.lat, lng:data.lng}, extendType:model, domainId:data.domainId}, cb)
+        body: JSON.stringify(dat)
+    }, response => {
+        updateAssetsById(response.id, { name: data.name, geoPoint: { lat: data.lat, lng: data.lng }, extendType: model, domainId: data.domainId }, cb)
     })
 }
 
-export function updateXes(model,data, cb){
+export function updateXes(model, data, cb) {
     let headers = getHttpHeader();
     let dat = {
-        "geoType":0,
-        name:data.name,
-        geoPoint:{
-            lat:data.lat,
-            lng:data.lng
+        "geoType": 0,
+        name: data.name,
+        geoPoint: {
+            lat: data.lat,
+            lng: data.lng
         },
-        extendType:model,
-        domainId:data.domainId
+        extendType: model,
+        domainId: data.domainId
     };
-    httpRequest(HOST_IP+'/assets/'+data.id,{
+    httpRequest(HOST_IP + '/assets/' + data.id, {
         headers: headers,
         method: 'PATCH',
-        body:JSON.stringify(dat)
-    }, response=>{
+        body: JSON.stringify(dat)
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function delAssetsByModel(model, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/'+model+'s/'+id, {
+    httpRequest(HOST_IP + '/' + model + 's/' + id, {
         headers: headers,
         method: 'DELETE'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
 export function delXes(model, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/xes/'+id, {
+    httpRequest(HOST_IP + '/xes/' + id, {
         headers: headers,
         method: 'DELETE'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
 
-export function updateAssetsById(id, data, cb){
+export function updateAssetsById(id, data, cb) {
     let headers = getHttpHeader();
-    let dat = Object.assign({}, {"geoType":0}, data)
-    httpRequest(HOST_IP+'/assets/'+id,{
+    let dat = Object.assign({}, { "geoType": 0 }, data)
+    httpRequest(HOST_IP + '/assets/' + id, {
         headers: headers,
         method: 'PATCH',
-        body:JSON.stringify(dat)
-    }, response=>{
+        body: JSON.stringify(dat)
+    }, response => {
         cb && cb(response);
     })
 }
 
-export function updateDataOrigin(data,key){
+export function updateDataOrigin(data, key) {
 
 }
 
@@ -284,13 +284,44 @@ export function updateDataOrigin(data,key){
  * @param {String | Number} id
  */
 export const getDeviceStatusByModelAndId = (model, id) => cb => {
-    if(model == 'xes') model = 'xe';
-    httpRequest(`${HOST_IP}/${model}s/${id}/status`,{
-        headers: getHttpHeader(),
-        method: 'GET',
-    }, response=>{
-        cb && cb(response);
-    })
+    // if(model == 'xes') model = 'xe';
+    // httpRequest(`${HOST_IP}/${model}s/${id}/status`,{
+    //     headers: getHttpHeader(),
+    //     method: 'GET',
+    // }, response=>{
+    //     cb && cb(response);
+    // })
+    //先模拟实现
+    let response;
+    console.log(model)
+    if (model === 'lc') {
+        response = {
+            "name": "led1",
+            "online": "在线",
+            "device": "正常",
+            "switch": "开",
+            "brightness": 20,
+            "voltage": "110",
+            "current": "11",
+            "power": "11",
+            "totalPower": "100",
+            "runningTime": "100",
+            "lightTime": "100",
+            "updateTime": "2018/1/1"
+        }
+    } else if (model === 'gateway') {
+        response = {
+            "name": "gateway1",
+            "online": "online",
+            "domain": "上海",
+            "device": "正常",
+            "runningTime": "100",
+            "updateTime": "2018/1/1"
+        }
+    } else {
+        response = {}
+    }
+    cb && cb(response);
 }
 
 /**
@@ -300,11 +331,11 @@ export const getDeviceStatusByModelAndId = (model, id) => cb => {
  * @param {function} cb
  */
 export const updateAssetsRpcById = (id, data, cb) => {
-	httpRequest(`${HOST_IP}/assets/${id}/rpc`,{
+    httpRequest(`${HOST_IP}/assets/${id}/rpc`, {
         headers: getHttpHeader(),
-		method: 'POST',
-		body: JSON.stringify(data)
-    }, response=>{
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response => {
         cb && cb(response);
     })
 }
