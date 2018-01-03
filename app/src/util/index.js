@@ -156,7 +156,6 @@ export function IsMapCircleMarker(domainLevel, map){
     if(!domainLevel || !map){
         return false;
     }
-    
     return map.zoom < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
 }
 

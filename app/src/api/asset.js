@@ -143,6 +143,16 @@ export function getAssetsBaseByModelWithDomain(model, domainId, cb) {
         cb && cb(response);
     })
 }
+
+export function getAssetsBaseByDomain(domainId, cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"where":{"domainId":domainId}})), {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
 /**
  *
  * @param model(资产模型类型)
