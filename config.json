@@ -4,7 +4,7 @@
   },
 
   "client":{
-    "HOST": "localhost",
+    "HOST": "",
     "PORT": 3000,
     "PATH": "/api",
     "module":[
