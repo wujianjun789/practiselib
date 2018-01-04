@@ -301,37 +301,13 @@ export const getDeviceStatusByModelAndId = (model, id) => cb => {
     // }, response=>{
     //     cb && cb(response);
     // })
+
     //先模拟实现
-    let response;
-    console.log(model)
-    if (model === 'lc') {
-        response = {
-            "name": "led1",
-            "online": "在线",
-            "device": "正常",
-            "switch": "开",
-            "brightness": 20,
-            "voltage": "110",
-            "current": "11",
-            "power": "11",
-            "totalPower": "100",
-            "runningTime": "100",
-            "lightTime": "100",
-            "updateTime": "2018/1/1"
-        }
-    } else if (model === 'gateway') {
-        response = {
-            "name": "gateway1",
-            "online": "online",
-            "domain": "上海",
-            "device": "正常",
-            "runningTime": "100",
-            "updateTime": "2018/1/1"
-        }
-    } else {
-        response = {}
-    }
-    cb && cb(response);
+    fetch(`http://localhost:3001/${model}/${id}/status`, { mode: 'cors' })
+        .then(response => response.json())
+        .then(response => {
+            cb && cb(response);
+        }).catch(e => console.log(e))
 }
 
 /**

@@ -57,7 +57,7 @@ export default class SingleLampCon extends Component {
         this.columns = [
             { accessor: 'name', title: '设备名称' },
             { accessor: 'online', title: '在线状态' },
-            { accessor: 'device', title: '灯状态  ' },
+            { accessor: 'device', title: '设备状态  ' },
             { accessor: 'switch', title: '开关状态' },
             { accessor: 'brightness', title: '亮度    ' },
             { accessor: 'voltage', title: '电压    ' },

@@ -51,9 +51,9 @@ export default class Gateway extends Component {
 
         this.columns = [
             { accessor: 'name', title: '设备名称' },
-            { accessor: 'online', title: '在线状态' },
+            { accessor: 'online', title: '通信状态' },
             { accessor: 'domain', title: '域' },
-            { accessor: 'device', title: '状态' },
+            { accessor: 'device', title: '设备状态' },
             { accessor: 'runningTime', title: '运行时间' },
             {
                 accessor(data) {
