@@ -63,7 +63,10 @@ export default class MapView extends Component {
             }, option, mapCallFun);
             if (mapData.position && mapData.position.length) {
                 let key = transformDeviceType(mapData.position[0]["device_type"]);
-                this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
+                setTimeout(()=>{
+                    this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
+                }, 300)
+
             }
         }
     }

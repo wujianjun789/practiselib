@@ -110,7 +110,7 @@ export default class Map{
         if (!latlng || !latlng.lat || !latlng.lng) {
             return;
         }
-console.log('mapPanTo:');
+
         this.map.panTo([latlng.lat, latlng.lng]);
     }
 
@@ -148,10 +148,12 @@ console.log('mapPanTo:');
                     zoomControl: false
                 });
             }
+        }else{
+
         }
 
         this.map.on('dragend', mapMoveEnd);
-        this.map.on('zoomend', mapZoomEnd);
+        this.map.on('zoomend', mapZoomEnd, this);
     }
 
     setMapView(data, options) {
@@ -452,7 +454,9 @@ console.log('mapPanTo:');
                   radius: 50,
                   stroke: false,
                   fillColor: '#00bcff',
-                  fillOpacity: 0.7
+                  fillOpacity: 0.7,
+
+                  IsCircleMarker: IsCircleMarker
               });
          }else{
              marker = L.marker(position, {
@@ -462,7 +466,9 @@ console.log('mapPanTo:');
                  id: id,
                  digital: digital,
                  riseOnHover: true,
-                 draggable: this.markerDraggable
+                 draggable: this.markerDraggable,
+
+                 IsCircleMarker: IsCircleMarker
              });
          }
 
@@ -529,7 +535,7 @@ console.log('mapPanTo:');
 
      loadMarkerPopup(marker) {
         marker.off('click', markerClick);
-        marker.on('click', markerClick);
+        marker.on('click', markerClick, this);
     }
 
      markerControl(IsAdd, options) {
@@ -746,6 +752,7 @@ function mapMoveEnd(event) {
 }
 
 function mapZoomEnd(event) {
+    this.clearMarker();
     let map = event.target;
     let bounds = map.getBounds();
     this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
@@ -787,6 +794,7 @@ function markerOut(event) {
 
 function markerClick(event) {
     var marker = event.target;
+    marker.IsCircleMarker && this.clearMarker();
     markerClickHandler({
         mapId: marker.options.mapId,
         type: marker.options.type,

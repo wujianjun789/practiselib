@@ -102,23 +102,30 @@ export default class MapPreview extends Component{
     requestCurDomain(){
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
             let positionList = data.map(item=>{
-                getAssetsBaseByDomain(item.id, asset=>{
-                    let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
-                        return domain.id == item.id
-                    })
-
-                    if(curIndex>-1 && curIndex<this.state.curDomainList.length){
-                        this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
-                        this.setState({curDomainList: this.state.curDomainList});
-                    }
-
-                })
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
             })
 
+            this.setState({curDomainList: data, positionList:positionList},()=>{
+                let deviceLen = [];
+                data.map(item=>{
+                    getAssetsBaseByDomain(item.id, asset=>{
+                        deviceLen.push(item.id);
+                        let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
+                            return domain.id == item.id
+                        })
 
-            this.setState({curDomainList: data, positionList:positionList});
+                        if(curIndex>-1 && curIndex<this.state.curDomainList.length){
+                            this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+                        }
+
+                        if (deviceLen.length == data.length){
+                            this.setState({curDomainList: this.state.curDomainList});
+                        }
+                    })
+                })
+
+            });
         })
     }
 
@@ -154,11 +161,13 @@ export default class MapPreview extends Component{
     markerClick(data){
         if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
             this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+
             this.requestCurDomain();
         }
     }
 
     render(){
+
         const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
         return <Content className="map-preview">
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
