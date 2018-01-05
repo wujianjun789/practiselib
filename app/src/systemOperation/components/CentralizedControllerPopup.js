@@ -170,8 +170,8 @@ export default class CentralizedControllerPopup extends Component {
                   { footer }
                 </div>
                 <div className="popup-map">
-                  <MapView option={ { mapZoom: false, zoom:zoom } } mapData={ { id: "CentralizedPopup", latlng: { lng: lng, lat: lat },
- position: [{ "device_id": id, "device_type": "DEVICE", lng: lng, lat: lat }], data: [{ id: id, name: name }] } } mapCallFun={ { mapDragendHandler: this.mapDragend } } />
+                  <MapView mapIcon={true} option={ { mapZoom: false, zoom:zoom } } mapData={ { id: "CentralizedPopup", latlng: { lng: lng, lat: lat },
+ position: [/*{ "device_id": id, "device_type": "DEVICE", lng: lng, lat: lat }*/], data: [{ id: id, name: name }] } } mapCallFun={ { mapDragendHandler: this.mapDragend } } />
                 </div>
               </Panel>
             </div>

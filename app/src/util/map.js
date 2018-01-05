@@ -752,7 +752,7 @@ function mapMoveEnd(event) {
 }
 
 function mapZoomEnd(event) {
-    this.clearMarker();
+    // this.clearMarker();
     let map = event.target;
     let bounds = map.getBounds();
     this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
@@ -794,7 +794,7 @@ function markerOut(event) {
 
 function markerClick(event) {
     var marker = event.target;
-    marker.IsCircleMarker && this.clearMarker();
+    // marker.IsCircleMarker && this.clearMarker();
     markerClickHandler({
         mapId: marker.options.mapId,
         type: marker.options.type,

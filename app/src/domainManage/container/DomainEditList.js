@@ -268,10 +268,10 @@ export class DomainEditList extends Component {
         let selectDomain = this.state.selectDomain;
         selectDomain.latlng = domain.geoPoint;
         selectDomain.position.splice(0)
-        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE"}, domain.geoPoint))
+        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
         selectDomain.parentId = domain.parentId;
         selectDomain.data.splice(0);
-        selectDomain.data.push({id:domain.id, name:domain.name});
+        selectDomain.data.push({id:domain.id, name:domain.name, detail:domain.name});
         this.setState({selectDomain:selectDomain})
     }
 

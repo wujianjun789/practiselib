@@ -78,8 +78,8 @@ export default class MapView extends Component {
     }
 
     render() {
-        const {className='', mapData} = this.props;
-        return <div className={"map-view "+className} ref={this.renderMap} id={mapData && mapData.id}></div>
+        const {className='', mapData, mapIcon=false} = this.props;
+        return <div className={"map-view "+(mapIcon?"map-icon ":" ")+className} ref={this.renderMap} id={mapData && mapData.id}></div>
     }
 }
 
