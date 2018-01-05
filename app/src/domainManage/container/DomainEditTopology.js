@@ -13,7 +13,7 @@ import DomainPopup from '../component/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
-import {getDomainList,getDomainListByParentId, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
+import {getDomainList, getParentDomainList, getDomainListByParentId, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 import {getStringlistByLanguage, validEnglishStr, validChinaStr} from '../../util/string'
@@ -77,7 +77,7 @@ class DomainEditTopology extends Component{
     }
 
     requestDomain(){
-        getDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:"无"});}});
+        getParentDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:"无"});}});
     }
 
     requestCurDomain(parentId){

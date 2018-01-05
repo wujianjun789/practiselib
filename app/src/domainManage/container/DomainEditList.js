@@ -17,7 +17,7 @@ import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 
-import {getDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
+import {getDomainList, getParentDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
@@ -122,7 +122,7 @@ export class DomainEditList extends Component {
     }
 
     requestDomain(){
-        getDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:intlFormat({en:'null',zh:'无'})});}});
+        getParentDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:intlFormat({en:'null',zh:'无'})});}});
     }
 
     requestSearch(){
