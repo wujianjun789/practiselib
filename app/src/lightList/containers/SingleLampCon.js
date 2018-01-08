@@ -13,6 +13,8 @@ import { getDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId } from '../../api/asset';
 import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
+import {message} from 'antd'
+import 'antd/lib/message/style/css';
 export default class SingleLampCon extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +59,7 @@ export default class SingleLampCon extends Component {
         this.columns = [
             { accessor: 'name', title: '设备名称' },
             { accessor: 'online', title: '在线状态' },
-            { accessor: 'device', title: '设备状态  ' },
+            { accessor: 'device', title: '灯状态  ' },
             { accessor: 'switch', title: '开关状态' },
             { accessor: 'brightness', title: '亮度    ' },
             { accessor: 'voltage', title: '电压    ' },
@@ -88,7 +90,6 @@ export default class SingleLampCon extends Component {
         this.updatePageSize = this.updatePageSize.bind(this);
         this.updateBrightnessList = this.updateBrightnessList.bind(this);
     }
-
     componentWillMount() {
         this.mounted = true;
         this.initData();
@@ -193,12 +194,13 @@ export default class SingleLampCon extends Component {
     switchApply = () => {
         const { id } = this.state.currentDevice;
         const { currentSwitchStatus } = this.state;
-        console.log(id, currentSwitchStatus)
+        message.error('操作失败')
     }
     dimmingApply = () => {
         const { id } = this.state.currentDevice;
         const { currentBrightness } = this.state;
         console.log(id, currentBrightness)
+        message.success('操作成功')
     }
     render() {
         const { page: { total, current, limit }, sidebarCollapse, currentDevice, deviceList,
@@ -206,7 +208,6 @@ export default class SingleLampCon extends Component {
             brightnessList, currentSwitchStatus, currentBrightness } = this.state;
 
         const disabled = deviceList.length == 0 ? true : false;
-        console.log(currentDevice)
         return <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
             <div className="content-left">
                 <div className="heading">
