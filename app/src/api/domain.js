@@ -12,6 +12,42 @@ export function getDomainList(cb) {
     })
 }
 
+export function getParentDomainList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where":{level:{neq:5}}})), {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response)
+    })
+}
+
+export function getChildDomainList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where":{level:5}})), {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response)
+    })
+}
+
+export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
+    let headers = getHttpHeader();
+    let nearParam = {maxDistance: map.distance/2000,unit:'kilometers'}
+    if(domainLevel==1){
+        nearParam = {};
+    }
+
+    if(domainLevel)
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam)}})),{
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
 export function getDomainById(id,cb){
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains/'+id, {

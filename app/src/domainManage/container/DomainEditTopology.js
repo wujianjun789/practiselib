@@ -13,7 +13,7 @@ import DomainPopup from '../component/DomainPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 
-import {getDomainList,getDomainListByParentId, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
+import {getDomainList, getParentDomainList, getDomainListByParentId, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
 
 import Immutable from 'immutable';
 import {getStringlistByLanguage, validEnglishStr, validChinaStr} from '../../util/string'
@@ -77,7 +77,7 @@ class DomainEditTopology extends Component{
     }
 
     requestDomain(){
-        getDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:"无"});}});
+        getParentDomainList(data=>{if(this.mounted){this.domainList=data;this.domainList.unshift({id:null, name:"无"});}});
     }
 
     requestCurDomain(parentId){
@@ -193,10 +193,10 @@ class DomainEditTopology extends Component{
         let selectDomain = this.state.selectDomain;
         selectDomain.latlng = domain.geoPoint;
         selectDomain.position.splice(0)
-        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE"}, domain.geoPoint))
+        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
         selectDomain.parentId = domain.parentId;
         selectDomain.data.splice(0);
-        selectDomain.data.push({id:domain.id, name:domain.name});
+        selectDomain.data.push({id:domain.id, name:domain.name, detail:domain.name});
         this.setState({selectDomain:selectDomain})
     }
 

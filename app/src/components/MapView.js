@@ -31,8 +31,9 @@ export default class MapView extends Component {
         const {mapData, panLatlng, panCallFun} = this.props;
         this.initMap();
         if (panLatlng) {
+            console.log('panLanlng:', panLatlng);
             this.state.map[mapData.id].mapPanTo(panLatlng);
-            // panCallFun && panCallFun()
+            panCallFun && panCallFun();
         }
     }
 
@@ -62,7 +63,10 @@ export default class MapView extends Component {
             }, option, mapCallFun);
             if (mapData.position && mapData.position.length) {
                 let key = transformDeviceType(mapData.position[0]["device_type"]);
-                this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
+                setTimeout(()=>{
+                    this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
+                }, 300)
+
             }
         }
     }
@@ -74,8 +78,8 @@ export default class MapView extends Component {
     }
 
     render() {
-        const {className='', mapData} = this.props;
-        return <div className={"map-view "+className} ref={this.renderMap} id={mapData && mapData.id}></div>
+        const {className='', mapData, mapIcon=false} = this.props;
+        return <div className={"map-view "+(mapIcon?"map-icon ":" ")+className} ref={this.renderMap} id={mapData && mapData.id}></div>
     }
 }
 

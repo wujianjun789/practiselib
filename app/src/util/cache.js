@@ -42,7 +42,7 @@ export function getCookie(key) {
         try{
             return JSON.parse(user);
         }catch (err){
-            deleteCookie('user')
+            deleteCookie(key);
         }
     }
     return null;
@@ -68,7 +68,7 @@ export function setLocalStorage(key, value) {
     try {
         localStorage && localStorage.setItem(key, JSON.stringify(value));
     }catch (err){
-        console.log('存localStorage错误:'+key);
+        console.log('set localStorage error:'+key);
     }
 }
 
@@ -79,7 +79,12 @@ export function getLocalStorage(key) {
     }
 
     if(!!data){
-        return JSON.parse(data);
+        try {
+            return JSON.parse(data);
+        }catch (err){
+            removeLocalStorage(key);
+            console.log('get localStorage error,please refresh');
+        }
     }
 
     return null;

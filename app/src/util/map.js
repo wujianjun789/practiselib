@@ -40,6 +40,8 @@ export default class Map{
         this.activeBtn = null;
 
         this.markerDraggable = false;
+
+        this.mapZoomendTimeout = 0;
     }
 
     updateMap(data, option, callFun) {
@@ -146,10 +148,12 @@ export default class Map{
                     zoomControl: false
                 });
             }
+        }else{
+
         }
 
         this.map.on('dragend', mapMoveEnd);
-        this.map.on('zoomend', mapZoomEnd);
+        this.map.on('zoomend', mapZoomEnd, this);
     }
 
     setMapView(data, options) {
@@ -358,7 +362,7 @@ export default class Map{
         }
 
         // markerPosList.concat(list);
-         var _this = this
+         let _this = this
         list.map(function (data) {
             let marker = _this.getMarkerById(data.device_type, data.device_id);
             // let markerIndex = getMarkerIndexById(data.device_type, data.device_id)
@@ -369,11 +373,16 @@ export default class Map{
             } else {
                 if(data.lat && data.lng && data.lat.toString().replace(pattern,'') && data.lng.toString().replace(pattern,'')){
                     _this.markerPosList.push(data);
-                    var device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
-                    var labelInfo = device ? device.name : '';
-                    var newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
+                    let device = getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
+                    let labelInfo = '';
+                    if(data.IsCircleMarker && device){
+                        labelInfo = device.detail;
+                    }else if(device){
+                        labelInfo = device.name;
+                    }
+                    let newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
                     if (newMarker) {
-                        _this.loadMarkerLabel(newMarker, labelInfo);
+                        _this.loadMarkerLabel(newMarker, labelInfo, data.IsCircleMarker);
                         _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
                     }
                 }
@@ -439,7 +448,15 @@ export default class Map{
          let marker = null;
          if(IsCircleMarker){
               marker = L.circleMarker(position,{
-                  radius:50
+                  type: type,
+                  mapId: this.id,
+                  id: id,
+                  radius: 50,
+                  stroke: false,
+                  fillColor: '#00bcff',
+                  fillOpacity: 0.7,
+
+                  IsCircleMarker: IsCircleMarker
               });
          }else{
              marker = L.marker(position, {
@@ -449,7 +466,9 @@ export default class Map{
                  id: id,
                  digital: digital,
                  riseOnHover: true,
-                 draggable: this.markerDraggable
+                 draggable: this.markerDraggable,
+
+                 IsCircleMarker: IsCircleMarker
              });
          }
 
@@ -470,7 +489,7 @@ export default class Map{
     }
 
 
-     loadMarkerLabel(marker, labelInfo) {
+     loadMarkerLabel(marker, labelInfo, IsCircleMarker) {
         if (marker == null) {
             return;
         }
@@ -480,8 +499,12 @@ export default class Map{
         this.loadMarkerPopup(marker);
         this.loadMarkerMouseover(marker);
          this.loadMarkerDrag(marker);
-        if (!!labelInfo) {
-            this.drawItems && marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
+        if (!!labelInfo && this.drawItems) {
+            if(IsCircleMarker){
+                marker.bindLabel(labelInfo, {noHide: true, direction: 'center', className: 'circle-marker-label', offset:[-48,-26]}).addTo(this.drawItems).showLabel();
+            }else{
+                marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
+            }
         }
     }
 
@@ -512,7 +535,7 @@ export default class Map{
 
      loadMarkerPopup(marker) {
         marker.off('click', markerClick);
-        marker.on('click', markerClick);
+        marker.on('click', markerClick, this);
     }
 
      markerControl(IsAdd, options) {
@@ -716,24 +739,32 @@ export default class Map{
 }
 
 function mapMoveEnd(event) {
-    var map = event.target;
+    let map = event.target;
     map.off("dragend", mapMoveEnd);
-
+    let bounds = map.getBounds();
     mapDragendHandler({
         mapId:map.options.id,
         latlng:map.getCenter(),
         zoom: map.getZoom(),
-        bounds: map.getBounds()
+        bounds: bounds,
+        distance: bounds._southWest.distanceTo(bounds._northEast)
     });
 }
 
 function mapZoomEnd(event) {
-    var map = event.target;
-    mapZoomendHandler({
-        mapId: map.options.id,
-        latlng:map.getCenter(),
-        zoom: map.getZoom()
-    })
+    // this.clearMarker();
+    let map = event.target;
+    let bounds = map.getBounds();
+    this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
+    this.mapZoomendTimeout = setTimeout(()=>{
+        mapZoomendHandler({
+            mapId: map.options.id,
+            latlng:map.getCenter(),
+            zoom: map.getZoom(),
+            bounds: bounds,
+            distance: bounds._southWest.distanceTo(bounds._northEast)
+        })
+    }, 66)
 }
 function markerOver(event) {
     var marker = event.target;
@@ -763,12 +794,14 @@ function markerOut(event) {
 
 function markerClick(event) {
     var marker = event.target;
+    // marker.IsCircleMarker && this.clearMarker();
     markerClickHandler({
         mapId: marker.options.mapId,
         type: marker.options.type,
         id: marker.options.id,
         x: event.originalEvent.clientX,
-        y: event.originalEvent.clientY
+        y: event.originalEvent.clientY,
+        latlng: marker.getLatLng()
     });
 }
 
@@ -904,36 +937,36 @@ function mapZoomendHandler(data) {
 
 function mapDragendHandler(data){
     if(mapObject.callFun  && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].mapDragendHandler){
-        mapObject.callFun[data.mapId].mapDragendHandler(data);
+        mapObject.callFun[data.mapId].mapDragendHandler.call(null, data);
     }
 }
 
 function markerDragendHandler(data) {
     if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerDragendHandler) {
-        mapObject.callFun[data.mapId].markerDragendHandler(data);
+        mapObject.callFun[data.mapId].markerDragendHandler.call(null, data);
     }
 }
 
 function markerMouseOverHandler(data) {
     if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerMouseOverHandler) {
-        mapObject.callFun[data.mapId].markerMouseOverHandler(data);
+        mapObject.callFun[data.mapId].markerMouseOverHandler.call(null, data);
     }
 }
 
 function markerMouseOutHandler(data) {
     if (mapObject.callFun  && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerMouseOutHandler) {
-        mapObject.callFun[data.mapId].markerMouseOutHandler(data);
+        mapObject.callFun[data.mapId].markerMouseOutHandler.call(null, data);
     }
 }
 
 function markerClickHandler(data) {
     if (mapObject.callFun && mapObject.callFun[data.mapId] && mapObject.callFun[data.mapId].markerClickHandler) {
-        mapObject.callFun[data.mapId].markerClickHandler(data);
+        mapObject.callFun[data.mapId].markerClickHandler.call(null, data);
     }
 }
 
 function markerHandler(mapId, id, data) {
     if (mapObject.callFun && mapObject.callFun[mapId] && mapObject.callFun[mapId].markerHandler) {
-        mapObject.callFun.markerHandler(id, data)
+        mapObject.callFun.markerHandler.apply(null, [id, data])
     }
 }

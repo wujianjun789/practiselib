@@ -20,13 +20,14 @@ export function getPoleList(cb) {
  * @param searchValue
  * @param cb
  */
-export function getPoleListByModelWithName(searchType, model, searchValue, cb) {
+export function getPoleListByModelWithName(center, searchType, model, searchValue, cb) {
     let headers = getHttpHeader();
     if (searchType == "domain") {}
 
+    let latlng = {geoPoint: {near: center}}
     httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({
             "include": ["extend"],
-            "where": getSearchParam(searchType, model, searchValue)
+            "where": Object.assign({}, latlng, getSearchParam(searchType, model, searchValue))
         })), {
             headers: headers,
             method: 'GET'

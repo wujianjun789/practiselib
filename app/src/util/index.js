@@ -156,10 +156,20 @@ export function IsMapCircleMarker(domainLevel, map){
     if(!domainLevel || !map){
         return false;
     }
-    
-    return domainLevel < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
+    return map.zoom < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
 }
 
+export function getDomainLevelByMapLevel(domainLevel, map) {
+    if(map.zoom == map.minZoom){
+        return Math.min(1, domainLevel);
+    }
+
+    if(map.zoom == map.maxZoom){
+        return Math.max(1, domainLevel);
+    }
+
+    return Math.ceil((map.zoom-map.minZoom)*domainLevel/(map.maxZoom-map.minZoom));
+}
 export const DOMAIN_NAME_LENGTH = 16;
 export const DEVICE_ID_LENGTH = 16;
 export const DEVICE_NAME_LENGTH = 16;

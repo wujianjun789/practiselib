@@ -101,7 +101,7 @@ export default class DomainPopup extends PureComponent {
     }
 
     mapDragend(data){
-        console.log(data.bounds);
+        // console.log(data.bounds);
         let obj = {};
         let prompt = {};
         if(data.zoom){
@@ -173,8 +173,8 @@ export default class DomainPopup extends PureComponent {
                     </div>
                     <div className="col-sm-6 col-xs-6 popup-map">
 
-                            <MapView option={{zoom:zoom, mapZoom:false, markerDraggable:true}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
-                        position:[{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}], data:[{id:domainId, name:domainName}]}}
+                            <MapView mapIcon={true} option={{zoom:zoom, mapZoom:false, markerDraggable:true}} mapData={{id:"domainPopup",  latlng:{lng:lng, lat:lat},
+                        position:[/*{"device_id":domainId, "device_type":"DEVICE",lng:lng, lat:lat}*/], data:[{id:domainId, name:domainName}]}}
                                      mapCallFun={{mapDragendHandler:this.mapDragend}} markerCallFun={{markerDragendHandler:this.mapDragend}}/>
                     </div>
                 </div>

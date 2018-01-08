@@ -8,6 +8,7 @@ install package: npm install
 test: npm run test
 
 develop:
+pre: npm run bulid:lib
 start app: npm run dev
 
 product:

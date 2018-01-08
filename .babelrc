@@ -1,4 +1,3 @@
-// .babelrc
 {
   "presets": [
     "env",
@@ -10,7 +9,7 @@
       "import",
       {
         "libraryName": "antd",
-        "style": "true"
+        "style": "css"
       }
     ],
     ["react-html-attrs"]

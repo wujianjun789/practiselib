@@ -10,7 +10,7 @@ const client =  require('../models/config').client;
 
 /* GET config listing. */
 router.get('/', function (req, res, next) {
-    res.json("http://"+client.HOST+":"+client.PORT+client.PATH);
+    res.json("http://"+(client.HOST?client.HOST:"localhost")+":"+client.PORT+client.PATH);
 });
 
 router.get('/map', function (req, res, next) {

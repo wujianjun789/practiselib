@@ -654,6 +654,44 @@ ul {
     height: 100%;
 }
 
+.map-view.map-icon:after{
+    position: absolute;
+    top: 43%;
+    right: 46%;
+
+    width: 35px;
+    height: 45px;
+
+    content: '';
+    color: #ff0000;
+
+    z-index: 99;
+
+    pointer-events: none;
+
+    background: url('../leaflet/images/markers-soft.png') no-repeat 0 0;
+}
+
+.map-view .circle-marker-label{
+    width: 96px;
+    height: 50px;
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: center;
+
+    border-style: none;
+    background: none;
+
+    color: #fff;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.map-view .circle-marker-label:after{
+    border-left: none;
+}
+
 .select {
     display: inline-block;
     border: solid 1px #ddd;
