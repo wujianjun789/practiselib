@@ -18,12 +18,15 @@ import Immutable from 'immutable';
 import {injectIntl} from 'react-intl'
 
 import {getMapConfig,getLightLevelConfig} from '../../util/network'
-import {getDomainList} from '../../api/domain'
+import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain'
 import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
+import {getAssetsBaseByDomain} from '../../api/asset'
 
 import {getIndexByKey} from '../../util/algorithm'
-import {getObjectByKey, IsMapCircleMarker} from '../../util/index'
+import {IsMapCircleMarker, getDomainLevelByMapLevel} from '../../util/index'
 import {keyboard_key_up, keyboard_key_down, keyboard_key_enter} from '../../util/keyboard'
+
+import lodash from 'lodash';
 export class SmartLightMap extends Component{
     constructor(props){
         super(props);
@@ -96,7 +99,8 @@ export class SmartLightMap extends Component{
 
         this.domainList = [];
 
-        this.domainLevel = 4;
+        this.domainLevel = 5;
+        this.domainCurLevel = 0;
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
@@ -139,6 +143,7 @@ export class SmartLightMap extends Component{
         getMapConfig(data=>{
             if(this.mounted){
                 this.map = Object.assign({}, this.map, data);
+                this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
             }
         })
         getLightLevelConfig(data=>{
@@ -200,23 +205,26 @@ export class SmartLightMap extends Component{
     requestSearch(IsSearch=true){
         const {model, search, tableIndex} = this.state;
 
-        let searchType = this.searchPromptList[tableIndex].id;
+        if(this.domainCurLevel != this.domainLevel){
+            getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, data=>{this.mounted && this.updateSearch(data, IsSearch)});
+        }else{
+            let searchType = this.searchPromptList[tableIndex].id;
 
-        if(searchType=="domain"){
-            let curDomain = getObjectByKey(this.domainList, 'name', search.get("value"));
-            if(curDomain){
-                getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
-            }else{
-                this.props.actions.addNotify(0, 'app.not.found');
-                this.setState({IsSearchResult:false});
+            if(searchType=="domain"){
+                let curDomain = lodash.find(this.domainList, domain=>{ return domain.name == search.get("value")});
+                if(curDomain){
+                    getPoleListByModelWithName(this.map.center, searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
+                }else{
+                    this.props.actions.addNotify(0, 'app.not.found');
+                    this.setState({IsSearchResult:false});
+                }
+                return;
             }
-            return;
+            getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
         }
-        getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
     }
 
     updateSearch(data, IsSearch){
-
         if(IsSearch && (!data || data.length==0)){
             this.props.actions.addNotify(0, 'app.not.found');
         }
@@ -228,17 +236,42 @@ export class SmartLightMap extends Component{
             return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE', IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)}, latlng)
         });
 
-        if(data && data.length){
-            let fPole = data[0];
-            let flatlng = fPole.geoPoint;
-            this.map.center = flatlng;
+        if(this.domainCurLevel != this.domainLevel){
+
             this.setState({searchList:searchList, positionList:positionList}, ()=>{
-                this.requestPoleAsset(data);
+                let deviceLen = [];
+                data.map(item=>{
+                    getAssetsBaseByDomain(item.id, asset=>{
+                        deviceLen.push(item.id);
+                        let curIndex = lodash.findIndex(data, domain=>{
+                            return domain.id == item.id;
+                        })
+
+                        if(curIndex>-1 && curIndex<data.length){
+                            this.state.searchList = this.state.searchList.updateIn([curIndex, 'detail'], v=> item.name+' \n'+asset.length+'件设备');
+                        }
+
+                        if (deviceLen.length == data.length){
+                            console.log('updateSearch:', this.state.searchList.toJS());
+                            this.setState({searchList:this.state.searchList});
+                        }
+                    })
+                })
             });
+
         }else{
-            this.setState({searchList:searchList, positionList:positionList}, ()=>{
-                this.requestPoleAsset(data);
-            });
+            if(data && data.length){
+                let fPole = data[0];
+                let flatlng = fPole.geoPoint;
+                // this.map.center = flatlng;
+                this.setState({searchList:searchList, positionList:positionList}, ()=>{
+                    // this.requestPoleAsset(data);
+                });
+            }else{
+                this.setState({searchList:searchList, positionList:positionList}, ()=>{
+                    // this.requestPoleAsset(data);
+                });
+            }
         }
     }
 
@@ -447,13 +480,15 @@ export class SmartLightMap extends Component{
     mapDragend(data){
         console.log('mapDrag:',data.latlng);
         this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-        this.setState(this.map);
+        // this.setState(this.map);
+        this.requestSearch();
     }
 
     mapZoomend(data){
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
         this.mapTimeOut && clearTimeout(this.mapTimeOut);
         // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
+        this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         this.requestSearch();
     }
 
@@ -738,7 +773,7 @@ export class SmartLightMap extends Component{
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
-
+console.log('render:', searchList.toJS());
         /*panLatlng={panLatLng}*/
         // console.log('render:', this.map.center);
         return (
