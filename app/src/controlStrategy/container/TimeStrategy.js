@@ -1,7 +1,7 @@
 /**
  * Created by a on 2017/8/14.
  */
-import React,{Component} from 'react';
+import React,{Component, Children} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux'
 
@@ -26,6 +26,8 @@ import {getModelData, getModelList} from '../../data/assetModels'
 import {getStrategyListByName, getStrategyCountByName, addStrategy, updateStrategy, delStrategy} from '../../api/strategy'
 import {getStrategyDeviceConfig} from '../../util/network'
 
+import { DatePicker} from 'antd';
+
 class TimeStrategy extends Component{
     constructor(props){
         super(props);
@@ -46,7 +48,74 @@ class TimeStrategy extends Component{
             deviceList:{titleKey:"name", valueKey:"name", options:[/*{id:1, name:"test灯"},{id:2, name:"test显示屏"}*/]},
             strategyList:[/*{id:"start", time:"00:00", light:0}, {id:"end", time:"24:00", light:0}*/],
             data:Immutable.fromJS([
-            ])
+                {
+                    id:'001',
+                    name:'时间调光组1',
+                    timeRange:'1月10日-4月30日',
+                    childs:[
+                        {
+                            id:1,
+                            name:'冬季路灯使用策略1',
+                            timeRange:'1月10日-4月30日',
+                        },
+                        {
+                            id:2,
+                            name:'冬季路灯使用策略2',
+                            timeRange:'1月10日-4月30日',
+                        }
+                    ],
+                    hidden:false,
+                },
+                {
+                    id:'002',
+                    name:'时间调光组2',
+                    timeRange:'5月1日-6月30日',
+                    hidden:true,
+                    childs:[
+                        {
+                            id:1,
+                            name:'春季路灯使用策略1',
+                            timeRange:'5月1日-6月30日',
+                        },
+                        {
+                            id:2,
+                            name:'春季路灯使用策略2',
+                            timeRange:'5月10日-6月30日',
+                        }
+                    ]
+                },
+                {
+                    id:'002',
+                    name:'时间调光组2',
+                    timeRange:'5月1日-6月30日',
+                    hidden:false,
+                }
+            ]),
+            sidebarInfo: {
+                collapsed: false,
+                propertyCollapsed: false,
+                parameterCollapsed: false,
+                devicesCollapsed: false,
+                devicesExpanded:false
+            },
+            selectItem: {
+                id: "",
+                name: "",
+                type: " ",
+                starDate:"",
+                endDate:"",
+                retryCount:"",
+                retryInterval:""
+            },
+            property:{
+                lng:'',
+                lat:'',
+                domain:'',
+                time:'',
+                light:''
+            },
+            domainList:[{id:1,name:'闵行区'},{id:2,name:'徐汇区'},{id:3,name:'长宁区'},{id:4,name:'莘庄镇'},],
+            lightList:[{id:1,name:"10"},{id:1,name:"20"},{id:1,name:"30"}]
         }
         this.deviceDefault = [/*"lc", "screen"*/]
         this.columns =  [
@@ -56,19 +125,23 @@ class TimeStrategy extends Component{
 
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-        this.pageChange = this.pageChange.bind(this);
+        // this.pageChange = this.pageChange.bind(this);
         this.addHandler = this.addHandler.bind(this);
         this.tableClick = this.tableClick.bind(this);
         this.tableEdit = this.tableEdit.bind(this);
         this.tableDelete = this.tableDelete.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
-        this.initPageSize = this.initPageSize.bind(this);
+        // this.initPageSize = this.initPageSize.bind(this);
         this.initResult = this.initResult.bind(this);
-        this.initStrategyList = this.initStrategyList.bind(this);
+        // this.initStrategyList = this.initStrategyList.bind(this);
         this.initDeviceList = this.initDeviceList.bind(this);
 
         this.formatIntl = this.formatIntl.bind(this);
+        this.collapseHandler = this.collapseHandler.bind(this);
+        this.updateSelectItem = this.updateSelectItem.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.updateGroupName = this.updateGroupName.bind(this);
     }
 
     componentWillMount(){
@@ -98,13 +171,13 @@ class TimeStrategy extends Component{
         let offset = (page.get("current")-1)*limit;
         let name = search.get("value");
         getStrategyListByName(model, name, offset, limit, data=>{this.mounted && this.initResult(data)});
-        getStrategyCountByName(model, name, data=>{this.mounted && this.initPageSize(data)})
+        // getStrategyCountByName(model, name, data=>{this.mounted && this.initPageSize(data)})
     }
 
-    initPageSize(data){
-        let page = this.state.page.set('total', data.count);
-        this.setState({page:page});
-    }
+    // initPageSize(data){
+    //     let page = this.state.page.set('total', data.count);
+    //     this.setState({page:page});
+    // }
 
     initResult(data){
         let list = data.map(strategy=>{
@@ -135,9 +208,9 @@ class TimeStrategy extends Component{
         }
     }
 
-    initStrategyList(data){
-        this.setState({strategyList:data})
-    }
+    // initStrategyList(data){
+    //     this.setState({strategyList:data})
+    // }
 
     initDeviceList(data){
         let list = [];
@@ -302,16 +375,25 @@ class TimeStrategy extends Component{
         }}/>)
     }
 
-    tableClick(){
-
+    tableClick(row){
+        this.updateSelectItem(row.toJS());
     }
 
-    pageChange(current, pageSize){
-        let page = this.state.page.set('current', current);
-        this.setState({page: page}, ()=> {
-            this.requestSearch();
+    updateSelectItem(item) {
+        let selectDevice = this.state.selectDevice;
+        
+        this.setState({
+            selectDevice: selectDevice
         });
     }
+
+
+    // pageChange(current, pageSize){
+    //     let page = this.state.page.set('current', current);
+    //     this.setState({page: page}, ()=> {
+    //         this.requestSearch();
+    //     });
+    // }
 
     searchSubmit() {
         let page = this.state.page.set('current', 1);
@@ -324,10 +406,26 @@ class TimeStrategy extends Component{
         this.setState({search:this.state.search.update('value', v=>value)});
     }
 
-    render(){
-        const {search, selectDevice, page, data} = this.state;
+    collapseHandler(id) {
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
+	}
 
-        return <Content className="time-strategy">
+    onChange(id,value) {
+        console.log(id)
+    }
+
+    updateGroupName(){
+
+    }
+
+    expandDevice(){
+
+    }
+
+    render(){
+        const {search, selectDevice, page, data, sidebarInfo, selectItem,property,domainList,lightList} = this.state;
+
+        return <Content className={`time-strategy ${sidebarInfo.collapsed ? 'collapse' : ''}`}>
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
@@ -336,9 +434,145 @@ class TimeStrategy extends Component{
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={data} activeId={selectDevice && selectDevice.id}
                        rowClick={this.tableClick} rowEdit={this.tableEdit} rowDelete={this.tableDelete}/>
-                <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
-                      current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
+                {/* <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
+                      current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/> */}
             </div>
+            <div className={`container-fluid sidebar-info ${sidebarInfo.collapsed ? "sidebar-collapse" : ""}`}>
+                <div className="row collapse-container" onClick={()=>this.collapseHandler('collapsed')}>
+                    <span className={sidebarInfo.collapsed ? "icon_horizontal"  :"icon_verital"}></span>
+                </div>
+                {
+                    selectItem.type == "group"?
+                    <div className="panel panel-default group-info">
+                        <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
+                            <span className={sidebarInfo.collapsed ? "icon_info" :
+                                "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>选中组
+                        </div>
+                        <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
+                            <div className='form-group'>
+                                <label>组名称</label>
+                                <div className='input-container'>
+                                    <input type='text' className='form-control' placeholder="输入名称" onChange={e=>this.onChange("name",e)}/>
+                                </div>
+                            </div>
+                            <button className="btn btn-primary pull-right" onClick={this.updateGroupName}>{this.formatIntl('button.apply')}</button>                            
+                        </div>
+                    </div>
+                    :
+                    <div className="panel-strategy">
+                        <div className="panel panel-default">
+                            <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
+                                <span className={sidebarInfo.collapsed ? "icon_info" :
+                                    "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>选中策略
+                            </div>
+                            <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
+                                <div className='form-group'>
+                                    <label>策略名称</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={selectItem.name} disabled="disabled"/>
+                                    </div>
+                                </div>
+                                <div className='form-group'>
+                                    <label>策略类别</label>
+                                    <div className='input-container'>
+                                        <select className='form-control' value={selectItem.type} disabled="disabled"></select>
+                                    </div>
+                                </div>
+
+                                <div className='form-group date-range'>
+                                    <label>日期范围</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={selectItem.starDate} disabled="disabled"/>
+                                        <span>至</span>
+                                        <input type='text' className='form-control' value={selectItem.endDate} disabled="disabled"/>
+                                    </div>
+                                </div>
+
+                                <div className='form-group'>
+                                    <label>重试次数</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={selectItem.retryCount} disabled="disabled"/>
+                                    </div>
+                                </div>
+                                <div className='form-group'>
+                                    <label>重试间隔</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={selectItem.retryInterval} disabled="disabled"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="panel panel-default strategy-info">
+                            <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('parameterCollapsed') }}>
+                                <span className={sidebarInfo.collapsed ? "icon_info" :
+                                    "glyphicon " + (sidebarInfo.parameterCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>调整参数
+                            </div>
+                            <div className={"panel-body " + (sidebarInfo.parameterCollapsed ? 'collapsed' : '')}>
+                                <div className='form-group'>
+                                    <label>经度</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={property.lng} onChange={e=>this.onChange("lng",e)}/>
+                                    </div>
+                                </div>
+                                <div className='form-group'>
+                                    <label>纬度</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={property.lat} onChange={e=>this.onChange("lat",e)}/>
+                                    </div>
+                                </div>
+                                <div className='form-group'>
+                                    <label>选择域</label>
+                                    <div className='input-container'>
+                                        <select className='form-control' value={property.domain} onChange={e=>this.onChange("domain",e)}>
+                                        {
+                                            domainList.map((item, index) => {
+                                                return <option key={index} value={item.name}>{item.name}</option>
+                                            })
+                                        }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className='form-group'>
+                                    <label>时间</label>
+                                    <div className='input-container'>
+                                        <input type='text' className='form-control' value={property.time} onChange={e=>this.onChange("time",e)}/>
+                                    </div>
+                                </div>
+                                <div className='form-group'>
+                                    <label>亮度</label>
+                                    <div className='input-container'>
+                                        <select className='form-control' value={property.light} onChange={e=>this.onChange("light",e)}>
+                                        {
+                                            lightList.map((item, index) => {
+                                                return <option key={index} value={item.name}>{item.name}</option>
+                                            })
+                                        }
+                                        </select>
+                                    </div>
+                                </div>
+                                <button className="btn btn-primary pull-right" onClick={this.updateGroupName}>{this.formatIntl('button.apply')}</button>                            
+                            </div>
+                        </div>
+                        <div className="panel panel-default">
+                            <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesCollapsed') }}>
+                                <span className={sidebarInfo.collapsed ? "icon_info" :
+                                    "glyphicon " + (sidebarInfo.devicesCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>包含设备
+                            </div>
+                            <div className={"panel-body " + (sidebarInfo.devicesCollapsed ? 'collapsed' : '')}>
+                                <div className="header">
+                                    <span>{`包含：${60}个设备`}</span>
+                                    <button className="btn btn-primary pull-right" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                
+            </div>
+            {/* <div className="select-devices"> 
+
+            </div> */}
         </Content>
     }
 }
