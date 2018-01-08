@@ -1,3 +1,5 @@
+@import url(./sideBarInfo.less);
+
 .strategy-timeTable,.strategy-latlng{
   .content {
     .heading{
@@ -31,8 +33,8 @@
 
     .table-container{
       //overflow-x: auto;
-
-      margin: 20px;
+      transition: margin-right .3s;
+      margin: 20px 320px 20px 20px;
       padding: 20px;
 
       background: #fff;
@@ -662,5 +664,125 @@
   .modal-footer {
     padding: 5px 35px 35px 0px;
     border-top: none;
+  }
+}
+
+.time-strategy, .latlng-strategy{
+  > .sidebar-info {
+    width: 300px;
+    background-color: #eaeef2;;
+    transition: all .3s;
+    .panel.panel-default {
+      width: 300px;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      margin-bottom: 0;
+      background-color: #eaeef2;
+      overflow: hidden;
+      transition: all .3s ease;
+
+      > .panel-heading {
+        background: #d3d8dd;
+        border-radius: 0;
+        padding: 14px 20px;
+        background-color: #d3d8dd;
+        font-size: 14px;
+        color: #333744;
+        cursor: pointer;
+        > span {
+          float: left;
+          width: 15px;
+          height: 15px;
+          display: block;
+          transition: all .3s;
+          margin: 2.5px 7.5px 7.5px 0;
+        }
+      }
+      > .panel-body {
+        > .form-group {
+          padding-bottom: 20px;
+          line-height: 40px;
+          margin-bottom: 0;
+         
+          >label{
+            width: 60px;
+            margin-right: 10px;
+            margin-bottom: 0;
+            padding: 0;
+            font-size: 14px;
+            color: #4d4d4d;
+            text-align: right;
+            line-height: 40px;
+            float: left;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          > .input-container{
+            position: relative;
+            display: inline-block;
+            width: 200px;
+          }
+        }
+        >.date-range{
+          >.input-container{
+            >input{
+              width:85px;
+              display: inline-block;
+            }
+            >span{
+              margin-right: 8px;
+              margin-left: 8px;              
+            }
+          }
+          
+        }
+      }
+      > .panel-body.collapsed {
+        opacity: 0;
+        height: 0;
+        display: none;
+      }
+    }
+    .strategy-info,.group-info{
+      >.panel-body .form-group:last-of-type{
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 20px;
+      }
+    }
+  }
+  &.collapse {
+    display: block;
+    > .table-container {
+      margin-right: 80px;
+    }
+    > .sidebar-info.sidebar-collapse {
+      width: 60px;
+      right: 0;
+      .panel.panel-default {
+        // height: 40px;
+        > .panel-heading {
+          > span {
+            margin: 2.5px 23px 7.5px 7.5px;
+          }
+        }
+
+      }
+    }
+  }
+  > .select-devices{
+    position: fixed;
+    top: 0px;
+    right: 300px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, .5);
+    perspective: 600px;
+    transition: all .2s;
+    overflow: auto;
+    visibility: visible;
+    opacity: 1;
   }
 }
