@@ -124,7 +124,7 @@ exports[`test renders Strategy 1`] = `
       className="row collapse-container"
       onClick={[Function]}>
       <span
-        className="icon_verital" />
+        className="icon_vertical" />
     </div>
     <div
       className="panel panel-default strategy-info">
