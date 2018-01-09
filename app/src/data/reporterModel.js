@@ -25,39 +25,11 @@ export const TreeData = [
                 "link": "/reporterManage/device/gateway"
             },
             {
-                "id": 'brightness',
-                "name": "亮度",
-                "class": "icon_lc",
-                "active": false,
-                "link": "/reporterManage/device/brightness"
-            },
-            {
-                "id": 'amp',
-                "name": "电流",
-                "class": "icon_lc",
-                "active": false,
-                "link": "/reporterManage/device/amp"
-            },
-            {
-                "id": 'voltage',
-                "name": "电压",
-                "class": "icon_lc",
-                "active": false,
-                "link": "/reporterManage/device/voltage"
-            },
-            {
                 "id": 'power',
                 "name": "功率",
                 "class": "icon_lc",
                 "active": false,
                 "link": "/reporterManage/device/power"
-            },
-            {
-                "id": 'sensor',
-                "name": "传感器",
-                "class": "icon_lc",
-                "active": false,
-                "link": "/reporterManage/device/sensor"
             },
         ]
     },
