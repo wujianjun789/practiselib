@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 
 import Content from '../../components/Content'
 import SearchText from '../../components/SearchText'
-import Table from '../../components/Table'
+import Table from '../../components/Table3'
 import Page from '../../components/Page'
 
 import {injectIntl} from 'react-intl';
@@ -27,6 +27,7 @@ import {getStrategyListByName, getStrategyCountByName, addStrategy, updateStrate
 import {getStrategyDeviceConfig} from '../../util/network'
 
 import { DatePicker} from 'antd';
+import {getIndexByKey,getObjectKeyByKey,getIndexsByKey} from '../../util/algorithm'
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -47,50 +48,7 @@ class TimeStrategy extends Component{
             }),
             deviceList:{titleKey:"name", valueKey:"name", options:[/*{id:1, name:"test灯"},{id:2, name:"test显示屏"}*/]},
             strategyList:[/*{id:"start", time:"00:00", light:0}, {id:"end", time:"24:00", light:0}*/],
-            data:Immutable.fromJS([
-                {
-                    id:'001',
-                    name:'时间调光组1',
-                    timeRange:'1月10日-4月30日',
-                    childs:[
-                        {
-                            id:1,
-                            name:'冬季路灯使用策略1',
-                            timeRange:'1月10日-4月30日',
-                        },
-                        {
-                            id:2,
-                            name:'冬季路灯使用策略2',
-                            timeRange:'1月10日-4月30日',
-                        }
-                    ],
-                    hidden:false,
-                },
-                {
-                    id:'002',
-                    name:'时间调光组2',
-                    timeRange:'5月1日-6月30日',
-                    hidden:true,
-                    childs:[
-                        {
-                            id:1,
-                            name:'春季路灯使用策略1',
-                            timeRange:'5月1日-6月30日',
-                        },
-                        {
-                            id:2,
-                            name:'春季路灯使用策略2',
-                            timeRange:'5月10日-6月30日',
-                        }
-                    ]
-                },
-                {
-                    id:'002',
-                    name:'时间调光组2',
-                    timeRange:'5月1日-6月30日',
-                    hidden:false,
-                }
-            ]),
+            data:Immutable.fromJS([]),
             sidebarInfo: {
                 collapsed: false,
                 propertyCollapsed: false,
@@ -142,6 +100,8 @@ class TimeStrategy extends Component{
         this.updateSelectItem = this.updateSelectItem.bind(this);
         this.onChange = this.onChange.bind(this);
         this.updateGroupName = this.updateGroupName.bind(this);
+        this.initTableData = this.initTableData.bind(this);
+        this.collapseClick = this.collapseClick.bind(this);
     }
 
     componentWillMount(){
@@ -152,7 +112,65 @@ class TimeStrategy extends Component{
             })
         })
 
-        this.requestSearch();
+        // this.requestSearch();
+        const data = [
+            {
+                id:'001',
+                name:'时间调光组1',
+                timeRange:'1月10日-4月30日',
+                childs:[
+                    {
+                        id:1,
+                        name:'冬季路灯使用策略1',
+                        timeRange:'1月10日-4月30日',
+                        parentId:'001'
+                    },
+                    {
+                        id:2,
+                        name:'冬季路灯使用策略2',
+                        timeRange:'1月10日-4月30日',
+                        parentId:'001'                        
+                    }
+                ],
+            },
+            {
+                id:'002',
+                name:'时间调光组2',
+                timeRange:'5月1日-6月30日',
+                childs:[
+                    {
+                        id:3,
+                        name:'春季路灯使用策略1',
+                        timeRange:'5月1日-6月30日',
+                        parentId:'002'
+                    },
+                    {
+                        id:4,
+                        name:'春季路灯使用策略2',
+                        timeRange:'5月10日-6月30日',
+                        parentId:'002'
+                    }
+                ]
+            },
+            {
+                id:'003',
+                name:'未分组',
+                timeRange:'',
+                childs:[
+                    {
+                        id:5,
+                        name:'策略1',
+                        timeRange:'5月1日-6月30日',
+                    },
+                    {
+                        id:6,
+                        name:'策略2',
+                        timeRange:'5月10日-6月30日',
+                    }
+                ]
+            }
+        ]
+        this.initTableData(data);
     }
 
     componentWillUnmount(){
@@ -178,6 +196,21 @@ class TimeStrategy extends Component{
     //     let page = this.state.page.set('total', data.count);
     //     this.setState({page:page});
     // }
+
+    initTableData(data){
+        let result = [];
+        data.map(parent=>{
+            parent.collapsed = false;
+            result.push(parent);
+            if(parent.childs){
+                parent.childs.map(item=>{
+                    item.hidden = parent.collapsed;
+                    result.push(item);
+                })
+            }
+        })
+        this.setState({data:Immutable.fromJS(result)});
+    }
 
     initResult(data){
         let list = data.map(strategy=>{
@@ -422,6 +455,19 @@ class TimeStrategy extends Component{
 
     }
 
+    collapseClick(id){
+        console.log(id)
+        let {data} = this.state;
+        let childs = getIndexsByKey(data,'parentId',id);
+        childs.map(item=>{
+            data = data.setIn([item,'hidden'],!data.getIn([item,"hidden"]));
+        });
+        console.log(getIndexByKey(data,"id",id));
+        this.setState({data:data.setIn([getIndexByKey(data,"id",id),"collapsed"],!getObjectKeyByKey(data,"id",id,"collapsed"))},()=>{
+            console.log(this.state.data.toJS());
+        });
+    }
+
     render(){
         const {search, selectDevice, page, data, sidebarInfo, selectItem,property,domainList,lightList} = this.state;
 
@@ -433,7 +479,7 @@ class TimeStrategy extends Component{
             </div>
             <div className="table-container">
                 <Table isEdit={true} columns={this.columns} data={data} activeId={selectDevice && selectDevice.id}
-                       rowClick={this.tableClick} rowEdit={this.tableEdit} rowDelete={this.tableDelete}/>
+                       rowClick={this.tableClick} rowEdit={this.tableEdit} rowDelete={this.tableDelete} collapseClick={this.collapseClick}/>
                 {/* <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
                       current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/> */}
             </div>
