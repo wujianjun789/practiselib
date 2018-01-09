@@ -193,6 +193,11 @@ export default class Map{
             return;
         }
 
+        // if(type == 'bing'){
+        //     let imagerySet = "Road";// AerialWithLabels | Birdseye | BirdseyeWithLabels | Road
+        //     let bing = new L.BingLayer("LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc", {type: imagerySet});
+        //     bing.addTo(this.map);
+        // }
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', option).addTo(this.map);
     }
 
@@ -819,7 +824,7 @@ export default class Map{
             this.markerPosList.splice(delIndex, 1);
         }
     }
-    
+
     removeMarker(marker) {
         if (marker) {
             marker.off('click', this.markerClick, this);
