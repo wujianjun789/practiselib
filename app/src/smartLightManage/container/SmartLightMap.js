@@ -135,6 +135,7 @@ export class SmartLightMap extends Component{
 
         this.mapDragend = this.mapDragend.bind(this);
         this.mapZoomend = this.mapZoomend.bind(this);
+        this.markerClick = this.markerClick.bind(this);
         this.panCallFun = this.panCallFun.bind(this);
     }
 
@@ -142,7 +143,7 @@ export class SmartLightMap extends Component{
         this.mounted = true;
         getMapConfig(data=>{
             if(this.mounted){
-                this.map = Object.assign({}, this.map, data);
+                this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
             }
         })
@@ -492,6 +493,14 @@ export class SmartLightMap extends Component{
         this.requestSearch();
     }
 
+    markerClick(data){
+        if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
+            this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+
+            this.requestSearch();
+        }
+    }
+
     panCallFun(){
         this.setState({panLatLng:null});
     }
@@ -779,7 +788,7 @@ console.log('render:', searchList.toJS());
         return (
             <Content>
                 <MapView option={{zoom:this.map.zoom}} mapData={{id:"smartLightMap", latlng:this.map.center, position:positionList, data:searchList.toJS()}}
-                         mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}} panLatlng={panLatLng} panCallFun={this.panCallFun}/>
+                         mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatLng} panCallFun={this.panCallFun}/>
                 <div className="search-container">
                     <div className={"searchText smartLight-map"} onFocus={this.onFocus} onBlur={this.onBlur} onKeyDown={this.onkeydown}>
                         <input type="search" className="form-control" placeholder={this.formatIntl("app.search.placeholder.name")} value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>

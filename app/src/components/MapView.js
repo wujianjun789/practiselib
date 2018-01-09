@@ -15,6 +15,7 @@ export default class MapView extends Component {
             zoom: "",
             map:{}
         }
+        this.timeout = null;
         this.initMap = this.initMap.bind(this);
         this.renderMap = this.renderMap.bind(this);
     }
@@ -63,7 +64,8 @@ export default class MapView extends Component {
             }, option, mapCallFun);
             if (mapData.position && mapData.position.length) {
                 let key = transformDeviceType(mapData.position[0]["device_type"]);
-                setTimeout(()=>{
+                this.timeout && clearTimeout(this.timeout);
+                this.timeout = setTimeout(()=>{
                     this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
                 }, 300)
 
