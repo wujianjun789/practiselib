@@ -41,7 +41,7 @@ export function padHex(str, padLeft) {
  */
 export function getProByKey(list, key, value, backKey) {
     for(var i=0;i<list.size;i++){
-        if(list.getIn([i,key]) == value){
+        if(list.getIn([i,key]) === value){
             return list.getIn([i,backKey])
         }
     }
@@ -70,12 +70,23 @@ export function getObjectByKeyInObject(object,key) {
  */
 export function getIndexByKey(list, key, value) {
     for(var i=0;i<list.size;i++){
-        if(list.getIn([i, key]) == value){
+        if(list.getIn([i, key]) === value){
             return i;
         }
     }
 
     return -1;
+}
+
+export function getIndexsByKey(list, key, value) {
+    let result = [];
+    for(var i=0;i<list.size;i++){
+        if(list.getIn([i, key]) === value){
+            result.push(i);
+        }
+    }
+
+    return result;
 }
 
 /**
@@ -87,7 +98,7 @@ export function getIndexByKey(list, key, value) {
  */
 export function getIndexByKey2(list, key, value) {
     for(var i=0;i<list.length;i++){
-        if(list[i][key] == value){
+        if(list[i][key] === value){
             return i;
         }
     }
@@ -103,7 +114,7 @@ export function getIndexByKey2(list, key, value) {
  */
 export function getObjectByKey(list, key, value) {
     for(var i=0;i<list.size;i++){
-        if(list.getIn([i, key]) == value){
+        if(list.getIn([i, key]) === value){
             return list.get(i);
         }
     }
@@ -112,8 +123,24 @@ export function getObjectByKey(list, key, value) {
 
 export function getObjectByKeyObj(list, key, value) {
     for(var i=0;i<list.length;i++){
-        if(list[i][key] == value){
+        if(list[i][key] === value){
             return list[i];
+        }
+    }
+    return null;
+}
+
+/**
+ * 根据键值获取匹配项的指定键值
+ * @param {*} list 
+ * @param {*} key1 
+ * @param {*} value 
+ * @param {*} key2 
+ */
+export function getObjectKeyByKey(list, key1, value, key2){
+    for(var i=0;i<list.size;i++){
+        if(list.getIn([i, key1]) === value){
+            return list.getIn([i,key2]);
         }
     }
     return null;
@@ -132,9 +159,9 @@ export function getObjectByKeys(list, keys, values) {
     for(var i=0;i<list.size;i++){
         index = 0;
         while (index < len){
-            if(list.getIn([i, keys.get(index)]) == values.get(index)){
+            if(list.getIn([i, keys.get(index)]) === values.get(index)){
                 index++;
-                if(index == len){
+                if(index === len){
                     return list.get(i);
                 }
             }else{
@@ -154,7 +181,7 @@ export function getObjectByKeys(list, keys, values) {
 export function getListByKey(list, key, value) {
     let newList = Immutable.fromJS([]);
     list.map(item=>{
-        if(item.get(key) == value){
+        if(item.get(key) === value){
             newList = newList.push(item)
         }
     })
@@ -187,7 +214,7 @@ export function getListKeyByKeyFuzzy(list, key1, value, key2) {
 export function getListKeyByKey(list, key1, value,key2) {
     let newList = [];
     list.map(item=>{
-        if(item.get(key1) == value){
+        if(item.get(key1) === value){
             newList.push(item.get(key2))
         }
     })
@@ -216,7 +243,7 @@ export function getObjectByKey2(list, key) {
 export function spliceObjectByKey(list, key, value) {
     let _list = [];
     for (let i = 0; i < list.size; i++) {
-        if (list.getIn([i, key]) == value) {
+        if (list.getIn([i, key]) === value) {
             _list = list.splice(i, 1);
             break;
         }
@@ -319,7 +346,7 @@ export function StringIsHaveBlank(str) {
  * @return {Boolean}
  */
 export function IsExistInArray1(arr, accessor, value) {
-    if (arr.length == 0) {
+    if (arr.length === 0) {
         return false;
     }
 
@@ -328,7 +355,7 @@ export function IsExistInArray1(arr, accessor, value) {
     }
 
     for(let i=0, len=arr.length; i < len; i++) {
-        if(accessor(arr[i]) == value) {
+        if(accessor(arr[i]) === value) {
             return true;
         }
     }
