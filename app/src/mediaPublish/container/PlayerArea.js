@@ -1003,7 +1003,7 @@ export class PlayerArea extends Component {
             </div>
             <div className={"right sidebar-info "}>
                 <div className="row collapse-container" onClick={() => this.sidebarClick('collapsed')}>
-                    <span className={sidebarInfo.collapsed ? "icon_horizontal" : "icon_verital"}></span>
+                    <span className={sidebarInfo.collapsed ? "icon_horizontal" : "icon_vertical"}></span>
                 </div>
                 <div className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed') }}>

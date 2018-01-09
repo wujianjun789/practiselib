@@ -485,7 +485,7 @@ class TimeStrategy extends Component{
             </div>
             <div className={`container-fluid sidebar-info ${sidebarInfo.collapsed ? "sidebar-collapse" : ""}`}>
                 <div className="row collapse-container" onClick={()=>this.collapseHandler('collapsed')}>
-                    <span className={sidebarInfo.collapsed ? "icon_horizontal"  :"icon_verital"}></span>
+                    <span className={sidebarInfo.collapsed ? "icon_horizontal"  :"icon_vertical"}></span>
                 </div>
                 {
                     selectItem.type == "group"?

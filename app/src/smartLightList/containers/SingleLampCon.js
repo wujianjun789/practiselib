@@ -243,7 +243,7 @@ export class SingleLampCon extends Component {
                     </div>
                     <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
                         <div className="row collapse-container" onClick={this.collapseHandler}>
-                            <span className={sidebarCollapse ? "icon_horizontal"  :"icon_verital"}></span>
+                            <span className={sidebarCollapse ? "icon_horizontal"  :"icon_vertical"}></span>
                         </div>
                         <div className="panel panel-default panel-1">
                             <div className="panel-heading">
