@@ -266,24 +266,32 @@ export class SmartLightMap extends Component{
                 let flatlng = fPole.geoPoint;
                 // this.map.center = flatlng;
                 this.setState({searchList:searchList, positionList:positionList}, ()=>{
-                    // this.requestPoleAsset(data);
+                    this.requestPoleAsset(data);
                 });
             }else{
                 this.setState({searchList:searchList, positionList:positionList}, ()=>{
-                    // this.requestPoleAsset(data);
+                    this.requestPoleAsset(data);
                 });
             }
         }
     }
 
     requestPoleAsset(data){
-        const {model} = this.state;
+        const {model, searchList} = this.state;
         if(model != "pole"){
             return;
         }
 
+        let poleList = [];
         data.map(pole=>{
-            getPoleAssetById(pole.id, (id,data)=>{this.mounted && this.updatePoleAsset(id, data)});
+            getPoleAssetById(pole.id, (id,assets)=>{
+                poleList.push(pole.id);
+                this.updatePoleAsset(id, assets);
+
+                if(poleList.length == data.length){
+                    this.setState({searchList:this.state.searchList});
+                }
+            });
         })
     }
 
@@ -308,7 +316,8 @@ export class SmartLightMap extends Component{
             asset = Object.assign({}, asset, {[key]:ass})
         })
 
-        this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))});
+        this.state.searchList = this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset));
+
     }
 
     updateCameraVideo(data){
