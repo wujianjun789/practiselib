@@ -875,8 +875,8 @@ ul {
 */
 .sidebar-info{border-left:1px solid #e6e6e6;}
 
-.sidebar-info .icon_verital {
-    background: url("../svg/icon_verital.svg");
+.sidebar-info .icon_vertical {
+    background: url("../svg/icon_vertical.svg");
     background-size: 100% 100%;
 }
 

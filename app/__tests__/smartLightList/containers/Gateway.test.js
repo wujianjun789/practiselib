@@ -68,7 +68,7 @@ describe('<Gateway />', () => {
 		expect(!sidebarInfo.hasClass('sidebar-collapse')).toBeTruthy();
 
 		// 测试icon className
-		expect(sidebarInfo.find('.icon_verital').length).toBe(1);
+		expect(sidebarInfo.find('.icon_vertical').length).toBe(1);
 
 		// const panel1 = sidebarInfo.find('.panel-1');
 		// expect(panel1.find('.panel-heading').text()).toBe('选中设备');
