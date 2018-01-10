@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import Immutable from 'immutable';
 
 import Content from '../../../components/Content';
 import Select1 from '../../component/select.1';
-import Select2 from '../../component/select.2'
 import SearchText from '../../../components/SearchText';
+import Table from '../../../components/Table';
+import Page from '../../../components/Page';
 import { DatePicker } from 'antd';
 import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 
@@ -21,30 +23,34 @@ export default class Lc extends Component {
 
         currentMode: null,
         modeList: [
-            { value: '采样方式', disabled: true, hidden: true },
-            { value: '多设备' },
-            { value: '多参数' }
+            { name: '采样方式', hidden: true },
+            { name: '多设备' },
+            { name: '多参数' }
         ],
 
         currentParam: null,
         paramList: [
-            { value: '采样参数', disabled: true, hidden: true },
-            { value: '亮度' },
-            { value: '电流' },
-            { value: '电压' },
-            { value: '功率' }
+            { name: '采样参数', hidden: true },
+            { name: '亮度' },
+            { name: '电流' },
+            { name: '电压' },
+            { name: '功率' }
         ],
 
         currentDomain: null,
-        domainList: [],
+        domainList: [
+            { name: '选择域' }
+        ],
 
         search: {
             value: '',
-            placeholder: '输入编号或名称'
+            placeholder: '输入设备名称'
         },
+
         deviceList: [],
-        selectDeviceIds: [],
-        selectDevices: {},
+        selectedDeviceIdList: [],
+        selectedDeviceCollection: {},
+
         page: { total: 0, current: 1, limit: 5 }
     }
 
@@ -52,12 +58,18 @@ export default class Lc extends Component {
     componentWillMount() {
         this._isMounted = true;
         this.model = 'lc';
+        this.columns = [
+            { field: 'name', title: '设备名称' },
+            { field: 'id', title: '设备编号' }
+        ];
+        this.maxSelectNum = 5;
         this.initDomainData();
     }
     componentWillUnmount() {
         this._isMounted = false;
     }
 
+    //初始化域、更新域列表
     initDomainData = () => {
         getDomainList(data => {
             this._isMounted && this.updateDomainData(data);
@@ -65,12 +77,13 @@ export default class Lc extends Component {
     }
     updateDomainData = (data) => {
         if (data.length === 0) {
-            this.setState({ domainList: [{ name: '选择域' }] })
+            return;
         } else {
             this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData)
         }
     }
 
+    //初始化设备、更新设备列表、选择设备
     initDeviceData = (isSearch) => {
         if (!this._isMounted) {
             return;
@@ -87,38 +100,67 @@ export default class Lc extends Component {
             getSearchAssets(currentDomain.id, this.model, value, offset, limit, this.updateDeviceData);
         }
     }
+    updateDeviceData = (data) => {
+        this._isMounted && this.setState({ deviceList: data })
+    }
 
+    selectDevice = (rowId, checked) => {
+        const { deviceList, selectedDeviceIdList, selectedDeviceCollection } = this.state;
+        if (checked) {
+            if (selectedDeviceIdList.length < this.maxSelectNum) {
+                this.setState({
+                    selectedDeviceIdList: [...selectedDeviceIdList, rowId],
+                    selectedDeviceCollection: { ...selectedDeviceCollection, [rowId]: deviceList.find(item => item.id === rowId) }
+                })
+            }
+        } else {
+            selectedDeviceIdList.splice(selectedDeviceIdList.findIndex(item => item === rowId), 1) //注意，此处一定要指明删除数量为1
+            delete selectedDeviceCollection[rowId]
+            this.setState({
+                selectedDeviceIdList,
+                selectedDeviceCollection
+            })
+        }
+    }
+
+    //更新分页面板
     updatePageSize = (data) => {
         const page = this.state.page;
         page.total = data.count;
         this._isMounted && this.setState({ page })
     }
-    updateDeviceData = (data) => {
-        this._isMounted && this.setState({ deviceList: data })
+    changePagination = (index) => {
+        const page = this.state.page;
+        page.current = index;
+        this.setState({ page }, this.initDeviceData)
     }
 
+
+
+    //搜索栏
+    searchChange = (value) => {
+        const search = this.state.search;
+        search.value = value;
+        this._isMounted && this.setState({ search })
+    }
+    searchSubmit = () => {
+        this.initDeviceData(true)
+    }
 
     componentDidUpdate() {
         // console.log(this.state.domainList, this.state.currentDomain)
-        const { page: { current, limit, total }, currentDomain, deviceList } = this.state;
-        console.log(current, total, currentDomain, deviceList)
+        const { deviceList, selectedDeviceIdList, selectedDeviceCollection } = this.state;
+        console.log('deviceList', deviceList);
+        console.log('selectedDeviceIdList', selectedDeviceIdList);
+        console.log('selectedDeviceCollection', selectedDeviceCollection);
     }
-    // initDeviceData = () => {
-    //     const { search: { value }, page, currentDomain } = this.state;
-    //     if (isSearch !== undefined) {
-    //         page.current = 1;
-    //         this.setState({ page: page })
-    //     }
-    //     const { limit, current } = this.state.page;
-    //     const offset = limit * (current - 1);
-    //     getSearchAssets(currentDomain ? currentDomain.id : null, )
-    // }
+
     //d3图表
     drawLineChart = (node) => {
-        const { selectDevices, startDate, endDate } = this.state;
+        const { selectedDeviceCollection, startDate, endDate } = this.state;
         this.chart = new Chart({
             wrapper: node,
-            data: Object.values(selectDevices),
+            data: Object.values(selectedDeviceCollection),
             xAccessor: d => d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
             yAccessor: d => d.value,
             xDomain: [startDate, endDate],
@@ -127,6 +169,8 @@ export default class Lc extends Component {
             yTickFormat: d => { if (d === 0) return ''; return `${d}` },
             tooltipAccessor: d => d.y
         })
+    }
+    getChartData = (cb) => {
     }
 
     //侧边栏展开关闭
@@ -158,16 +202,40 @@ export default class Lc extends Component {
         }
     }
 
+    //重置、应用
+    onClickHandler = (e) => {
+        const { id } = e.target;
+        switch (id) {
+            case 'apply':
+                console.log('获取数据并在图表中渲染出来')
+                break;
+
+        }
+    }
     render() {
         const { sidebarCollapse, startDate, endDate, currentMode, modeList, currentParam, paramList, currentDomain, domainList, search: { value, placeholder },
-            deviceList, selectDeviceIds, selectDevices, page: { total, current, limit }, } = this.state;
+            deviceList, selectedDeviceIdList, selectedDeviceCollection, page: { total, current, limit }, } = this.state;
+        let devicePanel = null;
+        if (currentMode === 1) {
+            devicePanel = <div class='device-select-mode'>
+                <Select1 id='domain' className='select-domain' options={domainList} onChange={this.onChangeHandler} />
+                <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                <Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectedDeviceIdList} rowCheckChange={this.selectDevice} />
+                <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
+                    <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
+                </div>
+            </div>;
+        } else if (currentMode === 2) {
+            devicePanel = null;
+        }
+
         return (
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                 <div class='content-left'>
                     <div class='chart-container' ref={this.drawLineChart}></div>
                 </div>
                 <div class={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
-                    <div class='row collapse-container' onClick={this.collapseHandler}>
+                    <div class='row collapse-container fix-width' onClick={this.collapseHandler}>
                         <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                     </div>
                     <div class='panel panel-default panel-1'>
@@ -188,17 +256,17 @@ export default class Lc extends Component {
 						</div>
                         <div class='panel-body'>
                             <div class='device-filter'>
-                                <Select1 id='mode' disabled={false} options={modeList} onChange={this.onChangeHandler} />
-                                <Select1 id='param' disabled={currentMode === 1 ? false : true} options={paramList} onChange={this.onChangeHandler} />
+                                <Select1 id='mode' options={modeList} onChange={this.onChangeHandler} />
+                                <Select1 id='param' disabled={currentMode !== 1 ? true : false} options={paramList} onChange={this.onChangeHandler} />
                             </div>
-                            <div class=''>
-                                <Select2 id='domain' options={domainList} onChange={this.onChangeHandler} />
-                                <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                            {devicePanel}
+                            <div class='btn-group-right'>
+                                <button id='apply' class='btn btn-primary fix-margin' onClick={this.onClickHandler}>应用</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </Content>
+            </Content >
         )
     }
 }
