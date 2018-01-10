@@ -26,7 +26,7 @@ import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 
 import Immutable from 'immutable';
-export class Sensor extends Component {
+export class Screen extends Component {
     constructor(props) {
         super(props);
         this.state = {
