@@ -862,6 +862,7 @@ export default class Map{
 
     destroy() {
         clearTimeout(this.updateTime);
+        clearTimeout(this.mapZoomendTimeout);
         this.clearMarker();
         this.destroyMap();
     }
