@@ -86,6 +86,8 @@ export default {
         'button.apply': 'apply',
         'button.close':'Close',
         'button.save':'Save',
+        'button.add.gateway':'Add gateway',
+
 
         //用户中心
         'update.password':'Update password',

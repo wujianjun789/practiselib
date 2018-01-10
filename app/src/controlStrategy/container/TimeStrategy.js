@@ -17,7 +17,6 @@ import TimeStrategyPopup from '../component/TimeStrategyPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
 
 import Immutable from 'immutable';
-import {getObjectByKey} from '../../util/index';
 import {dateStringFormat} from '../../util/string'
 import {getMomentDate, momentDateFormat} from '../../util/time'
 
@@ -27,7 +26,7 @@ import {getStrategyListByName, getStrategyCountByName, addStrategy, updateStrate
 import {getStrategyDeviceConfig} from '../../util/network'
 
 import { DatePicker} from 'antd';
-import {getIndexByKey,getObjectKeyByKey,getIndexsByKey} from '../../util/algorithm'
+import {getObjectByKeyObj,getIndexByKey,getProByKey,getIndexsByKey,spliceInArray,getObjectByKey,getListKeyByKey,IsExitInArray2,IsExitInArray3} from '../../util/algorithm'
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -48,13 +47,13 @@ class TimeStrategy extends Component{
             }),
             deviceList:{titleKey:"name", valueKey:"name", options:[/*{id:1, name:"test灯"},{id:2, name:"test显示屏"}*/]},
             strategyList:[/*{id:"start", time:"00:00", light:0}, {id:"end", time:"24:00", light:0}*/],
-            data:Immutable.fromJS([]),
+            strategyData:Immutable.fromJS([]),
             sidebarInfo: {
                 collapsed: false,
                 propertyCollapsed: false,
                 parameterCollapsed: false,
                 devicesCollapsed: false,
-                devicesExpanded:false
+                devicesExpanded:true
             },
             selectItem: {
                 id: "",
@@ -72,14 +71,122 @@ class TimeStrategy extends Component{
                 time:'',
                 light:''
             },
+            selectedDevicesData:[
+                {
+                    id:1,
+                    name:'网关1',
+                    type:'网关',
+                    childs:[
+                        {
+                            id:2,
+                            name:'设备1',
+                            type:'灯',
+                            parentId:1                            
+                        }
+                    ]
+                },
+                {
+                    id:3,
+                    name:'网关2',
+                    type:'网关',
+                    childs:[
+                        {
+                            id:4,
+                            name:'设备2',
+                            type:'灯',
+                            parentId:3
+                        },
+                        {
+                            id:5,
+                            name:'设备3',
+                            type:'灯',
+                            parentId:3                          
+                        },
+                    ],
+                },
+            ],
+            allDevicesData:[
+                {
+                    id:1,
+                    name:'网关1',
+                    type:'网关',
+                    childs:[
+                        {
+                            id:2,
+                            name:'设备1',
+                            type:'灯',
+                            parentId:1                            
+                        },
+                        {
+                            id:6,
+                            name:'设备4',
+                            type:'灯',
+                            parentId:1                            
+                        },
+                        {
+                            id:7,
+                            name:'设备5',
+                            type:'灯',
+                            parentId:1                            
+                        },
+                    ]
+                },
+                {
+                    id:3,
+                    name:'网关2',
+                    type:'网关',
+                    childs:[
+                        {
+                            id:4,
+                            name:'设备2',
+                            type:'灯',
+                            parentId:3
+                        },
+                        {
+                            id:5,
+                            name:'设备3',
+                            type:'灯',
+                            parentId:3                          
+                        },
+                        {
+                            id:8,
+                            name:'设备6',
+                            type:'灯',
+                            parentId:3                            
+                        },
+                    ],
+                },
+                {
+                    id:9,
+                    name:'网关3',
+                    type:'网关',
+                    childs:[
+                        {
+                            id:10,
+                            name:'设备7',
+                            type:'灯',
+                            parentId:9
+                        },
+                    ],
+                },
+            ],
             domainList:[{id:1,name:'闵行区'},{id:2,name:'徐汇区'},{id:3,name:'长宁区'},{id:4,name:'莘庄镇'},],
-            lightList:[{id:1,name:"10"},{id:1,name:"20"},{id:1,name:"30"}]
+            lightList:[{id:1,name:"10"},{id:1,name:"20"},{id:1,name:"30"}],
+            allDevices:{
+                allChecked:false,
+                checked:[]
+            }
         }
         this.deviceDefault = [/*"lc", "screen"*/]
         this.columns =  [
             {id: 0, field:"name", title:this.formatIntl('app.strategy.name')},
             {id: 1, field: "timeRange", title: this.formatIntl('app.time.range')}
         ];
+
+        this.deviceColumns = [
+            {id: 0, field:"name", title:this.formatIntl('app.device.name')},
+            {id: 1, field: "type", title: this.formatIntl('app.type')}
+        ]
 
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
@@ -153,7 +260,7 @@ class TimeStrategy extends Component{
                 ]
             },
             {
-                id:'003',
+                id:'0',
                 name:'未分组',
                 timeRange:'',
                 childs:[
@@ -161,16 +268,20 @@ class TimeStrategy extends Component{
                         id:5,
                         name:'策略1',
                         timeRange:'5月1日-6月30日',
+                        parentId:'0'
                     },
                     {
                         id:6,
                         name:'策略2',
                         timeRange:'5月10日-6月30日',
+                        parentId:'0'                        
                     }
                 ]
             }
         ]
-        this.initTableData(data);
+        this.initTableData('strategyData',data);
+        this.initTableData('selectedDevicesData',this.state.selectedDevicesData);
+        this.initTableData('allDevicesData',this.state.allDevicesData);        
     }
 
     componentWillUnmount(){
@@ -197,7 +308,7 @@ class TimeStrategy extends Component{
     //     this.setState({page:page});
     // }
 
-    initTableData(data){
+    initTableData(key,data){
         let result = [];
         data.map(parent=>{
             parent.collapsed = false;
@@ -209,7 +320,7 @@ class TimeStrategy extends Component{
                 })
             }
         })
-        this.setState({data:Immutable.fromJS(result)});
+        this.setState({[key]:Immutable.fromJS(result)});
     }
 
     initResult(data){
@@ -248,7 +359,7 @@ class TimeStrategy extends Component{
     initDeviceList(data){
         let list = [];
         this.deviceDefault.map(key=>{
-            let model = getObjectByKey(data, 'id', key)
+            let model = getObjectByKeyObj(data, 'id', key)
             if(model){
                 list.push({id:model.id, name:model.name})
             }
@@ -307,8 +418,8 @@ class TimeStrategy extends Component{
     tableEdit(rowId){
         const {actions} = this.props;
         const {model, deviceList} = this.state;
-        let row = Immutable.fromJS(getObjectByKey(this.state.data.toJS(), 'id', rowId));
-        let device = getObjectByKey(deviceList.options, 'id', row.get("deviceType"));
+        let row = Immutable.fromJS(getObjectByKeyObj(this.state.data.toJS(), 'id', rowId));
+        let device = getObjectByKeyObj(deviceList.options, 'id', row.get("deviceType"));
         let initData = {
             name: row.get("name"),
             device: device
@@ -413,10 +524,8 @@ class TimeStrategy extends Component{
     }
 
     updateSelectItem(item) {
-        let selectDevice = this.state.selectDevice;
-        
         this.setState({
-            selectDevice: selectDevice
+            selectItem: item
         });
     }
 
@@ -455,30 +564,61 @@ class TimeStrategy extends Component{
 
     }
 
-    collapseClick(id){
-        console.log(id)
-        let {data} = this.state;
+    collapseClick(id,key,data){
         let childs = getIndexsByKey(data,'parentId',id);
-        childs.map(item=>{
+        childs.length !== 0 && childs.map(item=>{
             data = data.setIn([item,'hidden'],!data.getIn([item,"hidden"]));
         });
-        console.log(getIndexByKey(data,"id",id));
-        this.setState({data:data.setIn([getIndexByKey(data,"id",id),"collapsed"],!getObjectKeyByKey(data,"id",id,"collapsed"))},()=>{
-            console.log(this.state.data.toJS());
-        });
+        this.setState({[`${key}Data`]:data.setIn([getIndexByKey(data,"id",id),"collapsed"],!getProByKey(data,"id",id,"collapsed"))});
+    }
+    
+    allCheckChange = (value)=>{
+        const {allDevices,allDevicesData} = this.state;
+        let checked = [];
+        value && allDevicesData.map(item=>{
+            checked.push(item.get("id"));
+        })
+        this.setState({allDevices:{
+            allChecked:value,
+            checked:checked
+        }})
+    }
+
+    rowCheckChange = (id, value)=>{
+        let {allDevices,allDevicesData} = this.state;
+        value?allDevices.checked.push(id):spliceInArray(allDevices.checked,id);
+        let obj = getObjectByKey(allDevicesData,"id",id);
+        let childs = [];
+        if(obj.get('childs')){
+            childs=getListKeyByKey(allDevicesData,'parentId',id,'id');
+            childs.map(item=>{
+                value?!allDevices.checked.includes(item) && allDevices.checked.push(item):spliceInArray(allDevices.checked,item);
+            })
+        }
+        else{
+            childs=getListKeyByKey(allDevicesData,'parentId',obj.get('parentId'),'id');
+            if(value){
+                IsExitInArray3(allDevices.checked,childs) && allDevices.checked.push(obj.get('parentId'));
+            }
+            else{
+                IsExitInArray2(allDevices.checked,childs) && spliceInArray(allDevices.checked,obj.get('parentId'));
+            }
+        }
+        allDevices.allChecked = allDevicesData.size == allDevices.checked.length;
+        this.setState({allDevices:allDevices});
     }
 
     render(){
-        const {search, selectDevice, page, data, sidebarInfo, selectItem,property,domainList,lightList} = this.state;
+        const {search, selectedDevicesData,allDevicesData, page, strategyData, sidebarInfo, selectItem,property,domainList,lightList,allDevices} = this.state;
 
-        return <Content className={`time-strategy ${sidebarInfo.collapsed ? 'collapse' : ''}`}>
+        return <Content className={`time-strategy ${sidebarInfo.collapsed ? 'collapse' : sidebarInfo.devicesExpanded?'select-devices-collapse':''}`}>
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
                             onChange={this.searchChange} submit={this.searchSubmit}/>
                 <button  className="btn btn-primary add-strategy" onClick={this.addHandler}>{this.formatIntl('button.add')}</button>
             </div>
             <div className="table-container">
-                <Table isEdit={true} columns={this.columns} data={data} activeId={selectDevice && selectDevice.id}
+                <Table className="strategy" isEdit={true} columns={this.columns} data={strategyData} activeId={selectItem && selectItem.id}
                        rowClick={this.tableClick} rowEdit={this.tableEdit} rowDelete={this.tableDelete} collapseClick={this.collapseClick}/>
                 {/* <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
                       current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/> */}
@@ -498,7 +638,7 @@ class TimeStrategy extends Component{
                             <div className='form-group'>
                                 <label>组名称</label>
                                 <div className='input-container'>
-                                    <input type='text' className='form-control' placeholder="输入名称" onChange={e=>this.onChange("name",e)}/>
+                                    <input type='text' className='form-control' placeholder="输入名称" value={selectItem.name} onChange={e=>this.onChange("name",e)}/>
                                 </div>
                             </div>
                             <button className="btn btn-primary pull-right" onClick={this.updateGroupName}>{this.formatIntl('button.apply')}</button>                            
@@ -609,6 +749,7 @@ class TimeStrategy extends Component{
                                     <span>{`包含：${60}个设备`}</span>
                                     <button className="btn btn-primary pull-right" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                   
                                 </div>
+                                <Table className="selectedDevices" columns={this.deviceColumns} data={selectedDevicesData} collapseClick={this.collapseClick}/>
                             </div>
                         </div>
                     </div>
@@ -616,9 +757,22 @@ class TimeStrategy extends Component{
                 
                 
             </div>
-            {/* <div className="select-devices"> 
-
-            </div> */}
+            <div className='container-fluid sidebar-info sidebar-devices'>
+                <div className="panel panel-default">
+                    <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
+                        <span className="glyphicon glyphicon-triangle-bottom"></span>选择设备
+                    </div>
+                    <div className="panel-body">
+                        <div>
+                            <button className="btn btn-gray" onClick={() => {}}>{this.formatIntl('button.add.gateway')}</button>                                   
+                            <button className="btn btn-primary pull-right" onClick={() => {this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.apply')}</button>                                                               
+                        </div>
+                        <Table  className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
+                    </div>
+                </div>
+            </div>
+            {sidebarInfo.devicesExpanded && <div className="select-devices"></div>}
+            
         </Content>
     }
 }

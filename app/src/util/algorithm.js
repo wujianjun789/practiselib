@@ -131,22 +131,6 @@ export function getObjectByKeyObj(list, key, value) {
 }
 
 /**
- * 根据键值获取匹配项的指定键值
- * @param {*} list 
- * @param {*} key1 
- * @param {*} value 
- * @param {*} key2 
- */
-export function getObjectKeyByKey(list, key1, value, key2){
-    for(var i=0;i<list.size;i++){
-        if(list.getIn([i, key1]) === value){
-            return list.getIn([i,key2]);
-        }
-    }
-    return null;
-}
-
-/**
  * 根据键值(多个参数)搜索数组中匹配项
  *
  */
@@ -282,6 +266,34 @@ export function IsExitInArray(list, value) {
     }
 
     return false;
+}
+
+/**
+ * 数组中不包含另一个数组任意元素
+ */
+export function IsExitInArray2(list1, list2) {
+    let result=true;
+    list2.map(item=>{
+        if(list1.includes(item)){
+            result =false;
+            return;
+        }
+    })
+    return result;
+}
+
+/**
+ * 数组中包含另一个数组所有元素
+ */
+export function IsExitInArray3(list1, list2) {
+    let result=true;
+    list2.map(item=>{
+        if(!list1.includes(item)){
+            result =false;
+            return;
+        }
+    })
+    return result;
 }
 
 /**

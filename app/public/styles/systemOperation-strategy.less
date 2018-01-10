@@ -751,6 +751,15 @@
         margin-bottom: 20px;
       }
     }
+    .table-selectedDevices,.table-allDevices{
+      min-width: 300px;
+      >table{
+      min-width: 300px;        
+      }
+    }
+  }
+  >.sidebar-info.sidebar-devices{
+    z-index: -1;
   }
   &.collapse {
     display: block;
@@ -771,10 +780,24 @@
       }
     }
   }
+
+  &.select-devices-collapse {
+    display: block;
+    > .table-container {
+      margin-right: 620px;
+    }
+    > .sidebar-info {
+      right: 300px;
+    }
+    > .sidebar-devices {
+      right: 0;
+      z-index: 0;  
+    }
+  }
   > .select-devices{
     position: fixed;
     top: 0px;
-    right: 300px;
+    right: 316px;
     bottom: 0px;
     left: 0px;
     z-index: 1000;
@@ -784,5 +807,8 @@
     overflow: auto;
     visibility: visible;
     opacity: 1;
+    >.sidebar-info{
+      right: -300px;
+    }
   }
 }

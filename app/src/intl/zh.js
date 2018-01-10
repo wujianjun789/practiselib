@@ -85,6 +85,7 @@ export default {
         'button.apply': '应用',
         'button.close':'关闭',
         'button.save':'保存',
+        'button.add.gateway':'添加网关',
 
         //用户中心
         'update.password':'修改密码',
@@ -120,7 +121,8 @@ export default {
         'delete.user':'是否删除选中用户？',
         'delete.device':'是否删除选中设备？',
         'delete.strategy':'是否删除选中策略？',
-//登录
+
+        //登录
         'login.form.title':'用户登录',
         'login.button':'登录',
         'login.alert':"用户名或密码错误",
