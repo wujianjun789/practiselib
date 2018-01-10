@@ -253,7 +253,6 @@ export class SmartLightMap extends Component{
                         }
 
                         if (deviceLen.length == data.length){
-                            console.log('updateSearch:', this.state.searchList.toJS());
                             this.setState({searchList:this.state.searchList});
                         }
                     })
@@ -266,24 +265,32 @@ export class SmartLightMap extends Component{
                 let flatlng = fPole.geoPoint;
                 // this.map.center = flatlng;
                 this.setState({searchList:searchList, positionList:positionList}, ()=>{
-                    // this.requestPoleAsset(data);
+                    this.requestPoleAsset(data);
                 });
             }else{
                 this.setState({searchList:searchList, positionList:positionList}, ()=>{
-                    // this.requestPoleAsset(data);
+                    this.requestPoleAsset(data);
                 });
             }
         }
     }
 
     requestPoleAsset(data){
-        const {model} = this.state;
+        const {model, searchList} = this.state;
         if(model != "pole"){
             return;
         }
 
+        let poleList = [];
         data.map(pole=>{
-            getPoleAssetById(pole.id, (id,data)=>{this.mounted && this.updatePoleAsset(id, data)});
+            getPoleAssetById(pole.id, (id,assets)=>{
+                poleList.push(pole.id);
+                this.updatePoleAsset(id, assets);
+
+                if(poleList.length == data.length){
+                    this.setState({searchList:this.state.searchList});
+                }
+            });
         })
     }
 
@@ -308,7 +315,8 @@ export class SmartLightMap extends Component{
             asset = Object.assign({}, asset, {[key]:ass})
         })
 
-        this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))});
+        this.state.searchList = this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset));
+
     }
 
     updateCameraVideo(data){
@@ -480,13 +488,13 @@ export class SmartLightMap extends Component{
 
     mapDragend(data){
         console.log('mapDrag:',data.latlng);
-        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         // this.setState(this.map);
         this.requestSearch();
     }
 
     mapZoomend(data){
-        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.mapTimeOut && clearTimeout(this.mapTimeOut);
         // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);

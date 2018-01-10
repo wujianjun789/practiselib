@@ -19,7 +19,7 @@ export default {
         'app.open': '开',
         'app.close': '关',
         'app.update.time':'更新时间',
-        'app.contro.mode':'控制模式',
+        'app.control.mode':'控制模式',
         'app.automatic.time':'校时',
         'app.click.automatic.time':'点击校时',
 

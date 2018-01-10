@@ -193,6 +193,11 @@ export default class Map{
             return;
         }
 
+        // if(type == 'bing'){
+        //     let imagerySet = "Road";// AerialWithLabels | Birdseye | BirdseyeWithLabels | Road
+        //     let bing = new L.BingLayer("LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc", {type: imagerySet});
+        //     bing.addTo(this.map);
+        // }
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', option).addTo(this.map);
     }
 
@@ -391,20 +396,6 @@ export default class Map{
         return null;
     }
 
-     delMarkerById(type, id) {
-        var delIndex = -1;
-        for (var index in this.markerList) {
-            if (this.markerList[index].options.type == type && this.markerList[index].options.id == id) {
-                delIndex = index;
-                break;
-            }
-        }
-
-        if (delIndex > -1) {
-            this.markerList.splice(delIndex, 1)
-        }
-    }
-
      getMarkerDataById(type, id) {
         for (var x in this.markerPosList) {
             if (this.markerPosList[x].device_type == type && this.markerPosList[x].device_id == id) {
@@ -413,20 +404,6 @@ export default class Map{
         }
 
         return null;
-    }
-
-     delMarkerDataById(type, id) {
-        var delIndex = -1;
-        for (var x in this.markerPosList) {
-            if (this.markerPosList[x].device_type == type && this.markerPosList[x].device_id == id) {
-                delIndex = x;
-                break;
-            }
-        }
-
-        if (delIndex > -1) {
-            this.markerPosList.splice(delIndex, 1);
-        }
     }
 
      addMarkerData(data) {
@@ -465,32 +442,6 @@ export default class Map{
         return marker;
     }
 
-     removeMarker(marker) {
-        if (marker) {
-            marker.off('click', this.markerClick, this);
-            marker.off('mouseover', this.markerOver, this);
-            marker.off('mouseout', this.markerOut, this);
-            if (this.drawItems.hasLayer(marker)) {
-                this.drawItems.removeLayer(marker);
-            }
-        }
-
-        marker = null;
-    }
-
-    markerClick(event) {
-        var marker = event.target;
-
-        this.markerClickHandler({
-            mapId: marker.options.mapId,
-            type: marker.options.type,
-            id: marker.options.id,
-            x: event.originalEvent.clientX,
-            y: event.originalEvent.clientY,
-            latlng: marker.getLatLng()
-        });
-    }
-
      loadMarkerLabel(marker, labelInfo, IsCircleMarker) {
         if (marker == null) {
             return;
@@ -516,28 +467,15 @@ export default class Map{
         marker.on('dragend', this.markerDragEnd, this)
     }
 
-     loadMarkerMouseover(marker) {
+    loadMarkerMouseover(marker) {
         marker.on('mouseover', this.markerOver, this);
-    }
-
-    markerDragEnd(event) {
-        var marker = event.target;
-        marker.off("dragend", this.markerDragEnd);
-        this.markerDragendHandler({
-            mapId:marker.options.mapId,
-            id: marker.options.id,
-            type: marker.options.type,
-            latlng: marker.getLatLng()
-        })
-
-        marker.on("mouseover", this.markerOver, this);
     }
 
      loadMarkerPopup(marker) {
         marker.off('click', this.markerClick, this);
         marker.on('click', this.markerClick, this);
     }
-
+//---------------------------------------------------控制容器-------------------------------------------------------------------
      markerControl(IsAdd, options) {
          if (!this.map) {
             return;
@@ -575,6 +513,42 @@ export default class Map{
         this.IsDrawControl = true;
     }
 
+    customControl(data) {
+        return;
+        if (!this.map || this.deviceControl) {
+            return;
+        }
+
+        let DeviceControl = L.Control.extend({
+            options: {
+                position: 'topleft'
+            },
+            initialize: function (options) {
+                L.Util.setOptions(this, options);
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'custom-toggle-container');
+
+                data && data.deviceBtn && data.deviceBtn.data.map(function (item) {
+                    var className = 'custom-toggle-button  ' + (item.id == data.deviceBtn.active ? 'active' : '');
+
+                    var btn = L.DomUtil.create('button', className, container)
+                    btn.id = item.id;
+                    btn.innerText = item.name;
+                    L.DomEvent.on(btn, 'click', toggleHandler);
+                    if (item.id == data.deviceBtn.active) {
+                        this.activeBtn = btn;
+                    }
+                })
+                return container;
+            }
+        })
+
+        this.deviceControl = new DeviceControl();
+        this.deviceControl && this.map.addControl(this.deviceControl);
+    }
+
+    //----------------------------------------------事件处理------------------------------------------------------------
     drawEvent() {
         this.map.on('draw:created', function (e) {
 
@@ -645,42 +619,6 @@ export default class Map{
         })
     }
 
-    customControl(data) {
-        return;
-        if (!this.map || this.deviceControl) {
-            return;
-        }
-
-        let DeviceControl = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            initialize: function (options) {
-                L.Util.setOptions(this, options);
-            },
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'custom-toggle-container');
-
-                data && data.deviceBtn && data.deviceBtn.data.map(function (item) {
-                    var className = 'custom-toggle-button  ' + (item.id == data.deviceBtn.active ? 'active' : '');
-
-                    var btn = L.DomUtil.create('button', className, container)
-                    btn.id = item.id;
-                    btn.innerText = item.name;
-                    L.DomEvent.on(btn, 'click', toggleHandler);
-                    if (item.id == data.deviceBtn.active) {
-                        this.activeBtn = btn;
-                    }
-                })
-                return container;
-            }
-        })
-
-        this.deviceControl = new DeviceControl();
-        this.deviceControl && this.map.addControl(this.deviceControl);
-    }
-
-    //----------------------------------------------事件处理------------------------------------------------------------
     mapMoveEnd(event) {
         let map = event.target;
         map.off("dragend", this.mapMoveEnd, this);
@@ -709,6 +647,20 @@ export default class Map{
             })
         }, 66)
     }
+
+    markerClick(event) {
+        var marker = event.target;
+
+        this.markerClickHandler({
+            mapId: marker.options.mapId,
+            type: marker.options.type,
+            id: marker.options.id,
+            x: event.originalEvent.clientX,
+            y: event.originalEvent.clientY,
+            latlng: marker.getLatLng()
+        });
+    }
+
     markerOver(event) {
         var marker = event.target;
         marker.off("mouseover", this.markerOver, this);
@@ -735,6 +687,18 @@ export default class Map{
         })
     }
 
+    markerDragEnd(event) {
+        var marker = event.target;
+        marker.off("dragend", this.markerDragEnd);
+        this.markerDragendHandler({
+            mapId:marker.options.mapId,
+            id: marker.options.id,
+            type: marker.options.type,
+            latlng: marker.getLatLng()
+        })
+
+        marker.on("mouseover", this.markerOver, this);
+    }
 
     toggleHandler(event) {
         if (this.callFun != null && this.callFun.toggleMap) {
@@ -833,6 +797,47 @@ export default class Map{
     }
 
     //_______________________________________________销毁_______________________________________________________
+    delMarkerById(type, id) {
+        var delIndex = -1;
+        for (var index in this.markerList) {
+            if (this.markerList[index].options.type == type && this.markerList[index].options.id == id) {
+                delIndex = index;
+                break;
+            }
+        }
+
+        if (delIndex > -1) {
+            this.markerList.splice(delIndex, 1)
+        }
+    }
+
+    delMarkerDataById(type, id) {
+        var delIndex = -1;
+        for (var x in this.markerPosList) {
+            if (this.markerPosList[x].device_type == type && this.markerPosList[x].device_id == id) {
+                delIndex = x;
+                break;
+            }
+        }
+
+        if (delIndex > -1) {
+            this.markerPosList.splice(delIndex, 1);
+        }
+    }
+
+    removeMarker(marker) {
+        if (marker) {
+            marker.off('click', this.markerClick, this);
+            marker.off('mouseover', this.markerOver, this);
+            marker.off('mouseout', this.markerOut, this);
+            if (this.drawItems.hasLayer(marker)) {
+                this.drawItems.removeLayer(marker);
+            }
+        }
+
+        marker = null;
+    }
+
     clearMarker() {
         if (this.drawItems) {
             while (this.markerList.length > 0) {
@@ -857,6 +862,7 @@ export default class Map{
 
     destroy() {
         clearTimeout(this.updateTime);
+        clearTimeout(this.mapZoomendTimeout);
         this.clearMarker();
         this.destroyMap();
     }
