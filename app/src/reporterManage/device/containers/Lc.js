@@ -6,14 +6,15 @@ import Select1 from '../../component/select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import { DatePicker } from 'antd';
-import Chart from '../../utils/multiLineChartWithZoomAndBrush';
+import { DatePicker, Modal } from 'antd';
+import 'antd/lib/modal/style/css';
+import '../../../../public/styles/reporterManage-device.less';
 
+import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 import { getYesterday, getToday } from '../../../util/time';
 import { getDomainList } from '../../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../../api/asset'
 
-import '../../../../public/styles/reporterManage-device.less';
 
 export default class Lc extends Component {
     state = {
@@ -51,7 +52,19 @@ export default class Lc extends Component {
         selectedDeviceIdList: [],
         selectedDeviceCollection: {},
 
-        page: { total: 0, current: 1, limit: 5 }
+        page: { total: 0, current: 1, limit: 5 },
+
+        showDeviceName: '',
+        visible: false,
+
+        multiParamList: [
+            { param: '亮度', unit: '%' },
+            { param: '电压', unit: 'V' },
+            { param: '电流', unit: 'A' },
+            { param: '功率', unit: 'W' },
+        ],
+        selectedMultiParamIdList: [],
+        selectedMultiParamCollection: {},
     }
 
     //初始化
@@ -62,6 +75,10 @@ export default class Lc extends Component {
             { field: 'name', title: '设备名称' },
             { field: 'id', title: '设备编号' }
         ];
+        this.paramColumns = [
+            { field: 'param', title: '采样参数' },
+            { field: 'unit', title: '单位' }
+        ]
         this.maxSelectNum = 5;
         this.initDomainData();
     }
@@ -135,8 +152,6 @@ export default class Lc extends Component {
         this.setState({ page }, this.initDeviceData)
     }
 
-
-
     //搜索栏
     searchChange = (value) => {
         const search = this.state.search;
@@ -149,10 +164,14 @@ export default class Lc extends Component {
 
     componentDidUpdate() {
         // console.log(this.state.domainList, this.state.currentDomain)
-        const { deviceList, selectedDeviceIdList, selectedDeviceCollection } = this.state;
-        console.log('deviceList', deviceList);
-        console.log('selectedDeviceIdList', selectedDeviceIdList);
-        console.log('selectedDeviceCollection', selectedDeviceCollection);
+        // const { deviceList, selectedDeviceIdList, selectedDeviceCollection } = this.state;
+        // console.log('deviceList', deviceList);
+        // console.log('selectedDeviceIdList', selectedDeviceIdList);
+        // console.log('selectedDeviceCollection', selectedDeviceCollection);
+        const { multiParamList, selectedMultiParamIdList, selectedMultiParamCollection } = this.state;
+        console.log(multiParamList)
+        console.log(selectedMultiParamIdList)
+        console.log(selectedMultiParamCollection)
     }
 
     //d3图表
@@ -212,9 +231,30 @@ export default class Lc extends Component {
 
         }
     }
+
+    showModal = () => {
+        this.setState({ visible: !this.state.visible })
+    }
+
+    selectMultiParam = (rowId, checked) => {
+        const { multiParamList, selectedMultiParamIdList, selectedMultiParamCollection } = this.state;
+        if (checked) {
+            this.setState({
+                selectedMultiParamIdList: [...selectedMultiParamIdList, rowId],
+                selectedMultiParamCollection: { ...selectedMultiParamCollection, [rowId]: multiParamList.find(item => item.param === rowId) }
+            })
+        } else {
+            selectedMultiParamIdList.splice(selectedMultiParamIdList.findIndex(item => item === rowId), 1);
+            delete selectedMultiParamCollection[rowId]
+            this.setState({
+                selectedMultiParamIdList,
+                selectedMultiParamCollection
+            })
+        }
+    }
     render() {
         const { sidebarCollapse, startDate, endDate, currentMode, modeList, currentParam, paramList, currentDomain, domainList, search: { value, placeholder },
-            deviceList, selectedDeviceIdList, selectedDeviceCollection, page: { total, current, limit }, } = this.state;
+            deviceList, selectedDeviceIdList, selectedDeviceCollection, page: { total, current, limit }, showDeviceName, visible, multiParamList, selectedMultiParamIdList } = this.state;
         let devicePanel = null;
         if (currentMode === 1) {
             devicePanel = <div class='device-select-mode'>
@@ -226,7 +266,25 @@ export default class Lc extends Component {
                 </div>
             </div>;
         } else if (currentMode === 2) {
-            devicePanel = null;
+            devicePanel =
+                <div class='device-select-mode'>
+                    <input disabled value={showDeviceName} />
+                    <button onClick={this.showModal}>选择设备</button>
+                    <Modal title='选择设备' visible={visible} onCancel={this.showModal} maskClosable={false}>
+                        <Select1 id='domain' className='select-domain' options={domainList} onChange={this.onChangeHandler} />
+                        <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                        <div class=''>
+                            <Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectedDeviceIdList} rowCheckChange={this.selectDevice} />
+                            <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
+                                <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
+                            </div>
+                        </div>
+                    </Modal>
+                    <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
+                        keyField='param' checked={selectedMultiParamIdList} rowCheckChange={this.selectMultiParam} />
+
+                </div>
+
         }
 
         return (

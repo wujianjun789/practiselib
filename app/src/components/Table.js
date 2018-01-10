@@ -67,7 +67,7 @@ export default class Table extends Component {
                     <tbody>
                     {
                         data.map((row, index)=> {
-                            let curId = row.get('id');
+                            let curId = row.get(keyField);
                             return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
                                     {
