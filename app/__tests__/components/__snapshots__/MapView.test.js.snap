@@ -1,5 +1,5 @@
 exports[`test MapView renders 1`] = `
 <div
-  className="map-view "
+  className="map-view  "
   id="mapview" />
 `;

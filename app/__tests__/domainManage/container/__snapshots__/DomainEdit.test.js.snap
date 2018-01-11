@@ -132,7 +132,7 @@ exports[`test DomainEdit renders 1`] = `
       <div
         className="map-container panel-body">
         <div
-          className="map-view "
+          className="map-view  "
           id="domain" />
       </div>
     </div>

@@ -2,7 +2,7 @@ exports[`test renders smartLightMap 1`] = `
 <div
   className="content ">
   <div
-    className="map-view "
+    className="map-view  "
     id="smartLightMap" />
   <div
     className="search-container">
@@ -59,7 +59,7 @@ exports[`test renders smartLightMap 1`] = `
         <span
           className="icon icon_camera" />
         <span
-          className="icon icon_lamp" />
+          className="icon icon_lc" />
         <span
           className="icon icon_screen" />
       </li>
@@ -72,7 +72,7 @@ exports[`test renders smartLightMap 1`] = `
         <span
           className="icon icon_camera" />
         <span
-          className="icon icon_lamp" />
+          className="icon icon_lc" />
         <span
           className="icon icon_screen" />
       </li>
@@ -83,7 +83,7 @@ exports[`test renders smartLightMap 1`] = `
         <span
           className="icon icon_collect" />
         <span
-          className="icon icon_lamp" />
+          className="icon icon_lc" />
         <span
           className="icon icon_screen" />
       </li>
@@ -94,7 +94,7 @@ exports[`test renders smartLightMap 1`] = `
         <span
           className="icon icon_collect" />
         <span
-          className="icon icon_lamp" />
+          className="icon icon_lc" />
       </li>
     </ul>
     <div
@@ -145,7 +145,7 @@ exports[`test renders smartLightMap 1`] = `
             className=" active"
             onClick={[Function]}>
             <span
-              className="icon icon_screen_hover" />
+              className="icon icon_screen" />
           </li>
           <li
             className=" "
@@ -353,46 +353,31 @@ exports[`test renders smartLightMap 1`] = `
         className="btn active"
         onClick={[Function]}>
         <span
-          className="icon icon_pole_hover">
-          <span
-            className="icon_pole" />
-        </span>
+          className="icon icon_pole" />
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon ">
-          <span
-            className="icon_screen" />
-        </span>
+          className="icon icon_screen" />
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon ">
-          <span
-            className="icon_camera" />
-        </span>
+          className="icon icon_camera" />
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon ">
-          <span
-            className="icon_lc" />
-        </span>
+          className="icon icon_lc" />
       </li>
       <li
         className="btn "
         onClick={[Function]}>
         <span
-          className="icon ">
-          <span
-            className="icon_charge_pole" />
-        </span>
+          className="icon icon_charge_pole" />
       </li>
     </ul>
   </div>

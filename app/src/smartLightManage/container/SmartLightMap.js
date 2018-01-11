@@ -105,6 +105,7 @@ export class SmartLightMap extends Component{
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
         this.mapTimeOut = null;
+        this.handler = true;
 
         this.renderInfo = this.renderInfo.bind(this);
         this.renderState = this.renderState.bind(this);
@@ -164,7 +165,7 @@ export class SmartLightMap extends Component{
             this.mounted && this.setSize();
         }
 
-        this.requestSearch(false);
+        // this.requestSearch(false);
     }
 
     componentDidMount(){
@@ -203,30 +204,31 @@ export class SmartLightMap extends Component{
         }
     }
 
-    requestSearch(IsSearch=true){
+    requestSearch(){
         const {model, search, tableIndex} = this.state;
 
         if(this.domainCurLevel != this.domainLevel){
-            getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, data=>{this.mounted && this.updateSearch(data, IsSearch)});
+            getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, data=>{this.mounted && this.updateSearch(data)});
         }else{
             let searchType = this.searchPromptList[tableIndex].id;
 
             if(searchType=="domain"){
                 let curDomain = lodash.find(this.domainList, domain=>{ return domain.name == search.get("value")});
                 if(curDomain){
-                    getPoleListByModelWithName(this.map.center, searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
+                    getPoleListByModelWithName(this.map.center, searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
                 }else{
                     this.props.actions.addNotify(0, 'app.not.found');
                     this.setState({IsSearchResult:false});
                 }
                 return;
             }
-            getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data, IsSearch)});
+            getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
         }
     }
 
-    updateSearch(data, IsSearch){
-        if(IsSearch && (!data || data.length==0)){
+    updateSearch(data){
+        console.log('handler:',this.handler);
+        if(!this.handler && (!data || data.length==0)){
             this.props.actions.addNotify(0, 'app.not.found');
         }
 
@@ -435,6 +437,7 @@ export class SmartLightMap extends Component{
         this.setState({IsSearch:true, IsSearchResult:true, tableIndex:index,
             searchList:this.state.searchList.splice(0)},()=>{
             this.setSize();
+            this.handler = false;
             this.requestSearch();
         });
     }
@@ -490,6 +493,7 @@ export class SmartLightMap extends Component{
         console.log('mapDrag:',data.latlng);
         this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         // this.setState(this.map);
+        this.handler = true;
         this.requestSearch();
     }
 
@@ -498,13 +502,14 @@ export class SmartLightMap extends Component{
         this.mapTimeOut && clearTimeout(this.mapTimeOut);
         // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+        this.handler = true;
         this.requestSearch();
     }
 
     markerClick(data){
         if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
             this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-
+            this.handler = true;
             this.requestSearch();
         }
     }

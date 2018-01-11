@@ -2,7 +2,7 @@ exports[`test MapPreview renders 1`] = `
 <div
   className="content map-preview">
   <div
-    className="map-view "
+    className="map-view  "
     id="mapPreview" />
   <div
     className="searchText "

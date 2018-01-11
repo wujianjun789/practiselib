@@ -158,7 +158,7 @@ exports[`<Gateway /> component snapshot 1`] = `
       <div
         className="map-container panel-body">
         <div
-          className="map-view "
+          className="map-view  "
           id="systemOperation" />
       </div>
     </div>
