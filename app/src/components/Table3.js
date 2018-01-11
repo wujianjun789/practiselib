@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
-import '../../public/styles/table.less'
+import '../../public/styles/table.less';
 import Collapse from 'antd/lib/collapse/Collapse';
 /**
  * Table 组件
@@ -13,6 +13,7 @@ import Collapse from 'antd/lib/collapse/Collapse';
  * rowCheckChange:Func(rowId:Num,value:bool) 选中或取消事件
  * rowEdit:Func(rowId:Num) 编辑事件
  * rowDelete:Func(rowId:Num) 删除事件
+ * collapsedClick:Func(rowId:Num) 收缩展开事件
  */
 export default class Table extends Component {
     constructor(props) {
@@ -24,8 +25,8 @@ export default class Table extends Component {
         this.rowClick = this.rowClick.bind(this);
     }
 
-    allCheckChange() {
-        this.props.allCheckChange && this.props.allCheckChange();
+    allCheckChange(value) {
+        this.props.allCheckChange && this.props.allCheckChange(value);
     }
 
     rowCheckChange(rowId, value) {
@@ -45,19 +46,19 @@ export default class Table extends Component {
     }
 
     collapsedClick(rowId){
-        this.props.collapseClick && this.props.collapseClick(rowId);
+        this.props.collapseClick && this.props.collapseClick(rowId,this.props.className,this.props.data);
     }
 
     render() {
         let {columns=[], data=[], allChecked, checked=[], keyField='id', isEdit, className='', activeId} = this.props;
         return (
-            <div className={`table-responsive ${className}`}>
+            <div className={`table-responsive table-${className}`}>
                 <table className="table table-hover">
                     <thead>
                     <tr>
                         <th className={allChecked === undefined?'hidden':''}><input type="checkbox"
                                                                                     checked={allChecked}
-                                                                                    onChange={this.allCheckChange}/>
+                                                                                    onChange={e=>this.allCheckChange(e.target.checked)}/>
                         </th>
                         {
                             columns.map((item, index)=> {
@@ -71,7 +72,7 @@ export default class Table extends Component {
                     </thead>
                     <tbody>
                     {
-                        data.map((row, index)=> {
+                        data.map((row, index) => {
                             let curId = row.get('id');
                             if(!row.get('hidden')){
                                 return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
@@ -83,7 +84,7 @@ export default class Table extends Component {
                                 {
                                     columns.map((item, index)=>{
                                         return <td key={index}>
-                                        {item.field==columns[0].field && <span className={row.has("collapsed")?"glyphicon " + (row.get("collapsed") ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom"):"empty"}  onClick={()=>{this.collapsedClick(row.get(keyField))}}></span>}
+                                        {item.field==columns[0].field && <span className={row.has("collapsed")?"glyphicon " + (row.get("collapsed") ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom"):"glyphicon"}  onClick={()=>{this.collapsedClick(row.get(keyField))}}></span>}
                                         {row.get(item.field)}
                                         </td>
                                     })

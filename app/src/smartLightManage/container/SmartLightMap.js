@@ -253,7 +253,6 @@ export class SmartLightMap extends Component{
                         }
 
                         if (deviceLen.length == data.length){
-                            console.log('updateSearch:', this.state.searchList.toJS());
                             this.setState({searchList:this.state.searchList});
                         }
                     })
@@ -489,13 +488,13 @@ export class SmartLightMap extends Component{
 
     mapDragend(data){
         console.log('mapDrag:',data.latlng);
-        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         // this.setState(this.map);
         this.requestSearch();
     }
 
     mapZoomend(data){
-        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.mapTimeOut && clearTimeout(this.mapTimeOut);
         // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
