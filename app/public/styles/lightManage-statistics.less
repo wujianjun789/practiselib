@@ -1,0 +1,185 @@
+/**
+ * created by m on 2018/01/8
+ */
+
+.example{
+  position: fixed;
+  top: 160px;
+  left: 300px;
+}
+
+.light-statistics {
+  .content {
+    overflow-x: hidden;
+    min-width: 980px;
+    .heading {
+      height: 70px;
+      background: #ffffff;
+      .sort {
+        width: 160px;
+        height: 30px;
+        margin-top: 20px;
+        margin-right: 25px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+      }
+      .btn{
+        margin-top: -4px;
+      }
+    }
+
+    .energy-container {
+      width:1110px;
+      height:210px;
+      margin:40px;
+      .energy-container-header{
+        height:40px;
+        .sort {
+          width: 160px;
+          height: 30px;
+          margin:5px;
+          float: right;
+          position: relative;
+          top: -11px;
+          left: 16px;
+        }
+      }
+      .panel-body {
+        &.lightenergychart {
+          position: relative;
+          height: 170px;
+          padding: 0px;
+          .energyInfo {
+            position: absolute;
+            top:0px;
+            left:900px;
+            width: 210px;
+            height: 170px;
+            margin: 0px;
+            padding:10px;
+            border:1px solid #f7f4f4 ;
+          }
+      }
+      }
+    }
+
+
+    .col-sm-4 {
+      position: relative;
+      padding-right: 0px;
+      padding-left: 0px;
+      margin-right: 20px;
+      margin-left: 20px;
+      width:343px;
+      &:first-child {
+        margin-left:0px;
+      }
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
+    .col-sm-11 {
+      margin-right: 20px;
+      padding-right: 0px;
+      padding-left: 0px;
+      width:91%;
+
+    }
+    .panel{
+      border: 0px solid transparent;
+      border-color: #ddd;
+      .panel-heading{
+        background-color: #e4e4e4;
+        font-weight: bold;
+      }
+      .panel-body{
+        background-color:#fff;
+        height:170px;
+        padding:0px;
+      }
+    }
+
+    //统计数据信息
+    .stateInfo {
+      width: 210px;
+      height: 170px;
+      margin: 0px;
+      padding:10px;
+      float: right;
+      border:1px solid #f7f4f4 ;
+    }
+
+    .fontbold {
+      font-weight: bold;
+    }
+    .font {
+      margin:7px;
+    }
+
+    .state-container{
+      width:1110px;
+      margin:40px;
+      // .status {
+
+      // }
+      // .excution {
+
+      // }
+      // .lightson {
+
+      // }
+    }
+  }
+}
+
+//柱状图样式
+.axis path,
+.axis line{
+  fill: none;
+  stroke: #EAEEF1;
+  shape-rendering: crispEdges;
+}
+.axis text {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+.MyRect {
+  fill: #39CEA8;
+}
+.MyText {
+  fill: white;
+  text-anchor: middle;
+  }
+.d3-tip {
+  top:0px;
+  left:0px;
+  line-height: 1;
+  font-size: 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+

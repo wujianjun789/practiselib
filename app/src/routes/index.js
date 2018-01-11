@@ -263,6 +263,11 @@ export default (
                 </Route>
             </Route>
             <Route path="/light" component={LightManage}>
+                <Route path="statistics" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../lightManage/container/lightStatistics').default)
+                        }, 'starriverpro.lightManage.lightStatistics')
+                    }} />
                 <Route path="map" getComponent={(nextState, cb) => {
                     require.ensure([], (require) => {
                         cb(null, require('../lightManage/container/lightMap').default)
