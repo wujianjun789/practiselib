@@ -3,6 +3,16 @@
  */
 export const TreeData=[
     {
+        "id": "statistics",
+        "name":"统计",
+        "toggled": false,
+        "active": true,
+        "link": "/light/statistics",
+        "level":1,
+        "children":[
+        ]
+    },
+    {
         "id": "map",
         "name":"地图",
         "toggled": false,
