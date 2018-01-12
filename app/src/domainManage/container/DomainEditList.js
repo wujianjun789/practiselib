@@ -246,6 +246,7 @@ export class DomainEditList extends Component {
                                                  cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
                                                  ()=>{
                                                     actions.overlayerHide();
+                                                    this.initSelectDomain();
                                                     this.requestDomain();
                                                     this.requestSearch();
                                                 })}}/>);

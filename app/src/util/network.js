@@ -18,6 +18,8 @@ export const statusCode = {
 const errorCode = {
     [HOST_IP+"/users/login"]: 1
 }
+
+export let timeOut = {};
 /**
  *  url 请求路径
  *  option 头信息、请求类型等
@@ -28,7 +30,6 @@ const errorCode = {
  *  unresolved 代表需要用户手动处理,返回response
  */
 export function httpRequest(url, option, responseCall, responseParam, errorCall, errorParam) {
-    let IsHandle = false;
     let args = Array.prototype.slice.call(arguments);
     if (option) {
         // option.redirect = !!option.redirect?option.redirect:'same-origin';
@@ -61,22 +62,20 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
                 json,
                 response
             }) => {
-                IsHandle = true;
                 // if (!response.ok) {
                 //     return Promise.reject(json)
                 // }
                 responseCall && responseCall.apply(null, [json, response, responseParam]);
 
             }).catch(function (error) {
-                IsHandle = true;
                 errorCall && errorCall.apply(null, [error, errorParam]);
         })
     }), new Promise((resolve, reject)=>{
-        setTimeout(()=>{
+        timeOut[parseInt(Math.random()*99)] = setTimeout(()=>{
             let err = {"statusCode": 408,"name":"Error", "message":"Request Timeout"}
-            !IsHandle && console.log(err);
-            !IsHandle && alertPopup(err.message);
-            !IsHandle && errorCall && errorCall.apply(null, [err]);
+            console.log(err);
+            alertPopup(err.message);
+            errorCall && errorCall.apply(null, [err]);
         }, 30000)
     })]).then(resolve=>{
 
@@ -86,6 +85,10 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
 }
 
 function checkStatus(response) {
+    for(let ti in timeOut){
+        clearTimeout(timeOut[ti]);
+    }
+
     if (response.status >= 200 && response.status < 300) {
         return response
     } else {

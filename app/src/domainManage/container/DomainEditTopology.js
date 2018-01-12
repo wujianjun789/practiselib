@@ -21,6 +21,8 @@ import {getLanguage, getObjectByKey, getIndexByKey, getElementOffwidth} from '..
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 
+import lodash from 'lodash';
+
 class DomainEditTopology extends Component{
     constructor(props){
         super(props)
@@ -125,7 +127,7 @@ class DomainEditTopology extends Component{
                         }
 
                        childrens = data.map(children=>{
-                           let curDomain = getObjectByKey(domain.children, 'id', children.id)
+                           let curDomain = lodash.find(domain.children, domain=>{ return domain.id == children.id})
                            if(curDomain){
                                return Object.assign({}, curDomain, children);
                            }else{
@@ -190,14 +192,19 @@ class DomainEditTopology extends Component{
     }
 
     updateSelectDomain(domain){
-        let selectDomain = this.state.selectDomain;
-        selectDomain.latlng = domain.geoPoint;
-        selectDomain.position.splice(0)
-        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
-        selectDomain.parentId = domain.parentId;
-        selectDomain.data.splice(0);
-        selectDomain.data.push({id:domain.id, name:domain.name, detail:domain.name});
-        this.setState({selectDomain:selectDomain})
+        if(!domain || !domain.id ){
+            this.initSelectDomain();
+            return;
+        }else{
+            let selectDomain = this.state.selectDomain;
+            selectDomain.latlng = domain.geoPoint;
+            selectDomain.position.splice(0)
+            selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
+            selectDomain.parentId = domain.parentId;
+            selectDomain.data.splice(0);
+            selectDomain.data.push({id:domain.id, name:domain.name, detail:domain.name});
+            this.setState({selectDomain:selectDomain})
+        }
     }
 
     getDomainParentList(){
@@ -288,10 +295,10 @@ class DomainEditTopology extends Component{
                                                             actions.overlayerHide();
                                                             this.requestDomain();
                                                             this.requestCurDomain(selectDomain.parentId);
-                                                            if(selectDomain.parentId){
-                                                                let parentDomain = getObjectByKey(this.domainList, 'id', selectDomain.parentId);
+                                                            // if(selectDomain.parentId){
+                                                                let parentDomain = lodash.find(this.domainList, domain=>{ return domain.id == selectDomain.parentId});
                                                                 this.updateSelectDomain(parentDomain);
-                                                            }
+                                                            // }
                                                         })
                                                    }}/>);
                 break;
