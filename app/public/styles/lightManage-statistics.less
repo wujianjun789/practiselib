@@ -57,7 +57,7 @@
             height: 170px;
             margin: 0px;
             padding:10px;
-            border:1px solid #f7f4f4 ;
+            // border:1px solid #f7f4f4 ;
           }
       }
       }
@@ -100,13 +100,33 @@
     }
 
     //统计数据信息
+    .circle {
+      float: left;
+    }
+    .dot {
+      float:left;
+      width:10px;
+      height:10px;
+      border-radius: 50%;
+      margin-top: 5px;
+      &.color1 {
+        background-color: #1f77b4;
+      }
+      &.color2 {
+        background-color: #aec7e8;
+      }
+      &.color3 {
+        background-color: #ff7f0e;
+      }
+    }
     .stateInfo {
-      width: 210px;
+      width: 194px;
       height: 170px;
       margin: 0px;
       padding:10px;
+      padding-left: 4px;
       float: right;
-      border:1px solid #f7f4f4 ;
+      // border:1px solid #f7f4f4 ;
     }
 
     .fontbold {
@@ -114,6 +134,8 @@
     }
     .font {
       margin:7px;
+      margin-left: 20px;
+
     }
 
     .state-container{
