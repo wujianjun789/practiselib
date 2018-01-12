@@ -179,7 +179,7 @@ export class DomainEditList extends Component {
         const {actions} = this.props;
         switch(id){
             case 'add':
-                actions.overlayerShow(<DomainPopup title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+                actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                                    onConfirm={(data)=>{
@@ -187,13 +187,16 @@ export class DomainEditList extends Component {
                                                         domain.name = data.domainName;
                                                         domain.geoType = 0;
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
-                                                        domain.parentId = data.prevDomain;
+                                                        if(data.prevDomain){
+                                                            domain.parentId = data.prevDomain;
+                                                        }
 
                                                         addDomain(domain, ()=>{
                                                             actions.overlayerHide();
                                                             this.requestDomain();
                                                             this.requestSearch();
                                                         }, error=>{
+                                                            console.log('error:', error);
                                                             actions.addNotify(0, error);
                                                         });
                                                    }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify()}}/>);
@@ -213,7 +216,7 @@ export class DomainEditList extends Component {
                     name = data.name;
                 }
 
-                actions.overlayerShow(<DomainPopup title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
+                actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                                               domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                                               onConfirm={(data)=>{
@@ -222,7 +225,10 @@ export class DomainEditList extends Component {
                                                                     domain.name = data.domainName;
                                                                     domain.geoType = 0;
                                                                     domain.geoPoint = {lat:data.lat, lng:data.lng};
-                                                                    domain.parentId = data.prevDomain;
+                                                                    if(data.prevDomain){
+                                                                        domain.parentId = data.prevDomain;
+                                                                    }
+
                                                                     updateDomainById(domain, ()=>{
                                                                         actions.overlayerHide();
                                                                         this.requestDomain();

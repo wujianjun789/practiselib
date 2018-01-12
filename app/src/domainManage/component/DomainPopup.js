@@ -162,7 +162,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="fixed-width-left control-label" htmlFor="prevDomain"><FormattedMessage id='domain.superior'/>：</label>
                             <div className="fixed-width-right">
-                                <select className="form-control" id="prevDomain" placeholder={intlFormat({en:'please input the superior domain',zh:'输入GPS坐标'})} value={curDomain?curDomain.name:intlFormat({en:'null',zh:'无'})} onChange={this.onChange}>
+                                <select className="form-control" id="prevDomain" disabled={this.props.id=="updateDomain"?true:false} placeholder={intlFormat({en:'please input the superior domain',zh:'输入GPS坐标'})} value={curDomain?curDomain.name:intlFormat({en:'null',zh:'无'})} onChange={this.onChange}>
                                     {
                                         options.map(item => <option key={item.id} value={item[valueKey]}>{item[titleKey]}</option>)
                                     }

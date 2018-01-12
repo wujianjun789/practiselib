@@ -93,8 +93,10 @@ function checkStatus(response) {
             alertPopup(response);
         }
 
-        return parseJSON(response).then(({json,response}) => {
-            var error = new Error(json && json.message || response.status);
+        return parseJSON(response).then(({json, response}) => {
+            const errorJson = json && json.error;
+            console.log('errorJson:', errorJson, errorJson.message);
+            var error = new Error(errorJson && errorJson.message || response.status);
             throw error;
         })
     }
@@ -109,8 +111,15 @@ function parseJSON(response) {
             }
         )
     }else{
-        return new Promise((resolve)=>{
-            resolve({response})
+        return response.json().then(json=>{
+            console.log('json:', json);
+            return new Promise((resolve)=>{
+                resolve({json, response});
+            })
+        }, error=>{
+            return new Promise(resolve=>{
+                resolve({undefined, response});
+            })
         })
     }
 }
@@ -164,7 +173,14 @@ export function alertPopup(response) {
     if(typeof response === 'string'){
         alert(response);
     }else{
-        response && alert(response.statusText?response.statusText:statusCode[response.statusCode]);
+        response && parseJSON(response).then(({json, response}) => {
+            const errorJson = json && json.error;
+            errorJson && alert(errorJson.message);
+        }).catch(error=>{
+            alert(response.statusText?response.statusText:statusCode[response.statusCode]);
+        })
+
+
     }
 }
 

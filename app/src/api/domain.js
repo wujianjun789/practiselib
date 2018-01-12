@@ -94,10 +94,6 @@ export function getDomainCountByName(domainName, cb) {
 }
 
 export function addDomain(domain, cb, err) {
-    if(!domain.parentId){
-        domain.parentId = null;
-    }
-
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains',{
         headers: headers,
@@ -110,14 +106,16 @@ export function addDomain(domain, cb, err) {
     })
 }
 
-export function updateDomainById(domain, cb) {
+export function updateDomainById(domain, cb, err) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains/'+domain.id,{
         headers: headers,
-        method: 'PUT',
+        method: 'PATCH',
         body: JSON.stringify(domain)
     }, response=>{
         cb && cb(response)
+    }, null, error=>{
+        err && err(error);
     })
 }
 
