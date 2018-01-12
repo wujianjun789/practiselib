@@ -112,7 +112,7 @@
     "test": "jest --coverage",
     "dev:server": "cd server & node server --dev ",
     "dev:client": "webpack-dev-server --public",
-    "dev": "start npm run dev:server && start npm run dev:client ",
+    "dev": "start npm run dev:server &&start npm run dev:client ",
     "build:lib": "webpack --config ddl.config.js",
     "build:app": "webpack --config webpack.app.config.js",
     "build": "gulp && start npm run build:lib && start npm run build:app ",
