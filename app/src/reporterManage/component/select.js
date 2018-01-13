@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Select = (props, context) => {
-    let { id, className = '', disabled = false, hidden = false, options, onChange, current } = props;
+    const { id, className = '', disabled = false, hidden = false, options, onChange, current } = props;
+
     let defaultValue = null;
     if (id === 'domain' && current) {
         defaultValue = current
@@ -24,7 +25,7 @@ Select.propTypes = {
     hidden: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.object),
     onChange: PropTypes.func,
-
+    current: PropTypes.string,
 }
 
 export default Select;

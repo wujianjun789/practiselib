@@ -302,26 +302,26 @@ export default (
                 <Route path="device">
                     <IndexRoute getComponent={(nextState, cb) => {
                         require.ensure([], require => {
-                            cb(null, require('../reporterManage/device/containers/Lc').default);
+                            cb(null, require('../reporterManage/container/device/lc').default);
                         }, 'starriverpro.reporterManage.device.lc');
                     }} />
                     <Route path="gateway" getComponent={(nextState, cb) => {
                         require.ensure([], require => {
-                            cb(null, require('../reporterManage/device/containers/Gateway').default);
+                            cb(null, require('../reporterManage/container/device/gateway').default);
                         }, 'starriverpro.reporterManage.device.gateway');
                     }} />
                 
                     <Route path="power" getComponent={(nextState, cb) => {
                         require.ensure([], require => {
-                            cb(null, require('../reporterManage/device/containers/Power').default);
+                            cb(null, require('../reporterManage/container/device/power').default);
                         }, 'starriverpro.reporterManage.device.power');
                     }} />
                 </Route>
-                <Route path="count">
+                <Route path="stat">
                     <IndexRoute getComponent={(nextState, cb) => {
                         require.ensure([], require => {
-                            cb(null, require('../reporterManage/count/containers/Energy').default);
-                        }, 'starriverpro.reporterManage.count.energy');
+                            cb(null, require('../reporterManage/container/stat/energy').default);
+                        }, 'starriverpro.reporterManage.stat.energy');
                     }} />
                 </Route>
             </Route>
