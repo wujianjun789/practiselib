@@ -55,7 +55,6 @@ export default class MapPreview extends Component{
         getMapConfig(data=>{
             if(this.mounted){
                 this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
-                this.map.zoom = 15
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
             }
         })
@@ -68,7 +67,7 @@ export default class MapPreview extends Component{
     }
 
     initDomainList(data){
-        this.setState({domainList:data});
+        this.mounted && this.setState({domainList:data});
     }
 
     updatePlaceholder(){
@@ -106,7 +105,7 @@ export default class MapPreview extends Component{
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
             })
 
-            this.setState({curDomainList: data, positionList:positionList},()=>{
+            this.mounted && this.setState({curDomainList: data, positionList:positionList},()=>{
                 let deviceLen = [];
                 data.map(item=>{
                     getAssetsBaseByDomain(item.id, asset=>{
@@ -120,7 +119,7 @@ export default class MapPreview extends Component{
                         }
 
                         if (deviceLen.length == data.length){
-                            this.setState({curDomainList: this.state.curDomainList});
+                            this.mounted && this.setState({curDomainList: this.state.curDomainList});
                         }
                     })
                 })
@@ -135,7 +134,7 @@ export default class MapPreview extends Component{
             let item = domainList[i];
             if(!search.value || item.name.indexOf(search.value)>-1){
                 this.map.center = item.geoPoint;
-                this.setState({panLatlng:item.geoPoint});
+                this.mounted && this.setState({panLatlng:item.geoPoint});
                 break;
             }
         }
@@ -144,7 +143,7 @@ export default class MapPreview extends Component{
     }
 
     panCallFun(){
-        this.setState({panLatlng:null});
+        this.mounted && this.setState({panLatlng:null});
     }
 
     mapDragend(data){
