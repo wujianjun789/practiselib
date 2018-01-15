@@ -302,15 +302,15 @@
                                 margin-left: 10px;
                             }
                         }
-                        &.param-select-panel {
+                        &.param-select-panel,&.state-select-mode {
                             .select-device {
                                 margin-top: 20px;
-                                height: 30px;
+                                height: 34px;
                                 input {
                                     display: inline-block;
                                     font-size: 14px;
-                                    height: 30px;
-                                    line-height: 30px;
+                                    height: 34px;
+                                    line-height: 34px;
                                     text-indent: 15px;
                                     color: #222;
                                     font-weight: bold;
@@ -322,6 +322,18 @@
                                     vertical-align: top;
                                     border-radius: 0 2px 2px 0;
                                 }
+                            }
+                        }
+                        &.state-select-mode{
+                            .select-mode{
+                                margin-bottom:20px;
+                            }
+                            .select-device{
+                                margin-top:0;
+                            }
+                            .btn-group-right{
+                                margin-top:25px;
+                                text-align:right;
                             }
                         }
                     }
@@ -421,6 +433,9 @@
                 padding: 10px 20px;
                 min-width: 100%;
                 margin-bottom: 1px;
+                .table{
+                    min-width: 420px!important;
+                }
                 th:first-child input {
                     visibility: hidden;
                 };
