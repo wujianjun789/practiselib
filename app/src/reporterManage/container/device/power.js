@@ -8,7 +8,7 @@ import Select from '../../../components/Select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import Chart from '../../utils/multiLineChartWithZoomAndBrush';
+import Chart from '../../util/multiLineChartWithZoomAndBrush';
 import DatePicker from 'antd/lib/date-picker';  // 加载 JS
 import Immutable from 'immutable';
 import {getDomainList} from '../../../api/domain';

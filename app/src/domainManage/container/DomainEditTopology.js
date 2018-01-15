@@ -21,6 +21,8 @@ import {getLanguage, getObjectByKey, getIndexByKey, getElementOffwidth} from '..
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 
+import lodash from 'lodash';
+
 class DomainEditTopology extends Component{
     constructor(props){
         super(props)
@@ -125,7 +127,7 @@ class DomainEditTopology extends Component{
                         }
 
                        childrens = data.map(children=>{
-                           let curDomain = getObjectByKey(domain.children, 'id', children.id)
+                           let curDomain = lodash.find(domain.children, domain=>{ return domain.id == children.id})
                            if(curDomain){
                                return Object.assign({}, curDomain, children);
                            }else{
@@ -190,14 +192,19 @@ class DomainEditTopology extends Component{
     }
 
     updateSelectDomain(domain){
-        let selectDomain = this.state.selectDomain;
-        selectDomain.latlng = domain.geoPoint;
-        selectDomain.position.splice(0)
-        selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
-        selectDomain.parentId = domain.parentId;
-        selectDomain.data.splice(0);
-        selectDomain.data.push({id:domain.id, name:domain.name, detail:domain.name});
-        this.setState({selectDomain:selectDomain})
+        if(!domain || !domain.id ){
+            this.initSelectDomain();
+            return;
+        }else{
+            let selectDomain = this.state.selectDomain;
+            selectDomain.latlng = domain.geoPoint;
+            selectDomain.position.splice(0)
+            selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
+            selectDomain.parentId = domain.parentId;
+            selectDomain.data.splice(0);
+            selectDomain.data.push({id:domain.id, name:domain.name, detail:domain.name});
+            this.setState({selectDomain:selectDomain})
+        }
     }
 
     getDomainParentList(){
@@ -219,7 +226,7 @@ class DomainEditTopology extends Component{
         const {actions} = this.props;
         switch(id){
             case 'add':
-                actions.overlayerShow(<DomainPopup title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+                actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                                    onConfirm={(data)=>{
@@ -227,7 +234,9 @@ class DomainEditTopology extends Component{
                                                         domain.name = data.domainName;
                                                         domain.geoType = 0;
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
-                                                        domain.parentId = data.prevDomain;
+                                                        if(data.prevDomain){
+                                                            domain.parentId = data.prevDomain;
+                                                        }
 
                                                         addDomain(domain, ()=>{
                                                             actions.overlayerHide();
@@ -251,7 +260,7 @@ class DomainEditTopology extends Component{
                     updateId = data.id;
                     name = data.name;
                 }
-                actions.overlayerShow(<DomainPopup title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
+                actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                                    domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                                    onConfirm={(data)=>{
@@ -260,7 +269,10 @@ class DomainEditTopology extends Component{
                                                         domain.name = data.domainName;
                                                         domain.geoType = 0;
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
-                                                        domain.parentId = data.prevDomain;
+                                                        if(data.prevDomain){
+                                                            domain.parentId = data.prevDomain;
+                                                        }
+
                                                         updateDomainById(domain, ()=>{
                                                             actions.overlayerHide();
                                                             this.requestDomain();
@@ -283,10 +295,10 @@ class DomainEditTopology extends Component{
                                                             actions.overlayerHide();
                                                             this.requestDomain();
                                                             this.requestCurDomain(selectDomain.parentId);
-                                                            if(selectDomain.parentId){
-                                                                let parentDomain = getObjectByKey(this.domainList, 'id', selectDomain.parentId);
+                                                            // if(selectDomain.parentId){
+                                                                let parentDomain = lodash.find(this.domainList, domain=>{ return domain.id == selectDomain.parentId});
                                                                 this.updateSelectDomain(parentDomain);
-                                                            }
+                                                            // }
                                                         })
                                                    }}/>);
                 break;

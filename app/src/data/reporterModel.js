@@ -34,11 +34,11 @@ export const TreeData = [
         ]
     },
     {
-        "id": "count",
+        "id": "stat",
         "name": "统计",
         "toggled": false,
         "active": false,
-        "link": "/reporterManage/count",
+        "link": "/reporterManage/stat",
         "level": 1,
         "children": [
             {
@@ -46,7 +46,7 @@ export const TreeData = [
                 "name": "能耗",
                 "class": "icon_lc",
                 "active": true,
-                "link": "/reporterManage/count"
+                "link": "/reporterManage/stat"
             },
         ]
     },

@@ -20,17 +20,36 @@ export class NotifyPopup extends Component {
     }
 
     render() {
-        const {notifyPopup} = this.props;
+        const {notifyPopup, intl} = this.props;
 
         let notifyList = notifyPopup.get("notifyList");
         let curList = notifyList.slice(0, 3);
         return <ul className="list-group notify-popup">
-                 { curList.map((item, index) => {
-                       let id = item.get("id");
-                       let ani = item.get("animation");
-                   
-                       return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
-                                <div className="notify-content"><FormattedMessage id={item.get("text")} /></div>
+                 {
+                     curList.map((item, index) => {
+                         let id = item.get("id");
+                         let ani = item.get("animation");
+                         let text = item.get("text");
+
+                         if(text){
+                             console.log(text, typeof text);
+                             if(text instanceof Error){
+                                 console.log('error:', text.error);
+                                 text = text.error?text.error.message:text.toString();
+                             }
+                             else if(typeof text == "object"){
+                                 console.log('object:')
+                                 text = text.toString();
+                             }
+                         }else{
+                             text = '';
+                         }
+
+                         if(typeof text == "string"){
+
+                         }
+                         return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
+                                <div className="notify-content">{intl[text]?<FormattedMessage id={text} />:text}</div>
                                 <span className="glyphicon glyphicon-remove" onClick={ () => this.onClick(id) }></span>
                               </li>
                    }) }
@@ -40,7 +59,8 @@ export class NotifyPopup extends Component {
 
 function mapStateToProps(state) {
     return {
-        notifyPopup: state.notifyPopup
+        notifyPopup: state.notifyPopup,
+        intl: state.intl
     }
 }
 

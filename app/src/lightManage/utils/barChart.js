@@ -3,7 +3,8 @@
  */
 // import { intlFormat } from '../util/index';
 export default function BarChart(data) {
-    let parent = d3.select('#energyStatistics');
+	let ID = data.wrapper.id
+	let parent = d3.select(`#${ID}`)
     if (parent == null) return;
 
     var wrapper = data.wrapper;
@@ -52,8 +53,7 @@ export default function BarChart(data) {
         })
 
     //在 body 里添加一个 SVG 画布	
-	var svg = d3.select("#energyStatistics")
-        .append("svg")
+	var svg = parent.append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
@@ -119,4 +119,10 @@ export default function BarChart(data) {
 	// 	.attr("class","axis")
 	// 	.attr("transform","translate(" + padding.left + "," + padding.top + ")")
 	// 	.call(yAxis);
+	return {
+		destroy: function() {
+			parent.select('svg').remove()
+	   }
+	}
+	 
 }

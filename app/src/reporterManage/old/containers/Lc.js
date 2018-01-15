@@ -6,10 +6,11 @@ import Select1 from '../../component/select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import { DatePicker, Modal } from 'antd';
-import 'antd/lib/modal/style/css';
-import '../../../../public/styles/reporterManage-device.less';
+import { DatePicker } from 'antd';
+import Modal from 'antd/lib/modal';
+import '../../../../public/styles/antd-modal.less'
 
+import '../../../../public/styles/reporterManage-device.less';
 import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 import { getYesterday, getToday } from '../../../util/time';
 import { getDomainList } from '../../../api/domain'
@@ -48,14 +49,9 @@ export default class Lc extends Component {
             placeholder: '输入设备名称'
         },
 
-        deviceList: [],
-        selectedDeviceIdList: [],
-        selectedDeviceCollection: {},
-
-        page: { total: 0, current: 1, limit: 5 },
-
-        showDeviceName: '',
-        visible: false,
+        multiDeviceList: [],
+        selectedMultiDeviceIdList: [],
+        selectedMultiDeviceCollection: {},
 
         multiParamList: [
             { param: '亮度', unit: '%' },
@@ -65,13 +61,20 @@ export default class Lc extends Component {
         ],
         selectedMultiParamIdList: [],
         selectedMultiParamCollection: {},
+
+        page: { total: 0, current: 1, limit: 5 },
+
+        currentDeviceId: null,
+        showDeviceName: '',
+        visible: false,
+
     }
 
     //初始化
     componentWillMount() {
         this._isMounted = true;
         this.model = 'lc';
-        this.columns = [
+        this.deviceColumns = [
             { field: 'name', title: '设备名称' },
             { field: 'id', title: '设备编号' }
         ];
@@ -118,26 +121,7 @@ export default class Lc extends Component {
         }
     }
     updateDeviceData = (data) => {
-        this._isMounted && this.setState({ deviceList: data })
-    }
-
-    selectDevice = (rowId, checked) => {
-        const { deviceList, selectedDeviceIdList, selectedDeviceCollection } = this.state;
-        if (checked) {
-            if (selectedDeviceIdList.length < this.maxSelectNum) {
-                this.setState({
-                    selectedDeviceIdList: [...selectedDeviceIdList, rowId],
-                    selectedDeviceCollection: { ...selectedDeviceCollection, [rowId]: deviceList.find(item => item.id === rowId) }
-                })
-            }
-        } else {
-            selectedDeviceIdList.splice(selectedDeviceIdList.findIndex(item => item === rowId), 1) //注意，此处一定要指明删除数量为1
-            delete selectedDeviceCollection[rowId]
-            this.setState({
-                selectedDeviceIdList,
-                selectedDeviceCollection
-            })
-        }
+        this._isMounted && this.setState({ multiDeviceList: data })
     }
 
     //更新分页面板
@@ -163,23 +147,17 @@ export default class Lc extends Component {
     }
 
     componentDidUpdate() {
-        // console.log(this.state.domainList, this.state.currentDomain)
-        // const { deviceList, selectedDeviceIdList, selectedDeviceCollection } = this.state;
-        // console.log('deviceList', deviceList);
-        // console.log('selectedDeviceIdList', selectedDeviceIdList);
-        // console.log('selectedDeviceCollection', selectedDeviceCollection);
-        const { multiParamList, selectedMultiParamIdList, selectedMultiParamCollection } = this.state;
-        console.log(multiParamList)
-        console.log(selectedMultiParamIdList)
-        console.log(selectedMultiParamCollection)
+        const { currentDomain,multiDeviceList } = this.state;
+        console.log(multiDeviceList)
+        console.log(currentDomain)
     }
 
     //d3图表
     drawLineChart = (node) => {
-        const { selectedDeviceCollection, startDate, endDate } = this.state;
+        const { selectedMultiDeviceCollection, startDate, endDate } = this.state;
         this.chart = new Chart({
             wrapper: node,
-            data: Object.values(selectedDeviceCollection),
+            data: Object.values(selectedMultiDeviceCollection),
             xAccessor: d => d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
             yAccessor: d => d.value,
             xDomain: [startDate, endDate],
@@ -221,72 +199,132 @@ export default class Lc extends Component {
         }
     }
 
-    //重置、应用
+    //应用
     onClickHandler = (e) => {
         const { id } = e.target;
-        switch (id) {
-            case 'apply':
-                console.log('获取数据并在图表中渲染出来')
-                break;
+        // switch (id) {
+        //     case 'apply':
+        //         console.log('获取数据并在图表中渲染出来')
+        //         break;
 
+        // }
+        const { currentMode, currentParam, selectedMultiDeviceIdList, currentDeviceId, selectedMultiParamIdList } = this.state;
+        let body;
+        if (currentMode === 1) {
+            body = {
+                mode: 'multiDevice', //模式
+                param: currentParam, //选中的参数
+                deviceList: selectedMultiDeviceIdList //设备id列表
+            }
+            console.log(body)
+        } else if (currentMode === 2) {
+            body = {
+                mode: 'multiParam',
+                device: currentDeviceId, //选中的设备id
+                paramList: selectedMultiParamIdList //参数列表
+            }
+            console.log(body)
         }
     }
 
     showModal = () => {
         this.setState({ visible: !this.state.visible })
     }
+    selectDevice = (rowId, checked) => {
+        const { multiDeviceList, selectedMultiDeviceIdList, selectedMultiDeviceCollection } = this.state;
+        if (checked) {
+            if (selectedMultiDeviceIdList.length < this.maxSelectNum) {
+                this.setState({
+                    selectedMultiDeviceIdList: [...selectedMultiDeviceIdList, rowId],
+                    // selectedMultiDeviceCollection: { ...selectedMultiDeviceCollection, [rowId]: multiDeviceList.find(item => item.id === rowId) }
+                })
+            }
+        } else {
+            selectedMultiDeviceIdList.splice(selectedMultiDeviceIdList.findIndex(item => item === rowId), 1) //注意，此处一定要指明删除数量为1
+            // delete selectedMultiDeviceCollection[rowId]
+            this.setState({
+                selectedMultiDeviceIdList,
+                // selectedMultiDeviceCollection
+            })
+        }
+    }
+    selectSingleDevice = (rowId, checked) => {
+        let { currentDeviceId, showDeviceName, multiDeviceList } = this.state;
+        if (checked) {
+            this.setState({
+                currentDeviceId: rowId,
+                showDeviceName: multiDeviceList.find(item => item.id === rowId)['name']
+            })
 
-    selectMultiParam = (rowId, checked) => {
+        } else {
+            currentDeviceId = null;
+            this.setState({ currentDeviceId, showDeviceName: '' })
+        }
+    }
+    selectParam = (rowId, checked) => {
         const { multiParamList, selectedMultiParamIdList, selectedMultiParamCollection } = this.state;
         if (checked) {
             this.setState({
                 selectedMultiParamIdList: [...selectedMultiParamIdList, rowId],
-                selectedMultiParamCollection: { ...selectedMultiParamCollection, [rowId]: multiParamList.find(item => item.param === rowId) }
+                // selectedMultiParamCollection: { ...selectedMultiParamCollection, [rowId]: multiParamList.find(item => item.param === rowId) }
             })
         } else {
             selectedMultiParamIdList.splice(selectedMultiParamIdList.findIndex(item => item === rowId), 1);
-            delete selectedMultiParamCollection[rowId]
+            // delete selectedMultiParamCollection[rowId]
             this.setState({
                 selectedMultiParamIdList,
-                selectedMultiParamCollection
+                // selectedMultiParamCollection
             })
         }
     }
     render() {
         const { sidebarCollapse, startDate, endDate, currentMode, modeList, currentParam, paramList, currentDomain, domainList, search: { value, placeholder },
-            deviceList, selectedDeviceIdList, selectedDeviceCollection, page: { total, current, limit }, showDeviceName, visible, multiParamList, selectedMultiParamIdList } = this.state;
-        let devicePanel = null;
+            multiDeviceList, selectedMultiDeviceIdList, page: { total, current, limit }, showDeviceName, visible, multiParamList,
+            selectedMultiParamIdList, currentDeviceId } = this.state;
+        let devicePanel = null, applyDisabled = true, currentDomainName = null;
+
+        if (currentDomain) {
+            currentDomainName = currentDomain['name']
+        }
+
         if (currentMode === 1) {
             devicePanel = <div class='device-select-mode'>
-                <Select1 id='domain' className='select-domain' options={domainList} onChange={this.onChangeHandler} />
+                <Select1 id='domain' className='select-domain' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
                 <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
-                <Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectedDeviceIdList} rowCheckChange={this.selectDevice} />
+                <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={selectedMultiDeviceIdList} rowCheckChange={this.selectDevice} />
                 <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
                     <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
                 </div>
             </div>;
+            if (currentParam !== null && selectedMultiDeviceIdList.length) {
+                applyDisabled = false;
+            }
         } else if (currentMode === 2) {
-            devicePanel =
-                <div class='device-select-mode'>
+            devicePanel = <div class='device-select-mode param-select-panel'>
+                <div class='select-device'>
                     <input disabled value={showDeviceName} />
-                    <button onClick={this.showModal}>选择设备</button>
-                    <Modal title='选择设备' visible={visible} onCancel={this.showModal} maskClosable={false}>
-                        <Select1 id='domain' className='select-domain' options={domainList} onChange={this.onChangeHandler} />
-                        <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
-                        <div class=''>
-                            <Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectedDeviceIdList} rowCheckChange={this.selectDevice} />
-                            <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
-                                <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
-                            </div>
-                        </div>
-                    </Modal>
-                    <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
-                        keyField='param' checked={selectedMultiParamIdList} rowCheckChange={this.selectMultiParam} />
-
+                    <button class='btn btn-gray' onClick={this.showModal}>选择设备</button>
                 </div>
+                <Modal class='reporter-modal' title='选择设备' visible={visible} onCancel={this.showModal} onOk={this.showModal} maskClosable={false}>
+                    <div class='select-input'>
+                        <Select1 id='domain' className='' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
+                        <SearchText className='' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                    </div>
+                    <div class='select-panel'>
+                        <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={currentDeviceId ? [currentDeviceId] : []} rowCheckChange={this.selectSingleDevice} />
+                        <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
+                            <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
+                        </div>
+                    </div>
+                </Modal>
+                <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
+                    keyField='param' checked={selectedMultiParamIdList} rowCheckChange={this.selectParam} />
 
+            </div>
+            if (currentDeviceId !== null && selectedMultiParamIdList.length) {
+                applyDisabled = false;
+            }
         }
-
         return (
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                 <div class='content-left'>
@@ -319,7 +357,7 @@ export default class Lc extends Component {
                             </div>
                             {devicePanel}
                             <div class='btn-group-right'>
-                                <button id='apply' class='btn btn-primary fix-margin' onClick={this.onClickHandler}>应用</button>
+                                <button id='apply' class='btn btn-primary fix-margin' disabled={applyDisabled} onClick={this.onClickHandler}>应用</button>
                             </div>
                         </div>
                     </div>
