@@ -37,6 +37,7 @@ export default class Lc extends Component {
 		search: { value: '', placeholder: '输入设备名称' },
 		page: { total: 0, current: 1, limit: 5 },
 
+
 		data: {},
 	}
 
@@ -237,8 +238,8 @@ export default class Lc extends Component {
 							<span class='icon_select'></span>统计参数
 						</div>
 						<div class='panel-body'>
-							<div class='device-filter'>
-								<Select id='mode' options={modeList} onChange={this.onChangeHandler} />
+							<div class='state-select-mode'>
+								<Select class='select-mode' id='mode' options={modeList} onChange={this.onChangeHandler} />
 								{modePanel}
 								<div class='btn-group-right'>
 									<button id='apply' class='btn btn-primary fix-margin' disabled={applyDisabled} onClick={this.onClickHandler}>应用</button>
