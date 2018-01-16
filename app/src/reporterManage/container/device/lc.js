@@ -13,6 +13,8 @@ import { getYesterday, getToday } from '../../../util/time';
 import { getDomainList } from '../../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../../api/asset'
 import '../../../../public/styles/reporterManage-device.less';
+import { HOST_IP, getHttpHeader, httpRequest } from '../../../util/network'
+import { momentDateFormat } from '../../../util/time'
 
 export default class Lc extends Component {
     state = {
@@ -41,10 +43,10 @@ export default class Lc extends Component {
         ],
         multiDeviceList: [],
         multiParamList: [
-            { param: '亮度', unit: '%' },
-            { param: '电压', unit: 'V' },
-            { param: '电流', unit: 'A' },
-            { param: '功率', unit: 'W' },
+            { param: '亮度', unit: '%', id: 'brightness' },
+            { param: '电压', unit: 'V', id: 'voltage' },
+            { param: '电流', unit: 'A', id: 'current' },
+            { param: '功率', unit: 'W', id: 'power' },
         ],
         selectedMultiDeviceIdList: [],
         selectedMultiParamIdList: [],
@@ -205,29 +207,36 @@ export default class Lc extends Component {
     }
     //应用
     onClickHandler = (e) => {
-        const { id } = e.target;
-        // switch (id) {
-        //     case 'apply':
-        //         console.log('获取数据并在图表中渲染出来')
-        //         break;
+        const { currentMode, startDate, endDate } = this.state;
+        const headers = getHttpHeader();
+        const start = momentDateFormat(startDate, 'YYYY-MM-DD');
+        const end = momentDateFormat(endDate, 'YYYY-MM-DD');
+        const timeRange = JSON.stringify([start, end]);
 
-        // }
-        const { currentMode, currentParam, selectedMultiDeviceIdList, currentDeviceId, selectedMultiParamIdList } = this.state;
-        let body;
-        if (currentMode === 1) {
-            body = {
-                mode: 'multiDevice', //模式
-                param: currentParam, //选中的参数
-                deviceList: selectedMultiDeviceIdList //设备id列表
-            }
-            console.log(body)
-        } else if (currentMode === 2) {
-            body = {
-                mode: 'multiParam',
-                device: currentDeviceId, //选中的设备id
-                paramList: selectedMultiParamIdList //参数列表
-            }
-            console.log(body)
+        if (currentMode === 'device') {
+            const { currentParam, selectedMultiDeviceIdList } = this.state;
+            const deviceList = JSON.stringify(selectedMultiDeviceIdList.map(item => ({ asset: item })));
+            const querystring = `/histories?filter={"where":{"prop":"${currentParam}","or":${deviceList},"timestamp":{"between":${timeRange}}}}`;
+
+            console.log(querystring)
+            httpRequest(HOST_IP + querystring, {
+                headers,
+                method: 'GET',
+            }, response => {
+                console.log(response)
+            })
+
+        } else if (currentMode === 'param') {
+            const { currentDeviceId, selectedMultiParamIdList } = this.state;
+            const paramList = JSON.stringify(selectedMultiParamIdList.map(item => ({ prop: item })))
+            const querystring = `/histories?filter={"where":{"asset":"${currentDeviceId}","or":${paramList},"timestamp":{"between":${timeRange}}}}`;
+
+            httpRequest(HOST_IP + querystring, {
+                headers,
+                method: 'GET',
+            }, response => {
+                console.log(response)
+            })
         }
     }
     //测试数据
@@ -283,7 +292,7 @@ export default class Lc extends Component {
                         </div>
                     </Modal>
                     <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
-                        keyField='param' checked={selectedMultiParamIdList} rowCheckChange={this.selectParam} />
+                        checked={selectedMultiParamIdList} rowCheckChange={this.selectParam} />
 
                 </div>
             }; break;
