@@ -14,23 +14,36 @@ import Panel from '../component/FaultPanel'
 
 /*  新增－t  */
 import NotifyPopup from '../../common/containers/NotifyPopup';
-import {addNotify, removeAllNotify, removeNotify} from '../../common/actions/notifyPopup';
-import {getDomainList} from '../../api/domain'
+import {addNotify, removeAllNotify, removeNotify} from '../../common/actions/notifyPopup'
+import {getDomainList,getDomainByDomainLevelWithCenter} from '../../api/domain'
 import {getObjectByKey} from '../../util/index'
-import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
+import {getMapConfig} from '../../util/network'
+import {getPoleListByModelWithName, getPoleListByModelDomainId, getPoleAssetById} from '../../api/pole'
+import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index'
+import {getDomainListByName} from '../../api/domain'
 import {getIndexByKey} from '../../util/algorithm'
+import {getAssetsBaseByDomain,getSearchAssets,getAssetsByDomainLevelWithCenter} from '../../api/asset'
+import lodash from 'lodash'
 import Immutable from 'immutable';
 export class lightMap extends Component{
     constructor(props){
         super(props);
         this.state = {
+            modifyNow: 0,
+            domainList: [],
+            domainSearch:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
+            panLatlng: null,
+            placeholderList: [],
+            curPositionList:[],
+            curList: [],
+            mapId: "lightMap",
 
             /* 新增－20170915 */
             model:"pole",
             interactive:false,
             tableIndex: 0,
             mapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
-
+            tmapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
             deviceId:"",
             IsSearch: true,
             IsSearchResult: false,
@@ -66,7 +79,7 @@ export class lightMap extends Component{
             positionList:[],
             searchList:Immutable.fromJS([]),
             deviceList:[],
-            domainList: {
+            domainList:{
                 titleField: 'name',
                 valueField: 'name',
                 index: 0,
@@ -83,6 +96,13 @@ export class lightMap extends Component{
             },
             isMouseEnter:false
         }
+
+        this.map = {
+            center:{ lng: 121.49971691534425, lat: 31.239658843127756 }
+        }
+
+        this.domainLevel = 5;
+        this.domainCurLevel = 0;
 
         this.screen = Immutable.fromJS({})
         this.faultKeys = ["sys_fault", "vram_fault", "disp_module_fault", "disp_module_power_fault", "single_pixel_tube_fault",
@@ -101,6 +121,7 @@ export class lightMap extends Component{
             {id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
             {id:"6", value:50}, {id:"7", value:60}, {id:"9", value:70}, {id:"10", value:80}, {id:"11", value:90}, {id:"12", value:100}
         ]}
+
         this.screenSwitch = {id:"screenSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
         this.lightSwitch = {id:"lightSwitch", value:"关",options:[{id:1, value:"关"},{id:2, value:"开"}]};
         this.presetList = {id:"preset", value:"1",options:[{id:1, value:"1"},{id:2, value:"2"}]};
@@ -120,9 +141,7 @@ export class lightMap extends Component{
         this.searchDeviceSelect = this.searchDeviceSelect.bind(this);
         this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
         this.closeClick = this.closeClick.bind(this);
-
         this.updateCameraVideo = this.updateCameraVideo.bind(this);
-
 
         /*  新增－t  */
         this.initDomainList = this.initDomainList.bind(this);
@@ -138,17 +157,32 @@ export class lightMap extends Component{
         this.domainList = [];
         this.stopProp = this.stopProp.bind(this);
         this.isMouseEnterSet = this.isMouseEnterSet.bind(this);
-
-
         this.test = this.test.bind(this);
+        this.requestCurDomain = this.requestCurDomain.bind(this);
+        this.requestCurAssets = this.requestCurAssets.bind(this);
+        this.mapDragend = this.mapDragend.bind(this);
+        this.mapZoomend = this.mapZoomend.bind(this);
+        this.markerClick = this.markerClick.bind(this);
+        this.modifyNow = this.modifyNow.bind(this);
+        this.searchCancel = this.searchCancel.bind(this);
 
     }
 
     componentWillMount(){
+
         this.mounted = true;
-        window.onresize = event=>{
+        window.onresize = event => {
             this.mounted && this.setSize();
         }
+
+        getMapConfig(data=>{
+                if(this.mounted){
+                    this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
+                    this.map.zoom = 15;
+                    this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+                }
+        })
+
         /*  新增－t  */
         getDomainList(data=>{
             if(this.mounted){
@@ -164,15 +198,34 @@ export class lightMap extends Component{
     }
 
     componentWillUnmount(){
+
         this.mounted = false;
         window.onresize = event=>{
             this.setSize();
         }
-        
         this.props.actions.removeAllNotify();
+
     }
+
+    initDomainList(data){
+        this.setState({domainList:data});
+    }
+
+    updatePlaceholder(){
+        const {domainList, domainSearch} = this.state;
+        let datalist = [];
+        for(var key in domainList){
+            let item = domainList[key];
+            if(!domainSearch.value || item.name.indexOf(domainSearch.value)>-1){
+                datalist.push({id:item.id, value:item.name})
+            }
+        }
+        this.setState({placeholderList:datalist});
+    }
+
     /*  新增－t  */
     searchInputOnKeyUp(e){
+
         if (e.keyCode === 13 || e=="toSearch"){}else{return}
         if(this.state.searchMode=="设备"){
             /*  先在已经请求到的域内的所有设备中寻找  */
@@ -180,157 +233,191 @@ export class lightMap extends Component{
             let num = searchObj.length-1;
             let list = [];
             searchObj.map((item,index)=>{
-                    if(item.name.indexOf(this.state.search.get("value"))>0){
-                        list.push(item)
-                    }
-                    if(index==num){this.setState({searchList:Immutable.fromJS(list)},()=>{
-                            console.log("success")
-                    })};
+                if(item.name.indexOf(this.state.search.get("value"))>0){
+                    list.push(item);
+                }
+                if(index==num){this.setState({searchList:Immutable.fromJS(list)},()=>{
+                    console.log("success");
+                })}
             })
             /*  如没有找到则根据input值执行api获取数据  */
             /*  根据返回数据添加到searchList变量中  */
-            //  this.setState({searchList:this.state.resDevice},()=>{});
             this.setState({IsSearchResult:true},()=>{
                 this.setState({search:this.state.search.update("value",v=>'')});
                 this.setSize();
-            });
-            //  this.state.curDevice._tail.array.map(item=>{
-            //     if(item.name.indexOf(e.target.value)!=-1){
-            //         this.setState({searchList:this.state.searchList.push(item)},()=>{console.log(this.state.searchList)});
-            //     }
-            // })
+            })
         }else{
-
         }
+
     }
+
 
     /*  新增－t－20170915  */
     requestSearch(){
-        const {model, search, tableIndex} = this.state;
+
+        const {model, search, tableIndex ,mapLatlng} = this.state;
         let searchType = this.searchPromptList[tableIndex].id;
+        let searchValue = search.get("value");
         if(searchType=="domain"){
-            let curDomain = getObjectByKey(this.domainList, 'name', search.get("value"));
-            if(curDomain){
-                getPoleListByModelWithName(searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
-            }else{
-                this.props.actions.addNotify(0, "没有找到匹配域");
-                this.setState({IsSearchResult:false});
-            }
+            getDomainListByName(searchValue,'','',(data)=>{
+                this.updateSearch(data,1,'domain')
+                // this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+                // if(this.map.zoom>15&&this.map.zoom<=18){
+                //     this.requestCurAssets();
+                // }else{
+                //     this.requestCurDomain();
+                // }
+            })
+            //this.requestCurDomain(searchValue,false);
             return;
         }
-        getPoleListByModelWithName(searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
+        getSearchAssets("","lc",searchValue,"","",(data)=>{
+            this.mounted && this.updateSearch(data,0,"lamp")
+        })
+        //getPoleListByModelWithName(mapLatlng, searchType, model, searchValue, (data)=>{this.mounted && this.updateSearch(data,0,"pole")});
+
     }
 
-    updateSearch(data){
-        const {tableIndex} = this.state;
+    searchCancel(){
+        this.setState({interactive:false,IsSearchResult:false});
+    }
+
+    modifyNow(){
+        let n = this.state.modifyNow;
+        n=n+1;
+        this.setState({modifyNow:n});
+    }
+
+    updateSearch(data,tableIndex,type){
         let searchType = this.searchPromptList[tableIndex].id;
         if(data[0]){}else{
             if(searchType=="domain"){
                 this.props.actions.addNotify(0, "域内无绑定设备");
             }else{
                 this.props.actions.addNotify(0, "未找到设备");
-            }   
+            }
             return;
         }
+        
         let searchList = Immutable.fromJS(data);
-        let deviceList=[];
-        let positionList = data.map((pole)=>{
-            let latlng = pole.geoPoint; 
-            deviceList.push({"id": pole.id,"name": pole.name});
-            return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE'}, latlng);
-        });
+        this.setState({searchList:searchList,tableIndex:tableIndex,IsSearchResult:true});
+        // let deviceList=[];
+        // let positionList = data.map((pole)=>{
+        //     let latlng = pole.geoPoint;
+        //     deviceList.push({ "id":pole.id, "name":pole.name, "type":type });
+        //     return Object.assign({}, latlng, {"device_type":'DEVICE', "device_id":pole.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+        // });
+        // if(data && data.length){
+        //     let fPole = data[0];
+        //     let flatlng = fPole.geoPoint;
+        //     this.setState({searchList:searchList, mapLatlng:flatlng, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
+        //         //this.requestPoleAsset(data);
+        //     });
+        // }else{
+        //     this.setState({searchList:searchList, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
+        //         //this.requestPoleAsset(data);
+        //     });
+        // }
 
-        if(data && data.length){
-            let fPole = data[0];
-            let flatlng = fPole.geoPoint;
-            this.setState({searchList:searchList, mapLatlng:flatlng,positionList:positionList,deviceList:deviceList}, ()=>{
-                this.requestPoleAsset(data);
-            });
-        }else{
-            this.setState({searchList:searchList, positionList:positionList, deviceList:deviceList}, ()=>{
-                this.requestPoleAsset(data);
-            });
-        }
     }
 
     requestPoleAsset(data){
+
         const {model} = this.state;
         if(model != "pole"){
             return;
+        };
+        let assets = [];
+        let ids = [];
+        let datas = [];
+        for(let i=0;i<data.length;i++){
+            getPoleAssetById(data[i].id, (id,res)=>{ assets.push(res[0]); ids.push({id:id}); datas.push({id:id,data:res}); if(data.length==assets.length){this.updatePoleAsset(ids,assets,datas)} });
         }
+        //this.mounted && this.updatePoleAsset(id,data)
 
-        data.map(pole=>{
-            getPoleAssetById(pole.id, (id,data)=>{this.mounted && this.updatePoleAsset(id, data)});
-        })
     }
 
-    updatePoleAsset(id, data){
-        console.log("poleAsset:",data); 
-        const {searchList} = this.state;
-        let curIndex = getIndexByKey(searchList, 'id', id);
-        let asset = this.state.searchList.getIn([curIndex, "asset"]);
-        let positionList = this.state.positionList;
-        let deviceList = this.state.deviceList;
+    updatePoleAsset(id, data, datas){
 
-        if(!asset){
-            asset = {}
-        }else{}
+        console.log("ids:",id);
+        console.log("poleAsset:",data);
+        console.log("data:",datas);
+
+        const { searchList } = this.state;
+
+        let deviceList = this.state.deviceList_d;
+        let positionList = this.state.positionList_d;
+        let indexList = [];
+        for(let i=0;i<id.length;i++){
+            let curIndex = getIndexByKey(searchList, 'id', id[i].id);
+            let asset = searchList.getIn([curIndex,"asset"]);
+            let dataV = datas[i];
+            let pv = {curIndex:curIndex,asset:asset,dataV:dataV};
+            indexList.push(pv);
+        }
+
+        for(let i=0;i<indexList.length;i++){
+            if(!indexList[i].asset){
+                indexList[i].asset = {}
+            }
+        }
 
         if(!data[0]){
             positionList = positionList.filter(item => {if (item.device_id != id) {return item }})
             deviceList = deviceList.filter(item => {if (item.id == id) {return item }})
             return;
         }
+        
+        for(let i=0;i<data.length;i++){
 
-        data.map(ass=>{
-            if(ass.extendType == "screen"||ass.extendType == "xes"||ass.extendType == "camera"||ass.extendType == "charge"){
-                //this.setState({positionList: this.state.positionList.filter(item => {if (item.device_id != id) {return item }}),deviceList: deviceList.filter(item => {if (item.id == id) {return item}})},()=>{})
+            indexList[i].asset = Object.assign({}, indexList[i].asset, {lamp:data[i]});
+            if(data[i].extendType == "screen"||data[i].extendType == "xes"||data[i].extendType == "camera"||data[i].extendType == "charge"){
                 positionList = positionList.filter(item => {if (item.device_id != id) {return item }})
                 deviceList = deviceList.filter(item => {if (item.id == id) {return item }})
                 return;
-            }else if(ass.extendType == "lc"){
-                deviceList.map((o,i)=>{ if(o.id==id){deviceList[i]["lamp"]=ass.id} })
-                asset = Object.assign({}, asset, {lamp:ass});
+            }else if(data[i].extendType == "lc"){
+                for(let j=0;j<deviceList.length;j++){
+                    for(let k=0;k<indexList.length;k++){
+                        if(deviceList[j].id==indexList[k].dataV.id){
+                            deviceList[j]["lamp"] = data[j].id;
+                        }
+                    }
+                }
             }else{}
-        })
+            this.setState({searchList:this.state.searchList.updateIn([indexList[i].curIndex,"asset"], v=>Immutable.fromJS(indexList[i].asset))})
+
+        }
 
         /* 列出搜索项 */
-        this.setState({IsSearchResult:true, deviceList:deviceList, positionList:positionList, searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset))},()=>{});
-        // this.setState({searchList:this.state.searchList.updateIn([curIndex, "asset"], v=>Immutable.fromJS(asset)),curPosition:this.state.positionList,curDevice:Immutable.fromJS(this.state.deviceList)},()=>{
-        // });
+        this.setState({IsSearchResult:true, deviceList:deviceList, positionList:positionList},()=>{});
 
     }
 
     initDomainList(data) {
         let domainList = Object.assign({}, this.state.domainList, {index: 0}, {value: data.length ? data[0].name : ""}, {options: data});
-        this.setState({domainList: domainList},()=>{});
-        // this.requestSearch();    
+        this.setState({domainList:domainList},()=>{});
     }
 
     /*  新增－t  */
     test(){
-        this.setState({isMouseEnter:false},()=>{});
-        setTimeout(()=>{
-                if(this.state.isMouseEnter==true){return}else if(this.state.IsSearchResult==true||this.state.interactive==true){
-                    this.setState({IsSearchResult:false,interactive:false});
-                }
-        }, 2000)
         
-        // let aaaa = this.state.searchList
-        // aaaa.map((item,index)=>{
-        //     if(index==1){
-        //         console.log(item.get("asset"))
-        //         console.log(item.get(["asset","lamp"]))
-        //     }
-        // })
+        // this.setState({isMouseEnter:false},()=>{});
+        // setTimeout(()=>{
+        //         if(this.state.isMouseEnter == true){return}else if( this.state.IsSearchResult == true||this.state.interactive==true){
+        //             this.setState({IsSearchResult:false,interactive:false});
+        //         }
+        // }, 2000)
 
     }
 
     isMouseEnterSet(){
-        this.setState({isMouseEnter:true},()=>{});
+
+        this.setState({isMouseEnter:!this.state.isMouseEnter},()=>{});
+
     }
 
     setSize(){
+
         if(!this.mounted){
             return;
         }
@@ -338,7 +425,7 @@ export class lightMap extends Component{
         const {IsSearch, curId} = this.state;
         let height = window.innerHeight;
 
-        if(IsSearch){       
+        if(IsSearch){
             let listStyle = {"maxHeight":(height<145?0:height-145)+"px"};
             this.setState({listStyle:listStyle});
         }else{
@@ -350,20 +437,24 @@ export class lightMap extends Component{
             let controlStyle = {"maxHeight":(height<defaultHeight?0:height-defaultHeight)};
             this.setState({infoStyle:infoStyle, controlStyle:controlStyle});
         }
+
     }
 
     updateCameraVideo(data){
+
         if(this.refs.camera != null && data.hasOwnProperty('camera_url')){
 
             this.client = new JSMpeg.Player(data.camera_url, { canvas: this.refs.camera })
-            /* this.client = new WebSocket(data.camera_url);
+            /* 
+             this.client = new WebSocket(data.camera_url);
              this.client.onerror = function (err) {
-             console.log(err);
+                console.log(err);
              }
              var player = new jsmpeg(this.client, {canvas: this.refs.camera});
-             */
+            */
 
         }
+
     }
 
     formatIntl(formatId){
@@ -372,8 +463,7 @@ export class lightMap extends Component{
     }
 
     onBlur(event){
-        this.setState({interactive:false,IsSearchResult:false});
-        //this.timeOut = setTimeout(()=>{this.setState({interactive:false,IsSearchResult:false});}, 1000)
+        this.timeOut = setTimeout(()=>{this.setState({interactive:false,IsSearchResult:false});}, 1000)
     }
 
     stopProp(event){
@@ -382,7 +472,7 @@ export class lightMap extends Component{
 
     onChange(key, event){
         switch (key){
-            case "search"://特殊处理
+            case "search": //特殊处理
                 if (event.target.value){
                     this.setState({search:this.state.search.update("value",v=>event.target.value), interactive:true,IsSearchResult:false});
                 }else{
@@ -424,28 +514,47 @@ export class lightMap extends Component{
     submit(key){
     }
 
-    itemClick(id){
-        this.setState({IsSearch:false, IsOpenFault:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
-            /* 根据id将设备position项塞进curPosition */
-            this.state.positionList.map((item,index)=>{
-                if(item.device_id===id){
-                    
-                    let itemLst = []
-                    itemLst.push(item)
-                    this.setState({curPosition:itemLst},()=>{})
+    itemClick(item){
 
-                    this.state.deviceList.map(dItem=>{
-                         if(dItem.id===id){
-                            let dItemLst = []
-                            dItemLst.push(dItem)
-                            this.setState({curDevice:Immutable.fromJS(dItemLst)})
-                         }
-                    })
+        let data  = item.toJS()
+        //this.setState({IsSearch:false, IsOpenFault:false, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
+        this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{
+
+            if(this.state.tableIndex==0){
+                if(this.map.zoom>15&&this.map.zoom<=18){
+                    this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                }else{
+                    this.map = Object.assign({}, this.map, {zoom:16,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
                 }
-            })
+            }else{
+                if(this.map.zoom>6&&this.map.zoom<=15){
+                    this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                }else{
+                    this.map = Object.assign({}, this.map, {zoom:14,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                }
+            }
+
+            /* 根据id将设备position项塞进curPosition */
+
+            // this.state.positionList.map((item,index)=>{
+            //     if(item.device_id===id){
+            //         itemLst.push(item);
+            //         this.setState({positionList:itemLst});
+            //     }
+            // })
+            // this.state.deviceList.map(item=>{
+            //      if(item.id===id){
+            //         dItemLst.push(item);
+            //         this.setState({deviceList:dItemLst},()=>{this.isMouseEnterSet()});
+            //      }
+            // })
+
             //this.setState({searchList:this.state.searchList.push(item)},()=>{console.log(this.state.searchList)});
+
             this.setSize();
+
         });
+
     }
 
     backHandler(){
@@ -455,12 +564,12 @@ export class lightMap extends Component{
     }
 
     searchDeviceSelect(id){
-        var device = this.state.curDevice.toJS();
-        device=device[0];
-        if(!device[id]&&id!="pole"){console.log("has not "+id); return
-        }else if(id=="pole"){console.log(this.state.searchList.toJS());this.setState({deviceId:id, IsSearch:true, IsSearchResult:false, IsOpenFault:false});
-        }else{console.log("lcId: "+device[id]);this.setState({deviceId:id, IsSearch:true, IsSearchResult:false, IsOpenFault:false});
-        }
+        // console.log("----------------------------------------------")
+        // this.map = Object.assign({}, this.map, {zoom:15,center:{lng:this.state.tmapLatlng.lng, lat:this.state.tmapLatlng.lat}, distance:3000});
+        // this.modifyNow();
+        // console.log("==============================================")
+        //var device = this.state.deviceList;
+        return;
     }
 
     infoDeviceSelect(id){
@@ -470,9 +579,24 @@ export class lightMap extends Component{
     }
 
     searchSubmit(index){
-        this.setState({interactive:false, tableIndex:index},()=>{
+
+        const {domainList, domainSearch} = this.state;
+        if(index==1){
+            for(let i=0;i<domainList.length;i++){
+                let item = domainList[i];
+                if(!domainSearch.value || item.name.indexOf(domainSearch.value)>-1){
+                    this.map.center = item.geoPoint;
+                    this.setState({panLatlng:item.geoPoint});
+                    break;
+                }
+            }
+        }
+
+        //this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        this.setState({interactive:false, tableIndex:index, IsOpenPoleInfo:false, IsOpenPoleControl:false, IsSearch:true},()=>{
             this.requestSearch();
         });
+
     }
 
     poleInfoCloseClick(){
@@ -486,10 +610,147 @@ export class lightMap extends Component{
     }
 
     closeClick(){
-        this.setState({IsOpenFault:false});
+        this.setState({IsOpenFault: false});
+    }
+
+    requestCurAssets(model){
+        getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
+            console.log(data)
+            let positionList = data.map(item=>{
+                let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+            })
+            this.setState({curList: data, positionList:positionList},()=>{
+                // let deviceLen = [];
+                // data.map(item=>{
+                //     getAssetsBaseByDomain(item.id, asset=>{
+                //         deviceLen.push(item.id);
+                //         let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
+                //             return domain.id == item.id
+                //         })
+                //         if(curIndex>-1 && curIndex<this.state.curDomainList.length){
+                //             this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+                //         }
+                //         if(deviceLen.length == data.length){
+                //             this.setState({curDomainList: this.state.curDomainList});
+                //         }
+                //     })
+                // })
+            });
+        })
+    }
+
+    requestCurDomain(){
+        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+            let positionList = data.map(item=>{
+                let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+            })
+            this.setState({curList: data, positionList:positionList},()=>{
+                let deviceLen = [];
+                data.map(item=>{
+                    getAssetsBaseByDomain(item.id, asset=>{
+                        deviceLen.push(item.id);
+                        let curIndex = lodash.findIndex(this.state.curList, domain=>{
+                            return domain.id == item.id
+                        })
+                        if(curIndex>-1 && curIndex<this.state.curList.length){
+                            this.state.curList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+                        }
+
+                        if (deviceLen.length == data.length){
+                            this.setState({curList: this.state.curList});
+                        }
+                    })
+                })
+            });
+        })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        // getDomainListByName(searchValue, 0, 10, (data)=>{
+        //     if((this.map.zoom+this.map.zoomStep > this.map.maxZoom)&&!mapType){
+        //             this.map = Object.assign({}, this.map, {zoom:15, center:{lng:data[0].geoPoint.lng, lat:data[0].geoPoint.lat}});
+        //     }
+        //     let positionList = data.map(item=>{
+        //         let geoPoint=item.geoPoint?item.geoPoint:{lat:"",lng:""};
+        //         return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+        //     });
+
+        //     this.setState({deviceList: data, positionList:positionList},()=>{
+
+        //         let deviceLen = [];
+        //         data.map(item=>{
+
+        //             getAssetsBaseByDomain(item.id, asset=>{
+
+        //                 deviceLen.push(item.id);
+        //                 let curIndex = lodash.findIndex(this.state.deviceList, domain=>{
+        //                     return domain.id == item.id
+        //                 })
+        //                 if(curIndex>-1 && curIndex<this.state.deviceList.length){
+        //                     this.state.deviceList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+        //                 }
+        //                 if (deviceLen.length == data.length){
+        //                     this.setState({deviceList:this.state.deviceList});
+        //                 }
+
+        //             })
+
+        //         })
+
+        //     });
+
+        // })
+
+    }
+
+    panCallFun(){
+        this.setState({panLatlng:null});
+    }
+
+    mapDragend(data){
+        return;
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        if(this.map.zoom>15&&this.map.zoom<=18){
+            this.requestCurAssets("lc");
+        }else{
+            this.requestCurDomain();
+        }
+    }
+
+    mapZoomend(data){
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        if(this.map.zoom>15&&this.map.zoom<=18){
+            this.requestCurAssets("lc");
+        }else{
+            this.requestCurDomain();
+        }
+    }
+
+    markerClick(data){
+
+        const{tableIndex} = this.state;
+        let searchValue = this.state.deviceList[0].name;
+        let searchType = this.searchPromptList[tableIndex].id;
+        if(searchType=="domain"){
+
+            this.setState({tableIndex:0})
+            getPoleListByModelWithName(data.latlng, searchType, "pole", searchValue, (res)=>{
+
+                if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
+                    this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+                }
+
+                this.setState({positionList:[],deviceList:[]})
+                this.mounted && this.updateSearch(res,0,"pole")
+
+            });
+
+        }
+        
     }
 
     transformState(key, sf){
+
         if(key == 'wind-direction'){
             // return this.formatIntl('app.'+sf);
             return <span className="glyphicon glyphicon-arrow-up" style={{transform:`rotate(${sf}deg)`}}></span>
@@ -508,9 +769,11 @@ export class lightMap extends Component{
         }
 
         return this.formatIntl(sf ? 'abnormal':'normal');
+
     }
 
     IsHaveFault(parentPro, faultKeys){
+
         let faultList = [];
         for(var i=0;i<faultKeys.length;i++){
             if(parentPro.get(faultKeys[i]) == 1){
@@ -518,24 +781,28 @@ export class lightMap extends Component{
             }
         }
         return faultList;
+
     }
 
     renderState(parentPro, key, name, IsTransform, unit){
+
         if(key == "resolution"){
             if(parentPro && parentPro.has("width") && parentPro.has("height")){
                 return <div key={key} className="pro"><span>{name?this.formatIntl(name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
             }
         }
         if(parentPro && parentPro.has(key)){
+
             if(key == 'wind-direction'){
                 return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{this.transformState(key, parentPro.get(key))}</div>
             }
-
             if(key == 'o2'){
                 return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
             }
             return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
+
         }
+
     }
 
     renderInfo(id, props){
@@ -545,7 +812,6 @@ export class lightMap extends Component{
             case "screen":
                 const {screen} = this.state;
                 faultList = screen.get("faultList").toJS();
-
                 return <div className="row state-info screen">
                     <div className="col-sm-8 prop">
                         {this.renderState(props, "resolution", "width")}
@@ -754,23 +1020,47 @@ export class lightMap extends Component{
         }
     }
 
+
+    
+
+
+
     render(){
-        const {deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList,deviceList, tableIndex,
-            listStyle, infoStyle, controlStyle, positionList, mapLatlng, IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
-        let IsControl = false;  
+        const {panLatlng ,curList, curPositionList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList, deviceList, tableIndex,
+            listStyle, infoStyle, controlStyle, positionList, mapLatlng,  IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
+        let IsControl = false;
+        //let aaaa = JSON.stringify(positionList);
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
+        // let positionV = [];
+        // let dV = [];
+        // console.log(this.searchPromptList[tableIndex].id);
+        // if(this.searchPromptList[tableIndex].id=="domain"){
+        //     positionV = curPositionList;
+        //     dV = curDomainList;
+        // }else{
+        //     console.log(JSON.stringify(positionList))
+        //     let aa = '[{"lat":31.238737945486196,"lng":121.50034546852112,"device_type":"DEVICE","device_id":1,"IsCircleMarker":false},{"lat":31.2385911725218,"lng":121.50098919868469,"device_type":"DEVICE","device_id":3,"IsCircleMarker":false},{"lat":31.237416980596816,"lng":121.50118231773376,"device_type":"DEVICE","device_id":2,"IsCircleMarker":false},{"lat":31.23772887675042,"lng":121.50283455848694,"device_type":"DEVICE","device_id":4,"IsCircleMarker":false}]';
+        //     let bb = '[{"lat":31.238737945486196,"lng":121.50034546852112,"device_type":"DEVICE","device_id":1,"IsCircleMarker":false},{"lat":31.2385911725218,"lng":121.50098919868469,"device_type":"DEVICE","device_id":3,"IsCircleMarker":false},{"lat":31.237416980596816,"lng":121.50118231773376,"device_type":"DEVICE","device_id":2,"IsCircleMarker":false},{"lat":31.23772887675042,"lng":121.50283455848694,"device_type":"DEVICE","device_id":4,"IsCircleMarker":false}]';
+        //     aa = JSON.parse(aa);
+        //     bb = JSON.parse(bb);
+        //     positionV = positionList;
+        //     dV = deviceList;
+        // }
+        
 
+        //<MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
         return (
             <Content onClick={()=>{}}>
-                <MapView mapData={{id:"lightMap", latlng:mapLatlng, position:curPosition, data:curDevice.toJS()}}/>
-                <div className="search-container" onMouseLeave={()=>{this.test()}} onMouseEnter={()=>{this.isMouseEnterSet()}}>
+                <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
+                <div className="search-container" onMouseLeave={()=>{}} onMouseEnter={()=>{}}>
                     <div className="input-group searchBlock">
-                      <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
-                      <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+                        <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
+                        <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
+                        <span className={"cancel-control "+(interactive||IsSearchResult?'active':'')} onClick={()=>{this.searchCancel()}}>cancel</span>
                     </div>
-                    <ul className={"list-group mode-select "+(interactive?'select-active':'')} >
+                    <ul className={"list-group mode-select "+(interactive?'select-active':'')}>
                             {
                                 this.searchPromptList.map((item, index)=>{
                                     return <li className={"list-group-item "+(index==tableIndex?"":"")} key={index} value={item.value} onClick={()=>this.searchSubmit(index)}>{item.value}<span></span> {search.get("value")}</li>
@@ -779,19 +1069,18 @@ export class lightMap extends Component{
                     </ul>
                     <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
                         {
-                            searchList.map(pole=>{
-                                return <li key={pole.get("id")} className="list-group-item" onClick={()=>this.itemClick(pole.get("id"))}>
-                                    {pole.get("name")}
-                                    {pole.getIn(["asset","collect"]) && <span className=""><svg><use xlinkHref={"#icon_collect"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {pole.getIn(["asset","charge"]) && <span className=""><svg><use xlinkHref={"#icon_charge_pole"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {pole.getIn(["asset","camera"]) && <span className=""><svg><use xlinkHref={"#icon_camera"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {pole.getIn(["asset","lamp"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {pole.getIn(["asset","screen"]) && <span className=""><svg><use xlinkHref={"#screen"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                            searchList.map(item=>{
+                                return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
+                                    {item.get("name")}
+                                    {item.getIn(["asset","collect"]) && <span className=""><svg><use xlinkHref={"#icon_collect"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {item.getIn(["asset","charge"]) && <span className=""><svg><use xlinkHref={"#icon_charge_pole"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {item.getIn(["asset","camera"]) && <span className=""><svg><use xlinkHref={"#icon_camera"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {item.getIn(["asset","lamp"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {item.getIn(["asset","screen"]) && <span className=""><svg><use xlinkHref={"#screen"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                 </li>
                             })
                         }
                     </ul>
-
                     <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}
                         onClick={this.backHandler}>
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
@@ -817,8 +1106,7 @@ export class lightMap extends Component{
                         </div>
                     </div>
                     <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":controlStyle.maxHeight+"px"}}>
-                        <div className={"panel-heading "+(controlStyle.maxHeight==0?"hidden":"")}
-                             style={{"maxHeight":(controlStyle.maxHeight>40?40:controlStyle.maxHeight)+"px","borderBottom":(controlStyle.maxHeight<=40?0:1)+"px",
+                        <div className={"panel-heading "+(controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(controlStyle.maxHeight>40?40:controlStyle.maxHeight)+"px","borderBottom":(controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(controlStyle.maxHeight<40?0:12)+"px","paddingTop":(controlStyle.maxHeight<30?0:12)+"px"}}>
                             <h3 className={"panel-title "+(controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
                             <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle}></span>
