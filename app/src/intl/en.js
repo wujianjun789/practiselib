@@ -123,7 +123,9 @@ export default {
         'delete.user': 'Are you sure to delete the seleted user ?',
         'delete.device': 'Are you sure to delete the seleted device ?',
         'delete.strategy':'Are you sure to delete the seleted strategy ?',
-//登录
+        'delete.group':'Are you sure to delete the seleted group ?',        
+
+        //登录
         'login.form.title':'User Login',
         'login.button':'Login',
         'login.alert':"Error Incorrect username or password",
@@ -220,6 +222,8 @@ export default {
 
         'app.strategy.name.userd':'strategy name used',
 
+        'app.strategy.platform':'Platform',
+
         //智慧路灯
 
         'app.map': 'map',
@@ -263,6 +267,12 @@ export default {
         'app.set.state': 'set state',
         'app.strategy.param': 'strategy param',
         'app.include.target.devices': 'include target devices',
+        'app.strategy.group.name':'Group name',        
+        'app.strategy.retryCount':'Retry count',
+        'app.strategy.retryInterval':'Retry interval',
+        'app.strategy.select.group':'Select group',
+        'app.strategy.level':'Level',        
+
         'app.input.device.name':'input device name',
         'app.device.name': 'device name',
         'app.online.state': 'online state',

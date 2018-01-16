@@ -15,6 +15,7 @@ import {injectIntl} from 'react-intl';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import TimeStrategyPopup from '../component/TimeStrategyPopup'
 import ConfirmPopup from '../../components/ConfirmPopup'
+import TimeGroupPopup from '../component/TimeGroupPopup'
 
 import Immutable from 'immutable';
 import {dateStringFormat} from '../../util/string'
@@ -27,6 +28,7 @@ import {getStrategyDeviceConfig} from '../../util/network'
 
 import { DatePicker} from 'antd';
 import {getObjectByKeyObj,getIndexByKey,getProByKey,getIndexsByKey,spliceInArray,getObjectByKey,getListKeyByKey,IsExitInArray2,IsExitInArray3} from '../../util/algorithm'
+import {getLightLevelConfig} from '../../util/network'
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -37,23 +39,15 @@ class TimeStrategy extends Component{
                 placeholder: this.formatIntl('app.input.strategy.name'),
                 value: ''
             }),
-            selectStrategy:{
-
-            },
-            page: Immutable.fromJS({
-                pageSize: 10,
-                current: 1,
-                total: 0
-            }),
+            selectStrategy:{},
             deviceList:{titleKey:"name", valueKey:"name", options:[/*{id:1, name:"test灯"},{id:2, name:"test显示屏"}*/]},
-            strategyList:[/*{id:"start", time:"00:00", light:0}, {id:"end", time:"24:00", light:0}*/],
             strategyData:Immutable.fromJS([]),
             sidebarInfo: {
                 collapsed: false,
                 propertyCollapsed: false,
                 parameterCollapsed: false,
                 devicesCollapsed: false,
-                devicesExpanded:true
+                devicesExpanded:false
             },
             selectItem: {
                 id: "",
@@ -190,16 +184,13 @@ class TimeStrategy extends Component{
 
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-        // this.pageChange = this.pageChange.bind(this);
         this.addHandler = this.addHandler.bind(this);
         this.tableClick = this.tableClick.bind(this);
         this.tableEdit = this.tableEdit.bind(this);
         this.tableDelete = this.tableDelete.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
-        // this.initPageSize = this.initPageSize.bind(this);
         this.initResult = this.initResult.bind(this);
-        // this.initStrategyList = this.initStrategyList.bind(this);
         this.initDeviceList = this.initDeviceList.bind(this);
 
         this.formatIntl = this.formatIntl.bind(this);
@@ -225,18 +216,22 @@ class TimeStrategy extends Component{
                 id:'001',
                 name:'时间调光组1',
                 timeRange:'1月10日-4月30日',
+                type:"group",
                 childs:[
                     {
                         id:1,
                         name:'冬季路灯使用策略1',
                         timeRange:'1月10日-4月30日',
-                        parentId:'001'
+                        parentId:'001',
+                        type:"strategy",                        
                     },
                     {
                         id:2,
                         name:'冬季路灯使用策略2',
                         timeRange:'1月10日-4月30日',
-                        parentId:'001'                        
+                        parentId:'001' ,
+                        type:"strategy",                        
+                                               
                     }
                 ],
             },
@@ -244,18 +239,23 @@ class TimeStrategy extends Component{
                 id:'002',
                 name:'时间调光组2',
                 timeRange:'5月1日-6月30日',
+                type:"group",                
                 childs:[
                     {
                         id:3,
                         name:'春季路灯使用策略1',
                         timeRange:'5月1日-6月30日',
-                        parentId:'002'
+                        parentId:'002',
+                        type:"strategy",                        
+                        
                     },
                     {
                         id:4,
                         name:'春季路灯使用策略2',
                         timeRange:'5月10日-6月30日',
-                        parentId:'002'
+                        parentId:'002',
+                        type:"strategy",                        
+                        
                     }
                 ]
             },
@@ -268,24 +268,33 @@ class TimeStrategy extends Component{
                         id:5,
                         name:'策略1',
                         timeRange:'5月1日-6月30日',
-                        parentId:'0'
+                        parentId:'0',
+                        type:"strategy",                        
+                        
                     },
                     {
                         id:6,
                         name:'策略2',
                         timeRange:'5月10日-6月30日',
-                        parentId:'0'                        
+                        parentId:'0' ,
+                        type:"strategy",                        
+                                               
                     }
                 ]
             }
         ]
         this.initTableData('strategyData',data);
         this.initTableData('selectedDevicesData',this.state.selectedDevicesData);
-        this.initTableData('allDevicesData',this.state.allDevicesData);        
+        this.initTableData('allDevicesData',this.state.allDevicesData);    
     }
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    setHeight = ()=>{
+        console.log(document.getElementsByClassName('select-devices')[0])
+        document.getElementsByClassName('select-devices')[0].style.height = document.getElementsByClassName('content')[0].scrollHeight + "px";         
     }
 
     formatIntl(formatId){
@@ -302,11 +311,6 @@ class TimeStrategy extends Component{
         getStrategyListByName(model, name, offset, limit, data=>{this.mounted && this.initResult(data)});
         // getStrategyCountByName(model, name, data=>{this.mounted && this.initPageSize(data)})
     }
-
-    // initPageSize(data){
-    //     let page = this.state.page.set('total', data.count);
-    //     this.setState({page:page});
-    // }
 
     initTableData(key,data){
         let result = [];
@@ -370,13 +374,7 @@ class TimeStrategy extends Component{
 
     addHandler(){
         const {actions} = this.props;
-        const {model, deviceList, strategyList} = this.state;
-        let initData = {
-            name:"",
-            device:deviceList.options.length?deviceList.options[0]:null
-        }
-
-        actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title={this.formatIntl('app.add.strategy')} data={initData} deviceList={deviceList} strategyList={strategyList}
+        actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title={this.formatIntl('app.add.strategy')} groupList=''
                                                  onConfirm={(data)=>{
                                                     let weekList = data.workTime.map(day=>{
                                                             return day.get("active")?1:0
@@ -395,17 +393,14 @@ class TimeStrategy extends Component{
 
                                                     let object = {};
                                                     object.name = data.name;
-                                                    object.type = model,
-                                                    object.asset = data.device.id;
                                                     object.expire ={
                                                         expireRange:expireRangeList,
                                                         executionRange:executionRangeList,
-                                                        week:parseInt(weekList.join(""), 2)
                                                     }
 
-                                                    object.strategy = data.strategyList.map(strategy=>{
-                                                        return {"condition":{"time":strategy.time}, "rpc":{"brightness":strategy.light}}
-                                                    });
+                                                    // object.strategy = data.strategyList.map(strategy=>{
+                                                    //     return {"condition":{"time":strategy.time}, "rpc":{"brightness":strategy.light}}
+                                                    // });
                                                     addStrategy(object, ()=>{
                                                         this.requestSearch();
                                                         actions.overlayerHide();
@@ -417,33 +412,17 @@ class TimeStrategy extends Component{
 
     tableEdit(rowId){
         const {actions} = this.props;
-        const {model, deviceList} = this.state;
-        let row = Immutable.fromJS(getObjectByKeyObj(this.state.data.toJS(), 'id', rowId));
-        let device = getObjectByKeyObj(deviceList.options, 'id', row.get("deviceType"));
-        let initData = {
-            name: row.get("name"),
-            device: device
+
+        let row = getObjectByKey(this.state.strategyData, 'id', rowId);
+        if(row.get('type')=="group"){
+            actions.overlayerShow(<TimeGroupPopup className="time-group-popup" intl={this.props.intl} title="修改组" name ={row.get('name')}
+                onConfirm={(data)=>{
+                    console.log(data)
+                }} onCancel={()=>{
+                actions.overlayerHide();
+            }}/>)
+            return;
         }
-
-        let strategyList=[];
-        // let Isrepeat = false;
-        // strategyList.push({id:row.get("id"), time:"00:00", light:0})
-        row.get("strategy").map(strategy=>{
-            let strategyTime = strategy.getIn(["condition", "time"]);
-            // if(strategyTime.indexOf("00:00")>-1){
-            //     strategyList.splice(0, 1, {id:row.get("id"), time:strategyTime, light:strategy.getIn(["rpc", "brightness"])});
-            // }else{
-                strategyList.push({id:row.get("id"), time:strategyTime, light:strategy.getIn(["rpc", "brightness"])});
-            // }
-
-
-        })
-
-        // if(!Isrepeat){
-        //     strategyList.push({id:row.get("id"), time:"24:00", light:0});
-        // }
-
-
         let expR = row.getIn(["expire", "expireRange"])
         let exeR = row.getIn(["expire", "executionRange"])
         let expRList = [];
@@ -466,13 +445,8 @@ class TimeStrategy extends Component{
             exeRList = exeR.get(1).split("-");
             endTime = {year:0, month:exeRList[0], date:exeRList[1]};
         }
-        actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title="修改策略" data={initData} deviceList={deviceList} strategyList={strategyList}
-                                                 workTime={row.get("week")} startTime={startTime} endTime={endTime}
+        actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title="修改策略" startTime={startTime} endTime={endTime}
                     onConfirm={(data)=>{
-                        let weekList = data.workTime.map(day=>{
-                                return day.get("active")?1:0
-                            });
-
                         let year = data.startTime.year.get("value");
                         let expireRangeList = [];
                         let executionRangeList = [];
@@ -486,17 +460,15 @@ class TimeStrategy extends Component{
                         let object = {};
                         object.id = rowId;
                         object.name = data.name;
-                        object.type = model;
-                        object.asset = data.device.id;
                         object.expire ={
                             expireRange:expireRangeList,
                             executionRange:executionRangeList,
                             week:parseInt(weekList.join(""), 2)
                         }
 
-                        object.strategy = data.strategyList.map(strategy=>{
-                            return {"condition":{"time":strategy.time}, "rpc":{"brightness":strategy.light}}
-                        });
+                        // object.strategy = data.strategyList.map(strategy=>{
+                        //     return {"condition":{"time":strategy.time}, "rpc":{"brightness":strategy.light}}
+                        // });
                         updateStrategy(object, ()=>{
                             this.requestSearch();
                             actions.overlayerHide();
@@ -509,7 +481,7 @@ class TimeStrategy extends Component{
     tableDelete(rowId){
         const {actions} = this.props;
 
-        actions.overlayerShow(<ConfirmPopup tips={this.formatIntl('delete.strategy')} iconClass="icon_popup_delete" cancel={()=>{
+        actions.overlayerShow(<ConfirmPopup tips={this.formatIntl(getObjectByKey(this.state.strategyData,'id',rowId).get('type') == "group"?'delete.group':'delete.strategy')} iconClass="icon_popup_delete" cancel={()=>{
             actions.overlayerHide();
         }} confirm={()=>{
             delStrategy(rowId, ()=>{
@@ -529,19 +501,10 @@ class TimeStrategy extends Component{
         });
     }
 
-
-    // pageChange(current, pageSize){
-    //     let page = this.state.page.set('current', current);
-    //     this.setState({page: page}, ()=> {
-    //         this.requestSearch();
-    //     });
-    // }
-
     searchSubmit() {
-        let page = this.state.page.set('current', 1);
-        this.setState({page:page},()=>{
+        // this.setState({page:page},()=>{
             this.requestSearch();
-        });    
+        // });    
     }
 
     searchChange(value){
@@ -549,7 +512,11 @@ class TimeStrategy extends Component{
     }
 
     collapseHandler(id) {
-        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) },()=>{
+            if(id == "devicesExpanded" && this.state.sidebarInfo[id]){
+                this.setHeight();
+            }
+        });
 	}
 
     onChange(id,value) {
@@ -620,8 +587,6 @@ class TimeStrategy extends Component{
             <div className="table-container">
                 <Table className="strategy" isEdit={true} columns={this.columns} data={strategyData} activeId={selectItem && selectItem.id}
                        rowClick={this.tableClick} rowEdit={this.tableEdit} rowDelete={this.tableDelete} collapseClick={this.collapseClick}/>
-                {/* <Page className={"page "+(page.get('total')==0?"hidden":'')} showSizeChanger pageSize={page.get('pageSize')}
-                      current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/> */}
             </div>
             <div className={`container-fluid sidebar-info ${sidebarInfo.collapsed ? "sidebar-collapse" : ""}`}>
                 <div className="row collapse-container" onClick={()=>this.collapseHandler('collapsed')}>
@@ -631,57 +596,56 @@ class TimeStrategy extends Component{
                     selectItem.type == "group"?
                     <div className="panel panel-default group-info">
                         <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
-                            <span className={sidebarInfo.collapsed ? "icon_info" :
+                            <span className={sidebarInfo.collapsed ? "icon_select" :
                                 "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>选中组
                         </div>
                         <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
                             <div className='form-group'>
-                                <label>组名称</label>
+                                <label>{this.formatIntl('app.strategy.group.name')}</label>
                                 <div className='input-container'>
-                                    <input type='text' className='form-control' placeholder="输入名称" value={selectItem.name} onChange={e=>this.onChange("name",e)}/>
+                                    <input type='text' className='form-control' value={selectItem.name} disabled="disabled"/>
                                 </div>
                             </div>
-                            <button className="btn btn-primary pull-right" onClick={this.updateGroupName}>{this.formatIntl('button.apply')}</button>                            
                         </div>
                     </div>
                     :
                     <div className="panel-strategy">
                         <div className="panel panel-default">
                             <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
-                                <span className={sidebarInfo.collapsed ? "icon_info" :
+                                <span className={sidebarInfo.collapsed ? "icon_select" :
                                     "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>选中策略
                             </div>
                             <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
                                 <div className='form-group'>
-                                    <label>策略名称</label>
+                                    <label>{this.formatIntl('app.strategy.name')}</label>
                                     <div className='input-container'>
                                         <input type='text' className='form-control' value={selectItem.name} disabled="disabled"/>
                                     </div>
                                 </div>
                                 <div className='form-group'>
-                                    <label>策略类别</label>
+                                    <label>{this.formatIntl('app.strategy.type')}</label>
                                     <div className='input-container'>
                                         <select className='form-control' value={selectItem.type} disabled="disabled"></select>
                                     </div>
                                 </div>
 
                                 <div className='form-group date-range'>
-                                    <label>日期范围</label>
+                                    <label>{this.formatIntl('app.date.range')}</label>
                                     <div className='input-container'>
                                         <input type='text' className='form-control' value={selectItem.starDate} disabled="disabled"/>
-                                        <span>至</span>
+                                        <span>{this.formatIntl('mediaPublish.to')}</span>
                                         <input type='text' className='form-control' value={selectItem.endDate} disabled="disabled"/>
                                     </div>
                                 </div>
 
                                 <div className='form-group'>
-                                    <label>重试次数</label>
+                                    <label>{this.formatIntl('app.strategy.retryCount')}</label>
                                     <div className='input-container'>
                                         <input type='text' className='form-control' value={selectItem.retryCount} disabled="disabled"/>
                                     </div>
                                 </div>
                                 <div className='form-group'>
-                                    <label>重试间隔</label>
+                                    <label>{this.formatIntl('app.strategy.retryInterval')}</label>
                                     <div className='input-container'>
                                         <input type='text' className='form-control' value={selectItem.retryInterval} disabled="disabled"/>
                                     </div>
@@ -690,7 +654,7 @@ class TimeStrategy extends Component{
                         </div>
                         <div className="panel panel-default strategy-info">
                             <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('parameterCollapsed') }}>
-                                <span className={sidebarInfo.collapsed ? "icon_info" :
+                                <span className={sidebarInfo.collapsed ? "icon_control" :
                                     "glyphicon " + (sidebarInfo.parameterCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>调整参数
                             </div>
                             <div className={"panel-body " + (sidebarInfo.parameterCollapsed ? 'collapsed' : '')}>
@@ -739,9 +703,9 @@ class TimeStrategy extends Component{
                                 <button className="btn btn-primary pull-right" onClick={this.updateGroupName}>{this.formatIntl('button.apply')}</button>                            
                             </div>
                         </div>
-                        <div className="panel panel-default">
+                        <div className="panel panel-default device-info">
                             <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesCollapsed') }}>
-                                <span className={sidebarInfo.collapsed ? "icon_info" :
+                                <span className={sidebarInfo.collapsed ? "icon_device_list" :
                                     "glyphicon " + (sidebarInfo.devicesCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>包含设备
                             </div>
                             <div className={"panel-body " + (sidebarInfo.devicesCollapsed ? 'collapsed' : '')}>
@@ -757,20 +721,20 @@ class TimeStrategy extends Component{
                 
                 
             </div>
-            <div className='container-fluid sidebar-info sidebar-devices'>
+            {sidebarInfo.devicesExpanded && <div className='container-fluid sidebar-info sidebar-devices'>
                 <div className="panel panel-default">
-                    <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
+                    <div className="panel-heading">
                         <span className="glyphicon glyphicon-triangle-bottom"></span>选择设备
                     </div>
                     <div className="panel-body">
                         <div>
                             <button className="btn btn-gray" onClick={() => {}}>{this.formatIntl('button.add.gateway')}</button>                                   
-                            <button className="btn btn-primary pull-right" onClick={() => {this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.apply')}</button>                                                               
+                            <button className="btn btn-primary pull-right" onClick={() => {this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                                               
                         </div>
                         <Table  className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
                     </div>
                 </div>
-            </div>
+            </div>}
             {sidebarInfo.devicesExpanded && <div className="select-devices"></div>}
             
         </Content>

@@ -121,6 +121,7 @@ export default {
         'delete.user':'是否删除选中用户？',
         'delete.device':'是否删除选中设备？',
         'delete.strategy':'是否删除选中策略？',
+        'delete.group':'是否删除选中组？',        
 
         //登录
         'login.form.title':'用户登录',
@@ -217,6 +218,8 @@ export default {
         'app.strategy.name.used':'策略名已使用',
         '':'',
 
+        'app.strategy.platform':'平台',
+        
         //智慧路灯
         'app.search.placeholder.name': "搜索名称或域",
         'app.search.list': '返回',
@@ -252,7 +255,12 @@ export default {
         'app.set.state':'设定状态',
         'app.strategy.param':'策略参数',
         'app.include.target.devices':'包含目标设备',
-
+        'app.strategy.group.name':'组名称',        
+        'app.strategy.retryCount':'重试次数',
+        'app.strategy.retryInterval':'重试间隔',
+        'app.strategy.select.group':'选择组',
+        'app.strategy.level':'策略级别',        
+        
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
         'app.online.state': '在线状态',
