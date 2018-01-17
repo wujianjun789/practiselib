@@ -194,7 +194,7 @@ export default class Map{
         }
 
         if(type == 'bing'){
-            let imagerySet = "Road";// AerialWithLabels | Birdseye | BirdseyeWithLabels | Road
+            let imagerySet = "CanvasLight";// AerialWithLabels | Birdseye | BirdseyeWithLabels | Road
             // let bing = new L.BingLayer("LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc", {type: imagerySet});
             let bing = new L.BingLayer("Akd2MEZfAV6OL9yS-Ll85Lfu3hhIi6U2K_GKrI35dPch9iyMPmAao6ZryOATSkC5", Object.assign({}, option,{type: imagerySet}));
             bing.addTo(this.map);
@@ -202,12 +202,13 @@ export default class Map{
         }
 
         if(type == 'arcGis'){
-            console.log(type);
-            L.esri.basemapLayer("Gray", {hideLogo:true}).addTo(this.map);
-            let parks = new L.esri.FeatureLayer(Object.assign({}, option,{url:"https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Portland_Parks/FeatureServer/0"}),{
-              style: function () {
-                  return {color:"#70ca49", weight:2};
-              }
+            console.log('option:',option);
+            L.esri.basemapLayer("Streets", Object.assign({}, option, {hideLogo:true})).addTo(this.map);
+            let parks = new L.esri.FeatureLayer({
+                url:"https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/stops/FeatureServer/0/",
+                style: function () {
+                    return {color:"#70ca49", weight:2};
+                }
             }).addTo(this.map);
             return;
         }

@@ -288,6 +288,33 @@ export function updateDataOrigin(data, key) {
 
 }
 
+export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
+
+    let headers = getHttpHeader();
+    let nearParam = {maxDistance: map.distance/2000,unit:'kilometers'};
+    
+    if(domainLevel==1){
+        nearParam = {};
+    }
+    if(domainLevel)
+    if(model){
+        httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam),extendType:model}})),{
+            headers: headers,
+            method: 'GET'
+        }, response=>{
+            cb && cb(response);
+        })
+    }else{
+        httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam)}})),{
+            headers: headers,
+            method: 'GET'
+        }, response=>{
+            cb && cb(response);
+        })
+    }
+
+}
+
 /**
  * 获取设备的状态
  * @param {String} model
