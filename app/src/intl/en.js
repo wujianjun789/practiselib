@@ -300,6 +300,9 @@ export default {
         'app.total.charge.time':'total charge time',
         'app.last.charge.time':'last charge time',
 
+        'app.time.strategy':'Time dimming strategy',
+        'app.latlng.strategy':'Latlng dimming strategy',      
+
         //media
         'mediaPublish.playList': 'Play List',
         'mediaPublish.manage': 'Publish Manage',

@@ -289,6 +289,9 @@ export default {
         'app.last.charge.time':'最后一次充电时间',
 
 
+        'app.time.strategy':'时间调光表',
+        'app.latlng.strategy':'经纬度调光表',        
+
         //多媒体
         'mediaPublish.playList':'播放列表',
         'mediaPublish.manage':'发布管理',
