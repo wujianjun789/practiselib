@@ -1074,7 +1074,7 @@ export class lightMap extends Component{
                     <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsOpenPoleInfo?"":"hidden")}
                          style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
                         <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?40:infoStyle.maxHeight)+"px"}}>
-                            <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0].name}</h3>
+                            <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0]?searchListToJS[0].name:''}</h3>
                             <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
