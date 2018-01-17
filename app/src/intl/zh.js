@@ -98,6 +98,7 @@ export default {
         'map.location':'地图位置',
         'map.lng':'经度',
         'map.lat':'纬度',
+        'map.device.tip':'件设备',
 
         //设备
         'sysOperation.gateway':'网关',

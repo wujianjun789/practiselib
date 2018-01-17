@@ -2,6 +2,9 @@
  * Created by a on 2017/7/25.
  */
 import React,{Component} from 'react'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {injectIntl} from 'react-intl';
 
 import '../../../public/styles/domain-mapPreview.less';
 import Content from '../../components/Content';
@@ -9,13 +12,14 @@ import MapView from '../../components/MapView';
 
 import SearchText from '../../components/SearchText';
 
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 import {getMapConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
 import {getAssetsBaseByDomain} from '../../api/asset';
 
 import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index';
 import lodash from 'lodash';
-export default class MapPreview extends Component{
+export class MapPreview extends Component{
     constructor(props){
         super(props)
         this.state = {
@@ -115,7 +119,7 @@ export default class MapPreview extends Component{
                         })
 
                         if(curIndex>-1 && curIndex<this.state.curDomainList.length){
-                            this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+                            this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+this.props.intl.formatMessage({id:'map.device.tip'});
                         }
 
                         if (deviceLen.length == data.length){
@@ -153,7 +157,6 @@ export default class MapPreview extends Component{
     }
 
     mapZoomend(data){
-        console.log('zoom:', data.zoom);
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.requestCurDomain();
     }
@@ -177,3 +180,22 @@ export default class MapPreview extends Component{
             </Content>
     }
 }
+
+function mapStateToProps(state) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            addNotify: addNotify,
+            removeAllNotify: removeAllNotify
+        }, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(injectIntl(MapPreview));
