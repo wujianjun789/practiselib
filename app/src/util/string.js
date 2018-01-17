@@ -93,7 +93,7 @@ export function dateStringFormat(str, IsHaveYear=true) {
     }
 
     if(IsHaveYear && strList.length==3){
-        return strList[0]+"年"+strList[1]+"月"+strList[2]+"日"
+        return strList[0]+"年"+strList[1]+"月"+strList[2].split("T")[0]+"日"
     }
     return "";
 }

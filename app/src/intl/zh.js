@@ -257,7 +257,7 @@ export default {
         'app.strategy.param':'策略参数',
         'app.include.target.devices':'包含目标设备',
         'app.strategy.group.name':'组名称',        
-        'app.strategy.retryCount':'重试次数',
+        'app.strategy.retryNumber':'重试次数',
         'app.strategy.retryInterval':'重试间隔',
         'app.strategy.select.group':'选择组',
         'app.strategy.level':'策略级别',        

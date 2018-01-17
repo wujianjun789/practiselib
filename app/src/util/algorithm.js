@@ -172,6 +172,16 @@ export function getListByKey(list, key, value) {
     return newList;
 }
 
+export function getListByKey2(list, key, value) {
+    let newList = [];
+    list.map(item=>{
+        if(item[key] === value){
+            newList.push(item)
+        }
+    })
+    return newList;
+}
+
 /**
  * 根据指定键值模糊搜索数组中所有相同项，并返回由相同项中指定的键值组成的数组
  * @param list 
