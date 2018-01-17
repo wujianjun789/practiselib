@@ -268,7 +268,7 @@ export default {
         'app.strategy.param': 'strategy param',
         'app.include.target.devices': 'include target devices',
         'app.strategy.group.name':'Group name',        
-        'app.strategy.retryCount':'Retry count',
+        'app.strategy.retryNumber':'Retry count',
         'app.strategy.retryInterval':'Retry interval',
         'app.strategy.select.group':'Select group',
         'app.strategy.level':'Level',        
