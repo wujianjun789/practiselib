@@ -599,7 +599,6 @@ export class lightMap extends Component{
 
     requestCurAssets(model){
         getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
-            console.log(data)
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -692,6 +691,7 @@ export class lightMap extends Component{
     }
 
     mapDragend(data){
+
         return;
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         if(this.map.zoom>15&&this.map.zoom<=18){
@@ -1017,7 +1017,6 @@ export class lightMap extends Component{
             listStyle, infoStyle, controlStyle, positionList, mapLatlng,  IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
         let IsControl = false;
         let searchListToJS = searchList.toJS();
-        console.log(searchListToJS);
         //let aaaa = JSON.stringify(positionList);
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
