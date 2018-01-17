@@ -67,7 +67,7 @@ export function updateStrategy(data, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/plans/'+data.id,{
         headers: headers,
-        method: 'PUT',
+        method: 'PATCH',
         body: JSON.stringify(data)
     }, response=>{
         cb && cb(response);
@@ -122,6 +122,17 @@ export function delGroup(id,cb){
     httpRequest(HOST_IP+'/planGroups/'+id,{
         headers: headers,
         method: 'DELETE'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function updateGroup(data,cb){
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/planGroups/'+data.id,{
+        headers: headers,
+        method: 'PATCH',
+        body: JSON.stringify(data)
     }, response=>{
         cb && cb(response);
     })

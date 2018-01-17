@@ -30,7 +30,7 @@ import {getStrategyDeviceConfig} from '../../util/network'
 import { DatePicker} from 'antd';
 import {getObjectByKeyObj,getIndexByKey,getProByKey,getIndexsByKey,spliceInArray,getObjectByKey,getListKeyByKey,IsExitInArray2,IsExitInArray3,getListByKey2} from '../../util/algorithm'
 import {getLightLevelConfig} from '../../util/network'
-import {getStrategyList,getGroupListPlan,getNoGroupStrategy,delStrategy,delGroup,addStrategy,updateStrategy} from '../../api/plan';
+import {getStrategyList,getGroupListPlan,getNoGroupStrategy,delStrategy,delGroup,addStrategy,updateStrategy,updateGroup} from '../../api/plan';
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -52,18 +52,8 @@ class TimeStrategy extends Component{
                 devicesExpanded:false
             },
             selectItem: {
-                id: "",
-                // name: "",
-                // type: " ",
-                // starDate:"",
-                // endDate:"",
-                // retryNumber:"",
-                // retryInterval:""
             },
             property:{
-                lng:'',
-                lat:'',
-                domain:'',
                 time:'',
                 light:''
             },
@@ -166,7 +156,6 @@ class TimeStrategy extends Component{
                     ],
                 },
             ],
-            domainList:[{id:1,name:'闵行区'},{id:2,name:'徐汇区'},{id:3,name:'长宁区'},{id:4,name:'莘庄镇'},],
             lightList:[{id:1,name:"10"},{id:1,name:"20"},{id:1,name:"30"}],
             allDevices:{
                 allChecked:false,
@@ -187,19 +176,7 @@ class TimeStrategy extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        // getStrategyDeviceConfig(data=>{
-        //     debugger
-        //     this.mounted && this.setState(this.deviceDefault=data, ()=>{
-        //         getModelData(()=>this.mounted && this.initDeviceList(getModelList()));
-        //     })
-        // })
-
         this.requestSearch();
-        
-        // getStrategyList(0,data=>{
-        //     this.mounted && this.initResult(data);
-        // })
-    
         this.initDeviceData('selectedDevicesData',this.state.selectedDevicesData);
         this.initDeviceData('allDevicesData',this.state.allDevicesData);    
     }
@@ -216,17 +193,7 @@ class TimeStrategy extends Component{
     formatIntl=(formatId)=>{
         const {intl} = this.props;
         return intl?intl.formatMessage({id:formatId}):null;
-        // return formatId;
     }
-
-    // requestSearch=() =>{
-    //     const {model, page, search} = this.state;
-    //     let limit = page.get("pageSize");
-    //     let offset = (page.get("current")-1)*limit;
-    //     let name = search.get("value");
-    //     getStrategyListByName(model, name, offset, limit, data=>{this.mounted && this.initResult(data)});
-    //     // getStrategyCountByName(model, name, data=>{this.mounted && this.initPageSize(data)})
-    // }
 
     requestSearch=() =>{
         getGroupListPlan(data=>{
@@ -251,21 +218,37 @@ class TimeStrategy extends Component{
 
     initTableData=(key,data)=>{
         let result = [];
+        const {search} = this.state;
         data.map(parent=>{
-            parent.collapsed = false;
-            result.push(parent);
-            if(parent.plans){
+            if(parent.name.indexOf(search.get("value"))>-1){
+                parent.collapsed = false;
+                result.push(parent);
+                if(parent.plans){
+                    parent.plans.map(item=>{
+                        item.hidden = parent.collapsed;
+                        item.timeRange = dateStringFormat(item.start)+"-"+dateStringFormat(item.end)
+                        result.push(item);
+                    })
+                }
+            }
+            else{
                 parent.plans.map(item=>{
-                    item.hidden = parent.collapsed;
-                    item.timeRange = dateStringFormat(item.start)+"-"+dateStringFormat(item.end)
-                    result.push(item);
+                    if(item.name.indexOf(search.get("value"))>-1){
+                        parent.collapsed = false;
+                        result.push(parent);
+
+                        item.hidden = parent.collapsed;
+                        item.timeRange = dateStringFormat(item.start)+"-"+dateStringFormat(item.end)
+                        result.push(item);
+                    }
                 })
             }
         })
-        result.map(item=>{
+        result.length>0 && result.map(item=>{
             item.key = (item.plans?"group":"plan")+item.id;
         });
-        this.setState({[key]:Immutable.fromJS(result),selectItem:result[0]},()=>{
+
+        this.setState({[key]:Immutable.fromJS(result),selectItem:result.length>0?result[0]:{}},()=>{
             console.log(this.state.selectItem)
         });
     }
@@ -285,56 +268,10 @@ class TimeStrategy extends Component{
         this.setState({[key]:Immutable.fromJS(result)});
     }
 
-    // initResult=(data)=>{
-    //     let list = data.map(strategy=>{
-    //         let expR = strategy.expire.expireRange;
-    //         let exeR = strategy.expire.executionRange;
-    //         let timeRange = "";
-    //         if(expR && expR.length){
-    //             timeRange += dateStringFormat(expR[0]);
-    //         }
-    //         else if(exeR && exeR.length){
-    //             timeRange += dateStringFormat(exeR[0], false);
-    //         }
-
-    //         if(expR && expR.length==2){
-    //             timeRange += "-"+dateStringFormat(expR[1]);
-    //         }
-    //         else if(exeR && exeR.length==2){
-    //             timeRange += "-"+dateStringFormat(exeR[1], false)
-    //         }
-    //         return {id:strategy.id, name:strategy.name, timeRange:timeRange, deviceType:strategy.asset,
-    //                             week:strategy.expire.week, asset:strategy.asset,strategy:strategy.strategy,
-    //             expire:strategy.expire};
-    //     })
-
-    //     this.setState({data:Immutable.fromJS(list)});
-    //     if(data && data.length){
-    //         this.setState({selectStrategy:data[0]});
-    //     }
-    // }
-
-    // initStrategyList(data){
-    //     this.setState({strategyList:data})
-    // }
-
-    // initDeviceList(data){
-    //     let list = [];
-    //     this.deviceDefault.map(key=>{
-    //         let model = getObjectByKeyObj(data, 'id', key)
-    //         if(model){
-    //             list.push({id:model.id, name:model.name})
-    //         }
-    //     })
-
-    //     this.setState({deviceList: Object.assign({}, this.state.deviceList, {options:list})})
-    // }
-
     addHandler=()=>{
         const {actions} = this.props;
         actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title={this.formatIntl('app.add.strategy')} 
                                                  onConfirm={(data)=>{
-                                                     debugger
                                                     data.type=0;
                                                     addStrategy(data, ()=>{
                                                         this.requestSearch();
@@ -352,34 +289,16 @@ class TimeStrategy extends Component{
         if(row.get('plans')){
             actions.overlayerShow(<TimeGroupPopup className="time-group-popup" intl={this.props.intl} title="修改组" name ={row.get('name')}
                 onConfirm={(data)=>{
-                    console.log(data)
+                    updateGroup({id:row.get("id"),name:data},()=>{
+                        this.requestSearch();
+                        actions.overlayerHide();                        
+                    })
+                console.log(data)
                 }} onCancel={()=>{
                 actions.overlayerHide();
             }}/>)
             return;
         }
-        // let expR = row.getIn(["expire", "expireRange"])
-        // let exeR = row.getIn(["expire", "executionRange"])
-        // let expRList = [];
-        // let exeRList = [];
-
-        // let startTime = {};
-        // let endTime = {};
-        // if(expR && expR.size){
-        //     expRList = expR.get(0).split("-");
-        //     startTime = {year:expRList[0], month:expRList[1], date:expRList[2]};
-        // }else if(exeR && exeR.size){
-        //     exeRList = exeR.get(0).split("-");
-        //     startTime = {year:0, month:exeRList[0], date:exeRList[1]};
-        // }
-
-        // if(expR && expR.size==2){
-        //     expRList = expR.get(1).split("-");
-        //     endTime = {year:expRList[0], month:expRList[1], date:expRList[2]};
-        // }else if(exeR && exeR.size==2){
-        //     exeRList = exeR.get(1).split("-");
-        //     endTime = {year:0, month:exeRList[0], date:exeRList[1]};
-        // }
         
         actions.overlayerShow(<TimeStrategyPopup isEdit intl={this.props.intl} title="修改策略" data={row.toJS()}
                     onConfirm={(data)=>{
@@ -417,9 +336,7 @@ class TimeStrategy extends Component{
     }
 
     updateSelectItem=(item) =>{
-        let selectItem = {
-            name:item.name,
-        }
+        let selectItem = item;
         if(!item.plans){
             selectItem.start=item.start.split('T')[0];
             selectItem.end=item.end.split('T')[0];
@@ -434,9 +351,7 @@ class TimeStrategy extends Component{
     }
 
     searchSubmit=()=> {
-        // this.setState({page:page},()=>{
-            this.requestSearch();
-        // });    
+        this.requestSearch();
     }
 
     searchChange=(value)=>{
@@ -527,7 +442,6 @@ class TimeStrategy extends Component{
 
     render(){
         const {search, selectedDevicesData,allDevicesData, page, strategyData, sidebarInfo, selectItem,property,domainList,lightList,allDevices} = this.state;
-        console.log(selectItem)
         return <Content className={`time-strategy ${sidebarInfo.collapsed ? 'collapse' : sidebarInfo.devicesExpanded?'select-devices-collapse':''}`}>
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
@@ -543,7 +457,7 @@ class TimeStrategy extends Component{
                     <span className={sidebarInfo.collapsed ? "icon_horizontal"  :"icon_vertical"}></span>
                 </div>
                 {
-                    selectItem.plans?
+                    !selectItem.id || selectItem.plans?
                     <div className="panel panel-default group-info">
                         <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
                             <span className={sidebarInfo.collapsed ? "icon_select" :
@@ -553,7 +467,7 @@ class TimeStrategy extends Component{
                             <div className='form-group'>
                                 <label>{this.formatIntl('app.strategy.group.name')}</label>
                                 <div className='input-container'>
-                                    <input type='text' className='form-control' value={selectItem.name} disabled="disabled"/>
+                                    <input type='text' className='form-control' value={selectItem.name?selectItem.name:''} disabled="disabled"/>
                                 </div>
                             </div>
                         </div>
@@ -608,30 +522,6 @@ class TimeStrategy extends Component{
                                     "glyphicon " + (sidebarInfo.parameterCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>调整参数
                             </div>
                             <div className={"panel-body " + (sidebarInfo.parameterCollapsed ? 'collapsed' : '')}>
-                                <div className='form-group'>
-                                    <label>经度</label>
-                                    <div className='input-container'>
-                                        <input type='text' className='form-control' value={property.lng} onChange={e=>this.onChange("lng",e)}/>
-                                    </div>
-                                </div>
-                                <div className='form-group'>
-                                    <label>纬度</label>
-                                    <div className='input-container'>
-                                        <input type='text' className='form-control' value={property.lat} onChange={e=>this.onChange("lat",e)}/>
-                                    </div>
-                                </div>
-                                <div className='form-group'>
-                                    <label>选择域</label>
-                                    <div className='input-container'>
-                                        <select className='form-control' value={property.domain} onChange={e=>this.onChange("domain",e)}>
-                                        {
-                                            domainList.map((item, index) => {
-                                                return <option key={index} value={item.name}>{item.name}</option>
-                                            })
-                                        }
-                                        </select>
-                                    </div>
-                                </div>
                                 <div className='form-group'>
                                     <label>时间</label>
                                     <div className='input-container'>

@@ -61,30 +61,6 @@
     // overflow-x: hidden;
     // overflow-y: auto;
     padding: 35px 0 20px 20px;
-    .date-range{
-      .input-container{
-        position: relative;
-        .select-container{
-          width:73px;
-          display: inline-block;
-          margin-right: 10px;
-          >.form-control{
-            padding: 0;
-          }
-          &:last-of-type{
-            margin-right: 0;       
-          }
-        }
-        >span{
-          top:40px;
-          left:0;
-        }
-      }
-      .to{
-        margin: 0 43px;
-        font-weight: 700;
-      }
-    }
     .form-group{
       display: inline-block;
       margin-right: 20px;
@@ -149,6 +125,14 @@
           .active{
             background: #e6fbff;
           }
+        }
+      }
+      .ant-calendar-picker{
+        input{
+          height: 40px;
+          padding: 6px 10px;
+          font-size: 14px;
+          color: #4d4d4d;
         }
       }
     }
@@ -586,6 +570,7 @@
             >input{
               width:85px;
               display: inline-block;
+              padding: 6px;
             }
             >span{
               margin-right: 8px;

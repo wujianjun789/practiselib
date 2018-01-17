@@ -254,6 +254,7 @@ export default class Power extends PureComponent {
 
 	updateLineChart() {
 		const {selectDevices, startDate, endDate} = this.state;
+		console.log(Object.values(selectDevices))
         this.chart.updateChart(Object.values(selectDevices), [startDate, endDate]);
 	}
 

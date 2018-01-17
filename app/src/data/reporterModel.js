@@ -23,14 +23,7 @@ export const TreeData = [
                 "class": "icon_gateway",
                 "active": false,
                 "link": "/reporterManage/device/gateway"
-            },
-            {
-                "id": 'power',
-                "name": "功率",
-                "class": "icon_lc",
-                "active": false,
-                "link": "/reporterManage/device/power"
-            },
+            }
         ]
     },
     {
