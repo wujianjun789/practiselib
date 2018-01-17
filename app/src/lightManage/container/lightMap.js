@@ -65,8 +65,8 @@ export class lightMap extends Component{
             listStyle:{"maxHeight":"200px"},
             infoStyle:{"maxHeight":"352"},
             controlStyle:{"maxHeight":"180"},
-            IsOpenPoleInfo:true,
-            IsOpenPoleControl:true,
+            IsOpenPoleInfo:false,
+            IsOpenPoleControl:false,
 
             /*  新增－t  */
             searchMode:"域",
@@ -307,17 +307,17 @@ export class lightMap extends Component{
         //     deviceList.push({ "id":pole.id, "name":pole.name, "type":type });
         //     return Object.assign({}, latlng, {"device_type":'DEVICE', "device_id":pole.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
         // });
-        // if(data && data.length){
-        //     let fPole = data[0];
-        //     let flatlng = fPole.geoPoint;
-        //     this.setState({searchList:searchList, mapLatlng:flatlng, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
-        //         //this.requestPoleAsset(data);
-        //     });
-        // }else{
-        //     this.setState({searchList:searchList, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
-        //         //this.requestPoleAsset(data);
-        //     });
-        // }
+        if(data && data.length){
+            let fPole = data[0];
+            let flatlng = fPole.geoPoint;
+            this.setState({searchList:searchList, mapLatlng:flatlng, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
+                //this.requestPoleAsset(data);
+            });
+        }else{
+            this.setState({searchList:searchList, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
+                //this.requestPoleAsset(data);
+            });
+        }
 
     }
 
@@ -384,6 +384,7 @@ export class lightMap extends Component{
                     }
                 }
             }else{}
+
             this.setState({searchList:this.state.searchList.updateIn([indexList[i].curIndex,"asset"], v=>Immutable.fromJS(indexList[i].asset))})
 
         }
@@ -516,49 +517,32 @@ export class lightMap extends Component{
 
     itemClick(item){
 
-        let data  = item.toJS()
-        //this.setState({IsSearch:false, IsOpenFault:false, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:true},()=>{
-        this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{
-
+        this.setState({searchList:Immutable.fromJS([item])},()=>{
+            let data  = item.toJS()
             if(this.state.tableIndex==0){
-                if(this.map.zoom>15&&this.map.zoom<=18){
-                    this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
-                }else{
-                    this.map = Object.assign({}, this.map, {zoom:16,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
-                }
+                    if(this.map.zoom>15&&this.map.zoom<=18){
+                        this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                    }else{
+                        this.map = Object.assign({}, this.map, {zoom:16,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                    }
+                    this.setState({IsSearch:false, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:false},()=>{});
             }else{
-                if(this.map.zoom>6&&this.map.zoom<=15){
-                    this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
-                }else{
-                    this.map = Object.assign({}, this.map, {zoom:14,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
-                }
+                    if(this.map.zoom>6&&this.map.zoom<=15){
+                        this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                    }else{
+                        this.map = Object.assign({}, this.map, {zoom:14,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                    }
+                    this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{});
             }
-
-            /* 根据id将设备position项塞进curPosition */
-
-            // this.state.positionList.map((item,index)=>{
-            //     if(item.device_id===id){
-            //         itemLst.push(item);
-            //         this.setState({positionList:itemLst});
-            //     }
-            // })
-            // this.state.deviceList.map(item=>{
-            //      if(item.id===id){
-            //         dItemLst.push(item);
-            //         this.setState({deviceList:dItemLst},()=>{this.isMouseEnterSet()});
-            //      }
-            // })
-
-            //this.setState({searchList:this.state.searchList.push(item)},()=>{console.log(this.state.searchList)});
-
             this.setSize();
-
-        });
+        })
+        
+        
 
     }
 
     backHandler(){
-        this.setState({IsSearch:true,IsSearchResult:true}, ()=>{
+        this.setState({IsSearch:true,IsSearchResult:true,IsOpenPoleInfo:false}, ()=>{
             this.setSize();
         });
     }
@@ -715,15 +699,18 @@ export class lightMap extends Component{
         }else{
             this.requestCurDomain();
         }
+
     }
 
     mapZoomend(data){
+
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         if(this.map.zoom>15&&this.map.zoom<=18){
             this.requestCurAssets("lc");
         }else{
             this.requestCurDomain();
         }
+
     }
 
     markerClick(data){
@@ -1029,6 +1016,8 @@ export class lightMap extends Component{
         const {panLatlng ,curList, curPositionList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList, deviceList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList, mapLatlng,  IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
         let IsControl = false;
+        let searchListToJS = searchList.toJS();
+        console.log(searchListToJS);
         //let aaaa = JSON.stringify(positionList);
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
@@ -1072,11 +1061,7 @@ export class lightMap extends Component{
                             searchList.map(item=>{
                                 return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
                                     {item.get("name")}
-                                    {item.getIn(["asset","collect"]) && <span className=""><svg><use xlinkHref={"#icon_collect"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {item.getIn(["asset","charge"]) && <span className=""><svg><use xlinkHref={"#icon_charge_pole"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {item.getIn(["asset","camera"]) && <span className=""><svg><use xlinkHref={"#icon_camera"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {item.getIn(["asset","lamp"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                    {item.getIn(["asset","screen"]) && <span className=""><svg><use xlinkHref={"#screen"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                 </li>
                             })
                         }
@@ -1086,19 +1071,17 @@ export class lightMap extends Component{
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
                         <span className="name">{"返回搜索结果"}</span>
                     </div>
-                    <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsSearch || !IsOpenPoleInfo || infoStyle.maxHeight==0?"hidden":"")}
+                    <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsOpenPoleInfo?"":"hidden")}
                          style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
                         <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?40:infoStyle.maxHeight)+"px"}}>
-                            <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{curDevice.get("name")}</h3>
+                            <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0].name}</h3>
                             <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
                         </div>
                         <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
-                                {curDevice.get("screen") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="screen"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("screen")}><span className="icon_screen"></span></li>}
-                                {curDevice.get("lamp") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>}
-                                {curDevice.get("camera") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="camera"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("camera")}><span className={"this"+(curId=="camera"?"_hover":"")}><span className="icon_camera"></span></span></li>}
-                                {curDevice.get("charge") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="charge"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("charge")}><span className={"this"+(curId=="charge"?"_hover":"")}><span className="icon_charge_pole"></span></span></li>}
-                                {curDevice.get("collect") && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="collect"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("collect")}><span className={"this"+(curId=="collect"?"_hover":"")}><span className="icon_collect"></span></span></li>}
+                                {
+                                   searchListToJS[0] && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
+                                }
                             </ul>
                             {
                                 this.renderInfo(curId,this.state[curId])
