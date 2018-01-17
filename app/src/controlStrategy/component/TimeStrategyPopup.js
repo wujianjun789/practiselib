@@ -9,13 +9,14 @@ import {getMomentDate, momentDateFormat,getMomentUTC,getCurHM, getDaysByYearMont
 import {STRATEGY_NAME_LENGTH, Name2Valid} from '../../util/index'
 import {dateAddZero} from '../../util/string'
 import Immutable from 'immutable'
+import {getGroupList,addGroup} from '../../api/plan'
 
 const date_year = "不限";
 export default class TimeStrategyPopup extends Component{
     constructor(props){
         super(props);
         const {data={},isEdit=false} = this.props;
-        let {name="", level='platform',retryCount='',retryInterval='',group=''} = data;
+        let {name="", level='platform',retryNumber='',retryInterval='',group=''} = data;
         this.state = {
             name:name,
             level:level,
@@ -29,19 +30,13 @@ export default class TimeStrategyPopup extends Component{
                 month:Immutable.fromJS({value:"1", list:[]}),
                 date:Immutable.fromJS({value:"1", list:[]})
             },
-            retryCount:retryCount,
+            retryNumber:retryNumber,
             retryInterval:retryInterval,
             group:'',
-            groupList:[
-                {id:1,name:'组1'},
-                {id:2,name:'组2'},
-                {id:3,name:'组3'},
-                {id:4,name:'组4'},
-                {id:5,name:'组5'},
-            ],
+            groupList:[],
             search:'',
             prompt:{
-                name:true,
+                name:false,
                 date:false,
             },
         },
@@ -74,32 +69,34 @@ export default class TimeStrategyPopup extends Component{
 
         let curDate = new Date();
         let nextDate = new Date(curDate);
-
         let yearValue = "";
         let monthValue = "";
         let dateValue = "";
         let nextYearValue = "";
         let nextMonthValue = "";
         let nextDateValue = "";
-        if(this.props.startTime){
-            yearValue = this.props.startTime.year
-            monthValue = this.props.startTime.month
-            dateValue = this.props.startTime.date
+        if(this.props.isEdit){
+            let {start,end} = this.props.data;
+            start = start.split("-");
+            end = end.split("-");
+            yearValue = start[0];
+            monthValue = start[1];
+            dateValue = start[2].split("T")[0];
+            nextYearValue = end[0];
+            nextMonthValue = end[1];
+            nextDateValue = end[2].split("T")[0];
         }else{
             yearValue = curDate.getFullYear()
             monthValue = dateAddZero(curDate.getMonth()+1)
             dateValue = dateAddZero(curDate.getDate())
+            nextYearValue = nextDate.getFullYear()
+            nextMonthValue = dateAddZero(nextDate.getMonth()+1)
+            nextDateValue = dateAddZero(nextDate.getDate()+1)
         }
 
-        if(this.props.endTime){
-            nextYearValue = this.props.endTime.year
-            nextMonthValue = this.props.endTime.month
-            nextDateValue = this.props.endTime.date
-        }else{
-            nextYearValue = nextDate.getFullYear()
-            nextMonthValue = dateAddZero(nextDate.getMonth()+2)
-            nextDateValue = dateAddZero(nextDate.getDate())
-        }
+        getGroupList(data=>{
+            this.setState({groupList:data});
+        })
 
         this.setState({
             startTime:{
@@ -187,25 +184,38 @@ export default class TimeStrategyPopup extends Component{
     }
 
     onConfirm=()=> {
-        this.props.onConfirm && this.props.onConfirm(this.state);
+        const {name,level,startTime,endTime,retryNumber,retryInterval,group}=this.state;
+        let data = {};
+        data.name = name;
+        data.start = startTime.year.get("value")+"-"+startTime.month.get("value")+"-"+startTime.date.get("value");
+        data.end = endTime.year.get("value")+"-"+endTime.month.get("value")+"-"+endTime.date.get("value");
+        retryNumber && (data.retryNumber = retryNumber);
+        retryInterval && (data.retryInterval = retryInterval);
+        group && (data.groupId = group);
+        this.props.onConfirm && this.props.onConfirm(data);
     }
 
     onCancel=()=> {
         this.props.onCancel && this.props.onCancel();
     }
 
-    searchSubmit=(value)=>{
-        this.setState({search:value,group:value});
+    searchSubmit=(group)=>{
+        this.setState({search:group.name,group:group.id});
     }
     
     addGroup=()=>{
         const {search} = this.state;
+        addGroup({name:search},()=>{
+            getGroupList(data=>{
+                this.setState({groupList:data,search:''});
+            })
+        })
     }
 
     render(){
-        const {name, level, startTime, endTime,retryCount,retryInterval, prompt,groupList,group,search} = this.state;
+        const {name, level, startTime, endTime,retryNumber,retryInterval, prompt,groupList,group,search} = this.state;
         let {titleField, valueField, options} = this.levelList;
-        let valid = prompt.name || !options.length || prompt.date;
+        let valid = !name || prompt.name || !options.length || prompt.date;
 
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.save']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -262,15 +272,15 @@ export default class TimeStrategyPopup extends Component{
                         </div>
                 </div>
                 <div className="form-group">
-                    <label className="control-label" htmlFor="retryCount" title={this.formatIntl('app.strategy.retryCount')}>{this.formatIntl('app.strategy.retryCount')}:</label>
+                    <label className="control-label" htmlFor="retryNumber" title={this.formatIntl('app.strategy.retryNumber')}>{this.formatIntl('app.strategy.retryNumber')}:</label>
                     <div className="input-container">
-                        <input type="text" className="form-control" id="retryCount" value={retryCount} onChange={this.onChange}/>
+                        <input type="text" className="form-control" id="retryNumber" placeholder="次" value={retryNumber} onChange={this.onChange}/>
                     </div>
                 </div>
                 <div className="form-group">
                     <label className="control-label" htmlFor="retryInterval" title={this.formatIntl('app.strategy.retryInterval')}>{this.formatIntl('app.strategy.retryInterval')}:</label>
                     <div className="input-container">
-                        <input type="text" className="form-control" id="retryInterval" value={retryInterval} onChange={this.onChange}/>
+                        <input type="text" className="form-control" id="retryInterval" placeholder="秒" value={retryInterval} onChange={this.onChange}/>
                     </div>
                 </div>
                 <div className="form-group">
@@ -280,10 +290,12 @@ export default class TimeStrategyPopup extends Component{
                         <ul className="group-list">
                             {
                                 groupList.map((item, index)=>{
-                                    return item.name.indexOf(search)>-1?<li className={item.name===search?"active":""} key={index} value={item.name} onClick={()=>this.searchSubmit(item.name)}>{item.name}</li>:""
+                                    return item.name.indexOf(search)>-1?<li className={item.name===search?"active":""} key={index} value={item.name} onClick={()=>this.searchSubmit(item)}>{item.name}</li>:""
                                 })
                             }
-                            <li><span className="glyphicon glyphicon-plus" onClick={this.addGroup}></span>{`创建组“${search}”`}</li>                             
+                            {
+                                search && <li onClick={this.addGroup}><span className="glyphicon glyphicon-plus"></span>{`创建组“${search}”`}</li>                                
+                            }                           
                         </ul>
                     </div>
                 </div>

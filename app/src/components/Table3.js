@@ -10,10 +10,10 @@ import Collapse from 'antd/lib/collapse/Collapse';
  * data:[{esn,name,...},..other]
  * allChecked:bool 全选或全取消属性
  * allCheckChange:Func(value:bool) 全选或全取消事件，value:true:全选，false:取消
- * rowCheckChange:Func(rowId:Num,value:bool) 选中或取消事件
- * rowEdit:Func(rowId:Num) 编辑事件
- * rowDelete:Func(rowId:Num) 删除事件
- * collapsedClick:Func(rowId:Num) 收缩展开事件
+ * rowCheckChange:Func(rowKey:Num,value:bool) 选中或取消事件
+ * rowEdit:Func(rowKey:Num) 编辑事件
+ * rowDelete:Func(rowKey:Num) 删除事件
+ * collapsedClick:Func(rowKey:Num) 收缩展开事件
  */
 export default class Table extends Component {
     constructor(props) {
@@ -29,24 +29,24 @@ export default class Table extends Component {
         this.props.allCheckChange && this.props.allCheckChange(value);
     }
 
-    rowCheckChange(rowId, value) {
-        this.props.rowCheckChange && this.props.rowCheckChange(rowId, value);
+    rowCheckChange(rowKey, value) {
+        this.props.rowCheckChange && this.props.rowCheckChange(rowKey, value);
     }
 
-    rowEdit(rowId) {
-        this.props.rowEdit && this.props.rowEdit(rowId);
+    rowEdit(rowKey) {
+        this.props.rowEdit && this.props.rowEdit(rowKey);
     }
 
-    rowDelete(rowId) {
-        this.props.rowDelete && this.props.rowDelete(rowId);
+    rowDelete(rowKey) {
+        this.props.rowDelete && this.props.rowDelete(rowKey);
     }
 
     rowClick(row){
         this.props.rowClick && this.props.rowClick(row);
     }
 
-    collapsedClick(rowId){
-        this.props.collapseClick && this.props.collapseClick(rowId,this.props.className,this.props.data);
+    collapsedClick(rowKey){
+        this.props.collapseClick && this.props.collapseClick(rowKey,this.props.className,this.props.data);
     }
 
     render() {
@@ -73,7 +73,7 @@ export default class Table extends Component {
                     <tbody>
                     {
                         data.map((row, index) => {
-                            let curId = row.get('id');
+                            let curId = row.get(keyField);
                             if(!row.get('hidden')){
                                 return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
@@ -91,7 +91,7 @@ export default class Table extends Component {
                                 }
                                 {
                                     isEdit &&
-                                        row.get('type')?<td className="edit">
+                                        row.get('id')!==0?<td className="edit">
                                                 <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.modify'/></span></a>
                                                 <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete'/></span></a>
                                             </td>

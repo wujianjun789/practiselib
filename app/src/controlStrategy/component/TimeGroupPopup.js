@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
-import '../../../public/styles/permissionManage.less';
 import {Name2Valid} from '../../util/index';
 import {FormattedMessage} from 'react-intl';
 
