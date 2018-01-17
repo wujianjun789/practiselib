@@ -260,7 +260,14 @@ export class lightMap extends Component{
         let searchValue = search.get("value");
         if(searchType=="domain"){
             getDomainListByName(searchValue,'','',(data)=>{
-                this.updateSearch(data,1,'domain')
+                let dat = data;
+                if(!dat[0]){
+                    this.props.actions.addNotify(0, "未找到此搜索域");
+                    return;
+                }else{
+                    this.updateSearch(data,1,'domain')
+                }
+                
                 // this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
                 // if(this.map.zoom>15&&this.map.zoom<=18){
                 //     this.requestCurAssets();
@@ -290,14 +297,14 @@ export class lightMap extends Component{
 
     updateSearch(data,tableIndex,type){
         let searchType = this.searchPromptList[tableIndex].id;
-        if(data[0]){}else{
-            if(searchType=="domain"){
-                this.props.actions.addNotify(0, "域内无绑定设备");
-            }else{
-                this.props.actions.addNotify(0, "未找到设备");
-            }
-            return;
-        }
+        // if(data[0]){}else{
+        //     if(searchType=="domain"){
+        //         this.props.actions.addNotify(0, "域内无绑定设备");
+        //     }else{
+        //         this.props.actions.addNotify(0, "未找到设备");
+        //     }
+        //     return;
+        // }
         
         let searchList = Immutable.fromJS(data);
         this.setState({searchList:searchList,tableIndex:tableIndex,IsSearchResult:true});
@@ -624,7 +631,9 @@ export class lightMap extends Component{
     }
 
     requestCurDomain(){
+        console.log("=========================================================================================")
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+            console.log(data)
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
