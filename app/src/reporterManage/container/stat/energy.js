@@ -38,7 +38,7 @@ export default class Lc extends Component {
 		page: { total: 0, current: 1, limit: 5 },
 
 
-		data: {},
+		data: [],
 	}
 
 	//初始化

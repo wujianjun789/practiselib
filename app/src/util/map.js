@@ -467,9 +467,9 @@ export default class Map{
          this.loadMarkerDrag(marker);
         if (!!labelInfo && this.drawItems) {
             if(IsCircleMarker){
-                marker.bindLabel(labelInfo, {noHide: true, direction: 'center', className: 'circle-marker-label', offset:[-48,-26]}).addTo(this.drawItems).showLabel();
+                marker.bindTooltip(labelInfo, {className: 'circle-marker-label', offset: [-52,-0], direction: 'right', permanent: true, opacity:1}).openTooltip();
             }else{
-                marker.bindLabel(labelInfo, {noHide: true}).addTo(this.drawItems).showLabel();
+                marker.bindTooltip(labelInfo, {offset: [6,2], direction: 'right', permanent: true, opacity:1}).openTooltip();
             }
         }
     }
@@ -506,7 +506,7 @@ export default class Map{
             return;
          }
 
-        var drawControl = new L.Control.Draw({
+        let drawControl = new L.Control.Draw({
             position: 'topright',
             draw: {
                 rectangle: false,
@@ -565,7 +565,7 @@ export default class Map{
 
     //----------------------------------------------事件处理------------------------------------------------------------
     drawEvent() {
-        this.map.on('draw:created', function (e) {
+        this.map.on(L.Draw.Event.CREATED, function (e) {
 
             if (this.curDevice.id < 0) {
                 this.markerHandler(this.id, 'error', $.i18n.prop('select_device'));
@@ -602,7 +602,7 @@ export default class Map{
             this.markerHandler(this.id, 'add', addData);
         });
         //
-        this.map.on('draw:edited', function (e) {
+        this.map.on(L.Draw.Event.EDITED, function (e) {
             var layers = e.layers;
             var editData = []
             layers.eachLayer(function (layer) {
@@ -617,7 +617,7 @@ export default class Map{
             this.markerHandler(this.id, 'edit', editData);
         });
 
-        this.map.on('draw:deleted', function (e) {
+        this.map.on(L.Draw.Event.DELETED, function (e) {
             var layers = e.layers;
             var deletedData = []
             layers.eachLayer(function (layer) {

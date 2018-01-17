@@ -100,6 +100,7 @@ export default {
         'map.location': 'Map Location',
         'map.lng':'Lng',
         'map.lat':'Lat',
+        'map.device.tip':'piece device',
 
         //设备
         'sysOperation.gateway':'Gateway',

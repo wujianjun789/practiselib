@@ -686,12 +686,17 @@ ul {
     color: #fff;
     font-weight: normal;
     font-size: 14px;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
-.map-view .circle-marker-label:after{
-    border-left: none;
+.map-view .circle-marker-label:before, .map-view .circle-marker-label:after{
+    border: none;
 }
 
+.
 .select {
     display: inline-block;
     border: solid 1px #ddd;

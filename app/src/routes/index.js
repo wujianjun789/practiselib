@@ -310,12 +310,6 @@ export default (
                             cb(null, require('../reporterManage/container/device/gateway').default);
                         }, 'starriverpro.reporterManage.device.gateway');
                     }} />
-                
-                    <Route path="power" getComponent={(nextState, cb) => {
-                        require.ensure([], require => {
-                            cb(null, require('../reporterManage/container/device/power').default);
-                        }, 'starriverpro.reporterManage.device.power');
-                    }} />
                 </Route>
                 <Route path="stat">
                     <IndexRoute getComponent={(nextState, cb) => {
