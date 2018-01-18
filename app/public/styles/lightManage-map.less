@@ -63,12 +63,94 @@
       display:block;
     }
 
+    .prevNext{
+      text-align:right;
+      height:40px;
+      width:300px;
+      background:#fff;
+      position:absolute;
+      padding-top:10px;
+      padding-bottom:0px;
+      padding-right:0px;
+      border-top:1px solid #ddd;
+      .prev{
+        position: relative;
+      }
+      .prev:after, .prev:before {
+        border: 9px solid transparent;
+        border-right: 9px solid #fff;
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        right: 27px;
+        content: ''
+      }
+      .prev:before {
+        border-right-color: #aaa;
+        right: 28px;
+      }
+    }
+    .prevNext:hover,.prevNext.active{
+      .prev:after, .prev:before {
+        border: 9px solid transparent;
+        border-right: 9px solid #f1f1f1;
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        right: 27px;
+        content: ''
+      }
+      .prev:before {
+        border-right-color: #00d8ff;
+        right: 28px;
+      }
+    }
+    .prevNext{
+      padding-bottom:0px;
+      .next{
+        position: relative;
+      }
+      .next:after, .next:before {
+        border: 9px solid transparent;
+        border-left: 9px solid #fff;
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        right: 1px;
+        content: ''
+      }
+      .next:before {
+        border-left-color: #aaa;
+        right: 0px;
+      }
+    }
+    .prevNext:hover,.prevNext.active{
+      .next:after, .next:before {
+        border: 9px solid transparent;
+        border-left: 9px solid #f1f1f1;
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        right: 1px;
+        content: ''
+      }
+      .next:before {
+        border-left-color: #00d8ff;
+        right: 0px;
+      }
+    }
+
     .list-group{
       margin-bottom: 0;
       color: #999;
       overflow-x: hidden;
       font-size: 14px;
       li:last-child{border-bottom:0px;padding-bottom:32px;}
+      
       .list-group-item{
         height: 40px;
         border-left:0px;
@@ -88,6 +170,7 @@
         }
       }
       .list-group-item:hover,.list-group-item.active{
+        border-left: 9px solid #f1f1f1;
         border-color:#ccc;
         color:#999;
         background:#eee;
