@@ -235,7 +235,6 @@ export class SmartLightMap extends Component{
         let searchList = Immutable.fromJS(data);
         let positionList = data.map((pole)=>{
             let latlng = pole.geoPoint;
-
             return Object.assign({}, {"device_id": pole.id,"device_type": 'DEVICE', IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)}, latlng)
         });
 

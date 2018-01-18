@@ -107,6 +107,7 @@ export class DomainEditList extends Component {
     }
 
     setSize(){
+        
         if(!this.mounted){
             return;
         }
@@ -114,9 +115,7 @@ export class DomainEditList extends Component {
         if(this.refs.domainEditList){
             let height = window.innerHeight-60;
             let faultHeight = findDOMNode(this.refs.domainEditList).offsetHeight+90;
-
             this.setState({sidebarInfoStyle:{height:height>faultHeight?"100%":faultHeight+"px"}});
-
         }
 
     }
