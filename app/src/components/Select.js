@@ -20,7 +20,7 @@ export default class Select extends Component {
                 value: '',
                 placeholder: ""
             })} = this.props;
-        return <select className={ "select " + className + " form-control" } id={ id } placeholder={ data.get('placeholder') } value={ data.get("value") } onChange={ this.onChange }>
+        return <select className={ "select " + className } id={ id } placeholder={ data.get('placeholder') } value={ data.get("value") } onChange={ this.onChange }>
                  { data.get('list').length !==0 && data.get('list').map((option, index) => {
                        let value = option.get(valueKey);
                        let title = option.get(titleKey);
