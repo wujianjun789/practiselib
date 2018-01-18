@@ -1084,7 +1084,7 @@ export class lightMap extends Component{
                                 })
                             }
                     </ul>
-                    <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
+                    <ul className={"list-group "+(IsSearch&&IsSearchResult?"":"hidden")} style={listStyle}>
                         {
                             searchList.map((item,key)=>{
                                 if(searchListLength == (key+1)){
@@ -1101,7 +1101,7 @@ export class lightMap extends Component{
                             })
                         }
                     </ul>
-                    <div className="prevNext"><span className="next" onClick={()=>{ let num=searchOffset+6; this.requestSearch(num); }}></span><span className="prev" onClick={()=>{ let num=searchOffset-6; this.requestSearch(num); }}></span></div>
+                    <div className={"prevNext "+(IsSearch&&IsSearchResult?"":"hidden")}><span className="next" onClick={()=>{ let num=searchOffset+6; this.requestSearch(num); }}></span><span className="prev" onClick={()=>{ let num=searchOffset-6; this.requestSearch(num); }}></span></div>
                     <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}
                         onClick={this.backHandler}>
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
