@@ -5,13 +5,14 @@
   }
   .search-container{
     position: absolute;
-    z-index:1;
     top: 40px;
     left: 40px;
 
     width: 300px;
 
     padding: 0;
+
+    z-index: 999;
 
     .addAnimation();
     .searchText{
@@ -411,13 +412,14 @@
 
   .filter-container{
     position: absolute;
-    z-index:1;
+    //z-index:1;
     top: 40px;
     right: 40px;
 
     box-shadow: 0 10px 10px rgba(80, 80, 80, 0.03);
     border-radius: 5px;
 
+    z-index: 998;
     ul{
       li{
         padding: 10px 14.5px;
