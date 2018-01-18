@@ -665,7 +665,7 @@ ul {
     content: '';
     color: #ff0000;
 
-    z-index: 99;
+    z-index: 999;
 
     pointer-events: none;
 

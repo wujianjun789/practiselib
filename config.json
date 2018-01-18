@@ -22,7 +22,7 @@
       "mapOfflineDetail": "(0在线1离线2静态图,必须有)",
       "mapOffline": 0,
       "mapTypeDetail":"(地图类型:google、gaoDe、baidu、bing、arcGis、OpenStreetMap)",
-      "mapType": "google",
+      "mapType": "bing",
       "center": [31.239658843127756, 121.49971691534425],
       "zoomDetail":"当前等级",
       "zoom": 16,

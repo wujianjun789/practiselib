@@ -157,6 +157,7 @@ export class MapPreview extends Component{
     }
 
     mapZoomend(data){
+        console.log('zoom:', data.zoom);
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.requestCurDomain();
     }
