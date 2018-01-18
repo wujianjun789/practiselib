@@ -119,7 +119,7 @@ export default class DomainPopup extends PureComponent {
          let {domainId, domainName, zoom, lng, lat, prevDomain, prompt} = this.state;
          let {titleKey, valueKey, options} = this.props.domainList;
 
-        let valid = prompt.domainName || prompt.lng || prompt.lat;
+        let valid = prompt.domainName || prompt.lng || prompt.lat || !domainName || !lat || !lng;
 
          let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']}
             btnClassName={['btn-default', 'btn-primary']} 

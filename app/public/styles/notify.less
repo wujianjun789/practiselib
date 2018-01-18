@@ -16,16 +16,18 @@
     transition: opacity 0.3s, top 0.3s linear;
     .list-group-item {
         position: relative;
-        top:-25px;
-        opacity:0;
+        top: -25px;
+        opacity: 0;
         width: 370px;
         height: 40px;
         margin: auto;
         padding: 10px 15px;
         border: 0;
-        margin-bottom:10px;
+        margin-bottom: 10px;
         border-radius: 3px;
         user-select: none;
+
+        pointer-events: auto;
         &.success {
             background: #43d480;
         }
@@ -35,7 +37,13 @@
         color: #ffffff;
         text-align: center;
         .notify-content{
-          display:inline-block;
+            display:inline-block;
+
+            width: 95%;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         span {
             display:inline-block;

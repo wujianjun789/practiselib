@@ -32,7 +32,6 @@ export class NotifyPopup extends Component {
                          let text = item.get("text");
 
                          if(text){
-                             console.log(text, typeof text);
                              if(text instanceof Error){
                                  console.log('error:', text.error);
                                  text = text.error?text.error.message:text.toString();
@@ -49,7 +48,7 @@ export class NotifyPopup extends Component {
 
                          }
                          return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
-                                <div className="notify-content">{intl[text]?<FormattedMessage id={text} />:text}</div>
+                                <div className="notify-content" title={intl[text]?intl[text]:text}>{intl[text]?<FormattedMessage id={text} />:text}</div>
                                 <span className="glyphicon glyphicon-remove" onClick={ () => this.onClick(id) }></span>
                               </li>
                    }) }

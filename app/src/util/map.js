@@ -196,8 +196,14 @@ export default class Map{
         if(type == 'bing'){
             let imagerySet = "CanvasLight";// AerialWithLabels | Birdseye | BirdseyeWithLabels | Road
             // let bing = new L.BingLayer("LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc", {type: imagerySet});
-            let bing = new L.BingLayer("Akd2MEZfAV6OL9yS-Ll85Lfu3hhIi6U2K_GKrI35dPch9iyMPmAao6ZryOATSkC5", Object.assign({}, option,{type: imagerySet}));
-            bing.addTo(this.map);
+            // let bing = new L.BingLayer("Akd2MEZfAV6OL9yS-Ll85Lfu3hhIi6U2K_GKrI35dPch9iyMPmAao6ZryOATSkC5", Object.assign({}, option,{type: imagerySet}));
+            // bing.addTo(this.map);
+            L.tileLayer.bing({
+                bingMapsKey: "Akd2MEZfAV6OL9yS-Ll85Lfu3hhIi6U2K_GKrI35dPch9iyMPmAao6ZryOATSkC5",
+                imagerySet: imagerySet,
+                culture: 'zh-CN',
+                minZoom: option.minZoom
+            }).addTo(this.map);
             return;
         }
 
