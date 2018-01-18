@@ -29,6 +29,7 @@ export class lightMap extends Component{
     constructor(props){
         super(props);
         this.state = {
+            searchOffset:0,
             modifyNow: 0,
             domainList: [],
             domainSearch:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
@@ -212,6 +213,7 @@ export class lightMap extends Component{
     }
 
     updatePlaceholder(){
+
         const {domainList, domainSearch} = this.state;
         let datalist = [];
         for(var key in domainList){
@@ -221,6 +223,7 @@ export class lightMap extends Component{
             }
         }
         this.setState({placeholderList:datalist});
+
     }
 
     /*  新增－t  */
@@ -253,33 +256,32 @@ export class lightMap extends Component{
 
 
     /*  新增－t－20170915  */
-    requestSearch(){
-
+    requestSearch(offset){
         const {model, search, tableIndex ,mapLatlng} = this.state;
         let searchType = this.searchPromptList[tableIndex].id;
         let searchValue = search.get("value");
+        let offsetV = offset;
+        let limitV = 6;
+        !offsetV||offsetV<0?offsetV=0:offsetV;
         if(searchType=="domain"){
-            getDomainListByName(searchValue,'','',(data)=>{
+            getDomainListByName(searchValue,offsetV,limitV,(data)=>{
                 let dat = data;
                 if(!dat[0]){
-                    this.props.actions.addNotify(0, "未找到此搜索域");
+                    this.props.actions.addNotify(0, "未找到此搜索域")
                     return;
                 }else{
+                    this.setState({searchOffset:offsetV},()=>{})
                     this.updateSearch(data,1,'domain')
                 }
-                
-                // this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-                // if(this.map.zoom>15&&this.map.zoom<=18){
-                //     this.requestCurAssets();
-                // }else{
-                //     this.requestCurDomain();
-                // }
             })
-            //this.requestCurDomain(searchValue,false);
             return;
         }
-        getSearchAssets("","lc",searchValue,"","",(data)=>{
-            this.mounted && this.updateSearch(data,0,"lamp")
+        getSearchAssets("","lc",searchValue,offsetV,limitV,(data)=>{
+            let dat = data;
+            if(!dat[0]){}else{
+                this.setState({searchOffset:offsetV},()=>{})
+                this.mounted && this.updateSearch(data,0,'lamp')
+            }
         })
         //getPoleListByModelWithName(mapLatlng, searchType, model, searchValue, (data)=>{this.mounted && this.updateSearch(data,0,"pole")});
 
@@ -296,6 +298,7 @@ export class lightMap extends Component{
     }
 
     updateSearch(data,tableIndex,type){
+
         let searchType = this.searchPromptList[tableIndex].id;
         // if(data[0]){}else{
         //     if(searchType=="domain"){
@@ -317,13 +320,9 @@ export class lightMap extends Component{
         if(data && data.length){
             let fPole = data[0];
             let flatlng = fPole.geoPoint;
-            this.setState({searchList:searchList, mapLatlng:flatlng, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
-                //this.requestPoleAsset(data);
-            });
+            this.setState({searchList:searchList, mapLatlng:flatlng, positionList_d:positionList, deviceList_d:deviceList}, ()=>{});
         }else{
-            this.setState({searchList:searchList, positionList_d:positionList, deviceList_d:deviceList}, ()=>{
-                //this.requestPoleAsset(data);
-            });
+            this.setState({searchList:searchList, positionList_d:positionList, deviceList_d:deviceList}, ()=>{});
         }
 
     }
@@ -525,6 +524,7 @@ export class lightMap extends Component{
     itemClick(item){
 
         this.setState({searchList:Immutable.fromJS([item])},()=>{
+
             let data  = item.toJS()
             if(this.state.tableIndex==0){
                     if(this.map.zoom>15&&this.map.zoom<=18){
@@ -542,31 +542,39 @@ export class lightMap extends Component{
                     this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{});
             }
             this.setSize();
+
         })
-        
-        
 
     }
 
     backHandler(){
+
         this.setState({IsSearch:true,IsSearchResult:true,IsOpenPoleInfo:false}, ()=>{
+
             this.setSize();
+
         });
+
     }
 
     searchDeviceSelect(id){
+
         // console.log("----------------------------------------------")
         // this.map = Object.assign({}, this.map, {zoom:15,center:{lng:this.state.tmapLatlng.lng, lat:this.state.tmapLatlng.lat}, distance:3000});
         // this.modifyNow();
         // console.log("==============================================")
-        //var device = this.state.deviceList;
+        // var device = this.state.deviceList;
+
         return;
+
     }
 
     infoDeviceSelect(id){
+
         this.setState({curId:id, IsOpenFault:false}, ()=>{
             this.setSize();
         });
+
     }
 
     searchSubmit(index){
@@ -585,26 +593,37 @@ export class lightMap extends Component{
 
         //this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.setState({interactive:false, tableIndex:index, IsOpenPoleInfo:false, IsOpenPoleControl:false, IsSearch:true},()=>{
+
             this.requestSearch();
+
         });
 
     }
 
     poleInfoCloseClick(){
-        this.setState({IsOpenPoleInfo: false}, ()=>{
+
+        this.setState({IsOpenPoleInfo:false}, ()=>{
+
             this.setSize();
+
         })
+
     }
 
     onToggle(){
+
         this.setState({IsOpenPoleControl:!this.state.IsOpenPoleControl});
+
     }
 
     closeClick(){
+
         this.setState({IsOpenFault: false});
+
     }
 
     requestCurAssets(model){
+
         getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
@@ -626,14 +645,12 @@ export class lightMap extends Component{
                 //         }
                 //     })
                 // })
-            });
+            })
         })
     }
 
     requestCurDomain(){
-        console.log("=========================================================================================")
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
-            console.log(data)
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -642,6 +659,7 @@ export class lightMap extends Component{
                 let deviceLen = [];
                 data.map(item=>{
                     getAssetsBaseByDomain(item.id, asset=>{
+
                         deviceLen.push(item.id);
                         let curIndex = lodash.findIndex(this.state.curList, domain=>{
                             return domain.id == item.id
@@ -649,13 +667,13 @@ export class lightMap extends Component{
                         if(curIndex>-1 && curIndex<this.state.curList.length){
                             this.state.curList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
                         }
-
                         if (deviceLen.length == data.length){
                             this.setState({curList: this.state.curList});
                         }
+
                     })
                 })
-            });
+            })
         })
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
         // getDomainListByName(searchValue, 0, 10, (data)=>{
@@ -733,7 +751,7 @@ export class lightMap extends Component{
             getPoleListByModelWithName(data.latlng, searchType, "pole", searchValue, (res)=>{
 
                 if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
-                    this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+                    this.map = Object.assign({}, this.map, { zoom:this.map.zoom + this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat} });
                 }
 
                 this.setState({positionList:[],deviceList:[]})
@@ -1022,10 +1040,13 @@ export class lightMap extends Component{
 
 
     render(){
-        const {panLatlng ,curList, curPositionList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList, deviceList, tableIndex,
+        const {searchOffset, panLatlng, curList, curPositionList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList, deviceList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList, mapLatlng,  IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
         let IsControl = false;
         let searchListToJS = searchList.toJS();
+        let searchListLength = searchListToJS.length;
+        
+        console.log(searchListToJS)
         //let aaaa = JSON.stringify(positionList);
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
@@ -1046,7 +1067,6 @@ export class lightMap extends Component{
         //     dV = deviceList;
         // }
         
-
         //<MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
         return (
             <Content onClick={()=>{}}>
@@ -1064,16 +1084,24 @@ export class lightMap extends Component{
                                 })
                             }
                     </ul>
-                    <ul className={"list-group "+(IsSearch && IsSearchResult?"":"hidden")} style={listStyle}>
+                    <ul className={"list-group "+(IsSearch&&IsSearchResult?"":"hidden")} style={listStyle}>
                         {
-                            searchList.map(item=>{
-                                return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
-                                    {item.get("name")}
-                                    {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
-                                </li>
+                            searchList.map((item,key)=>{
+                                if(searchListLength == (key+1)){
+                                    return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
+                                        {item.get("name")}
+                                        {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    </li>
+                                }else{
+                                    return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
+                                        {item.get("name")}
+                                        {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                    </li>
+                                }
                             })
                         }
                     </ul>
+                    <div className={"prevNext "+(IsSearch&&IsSearchResult?"":"hidden")}><span className="next" onClick={()=>{ let num=searchOffset+6; this.requestSearch(num); }}></span><span className="prev" onClick={()=>{ let num=searchOffset-6; this.requestSearch(num); }}></span></div>
                     <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}
                         onClick={this.backHandler}>
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
@@ -1091,9 +1119,7 @@ export class lightMap extends Component{
                                    searchListToJS[0] && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
                                 }
                             </ul>
-                            {
-                                this.renderInfo(curId,this.state[curId])
-                            }
+                            { this.renderInfo(curId,this.state[curId]) }
                         </div>
                     </div>
                     <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":controlStyle.maxHeight+"px"}}>

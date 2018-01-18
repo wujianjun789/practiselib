@@ -33,6 +33,7 @@ export function getChildDomainList(cb) {
 }
 
 export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
+
     let headers = getHttpHeader();
     let nearParam = {maxDistance: map.distance/2000,unit:'kilometers'}
     if(domainLevel==1){
@@ -46,6 +47,7 @@ export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
     }, response=>{
         cb && cb(response);
     })
+
 }
 
 export function getDomainById(id,cb){

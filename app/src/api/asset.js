@@ -39,10 +39,9 @@ export function getAssetList(cb) {
 }
 
 export function getSearchAssets(domainId, model, name, offset, limit, cb) {
+    console.log(offset)
     let headers = getHttpHeader();
-
     let paramStr = JSON.stringify({ "include": ["extend"], "where": getSearchParam(domainId, model, name), "offset": offset, "limit": limit })
-
     httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
         headers: headers,
         method: 'GET'
