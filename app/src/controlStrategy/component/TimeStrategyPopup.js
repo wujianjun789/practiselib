@@ -16,7 +16,7 @@ export default class TimeStrategyPopup extends Component{
     constructor(props){
         super(props);
         const {data={},isEdit=false} = this.props;
-        let {name="", level='platform',start=moment(),end=moment(),retryNumber='',retryInterval='',groupId=''} = data;
+        let {name="", level=0,start=moment(),end=moment(),retryNumber='',retryInterval='',groupId=''} = data;
         this.state = {
             name:name,
             level:level,
@@ -36,8 +36,9 @@ export default class TimeStrategyPopup extends Component{
             titleField: 'title',
             valueField: 'value',
             options: [
-                {value: 'platform', title: this.formatIntl('app.strategy.platform')},
-                {value: 'gateway', title: this.formatIntl('sysOperation.gateway')}
+                {value: 0, title: this.formatIntl('app.strategy.platform')},
+                {value: 1, title: this.formatIntl('sysOperation.gateway')},
+                {value: 2, title: this.formatIntl('app.device')},
             ]
         }
     }
@@ -82,7 +83,7 @@ export default class TimeStrategyPopup extends Component{
         const {name,level,start,end,retryNumber,retryInterval,groupId}=this.state;
         let data = {
             name:name,
-            // level:level,
+            level:level,
             start:start,
             end:end
         };

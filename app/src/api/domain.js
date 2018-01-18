@@ -173,9 +173,10 @@ export function getWhiteListById(id, cb) {
  */
 export function addLcToWhiteListById(gatewayId, lcId, cb) {   
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/gateways/${gatewayId}/whiteList/rel/${lcId}`,{
+    httpRequest(`${HOST_IP}/assets/${lcId}`,{
         headers: headers,
-        method: 'PUT',
+        method: 'PATCH',
+        body:JSON.stringify({'gatewayId':gatewayId})
     }, response=>{
         cb && cb(response)
     })
@@ -189,9 +190,10 @@ export function addLcToWhiteListById(gatewayId, lcId, cb) {
  */
 export function delLcFromWhiteListById(gatewayId, lcId, cb) {
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/gateways/${gatewayId}/whiteList/rel/${lcId}`,{
+    httpRequest(`${HOST_IP}/assets/${lcId}`,{
         headers: headers,
-        method: 'DELETE',
+        method: 'PATCH',
+        body:JSON.stringify({'gatewayId':null})
     }, response=>{
         cb && cb(response)
     })

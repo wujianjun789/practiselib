@@ -31,6 +31,9 @@ import { DatePicker} from 'antd';
 import {getObjectByKeyObj,getIndexByKey,getProByKey,getIndexsByKey,spliceInArray,getObjectByKey,getListKeyByKey,IsExitInArray2,IsExitInArray3,getListByKey2} from '../../util/algorithm'
 import {getLightLevelConfig} from '../../util/network'
 import {getStrategyList,getGroupListPlan,getNoGroupStrategy,delStrategy,delGroup,addStrategy,updateStrategy,updateGroup} from '../../api/plan';
+import {getAssetsBaseById} from '../../api/asset';
+import {getWhiteListById} from '../../api/domain';
+import { Promise } from 'es6-promise';
 
 class TimeStrategy extends Component{
     constructor(props){
@@ -51,118 +54,19 @@ class TimeStrategy extends Component{
                 devicesCollapsed: false,
                 devicesExpanded:false
             },
-            selectItem: {
-            },
+            selectItem: {},
             property:{
                 time:'',
                 light:''
             },
-            selectedDevicesData:[
-                {
-                    id:1,
-                    name:'网关1',
-                    type:'网关',
-                    childs:[
-                        {
-                            id:2,
-                            name:'设备1',
-                            type:'灯',
-                            parentId:1                            
-                        }
-                    ]
-                },
-                {
-                    id:3,
-                    name:'网关2',
-                    type:'网关',
-                    childs:[
-                        {
-                            id:4,
-                            name:'设备2',
-                            type:'灯',
-                            parentId:3
-                        },
-                        {
-                            id:5,
-                            name:'设备3',
-                            type:'灯',
-                            parentId:3                          
-                        },
-                    ],
-                },
-            ],
-            allDevicesData:[
-                {
-                    id:1,
-                    name:'网关1',
-                    type:'网关',
-                    childs:[
-                        {
-                            id:2,
-                            name:'设备1',
-                            type:'灯',
-                            parentId:1                            
-                        },
-                        {
-                            id:6,
-                            name:'设备4',
-                            type:'灯',
-                            parentId:1                            
-                        },
-                        {
-                            id:7,
-                            name:'设备5',
-                            type:'灯',
-                            parentId:1                            
-                        },
-                    ]
-                },
-                {
-                    id:3,
-                    name:'网关2',
-                    type:'网关',
-                    childs:[
-                        {
-                            id:4,
-                            name:'设备2',
-                            type:'灯',
-                            parentId:3
-                        },
-                        {
-                            id:5,
-                            name:'设备3',
-                            type:'灯',
-                            parentId:3                          
-                        },
-                        {
-                            id:8,
-                            name:'设备6',
-                            type:'灯',
-                            parentId:3                            
-                        },
-                    ],
-                },
-                {
-                    id:9,
-                    name:'网关3',
-                    type:'网关',
-                    childs:[
-                        {
-                            id:10,
-                            name:'设备7',
-                            type:'灯',
-                            parentId:9
-                        },
-                    ],
-                },
-            ],
-            lightList:[{id:1,name:"10"},{id:1,name:"20"},{id:1,name:"30"}],
+            selectedDevicesData:[],
+            allDevicesData:[],
+            lightList:[{id:1,name:"0"},{id:2,name:"10"},{id:3,name:"20"},{id:4,name:"30"}],
             allDevices:{
                 allChecked:false,
                 checked:[]
             }
         }
-        this.deviceDefault = [/*"lc", "screen"*/]
         this.columns =  [
             {id: 0, field:"name", title:this.formatIntl('app.strategy.name')},
             {id: 1, field: "timeRange", title: this.formatIntl('app.time.range')}
@@ -170,15 +74,13 @@ class TimeStrategy extends Component{
 
         this.deviceColumns = [
             {id: 0, field:"name", title:this.formatIntl('app.device.name')},
-            {id: 1, field: "type", title: this.formatIntl('app.type')}
+            {id: 1, field: "extendType", title: this.formatIntl('app.type')}
         ]
     }
 
     componentWillMount(){
         this.mounted = true;
         this.requestSearch();
-        this.initDeviceData('selectedDevicesData',this.state.selectedDevicesData);
-        this.initDeviceData('allDevicesData',this.state.allDevicesData);    
     }
 
     componentWillUnmount(){
@@ -248,24 +150,111 @@ class TimeStrategy extends Component{
             item.key = (item.plans?"group":"plan")+item.id;
         });
 
-        this.setState({[key]:Immutable.fromJS(result),selectItem:result.length>0?result[0]:{}},()=>{
-            console.log(this.state.selectItem)
-        });
+        this.setState({[key]:Immutable.fromJS(result)});
+
+        result.length>0 && this.setState({selectItem:result[0]},()=>{
+            !this.state.selectItem.plans && this.getDeviceData(this.state.selectItem.devices)
+        })
     }
 
+    getDeviceData=(devices)=>{
+        let gatewayIds = [];
+        let gateways = [];
+        let allDevicesData = [];
+        let selectedDevices = [];
+        let selectedDevicesData = [];
+        
+        if(devices){
+            const promise = new Promise((resolve, reject)=>{
+                let len=0;
+                devices.map(id=>{
+                    getAssetsBaseById(parseInt(id),(res)=>{
+                        len++;
+                        selectedDevices.push(res);
+                        //所有网关Id          
+                        !gatewayIds.includes(res.gatewayId) && gatewayIds.push(res.gatewayId);
+                        if(len == devices.length){
+                            resolve(gatewayIds);
+                        }
+                        
+                    })
+                });
+            })
+            
+            promise.then(gatewayIds=>{
+                return new Promise((resolve, reject)=>{
+                    let len = 0;
+                gatewayIds.map(id=>{
+                    getAssetsBaseById(parseInt(id),(res)=>{
+                        len++
+                        //所有网关
+                        gateways.push(res);
+                        if(len == gatewayIds.length){
+                            resolve(gateways);
+                        }
+                    })
+                })
+                })
+                
+            }).then(gateways=>{
+                return new Promise((resolve, reject)=>{
+                    let len = 0;                    
+                    gateways.forEach(item=>{
+                        //网关白名单中的选中设备
+                        selectedDevicesData.push(Object.assign({},item,{whiteList:getListByKey2(selectedDevices,'gatewayId',item.id)}));
+                        getWhiteListById(item.id,(res)=>{
+                            len++;
+                            allDevicesData.push(Object.assign({},item,{whiteList:res}))
+                            if(len == gateways.length){
+                                resolve({selectedDevicesData, allDevicesData});
+                            }
+                        })
+                    })
+                })
+                
+            }).then(({selectedDevicesData, allDevicesData})=>{
+                this.initChecked(devices,selectedDevicesData,allDevicesData)
+                this.initDeviceData('selectedDevicesData',selectedDevicesData);
+                this.initDeviceData('allDevicesData',allDevicesData);
+            }).catch(error=>{
+                console.log(error);
+            })
+        }
+        else{
+            this.setState({selectedDevicesData:Immutable.fromJS([]),allDevicesData:Immutable.fromJS([])})
+        }
+    
+    }
+    
     initDeviceData=(key,data)=>{
         let result = [];
         data.map(parent=>{
             parent.collapsed = false;
             result.push(parent);
-            if(parent.childs){
-                parent.childs.map(item=>{
+            if(parent.whiteList){
+                parent.whiteList.map(item=>{
                     item.hidden = parent.collapsed;
                     result.push(item);
                 })
             }
         })
         this.setState({[key]:Immutable.fromJS(result)});
+    }
+
+    initChecked=(devices,data1,data2)=>{
+        let gateways = [];
+        data1.map(item=>{
+            if(item.whiteList.length == getObjectByKeyObj(data2,'id',item.id).whiteList.length){
+                gateways.push(item.id);
+            }
+        })
+
+        this.setState({
+            allDevices:{
+                allChecked:gateways.length == data1.length,
+                checked:devices.concat(gateways)
+            }
+        })
     }
 
     addHandler=()=>{
@@ -340,13 +329,25 @@ class TimeStrategy extends Component{
         if(!item.plans){
             selectItem.start=item.start.split('T')[0];
             selectItem.end=item.end.split('T')[0];
-            selectItem.retryNumber=item.retryNumber;
-            selectItem.retryInterval=item.retryInterval;
-            
+            switch(selectItem.level){
+                case 0:
+                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    break;
+                case 1:
+                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    break;
+                case 2:
+                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    break;
+                default:
+                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+            }
         }
        
         this.setState({
             selectItem: selectItem
+        },()=>{
+            !item.plans && this.getDeviceData(this.state.selectItem.devices)
         });
     }
 
@@ -368,26 +369,29 @@ class TimeStrategy extends Component{
 
     onChange=(id,value)=> {
         console.log(id)
+        let {execution={}} = this.state.selectItem;
+        execution[id] = value;
+        this.setState({selectItem:Object.assign({},this.state.selectItem,{execution:execution})});
     }
 
-    updateGroupName=()=>{
-
-    }
-
-    expandDevice=()=>{
-
+    editStrategy=()=>{
+        let {selectItem} = this.state;
+        if(!selectItem.execution.hasOwnProperty("light")){
+            selectItem.execution.light = 0;
+        }
+        updateStrategy({id:selectItem.id,execution:selectItem.execution},this.requestSearch);
     }
 
     collapseClick=(id,key,data)=>{
-        let plans;
+        let childs;
         if(key=="strategy"){
             let parentId = getProByKey(data,"key",id,"id");
-            plans = getIndexsByKey(data,'groupId',parentId);
+            childs = getIndexsByKey(data,'groupId',parentId);
         }
         else{
-            plans = getIndexsByKey(data,"parentId",id);
+            childs = getIndexsByKey(data,"gatewayId",id);
         }
-        plans.length !== 0 && plans.map(item=>{
+        childs.length !== 0 && childs.map(item=>{
             data = data.setIn([item,'hidden'],!data.getIn([item,"hidden"]));
         });
         this.setState({[`${key}Data`]:data.setIn([getIndexByKey(data,key=="strategy"?"key":"id",id),"collapsed"],!getProByKey(data,key=="strategy"?"key":"id",id,"collapsed"))});
@@ -410,19 +414,19 @@ class TimeStrategy extends Component{
         value?allDevices.checked.push(id):spliceInArray(allDevices.checked,id);
         let obj = getObjectByKey(allDevicesData,"id",id);
         let childs = [];
-        if(obj.get('childs')){
-            childs=getListKeyByKey(allDevicesData,'parentId',id,'id');
+        if(obj.get('whiteList')){
+            childs=getListKeyByKey(allDevicesData,'gatewayId',id,'id');
             childs.map(item=>{
                 value?!allDevices.checked.includes(item) && allDevices.checked.push(item):spliceInArray(allDevices.checked,item);
             })
         }
         else{
-            childs=getListKeyByKey(allDevicesData,'parentId',obj.get('parentId'),'id');
+            childs=getListKeyByKey(allDevicesData,'gatewayId',obj.get('gatewayId'),'id');
             if(value){
-                IsExitInArray3(allDevices.checked,childs) && allDevices.checked.push(obj.get('parentId'));
+                IsExitInArray3(allDevices.checked,childs) && allDevices.checked.push(obj.get('gatewayId'));
             }
             else{
-                IsExitInArray2(allDevices.checked,childs) && spliceInArray(allDevices.checked,obj.get('parentId'));
+                spliceInArray(allDevices.checked,obj.get('gatewayId'));
             }
         }
         allDevices.allChecked = allDevicesData.size == allDevices.checked.length;
@@ -440,8 +444,25 @@ class TimeStrategy extends Component{
             }}/>)
     }
 
+    addDevice=()=>{
+        const {allDevices,allDevicesData,selectItem} = this.state;
+        let res = [];
+        allDevices.checked.map(id=>{
+            if(getProByKey(allDevicesData,'id',id,'extendType')!=="gateway"){
+                res.push(id)
+            }
+        })
+        updateStrategy({
+            id:selectItem.id,
+            devices:res
+        },this.requestSearch);
+        this.collapseHandler('devicesExpanded')
+
+    }
+
     render(){
         const {search, selectedDevicesData,allDevicesData, page, strategyData, sidebarInfo, selectItem,property,domainList,lightList,allDevices} = this.state;
+        const valid = selectItem.execution && selectItem.execution.time;
         return <Content className={`time-strategy ${sidebarInfo.collapsed ? 'collapse' : sidebarInfo.devicesExpanded?'select-devices-collapse':''}`}>
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
@@ -489,7 +510,7 @@ class TimeStrategy extends Component{
                                 <div className='form-group'>
                                     <label>{this.formatIntl('app.strategy.level')}</label>
                                     <div className='input-container'>
-                                        <select className='form-control' value={selectItem.level} disabled="disabled"></select>
+                                        <input type='text' className='form-control' value={selectItem.levelTitle} disabled="disabled"/>
                                     </div>
                                 </div>
 
@@ -525,13 +546,13 @@ class TimeStrategy extends Component{
                                 <div className='form-group'>
                                     <label>时间</label>
                                     <div className='input-container'>
-                                        <input type='text' className='form-control' value={property.time} onChange={e=>this.onChange("time",e)}/>
+                                        <input type='text' className='form-control' value={selectItem.execution?selectItem.execution.time:''} onChange={e=>this.onChange("time",e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className='form-group'>
                                     <label>亮度</label>
                                     <div className='input-container'>
-                                        <select className='form-control' value={property.light} onChange={e=>this.onChange("light",e)}>
+                                        <select className='form-control' value={selectItem.execution?selectItem.execution.light:''} onChange={e=>this.onChange("light",e.target.value)}>
                                         {
                                             lightList.map((item, index) => {
                                                 return <option key={index} value={item.name}>{item.name}</option>
@@ -540,7 +561,7 @@ class TimeStrategy extends Component{
                                         </select>
                                     </div>
                                 </div>
-                                <button className="btn btn-primary pull-right" onClick={this.updateGroupName}>{this.formatIntl('button.apply')}</button>                            
+                                <button className="btn btn-primary pull-right" onClick={this.editStrategy} disabled = {!valid}>{this.formatIntl('button.apply')}</button>                            
                             </div>
                         </div>
                         <div className="panel panel-default device-info">
@@ -550,7 +571,7 @@ class TimeStrategy extends Component{
                             </div>
                             <div className={"panel-body " + (sidebarInfo.devicesCollapsed ? 'collapsed' : '')}>
                                 <div className="header">
-                                    <span>{`包含：${60}个设备`}</span>
+                                    <span>{`包含：${selectItem.devices?selectItem.devices.length:0}个设备`}</span>
                                     <button className="btn btn-primary pull-right" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                   
                                 </div>
                                 <Table className="selectedDevices" columns={this.deviceColumns} data={selectedDevicesData} collapseClick={this.collapseClick}/>
@@ -569,14 +590,13 @@ class TimeStrategy extends Component{
                     <div className="panel-body">
                         <div>
                             <button className="btn btn-gray" onClick={() => {this.addGateway()}}>{this.formatIntl('button.add.gateway')}</button>                                   
-                            <button className="btn btn-primary pull-right" onClick={() => {this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                                               
+                            <button className="btn btn-primary pull-right" onClick={this.addDevice}>{this.formatIntl('button.modify')}</button>                                                               
                         </div>
-                        <Table  className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
+                        <Table className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
                     </div>
                 </div>
             </div>}
             {sidebarInfo.devicesExpanded && <div className="select-devices"></div>}
-            
         </Content>
     }
 }
