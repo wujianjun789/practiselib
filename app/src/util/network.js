@@ -73,7 +73,6 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
     }), new Promise((resolve, reject)=>{
         timeOut[parseInt(Math.random()*99)] = setTimeout(()=>{
             let err = {"statusCode": 408,"name":"Error", "message":"Request Timeout"}
-            console.log(err);
             alertPopup(err.message);
             errorCall && errorCall.apply(null, [err]);
         }, 30000)
@@ -92,13 +91,13 @@ function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return response
     } else {
-        if(!errorCode[response.url]){
-            alertPopup(response);
-        }
-
         return parseJSON(response).then(({json, response}) => {
             const errorJson = json && json.error;
-            console.log('errorJson:', errorJson, errorJson.message);
+
+            if(!errorCode[response.url]){
+                alertPopup(errorJson?errorJson.message:response);
+            }
+
             var error = new Error(errorJson && errorJson.message || response.status);
             throw error;
         })
@@ -115,13 +114,12 @@ function parseJSON(response) {
         )
     }else{
         return response.json().then(json=>{
-            console.log('json:', json);
             return new Promise((resolve)=>{
                 resolve({json, response});
             })
         }, error=>{
-            return new Promise(resolve=>{
-                resolve({undefined, response});
+            return new Promise((resolve, reject)=>{
+                reject({undefined, response});
             })
         })
     }
@@ -182,8 +180,6 @@ export function alertPopup(response) {
         }).catch(error=>{
             alert(response.statusText?response.statusText:statusCode[response.statusCode]);
         })
-
-
     }
 }
 
