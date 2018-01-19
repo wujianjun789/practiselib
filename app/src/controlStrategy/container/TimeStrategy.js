@@ -435,15 +435,37 @@ class TimeStrategy extends Component{
 
     addGateway=()=>{
         const {actions} = this.props;
-        actions.overlayerShow(<AddGatewayPopup className="add-gateway-popup" intl={this.props.intl} title="添加网关"
+        actions.overlayerShow(<AddGatewayPopup className="add-gateway-popup" intl={this.props.intl} title="添加网关" allDevices={this.state.allDevicesData}
                 onConfirm={(data)=>{
-                    console.log(data);
+                    this.addGatewayToAll(data);
                     actions.overlayerHide();
                 }} onCancel={()=>{
                 actions.overlayerHide();
             }}/>)
     }
 
+    addGatewayToAll=(data)=>{
+        let {allDevicesData} = this.state;
+        let len = 0;
+        const promise = new Promise((resolve, reject)=>{
+            data.map(item=>{
+                    getWhiteListById(item.id,(res)=>{
+                        len++;
+                        item.whiteList=res;
+                        if(!getObjectByKey(allDevicesData,'id',item.id)){
+                            allDevicesData = allDevicesData.push(item);
+                        }
+                        if(len == data.length){
+                            resolve(allDevicesData)
+                        };
+                    })
+                
+            })
+        })
+        promise.then(data=>{
+            this.initDeviceData('allDevicesData',data)
+        })
+    }
     addDevice=()=>{
         const {allDevices,allDevicesData,selectItem} = this.state;
         let res = [];
