@@ -800,7 +800,9 @@ export default class Map{
         return color;
     }
 
-    static deviceList = {'DEVICE':'lamp', 'CONTROLLER':'controller', 'ISTREETLIGHT':'intelligent', 'PLC':'plc', 'SCREEN':'screen', 'CHARGER':'charger', 'POLE':'pole', 'DIGITAL':'digital'};
+    static deviceList = {'DEVICE':'lamp', 'CONTROLLER':'controller', 'ISTREETLIGHT':'intelligent', 'PLC':'plc',
+        'SCREEN':'screen', 'CHARGER':'charger', 'POLE':'pole', 'GATEWAY':'gateway', 'XES':'xes',
+        'SENSOR':'sensor', 'DIGITAL':'digital'};
     getDevicesByTypeAndId(mapId, type, id) {
         let proType = Map.deviceList[type]
         let list = this.deviceList[proType];

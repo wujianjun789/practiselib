@@ -211,7 +211,6 @@ export class Xes extends Component {
 
         const {total=0, normal=0} = deviceInfo;
         let width=145,height=145;
-
         return (
             <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <div className="heading">
