@@ -33,14 +33,12 @@ export function getChildDomainList(cb) {
 }
 
 export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
-
     let headers = getHttpHeader();
-    let nearParam = {maxDistance: map.distance/2000,unit:'kilometers'}
+    let nearParam = {maxDistance: map.distance/1000,unit:'kilometers'}
     if(domainLevel==1){
         nearParam = {};
     }
 
-    if(domainLevel)
     httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam)}})),{
         headers: headers,
         method: 'GET'

@@ -208,7 +208,6 @@ export default class Map{
         }
 
         if(type == 'arcGis'){
-            console.log('option:',option);
             L.esri.basemapLayer("Streets", Object.assign({}, option, {hideLogo:true})).addTo(this.map);
             let parks = new L.esri.FeatureLayer({
                 url:"https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/stops/FeatureServer/0/",
@@ -782,13 +781,13 @@ export default class Map{
      * @param type设备类型
      * @param status设备状态
      */
-    static markerIcon = {'CONTROLLER':'sitemap', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent', 'CHARGER':'charger'}
+    static markerIcon = {'CONTROLLER':'sitemap', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent', 'CHARGER':'charger', 'POLE':'lightbulb', 'PLC':'plc', 'Screen':'screen'}
     static getCustomMarkerByDeviceType(type, status, digital) {
         if(type == 'DIGITAL'){
             L.AwesomeMarkers.icon({icon: '' + digital, color:Map.getColorByStatus(status)});
         }
 
-        return L.AwesomeMarkers.icon({icon: Map.markerIcon[type]?Map.markerIcon[type]:'', color:Map.getColorByStatus(status)});
+        return L.AwesomeMarkers.icon({icon: Map.markerIcon[type]?Map.markerIcon[type]:'lightbulb', color:Map.getColorByStatus(status)});
     }
 
     static markerColor = ['red', 'green', 'cadetblue', 'darkblue'];
@@ -803,7 +802,7 @@ export default class Map{
         return color;
     }
 
-    static deviceList = {'DEVICE':'lamp', 'CONTROLLER':'controller', 'ISTREETLIGHT':'intelligent', 'CHARGER':'charger', 'DIGITAL':'digital'};
+    static deviceList = {'DEVICE':'lamp', 'CONTROLLER':'controller', 'ISTREETLIGHT':'intelligent', 'PLC':'plc', 'Screen':'screen', 'CHARGER':'charger', 'POLE':'pole', 'DIGITAL':'digital'};
     getDevicesByTypeAndId(mapId, type, id) {
         let proType = Map.deviceList[type]
         let list = this.deviceList[proType];

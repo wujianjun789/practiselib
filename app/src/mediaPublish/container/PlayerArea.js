@@ -277,6 +277,9 @@ export class PlayerArea extends Component {
     componentWillUnmount() {
         this.mounted = false;
         this.props.actions.removeAllNotify();
+        window.onresize = event => {
+
+        }
     }
 
     setSize() {
@@ -950,11 +953,11 @@ export class PlayerArea extends Component {
                 <div className="left">
                     <div className="form-group control-container-top">
                         <div className="form-group play-container" onClick={() => this.playHandler()}>
-                            <span className="icon icon_play"></span><span><FormattedMessage id='mediaPublish.play'/></span></div>
+                            <span className="icon icon_play"></span><span className="word"><FormattedMessage id='mediaPublish.play'/></span></div>
                         <div className="form-group zoom-out-container" onClick={() => this.zoomOutHandler()}>
-                            <span className="icon icon_enlarge"></span><span><FormattedMessage id='mediaPublish.enlarge'/></span></div>
+                            <span className="icon icon_enlarge"></span><span className="word"><FormattedMessage id='mediaPublish.enlarge'/></span></div>
                         <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
-                            <span className="icon icon_reduce"></span><span><FormattedMessage id='mediaPublish.narrow'/></span></div>
+                            <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id='mediaPublish.narrow'/></span></div>
                     </div>
                     <div className="img-container">
                         <img src="" />

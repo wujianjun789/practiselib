@@ -136,6 +136,12 @@ export function transformDeviceType(deviceType) {
             return 'intelligent';
         case "CHARGER":
             return 'charger';
+        case "POLE":
+            return 'pole';
+        case "SCREEN":
+            return 'screen';
+        case "PLC":
+            return 'plc'
         default:
             return null;
     }
