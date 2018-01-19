@@ -144,18 +144,18 @@ export class Pole extends Component {
     }
 
     searchResult(data){
+        console.log('result:', data);
         let list = data.map(item=>{
             let curDomain = getObjectByKey(this.state.domain.get("list"), 'id', item.domainId);
             return Object.assign({}, {domain:curDomain?curDomain.get("name"):""}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
-        this.setState({data:Immutable.fromJS(list)})
-
-        if(this.state.data && this.state.data.size>0){
-            let data = this.state.data.get(0);
-            this.tableClick(data);
-        }
-
+        this.setState({data:Immutable.fromJS(list)}, ()=>{
+            if(this.state.data && this.state.data.size>0){
+                let data = this.state.data.get(0);
+                this.tableClick(data);
+            }
+        })
     }
 
     deviceTotal(data){
@@ -195,11 +195,11 @@ export class Pole extends Component {
     }
 
     tableClick(data){
-        this.setState({selectDevice:{
-            id:"assetStatistics",
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["latlng", "lng"]), lat:data.getIn(["latlng", "lat"])}],
-            data:[{id:data.get('id'), name:data.get('deviceName')}]
-        }})
+        this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
+            latlng: data.get('geoPoint').toJS(),
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["geoPoint", "lng"]), lat:data.getIn(["geoPoint", "lat"])}],
+            data:[{id:data.get('id'), name:data.get('name')}]
+        })})
     }
 
     collpseHandler(){
@@ -211,6 +211,7 @@ export class Pole extends Component {
 
         const {total=0, normal=0} = deviceInfo;
         let width=145,height=145;
+        console.log(selectDevice);
         return (
             <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <div className="heading">

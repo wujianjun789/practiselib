@@ -149,13 +149,12 @@ export class SingleLamp extends Component {
             return Object.assign({}, {domain:curDomain?curDomain.get("name"):""}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
-        this.setState({data:Immutable.fromJS(list)})
-
-        if(this.state.data && this.state.data.size>0){
-            let data = this.state.data.get(0);
-            this.tableClick(data);
-        }
-
+        this.setState({data:Immutable.fromJS(list)},()=>{
+            if(this.state.data && this.state.data.size>0){
+                let data = this.state.data.get(0);
+                this.tableClick(data);
+            }
+        })
     }
 
     deviceTotal(data){
@@ -195,11 +194,11 @@ export class SingleLamp extends Component {
     }
 
     tableClick(data){
-        this.setState({selectDevice:{
-            id:"assetStatistics",
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["latlng", "lng"]), lat:data.getIn(["latlng", "lat"])}],
-            data:[{id:data.get('id'), name:data.get('deviceName')}]
-        }})
+        this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
+            latlng: data.get('geoPoint').toJS(),
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["geoPoint", "lng"]), lat:data.getIn(["geoPoint", "lat"])}],
+            data:[{id:data.get('id'), name:data.get('name')}]
+        })})
     }
 
     collpseHandler(){
