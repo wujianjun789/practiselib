@@ -151,8 +151,8 @@ export class SingleLamp extends Component {
         })
         this.setState({data:Immutable.fromJS(list)},()=>{
             if(this.state.data && this.state.data.size>0){
-                let data = this.state.data.get(0);
-                this.tableClick(data);
+                let item = this.state.data.get(0);
+                this.tableClick(item);
             }
         })
     }
@@ -194,9 +194,10 @@ export class SingleLamp extends Component {
     }
 
     tableClick(data){
+        const latlng = data.get('geoPoint').toJS();
         this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
-            latlng: data.get('geoPoint').toJS(),
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["geoPoint", "lng"]), lat:data.getIn(["geoPoint", "lat"])}],
+            latlng: latlng,
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:latlng.lng, lat:latlng.lat}],
             data:[{id:data.get('id'), name:data.get('name')}]
         })})
     }
@@ -249,7 +250,6 @@ export class SingleLamp extends Component {
 
 function mapStateToProps(state) {
     return {
-        sidebarNode: state.assetStatistics.get('sidebarNode')
     }
 }
 

@@ -30,7 +30,7 @@ export class Screen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model:"sensor",
+            model:"screen",
             data: Immutable.fromJS([
                /* {id:1,domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
@@ -195,9 +195,10 @@ export class Screen extends Component {
     }
 
     tableClick(data){
+        const latlng = data.get('geoPoint').toJS();
         this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
-            latlng: data.get('geoPoint').toJS(),
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["geoPoint", "lng"]), lat:data.getIn(["geoPoint", "lat"])}],
+            latlng: latlng,
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:latlng.lng, lat:latlng.lat}],
             data:[{id:data.get('id'), name:data.get('name')}]
         })})
     }
