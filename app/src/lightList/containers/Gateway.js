@@ -10,9 +10,10 @@ import TableWithHeader from '../components/TableWithHeader';
 import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import { getDomainList } from '../../api/domain';
-import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId } from '../../api/asset';
+import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById } from '../../api/asset';
 import { getMomentDate, momentDateFormat } from '../../util/time';
-
+import { message } from 'antd'
+import 'antd/lib/message/style/css';
 export default class Gateway extends Component {
     constructor(props) {
         super(props);
@@ -164,14 +165,25 @@ export default class Gateway extends Component {
     apply = () => {
         const { id } = this.state.currentDevice;
         const { currentControlMode } = this.state;
-        console.log(id, currentControlMode)
-        fetch(`/${id}/${currentControlMode}`)
-            .then(res => {
-
-            })
+        console.log('here')
+        updateAssetsRpcById(id, { "mode": currentControlMode }, res => {
+            if (res.success) {
+                message.success('操作成功')
+            } else {
+                message.error('操作失败')
+            }
+        })
     }
     checkTime = () => {
-        console.log('校验时间操作')
+        const { id } = this.state.currentDevice;
+        console.log('here')
+        updateAssetsRpcById(id, { "updateTime": true }, res => {
+            if (res.success) {
+                message.success('操作成功')
+            } else {
+                message.error('操作失败')
+            }
+        })
     }
     render() {
         const {
