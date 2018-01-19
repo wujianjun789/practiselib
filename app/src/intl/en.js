@@ -224,6 +224,13 @@ export default {
         'app.strategy.name.userd':'strategy name used',
 
         'app.strategy.platform':'Platform',
+        'app.select.group':'Selected group',
+        'app.select.strategy':'Selected strategy',
+        'app.strategy.property':'Edit property',
+        'app.strategy.devices':'Include devices',
+        'app.strategy.select.devices':'Select devices',
+        'app.strategy.identifying':'Identifying',
+        'app.time.difference': 'Time difference',
 
         //智慧路灯
 

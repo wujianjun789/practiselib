@@ -220,6 +220,13 @@ export default {
         '':'',
 
         'app.strategy.platform':'平台',
+        'app.select.group':'选中组',
+        'app.select.strategy':'选中策略',
+        'app.strategy.property':'调整参数',
+        'app.strategy.devices':'包含设备',
+        'app.strategy.select.devices':'选择设备',
+        'app.strategy.identifying':'标识',
+        'app.time.difference': '时间差',
         
         //智慧路灯
         'app.search.placeholder.name': "搜索名称或域",
