@@ -23,8 +23,8 @@ export default class Table extends Component {
         this.rowClick = this.rowClick.bind(this);
     }
 
-    allCheckChange() {
-        this.props.allCheckChange && this.props.allCheckChange();
+    allCheckChange(value) {
+        this.props.allCheckChange && this.props.allCheckChange(value);
     }
 
     rowCheckChange(rowId, value) {
@@ -52,7 +52,7 @@ export default class Table extends Component {
                     <tr>
                         <th className={allChecked === undefined?'hidden':''}><input type="checkbox"
                                                                                     checked={allChecked}
-                                                                                    onChange={this.allCheckChange}/>
+                                                                                    onChange={e=>this.allCheckChange(e.target.checked)}/>
                         </th>
                         {
                             columns.map((item, index)=> {
