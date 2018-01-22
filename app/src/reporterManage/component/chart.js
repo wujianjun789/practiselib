@@ -23,19 +23,20 @@ export default class Chart extends PureComponent {
         this.chart = new DrawChart({
             wrapper: node,
             data: [],
-            xAccessor: d => d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
+            //eslint-disable-next-line
+            xAccessor: d => d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ')(d.timestamp),
             yAccessor: d => d.value,
             xDomain: [start, end],
             yDomain: [0, 100],
-            curveFactory: d3.curveStepAfter,
-            yTickFormat: d => { if (d === 0) return ''; return `${d}%` },
+            curveFactory: d3.curveStepAfter,//eslint-disable-line
+            yTickFormat: d => { if (d === 0) return ''; return `${d}%`; },
             tooltipAccessor: d => d.y
-        })
+        });
     }
 
     updateLineChart = (props) => {
         const { data, start, end } = props;
-        this.chart.updateChart(data, [start, end])
+        this.chart.updateChart(data, [start, end]);
     }
 
     destroyLineChart = () => {
@@ -52,7 +53,7 @@ export default class Chart extends PureComponent {
     render() {
         return (
             <div class='chart-container' ref={this.drawLineChart}></div>
-        )
+        );
     }
 }
 

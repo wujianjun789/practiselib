@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Immutable from 'immutable';
 
 import Content from '../../../components/Content';
@@ -8,13 +8,13 @@ import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import { DatePicker } from 'antd';
 import Modal from 'antd/lib/modal';
-import '../../../../public/styles/antd-modal.less'
+import '../../../../public/styles/antd-modal.less';
 
 import '../../../../public/styles/reporterManage-device.less';
 import Chart from '../../utils/multiLineChartWithZoomAndBrush';
 import { getYesterday, getToday } from '../../../util/time';
-import { getDomainList } from '../../../api/domain'
-import { getSearchAssets, getSearchCount } from '../../../api/asset'
+import { getDomainList } from '../../../api/domain';
+import { getSearchAssets, getSearchCount } from '../../../api/asset';
 
 
 export default class Lc extends Component {
@@ -81,7 +81,7 @@ export default class Lc extends Component {
         this.paramColumns = [
             { field: 'param', title: '采样参数' },
             { field: 'unit', title: '单位' }
-        ]
+        ];
         this.maxSelectNum = 5;
         this.initDomainData();
     }
@@ -93,13 +93,13 @@ export default class Lc extends Component {
     initDomainData = () => {
         getDomainList(data => {
             this._isMounted && this.updateDomainData(data);
-        })
+        });
     }
     updateDomainData = (data) => {
         if (data.length === 0) {
             return;
         } else {
-            this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData)
+            this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData);
         }
     }
 
@@ -111,7 +111,7 @@ export default class Lc extends Component {
         const { page, currentDomain } = this.state;
         if (isSearch) {
             page.current = 1;
-            this._isMounted && this.setState({ page: page })
+            this._isMounted && this.setState({ page: page });
         }
         if (currentDomain) {
             const { search: { value }, page: { current, limit } } = this.state;
@@ -121,35 +121,35 @@ export default class Lc extends Component {
         }
     }
     updateDeviceData = (data) => {
-        this._isMounted && this.setState({ multiDeviceList: data })
+        this._isMounted && this.setState({ multiDeviceList: data });
     }
 
     //更新分页面板
     updatePageSize = (data) => {
         const page = this.state.page;
         page.total = data.count;
-        this._isMounted && this.setState({ page })
+        this._isMounted && this.setState({ page });
     }
     changePagination = (index) => {
         const page = this.state.page;
         page.current = index;
-        this.setState({ page }, this.initDeviceData)
+        this.setState({ page }, this.initDeviceData);
     }
 
     //搜索栏
     searchChange = (value) => {
         const search = this.state.search;
         search.value = value;
-        this._isMounted && this.setState({ search })
+        this._isMounted && this.setState({ search });
     }
     searchSubmit = () => {
-        this.initDeviceData(true)
+        this.initDeviceData(true);
     }
 
     componentDidUpdate() {
         const { currentDomain,multiDeviceList } = this.state;
-        console.log(multiDeviceList)
-        console.log(currentDomain)
+        console.log(multiDeviceList);
+        console.log(currentDomain);
     }
 
     //d3图表
@@ -158,44 +158,44 @@ export default class Lc extends Component {
         this.chart = new Chart({
             wrapper: node,
             data: Object.values(selectedMultiDeviceCollection),
-            xAccessor: d => d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
+            xAccessor: d => d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ')(d.timestamp),
             yAccessor: d => d.value,
             xDomain: [startDate, endDate],
             yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => { if (d === 0) return ''; return `${d}` },
+            yTickFormat: d => { if (d === 0) return ''; return `${d}`; },
             tooltipAccessor: d => d.y
-        })
+        });
     }
     getChartData = (cb) => {
     }
 
     //侧边栏展开关闭
     collapseHandler = () => {
-        this.setState({ sidebarCollapse: !this.state.sidebarCollapse })
+        this.setState({ sidebarCollapse: !this.state.sidebarCollapse });
     }
 
     //选择起始日期
     startDateChange = (date, dateStr) => {
-        this.setState({ startDate: date })
+        this.setState({ startDate: date });
     }
     endDateChange = (date, dateStr) => {
-        this.setState({ endDate: date })
+        this.setState({ endDate: date });
     }
 
     //选择采样模式、采样参数、选择域
     onChangeHandler = (e) => {
         const { id, selectedIndex } = e.target;
         switch (id) {
-            case 'mode':
-                this.setState({ currentMode: selectedIndex })
-                break;
-            case 'param':
-                this.setState({ currentParam: selectedIndex })
-                break;
-            case 'domain':
-                this.setState({ currentDomain: this.state.domainList[selectedIndex] }, this.initDeviceData);
-                break;
+        case 'mode':
+            this.setState({ currentMode: selectedIndex });
+            break;
+        case 'param':
+            this.setState({ currentParam: selectedIndex });
+            break;
+        case 'domain':
+            this.setState({ currentDomain: this.state.domainList[selectedIndex] }, this.initDeviceData);
+            break;
         }
     }
 
@@ -215,20 +215,20 @@ export default class Lc extends Component {
                 mode: 'multiDevice', //模式
                 param: currentParam, //选中的参数
                 deviceList: selectedMultiDeviceIdList //设备id列表
-            }
-            console.log(body)
+            };
+            console.log(body);
         } else if (currentMode === 2) {
             body = {
                 mode: 'multiParam',
                 device: currentDeviceId, //选中的设备id
                 paramList: selectedMultiParamIdList //参数列表
-            }
-            console.log(body)
+            };
+            console.log(body);
         }
     }
 
     showModal = () => {
-        this.setState({ visible: !this.state.visible })
+        this.setState({ visible: !this.state.visible });
     }
     selectDevice = (rowId, checked) => {
         const { multiDeviceList, selectedMultiDeviceIdList, selectedMultiDeviceCollection } = this.state;
@@ -237,15 +237,15 @@ export default class Lc extends Component {
                 this.setState({
                     selectedMultiDeviceIdList: [...selectedMultiDeviceIdList, rowId],
                     // selectedMultiDeviceCollection: { ...selectedMultiDeviceCollection, [rowId]: multiDeviceList.find(item => item.id === rowId) }
-                })
+                });
             }
         } else {
-            selectedMultiDeviceIdList.splice(selectedMultiDeviceIdList.findIndex(item => item === rowId), 1) //注意，此处一定要指明删除数量为1
+            selectedMultiDeviceIdList.splice(selectedMultiDeviceIdList.findIndex(item => item === rowId), 1); //注意，此处一定要指明删除数量为1
             // delete selectedMultiDeviceCollection[rowId]
             this.setState({
                 selectedMultiDeviceIdList,
                 // selectedMultiDeviceCollection
-            })
+            });
         }
     }
     selectSingleDevice = (rowId, checked) => {
@@ -254,11 +254,11 @@ export default class Lc extends Component {
             this.setState({
                 currentDeviceId: rowId,
                 showDeviceName: multiDeviceList.find(item => item.id === rowId)['name']
-            })
+            });
 
         } else {
             currentDeviceId = null;
-            this.setState({ currentDeviceId, showDeviceName: '' })
+            this.setState({ currentDeviceId, showDeviceName: '' });
         }
     }
     selectParam = (rowId, checked) => {
@@ -267,14 +267,14 @@ export default class Lc extends Component {
             this.setState({
                 selectedMultiParamIdList: [...selectedMultiParamIdList, rowId],
                 // selectedMultiParamCollection: { ...selectedMultiParamCollection, [rowId]: multiParamList.find(item => item.param === rowId) }
-            })
+            });
         } else {
             selectedMultiParamIdList.splice(selectedMultiParamIdList.findIndex(item => item === rowId), 1);
             // delete selectedMultiParamCollection[rowId]
             this.setState({
                 selectedMultiParamIdList,
                 // selectedMultiParamCollection
-            })
+            });
         }
     }
     render() {
@@ -284,7 +284,7 @@ export default class Lc extends Component {
         let devicePanel = null, applyDisabled = true, currentDomainName = null;
 
         if (currentDomain) {
-            currentDomainName = currentDomain['name']
+            currentDomainName = currentDomain['name'];
         }
 
         if (currentMode === 1) {
@@ -320,7 +320,7 @@ export default class Lc extends Component {
                 <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
                     keyField='param' checked={selectedMultiParamIdList} rowCheckChange={this.selectParam} />
 
-            </div>
+            </div>;
             if (currentDeviceId !== null && selectedMultiParamIdList.length) {
                 applyDisabled = false;
             }
@@ -337,7 +337,7 @@ export default class Lc extends Component {
                     <div class='panel panel-default panel-1'>
                         <div class='panel-heading'>
                             <span class='icon_touch'></span>选择时间
-						</div>
+                        </div>
                         <div class='panel-body'>
                             <DatePicker class='start-date' placeholder='选择起始日期' value={startDate}
                                 allowClear={false} locale={'zh'} onChange={this.startDateChange} />
@@ -349,7 +349,7 @@ export default class Lc extends Component {
                     <div class='panel panel-default panel-2'>
                         <div class='panel-heading'>
                             <span class='icon_select'></span>选中设备
-						</div>
+                        </div>
                         <div class='panel-body'>
                             <div class='device-filter'>
                                 <Select1 id='mode' options={modeList} onChange={this.onChangeHandler} />
@@ -363,6 +363,6 @@ export default class Lc extends Component {
                     </div>
                 </div>
             </Content >
-        )
+        );
     }
 }
