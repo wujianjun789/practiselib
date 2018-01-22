@@ -269,6 +269,8 @@ export default {
         'app.sensor.strategy': 'sensor strategy',
         'app.latlng.strategy': 'latlng strategy',
         'app.input.strategy.name': 'input strategy name',
+        'app.input.strategys.name':'input group and strategy name',        
+
         'app.strategy.name': 'strategy name',
         'app.strategy.type': 'strategy type',
         'app.device.type': 'device type',
