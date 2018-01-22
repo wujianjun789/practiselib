@@ -7,14 +7,14 @@ import React, { Component } from 'react';
 import {injectIntl} from 'react-intl';
 
 import Content from '../../components/Content';
-import Select from '../../components/Select.1'
-import SearchText from '../../components/SearchText'
-import TableWithHeader from '../components/TableWithHeader'
-import TableTr from '../components/TableTr'
-import Page from '../../components/Page'
-import { getDomainList } from '../../api/domain'
-import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, getModelSummariesByModelID } from '../../api/asset'
-import { getMomentDate, momentDateFormat } from '../../util/time'
+import Select from '../../components/Select.1';
+import SearchText from '../../components/SearchText';
+import TableWithHeader from '../components/TableWithHeader';
+import TableTr from '../components/TableTr';
+import Page from '../../components/Page';
+import { getDomainList } from '../../api/domain';
+import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, getModelSummariesByModelID } from '../../api/asset';
+import { getMomentDate, momentDateFormat } from '../../util/time';
 export class Sensor extends Component {
     constructor(props) {
         super(props);
@@ -37,12 +37,12 @@ export class Sensor extends Component {
             currentDevice: null,
             deviceList: [],
             sidebarCollapse: false,
-        }
-        this.model = 'sensor'
+        };
+        this.model = 'sensor';
         this.sensorProps = null;
         this.columns = [
             { accessor: 'name', title: this.formatIntl('app.device.name') },
-            { accessor(data) { return data.extend.type }, title: this.formatIntl('app.type') },
+            { accessor(data) { return data.extend.type; }, title: this.formatIntl('app.type') },
             {
                 accessor: (data) => {
                     // console.log(this)
@@ -58,7 +58,7 @@ export class Sensor extends Component {
                     return data.updated ? momentDateFormat(getMomentDate(data.updated, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm') : '';
                 }, title: this.formatIntl('app.update.time')
             }
-        ]
+        ];
 
         this.formatIntl = this.formatIntl.bind(this);
 
@@ -73,7 +73,7 @@ export class Sensor extends Component {
         this.initData();
     }
     componentWillUnmount() {
-        this.mounted = false
+        this.mounted = false;
     }
 
     formatIntl(formatId){
@@ -87,7 +87,7 @@ export class Sensor extends Component {
             this.mounted && this.updateDomainData(data);
             this.mounted && this.initDeviceData();
 
-        })
+        });
     }
     updateDomainData = data => {
         let currentDomain, options = data;
@@ -96,7 +96,7 @@ export class Sensor extends Component {
         } else {
             currentDomain = data[0];
         }
-        this.setState({ domainList: { ...this.state.domainList, options }, currentDomain })
+        this.setState({ domainList: { ...this.state.domainList, options }, currentDomain });
 
     }
     initDeviceData = isSearch => {
@@ -122,25 +122,25 @@ export class Sensor extends Component {
     onChange = e => {
         const { id, value } = e.target;
         switch (id) {
-            case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({ currentDomain }, this.initDeviceData);
-                break;
+        case 'domain':
+            let currentDomain = this.state.domainList.options[e.target.selectedIndex];
+            this.setState({ currentDomain }, this.initDeviceData);
+            break;
         }
     }
     searchChange = value => {
         this.setState({
             search: { ...this.state.search, value }
-        })
+        });
     }
     searchSubmit = () => {
-        this.initDeviceData(true)
+        this.initDeviceData(true);
     }
     pageChange = page => {
-        this.setState({ page: { ...this.state.page, current: page } }, this.initDeviceData)
+        this.setState({ page: { ...this.state.page, current: page } }, this.initDeviceData);
     }
     tableClick = currentDevice => {
-        this.setState({ currentDevice })
+        this.setState({ currentDevice });
     }
     collapse = () => {
         this.setState({ sidebarCollapse: !this.state.sidebarCollapse });
@@ -169,16 +169,16 @@ export class Sensor extends Component {
                         {
                             deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
                                 rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                             />)
+                            />)
                         }
                     </TableWithHeader>
                     <Page className={`page ${total === 0 ? 'hidden' : ''}`} pageSize={limit}
                         current={current} total={total} onChange={this.pageChange} />
                 </div>
             </div>
-            <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
+            <div className={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
                 <div className="row collapse-container" onClick={this.collapse}>
-                    <span className={sidebarCollapse ? "icon_horizontal" : "icon_vertical"}></span>
+                    <span className={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                 </div>
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
@@ -189,7 +189,7 @@ export class Sensor extends Component {
                     </div>
                 </div>
             </div>
-        </Content>
+        </Content>;
     }
 }
 

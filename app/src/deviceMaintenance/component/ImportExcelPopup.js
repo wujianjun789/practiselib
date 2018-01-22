@@ -4,12 +4,12 @@ import Panel from '../../components/Panel';
 import PanelFooter from '../../components/PanelFooter';
 import Table from '../../components/Table';
 import Page from '../../components/Page';
-import {excelImport} from '../../util/excel'
+import {excelImport} from '../../util/excel';
 import Immutable from 'immutable';
 import NotifyPopup from '../../common/containers/NotifyPopup';
-import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 import {getModelTypesNameById } from '../../data/systemModel';
-import {getObjectByKeyObj} from '../../util/algorithm'
+import {getObjectByKeyObj} from '../../util/algorithm';
 
 export default class ImportExcelPopup extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ export default class ImportExcelPopup extends Component {
                 total: 0
             },
             filename:''
-        }
+        };
         this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -36,12 +36,12 @@ export default class ImportExcelPopup extends Component {
             if(data.length==0){
                 addNotify(0, '导入Excel格式有误');
                 target.value = '';
-                return
+                return;
             }
              
             let page = this.state.page;
             page.total = data.length;
-            this.setState({data:data,page:page,filename:filename})
+            this.setState({data:data,page:page,filename:filename});
         });
     }
 
@@ -63,7 +63,7 @@ export default class ImportExcelPopup extends Component {
                 delete item.domainName;            
             }
             return item;}
-        )
+        );
         this.props.onConfirm && this.props.onConfirm(datas, isUpdate);        
     }
 
@@ -75,7 +75,7 @@ export default class ImportExcelPopup extends Component {
         const {className,columns, title} =this.props;
         const {data,page,filename} =this.state;
         
-        let result=Immutable.fromJS(data.slice((page.current-1)*page.pageSize,page.current*page.pageSize))
+        let result=Immutable.fromJS(data.slice((page.current-1)*page.pageSize,page.current*page.pageSize));
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['取消','确认']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;    
         
         return <div className={ className }>
@@ -91,11 +91,11 @@ export default class ImportExcelPopup extends Component {
                 {
                     data.length !== 0 &&<div className="table-container">
                         <Table columns={ columns } data={ result }/>
-                        <Page className={ "page " + (page.total == 0 ? "hidden" : '') } showSizeChanger pageSize={ page.pageSize } current={ page.current } total={ page.total } onChange={ this.pageChange }/>
+                        <Page className={ 'page ' + (page.total == 0 ? 'hidden' : '') } showSizeChanger pageSize={ page.pageSize } current={ page.current } total={ page.total } onChange={ this.pageChange }/>
                     </div>
                 }
                 <NotifyPopup />
             </Panel>
-        </div>
+        </div>;
     }
 }

@@ -37,7 +37,7 @@ export default class TableTr extends PureComponent {
         this.mounted = true;
         const {willMountFuncs} = this.props;
         if (Array.isArray(willMountFuncs)) {
-            willMountFuncs.forEach(func => {func(this.updateData)});
+            willMountFuncs.forEach(func => {func(this.updateData);});
         } else if (typeof willMountFuncs == 'function') {
             willMountFuncs(this.updateData);
         }
@@ -57,21 +57,21 @@ export default class TableTr extends PureComponent {
 
     render() {
         const {data, data:{id}} = this.state;
-		const {activeId, columns} = this.props;
+        const {activeId, columns} = this.props;
         return (
             <tr className={(activeId || (typeof activeId == 'number' && activeId == 0) ) && activeId==id ? 'active':''} onClick={this.onClick}>
-            {
-                columns.map((item, index) => {
-                    if(typeof item.accessor === 'function') {
-                        return <td key={index}>{item.accessor(data)}</td>
-                    } else if(typeof item.accessor === 'string') {
-                        return <td key={index}>{data[item.accessor]}</td>
-                    } else {
-                        return <td key={index}></td>
-                    }
-                })
-            }
+                {
+                    columns.map((item, index) => {
+                        if(typeof item.accessor === 'function') {
+                            return <td key={index}>{item.accessor(data)}</td>;
+                        } else if(typeof item.accessor === 'string') {
+                            return <td key={index}>{data[item.accessor]}</td>;
+                        } else {
+                            return <td key={index}></td>;
+                        }
+                    })
+                }
             </tr>
-        )
+        );
     }
 }

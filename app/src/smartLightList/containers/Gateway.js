@@ -71,8 +71,8 @@ export class Gateway extends Component{
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-		this.tableClick = this.tableClick.bind(this);
-		this.onClick = this.onClick.bind(this);
+        this.tableClick = this.tableClick.bind(this);
+        this.onClick = this.onClick.bind(this);
 
         this.initData = this.initData.bind(this);
         this.updateDomainData = this.updateDomainData.bind(this);
@@ -104,7 +104,7 @@ export class Gateway extends Component{
 
     updateDomainData(data, cb) {
         let currentDomain,
-        options = data;
+            options = data;
         if (data.length == 0) {
             currentDomain = null;
         } else {
@@ -134,19 +134,19 @@ export class Gateway extends Component{
     }
 
     updatePageSize(data) {
-        this.setState({page: {...this.state.page, total: data.count}})
+        this.setState({page: {...this.state.page, total: data.count}});
     }
 
     onChange(e) {
         const {id, value} = e.target;
         switch(id) {
-            case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({currentDomain}, this.initDeviceData);
-                break;
-            case 'controlMode':
-                this.setState({currentControlMode: value});
-                break;
+        case 'domain':
+            let currentDomain = this.state.domainList.options[e.target.selectedIndex];
+            this.setState({currentDomain}, this.initDeviceData);
+            break;
+        case 'controlMode':
+            this.setState({currentControlMode: value});
+            break;
         }
     }
 
@@ -157,7 +157,7 @@ export class Gateway extends Component{
     searchChange(value) {
         this.setState({
             search: {...this.state.search, value: value}
-        })
+        });
     }
 
     searchSubmit() {
@@ -170,22 +170,22 @@ export class Gateway extends Component{
 
     tableClick(currentDevice) {
         this.setState({currentDevice});
-	}
+    }
 
-	onClick(e) {
-		const id = e.target.id;
-		const deviceId = this.state.currentDevice.id;
-		let body;
-		switch(id) {
-			case 'controlMode_btn':
-				body = {'mode': this.state.currentControlMode};
-				break;
-			case 'timing':
-				body = {};
-				break;
-		}
-		updateAssetsRpcById(deviceId, body);
-	}
+    onClick(e) {
+        const id = e.target.id;
+        const deviceId = this.state.currentDevice.id;
+        let body;
+        switch(id) {
+        case 'controlMode_btn':
+            body = {'mode': this.state.currentControlMode};
+            break;
+        case 'timing':
+            body = {};
+            break;
+        }
+        updateAssetsRpcById(deviceId, body);
+    }
 
     render() {
         const {
@@ -195,55 +195,55 @@ export class Gateway extends Component{
         } = this.state;
         const disabled = deviceList.length == 0 ? true : false;
         return <Content className={`list-lcc ${sidebarCollapse ? 'collapse' : ''}`}>
-                    <div className="content-left">
-                        <div className="heading">
-                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
-                                value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+            <div className="content-left">
+                <div className="heading">
+                    <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                        value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+                    <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                </div>
+                <div className="table-container">
+                    <TableWithHeader columns={this.columns}>
+                        {
+                            deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
+                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]} />)
+                        }
+                    </TableWithHeader>
+                    <Page className={`page ${total==0?'hidden':''}`} showSizeChanger pageSize={limit}
+                        current={current} total={total} onChange={this.pageChange}/>
+                </div>
+            </div>
+            <div className={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
+                <div className="row collapse-container" onClick={this.collapseHandler}>
+                    <span className={sidebarCollapse ? 'icon_horizontal'  :'icon_vertical'}></span>
+                </div>
+                <div className="panel panel-default panel-1">
+                    <div className="panel-heading">
+                        <span className="icon_select"></span><FormattedMessage id="sysOperation.selected.device"/>
+                    </div>
+                    <div className="panel-body">
+                        <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
+                    </div>
+                </div>
+                <div className="panel panel-default panel-2">
+                    <div className="panel-heading">
+                        <span className="icon_touch"></span><FormattedMessage id="app.device.operation"/>
+                    </div>
+                    <div className="panel-body">
+                        <div>
+                            <span className="tit">{this.formatIntl('app.control.mode')}</span>
+                            <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField}
+                                options={controlModeList.options}  value={currentControlMode} onChange={this.onChange} disabled={disabled}/>
+                            <button id="controlMode_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
                         </div>
-                        <div className="table-container">
-                            <TableWithHeader columns={this.columns}>
-                            {
-                                deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
-                                                            rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]} />)
-                            }
-                            </TableWithHeader>
-                            <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
-                                current={current} total={total} onChange={this.pageChange}/>
+                        <div>
+                            <span className="tit">{this.formatIntl('app.automatic.time')}</span>
+                            <span className="note">({this.formatIntl('app.click.automatic.time')})</span>
+                            <button id=" timing" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
                         </div>
                     </div>
-                    <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
-                        <div className="row collapse-container" onClick={this.collapseHandler}>
-                            <span className={sidebarCollapse ? "icon_horizontal"  :"icon_vertical"}></span>
-                        </div>
-                        <div className="panel panel-default panel-1">
-                            <div className="panel-heading">
-                                <span className="icon_select"></span><FormattedMessage id="sysOperation.selected.device"/>
-                            </div>
-                            <div className="panel-body">
-                                <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
-                            </div>
-                        </div>
-                        <div className="panel panel-default panel-2">
-                            <div className="panel-heading">
-                                <span className="icon_touch"></span><FormattedMessage id="app.device.operation"/>
-                            </div>
-                            <div className="panel-body">
-                                <div>
-                                    <span className="tit">{this.formatIntl('app.control.mode')}</span>
-                                    <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField}
-                                        options={controlModeList.options}  value={currentControlMode} onChange={this.onChange} disabled={disabled}/>
-                                    <button id="controlMode_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
-                                </div>
-                                <div>
-                                    <span className="tit">{this.formatIntl('app.automatic.time')}</span>
-                                    <span className="note">({this.formatIntl('app.click.automatic.time')})</span>
-                                    <button id=" timing" className="btn btn-primary" disabled={disabled} onClick={this.onClick}><FormattedMessage id="button.apply"/></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Content>
+                </div>
+            </div>
+        </Content>;
     }
 }
 

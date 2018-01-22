@@ -11,8 +11,8 @@ import Select from '../../components/Select.1';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table2';
 import Page from '../../components/Page';
-import { getDomainList } from '../../api/domain'
-import { getSearchAssets, getSearchCount } from '../../api/asset'
+import { getDomainList } from '../../api/domain';
+import { getSearchAssets, getSearchCount } from '../../api/asset';
 export class ChargePole extends Component {
     constructor(props) {
         super(props);
@@ -35,7 +35,7 @@ export class ChargePole extends Component {
                 valueField: 'name',
                 options: []
             }
-        }
+        };
         //! 后端暂时没有充电桩api
         this.model = 'sensor';//暂时使用传感器代替
         this.columns = [
@@ -46,7 +46,7 @@ export class ChargePole extends Component {
             { field: 'chargeTime', title: this.formatIntl('app.total.charge.time') },
             { filed: 'lastChargeTime', title: this.formatIntl('app.last.charge.time') },
             { field: 'updateTime', title: this.formatIntl('app.update.time') }
-        ]
+        ];
 
         this.formatIntl = this.formatIntl.bind(this);
     }
@@ -66,7 +66,7 @@ export class ChargePole extends Component {
 
     initData = () => {
         getDomainList(data => {
-            console.log(1)
+            console.log(1);
             this.mounted && this.updateDomainData(data);
             this.mounted && this.initDeviceData();
         });
@@ -79,43 +79,43 @@ export class ChargePole extends Component {
         } else {
             currentDomain = data[0];
         }
-        this.setState({ domainList: { ...this.state.domainList, options }, currentDomain })
+        this.setState({ domainList: { ...this.state.domainList, options }, currentDomain });
     }
     initDeviceData = isSearch => {
         let { search: { value }, page, page: { limit }, currentDomain } = this.state;
         if (isSearch) {
             page.current = 1;
-            this.setState({ page: page })
+            this.setState({ page: page });
         }
         let offset = limit * (page.current - 1);
         getSearchAssets(currentDomain ? currentDomain.id : null, this.model, value, offset, limit, this.mounted && this.updateDeviceData);
-        getSearchCount(currentDomain ? currentDomain.id : null, this.model, value, this.mounted && this.updatePageSize)
+        getSearchCount(currentDomain ? currentDomain.id : null, this.model, value, this.mounted && this.updatePageSize);
     }
     updateDeviceData = data => {
         let currentDevice = data.length === 0 ? null : data[0];
         this.setState({ deviceList: data, currentDevice });
     }
     updatePageSize = data => {
-        this.setState({ page: { ...this.state.page, total: data.count } })
+        this.setState({ page: { ...this.state.page, total: data.count } });
     }
     onChange = e => {
         const { id, value } = e.target;
         switch (id) {
-            case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({ currentDomain }, this.initDeviceData)
+        case 'domain':
+            let currentDomain = this.state.domainList.options[e.target.selectedIndex];
+            this.setState({ currentDomain }, this.initDeviceData);
         }
     }
     searchChange = value => {
         this.setState({
             search: { ...this.state.search, value }
-        })
+        });
     }
     searchSubmit = () => {
-        this.initDeviceData(true)
+        this.initDeviceData(true);
     }
     pageChange = page => {
-        this.setState({ page: { ...this.state.page, current: page } }, this.initDeviceData)
+        this.setState({ page: { ...this.state.page, current: page } }, this.initDeviceData);
     }
     tableClick = currentDevice => {
         this.setState({ currentDevice });
@@ -144,18 +144,18 @@ export class ChargePole extends Component {
             </div>
             <div className={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
                 <div className="row collapse-container" onClick={this.collapse}>
-                    <span className={sidebarCollapse ? "icon_horizontal" : "icon_vertical"}></span>
+                    <span className={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                 </div>
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
                         <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
-                            </div>
+                    </div>
                     <div className="panel-body">
                         <span title={currentDevice === null ? '' : currentDevice.name}>{currentDevice === null ? '' : currentDevice.name}</span>
                     </div>
                 </div>
             </div>
-        </Content>
+        </Content>;
     }
 }
 

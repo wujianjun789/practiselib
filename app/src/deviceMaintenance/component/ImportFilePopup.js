@@ -10,7 +10,7 @@ import NotifyPopup from '../../common/containers/NotifyPopup';
 export default class ImportFilePopup extends Component {
     constructor(props) {
         super(props);
-        const { title="", placeholder="",success="", fail="" } = props.data;
+        const { title='', placeholder='',success='', fail='' } = props.data;
         this.state = {
             title: title,
             placeholder: placeholder,
@@ -36,7 +36,7 @@ export default class ImportFilePopup extends Component {
     }
 
     onClick() {
-        console.log("导入文件");
+        console.log('导入文件');
     }
 
     onCancel() {
@@ -48,7 +48,7 @@ export default class ImportFilePopup extends Component {
         const notifyText = {
             success: this.state.success,
             fail: this.state.fail
-        }
+        };
         const{ replaceSuccess } = this.state;
         if(replaceSuccess) {
             addNotify(1, notifyText.success);
@@ -83,6 +83,6 @@ export default class ImportFilePopup extends Component {
                     <NotifyPopup/>
                 </Panel>
             </div>
-        )
+        );
     }
 }

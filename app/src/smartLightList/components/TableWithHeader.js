@@ -20,21 +20,21 @@ export default class TableWithHeader extends PureComponent {
         const {className, columns, children} = this.props;
         return (
             <div className={`table-responsive ${className}`}>
-            <table className="table table-hover">
-                <thead>
-                <tr>
-                    {
-                        columns.map((item, index)=> {
-                            return <th key={index}>{item.title}</th>
-                        })
-                    }
-                </tr>
-                </thead>
-                <tbody>
-                    {children}
-                </tbody>
-            </table>
-        </div>
-        )
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            {
+                                columns.map((item, index)=> {
+                                    return <th key={index}>{item.title}</th>;
+                                })
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {children}
+                    </tbody>
+                </table>
+            </div>
+        );
     }
 }
