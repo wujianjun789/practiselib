@@ -1,7 +1,9 @@
 /**
  * Created by a on 2017/7/26.
  */
-import {HOST_IP, getHttpHeader, httpRequest} from '../util/network'
+import {HOST_IP, getHttpHeader, httpRequest} from '../util/network';
+import {DOMAIN_LEVEL} from '../common/util/index';
+
 export function getDomainList(cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains', {
@@ -14,7 +16,7 @@ export function getDomainList(cb) {
 
 export function getParentDomainList(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where":{level:{neq:5}}})), {
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where":{level:{neq:DOMAIN_LEVEL}}})), {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -24,7 +26,7 @@ export function getParentDomainList(cb) {
 
 export function getChildDomainList(cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where":{level:5}})), {
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where":{level:DOMAIN_LEVEL}})), {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -33,14 +35,12 @@ export function getChildDomainList(cb) {
 }
 
 export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
-
     let headers = getHttpHeader();
-    let nearParam = {maxDistance: map.distance/2000,unit:'kilometers'}
+    let nearParam = {maxDistance: map.distance/1000,unit:'kilometers'}
     if(domainLevel==1){
         nearParam = {};
     }
 
-    if(domainLevel)
     httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam)}})),{
         headers: headers,
         method: 'GET'

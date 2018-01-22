@@ -41,7 +41,7 @@ class TimeStrategy extends Component{
         this.state = {
             model:'time',
             search: Immutable.fromJS({
-                placeholder: this.formatIntl('app.input.strategy.name'),
+                placeholder: this.formatIntl('app.input.strategys.name'),
                 value: ''
             }),
             selectStrategy:{},
@@ -102,7 +102,7 @@ class TimeStrategy extends Component{
             data.map(item=>{
                 item.plans=getListByKey2(item.plans,'type',0);
             })
-            getNoGroupStrategy(res=>{
+            getNoGroupStrategy(0,res=>{
                 if(res.length){
                     res.map(item=>{
                         item.groupId = 0;
@@ -163,8 +163,7 @@ class TimeStrategy extends Component{
         let allDevicesData = [];
         let selectedDevices = [];
         let selectedDevicesData = [];
-        
-        if(devices){
+        if(devices && devices.length){
             const promise = new Promise((resolve, reject)=>{
                 let len=0;
                 devices.map(id=>{
@@ -184,24 +183,25 @@ class TimeStrategy extends Component{
             promise.then(gatewayIds=>{
                 return new Promise((resolve, reject)=>{
                     let len = 0;
-                gatewayIds.map(id=>{
-                    getAssetsBaseById(parseInt(id),(res)=>{
-                        len++
-                        //所有网关
-                        gateways.push(res);
-                        if(len == gatewayIds.length){
-                            resolve(gateways);
-                        }
+                    gatewayIds.map(id=>{
+                        getAssetsBaseById(parseInt(id),(res)=>{
+                            len++
+                            //所有网关
+                            gateways.push(res);
+                            if(len == gatewayIds.length){
+                                resolve(gateways);
+                            }
+                        })
                     })
                 })
-                })
-                
             }).then(gateways=>{
                 return new Promise((resolve, reject)=>{
                     let len = 0;                    
                     gateways.forEach(item=>{
                         //网关白名单中的选中设备
                         selectedDevicesData.push(Object.assign({},item,{whiteList:getListByKey2(selectedDevices,'gatewayId',item.id)}));
+
+                        //网关白名单中的所有设备
                         getWhiteListById(item.id,(res)=>{
                             len++;
                             allDevicesData.push(Object.assign({},item,{whiteList:res}))
@@ -221,9 +221,11 @@ class TimeStrategy extends Component{
             })
         }
         else{
-            this.setState({selectedDevicesData:Immutable.fromJS([]),allDevicesData:Immutable.fromJS([])})
+            this.setState({selectedDevicesData:Immutable.fromJS([]),allDevicesData:Immutable.fromJS([]),allDevices:{
+                allChecked:false,
+                checked:[]
+            }})
         }
-    
     }
     
     initDeviceData=(key,data)=>{
@@ -334,10 +336,10 @@ class TimeStrategy extends Component{
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
                     break;
                 case 1:
-                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    selectItem.levelTitle=this.formatIntl('sysOperation.gateway');
                     break;
                 case 2:
-                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    selectItem.levelTitle=this.formatIntl('app.device');
                     break;
                 default:
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
@@ -368,18 +370,24 @@ class TimeStrategy extends Component{
 	}
 
     onChange=(id,value)=> {
-        console.log(id)
-        let {execution={}} = this.state.selectItem;
-        execution[id] = value;
-        this.setState({selectItem:Object.assign({},this.state.selectItem,{execution:execution})});
+        if(id=="time"){
+            this.setState({selectItem:Object.assign({},this.state.selectItem,{excuteTime:value})});
+        }
+        else{
+            let {execution={}} = this.state.selectItem;
+            execution[id] = value;
+            this.setState({selectItem:Object.assign({},this.state.selectItem,{execution:execution})});
+        }
     }
 
     editStrategy=()=>{
         let {selectItem} = this.state;
-        if(!selectItem.execution.hasOwnProperty("light")){
-            selectItem.execution.light = 0;
+        if(!selectItem.hasOwnProperty('execution')){
+            selectItem.execution={
+                light:0
+            }
         }
-        updateStrategy({id:selectItem.id,execution:selectItem.execution},this.requestSearch);
+        updateStrategy({id:selectItem.id,execution:selectItem.execution,excuteTime:selectItem.excuteTime},this.requestSearch);
     }
 
     collapseClick=(id,key,data)=>{
@@ -435,15 +443,38 @@ class TimeStrategy extends Component{
 
     addGateway=()=>{
         const {actions} = this.props;
-        actions.overlayerShow(<AddGatewayPopup className="add-gateway-popup" intl={this.props.intl} title="添加网关"
+        actions.overlayerShow(<AddGatewayPopup className="add-gateway-popup" intl={this.props.intl} title="添加网关" allDevices={this.state.allDevicesData}
                 onConfirm={(data)=>{
-                    console.log(data);
+                    this.addGatewayToAll(data);
                     actions.overlayerHide();
                 }} onCancel={()=>{
                 actions.overlayerHide();
             }}/>)
     }
 
+    addGatewayToAll=(data)=>{
+        let {allDevicesData} = this.state;
+        let len = 0;
+        const promise = new Promise((resolve, reject)=>{
+            data.map(item=>{
+                getWhiteListById(item.id,(res)=>{
+                    len++;
+                    item.whiteList=res;
+                    if(!getObjectByKey(allDevicesData,'id',item.id)){
+                        allDevicesData = allDevicesData.push(item);
+                    }
+                    if(len == data.length){
+                        resolve(allDevicesData)
+                    };
+                })
+            })
+        })
+        promise.then(allDevicesData=>{
+            this.initDeviceData('allDevicesData',allDevicesData)
+        }).catch(error=>{
+            console.log(error);
+        })
+    }
     addDevice=()=>{
         const {allDevices,allDevicesData,selectItem} = this.state;
         let res = [];
@@ -462,7 +493,7 @@ class TimeStrategy extends Component{
 
     render(){
         const {search, selectedDevicesData,allDevicesData, page, strategyData, sidebarInfo, selectItem,property,domainList,lightList,allDevices} = this.state;
-        const valid = selectItem.execution && selectItem.execution.time;
+        const valid = selectItem.excuteTime;
         return <Content className={`time-strategy ${sidebarInfo.collapsed ? 'collapse' : sidebarInfo.devicesExpanded?'select-devices-collapse':''}`}>
             <div className="heading">
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
@@ -482,7 +513,7 @@ class TimeStrategy extends Component{
                     <div className="panel panel-default group-info">
                         <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
                             <span className={sidebarInfo.collapsed ? "icon_select" :
-                                "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>选中组
+                                "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{this.formatIntl('app.select.group')}
                         </div>
                         <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
                             <div className='form-group'>
@@ -498,7 +529,7 @@ class TimeStrategy extends Component{
                         <div className="panel panel-default">
                             <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed') }}>
                                 <span className={sidebarInfo.collapsed ? "icon_select" :
-                                    "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>选中策略
+                                    "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{this.formatIntl('app.select.strategy')}
                             </div>
                             <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
                                 <div className='form-group'>
@@ -540,17 +571,17 @@ class TimeStrategy extends Component{
                         <div className="panel panel-default strategy-info">
                             <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('parameterCollapsed') }}>
                                 <span className={sidebarInfo.collapsed ? "icon_control" :
-                                    "glyphicon " + (sidebarInfo.parameterCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>调整参数
+                                    "glyphicon " + (sidebarInfo.parameterCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{this.formatIntl('app.strategy.property')}
                             </div>
                             <div className={"panel-body " + (sidebarInfo.parameterCollapsed ? 'collapsed' : '')}>
                                 <div className='form-group'>
-                                    <label>时间</label>
+                                    <label>{this.formatIntl('app.date')}</label>
                                     <div className='input-container'>
-                                        <input type='text' className='form-control' value={selectItem.execution?selectItem.execution.time:''} onChange={e=>this.onChange("time",e.target.value)}/>
+                                        <input type='text' className='form-control' value={selectItem.excuteTime?selectItem.excuteTime :''} onChange={e=>this.onChange("time",e.target.value)}/>
                                     </div>
                                 </div>
                                 <div className='form-group'>
-                                    <label>亮度</label>
+                                    <label>{this.formatIntl('app.brightness')}</label>
                                     <div className='input-container'>
                                         <select className='form-control' value={selectItem.execution?selectItem.execution.light:''} onChange={e=>this.onChange("light",e.target.value)}>
                                         {
@@ -567,11 +598,11 @@ class TimeStrategy extends Component{
                         <div className="panel panel-default device-info">
                             <div className="panel-heading" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesCollapsed') }}>
                                 <span className={sidebarInfo.collapsed ? "icon_device_list" :
-                                    "glyphicon " + (sidebarInfo.devicesCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>包含设备
+                                    "glyphicon " + (sidebarInfo.devicesCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{this.formatIntl('app.strategy.devices')}
                             </div>
                             <div className={"panel-body " + (sidebarInfo.devicesCollapsed ? 'collapsed' : '')}>
                                 <div className="header">
-                                    <span>{`包含：${selectItem.devices?selectItem.devices.length:0}个设备`}</span>
+                                    <span>{`${this.formatIntl('sysOperation.include')}：${selectItem.devices?selectItem.devices.length:0}${this.formatIntl('sysOperation.devices')}`}</span>
                                     <button className="btn btn-primary pull-right" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                   
                                 </div>
                                 <Table className="selectedDevices" columns={this.deviceColumns} data={selectedDevicesData} collapseClick={this.collapseClick}/>
@@ -585,11 +616,11 @@ class TimeStrategy extends Component{
             {sidebarInfo.devicesExpanded && <div className='container-fluid sidebar-info sidebar-devices'>
                 <div className="panel panel-default">
                     <div className="panel-heading">
-                        <span className="glyphicon glyphicon-triangle-bottom"></span>选择设备
+                        <span className="glyphicon glyphicon-triangle-bottom"></span>{this.formatIntl('app.strategy.select.devices')}
                     </div>
                     <div className="panel-body">
                         <div>
-                            <button className="btn btn-gray" onClick={() => {this.addGateway()}}>{this.formatIntl('button.add.gateway')}</button>                                   
+                            <button className="btn btn-gray" onClick={this.addGateway}>{this.formatIntl('button.add.gateway')}</button>                                   
                             <button className="btn btn-primary pull-right" onClick={this.addDevice}>{this.formatIntl('button.modify')}</button>                                                               
                         </div>
                         <Table className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>

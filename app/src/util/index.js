@@ -62,13 +62,10 @@ export function getElementOffwidth(str, fontSize = "14px") {
     html.style.visibility = 'hidden';
     html.style.fontSize = fontSize;
     html.innerHTML = str;
-    document
-        .body
-        .appendChild(html);
+    document.body.appendChild(html);
     w = html.offsetWidth;
-    document
-        .body
-        .removeChild(html);
+    document.body.removeChild(html);
+
     return w;
 }
 
@@ -106,7 +103,7 @@ export function getClassByModel(key) {
 
 export function getDeviceTypeByModel(key) {
     switch (key) {
-        case 'lightController':
+        case 'lc':
             return 'CONTROLLER';
         case 'led':
             return 'DEVICE';
@@ -119,7 +116,11 @@ export function getDeviceTypeByModel(key) {
         case 'screen':
             return 'SCREEN';
         case 'xes':
-            return 'POLE'
+            return 'XES';
+        case 'gateway':
+            return 'GATEWAY';
+        case 'sensor':
+            return 'SENSOR';
         default:
             return 'DEVICE';
     }
@@ -130,11 +131,23 @@ export function transformDeviceType(deviceType) {
         case "DEVICE":
             return 'lamp';
         case "CONTROLLER":
-            return 'controller';
+            return 'lc';
         case "ISTREETLIGHT":
             return 'intelligent';
         case "CHARGER":
             return 'charger';
+        case "POLE":
+            return 'pole';
+        case "SCREEN":
+            return 'screen';
+        case "PLC":
+            return 'plc';
+        case "XES":
+            return 'xes';
+        case "GATEWAY":
+            return 'gateway';
+        case "SENSOR":
+            return 'sensor';
         default:
             return null;
     }

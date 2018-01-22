@@ -19,11 +19,12 @@ import {injectIntl} from 'react-intl'
 
 import {getMapConfig,getLightLevelConfig} from '../../util/network'
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain'
-import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole'
+import {getPoleListByModelWithName, getPoleAssetById} from '../../api/pole';
 import {getAssetsBaseByDomain} from '../../api/asset'
 
-import {getIndexByKey} from '../../util/algorithm'
-import {IsMapCircleMarker, getDomainLevelByMapLevel} from '../../util/index'
+import {getIndexByKey} from '../../util/algorithm';
+import {DOMAIN_LEVEL} from '../../common/util/index';
+import {IsMapCircleMarker, getDomainLevelByMapLevel} from '../../util/index';
 import {keyboard_key_up, keyboard_key_down, keyboard_key_enter} from '../../util/keyboard'
 
 import lodash from 'lodash';
@@ -99,7 +100,7 @@ export class SmartLightMap extends Component{
 
         this.domainList = [];
 
-        this.domainLevel = 5;
+        this.domainLevel = DOMAIN_LEVEL;
         this.domainCurLevel = 0;
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}

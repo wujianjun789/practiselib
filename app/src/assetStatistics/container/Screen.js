@@ -30,7 +30,7 @@ export class Screen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model:"sensor",
+            model:"screen",
             data: Immutable.fromJS([
                /* {id:1,domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
@@ -149,12 +149,12 @@ export class Screen extends Component {
             return Object.assign({}, {domain:curDomain?curDomain.get("name"):""}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
-        this.setState({data:Immutable.fromJS(list)})
-
-        if(this.state.data && this.state.data.size>0){
-            let data = this.state.data.get(0);
-            this.tableClick(data);
-        }
+        this.setState({data:Immutable.fromJS(list)},()=>{
+            if(this.state.data && this.state.data.size>0){
+                let data = this.state.data.get(0);
+                this.tableClick(data);
+            }
+        })
 
     }
 
@@ -195,11 +195,12 @@ export class Screen extends Component {
     }
 
     tableClick(data){
-        this.setState({selectDevice:{
-            id:"assetStatistics",
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["latlng", "lng"]), lat:data.getIn(["latlng", "lat"])}],
-            data:[{id:data.get('id'), name:data.get('deviceName')}]
-        }})
+        const latlng = data.get('geoPoint').toJS();
+        this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
+            latlng: latlng,
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:latlng.lng, lat:latlng.lat}],
+            data:[{id:data.get('id'), name:data.get('name')}]
+        })})
     }
 
     collpseHandler(){

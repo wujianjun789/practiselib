@@ -8,6 +8,7 @@ import Map from '../util/map'
 import {transformDeviceType} from '../util/index'
 import {getMapConfig} from '../util/network'
 
+import lodash from 'lodash';
 export default class MapView extends Component {
     constructor(props) {
         super(props);
@@ -29,10 +30,10 @@ export default class MapView extends Component {
     }
 
     componentDidUpdate() {
+
         const {mapData, panLatlng, panCallFun} = this.props;
         this.initMap();
         if (panLatlng) {
-            console.log('panLanlng:', panLatlng);
             this.state.map[mapData.id].mapPanTo(panLatlng);
             panCallFun && panCallFun();
         }
@@ -63,19 +64,30 @@ export default class MapView extends Component {
                 latlng: latlng
             }, option, mapCallFun);
             if (mapData.position && mapData.position.length) {
-                let key = transformDeviceType(mapData.position[0]["device_type"]);
+                let deviceList = {};
+                mapData.position.map(pos=>{
+                    let key = transformDeviceType(pos["device_type"]);
+                    if(!deviceList[key]){
+                        deviceList[key] = [];
+                    }
+
+                    const deviceData = lodash.find(mapData.data, dd=>{ return dd.id == pos["device_id"] })
+
+                    deviceData && deviceList[key].push(deviceData);
+                })
+
+
                 this.timeout && clearTimeout(this.timeout);
                 this.timeout = setTimeout(()=>{
-                    this.state.map[mapData.id].updateMapDevice(mapData.position, {[key]: mapData.data}, markerCallFun)
+                    this.state.map[mapData.id].updateMapDevice(mapData.position, deviceList, markerCallFun)
                 }, 300)
-
             }
         }
     }
 
     renderMap(ref) {
         if (ref) {
-            this.initMap();
+            // this.initMap();
         }
     }
 

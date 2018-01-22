@@ -20,11 +20,11 @@ import {getModelData, getModelList, getModelNameById} from '../../data/assetMode
 
 import {getSearchCount, getSearchAssets} from '../../api/asset'
 import {getDomainList} from '../../api/domain'
-import {getDeviceTypeByModel} from '../../util/index'
+import {_} from '../../util/index'
 import {getObjectByKey} from '../../util/algorithm'
 
 import {FormattedMessage,injectIntl} from 'react-intl';
-import { intlFormat } from '../../util/index';
+import { intlFormat,getDeviceTypeByModel } from '../../util/index';
 
 import Immutable from 'immutable';
 export class Gateway extends Component {
@@ -145,13 +145,12 @@ export class Gateway extends Component {
             return Object.assign({}, {domain:curDomain?curDomain.get("name"):""}, {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
             // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, latlng:item.geoPoint}, item.extend))
         })
-        this.setState({data:Immutable.fromJS(list)})
-
-        if(this.state.data && this.state.data.size>0){
-            let data = this.state.data.get(0);
-            this.tableClick(data);
-        }
-
+        this.setState({data:Immutable.fromJS(list)},()=>{
+            if(this.state.data && this.state.data.size>0){
+                let item = this.state.data.get(0);
+                this.tableClick(item);
+            }
+        })
     }
 
     deviceTotal(data){
@@ -191,11 +190,12 @@ export class Gateway extends Component {
     }
 
     tableClick(data){
-        this.setState({selectDevice:{
-            id:"assetStatistics",
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["latlng", "lng"]), lat:data.getIn(["latlng", "lat"])}],
-            data:[{id:data.get('id'), name:data.get('deviceName')}]
-        }})
+        const latlng = data.get('geoPoint').toJS()
+        this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
+            latlng: latlng,
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:latlng.lng, lat:latlng.lat}],
+            data:[{id:data.get('id'), name:data.get('name')}]
+        })})
     }
 
     collpseHandler(){
@@ -207,6 +207,7 @@ export class Gateway extends Component {
 
         const {total=0, normal=0} = deviceInfo;
         let width=145,height=145;
+
         return (
             <Content className={'offset-right '+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -246,7 +247,6 @@ export class Gateway extends Component {
 
 function mapStateToProps(state) {
     return {
-        sidebarNode: state.assetStatistics.get('sidebarNode')
     }
 }
 

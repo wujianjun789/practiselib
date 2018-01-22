@@ -11,7 +11,7 @@ import Immutable from 'immutable';
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../api/asset'
 import Page from '../../components/Page';
-import {getObjectByKeyObj} from '../../util/algorithm'
+import {getObjectByKeyObj,spliceInArray,getObjectByKey} from '../../util/algorithm'
 export default class AddGatewayPopup extends Component{
     constructor(props){
         super(props);
@@ -66,12 +66,14 @@ export default class AddGatewayPopup extends Component{
     }
 
     initData=(data)=>{
+        let checked = [];
         let list = data.map(item=>{
             let domain = getObjectByKeyObj(this.state.domainList, 'id', item.domainId);
             item.domain = domain ? domain.name : "";
+            getObjectByKey(this.props.allDevices,'id',item.id) && checked.push(item.id);
             return item;
         })
-        this.setState({data:Immutable.fromJS(list)});
+        this.setState({data:Immutable.fromJS(list),checked:checked,allChecked:data.length === checked.length});
     }
 
     initPageSize=(data) =>{
@@ -101,7 +103,12 @@ export default class AddGatewayPopup extends Component{
     }
 
     onConfirm=()=>{
-        this.props.onConfirm && this.props.onConfirm(this.state.name);
+        const {data,checked} = this.state;
+        let gateways =[];
+        checked.map(id=>{
+            gateways.push(getObjectByKey(data,'id',id).toJS());
+        })
+        this.props.onConfirm && this.props.onConfirm(gateways);
     }
 
     onChange=(e)=>{
@@ -121,6 +128,22 @@ export default class AddGatewayPopup extends Component{
             this.requestSearch();
         });   
     }
+
+    allCheckChange=(value)=>{
+        const {data} =this.state;
+        let checked = [];
+        value && data.map(item=>{
+            checked.push(item.get("id"))
+        })
+        this.setState({allChecked:value,checked:checked})
+    }
+
+    rowCheckChange=(id,value)=>{
+        let {data,checked} =this.state;
+        value?checked.push(id):spliceInArray(checked,id);
+        let allChecked = data.size == checked.length;
+        this.setState({allChecked:allChecked,checked:checked})        
+    }
     
     render() {
         let {className = '',title = '',isEdit=false} = this.props;
@@ -130,7 +153,7 @@ export default class AddGatewayPopup extends Component{
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <SearchText placeholder={search.get('placeholder')} value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit}/>
                 <div className="table-container">              
-                    <Table columns={this.columns} data={data} allChecked={allChecked} checked={checked}/>
+                    <Table columns={this.columns} data={data} allChecked={allChecked} checked={checked} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
                     <Page className={ "page " + (page.get('total') == 0 ? "hidden" : '') } pageSize={ page.get('pageSize') } current={ page.get('current') } total={ page.get('total') } onChange={ this.pageChange }/>
                 </div>
             </Panel>

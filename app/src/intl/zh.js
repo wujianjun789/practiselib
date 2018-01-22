@@ -220,6 +220,13 @@ export default {
         '':'',
 
         'app.strategy.platform':'平台',
+        'app.select.group':'选中组',
+        'app.select.strategy':'选中策略',
+        'app.strategy.property':'调整参数',
+        'app.strategy.devices':'包含设备',
+        'app.strategy.select.devices':'选择设备',
+        'app.strategy.identifying':'标识',
+        'app.time.difference': '时间差',
         
         //智慧路灯
         'app.search.placeholder.name': "搜索名称或域",
@@ -250,6 +257,7 @@ export default {
         'app.sensor.strategy':'传感器策略',
         'app.latlng.strategy':'经纬度策略',
         'app.input.strategy.name':'输入策略名称',
+        'app.input.strategys.name':'输入组和策略名称',        
         'app.strategy.name':'策略名称',
         'app.strategy.type':'策略类型',
         'app.device.type':'设备种类',

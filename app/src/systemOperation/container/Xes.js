@@ -20,10 +20,10 @@ import Content from '../../components/Content';
 
 import {TreeData, getModelData, getModelList,getModelTypesById,getModelTypesNameById} from '../../data/systemModel';
 
-import {getDomainList} from '../../api/domain';
+import {getDomainList,getChildDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount, postXes, updateXes, delXes,updateDataOrigin} from '../../api/asset';
 
-import {getObjectByKey} from '../../util/index';
+import {getObjectByKey, getDeviceTypeByModel} from '../../util/index';
 
 import {treeViewInit} from '../../common/actions/treeView';
 import {getModelSummariesByModelID} from '../../api/asset';
@@ -104,7 +104,7 @@ export class Xes extends Component {
                         return  {id: type.id, title: type.title, value: type.title}
                     })})
                 });
-                getDomainList(data=> {
+                getChildDomainList(data=> {
                     this.mounted && this.initDomainList(data)
                 })
             }
@@ -205,7 +205,7 @@ export class Xes extends Component {
                     model: curType?curType.title:"",
                     modelId: curType?curType.id:"",
                     domain: domainList.value,
-                    domainId: curDomain?curDomain:"",
+                    domainId: curDomain?curDomain.id:"",
                     lng: addLatlng?addLatlng.lng:"",
                     lat: addLatlng?addLatlng.lat:""
                 };
@@ -213,6 +213,7 @@ export class Xes extends Component {
                 overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup" title={this.props.intl.formatMessage({id:'sysOperation.addDevice'})} model={model}
                                                         data={dataInit} domainList={domainList} modelList={modelList}
                                                         overlayerHide={overlayerHide} onConfirm={(data)=>{
+                                                        console.log('xes:', data);
                                                             postXes(model, data, ()=>{
                                                                     this.requestSearch();
                                                                 });
@@ -261,12 +262,13 @@ export class Xes extends Component {
 
     updateSelectDevice(item) {
         let selectDevice = this.state.selectDevice;
+        selectDevice.latlng = item.geoPoint;
         selectDevice.data.splice(0);
         selectDevice.data.push(item);
         selectDevice.domainId = item.domainId;
         selectDevice.domainName = item.domainName;
         selectDevice.position.splice(0);
-        selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'},item.geoPoint));
+        selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": getDeviceTypeByModel(item.extendType)},item.geoPoint));
         this.setState({selectDevice: selectDevice});
     }
 

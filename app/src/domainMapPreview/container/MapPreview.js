@@ -15,10 +15,12 @@ import SearchText from '../../components/SearchText';
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 import {getMapConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
-import {getAssetsBaseByDomain} from '../../api/asset';
+import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
 
-import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index';
+import {DOMAIN_LEVEL} from '../../common/util/index';
+import {getDomainLevelByMapLevel, getDeviceTypeByModel} from '../../util/index';
 import lodash from 'lodash';
+
 export class MapPreview extends Component{
     constructor(props){
         super(props)
@@ -29,7 +31,7 @@ export class MapPreview extends Component{
             search:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
             placeholderList: [],
 
-            curDomainList: [],
+            curDomainList: [],//device or domain
             positionList: [],
 
             panLatlng: null
@@ -38,7 +40,7 @@ export class MapPreview extends Component{
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
-        this.domainLevel = 5;
+        this.domainLevel = DOMAIN_LEVEL;
         this.domainCurLevel = 0;
 
         this.onChange = this.onChange.bind(this);
@@ -103,10 +105,23 @@ export class MapPreview extends Component{
     }
 
     requestCurDomain(){
+        if(this.domainCurLevel==this.domainLevel){
+            getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, null, data=>{
+                let devPositionList = data.map(item=>{
+                    let gePoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+                    return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
+                })
+
+                this.mounted && this.setState({curDomainList: data, positionList:devPositionList});
+            })
+
+            return;
+        }
+
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
-                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
             })
 
             this.mounted && this.setState({curDomainList: data, positionList:positionList},()=>{
@@ -159,13 +174,14 @@ export class MapPreview extends Component{
     mapZoomend(data){
         console.log('zoom:', data.zoom);
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         this.requestCurDomain();
     }
 
     markerClick(data){
         if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
             this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-
+            this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
             this.requestCurDomain();
         }
     }

@@ -35,9 +35,9 @@ export function addStrategy(data, cb) {
 /**
  * 获取所有未分组的策略
  */
-export function getNoGroupStrategy(cb){
+export function getNoGroupStrategy(type,cb){
     let headers = getHttpHeader();
-    httpRequest(HOST_IP+'/plans?filter='+encodeURIComponent(JSON.stringify({"where":{"groupId":null}})),{
+    httpRequest(HOST_IP+'/plans?filter='+encodeURIComponent(JSON.stringify({"where":{"groupId":null,'type':type}})),{
         headers:headers,
         method: 'GET'
     }, response=>{
