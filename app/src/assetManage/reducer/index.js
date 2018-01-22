@@ -3,7 +3,7 @@
  */
 import {
     SIDEBAR_TOGGLE
-} from '../actionType/index'
+} from '../actionType/index';
 import Immutable from 'immutable';
 const initialState = {
     sidebarNode: null
@@ -12,9 +12,9 @@ const initialState = {
 
 export default function assetManage (state=Immutable.fromJS(initialState), action) {
     switch(action.type) {
-        case SIDEBAR_TOGGLE:
-            return state.update('sidebarNode', v=>action.data);
-        default:
-            return state;
+    case SIDEBAR_TOGGLE:
+        return state.update('sidebarNode', v=>action.data);
+    default:
+        return state;
     }
 }

@@ -8,17 +8,17 @@ import {bindActionCreators} from 'redux';
 import {injectIntl} from 'react-intl';
 
 import '../../../public/styles/assetManage-model.less';
-import '../../../public/styles/assetManage-statistics.less'
+import '../../../public/styles/assetManage-statistics.less';
 
-import HeadBar from '../../components/HeadBar'
-import SideBar from '../../components/SideBar'
-import Overlayer from '../../common/containers/Overlayer'
+import HeadBar from '../../components/HeadBar';
+import SideBar from '../../components/SideBar';
+import Overlayer from '../../common/containers/Overlayer';
 
-import {getModelData, TreeData} from '../../data/assetModels'
-import {treeViewInit} from '../../common/actions/treeView'
+import {getModelData, TreeData} from '../../data/assetModels';
+import {treeViewInit} from '../../common/actions/treeView';
 
-import {sideBarToggled} from '../action/index'
-import {treeViewNavigator} from '../../common/util/index'
+import {sideBarToggled} from '../action/index';
+import {treeViewNavigator} from '../../common/util/index';
 class AssetManageIndex extends Component{
     constructor(props){
         super(props);
@@ -29,7 +29,7 @@ class AssetManageIndex extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        getModelData(()=>{this.mounted && this.initTreeData()});
+        getModelData(()=>{this.mounted && this.initTreeData();});
     }
 
     componentWillUnmount(){
@@ -50,8 +50,8 @@ class AssetManageIndex extends Component{
     }
 
     render(){
-        let parentPath = "";
-        let childPath = "";
+        let parentPath = '';
+        let childPath = '';
         const {routes} = this.props;
         if(routes.length>3){
             parentPath = routes[3].path;
@@ -61,19 +61,19 @@ class AssetManageIndex extends Component{
             childPath = routes[4].path;
         }
 
-        return <div className={"container "+"asset-"+parentPath+" "+parentPath+"-"+childPath}>
+        return <div className={'container '+'asset-'+parentPath+' '+parentPath+'-'+childPath}>
             <HeadBar moduleName="app.asset.manage" router={this.props.router}/>
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />
-        </div>
+        </div>;
     }
 }
 
 function mapStateToProps(state) {
     return {
         userCenter:state.userCenter
-    }
+    };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -82,7 +82,7 @@ function mapDispatchToProps(dispatch) {
             treeViewInit: treeViewInit,
             sideBarToggled: sideBarToggled
         }, dispatch)
-    }
+    };
 }
 export default connect(
     mapStateToProps,
