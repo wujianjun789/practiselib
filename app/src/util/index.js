@@ -69,7 +69,6 @@ export function getElementOffwidth(str, fontSize = "14px") {
     document
         .body
         .removeChild(html);
-
     return w;
 }
 
