@@ -62,13 +62,9 @@ export function getElementOffwidth(str, fontSize = "14px") {
     html.style.visibility = 'hidden';
     html.style.fontSize = fontSize;
     html.innerHTML = str;
-    document
-        .body
-        .appendChild(html);
+    document.body.appendChild(html);
     w = html.offsetWidth;
-    document
-        .body
-        .removeChild(html);
+    document.body.removeChild(html);
 
     return w;
 }
@@ -107,7 +103,7 @@ export function getClassByModel(key) {
 
 export function getDeviceTypeByModel(key) {
     switch (key) {
-        case 'lightController':
+        case 'lc':
             return 'CONTROLLER';
         case 'led':
             return 'DEVICE';
@@ -135,7 +131,7 @@ export function transformDeviceType(deviceType) {
         case "DEVICE":
             return 'lamp';
         case "CONTROLLER":
-            return 'controller';
+            return 'lc';
         case "ISTREETLIGHT":
             return 'intelligent';
         case "CHARGER":

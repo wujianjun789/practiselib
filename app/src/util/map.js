@@ -779,7 +779,8 @@ export default class Map{
      * @param type设备类型
      * @param status设备状态
      */
-    static markerIcon = {'CONTROLLER':'sitemap', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent', 'CHARGER':'charger', 'POLE':'lightbulb', 'PLC':'plc', 'Screen':'screen'}
+    static markerIcon = {'CONTROLLER':'lightbulb', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent',
+        'CHARGER':'charger', 'POLE':'lightbulb', 'PLC':'plc', 'Screen':'screen'}
     static getCustomMarkerByDeviceType(type, status, digital) {
         if(type == 'DIGITAL'){
             L.AwesomeMarkers.icon({icon: '' + digital, color:Map.getColorByStatus(status)});
@@ -800,9 +801,8 @@ export default class Map{
         return color;
     }
 
-    static deviceList = {'DEVICE':'lamp', 'CONTROLLER':'controller', 'ISTREETLIGHT':'intelligent', 'PLC':'plc',
-        'SCREEN':'screen', 'CHARGER':'charger', 'POLE':'pole', 'GATEWAY':'gateway', 'XES':'xes',
-        'SENSOR':'sensor', 'DIGITAL':'digital'};
+    static deviceList = {'DEVICE':'lamp', 'PLC':'plc', 'SCREEN':'screen', 'CHARGER':'charger', 'POLE':'pole',
+        'GATEWAY':'gateway', 'XES':'xes', 'SENSOR':'sensor', 'DIGITAL':'digital', 'CONTROLLER':'lc'};
     getDevicesByTypeAndId(mapId, type, id) {
         let proType = Map.deviceList[type]
         let list = this.deviceList[proType];

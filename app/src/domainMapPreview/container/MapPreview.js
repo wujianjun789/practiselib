@@ -17,8 +17,10 @@ import {getMapConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
 import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
 
+import {DOMAIN_LEVEL} from '../../common/util/index';
 import {getDomainLevelByMapLevel, getDeviceTypeByModel} from '../../util/index';
 import lodash from 'lodash';
+
 export class MapPreview extends Component{
     constructor(props){
         super(props)
@@ -38,7 +40,7 @@ export class MapPreview extends Component{
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
-        this.domainLevel = 5;
+        this.domainLevel = DOMAIN_LEVEL;
         this.domainCurLevel = 0;
 
         this.onChange = this.onChange.bind(this);

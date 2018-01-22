@@ -19,11 +19,11 @@ import Content from '../../components/Content';
 
 import { TreeData, getModelData, getModelList, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
 
-import { getDomainList } from '../../api/domain'
+import { getDomainList, getChildDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
 import { requestWhiteListCountById } from '../../api/domain'
-import { getObjectByKey } from '../../util/index'
+import { getObjectByKey,getDeviceTypeByModel } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
 import ExcelPopup from '../components/ExcelPopup'
@@ -74,31 +74,6 @@ export class Gateway extends Component {
                         id: 2,
                         title: 'model02',
                         value: 'model02'
-                    },
-                    {
-                        id: 3,
-                        title: 'model03',
-                        value: 'model03'
-                    },
-                    {
-                        id: 4,
-                        title: 'model04',
-                        value: 'model04'
-                    },
-                    {
-                        id: 5,
-                        title: 'model05',
-                        value: 'model05'
-                    },
-                    {
-                        id: 6,
-                        title: 'model06',
-                        value: 'model06'
-                    },
-                    {
-                        id: 7,
-                        title: 'model07',
-                        value: 'model07'
                     }
                 ]
             },
@@ -131,36 +106,12 @@ export class Gateway extends Component {
         }
 
         this.columns = [
-            {
-                id: 0,
-                field: "domainName",
-                title: this.formatIntl("sysOperation.domain")
-            },
-            {
-                id: 1,
-                field: "name",
-                title: this.formatIntl("name")
-            },
-            {
-                id: 2,
-                field: "typeName",
-                title: this.formatIntl("sysOperation.type")
-            },
-            {
-                id: 3,
-                field: "id",
-                title: this.formatIntl("sysOperation.id")
-            },
-            {
-                id: 5,
-                field: "lng",
-                title: this.formatIntl("map.lng")
-            },
-            {
-                id: 6,
-                field: "lat",
-                title: this.formatIntl("map.lat")
-            },
+            {id: 0, field: "domainName", title: this.formatIntl("sysOperation.domain")},
+            {id: 1, field: "name", title: this.formatIntl("name")},
+            {id: 2, field: "typeName", title: this.formatIntl("sysOperation.type")},
+            {id: 3, field: "id", title: this.formatIntl("sysOperation.id")},
+            {id: 5, field: "lng", title: this.formatIntl("map.lng")},
+            {id: 6, field: "lat", title: this.formatIntl("map.lat")},
         ];
 
         this.formatIntl = this.formatIntl.bind(this);
@@ -203,7 +154,7 @@ export class Gateway extends Component {
                         })
                     })
                 });
-                getDomainList(data => {
+                getChildDomainList(data => {
                     this.mounted && this.initDomainList(data)
                 })
             }
@@ -404,7 +355,7 @@ export class Gateway extends Component {
         selectDevice.position.splice(0);
         selectDevice.position.push(Object.assign({}, {
             "device_id": item.id,
-            "device_type": 'DEVICE'
+            "device_type": getDeviceTypeByModel(item.extendType)
         }, item.geoPoint));
         this.setState({
             selectDevice: selectDevice

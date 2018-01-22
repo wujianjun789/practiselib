@@ -20,10 +20,10 @@ import Content from '../../components/Content';
 
 import { TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById } from '../../data/systemModel'
 
-import { getDomainList } from '../../api/domain'
+import { getDomainList, getChildDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } from '../../api/asset'
 
-import { getObjectByKey } from '../../util/index'
+import { getObjectByKey, getDeviceTypeByModel } from '../../util/index'
 
 import { treeViewInit } from '../../common/actions/treeView'
 import {FormattedMessage,injectIntl} from 'react-intl';
@@ -233,7 +233,7 @@ export class Sensor extends Component {
                         })
                     })
                 });
-                getDomainList(data => {
+                getChildDomainList(data => {
                     this.mounted && this.initDomainList(data)
                 })
             }
@@ -413,7 +413,7 @@ export class Sensor extends Component {
         selectDevice.position.splice(0);
         selectDevice.position.push(Object.assign({}, {
             "device_id": item.id,
-            "device_type": 'DEVICE'
+            "device_type": getDeviceTypeByModel(item.extendType)
         }, item.geoPoint));
         this.setState({
             selectDevice: selectDevice

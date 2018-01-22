@@ -13,3 +13,5 @@ export function treeViewNavigator(data, router) {
         router.push(href);//默认路径设置
     }
 }
+
+export const DOMAIN_LEVEL = 4;
