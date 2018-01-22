@@ -114,7 +114,7 @@
   },
   "scripts": {
     "test": "jest --coverage",
-    "lint": "eslint .",
+    "lint": "eslint --ext .js --ext .jsx app/src",
     "fix": "eslint --fix .",
     "dev:server": "cd server & node server --dev ",
     "dev:client": "webpack-dev-server --public",
