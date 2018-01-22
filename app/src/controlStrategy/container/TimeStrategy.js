@@ -102,7 +102,7 @@ class TimeStrategy extends Component{
             data.map(item=>{
                 item.plans=getListByKey2(item.plans,'type',0);
             })
-            getNoGroupStrategy(res=>{
+            getNoGroupStrategy(0,res=>{
                 if(res.length){
                     res.map(item=>{
                         item.groupId = 0;

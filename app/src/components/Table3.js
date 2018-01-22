@@ -90,13 +90,12 @@ export default class Table extends Component {
                                     })
                                 }
                                 {
-                                    isEdit &&
-                                        row.get('id')!==0?<td className="edit">
+                                    isEdit && (row.get('id')!==0?<td className="edit">
                                                 <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.modify'/></span></a>
                                                 <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete'/></span></a>
                                             </td>
                                             :
-                                            <td></td>
+                                            <td></td>)
                                 }
 
 

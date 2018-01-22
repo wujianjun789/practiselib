@@ -103,7 +103,7 @@ class LatlngStrategy extends Component{
             data.map(item=>{
                 item.plans=getListByKey2(item.plans,'type',1);
             })
-            getNoGroupStrategy(res=>{
+            getNoGroupStrategy(1,res=>{
                 if(res.length){
                     res.map(item=>{
                         item.groupId = 0;
