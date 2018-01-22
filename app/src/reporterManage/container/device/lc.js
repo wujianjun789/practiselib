@@ -12,10 +12,10 @@ import '../../../../public/styles/antd-modal.less'
 import { getYesterday, getToday } from '../../../util/time';
 import { getDomainList } from '../../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../../api/asset'
+import { getHistoriesDataInDevice } from '../../../api/reporter'
 import '../../../../public/styles/reporterManage-device.less';
-import { HOST_IP, getHttpHeader, httpRequest } from '../../../util/network'
 import { momentDateFormat } from '../../../util/time'
-import _ from 'lodash';
+
 export default class Lc extends Component {
     state = {
         sidebarCollapse: false,
@@ -208,57 +208,18 @@ export default class Lc extends Component {
     //应用
     onClickHandler = (e) => {
         const { currentMode, startDate, endDate, data, multiParamList, multiDeviceList } = this.state;
-        const headers = getHttpHeader();
         const start = momentDateFormat(startDate, 'YYYY-MM-DD');
         const end = momentDateFormat(endDate, 'YYYY-MM-DD');
-        const timeRange = JSON.stringify([start, end]);
         if (currentMode === 'device') {
             const { currentParam, selectedMultiDeviceIdList } = this.state;
-            const deviceList = JSON.stringify(selectedMultiDeviceIdList.map(item => ({ asset: item })));
-            const querystring = `/histories?filter={"where":{"prop":"${currentParam}","or":${deviceList},"timestamp":{"between":${timeRange}}}}`;
-            httpRequest(HOST_IP + querystring, {
-                headers,
-                method: 'GET',
-            }, response => {
-                const _data = [];
-                const _obj = _.groupBy(response, (item) => {
-                    return item.asset;
-                })
-                const _arr = Object.keys(_obj);
-                console.log(multiDeviceList)
-                _arr.forEach((item) => {
-                    let _item = {
-                        name: multiDeviceList.find(i => i.id === item)['name'],
-                        values: _obj[item]
-                    }
-                    _data.push(_item)
-                })
-                this.setState({ data: _data })
-            })
-
-        } else if (currentMode === 'param') {
+            const deviceList = selectedMultiDeviceIdList.map(item => ({ asset: item }))
+            getHistoriesDataInDevice('prop', currentParam, deviceList, start, end, 'asset', multiDeviceList, 'name', res => this.setState({ data: res }))
+        }
+        if (currentMode === 'param') {
             const { currentDeviceId, selectedMultiParamIdList } = this.state;
-            const paramList = JSON.stringify(selectedMultiParamIdList.map(item => ({ prop: item })))
-            const querystring = `/histories?filter={"where":{"asset":"${currentDeviceId}","or":${paramList},"timestamp":{"between":${timeRange}}}}`;
-            httpRequest(HOST_IP + querystring, {
-                headers,
-                method: 'GET',
-            }, response => {
-                // console.log(response)
-                const _data = [];
-                const _obj = _.groupBy(response, (item) => {
-                    return item.prop;
-                })
-                const _arr = Object.keys(_obj);
-                _arr.forEach((item) => {
-                    let _item = {
-                        name: multiParamList.find(i => i.id === item)['param'],
-                        values: _obj[item]
-                    }
-                    _data.push(_item);
-                })
-                this.setState({ data: _data });
-            })
+            const paramList = selectedMultiParamIdList.map(item => ({ prop: item }))
+            getHistoriesDataInDevice('asset', currentDeviceId, paramList, start, end, 'prop', multiParamList, 'param', res => this.setState({ data: res }))
+
         }
     }
     //测试数据

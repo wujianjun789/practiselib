@@ -10,10 +10,10 @@ import TableWithHeader from '../components/TableWithHeader';
 import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
 import { getDomainList } from '../../api/domain';
-import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId } from '../../api/asset';
+import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById } from '../../api/asset';
 import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
-import {message} from 'antd'
+import { message } from 'antd'
 import 'antd/lib/message/style/css';
 export default class SingleLampCon extends Component {
     constructor(props) {
@@ -194,13 +194,24 @@ export default class SingleLampCon extends Component {
     switchApply = () => {
         const { id } = this.state.currentDevice;
         const { currentSwitchStatus } = this.state;
-        message.error('操作失败')
+        updateAssetsRpcById(id, { "status": currentSwitchStatus }, res => {
+            if (res.success) {
+                message.success('操作成功')
+            } else {
+                message.error('操作失败')
+            }
+        })
     }
     dimmingApply = () => {
         const { id } = this.state.currentDevice;
         const { currentBrightness } = this.state;
-        console.log(id, currentBrightness)
-        message.success('操作成功')
+        updateAssetsRpcById(id, { "brightness": currentBrightness }, res => {
+            if (res.success) {
+                message.success('操作成功')
+            } else {
+                message.error('操作失败')
+            }
+        })
     }
     render() {
         const { page: { total, current, limit }, sidebarCollapse, currentDevice, deviceList,

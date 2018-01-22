@@ -39,7 +39,6 @@ export function getAssetList(cb) {
 }
 
 export function getSearchAssets(domainId, model, name, offset, limit, cb) {
-    console.log(offset)
     let headers = getHttpHeader();
     let paramStr = JSON.stringify({ "include": ["extend"], "where": getSearchParam(domainId, model, name), "offset": offset, "limit": limit })
     httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
@@ -290,21 +289,21 @@ export function updateDataOrigin(data, key) {
 export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
 
     let headers = getHttpHeader();
-    let nearParam = {maxDistance: map.distance/1000,unit:'kilometers'};
-    
-    if(domainLevel==1){
+    let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
+
+    if (domainLevel == 1) {
         nearParam = {};
     }
 
-    let param = {geoPoint: Object.assign({}, {near: map.center}, nearParam)};
-    if(model){
-        param = Object.assign({}, param, {extendType:model})
+    let param = { geoPoint: Object.assign({}, { near: map.center }, nearParam) };
+    if (model) {
+        param = Object.assign({}, param, { extendType: model })
     }
 
-    httpRequest(HOST_IP+'/assets?filter='+encodeURIComponent(JSON.stringify({"where": param})),{
+    httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({ "where": param })), {
         headers: headers,
         method: 'GET'
-    }, response=>{
+    }, response => {
         cb && cb(response);
     })
 }
@@ -316,19 +315,12 @@ export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
  */
 export const getDeviceStatusByModelAndId = (model, id) => cb => {
     // if(model == 'xes') model = 'xe';
-    // httpRequest(`${HOST_IP}/${model}s/${id}/status`,{
-    //     headers: getHttpHeader(),
-    //     method: 'GET',
-    // }, response=>{
-    //     cb && cb(response);
-    // })
-
-    //先模拟实现
-    fetch(`http://localhost:3001/${model}/${id}/status`, { mode: 'cors' })
-        .then(response => response.json())
-        .then(response => {
-            cb && cb(response);
-        }).catch(e => console.log(e))
+    httpRequest(`${HOST_IP}/${model}s/${id}/status`, {
+        headers: getHttpHeader(),
+        method: 'GET',
+    }, response => {
+        cb && cb(response)
+    })
 }
 
 /**

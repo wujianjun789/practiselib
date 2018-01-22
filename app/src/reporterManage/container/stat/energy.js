@@ -12,7 +12,10 @@ import '../../../../public/styles/antd-modal.less'
 import { getYesterday, getToday } from '../../../util/time';
 import { getDomainList } from '../../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../../api/asset'
+import { getHistoriesDataInStat } from '../../../api/reporter';
 import '../../../../public/styles/reporterManage-device.less';
+import { HOST_IP, getHttpHeader, httpRequest } from '../../../util/network'
+import { momentDateFormat } from '../../../util/time'
 
 export default class Lc extends Component {
 	state = {
@@ -44,7 +47,7 @@ export default class Lc extends Component {
 	//初始化
 	componentWillMount() {
 		this._isMounted = true;
-		this.model = 'lc';
+		// this.model = 'lc';
 		this.deviceColumns = [
 			{ field: 'name', title: '设备名称' },
 			{ field: 'id', title: '设备编号' }
@@ -146,21 +149,17 @@ export default class Lc extends Component {
 	}
 	//应用
 	onClickHandler = (e) => {
-		const { id } = e.target;
-		const { currentMode, currentDeviceId, currentDomain } = this.state;
-		let body;
+		const { startDate, endDate, currentMode, currentDeviceId, currentDomain, multiDeviceList, domainList } = this.state;
+		const start = momentDateFormat(startDate, 'YYYY-MM-DD');
+		const end = momentDateFormat(endDate, 'YYYY-MM-DD');
+		// const timeRange = JSON.stringify([start, end]);
 		if (currentMode === 'device') {
-			body = {
-				mode: currentMode, //模式
-				device: currentDeviceId, //选中的参数
-			}
-			console.log(body)
-		} else if (currentMode === 'domain') {
-			body = {
-				mode: currentMode,
-				domain: currentDomain, //选中的设备id
-			}
-			console.log(body)
+			const name = multiDeviceList.find(item => item.id === currentDeviceId)["name"]
+			getHistoriesDataInStat('assets', currentDeviceId, start, end, name, res => this.setState({ data: res }))
+		}
+		if (currentMode === 'domain') {
+			const { id, name } = currentDomain;
+			getHistoriesDataInStat('domains', id, start, end, name, res => this.setState({ data: res }))
 		}
 	}
 	//测试数据

@@ -73,7 +73,7 @@ export const TreeData = [
       },
       {
         "id": 'serviceState',
-        "name": '后天服务状态',
+        "name": '后台服务状态',
         "class": 'icon_sys_status',
         "active": true,
         "link": "/systemOperation/serviceMonitor/serviceState"

@@ -120,7 +120,11 @@ export function getDeviceTypeByModel(key) {
         case 'screen':
             return 'SCREEN';
         case 'xes':
-            return 'POLE'
+            return 'XES';
+        case 'gateway':
+            return 'GATEWAY';
+        case 'sensor':
+            return 'SENSOR';
         default:
             return 'DEVICE';
     }
@@ -141,7 +145,13 @@ export function transformDeviceType(deviceType) {
         case "SCREEN":
             return 'screen';
         case "PLC":
-            return 'plc'
+            return 'plc';
+        case "XES":
+            return 'xes';
+        case "GATEWAY":
+            return 'gateway';
+        case "SENSOR":
+            return 'sensor';
         default:
             return null;
     }

@@ -194,9 +194,10 @@ export class Xes extends Component {
     }
 
     tableClick(data){
+        const latlng = data.get('geoPoint').toJS();
         this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
-            latlng: data.get('geoPoint').toJS(),
-            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:data.getIn(["geoPoint", "lng"]), lat:data.getIn(["geoPoint", "lat"])}],
+            latlng: latlng,
+            position:[{"device_id":data.get('id'), "device_type":getDeviceTypeByModel(data.get('extendType')), lng:latlng.lng, lat:latlng.lat}],
             data:[{id:data.get('id'), name:data.get('name')}]
         })})
     }
@@ -206,7 +207,7 @@ export class Xes extends Component {
     }
 
     render() {
-        const { model, data, domain, device ,search, collapse, page, deviceInfo, selectDevice } = this.state;
+        const { data, domain,search, collapse, page, deviceInfo, selectDevice } = this.state;
 
         const {total=0, normal=0} = deviceInfo;
         let width=145,height=145;

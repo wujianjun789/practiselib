@@ -41,16 +41,23 @@ router.get('/module', function (req, res, next) {
         response.on('end', ()=>{
             // console.log('body:', body, JSON.parse(body).roleId);
             let modules = JSON.parse(body).modules;
-            if(!modules||user.role=="admin"){
+            console.log('modules:', modules, 'user:', user.role);
+            if(user.role=="admin"){
                 res.json(client.module);
             }else{
+
                 let moduList = [];
-                modules.forEach(mod=>{
-                    let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
-                    if(curMod){
-                        moduList.push(curMod);
-                    }
-                })
+
+                if(!modules){
+                    moduList = [{"key": "asset", "title": "资产管理", "link": "/assetManage/manage"}];
+                }else{
+                    modules.forEach(mod=>{
+                        let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
+                        if(curMod){
+                            moduList.push(curMod);
+                        }
+                    })
+                }
 
                 res.json(moduList);
             }
