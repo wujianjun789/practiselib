@@ -41,7 +41,9 @@ export default class Map{
         //marker是否可拖拽
         this.markerDraggable = false;
 
+        this.mapDragendTimeout = 0;
         this.mapZoomendTimeout = 0;
+        this.markerClickTimeout = 0;
 
         this.callFun = {};
     }
@@ -641,13 +643,16 @@ export default class Map{
         let map = event.target;
         map.off("dragend", this.mapMoveEnd, this);
         let bounds = map.getBounds();
-        this.mapDragendHandler({
-            mapId:map.options.id,
-            latlng:map.getCenter(),
-            zoom: map.getZoom(),
-            bounds: bounds,
-            distance: bounds._southWest.distanceTo(bounds._northEast)
-        });
+        this.mapDragendTimeout && clearTimeout(this.mapDragendTimeout);
+        this.mapDragendTimeout = setTimeout(()=>{
+            this.mapDragendHandler({
+                mapId:map.options.id,
+                latlng:map.getCenter(),
+                zoom: map.getZoom(),
+                bounds: bounds,
+                distance: bounds._southWest.distanceTo(bounds._northEast)
+            });
+        }, 66);
     }
 
     mapZoomEnd(event) {
@@ -669,14 +674,17 @@ export default class Map{
     markerClick(event) {
         var marker = event.target;
 
-        this.markerClickHandler({
-            mapId: marker.options.mapId,
-            type: marker.options.type,
-            id: marker.options.id,
-            x: event.originalEvent.clientX,
-            y: event.originalEvent.clientY,
-            latlng: marker.getLatLng()
-        });
+        this.markerClickTimeout && clearTimeout(this.markerClickTimeout);
+        this.markerClickTimeout = setTimeout(()=>{
+            this.markerClickHandler({
+                mapId: marker.options.mapId,
+                type: marker.options.type,
+                id: marker.options.id,
+                x: event.originalEvent.clientX,
+                y: event.originalEvent.clientY,
+                latlng: marker.getLatLng()
+            });
+        }, 66)
     }
 
     markerOver(event) {

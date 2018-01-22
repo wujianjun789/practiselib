@@ -77,7 +77,8 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
 
         timeOut[url] = setTimeout(()=>{
             let err = {"statusCode": 408,"name":"Error", "message":"Request Timeout"}
-            alertPopup(err.message);
+            // alertPopup(err.message);
+            throw err;
             errorCall && errorCall.apply(null, [err]);
         }, 30000)
     })]).then(resolve=>{
