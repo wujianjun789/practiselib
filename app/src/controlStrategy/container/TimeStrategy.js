@@ -163,8 +163,7 @@ class TimeStrategy extends Component{
         let allDevicesData = [];
         let selectedDevices = [];
         let selectedDevicesData = [];
-        
-        if(devices){
+        if(devices && devices.length){
             const promise = new Promise((resolve, reject)=>{
                 let len=0;
                 devices.map(id=>{
@@ -184,18 +183,17 @@ class TimeStrategy extends Component{
             promise.then(gatewayIds=>{
                 return new Promise((resolve, reject)=>{
                     let len = 0;
-                gatewayIds.map(id=>{
-                    getAssetsBaseById(parseInt(id),(res)=>{
-                        len++
-                        //所有网关
-                        gateways.push(res);
-                        if(len == gatewayIds.length){
-                            resolve(gateways);
-                        }
+                    gatewayIds.map(id=>{
+                        getAssetsBaseById(parseInt(id),(res)=>{
+                            len++
+                            //所有网关
+                            gateways.push(res);
+                            if(len == gatewayIds.length){
+                                resolve(gateways);
+                            }
+                        })
                     })
                 })
-                })
-                
             }).then(gateways=>{
                 return new Promise((resolve, reject)=>{
                     let len = 0;                    
@@ -223,9 +221,11 @@ class TimeStrategy extends Component{
             })
         }
         else{
-            this.setState({selectedDevicesData:Immutable.fromJS([]),allDevicesData:Immutable.fromJS([])})
+            this.setState({selectedDevicesData:Immutable.fromJS([]),allDevicesData:Immutable.fromJS([]),allDevices:{
+                allChecked:false,
+                checked:[]
+            }})
         }
-    
     }
     
     initDeviceData=(key,data)=>{
@@ -336,10 +336,10 @@ class TimeStrategy extends Component{
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
                     break;
                 case 1:
-                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    selectItem.levelTitle=this.formatIntl('sysOperation.gateway');
                     break;
                 case 2:
-                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    selectItem.levelTitle=this.formatIntl('app.device');
                     break;
                 default:
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
@@ -457,21 +457,22 @@ class TimeStrategy extends Component{
         let len = 0;
         const promise = new Promise((resolve, reject)=>{
             data.map(item=>{
-                    getWhiteListById(item.id,(res)=>{
-                        len++;
-                        item.whiteList=res;
-                        if(!getObjectByKey(allDevicesData,'id',item.id)){
-                            allDevicesData = allDevicesData.push(item);
-                        }
-                        if(len == data.length){
-                            resolve(allDevicesData)
-                        };
-                    })
-                
+                getWhiteListById(item.id,(res)=>{
+                    len++;
+                    item.whiteList=res;
+                    if(!getObjectByKey(allDevicesData,'id',item.id)){
+                        allDevicesData = allDevicesData.push(item);
+                    }
+                    if(len == data.length){
+                        resolve(allDevicesData)
+                    };
+                })
             })
         })
-        promise.then(data=>{
-            this.initDeviceData('allDevicesData',data)
+        promise.then(allDevicesData=>{
+            this.initDeviceData('allDevicesData',allDevicesData)
+        }).catch(error=>{
+            console.log(error);
         })
     }
     addDevice=()=>{
@@ -619,7 +620,7 @@ class TimeStrategy extends Component{
                     </div>
                     <div className="panel-body">
                         <div>
-                            <button className="btn btn-gray" onClick={() => {this.addGateway()}}>{this.formatIntl('button.add.gateway')}</button>                                   
+                            <button className="btn btn-gray" onClick={this.addGateway}>{this.formatIntl('button.add.gateway')}</button>                                   
                             <button className="btn btn-primary pull-right" onClick={this.addDevice}>{this.formatIntl('button.modify')}</button>                                                               
                         </div>
                         <Table className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
