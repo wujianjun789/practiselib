@@ -12,7 +12,8 @@ export default function BarChart(data) {
 	var dataset = data.data;
 	var type = data.type;
 	// 画布大小
-	var width = 900;
+	// var width = 900;
+	var width = wrapper.offsetWidth;
 	var height = 170;
 
 	//画布周边的空白

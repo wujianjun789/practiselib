@@ -2,11 +2,6 @@
  * created by m on 2018/01/8
  */
 
-.example{
-  position: fixed;
-  top: 160px;
-  left: 300px;
-}
 
 .light-statistics {
   .content {
@@ -29,9 +24,12 @@
     }
 
     .energy-container {
-      width:1110px;
       height:210px;
       margin:40px;
+      .row{
+        margin-left: 0px; 
+        margin-right: 0px; 
+      }
       .energy-container-header{
         height:40px;
         .sort {
@@ -49,42 +47,32 @@
           position: relative;
           height: 170px;
           padding: 0px;
-          .energyInfo {
-            position: absolute;
-            top:0px;
-            left:900px;
-            width: 210px;
-            height: 170px;
-            margin: 0px;
-            padding:10px;
-            // border:1px solid #f7f4f4 ;
+          .col-sm-9{
+            margin-right:0px;
+            padding-right:0px;
+          }
+          .col-sm-3{
+            margin-top: -10px;
+            .energyInfo {
+              top:0px;
+              left:900px;
+              width: 210px;
+              height: 170px;
+              margin: 0px;
+              padding:10px;
+              padding-left:0px;
+              .font{
+                margin-left:10px;
+                margin-top:10px;
+              }
+            }
           }
       }
       }
     }
 
 
-    .col-sm-4 {
-      position: relative;
-      padding-right: 0px;
-      padding-left: 0px;
-      margin-right: 20px;
-      margin-left: 20px;
-      width:343px;
-      &:first-child {
-        margin-left:0px;
-      }
-      &:last-child {
-        margin-right: 0px;
-      }
-    }
-    .col-sm-11 {
-      margin-right: 20px;
-      padding-right: 0px;
-      padding-left: 0px;
-      width:91%;
-
-    }
+    
     .panel{
       border: 0px solid transparent;
       border-color: #ddd;
@@ -120,13 +108,11 @@
       }
     }
     .stateInfo {
-      width: 194px;
       height: 170px;
       margin: 0px;
-      padding:10px;
-      padding-left: 4px;
-      float: right;
-      // border:1px solid #f7f4f4 ;
+      margin-left: 10px;
+      padding: 10px;
+      float: left;
     }
 
     .fontbold {
@@ -134,22 +120,28 @@
     }
     .font {
       margin:7px;
-      margin-left: 20px;
+      margin-left: 15px;
 
     }
 
     .state-container{
-      width:1110px;
       margin:40px;
-      // .status {
+      height:215px;
+      .col-sm-4{
+        height: 170px;
+        .panel-body{
+          .boxLeft{
+            width:43%;
+            float: left;
+            padding-left: 10px;
+          }
+          .boxRight{
+            width:57%;
+            float: left;
+          }
+        }
 
-      // }
-      // .excution {
-
-      // }
-      // .lightson {
-
-      // }
+      }
     }
   }
 }

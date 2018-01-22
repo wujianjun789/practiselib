@@ -3,7 +3,9 @@
  */
 // import { intlFormat } from '../util/index';
 export default function PieChart(data) {
-    var width = 148;
+    let wrapper = data.wrapper;
+    let width = data.width;
+    // var width = 148;
     var height = 170;
     let dataset = data.data;
     let ID = data.wrapper.id;
