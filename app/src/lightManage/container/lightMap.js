@@ -158,7 +158,6 @@ export class lightMap extends Component{
         this.domainList = [];
         this.stopProp = this.stopProp.bind(this);
         this.isMouseEnterSet = this.isMouseEnterSet.bind(this);
-        this.test = this.test.bind(this);
         this.requestCurDomain = this.requestCurDomain.bind(this);
         this.requestCurAssets = this.requestCurAssets.bind(this);
         this.mapDragend = this.mapDragend.bind(this);
@@ -178,7 +177,7 @@ export class lightMap extends Component{
 
         getMapConfig(data=>{
                 if(this.mounted){
-                    this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
+                    this.map = Object.assign({}, this.map, data, { zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel) });
                     this.map.zoom = 15;
                     this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
                 }
@@ -199,21 +198,22 @@ export class lightMap extends Component{
     }
 
     componentWillUnmount(){
-
         this.mounted = false;
         window.onresize = event=>{
             this.setSize();
         }
         this.props.actions.removeAllNotify();
-
     }
 
-    initDomainList(data){
-        this.setState({domainList:data});
+    shouldComponentUpdate(nextProps, nextState) {
+        if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
+           return true
+        } else {
+           return false
+        }
     }
 
     updatePlaceholder(){
-
         const {domainList, domainSearch} = this.state;
         let datalist = [];
         for(var key in domainList){
@@ -223,12 +223,10 @@ export class lightMap extends Component{
             }
         }
         this.setState({placeholderList:datalist});
-
     }
 
     /*  新增－t  */
     searchInputOnKeyUp(e){
-
         if (e.keyCode === 13 || e=="toSearch"){}else{return}
         if(this.state.searchMode=="设备"){
             /*  先在已经请求到的域内的所有设备中寻找  */
@@ -251,7 +249,6 @@ export class lightMap extends Component{
             })
         }else{
         }
-
     }
 
 
@@ -283,8 +280,6 @@ export class lightMap extends Component{
                 this.mounted && this.updateSearch(data,0,'lamp')
             }
         })
-        //getPoleListByModelWithName(mapLatlng, searchType, model, searchValue, (data)=>{this.mounted && this.updateSearch(data,0,"pole")});
-
     }
 
     searchCancel(){
@@ -298,25 +293,9 @@ export class lightMap extends Component{
     }
 
     updateSearch(data,tableIndex,type){
-
         let searchType = this.searchPromptList[tableIndex].id;
-        // if(data[0]){}else{
-        //     if(searchType=="domain"){
-        //         this.props.actions.addNotify(0, "域内无绑定设备");
-        //     }else{
-        //         this.props.actions.addNotify(0, "未找到设备");
-        //     }
-        //     return;
-        // }
-        
         let searchList = Immutable.fromJS(data);
         this.setState({searchList:searchList,tableIndex:tableIndex,IsSearchResult:true});
-        // let deviceList=[];
-        // let positionList = data.map((pole)=>{
-        //     let latlng = pole.geoPoint;
-        //     deviceList.push({ "id":pole.id, "name":pole.name, "type":type });
-        //     return Object.assign({}, latlng, {"device_type":'DEVICE', "device_id":pole.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
-        // });
         if(data && data.length){
             let fPole = data[0];
             let flatlng = fPole.geoPoint;
@@ -324,11 +303,9 @@ export class lightMap extends Component{
         }else{
             this.setState({searchList:searchList, positionList_d:positionList, deviceList_d:deviceList}, ()=>{});
         }
-
     }
 
     requestPoleAsset(data){
-
         const {model} = this.state;
         if(model != "pole"){
             return;
@@ -340,17 +317,13 @@ export class lightMap extends Component{
             getPoleAssetById(data[i].id, (id,res)=>{ assets.push(res[0]); ids.push({id:id}); datas.push({id:id,data:res}); if(data.length==assets.length){this.updatePoleAsset(ids,assets,datas)} });
         }
         //this.mounted && this.updatePoleAsset(id,data)
-
     }
 
     updatePoleAsset(id, data, datas){
-
         console.log("ids:",id);
         console.log("poleAsset:",data);
         console.log("data:",datas);
-
         const { searchList } = this.state;
-
         let deviceList = this.state.deviceList_d;
         let positionList = this.state.positionList_d;
         let indexList = [];
@@ -361,21 +334,17 @@ export class lightMap extends Component{
             let pv = {curIndex:curIndex,asset:asset,dataV:dataV};
             indexList.push(pv);
         }
-
         for(let i=0;i<indexList.length;i++){
             if(!indexList[i].asset){
                 indexList[i].asset = {}
             }
         }
-
         if(!data[0]){
             positionList = positionList.filter(item => {if (item.device_id != id) {return item }})
             deviceList = deviceList.filter(item => {if (item.id == id) {return item }})
             return;
         }
-        
         for(let i=0;i<data.length;i++){
-
             indexList[i].asset = Object.assign({}, indexList[i].asset, {lamp:data[i]});
             if(data[i].extendType == "screen"||data[i].extendType == "xes"||data[i].extendType == "camera"||data[i].extendType == "charge"){
                 positionList = positionList.filter(item => {if (item.device_id != id) {return item }})
@@ -392,12 +361,9 @@ export class lightMap extends Component{
             }else{}
 
             this.setState({searchList:this.state.searchList.updateIn([indexList[i].curIndex,"asset"], v=>Immutable.fromJS(indexList[i].asset))})
-
         }
-
         /* 列出搜索项 */
         this.setState({IsSearchResult:true, deviceList:deviceList, positionList:positionList},()=>{});
-
     }
 
     initDomainList(data) {
@@ -405,35 +371,19 @@ export class lightMap extends Component{
         this.setState({domainList:domainList},()=>{});
     }
 
-    /*  新增－t  */
-    test(){
-        
-        // this.setState({isMouseEnter:false},()=>{});
-        // setTimeout(()=>{
-        //         if(this.state.isMouseEnter == true){return}else if( this.state.IsSearchResult == true||this.state.interactive==true){
-        //             this.setState({IsSearchResult:false,interactive:false});
-        //         }
-        // }, 2000)
-
-    }
-
     isMouseEnterSet(){
-
         this.setState({isMouseEnter:!this.state.isMouseEnter},()=>{});
-
     }
 
     setSize(){
-
         if(!this.mounted){
             return;
         }
-        
         const {IsSearch, curId} = this.state;
         let height = window.innerHeight;
-
         if(IsSearch){
             let listStyle = {"maxHeight":(height<145?0:height-145)+"px"};
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             this.setState({listStyle:listStyle});
         }else{
             let defaultHeight = 230;
@@ -442,26 +392,15 @@ export class lightMap extends Component{
             }
             let infoStyle = {"maxHeight":(height<230?0:height-230)};
             let controlStyle = {"maxHeight":(height<defaultHeight?0:height-defaultHeight)};
+            console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
             this.setState({infoStyle:infoStyle, controlStyle:controlStyle});
         }
-
     }
 
     updateCameraVideo(data){
-
         if(this.refs.camera != null && data.hasOwnProperty('camera_url')){
-
             this.client = new JSMpeg.Player(data.camera_url, { canvas: this.refs.camera })
-            /* 
-             this.client = new WebSocket(data.camera_url);
-             this.client.onerror = function (err) {
-                console.log(err);
-             }
-             var player = new jsmpeg(this.client, {canvas: this.refs.camera});
-            */
-
         }
-
     }
 
     formatIntl(formatId){
@@ -522,9 +461,7 @@ export class lightMap extends Component{
     }
 
     itemClick(item){
-
         this.setState({searchList:Immutable.fromJS([item])},()=>{
-
             let data  = item.toJS()
             if(this.state.tableIndex==0){
                     if(this.map.zoom>15&&this.map.zoom<=18){
@@ -542,43 +479,26 @@ export class lightMap extends Component{
                     this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{});
             }
             this.setSize();
-
         })
-
     }
 
     backHandler(){
-
         this.setState({IsSearch:true,IsSearchResult:true,IsOpenPoleInfo:false}, ()=>{
-
             this.setSize();
-
         });
-
     }
 
     searchDeviceSelect(id){
-
-        // console.log("----------------------------------------------")
-        // this.map = Object.assign({}, this.map, {zoom:15,center:{lng:this.state.tmapLatlng.lng, lat:this.state.tmapLatlng.lat}, distance:3000});
-        // this.modifyNow();
-        // console.log("==============================================")
-        // var device = this.state.deviceList;
-
         return;
-
     }
 
     infoDeviceSelect(id){
-
         this.setState({curId:id, IsOpenFault:false}, ()=>{
             this.setSize();
         });
-
     }
 
     searchSubmit(index){
-
         const {domainList, domainSearch} = this.state;
         if(index==1){
             for(let i=0;i<domainList.length;i++){
@@ -590,62 +510,33 @@ export class lightMap extends Component{
                 }
             }
         }
-
         //this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.setState({interactive:false, tableIndex:index, IsOpenPoleInfo:false, IsOpenPoleControl:false, IsSearch:true},()=>{
-
             this.requestSearch();
-
         });
-
     }
 
     poleInfoCloseClick(){
-
         this.setState({IsOpenPoleInfo:false}, ()=>{
-
             this.setSize();
-
         })
-
     }
 
     onToggle(){
-
         this.setState({IsOpenPoleControl:!this.state.IsOpenPoleControl});
-
     }
 
     closeClick(){
-
         this.setState({IsOpenFault: false});
-
     }
 
     requestCurAssets(model){
-
         getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
             })
-            this.setState({curList: data, positionList:positionList},()=>{
-                // let deviceLen = [];
-                // data.map(item=>{
-                //     getAssetsBaseByDomain(item.id, asset=>{
-                //         deviceLen.push(item.id);
-                //         let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
-                //             return domain.id == item.id
-                //         })
-                //         if(curIndex>-1 && curIndex<this.state.curDomainList.length){
-                //             this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
-                //         }
-                //         if(deviceLen.length == data.length){
-                //             this.setState({curDomainList: this.state.curDomainList});
-                //         }
-                //     })
-                // })
-            })
+            this.setState({curList:data, positionList:positionList},()=>{})
         })
     }
 
@@ -667,7 +558,7 @@ export class lightMap extends Component{
                         if(curIndex>-1 && curIndex<this.state.curList.length){
                             this.state.curList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
                         }
-                        if (deviceLen.length == data.length){
+                        if(deviceLen.length == data.length){
                             this.setState({curList: this.state.curList});
                         }
 
@@ -675,42 +566,6 @@ export class lightMap extends Component{
                 })
             })
         })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-        // getDomainListByName(searchValue, 0, 10, (data)=>{
-        //     if((this.map.zoom+this.map.zoomStep > this.map.maxZoom)&&!mapType){
-        //             this.map = Object.assign({}, this.map, {zoom:15, center:{lng:data[0].geoPoint.lng, lat:data[0].geoPoint.lat}});
-        //     }
-        //     let positionList = data.map(item=>{
-        //         let geoPoint=item.geoPoint?item.geoPoint:{lat:"",lng:""};
-        //         return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
-        //     });
-
-        //     this.setState({deviceList: data, positionList:positionList},()=>{
-
-        //         let deviceLen = [];
-        //         data.map(item=>{
-
-        //             getAssetsBaseByDomain(item.id, asset=>{
-
-        //                 deviceLen.push(item.id);
-        //                 let curIndex = lodash.findIndex(this.state.deviceList, domain=>{
-        //                     return domain.id == item.id
-        //                 })
-        //                 if(curIndex>-1 && curIndex<this.state.deviceList.length){
-        //                     this.state.deviceList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
-        //                 }
-        //                 if (deviceLen.length == data.length){
-        //                     this.setState({deviceList:this.state.deviceList});
-        //                 }
-
-        //             })
-
-        //         })
-
-        //     });
-
-        // })
-
     }
 
     panCallFun(){
@@ -718,7 +573,7 @@ export class lightMap extends Component{
     }
 
     mapDragend(data){
-
+        console.log("111111111111111111111111111111111111111")
         return;
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         if(this.map.zoom>15&&this.map.zoom<=18){
@@ -726,68 +581,41 @@ export class lightMap extends Component{
         }else{
             this.requestCurDomain();
         }
-
     }
 
     mapZoomend(data){
-
+        return;
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         if(this.map.zoom>15&&this.map.zoom<=18){
             this.requestCurAssets("lc");
         }else{
             this.requestCurDomain();
         }
-
     }
 
     markerClick(data){
-
-        const{tableIndex} = this.state;
-        let searchValue = this.state.deviceList[0].name;
-        let searchType = this.searchPromptList[tableIndex].id;
-        if(searchType=="domain"){
-
-            this.setState({tableIndex:0})
-            getPoleListByModelWithName(data.latlng, searchType, "pole", searchValue, (res)=>{
-
-                if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
-                    this.map = Object.assign({}, this.map, { zoom:this.map.zoom + this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat} });
-                }
-
-                this.setState({positionList:[],deviceList:[]})
-                this.mounted && this.updateSearch(res,0,"pole")
-
-            });
-
-        }
-        
+        console.log("333333333333333333333333333333333333333")
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        this.isMouseEnterSet();
     }
 
     transformState(key, sf){
-
         if(key == 'wind-direction'){
-            // return this.formatIntl('app.'+sf);
             return <span className="glyphicon glyphicon-arrow-up" style={{transform:`rotate(${sf}deg)`}}></span>
         }
-
         if(key == 'brightness_mode'){
             return this.formatIntl(sf ? 'manual' : 'environment-brightness-control');
         }
-
         if(key == 'online'){
             return this.formatIntl(sf ? '在线' : '离线');
         }
-
         if(key == 'charge_state'){
             return this.formatIntl(sf ? '充电中' : '充电故障');
         }
-
         return this.formatIntl(sf ? 'abnormal':'normal');
-
     }
 
     IsHaveFault(parentPro, faultKeys){
-
         let faultList = [];
         for(var i=0;i<faultKeys.length;i++){
             if(parentPro.get(faultKeys[i]) == 1){
@@ -795,11 +623,9 @@ export class lightMap extends Component{
             }
         }
         return faultList;
-
     }
 
     renderState(parentPro, key, name, IsTransform, unit){
-
         if(key == "resolution"){
             if(parentPro && parentPro.has("width") && parentPro.has("height")){
                 return <div key={key} className="pro"><span>{name?this.formatIntl(name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
@@ -814,9 +640,7 @@ export class lightMap extends Component{
                 return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
             }
             return <div key={key} className="pro"><span>{name ? this.formatIntl(name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
-
         }
-
     }
 
     renderInfo(id, props){
@@ -884,8 +708,7 @@ export class lightMap extends Component{
                             }
                             {
                                 faultList.length>0 &&
-                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
-                                       closeClick={this.closeClick}>
+                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true} closeClick={this.closeClick}>
                                     {
                                         faultList.map(key=>{
                                             return <div key={key}>{this.formatIntl(""+key)}</div>
@@ -1040,34 +863,15 @@ export class lightMap extends Component{
 
 
     render(){
-        const {searchOffset, panLatlng, curList, curPositionList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curDevice, curId, searchList, deviceList, tableIndex,
-            listStyle, infoStyle, controlStyle, positionList, mapLatlng,  IsOpenPoleInfo, IsOpenPoleControl,searchMode,curPosition,resPosition,resDevice} = this.state;
+        const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
+            listStyle, infoStyle, controlStyle, positionList,  IsOpenPoleInfo, IsOpenPoleControl} = this.state;
         let IsControl = false;
         let searchListToJS = searchList.toJS();
         let searchListLength = searchListToJS.length;
-        
-        console.log(searchListToJS)
-        //let aaaa = JSON.stringify(positionList);
+        console.log("BBBBBBBBBBBBBBBBBBBBBBBBB===============================================================AAAAAAAAAAAAAAAAAAAAAAA")
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true
         }
-        // let positionV = [];
-        // let dV = [];
-        // console.log(this.searchPromptList[tableIndex].id);
-        // if(this.searchPromptList[tableIndex].id=="domain"){
-        //     positionV = curPositionList;
-        //     dV = curDomainList;
-        // }else{
-        //     console.log(JSON.stringify(positionList))
-        //     let aa = '[{"lat":31.238737945486196,"lng":121.50034546852112,"device_type":"DEVICE","device_id":1,"IsCircleMarker":false},{"lat":31.2385911725218,"lng":121.50098919868469,"device_type":"DEVICE","device_id":3,"IsCircleMarker":false},{"lat":31.237416980596816,"lng":121.50118231773376,"device_type":"DEVICE","device_id":2,"IsCircleMarker":false},{"lat":31.23772887675042,"lng":121.50283455848694,"device_type":"DEVICE","device_id":4,"IsCircleMarker":false}]';
-        //     let bb = '[{"lat":31.238737945486196,"lng":121.50034546852112,"device_type":"DEVICE","device_id":1,"IsCircleMarker":false},{"lat":31.2385911725218,"lng":121.50098919868469,"device_type":"DEVICE","device_id":3,"IsCircleMarker":false},{"lat":31.237416980596816,"lng":121.50118231773376,"device_type":"DEVICE","device_id":2,"IsCircleMarker":false},{"lat":31.23772887675042,"lng":121.50283455848694,"device_type":"DEVICE","device_id":4,"IsCircleMarker":false}]';
-        //     aa = JSON.parse(aa);
-        //     bb = JSON.parse(bb);
-        //     positionV = positionList;
-        //     dV = deviceList;
-        // }
-        
-        //<MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
         return (
             <Content onClick={()=>{}}>
                 <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>

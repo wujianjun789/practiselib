@@ -388,7 +388,6 @@ export class SmartLightMap extends Component{
         }else if(id=="plus" && curVal<max){
             curVal += step;
         }
-
         this.setState({camera:this.state.camera.update("focus", v=>curVal)});
     }
 
@@ -500,6 +499,7 @@ export class SmartLightMap extends Component{
     }
 
     mapZoomend(data){
+        console.log("-------------------------------------------------------------------------------------")
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.mapTimeOut && clearTimeout(this.mapTimeOut);
         // this.mapTimeOut = setTimeout(()=>{this.requestSearch();}, 300);
