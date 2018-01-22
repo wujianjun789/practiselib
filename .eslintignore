@@ -3,12 +3,12 @@ docs
 node_modules
 server
 testcases
+coverage
 
 app/__tests__
 app/public
 app/src/api
 app/src/app
-app/src/assetManage
 app/src/assetStatistics
 app/src/authentication
 app/src/common
