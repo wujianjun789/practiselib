@@ -41,7 +41,7 @@ export function getDomainByDomainLevelWithCenter(domainLevel, map, cb) {
         nearParam = {};
     }
 
-    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam)}})),{
+    httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(JSON.stringify({"where": {geoPoint: Object.assign({}, {near: map.center}, nearParam), level:domainLevel}})),{
         headers: headers,
         method: 'GET'
     }, response=>{

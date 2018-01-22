@@ -48,10 +48,10 @@ export class SmartLightMap extends Component{
             panLatlng:null,
             positionList:[/*{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}*/],
             searchList:Immutable.fromJS([
-                {id:1, name:"疏影路灯杆1号", asset:{screen:23, charge:45, camera:56, lamp:89, collect:99}},
+                /*{id:1, name:"疏影路灯杆1号", asset:{screen:23, charge:45, camera:56, lamp:89, collect:99}},
                 {id:2, name:"疏影路灯杆2号", asset:{screen:23, camera:56, lamp:89, collect:99}},
                 {id:3, name:"疏影路灯杆3号", asset:{screen:23,  lamp:89, collect:99}},
-                {id:4, name:"疏影路灯杆4号", asset:{lamp:89, collect:99}}
+                {id:4, name:"疏影路灯杆4号", asset:{lamp:89, collect:99}}*/
             ]),
 
             screen:Immutable.fromJS({width:192, height:576, online:1, brightness:100, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:["sys_fault"]}),
@@ -154,7 +154,8 @@ export class SmartLightMap extends Component{
                 this.lightList.options = data.map((key, index)=>{
                     return {id:index, value:key}
                 });
-                this.setState(this.lightList)}
+                // this.setState(this.lightList)
+            }
         })
 
         getDomainList(data=>{
@@ -218,12 +219,13 @@ export class SmartLightMap extends Component{
                 if(curDomain){
                     getPoleListByModelWithName(this.map.center, searchType, model, curDomain.id, (data)=>{this.mounted && this.updateSearch(data)});
                 }else{
-                    this.props.actions.addNotify(0, 'app.not.found');
-                    this.setState({IsSearchResult:false});
+                    this.mounted && this.props.actions.addNotify(0, 'app.not.found');
+                    this.mounted && this.setState({IsSearchResult:false});
                 }
-                return;
+            }else{
+                getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
             }
-            getPoleListByModelWithName(this.map.center, searchType, model, search.get("value"), (data)=>{this.mounted && this.updateSearch(data)});
+
         }
     }
 
