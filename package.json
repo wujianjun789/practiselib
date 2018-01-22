@@ -114,7 +114,7 @@
   },
   "scripts": {
     "test": "jest --coverage",
-    "lint": "eslint .",
+    "lint": "eslint --ext .js --ext .jsx app/src",
     "fix": "eslint --fix .",
     "dev:server": "cd server & node server --dev ",
     "dev:client": "webpack-dev-server --public",
@@ -122,7 +122,8 @@
     "build:lib": "webpack --config ddl.config.js",
     "build:app": "webpack --config webpack.app.config.js",
     "build": "gulp && start npm run build:lib && start npm run build:app ",
-    "start": "cd dist & npm start"
+    "start": "cd dist & npm start",
+    "precommit": "npm run lint"
   },
   "pre-commit": [
     "fix",
