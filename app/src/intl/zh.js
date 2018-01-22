@@ -257,6 +257,7 @@ export default {
         'app.sensor.strategy':'传感器策略',
         'app.latlng.strategy':'经纬度策略',
         'app.input.strategy.name':'输入策略名称',
+        'app.input.strategys.name':'输入组和策略名称',        
         'app.strategy.name':'策略名称',
         'app.strategy.type':'策略类型',
         'app.device.type':'设备种类',

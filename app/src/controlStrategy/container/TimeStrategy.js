@@ -41,7 +41,7 @@ class TimeStrategy extends Component{
         this.state = {
             model:'time',
             search: Immutable.fromJS({
-                placeholder: this.formatIntl('app.input.strategy.name'),
+                placeholder: this.formatIntl('app.input.strategys.name'),
                 value: ''
             }),
             selectStrategy:{},
@@ -202,6 +202,8 @@ class TimeStrategy extends Component{
                     gateways.forEach(item=>{
                         //网关白名单中的选中设备
                         selectedDevicesData.push(Object.assign({},item,{whiteList:getListByKey2(selectedDevices,'gatewayId',item.id)}));
+
+                        //网关白名单中的所有设备
                         getWhiteListById(item.id,(res)=>{
                             len++;
                             allDevicesData.push(Object.assign({},item,{whiteList:res}))
