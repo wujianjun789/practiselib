@@ -27,7 +27,7 @@ export default class Chart extends PureComponent {
             xAccessor: d => d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ')(d.timestamp),
             yAccessor: d => d.value,
             xDomain: [start, end],
-            yDomain: [0, 100],
+            yDomain: [0,100],
             curveFactory: d3.curveStepAfter,//eslint-disable-line
             yTickFormat: d => { if (d === 0) return ''; return `${d}%`; },
             tooltipAccessor: d => d.y

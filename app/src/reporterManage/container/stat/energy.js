@@ -27,7 +27,7 @@ export default class Lc extends Component {
         currentDomain: null,
         currentDeviceId: null,
         modeList: [
-            { name: '按设备' },
+            // { name: '按设备' },
             { name: '按域' }
         ],
         domainList: [
