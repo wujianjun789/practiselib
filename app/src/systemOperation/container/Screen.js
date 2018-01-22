@@ -20,10 +20,10 @@ import Content from '../../components/Content';
 
 import {TreeData, getModelData, getModelNameById, getModelTypesById, getModelTypesNameById} from '../../data/systemModel'
 
-import {getDomainList} from '../../api/domain'
+import {getDomainList, getChildDomainList} from '../../api/domain'
 import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} from '../../api/asset'
 
-import {getObjectByKey} from '../../util/index'
+import {getObjectByKey, getDeviceTypeByModel} from '../../util/index'
 
 import {treeViewInit} from '../../common/actions/treeView'
 import ExcelPopup from '../components/ExcelPopup'
@@ -133,7 +133,7 @@ export class Screen extends Component {
                         return  {id: type.id, title: type.title, value: type.title}
                     })})
                 });
-                getDomainList(data=> {
+                getChildDomainList(data=> {
                     this.mounted && this.initDomainList(data)
                 })
             }
@@ -282,7 +282,7 @@ export class Screen extends Component {
         selectDevice.data.push({id:item.id, type:item.extend.type, name:item.name});
         selectDevice.domainId = item.domainId;
         selectDevice.position.splice(0);
-        selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": 'DEVICE'}, item.geoPoint));
+        selectDevice.position.push(Object.assign({}, {"device_id": item.id, "device_type": getDeviceTypeByModel(item.extendType)}, item.geoPoint));
         this.setState({selectDevice: selectDevice});
     }
 

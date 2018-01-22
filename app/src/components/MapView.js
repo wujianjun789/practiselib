@@ -81,7 +81,6 @@ export default class MapView extends Component {
                 this.timeout = setTimeout(()=>{
                     this.state.map[mapData.id].updateMapDevice(mapData.position, deviceList, markerCallFun)
                 }, 300)
-
             }
         }
     }

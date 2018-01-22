@@ -71,7 +71,11 @@ export function httpRequest(url, option, responseCall, responseParam, errorCall,
                 errorCall && errorCall.apply(null, [error, errorParam]);
         })
     }), new Promise((resolve, reject)=>{
-        timeOut[parseInt(Math.random()*99)] = setTimeout(()=>{
+        if(timeOut[url]){
+            clearTimeout(timeOut[url]);
+        }
+
+        timeOut[url] = setTimeout(()=>{
             let err = {"statusCode": 408,"name":"Error", "message":"Request Timeout"}
             alertPopup(err.message);
             errorCall && errorCall.apply(null, [err]);
