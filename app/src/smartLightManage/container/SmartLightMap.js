@@ -100,7 +100,7 @@ export class SmartLightMap extends Component{
 
         this.domainList = [];
 
-        this.domainLevel = DOMAIN_LEVEL;
+        this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}

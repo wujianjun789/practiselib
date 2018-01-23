@@ -240,7 +240,7 @@ export default class Map{
             minZoom: option.minZoom
         }).addTo(this.map);
 
-        map.setView(this.latlng, option.zoom);
+        this.map.setView(this.latlng, option.zoom);
     }
 
     decimalToHex(d, padding) {
