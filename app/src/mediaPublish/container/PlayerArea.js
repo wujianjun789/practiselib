@@ -171,6 +171,7 @@ export class PlayerArea extends Component {
 
             assetStyle: { "bottom": "0px" },
             controlStyle: { "left": "auto", "right": "auto" },
+            libStyle: {},
             //拖拽
             mouseXY: [0, 0],
             mouseCircleDelta: [0, 0],
@@ -280,6 +281,16 @@ export class PlayerArea extends Component {
         window.onresize = event => {
 
         }
+
+        const list = this.state.uploadFileList;
+        list.map((item) => {
+            if (item !== undefined) {
+                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
+                item.xhr.removeEventListener('load', this.uploadComplete);
+                item.xhr.removeEventListener('error', this.uploadFailed);
+                item.xhr.removeEventListener('abort', this.uploadCanceled);
+            }
+        })
     }
 
     setSize() {
@@ -910,22 +921,13 @@ export class PlayerArea extends Component {
     }
 
     sidebarClick(id) {
-        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }) });
+        const libStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }), libStyle:libStyle });
     }
-    componentWillUnmount() {
-        const list = this.state.uploadFileList;
-        list.map((item) => {
-            if (item !== undefined) {
-                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
-                item.xhr.removeEventListener('load', this.uploadComplete);
-                item.xhr.removeEventListener('error', this.uploadFailed);
-                item.xhr.removeEventListener('abort', this.uploadCanceled);
-            }
-        })
-    }
+
     render() {
         const {
-            curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,
+            curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
         const { router } = this.props;
@@ -943,13 +945,15 @@ export class PlayerArea extends Component {
                 add_title = ` (${this.formatIntl('mediaPublish.timingPlayPlan')})`;
                 break;
         }
+
+        console.log(assetStyle);
+
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
             <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
                 onClick={this.areaClick} onToggle={this.onToggle} />
 
             <Content className="player-area">
-
                 <div className="left">
                     <div className="form-group control-container-top">
                         <div className="form-group play-container" onClick={() => this.playHandler()}>
@@ -972,38 +976,39 @@ export class PlayerArea extends Component {
                         </div>
                     </div>
                 </div>
-            </Content>
-            <div className="mediaPublish-footer" style={assetStyle}>
-                <span className="title"><FormattedMessage id='mediaPublish.playList'/></span>
-                <ul>
-                    {
-                        playerListAsset.get('list').map((item, index) => {
-                            const itemId = item.get('id');
-                            const curId = playerListAsset.get('id');
-                            return <li key={itemId} className="player-list-asset" onClick={() => this.playerAssetSelect(item)}>
-                                <div className={"background " + (curId == itemId ? '' : 'hidden')}></div>
-                                <span className="icon"></span>
-                                <span className="name">{item.get("name")}</span>
-                                {curId == itemId && index > 0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('left', item) }}></span>}
-                                {curId == itemId && index < playerListAsset.get("list").size - 1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('right', item) }}></span>}
-                                {!playerListAsset.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.playerAssetRemove(item) }}></span>}
-                            </li>
-                        })
-                    }
-                </ul>
-                <div className="pull-right control-container">
-                    <div className={"list-group " + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
-                        <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id='button.add'/></button>
-                        <button className="btn btn-gray" onClick={() => this.playerListAssetClick('edit')}><FormattedMessage id='button.edit'/></button>
-                    </div>
-                    <div className={"list-group " + (playerListAsset.get('isEdit') ? 'hidden' : '')}>
-                        <button className="btn btn-gray" onClick={() => this.playerListAssetClick('remove')}><FormattedMessage id='button.delete'/>
-                        </button>
-                        <button className="btn btn-primary" onClick={() => this.playerListAssetClick('complete')}><FormattedMessage id='button.finish'/>
-                        </button>
+                <div className="mediaPublish-footer">
+                    <span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>
+                    <ul>
+                        {
+                            playerListAsset.get('list').map((item, index) => {
+                                const itemId = item.get('id');
+                                const curId = playerListAsset.get('id');
+                                return <li key={itemId} className="player-list-asset" onClick={() => this.playerAssetSelect(item)}>
+                                    <div className={"background " + (curId == itemId ? '' : 'hidden')}></div>
+                                    <span className="icon"></span>
+                                    <span className="name">{item.get("name")}</span>
+                                    {curId == itemId && index > 0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('left', item) }}></span>}
+                                    {curId == itemId && index < playerListAsset.get("list").size - 1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('right', item) }}></span>}
+                                    {!playerListAsset.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.playerAssetRemove(item) }}></span>}
+                                </li>
+                            })
+                        }
+                    </ul>
+                    <div className="pull-right control-container">
+                        <div className={"list-group " + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
+                            <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id='button.add'/></button>
+                            <button className="btn btn-gray" onClick={() => this.playerListAssetClick('edit')}><FormattedMessage id='button.edit'/></button>
+                        </div>
+                        <div className={"list-group " + (playerListAsset.get('isEdit') ? 'hidden' : '')}>
+                            <button className="btn btn-gray" onClick={() => this.playerListAssetClick('remove')}><FormattedMessage id='button.delete'/>
+                            </button>
+                            <button className="btn btn-primary" onClick={() => this.playerListAssetClick('complete')}><FormattedMessage id='button.finish'/>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Content>
+
             <div className={"right sidebar-info "}>
                 <div className="row collapse-container" onClick={() => this.sidebarClick('collapsed')}>
                     <span className={sidebarInfo.collapsed ? "icon_horizontal" : "icon_vertical"}></span>
@@ -1029,7 +1034,7 @@ export class PlayerArea extends Component {
                     </div>
                 </div>
 
-                <div className="panel panel-default asset-lib">
+                <div className="panel panel-default asset-lib" style={libStyle}>
                     <div className="panel-heading lib-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_file" : "glyphicon " + (sidebarInfo.assetLibCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span><FormattedMessage id='mediaPublish.materialLib'/>
                     </div>

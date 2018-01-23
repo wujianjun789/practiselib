@@ -10,16 +10,17 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 export default class PlayerListPopup extends PureComponent {
     constructor(props) {
         super(props);
-        const {playerId, playerName, width, height} = this.props.data;
+        console.log('player:', this.props.data);
+        const {id, name, width, height} = this.props.data;
 
         this.state = {
-            playerId: playerId,
-            playerName: playerName,
+            id: id,
+            name: name,
             width: width,
             height: height,
 
             prompt: {
-                playerName: !Boolean(playerName),
+                name: !Boolean(name),
                 width: !Boolean(width),
                 height: !Boolean(height)
             }
@@ -57,7 +58,7 @@ export default class PlayerListPopup extends PureComponent {
         const id = e.target.id;
         let prompt = false;
         let newValue = e.target.value;
-        if(id == "playerName"){
+        if(id == "name"){
             if(!Name2Valid(newValue)){
                 prompt = true;
             }
@@ -71,10 +72,10 @@ export default class PlayerListPopup extends PureComponent {
     }
 
     render() {
-        let {playerId, playerName, width, height, prompt} = this.state;
+        let {id, name, width, height, prompt} = this.state;
 
-        let valid = prompt.playerName || prompt.width || prompt.height;
-        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={[this.formatIntl('button.cancel'),this.formatIntl('button.confirm')]}
+        let valid = prompt.name || prompt.width || prompt.height;
+        let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']}
                                   btnClassName={['btn-default', 'btn-primary']}
                                   btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
@@ -82,11 +83,11 @@ export default class PlayerListPopup extends PureComponent {
             <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel}>
                 <div className="row">
                     <div className="form-group row">
-                        <label className="col-sm-3 control-label" htmlFor="playerName"><FormattedMessage id='mediaPublish.schemeName' /></label>
+                        <label className="col-sm-3 control-label" htmlFor="name"><FormattedMessage id='mediaPublish.schemeName' /></label>
                         <div className="col-sm-9">
-                            <input type="text" className={ "form-control " } id="playerName" placeholder={this.formatIntl('mediaPublish.inputSchemeName')}
-                                   maxLength="16" value={playerName} onChange={this.onChange}/>
-                            <span className={prompt.playerName?"prompt ":"prompt hidden"}><FormattedMessage id='mediaPublish.prompt'/></span>
+                            <input type="text" className={ "form-control " } id="name" placeholder={this.formatIntl('mediaPublish.inputSchemeName')}
+                                   maxLength="16" value={name} onChange={this.onChange}/>
+                            <span className={prompt.name?"prompt ":"prompt hidden"}><FormattedMessage id='mediaPublish.prompt'/></span>
                         </div>
                     </div>
                     <div className="form-group row">
@@ -112,7 +113,7 @@ export default class PlayerListPopup extends PureComponent {
 PlayerListPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
-        playerName: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired
     }).isRequired,

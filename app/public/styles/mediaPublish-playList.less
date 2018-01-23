@@ -95,7 +95,7 @@
   overflow-y: hidden;
   overflow-x: hidden;
   .sidebar {
-    bottom: 95px;
+    bottom: 0px;
 
     //max-height: 626px;
     min-height: 300px;
@@ -398,6 +398,8 @@
   }
 
   .right {
+    overflow-y: scroll;
+    overflow-x: hidden;
     &.sidebar-info{
       border-left: 0;
 
@@ -437,6 +439,7 @@
     width: 680px;
     padding: 0;
 
+    height: auto;
     .addAnimation();
 
     .collapse-container{
@@ -1142,7 +1145,7 @@
   }
 
   .mediaPublish-footer {
-    position: fixed;
+    position: absolute;
     //top: 671px;
     right: 700px;
     left: 0;
@@ -1157,13 +1160,13 @@
 
     .addAnimation();
 
-    .title {
+    .asset-title {
       display: inline-block;
       font-size: 14px;
 
-      height: 94px;
-      line-height: 25px;
-      vertical-align: middle;
+      float: left;
+
+      margin-top: 36px;
       padding-right: 20px;
       padding-left: 20px;
       user-select: none;
@@ -1240,7 +1243,7 @@
     .control-container {
       display: inline-block;
       margin-right: 10px;
-      margin-left: 20px;
+      //margin-left: 20px;
       .list-group {
         > button {
           display: block;

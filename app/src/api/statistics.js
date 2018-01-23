@@ -17,7 +17,7 @@ export function getEnergyDataByDomainId(id, energyFilter, cb) { //需要的参�
         JSON.stringify({ "where":{"type": type, "dateTime": dateTime}}))),{
             headers: headers,
             method: 'GET'
-        }, respose => {
+        }, response => {
             cb && cb(response);
         }
 }

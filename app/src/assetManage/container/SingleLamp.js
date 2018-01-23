@@ -5,9 +5,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import Content from '../../components/Content'
+import Content from '../../components/Content';
 
-import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults} from '../../data/assetModels'
+import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults} from '../../data/assetModels';
 import Immutable from 'immutable';
 
 import {FormattedMessage,injectIntl} from 'react-intl';
@@ -17,23 +17,23 @@ export class SingleLamp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            model:"lc",
+            model:'lc',
             devicePro:Immutable.fromJS([
-                "软件版本",
-                "系统版本",
-                "内核版本"
+                '软件版本',
+                '系统版本',
+                '内核版本'
             ]),
             data:Immutable.fromJS([
-                {type:"LC300", detail:"LC300灯控"},
-                {type:"LC600", detail:"LC600灯控"},
-                {type:"LCMINI", detail:"智慧路灯用"}
+                {type:'LC300', detail:'LC300灯控'},
+                {type:'LC600', detail:'LC600灯控'},
+                {type:'LCMINI', detail:'智慧路灯用'}
             ]),
             dataDefaults: [],
             dataDefaultsValues: Immutable.fromJS([]),
-        }
+        };
 
         // this.columns = [{field:"type", title:"型号"}, {field:"detail", title:"描述"}]
-        this.columns = [{field:"type", title:intlFormat({en:'type',zh:'型号'})}, {field:"detail", title:intlFormat({en:'detail',zh:'描述'})}]
+        this.columns = [{field:'type', title:intlFormat({en:'type',zh:'型号'})}, {field:'detail', title:intlFormat({en:'detail',zh:'描述'})}];
 
         this.initTreeData = this.initTreeData.bind(this);
         this.formatIntl = this.formatIntl.bind(this);
@@ -41,7 +41,7 @@ export class SingleLamp extends Component {
 
     componentWillMount(){
         this.mounted = true;
-        getModelData(()=>{this.mounted && this.initTreeData()});
+        getModelData(()=>{this.mounted && this.initTreeData();});
     }
 
     componentWillUnmount(){
@@ -61,11 +61,11 @@ export class SingleLamp extends Component {
             data: Immutable.fromJS(getModelTypes(model)),
             dataDefaults: getModelDefaults(model),
             dataDefaultsValues: Immutable.fromJS(getModelDefaultsValues(model)),
-        })
+        });
     }
 
     render() {
-        const { data, devicePro, dataDefaults, dataDefaultsValues } = this.state
+        const { data, devicePro, dataDefaults, dataDefaultsValues } = this.state;
         return (
             <Content>
                 <div className="row heading">
@@ -73,7 +73,7 @@ export class SingleLamp extends Component {
                     <ul className="property-list">
                         {
                             devicePro.map((item,index)=>{
-                                return <li key={index}>{item}</li>
+                                return <li key={index}>{item}</li>;
                             })
                         }
                     </ul>
@@ -82,26 +82,26 @@ export class SingleLamp extends Component {
                     <div className="type"><span></span>{this.formatIntl('asset.type')}</div>
                     <table className="equipment">
                         <thead>
-                        <tr>
-                            {
-                                this.columns.map((column,index)=>{
-                                    return <th key={index}>{column.title}</th>
-                                })
-                            }
-                        </tr>
+                            <tr>
+                                {
+                                    this.columns.map((column,index)=>{
+                                        return <th key={index}>{column.title}</th>;
+                                    })
+                                }
+                            </tr>
                         </thead>
                         <tbody>
-                        {
-                            data.map((row, index)=>{
-                                return <tr key={index}>
-                                    {
-                                        this.columns.map((column,index)=>{
-                                            return <td key={index}>{row.get(column.field)}</td>
-                                        })
-                                    }
-                                </tr>
-                            })
-                        }
+                            {
+                                data.map((row, index)=>{
+                                    return <tr key={index}>
+                                        {
+                                            this.columns.map((column,index)=>{
+                                                return <td key={index}>{row.get(column.field)}</td>;
+                                            })
+                                        }
+                                    </tr>;
+                                })
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -109,31 +109,31 @@ export class SingleLamp extends Component {
                     <div className="param"><span></span>{this.formatIntl('asset.param')}</div>
                     <table className="equipment">
                         <thead>
-                        <tr>
-                            {
-                                dataDefaults.map((column,index)=>{
-                                    return <th key={index}>{column.title}</th>
-                                })
-                            }
-                        </tr>
+                            <tr>
+                                {
+                                    dataDefaults.map((column,index)=>{
+                                        return <th key={index}>{column.title}</th>;
+                                    })
+                                }
+                            </tr>
                         </thead>
                         <tbody>
-                        {
-                            dataDefaultsValues.map((row, index)=>{
-                                return <tr key={index}>
-                                    {
-                                        dataDefaults.map((column,index)=>{
-                                            return <td key={index}>{row.get(column.field)}</td>
-                                        })
-                                    }
-                                </tr>
-                            })
-                        }
+                            {
+                                dataDefaultsValues.map((row, index)=>{
+                                    return <tr key={index}>
+                                        {
+                                            dataDefaults.map((column,index)=>{
+                                                return <td key={index}>{row.get(column.field)}</td>;
+                                            })
+                                        }
+                                    </tr>;
+                                })
+                            }
                         </tbody>
                     </table>
                 </div>
             </Content>
-        )
+        );
     }
 }
 
@@ -141,14 +141,14 @@ export class SingleLamp extends Component {
 function mapStateToProps(state) {
     return {
         sidebarNode: state.assetManage.get('sidebarNode')
-    }
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
         }, dispatch)
-    }
+    };
 }
 export default connect(
     mapStateToProps,

@@ -1,5 +1,5 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
         rules: [
             {
                 test: /\.jsx?$/,
-                loader: "babel-loader",
+                loader: 'babel-loader',
                 exclude: /node_modules/,
                 include: __dirname,
 
@@ -62,8 +62,8 @@ module.exports = {
             manifest: require('./manifest.json'),
         }),
         new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("development")
+            'process.env': {
+                NODE_ENV: JSON.stringify('development')
             }
         }),
         new HtmlwebpackPlugin({

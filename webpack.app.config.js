@@ -1,5 +1,5 @@
 const path = require('path');
-const webpack = require('webpack')
+const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlwebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -18,7 +18,7 @@ module.exports = {
         rules: [
             {
                 test: /\.jsx?$/,
-                loader: "babel-loader",
+                loader: 'babel-loader',
                 exclude: /node_modules/,
                 include: __dirname,
             },
@@ -53,6 +53,7 @@ module.exports = {
 
     },
     plugins: [
+        new webpack.BannerPlugin('starriver_pro V0.9'),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DllReferencePlugin({
@@ -64,8 +65,8 @@ module.exports = {
             filename: 'commons.js'
         }),
         new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
             }
         }),
         new HtmlwebpackPlugin({

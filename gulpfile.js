@@ -1,12 +1,12 @@
 
 const gulp = require('gulp');
 const webpack = require('webpack-stream');
-const path = require('path')
+const path = require('path');
 const dest_app = path.join(__dirname, './dist/app/public');
 const config_app = require('./webpack.app.config');
 const clean = require('gulp-clean');
 const uglifyes=require('uglify-es');
-const composer = require('gulp-uglify/composer')
+const composer = require('gulp-uglify/composer');
 const minify=composer(uglifyes,console);
 const pump = require('pump');
 const options = {
@@ -25,7 +25,7 @@ const options = {
 gulp.task('clean', function () {
     return gulp.src('dist/', { read: false })
         .pipe(clean());
-})
+});
 
 //客户端
 gulp.task('app.public', function () {
@@ -52,17 +52,17 @@ gulp.task('server.webpack', function (cb) {
         minify(options),
         gulp.dest(dest_server)
     ], cb);
-})
+});
 
 gulp.task('server.config', function () {
     return gulp.src('config.json')
         .pipe(gulp.dest(path.resolve(dest_server, '..')));
-})
+});
 
 gulp.task('server.package', function () {
     return gulp.src('server/package.json')
         .pipe(gulp.dest(path.resolve(dest_server, '..')));
-})
+});
 
 gulp.task('server', ['server.webpack', 'server.config', 'server.package']);
 

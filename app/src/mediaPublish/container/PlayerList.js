@@ -11,9 +11,10 @@ import SearchText from '../../components/SearchText';
 import Table from '../../components/Table';
 import Page from '../../components/Page'
 
-import PlayerListItem from '../component/PlayerListItem';
 import PlayerListPopup from '../component/PlayerListPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
+
+import {searchProjectList, addProject, updateProjectById, removeProjectById} from '../../api/mediaPublish';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer'
 import Immutable from 'immutable';
@@ -59,6 +60,16 @@ export class PlayerList extends Component {
         this.removeHandler = this.removeHandler.bind(this);
 
         this.requestSearch = this.requestSearch.bind(this);
+        this.updateSearch = this.updateSearch.bind(this);
+    }
+
+    componentWillMount(){
+        this.mounted = true;
+        this.requestSearch();
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
     }
 
     formatIntl(formatId){
@@ -68,7 +79,20 @@ export class PlayerList extends Component {
     }
 
     requestSearch() {
+        const {page, search} = this.state;
+        const limit = page.get('pageSize');
+        const offset = (page.get('current')-1)*limit;
+        const searchName = search.get('value');
 
+        searchProjectList(0, searchName, offset, limit, data=>{this.mounted && this.updateSearch(data)})
+    }
+
+    updateSearch(data){
+        data = data.map(project=>{
+            return Object.assign({}, project, {"resolution":project.width+"X"+project.height});
+        })
+
+        this.setState({data:Immutable.fromJS(data)});
     }
 
     typeChange(selectIndex) {
@@ -99,8 +123,8 @@ export class PlayerList extends Component {
     addHandler() {
         const { actions } = this.props;
         const data = {
-            playerId: '',
-            playerName: '',
+            id: '',
+            name: '',
             width: 1920,
             height: 1080
         }
@@ -108,17 +132,24 @@ export class PlayerList extends Component {
         actions.overlayerShow(<PlayerListPopup intl={this.props.intl} title={this.formatIntl('mediaPublish.addPlan')} data={data}
 
             onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
-                actions.overlayerHide();
-                const id = parseInt(Math.random() * 30);
-                let item = { id: id, icon: "", name: state.playerName, resolution: state.width + "X" + state.height, width: state.width, height: state.height }
-                this.setState({ data: this.state.data.push(Immutable.fromJS(item)) }, () => { console.log('size:', this.state.data.size) })
+
+                let data = {
+                    name: state.name,
+                    width: state.width,
+                    height: state.height
+                }
+
+                // addProject(data, ()=>{
+                    actions.overlayerHide();
+                const id = Math.random()*9999;
+                let item = { id: id, icon: "", name: state.name, resolution: state.width + "X" + state.height, width: state.width, height: state.height }
                 this.props.router.push({
                     pathname: "/mediaPublish/playerArea",
                     state: {
                         item: item
                     }
                 });
-                // this.props.router.push('/playerArea');
+                // })
             }} />)
 
     }
@@ -136,28 +167,39 @@ export class PlayerList extends Component {
         const { actions } = this.props;
         const row = getObjectByKey(this.state.data, 'id', id);
         const obj = row ? row.toJS() : {};
-        // const data = {
-        //     playerId: obj.id,
-        //     playerName: obj.name,
-        //     width: obj.width,
-        //     height: obj.height
-        // }
-        //
-        // actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
-        //                                        onCancel={()=>{actions.overlayerHide()}} onConfirm={()=>{
-        //      actions.overlayerHide();
-        this.props.router.push({
-            pathname: "/mediaPublish/playerArea",
-            state: { item: obj }
-        });
-        // }}/>)
+        const data = {
+            id: obj.id,
+            name: obj.name,
+            width: obj.width,
+            height: obj.height
+        }
+console.log('edit:', data);
+        actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
+                                               onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
+                                               let project = {
+                                                    id: state.id,
+                                                    name: state.name,
+                                                    width: state.width,
+                                                    height: state.height
+                                                }
+                                               updateProjectById(project, ()=>{
+                                                    actions.overlayerHide();
+                                                    this.props.router.push({
+                                                        pathname: "/mediaPublish/playerArea",
+                                                        state: { item: project }
+                                                    });
+                                               })
+
+        }}/>)
     }
 
     removeHandler(id) {
         const { actions } = this.props;
         actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.isDeleteList')}
-
             cancel={() => { actions.overlayerHide() }} confirm={() => {
+                removeProjectById(id, ()=>{
+                    this.requestSearch();
+                })
             }} />);
     }
 

@@ -72,8 +72,8 @@ export class Screen extends Component {
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
-		this.tableClick = this.tableClick.bind(this);
-		this.onClick = this.onClick.bind(this);
+        this.tableClick = this.tableClick.bind(this);
+        this.onClick = this.onClick.bind(this);
 
         this.initData = this.initData.bind(this);
         this.updateDomainData = this.updateDomainData.bind(this);
@@ -105,7 +105,7 @@ export class Screen extends Component {
 
     updateDomainData(data, cb) {
         let currentDomain,
-        options = data;
+            options = data;
         if (data.length == 0) {
             currentDomain = null;
         } else {
@@ -135,19 +135,19 @@ export class Screen extends Component {
     }
 
     updatePageSize(data) {
-        this.setState({page: {...this.state.page, total: data.count}})
+        this.setState({page: {...this.state.page, total: data.count}});
     }
 
     onChange(e) {
         const {id, value} = e.target;
         switch(id) {
-            case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({currentDomain}, this.initDeviceData);
-                break;
-            case 'deviceSwitch':
-                this.setState({currentSwitchStatus: value});
-                break;
+        case 'domain':
+            let currentDomain = this.state.domainList.options[e.target.selectedIndex];
+            this.setState({currentDomain}, this.initDeviceData);
+            break;
+        case 'deviceSwitch':
+            this.setState({currentSwitchStatus: value});
+            break;
         }
     }
 
@@ -158,7 +158,7 @@ export class Screen extends Component {
     searchChange(value) {
         this.setState({
             search: {...this.state.search, value: value}
-        })
+        });
     }
 
     searchSubmit() {
@@ -171,19 +171,19 @@ export class Screen extends Component {
 
     tableClick(currentDevice) {
         this.setState({currentDevice});
-	}
+    }
 
-	onClick(e) {
-		const id = e.target.id;
-		const deviceId = this.state.currentDevice.id;
-		let body;
-		switch(id) {
-			case 'deviceSwitch_btn':
-				body = {"switch": this.state.currentSwitchStatus};
-				break;
-		}
-		updateAssetsRpcById(deviceId, body);
-	}
+    onClick(e) {
+        const id = e.target.id;
+        const deviceId = this.state.currentDevice.id;
+        let body;
+        switch(id) {
+        case 'deviceSwitch_btn':
+            body = {'switch': this.state.currentSwitchStatus};
+            break;
+        }
+        updateAssetsRpcById(deviceId, body);
+    }
 
     render() {
         const {
@@ -192,51 +192,51 @@ export class Screen extends Component {
         } = this.state;
         const disabled = deviceList.length == 0 ? true : false;
         return <Content className={`list-screen ${sidebarCollapse ? 'collapse' : ''}`}>
-                    <div className="content-left">
-                        <div className="heading">
-                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
-                                value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
-                        </div>
-                        <div className="table-container">
-                            <TableWithHeader columns={this.columns}>
-                                {
-                                    deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
-                                                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]} />)
-                                }
-                            </TableWithHeader>
-                            <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
-                                current={current} total={total} onChange={this.pageChange}/>
+            <div className="content-left">
+                <div className="heading">
+                    <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                        value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+                    <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
+                </div>
+                <div className="table-container">
+                    <TableWithHeader columns={this.columns}>
+                        {
+                            deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
+                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]} />)
+                        }
+                    </TableWithHeader>
+                    <Page className={`page ${total==0?'hidden':''}`} showSizeChanger pageSize={limit}
+                        current={current} total={total} onChange={this.pageChange}/>
+                </div>
+            </div>
+            <div className={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
+                <div className="row collapse-container" onClick={this.collapseHandler}>
+                    <span className={sidebarCollapse ? 'icon_horizontal'  :'icon_vertical'}></span>
+                </div>
+                <div className="panel panel-default panel-1">
+                    <div className="panel-heading">
+                        <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
+                    </div>
+                    <div className="panel-body">
+                        <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
+                    </div>
+                </div>
+                <div className="panel panel-default panel-2">
+                    <div className="panel-heading">
+                        <span className="icon_touch"></span>{this.formatIntl('app.device.operation')}
+                    </div>
+                    <div className="panel-body">
+                        <div>
+                            <span className="tit">{this.formatIntl('app.device.switch')}</span>
+                            <Select id="deviceSwitch" titleField={deviceSwitchList.titleField}
+                                valueField={deviceSwitchList.valueField} options={deviceSwitchList.options}
+                                value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
+                            <button id="deviceSwitch_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>{this.formatIntl('button.apply')}</button>
                         </div>
                     </div>
-                    <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
-                        <div className="row collapse-container" onClick={this.collapseHandler}>
-                            <span className={sidebarCollapse ? "icon_horizontal"  :"icon_vertical"}></span>
-                        </div>
-                        <div className="panel panel-default panel-1">
-                            <div className="panel-heading">
-                                <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
-                            </div>
-                            <div className="panel-body">
-                                <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
-                            </div>
-                        </div>
-                        <div className="panel panel-default panel-2">
-                            <div className="panel-heading">
-                                <span className="icon_touch"></span>{this.formatIntl('app.device.operation')}
-                            </div>
-                            <div className="panel-body">
-                                <div>
-                                    <span className="tit">{this.formatIntl('app.device.switch')}</span>
-                                    <Select id="deviceSwitch" titleField={deviceSwitchList.titleField}
-                                            valueField={deviceSwitchList.valueField} options={deviceSwitchList.options}
-                                            value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
-                                    <button id="deviceSwitch_btn" className="btn btn-primary" disabled={disabled} onClick={this.onClick}>{this.formatIntl('button.apply')}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Content>
+                </div>
+            </div>
+        </Content>;
     }
 }
 

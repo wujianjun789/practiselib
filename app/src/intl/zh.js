@@ -86,6 +86,8 @@ export default {
         'button.close':'关闭',
         'button.save':'保存',
         'button.add.gateway':'添加网关',
+        'button.start': '启用',
+        'button.pause': '暂停',
 
         //用户中心
         'update.password':'修改密码',
@@ -206,7 +208,6 @@ export default {
         'sysOperation.device.maintenance':'设备维护',
         'sysOperation.strategy.alert':'请添加策略名称',
         'sysOperation.set.param':'请设置参数',
-        'sysOperation.select.sensor':'请选择传感器',
         'sysOperation.select.device':'请选择设备',
         'sysOperation.select.instruction':'请选择指令',
 
@@ -268,7 +269,12 @@ export default {
         'app.strategy.retryNumber':'重试次数',
         'app.strategy.retryInterval':'重试间隔',
         'app.strategy.select.group':'选择组',
-        'app.strategy.level':'策略级别',        
+        'app.strategy.level':'策略级别',
+        'app.strategy.state':'状态',            
+        'app.task.create.time':'创建时间',
+        'app.task.execute.time':'执行时间',
+        'app.task.execute.result':'执行结果',
+        'app.task.record':'任务记录',
         
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
@@ -296,10 +302,6 @@ export default {
         'app.total.charge':'总充电量',
         'app.total.charge.time':'总充电时长',
         'app.last.charge.time':'最后一次充电时间',
-
-
-        'app.time.strategy':'时间调光表',
-        'app.latlng.strategy':'经纬度调光表',        
 
         //多媒体
         'mediaPublish.playList':'播放列表',
@@ -459,7 +461,6 @@ export default {
         'app.height': '高度',
         'app.version': '版本号',
         'app.brightness_mode': '亮度模式',
-        'app.brightness': '当前亮度',
         'app.sys_fault': '系统故障',
         'app.vram_fault': 'VRAM故障',
         'app.disp_module_fault': '显示模组故障',
@@ -503,7 +504,6 @@ export default {
 
         'app.alarm':'警报',
         'app.name':'名称',
-        'app.type':'类型',
         'app.date':'时间',
 
         'manage.title':'StarRiver 管理',

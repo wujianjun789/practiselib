@@ -12,9 +12,9 @@ import {treeViewInit} from '../common/actions/treeView';
 
 class ReporterManage extends Component{
     constructor(props){
-		super(props);
+        super(props);
 
-		this.moduleName = 'app.report.manage';
+        this.moduleName = 'app.report.manage';
 
         this.initTreeData = this.initTreeData.bind(this);
         this.onToggle = this.onToggle.bind(this);
@@ -44,7 +44,7 @@ class ReporterManage extends Component{
             <SideBar onToggle={this.onToggle}/>
             {this.props.children}
             <Overlayer />
-        </div>
+        </div>;
     }
 }
 
@@ -53,7 +53,7 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators({
             treeViewInit: treeViewInit,
         }, dispatch)
-    }
+    };
 }
 export default connect(
     null,

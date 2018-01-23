@@ -86,7 +86,7 @@ export class Xes extends Component{
 
     updateDomainData(data, cb) {
         let currentDomain,
-        options = data;
+            options = data;
         if (data.length == 0) {
             currentDomain = null;
         } else {
@@ -116,16 +116,16 @@ export class Xes extends Component{
     }
 
     updatePageSize(data) {
-        this.setState({page: {...this.state.page, total: data.count}})
+        this.setState({page: {...this.state.page, total: data.count}});
     }
 
     onChange(e) {
         const {id, value} = e.target;
         switch(id) {
-            case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({currentDomain}, this.initDeviceData);
-                break;
+        case 'domain':
+            let currentDomain = this.state.domainList.options[e.target.selectedIndex];
+            this.setState({currentDomain}, this.initDeviceData);
+            break;
         }
     }
 
@@ -136,7 +136,7 @@ export class Xes extends Component{
     searchChange(value) {
         this.setState({
             search: {...this.state.search, value: value}
-        })
+        });
     }
 
     searchSubmit() {
@@ -158,38 +158,38 @@ export class Xes extends Component{
         } = this.state;
         const disabled = deviceList.length == 0 ? true : false;
         return <Content className={`list-collect ${sidebarCollapse ? 'collapse' : ''}`}>
-                    <div className="content-left">
-                        <div className="heading">
-                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
-                                value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
-                        </div>
-                        <div className="table-container">
-                            <TableWithHeader columns={this.columns}>
-                                {
-                                    deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
-                                                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
-                                                                />)
-                                }
-                            </TableWithHeader>
-                            <Page className={`page ${total==0?"hidden":''}`} showSizeChanger pageSize={limit}
-                                current={current} total={total} onChange={this.pageChange}/>
-                        </div>
+            <div className="content-left">
+                <div className="heading">
+                    <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                        value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
+                    <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit}/>
+                </div>
+                <div className="table-container">
+                    <TableWithHeader columns={this.columns}>
+                        {
+                            deviceList.map(item => <TableTr key={item.id} data={item} columns={this.columns} activeId={currentDevice.id}
+                                rowClick={this.tableClick} willMountFuncs={[getDeviceStatusByModelAndId(this.model, item.id)]}
+                            />)
+                        }
+                    </TableWithHeader>
+                    <Page className={`page ${total==0?'hidden':''}`} showSizeChanger pageSize={limit}
+                        current={current} total={total} onChange={this.pageChange}/>
+                </div>
+            </div>
+            <div className={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
+                <div className="row collapse-container" onClick={this.collapseHandler}>
+                    <span className={sidebarCollapse ? 'icon_horizontal'  :'icon_vertical'}></span>
+                </div>
+                <div className="panel panel-default panel-1">
+                    <div className="panel-heading">
+                        <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
                     </div>
-                    <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
-                        <div className="row collapse-container" onClick={this.collapseHandler}>
-                            <span className={sidebarCollapse ? "icon_horizontal"  :"icon_vertical"}></span>
-                        </div>
-                        <div className="panel panel-default panel-1">
-                            <div className="panel-heading">
-                                <span className="icon_select"></span>{this.formatIntl('sysOperation.selected.device')}
-                            </div>
-                            <div className="panel-body">
-                                <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
-                            </div>
-                        </div>
+                    <div className="panel-body">
+                        <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
                     </div>
-                </Content>
+                </div>
+            </div>
+        </Content>;
     }
 }
 

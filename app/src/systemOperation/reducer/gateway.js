@@ -29,17 +29,7 @@ const initialState = Immutable.fromJS({
         total: 21
     },
     data: [
-        {id:1,deviceName: '灯集中控制器', model: '001', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:2,deviceName: '灯集中控制器', model: '002', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:3,deviceName: '灯集中控制器', model: '003', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:4,deviceName: '灯集中控制器', model: '004', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:5,deviceName: '灯集中控制器', model: '005', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:6,deviceName: '灯集中控制器', model: '006', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:7,deviceName: '灯集中控制器', model: '007', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:8,deviceName: '灯集中控制器', model: '008', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:9,deviceName: '灯集中控制器', model: '009', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:10,deviceName: '灯集中控制器', model: '010', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'},
-        {id:11,deviceName: '灯集中控制器', model: '011', deviceID: '00158D0000CABAD5', model: 8080, lng: '000.000.000.000', lat: '000.000.000.000'}
+        {id:1,deviceName: '灯集中控制器', model: '001', deviceID: '00158D0000CABAD5', lng: '000.000.000.000', lat: '000.000.000.000'},
     ],
     popupInfo: {
         whiteListData: [

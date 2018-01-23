@@ -40,7 +40,7 @@ export class MapPreview extends Component{
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
-        this.domainLevel = DOMAIN_LEVEL;
+        this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
 
         this.onChange = this.onChange.bind(this);

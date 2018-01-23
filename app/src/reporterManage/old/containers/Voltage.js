@@ -18,10 +18,10 @@ import {getToday, getYesterday} from '../../../util/time';
 
 export default class Voltage extends PureComponent {
     constructor(props) {
-		super(props);
+        super(props);
         this.state = {
-			startDate: getYesterday(),
-			endDate: getToday(),
+            startDate: getYesterday(),
+            endDate: getToday(),
             page: {
                 total: 0,
                 current: 1,
@@ -32,65 +32,66 @@ export default class Voltage extends PureComponent {
                 placeholder: '输入编号或名称',
 
             },
-			sidebarCollapse: false,
-			currentDomain: null,
+            sidebarCollapse: false,
+            currentDomain: null,
             domainList: {
                 titleField: 'name',
                 valueField: 'name',
                 options: []
-			},
-			deviceList: [],
-			selectDeviceIds: [],
-			selectDevices: {},
-		};
+            },
+            deviceList: [],
+            selectDeviceIds: [],
+            selectDevices: {},
+        };
 
-		this.chart = null;
-		this.model = 'lc';
-		this.prop = 'amp';
-		this.columns = [
-			{field: 'name', title: '设备名称'},
-			{field: 'id', title: '设备编号'},
-		];
-		this.maxNumofSelectDevices = 5;
+        this.chart = null;
+        this.model = 'lc';
+        this.prop = 'amp';
+        this.columns = [
+            {field: 'name', title: '设备名称'},
+            {field: 'id', title: '设备编号'},
+        ];
+        this.maxNumofSelectDevices = 5;
 
         this.collapseHandler = this.collapseHandler.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.searchChange = this.searchChange.bind(this);
-		this.searchSubmit = this.searchSubmit.bind(this);
-		this.onChange = this.onChange.bind(this);
-		this.startDateChange = this.startDateChange.bind(this);
-		this.endDateChange = this.endDateChange.bind(this);
-		this.tableRowCheckChange = this.tableRowCheckChange.bind(this);
-		this.onClick = this.onClick.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.startDateChange = this.startDateChange.bind(this);
+        this.endDateChange = this.endDateChange.bind(this);
+        this.tableRowCheckChange = this.tableRowCheckChange.bind(this);
+        this.onClick = this.onClick.bind(this);
 
-		this.drawLineChart = this.drawLineChart.bind(this);
-		this.updateLineChart = this.updateLineChart.bind(this);
-		this.destroyLineChart = this.destroyLineChart.bind(this);
+        this.drawLineChart = this.drawLineChart.bind(this);
+        this.updateLineChart = this.updateLineChart.bind(this);
+        this.destroyLineChart = this.destroyLineChart.bind(this);
 
-		this.initData = this.initData.bind(this);
-		this.initDeviceData = this.initDeviceData.bind(this);
-		this.updateDeviceData = this.updateDeviceData.bind(this);
-		this.updateDomainData = this.updateDomainData.bind(this);
-		this.updatePageSize = this.updatePageSize.bind(this);
-		this.getChartData = this.getChartData.bind(this);
+        this.initData = this.initData.bind(this);
+        this.initDeviceData = this.initDeviceData.bind(this);
+        this.updateDeviceData = this.updateDeviceData.bind(this);
+        this.updateDomainData = this.updateDomainData.bind(this);
+        this.updatePageSize = this.updatePageSize.bind(this);
+        this.getChartData = this.getChartData.bind(this);
     }
 
     componentWillMount() {
-		this.mounted = true;
-		this.initData();
+        this.mounted = true;
+        this.initData();
     }
 
     componentWillUnmount() {
         this.mounted = false;
-	}
+        this.destroyLineChart();
+    }
 
-	initData() {
+    initData() {
         getDomainList((data) =>{
             this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
-	}
+    }
 
-	initDeviceData(isSearch) {
+    initDeviceData(isSearch) {
         const {search: {value}, page, currentDomain} = this.state;
         if(isSearch){
             page.current = 1;
@@ -101,49 +102,49 @@ export default class Voltage extends PureComponent {
         const offset = limit * ( current - 1 );
         getSearchAssets(currentDomain?currentDomain.id:null, this.model, value, offset, limit, this.mounted&&this.updateDeviceData);
         getSearchCount(currentDomain?currentDomain.id:null, this.model, value, this.mounted&&this.updatePageSize);
-	}
+    }
 
-	updateDeviceData(data) {
+    updateDeviceData(data) {
         this.setState({deviceList: data});
     }
 
-	updateDomainData(data, cb) {
+    updateDomainData(data, cb) {
         let currentDomain,
             options;
         if (data.length == 0) {
-			currentDomain = null;
-			options = [{name: '选择域'}];
+            currentDomain = null;
+            options = [{name: '选择域'}];
         } else {
-			currentDomain = data[0];
-			options = data;
+            currentDomain = data[0];
+            options = data;
         }
         this.setState({domainList: {...this.state.domainList, options}, currentDomain }, ()=>{
-            cb && cb()
+            cb && cb();
         });
     }
 
     updatePageSize(data) {
-        this.setState({page: {...this.state.page, total: data.count}})
+        this.setState({page: {...this.state.page, total: data.count}});
     }
 
     pageChange(page) {
         this.setState({page: {...this.state.page, current: page}}, this.initDeviceData);
-	}
+    }
 
-	onChange(e) {
+    onChange(e) {
         const {id, value} = e.target;
         switch(id) {
-            case 'domain':
-                let currentDomain = this.state.domainList.options[e.target.selectedIndex];
-                this.setState({currentDomain, selectDeviceIds: [], selectDevices: {}}, this.initDeviceData);
-				break;
+        case 'domain':
+            let currentDomain = this.state.domainList.options[e.target.selectedIndex];
+            this.setState({currentDomain, selectDeviceIds: [], selectDevices: {}}, this.initDeviceData);
+            break;
         }
     }
 
     searchChange(value) {
         this.setState({
             search: {...this.state.search, value: value}
-        })
+        });
     }
 
     searchSubmit() {
@@ -152,161 +153,158 @@ export default class Voltage extends PureComponent {
 
     collapseHandler() {
         this.setState({sidebarCollapse: !this.state.sidebarCollapse});
-	}
+    }
 
-	startDateChange(date, dateStr) {
-		this.setState({startDate: date});
-	}
+    startDateChange(date, dateStr) {
+        this.setState({startDate: date});
+    }
 
-	endDateChange(date, dateStr) {
-		this.setState({endDate: date});
-	}
+    endDateChange(date, dateStr) {
+        this.setState({endDate: date});
+    }
 
-	tableRowCheckChange(rowId, checked) {
-		let {selectDevices, deviceList, selectDeviceIds} = this.state;
-		if(checked) {
-			if(selectDeviceIds.length < this.maxNumofSelectDevices) {
-				this.setState({selectDeviceIds: [...selectDeviceIds, rowId], selectDevices: {...selectDevices, [rowId]: deviceList.find(item=>item.id == rowId)} });
-			}
-		} else {
-			let _selectDevices = {...selectDevices};
-			let _selectDeviceIds = [...selectDeviceIds];
-			delete _selectDevices[rowId];
-			_selectDeviceIds.splice(_selectDeviceIds.findIndex(item => item == rowId), 1);
-			this.setState({selectDevices: _selectDevices, selectDeviceIds: _selectDeviceIds });
-		}
-	}
+    tableRowCheckChange(rowId, checked) {
+        let {selectDevices, deviceList, selectDeviceIds} = this.state;
+        if(checked) {
+            if(selectDeviceIds.length < this.maxNumofSelectDevices) {
+                this.setState({selectDeviceIds: [...selectDeviceIds, rowId], selectDevices: {...selectDevices, [rowId]: deviceList.find(item=>item.id == rowId)} });
+            }
+        } else {
+            let _selectDevices = {...selectDevices};
+            let _selectDeviceIds = [...selectDeviceIds];
+            delete _selectDevices[rowId];
+            _selectDeviceIds.splice(_selectDeviceIds.findIndex(item => item == rowId), 1);
+            this.setState({selectDevices: _selectDevices, selectDeviceIds: _selectDeviceIds });
+        }
+    }
 
-	getChartData(cb) {
-		const {selectDeviceIds, selectDevices, startDate, endDate} = this.state;
-		if(selectDeviceIds.length == 0) {
-			this.setState({selectDevices: {}});
-			cb && cb();
-			return ;
-		}
-		let arr = [];
-		selectDeviceIds
-			.forEach(id => {
-				arr.push(getHistoriesDataByAssetId({
-					where: {
-						asset: id,
-						prop: this.prop,
-						timestamp: {
-							between: [startDate, endDate]
-						}
-					}
-				}))
-			});
-		Promise.all(arr)
-			.then(ret => {
-				let _selectDevices = {...selectDevices};
-				selectDeviceIds.forEach((id, index) => {
-					_selectDevices[id].values = ret[index];
-				});
-				this.setState({selectDevices: _selectDevices}, cb);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}
+    getChartData(cb) {
+        const {selectDeviceIds, selectDevices, startDate, endDate} = this.state;
+        if(selectDeviceIds.length == 0) {
+            this.setState({selectDevices: {}});
+            cb && cb();
+            return ;
+        }
+        let arr = [];
+        selectDeviceIds
+            .forEach(id => {
+                arr.push(getHistoriesDataByAssetId({
+                    where: {
+                        asset: id,
+                        prop: this.prop,
+                        timestamp: {
+                            between: [startDate, endDate]
+                        }
+                    }
+                }));
+            });
+        Promise.all(arr)
+            .then(ret => {
+                let _selectDevices = {...selectDevices};
+                selectDeviceIds.forEach((id, index) => {
+                    _selectDevices[id].values = ret[index];
+                });
+                this.setState({selectDevices: _selectDevices}, cb);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-	onClick(e) {
-		const {id} = e.target;
-		const {search, domainList, currentDomain} = this.state;
-		switch(id) {
-			case 'apply':
-				this.getChartData(this.updateLineChart);
-				return ;
-			case 'reset':
-				this.setState({
-					selectDevices: {},
-					selectDeviceIds: [],
-					startDate: getYesterday(),
-					endDate: getToday(),
-					search: {...search, value: ''},
-					currentDomain: domainList.options[0]
-				}, () => {
-					this.initDeviceData();
-					this.updateLineChart();
-				});
-				return ;
-		}
-	}
+    onClick(e) {
+        const {id} = e.target;
+        const {search, domainList, currentDomain} = this.state;
+        switch(id) {
+        case 'apply':
+            this.getChartData(this.updateLineChart);
+            return ;
+        case 'reset':
+            this.setState({
+                selectDevices: {},
+                selectDeviceIds: [],
+                startDate: getYesterday(),
+                endDate: getToday(),
+                search: {...search, value: ''},
+                currentDomain: domainList.options[0]
+            }, () => {
+                this.initDeviceData();
+                this.updateLineChart();
+            });
+            return ;
+        }
+    }
 
-	componentWillUnmount() {
-		this.destroyLineChart();
-	}
 
-	drawLineChart(ref) {
-		const {selectDevices, startDate, endDate} = this.state;
+    drawLineChart(ref) {
+        const {selectDevices, startDate, endDate} = this.state;
         this.chart = new Chart({
             wrapper: ref,
             data: Object.values(selectDevices),
-            xAccessor: d=> d3.timeParse("%Y-%m-%dT%H:%M:%S.%LZ")(d.timestamp),
-			yAccessor: d => d.value,
-			xDomain: [startDate, endDate],
-			yDomain: [0, 100],
+            xAccessor: d=> d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ')(d.timestamp),
+            yAccessor: d => d.value,
+            xDomain: [startDate, endDate],
+            yDomain: [0, 100],
             curveFactory: d3.curveStepAfter,
-            yTickFormat: d => {if(d == 0) return ''; return `${d}V`},
+            yTickFormat: d => {if(d == 0) return ''; return `${d}V`;},
             tooltipAccessor: d => d.y
         });
-	}
+    }
 
-	updateLineChart() {
-		const {selectDevices, startDate, endDate} = this.state;
+    updateLineChart() {
+        const {selectDevices, startDate, endDate} = this.state;
         this.chart.updateChart(Object.values(selectDevices), [startDate, endDate]);
-	}
+    }
 
-	destroyLineChart() {
+    destroyLineChart() {
         this.chart.destroy();
         this.chart = null;
-	}
+    }
 
     render() {
         const {page: {total, current, limit}, sidebarCollapse,
-				search: {value, placeholder}, currentDomain, domainList,
-				deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
+            search: {value, placeholder}, currentDomain, domainList,
+            deviceList, selectDevices, startDate, endDate, selectDeviceIds } = this.state;
         return <Content className={`device-amp ${sidebarCollapse ? 'collapse' : ''}`}>
-					<div className="content-left">
-						<div className='chart-container' ref={this.drawLineChart}></div>
+            <div className="content-left">
+                <div className='chart-container' ref={this.drawLineChart}></div>
+            </div>
+            <div className={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
+                <div className="row collapse-container" onClick={this.collapseHandler}>
+                    <span className={sidebarCollapse ? 'icon_horizontal'  :'icon_vertical'}></span>
+                </div>
+                <div className="panel panel-default panel-1">
+                    <div className="panel-heading">
+                        <span className="icon_touch"></span>选择时间
                     </div>
-                    <div className={`container-fluid sidebar-info ${sidebarCollapse ? "sidebar-collapse" : ""}`}>
-                        <div className="row collapse-container" onClick={this.collapseHandler}>
-                            <span className={sidebarCollapse ? "icon_horizontal"  :"icon_vertical"}></span>
-                        </div>
-                        <div className="panel panel-default panel-1">
-                            <div className="panel-heading">
-								<span className="icon_touch"></span>选择时间
-                            </div>
-							<div className="panel-body">
-								<DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
-								<span>至</span>
-								<DatePicker className="start-date" placeholder="选择结束日期" value={endDate} allowClear={false} onChange={this.endDateChange}/>
-                            </div>
-                        </div>
-                        <div className="panel panel-default panel-2">
-							<div className="panel-heading">
-								<span className="icon_select"></span>选择设备
-                            </div>
-							<div className="panel-body">
-								<div className="device-filter">
-									<Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
+                    <div className="panel-body">
+                        <DatePicker className="start-date" placeholder="选择起始日期" value={startDate} allowClear={false} locale={'zh'} onChange={this.startDateChange}/>
+                        <span>至</span>
+                        <DatePicker className="start-date" placeholder="选择结束日期" value={endDate} allowClear={false} onChange={this.endDateChange}/>
+                    </div>
+                </div>
+                <div className="panel panel-default panel-2">
+                    <div className="panel-heading">
+                        <span className="icon_select"></span>选择设备
+                    </div>
+                    <div className="panel-body">
+                        <div className="device-filter">
+                            <Select id='domain' titleField={domainList.titleField} valueField={domainList.valueField} options={domainList.options}
                                 		value={currentDomain == null ? '' : currentDomain[this.state.domainList.valueField]} onChange={this.onChange} />
-									<SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
-								</div>
+                            <SearchText placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                        </div>
 
-								<Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
-								<div className={`page-center ${total==0?"hidden":''}`}>
-									<Page className='page' showSizeChanger pageSize={limit}
-											current={current} total={total} onChange={this.pageChange}/>
-								</div>
-								<div className="btn-group-right">
-									<button id="reset" className="btn btn-reset" onClick={this.onClick}>重置</button>
-									<button id="apply" className="btn btn-primary" onClick={this.onClick}>应用</button>
-								</div>
-                            </div>
+                        <Table columns={this.columns} data={Immutable.fromJS(deviceList)} allChecked={false} checked={selectDeviceIds} rowCheckChange={this.tableRowCheckChange}/>
+                        <div className={`page-center ${total==0?'hidden':''}`}>
+                            <Page className='page' showSizeChanger pageSize={limit}
+                                current={current} total={total} onChange={this.pageChange}/>
+                        </div>
+                        <div className="btn-group-right">
+                            <button id="reset" className="btn btn-reset" onClick={this.onClick}>重置</button>
+                            <button id="apply" className="btn btn-primary" onClick={this.onClick}>应用</button>
                         </div>
                     </div>
-                </Content>
+                </div>
+            </div>
+        </Content>;
     }
 }

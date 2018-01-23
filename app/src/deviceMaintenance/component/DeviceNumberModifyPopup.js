@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 export default class DeviceNumberModifyPopup extends Component {
     constructor(props) {
         super(props);
-        const { selectDeviceName="", selectDeviceId="", title=""} = props.data;
+        const { selectDeviceName='', selectDeviceId='', title=''} = props.data;
         this.state = {
             title: title,
             deviceName: selectDeviceName,
@@ -20,17 +20,17 @@ export default class DeviceNumberModifyPopup extends Component {
 
         this.onChange = this.onChange.bind(this);
         this.onCancel = this.onCancel.bind(this);
-        this.onConfirm = this.onConfirm.bind(this)
+        this.onConfirm = this.onConfirm.bind(this);
     }
 
     onChange(e) {
         let id = e.target.id;
         let value = e.target.vlaue;
-        if (id == "deviceId") {
+        if (id == 'deviceId') {
             this.setState({
                 deviceId: value,
                 deviceIdNew: value
-            })
+            });
         }
     }
 
@@ -58,21 +58,21 @@ export default class DeviceNumberModifyPopup extends Component {
                     <div className="form-group clearfix">
                         <label htmlFor="name" className="control-label">名称：</label>
                         <div className="name-content">
-                            <input type="text" className={ "form-control " } id="name" placeholder="name" value={ selectDevice.data[0].name } 
-                            maxLength={ 16 } onChange={ this.onChange } disabled={ valid ? true : false }/>
+                            <input type="text" className={ 'form-control ' } id="name" placeholder="name" value={ selectDevice.data[0].name } 
+                                maxLength={ 16 } onChange={ this.onChange } disabled={ valid ? true : false }/>
                             {/* <span className={ prompt.name ? "prompt " : "prompt hidden" }>{ "不合法" }</span> */}
                         </div>
                     </div>
                     <div className="form-group clearfix">
                         <label htmlFor="number" className="control-label">设备编号：</label>
                         <div className="number-content">
-                            <input type="text" className={ "form-control " } id="deviceId" placeholder="id" value={ deviceId } 
-                            maxLength={ 16 } onChange={ this.onChange }/>
+                            <input type="text" className={ 'form-control ' } id="deviceId" placeholder="id" value={ deviceId } 
+                                maxLength={ 16 } onChange={ this.onChange }/>
                             {/* <span className={ prompt.id ? "prompt " : "prompt hidden" }>{ "不合法" }</span> */}
                         </div>
                     </div>
                 </Panel>
             </div>
-        )
+        );
     }
 }
