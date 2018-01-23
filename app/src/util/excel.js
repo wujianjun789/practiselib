@@ -14,7 +14,7 @@ export function excelImport(e,key,columns,cb){
                     workbook = XLSX.read(data, {
                         type: 'binary'
                     });// 以二进制流方式读取得到整份excel表格对象
-            } catch (e) {
+            } catch (err) {
                 console.log('文件类型不正确');
                 resolve([[]]);
                 return;
