@@ -10,7 +10,7 @@ export default function BarChart(data) {
 
 	let wrapper = data.wrapper;
 	let dataset = data.data;
-	console.log("dataset:", dataset);
+	// console.log("dataset:", dataset);
 	let type = data.type;
 	// 画布大小
 	// let width = 900;
@@ -161,6 +161,7 @@ export default function BarChart(data) {
 	// 	.attr("class","axis")
 	// 	.attr("transform","translate(" + padding.left + "," + padding.top + ")")
 	// 	.call(yAxis);
+		
 	return {
 		destroy: function() {
 			parent.select('svg').remove()
