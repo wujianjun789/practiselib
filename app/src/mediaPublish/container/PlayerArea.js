@@ -169,7 +169,7 @@ export class PlayerArea extends Component {
             isUpload: false,
             afterFirstUpload: false,
 
-            assetStyle: { "bottom": "0px" },
+            assetStyle: { "height": "309px", "position":"relative" },
             controlStyle: { "left": "auto", "right": "auto" },
             libStyle: {},
             //拖拽
@@ -304,7 +304,7 @@ export class PlayerArea extends Component {
             cleft = "535px";
         }
 
-        this.setState({ /*assetStyle: { "bottom": (height < 796 ? 0 : height - 796) + "px" },*/ controlStyle: { "left": cleft, "right": cright } });
+        this.setState({ controlStyle: { "left": cleft, "right": cright } });
     }
 
     updatePlayerTree() {
@@ -922,7 +922,8 @@ export class PlayerArea extends Component {
 
     sidebarClick(id) {
         const libStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
-        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }), libStyle:libStyle });
+        const assetStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}:{'height':'309px'}
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }), libStyle:libStyle, assetStyle:assetStyle});
     }
 
     render() {
@@ -1038,8 +1039,8 @@ export class PlayerArea extends Component {
                     <div className="panel-heading lib-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_file" : "glyphicon " + (sidebarInfo.assetLibCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span><FormattedMessage id='mediaPublish.materialLib'/>
                     </div>
-                    <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')}>
-                        <div className="asset-container">
+                    <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')} style={sidebarInfo.propertyCollapsed?{'position':'absolute','top':'49px', 'bottom':0}:{}}>
+                        <div className="asset-container" style={{height:sidebarInfo.propertyCollapsed?'100%':'auto'}}>
 
                             <div className="top">
                                 <Select className="asset-type" data={assetType}
@@ -1062,7 +1063,7 @@ export class PlayerArea extends Component {
                                 </div>
                                 <PreviewFile showModal={this.state.showModal} hideModal={this.hideModal} addUploadFile={this.addUploadFile} />
                             </div>
-                            <div className="bottom">
+                            <div className="bottom" style={assetStyle}>
                                 <ul className="asset-list">
                                     {
                                         assetList.get('list').map((item, index) => {
