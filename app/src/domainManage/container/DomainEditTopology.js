@@ -350,7 +350,7 @@ class DomainEditTopology extends Component{
                         return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                                    onClick={()=>this.itemClick(item)}><div>{value}</div></li>
 
-                    let strs = getStringlistByLanguage(value);
+                    /*let strs = getStringlistByLanguage(value);
                     return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                     onClick={()=>this.itemClick(item)}>{
                         strs.map((str, index)=>{
@@ -365,7 +365,7 @@ class DomainEditTopology extends Component{
                             }
                             return <div key={index} className={className} style={{"marginBottom":width}}>{str}</div>
                         })
-                    }</li>
+                    }</li>*/
                 })
             }
         </ul>

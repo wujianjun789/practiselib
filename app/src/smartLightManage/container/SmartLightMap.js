@@ -100,7 +100,7 @@ export class SmartLightMap extends Component{
 
         this.domainList = [];
 
-        this.domainLevel = DOMAIN_LEVEL;
+        this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
@@ -324,7 +324,7 @@ export class SmartLightMap extends Component{
     }
 
     updateCameraVideo(data){
-        if(this.refs.camera != null && data.hasOwnProperty('camera_url')){
+        if(this.refs.camera != null && data.hasOwnProperty('camera_url') && JSMpeg){
 
             this.client = new JSMpeg.Player(data.camera_url, { canvas: this.refs.camera })
             /* this.client = new WebSocket(data.camera_url);

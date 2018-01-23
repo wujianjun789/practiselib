@@ -281,6 +281,16 @@ export class PlayerArea extends Component {
         window.onresize = event => {
 
         }
+
+        const list = this.state.uploadFileList;
+        list.map((item) => {
+            if (item !== undefined) {
+                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
+                item.xhr.removeEventListener('load', this.uploadComplete);
+                item.xhr.removeEventListener('error', this.uploadFailed);
+                item.xhr.removeEventListener('abort', this.uploadCanceled);
+            }
+        })
     }
 
     setSize() {
@@ -914,17 +924,7 @@ export class PlayerArea extends Component {
         const libStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }), libStyle:libStyle });
     }
-    componentWillUnmount() {
-        const list = this.state.uploadFileList;
-        list.map((item) => {
-            if (item !== undefined) {
-                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
-                item.xhr.removeEventListener('load', this.uploadComplete);
-                item.xhr.removeEventListener('error', this.uploadFailed);
-                item.xhr.removeEventListener('abort', this.uploadCanceled);
-            }
-        })
-    }
+
     render() {
         const {
             curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,

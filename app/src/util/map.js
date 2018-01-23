@@ -240,7 +240,7 @@ export default class Map{
             minZoom: option.minZoom
         }).addTo(this.map);
 
-        map.setView(this.latlng, option.zoom);
+        this.map.setView(this.latlng, option.zoom);
     }
 
     decimalToHex(d, padding) {
@@ -534,38 +534,38 @@ export default class Map{
     }
 
     customControl(data) {
-        return;
-        if (!this.map || this.deviceControl) {
-            return;
-        }
-
-        let DeviceControl = L.Control.extend({
-            options: {
-                position: 'topleft'
-            },
-            initialize: function (options) {
-                L.Util.setOptions(this, options);
-            },
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'custom-toggle-container');
-
-                data && data.deviceBtn && data.deviceBtn.data.map(function (item) {
-                    var className = 'custom-toggle-button  ' + (item.id == data.deviceBtn.active ? 'active' : '');
-
-                    var btn = L.DomUtil.create('button', className, container)
-                    btn.id = item.id;
-                    btn.innerText = item.name;
-                    L.DomEvent.on(btn, 'click', toggleHandler);
-                    if (item.id == data.deviceBtn.active) {
-                        this.activeBtn = btn;
-                    }
-                })
-                return container;
-            }
-        })
-
-        this.deviceControl = new DeviceControl();
-        this.deviceControl && this.map.addControl(this.deviceControl);
+        // return;
+        // if (!this.map || this.deviceControl) {
+        //     return;
+        // }
+        //
+        // let DeviceControl = L.Control.extend({
+        //     options: {
+        //         position: 'topleft'
+        //     },
+        //     initialize: function (options) {
+        //         L.Util.setOptions(this, options);
+        //     },
+        //     onAdd: function (map) {
+        //         var container = L.DomUtil.create('div', 'custom-toggle-container');
+        //
+        //         data && data.deviceBtn && data.deviceBtn.data.map(function (item) {
+        //             var className = 'custom-toggle-button  ' + (item.id == data.deviceBtn.active ? 'active' : '');
+        //
+        //             var btn = L.DomUtil.create('button', className, container)
+        //             btn.id = item.id;
+        //             btn.innerText = item.name;
+        //             L.DomEvent.on(btn, 'click', this.toggleHandler);
+        //             if (item.id == data.deviceBtn.active) {
+        //                 this.activeBtn = btn;
+        //             }
+        //         })
+        //         return container;
+        //     }
+        // })
+        //
+        // this.deviceControl = new DeviceControl();
+        // this.deviceControl && this.map.addControl(this.deviceControl);
     }
 
     //----------------------------------------------事件处理------------------------------------------------------------
@@ -803,7 +803,7 @@ export default class Map{
         if(status>-1 && status<Map.markerColor.length){
             color = Map.markerColor[status];
         }else{
-            throw error('not found status');
+            throw new Error('not found status');
         }
 
         return color;

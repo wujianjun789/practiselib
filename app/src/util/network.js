@@ -110,6 +110,7 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
+    console.log('response:',response, response.status);
     if(response.statusText == "OK"){
         return response.json().then(json => {
                 return new Promise((resolve) => {
