@@ -280,6 +280,8 @@ export default {
         'app.task.execute.time':'Execute time',
         'app.task.execute.result':'Execute result',
         'app.task.record':'Task record',
+        'app.status.started':'Started',
+        'app.status.paused':'Paused',
 
         'app.input.device.name':'input device name',
         'app.device.name': 'device name',

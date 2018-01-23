@@ -275,7 +275,9 @@ export default {
         'app.task.execute.time':'执行时间',
         'app.task.execute.result':'执行结果',
         'app.task.record':'任务记录',
-        
+        'app.status.started':'已启用',
+        'app.status.paused':'已停用',
+
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
         'app.online.state': '在线状态',
