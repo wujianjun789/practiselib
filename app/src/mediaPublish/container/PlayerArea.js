@@ -56,7 +56,7 @@ import { updateTree } from '../util/index'
 import {getProgramList, getSceneList, getZoneList} from '../../api/mediaPublish';
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
-import lodash from 'loddash';
+import lodash from 'lodash';
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
