@@ -52,21 +52,35 @@ export const TreeData=[
         "name": "控制",
         "toggled": false,
         "active": true,
-        "link": "/light/control/scene",
+        "link": "/light/control/timeStrategy",
         "level": 1,
         "children": [
+            // {
+            //     "id": "scene",
+            //     "name": "场景",
+            //     "class": "icon_scene",
+            //     "active": false,
+            //     "link": "/light/control/scene"
+            // },{
+            //     "id": "strategy",
+            //     "name": "策略",
+            //     "class": "icon_control",
+            //     "active": false,
+            //     "link": "/light/control/strategy"
+            // }
             {
-                "id": "scene",
-                "name": "场景",
-                "class": "icon_scene",
+                "id": "timeStrategy",
+                "name": "app.time.strategy",
+                "class": "icon_calendar",
                 "active": false,
-                "link": "/light/control/scene"
-            },{
-                "id": "strategy",
-                "name": "策略",
-                "class": "icon_control",
+                "link": "/light/control/timeStrategy"
+            },
+            {
+                "id": "latlngStrategy",
+                "name": "app.latlng.strategy",
+                "class": "icon_latlng",
                 "active": false,
-                "link": "/light/control/strategy"
+                "link": "/light/control/latlngStrategy"
             }
         ]
     }

@@ -86,6 +86,8 @@ export default {
         'button.close':'关闭',
         'button.save':'保存',
         'button.add.gateway':'添加网关',
+        'button.start': '启用',
+        'button.pause': '暂停',
 
         //用户中心
         'update.password':'修改密码',
@@ -268,7 +270,12 @@ export default {
         'app.strategy.retryNumber':'重试次数',
         'app.strategy.retryInterval':'重试间隔',
         'app.strategy.select.group':'选择组',
-        'app.strategy.level':'策略级别',        
+        'app.strategy.level':'策略级别',
+        'app.strategy.state':'状态',            
+        'app.task.create.time':'创建时间',
+        'app.task.execute.time':'执行时间',
+        'app.task.execute.result':'执行结果',
+        'app.task.record':'任务记录',
         
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
