@@ -29,7 +29,7 @@ export default function LineAreaChart(parentId, chartData) {
         y.domain([yMin, yMax])
             .range([height, 0]);
     }else{
-        y.domain([d3.min(dataset, yAccessor(d)), d3.max(dataset, yAccessor(d))])
+        y.domain([d3.min(dataset, yAccessor), d3.max(dataset, yAccessor)])
             .range([height, 0]);
     }
 
