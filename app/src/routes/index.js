@@ -259,7 +259,7 @@ export default (
                         require.ensure([], (require) => {
                             cb(null, require('../smartLightControl/container/Strategy').default)
                         }, 'starriverpro.smartLightControl.strategy')
-                    }} />
+                    }} /> 
                 </Route>
             </Route>
             <Route path="/light" component={LightManage}>
@@ -286,7 +286,7 @@ export default (
                     }} />
                 </Route>
                 <Route path="control">
-                    <Route path="scene" getComponent={(nextState, cb) => {
+                    {/* <Route path="scene" getComponent={(nextState, cb) => {
                         require.ensure([], (require) => {
                             cb(null, require('../lightControl/container/Scene').default)
                         }, 'starriverpro.lightControl.scene')
@@ -295,7 +295,17 @@ export default (
                         require.ensure([], (require) => {
                             cb(null, require('../lightControl/container/Strategy').default)
                         }, 'starriverpro.lightControl.strategy')
+                    }} /> */}
+                    <Route path="timeStrategy" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../lightControl/container/TimeStrategy').default)
+                        }, 'starriverpro.lightControl.timeStrategy')
                     }} />
+                    <Route path="latlngStrategy" getComponent={(nextState, cb) => {
+                        require.ensure([], (require) => {
+                            cb(null, require('../lightControl/container/LatlngStrategy').default)
+                        }, 'starriverpro.lightControl.latlngStrategy')
+                    }} />  
                 </Route>
             </Route>
             <Route path="/reporterManage" component={ReporterManage}>

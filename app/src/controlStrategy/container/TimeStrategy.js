@@ -501,7 +501,7 @@ class TimeStrategy extends Component{
                 <button  className="btn btn-primary add-strategy" onClick={this.addHandler}>{this.formatIntl('button.add')}</button>
             </div>
             <div className="table-container">
-                <Table className="strategy" keyField="key" isEdit={true} columns={this.columns} data={strategyData} activeId={selectItem && selectItem.key}
+                <Table className="strategy" keyField="key" collapsed isEdit={true} columns={this.columns} data={strategyData} activeId={selectItem && selectItem.key}
                        rowClick={this.tableClick} rowEdit={this.tableEdit} rowDelete={this.tableDelete} collapseClick={this.collapseClick}/>
             </div>
             <div className={`container-fluid sidebar-info ${sidebarInfo.collapsed ? "sidebar-collapse" : ""}`}>
@@ -605,7 +605,7 @@ class TimeStrategy extends Component{
                                     <span>{`${this.formatIntl('sysOperation.include')}：${selectItem.devices?selectItem.devices.length:0}${this.formatIntl('sysOperation.devices')}`}</span>
                                     <button className="btn btn-primary pull-right" onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded') }}>{this.formatIntl('button.modify')}</button>                                   
                                 </div>
-                                <Table className="selectedDevices" columns={this.deviceColumns} data={selectedDevicesData} collapseClick={this.collapseClick}/>
+                                <Table className="selectedDevices" collapsed columns={this.deviceColumns} data={selectedDevicesData} collapseClick={this.collapseClick}/>
                             </div>
                         </div>
                     </div>
@@ -623,7 +623,7 @@ class TimeStrategy extends Component{
                             <button className="btn btn-gray" onClick={this.addGateway}>{this.formatIntl('button.add.gateway')}</button>                                   
                             <button className="btn btn-primary pull-right" onClick={this.addDevice}>{this.formatIntl('button.modify')}</button>                                                               
                         </div>
-                        <Table className="allDevices" columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
+                        <Table className="allDevices" collapsed columns={this.deviceColumns} data={allDevicesData} allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick} allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
                     </div>
                 </div>
             </div>}

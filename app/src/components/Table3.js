@@ -50,7 +50,7 @@ export default class Table extends Component {
     }
 
     render() {
-        let {columns=[], data=[], allChecked, checked=[], keyField='id', isEdit, className='', activeId} = this.props;
+        let {columns=[], data=[], allChecked, checked=[], keyField='id', isEdit, className='', activeId,collapsed=false} = this.props;
         return (
             <div className={`table-responsive table-${className}`}>
                 <table className="table table-hover">
@@ -84,7 +84,7 @@ export default class Table extends Component {
                                 {
                                     columns.map((item, index)=>{
                                         return <td key={index}>
-                                        {item.field==columns[0].field && <span className={row.has("collapsed")?"glyphicon " + (row.get("collapsed") ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom"):"glyphicon"}  onClick={()=>{this.collapsedClick(row.get(keyField))}}></span>}
+                                        {item.field==columns[0].field && <span className={collapsed?(row.has("collapsed")?"glyphicon " + (row.get("collapsed") ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom"):"glyphicon"):""}  onClick={()=>{this.collapsedClick(row.get(keyField))}}></span>}
                                         {row.get(item.field)}
                                         </td>
                                     })

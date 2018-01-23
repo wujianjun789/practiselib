@@ -87,7 +87,8 @@ export default {
         'button.close':'Close',
         'button.save':'Save',
         'button.add.gateway':'Add gateway',
-
+        'button.start': 'Start',
+        'button.pause': 'Pause',
 
         //用户中心
         'update.password':'Update password',
@@ -273,7 +274,12 @@ export default {
         'app.strategy.retryNumber':'Retry count',
         'app.strategy.retryInterval':'Retry interval',
         'app.strategy.select.group':'Select group',
-        'app.strategy.level':'Level',        
+        'app.strategy.level':'Level',
+        'app.strategy.state':'State',
+        'app.task.create.time':'Create time',
+        'app.task.execute.time':'Execute time',
+        'app.task.execute.result':'Execute result',
+        'app.task.record':'Task record',
 
         'app.input.device.name':'input device name',
         'app.device.name': 'device name',

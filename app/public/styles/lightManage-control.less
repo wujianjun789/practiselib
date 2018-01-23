@@ -1,3 +1,5 @@
+@import url(./sideBarInfo.less);
+
 .light-control {
   .content {
     // overflow-x: hidden;
@@ -5,77 +7,11 @@
     .heading {
       height: 70px;
       margin-right: 300px;
-
       background: #ffffff;
-
-      .sort {
-        width: 160px;
-        height: 30px;
-
-        margin-top: 20px;
-        margin-right: 25px;
-        margin-bottom: 20px;
-        margin-left: 20px;
-      }
-
-      .strategy {
-        width: 160px;
-        height: 30px;
-        margin-top: 20px;
-        margin-right: 25px;
-        margin-bottom: 20px;
-      }
-
-      .search {
+      .searchText {
         width: 200px;
         height: 30px;
-        margin-top: 20px;
-        margin-right: 25px;
-        margin-bottom: 20px;
-      }
-
-    }
-
-    .screen-container {
-      overflow-x: auto;
-      .scroll-container {
-        min-width: 800px;
-      }
-      margin: 40px 20px 0px 20px;
-      .scene-item-container {
-        padding-right: 0;
-        padding-left: 0;
-      }
-
-      .scene-item {
-        padding-right: 0;
-        padding-left: 0;
-
-        //margin-right: 15px;
-        margin-bottom: 40px;
-        margin-left: 20px;
-
-        .panel-heading {
-          color: #333744;
-          font-size: 14px;
-
-          background: #eaedf1;
-          border-radius: 5px;
-
-          button {
-            width: 80px;
-            height: 41px;
-
-            position: absolute;
-            top: 0;
-            right: 0;
-          }
-        }
-
-        .panel-body {
-          color: #808080;
-          font-size: 14px;
-        }
+        margin: 20px;
       }
     }
 
@@ -95,270 +31,163 @@
       transition: margin-right .3s;
     }
 
-    .page {
-      text-align: center
-    }
-    .page li {
-      display: inline-block
-    }
+    &.collapse {
+      display: block;
 
-    &.collapsed {
       .heading {
         margin-right: 60px;
       }
       .table-container {
         margin-right: 80px;
       }
-    }
-
-    .sidebar-info {
-      border-left:1px solid #e4e4e4;
-      .addAnimation();
-      &.sidebar-collapse{
-        .strategy-info, .strategy-param, .strategy-device{
-          height: 40px;
-          .panel-body{
+      > .sidebar-info.sidebar-collapse {
+        width: 60px;
+        right: 0;
+        .panel.panel-default{
+          >.panel-heading> span {
+            margin: 2.5px 23px 7.5px 7.5px;
+          }
+          >.panel-body{
             opacity: 0;
-            display: none;
           }
         }
-        .strategy-device{
-          top: 110px;
-        }
-      }
-
-      .strategy-info{
-        height: 100px;
-        .addAnimation();
-      }
-      .strategy-param {
-        .addAnimation();
-        .panel-body {
-          height: 200px;
-
-          &.strategy-chart {
-            .y.axis {
-              path {
-                display: none;
-              }
-
-              g {
-                line {
-                  stroke-width: 1px;
-                  stroke: #e6e6e6;
-                }
-              }
-            }
-
-            .node {
-              .last {
-                text-anchor: end;
-              }
-            }
-
-            .area-group {
-              .area {
-                fill: #ff5c68;
-                fill-opacity: 0.1;
-              }
-            }
-
-            .line-group {
-              .path-line {
-                fill: none;
-                stroke-width: 3px;
-                stroke: #ff5c68;
-              }
-
-              circle {
-                fill: #ff5c68;
-
-                title {
-                  background: linear-gradient(#333744, #4a5064);
-                  color: #ffffff;
-
-                  font-size: 12px;
-                }
-              }
-            }
-
-            > svg {
-              .x-axis {
-                > path {
-                  display: none;
-                }
-                > .tick {
-                  > line {
-                    display: none;
-                  }
-                  > text {
-                    font-size: 12px;
-                    color: #808080;
-                  }
-                  &:first-of-type {
-                    > text {
-                      text-anchor: start;
-                    }
-                  }
-                  &:last-of-type {
-                    > text {
-                      text-anchor: end;
-                    }
-                  }
-                }
-              }
-              .y-axis {
-                > path {
-                  display: none;
-                }
-                > .tick {
-                  > text {
-                    display: none;
-                  }
-                  > line {
-                    stroke: #e6e6e6;
-                    stroke-width: 1px;
-                  }
-                }
-              }
-
-              .main-area {
-                fill: rgba(255, 92, 104, .1);
-              }
-              .main-line {
-                stroke: rgb(255, 92, 104);
-                stroke-width: 3px;
-                fill: none;
-              }
-            }
-            .tooltip {
-              .tooltip-arrow {
-                border-top-color: #3b4050;
-                border-top-color: #3b4050;
-              }
-              .tooltip-inner {
-                font-size: 12px;
-                color: #fff;
-                background: -webkit-gradient(linear, left 0, right 0, from(#333744), to(#4a5064));   /*  for safari */
-                background-image: linear-gradient(to right, #333744, #4a5064);
-                white-space: pre;
-              }
-            }
-          }
-        }
-      }
-
-      .strategy-device{
-        position: absolute;
-        top: 370px;
-        bottom: 0;
-
-        .addAnimation();
-        .panel-body{
+        .strategy-info{
           position: absolute;
-          top: 40px;
-          right: 0;
-          bottom: 0;
-          left: 0;
-
-          ul li{
-            margin-bottom: 10px;
-          }
+          top:73px;
+        }
+        .device-info{
+          position: absolute;
+          top:116px;
         }
       }
     }
-  }
 
-  &.control-scene{
-    .content{
-      .heading{
-        margin-right: 0;
+    > .sidebar-info {
+      width: 300px;
+      background-color: #eaeef2;;
+      transition: all .3s;
+      .switch-container{
+        width: 300px;
+        height: 70px;
+        line-height: 30px;
+        padding: 20px;
+        >span{
+          width: 100px;
+          display: inline-block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        >button:last-child{
+          margin-right: 20px;
+        }
+      }
+      .panel.panel-default {
+        width: 300px;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        margin-bottom: 0;
+        background-color: #eaeef2;
+        overflow: hidden;
+        transition: all .3s ease;
+  
+        > .panel-heading {
+          background: #d3d8dd;
+          border-radius: 0;
+          background-color: #d3d8dd;
+          font-size: 14px;
+          color: #333744;
+          cursor: pointer;
+          > span {
+            float: left;
+            width: 15px;
+            height: 15px;
+            display: block;
+            transition: all .3s;
+            margin: 2.5px 7.5px 7.5px 0;
+          }
+        }
+        > .panel-body {
+          > .form-group {
+            padding-bottom: 20px;
+            line-height: 40px;
+            margin-bottom: 0;
+           
+            >label{
+              width: 60px;
+              margin-right: 10px;
+              margin-bottom: 0;
+              padding: 0;
+              font-size: 14px;
+              color: #4d4d4d;
+              text-align: right;
+              line-height: 40px;
+              float: left;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+            > .input-container{
+              position: relative;
+              display: inline-block;
+              width: 200px;
+            }
+          }
+          >.date-range{
+            >.input-container{
+              >input{
+                width:85px;
+                display: inline-block;
+                padding: 6px;
+              }
+              >span{
+                margin-right: 8px;
+                margin-left: 8px;              
+              }
+            }
+            
+          }
+        }
+        > .panel-body.collapsed {
+          opacity: 0;
+          height: 0;
+          display: none;
+        }
+      }
+      .strategy-info{
+        >.panel-body .form-group:last-of-type{
+          border-bottom: 1px solid #ccc;
+          margin-bottom: 20px;
+        }
+      }
+      .table-selectedDevices,.table-allDevices,.table-task-records{
+        min-width: 270px;
+        >table{
+          min-width: 270px;    
+          th{
+            white-space: nowrap;
+          }      
+        }
+        
+      }
+      .page{
+        text-align: center;
       }
     }
   }
 }
 
-.strategy-set-popup{
-  width: 700px;
-  .modal-body{
-    padding-right: 35px;
-    padding-left: 0;
-
-    .row{
-      margin-right: 0;
-      margin-left: 0;
-      label{
-        text-align: right;
-      }
-
-      .col-sm-5{
-        padding-top: 20px;
-        padding-right: 20px;
-        padding-left: 20px;
-
-        border: solid 1px #e6e6e6;
-
-        &.device-cur-container{
-          padding-top: 0;
-        }
-        .searchText{
-          display: block;
-          width: 230px;
-
-          //margin-right: auto;
-          //margin-left: auto;
-        }
-
-        ul{
-          padding-top: 5px;
-          margin-right: -20px;
-          overflow-y: scroll;
-
-          li{
-            padding: 5px 10px 5px 0;
-            span{
-              float: right;
-
-              cursor: pointer;
-            }
-
-          }
-
-          &.device-all{
-            height: 160px;
-
-            margin-top: 20px;
-            li{
-              span{
-                color: #00bcff;
-                &.glyphicon{
-                  color: #808080;
-                }
-              }
-            }
-          }
-
-          &.device-cur{
-            height: 233px;
-            li{
-              span{
-                display: block;
-
-                width: 15px;
-                height: 15px;
-
-                background-image: url("/images/icon_delete.png");
-                background-size: 100% 100%;
-              }
-            }
-          }
-        }
-      }
+.task-record-popup{
+  width:600px;
+  .table-container{
+      min-width: 568px;
+    table{
+      min-width: 568px; 
     }
-  }
-
-  .modal-footer{
-    padding-right: 35px;
+    .page{
+      text-align: center;
+    }
   }
 }
 

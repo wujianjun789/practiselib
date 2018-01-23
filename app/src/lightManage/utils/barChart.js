@@ -8,45 +8,45 @@ export default function BarChart(data) {
 	let parent = d3.select(`#${ID}`)
     if (parent == null) return;
 
-	var wrapper = data.wrapper;
-	var dataset = data.data;
-	var type = data.type;
+	let wrapper = data.wrapper;
+	let dataset = data.data;
+	// console.log("dataset:", dataset);
+	let type = data.type;
 	// 画布大小
-	// var width = 900;
-	var width = wrapper.offsetWidth;
-	var height = 170;
+	// let width = 900;
+	let width = wrapper.offsetWidth;
+	let height = 170;
 
 	//画布周边的空白
-	var padding = {left:0, right:30, top:20, bottom:40};
+	let padding = {left:0, right:30, top:20, bottom:40};
 
 	//定义一个数组日，月，年，
-	// var dataset = [10, 20,32, 5, 30,  12, 5, 10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
-	// var dataset = [10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
-	// var dataset = [10, 40, 33, 24, 40, 33, 24, 30, 40, 33, 24, 12];
-	// var dataset = [{x:3, y: 10},{x:4, y: 20},{x:5, y: 14},{x:6, y: 15},{x:7, y: 12},{x:8, y: 17},{x:9, y: 14}];
-	// var dataset = data	
+	// let dataset = [10, 20,32, 5, 30,  12, 5, 10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
+	// let dataset = [10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
+	// let dataset = [{x:3, y: 10},{x:4, y: 20},{x:5, y: 14},{x:6, y: 15},{x:7, y: 12},{x:8, y: 17},{x:9, y: 14}];
+	// let dataset = data	
 	//x轴的比例尺
-    var xScale = d3.scaleBand()
+    let xScale = d3.scaleBand()
 		.domain(d3.range(dataset.length))
         // .domain(['一月', '二月','一月', '二月','一月', '二月','一月', '二月','一月', '二月'])
         .range([0, width - padding.left - padding.right])
 	//y轴的比例尺
-	var yScale = d3.scaleLinear()
+	let yScale = d3.scaleLinear()
 		.domain([0,d3.max(dataset, function(d) {
 			return d.y;
 		})])
 		.range([height - padding.top - padding.bottom, 0]);
 
 	//定义x轴,这里的d 和 i 有什么差别呢？
-	var xAxis = d3.axisBottom(xScale)
+	let xAxis = d3.axisBottom(xScale)
 		.tickFormat(function (d, i) {
-			// var Time1 = dataset[d].x.getMonth();
-			// var Time2 = new Date(dataset[d].x).getMonth();
-			var year = new Date(dataset[d].x).getFullYear();
-			var month = new Date(dataset[d].x).getMonth() + 1;
-			var day = new Date(dataset[d].x).getDate();
-			var hours = new Date(dataset[d].x).getHours();
-			var time = '';
+			// let Time1 = dataset[d].x.getMonth();
+			// let Time2 = new Date(dataset[d].x).getMonth();
+			let year = new Date(dataset[d].x).getFullYear();
+			let month = new Date(dataset[d].x).getMonth() + 1;
+			let day = new Date(dataset[d].x).getDate();
+			let hours = new Date(dataset[d].x).getHours();
+			let time = '';
 			switch(type) {
 				case "1":
 					time = `${month}月`
@@ -77,12 +77,12 @@ export default function BarChart(data) {
         // .tickValues([0,5,10,15,20,25,30]);//添加刻度
 		
 	//定义y轴
-	// var yAxis = d3.axisLeft(yScale)
+	// let yAxis = d3.axisLeft(yScale)
 		// .scale(yScale)
 		// .orient("left");
 
     //添加tips
-    var tip = d3.tip()
+    let tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset(function(){
             return [-10, 0]
@@ -92,7 +92,7 @@ export default function BarChart(data) {
         })
 
     //在 body 里添加一个 SVG 画布	
-	var svg = parent.append("svg")
+	let svg = parent.append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
@@ -101,11 +101,14 @@ export default function BarChart(data) {
     //调用tips    
     svg.call(tip)
 
-	//矩形之间的空白
-	var rectPadding = 10;
+	//矩形之间的空白,根据数据长度，设定不同宽度
+	let rectPadding = 10;
+	if(dataset.lenght != 0){
+		rectPadding = 300/dataset.length
+	}
 
 	//添加矩形元素
-	var rects = svg.selectAll(".MyRect")
+	let rects = svg.selectAll(".MyRect")
 		.data(dataset)
 		.enter()
 		.append("rect")
@@ -125,7 +128,7 @@ export default function BarChart(data) {
         .on('mouseout', tip.hide);
 
 	//添加文字元素
-	var texts = svg.selectAll(".MyText")
+	let texts = svg.selectAll(".MyText")
 		.data(dataset)
 		.enter()
 		.append("text")
@@ -158,6 +161,7 @@ export default function BarChart(data) {
 	// 	.attr("class","axis")
 	// 	.attr("transform","translate(" + padding.left + "," + padding.top + ")")
 	// 	.call(yAxis);
+		
 	return {
 		destroy: function() {
 			parent.select('svg').remove()

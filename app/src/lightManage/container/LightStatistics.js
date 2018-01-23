@@ -44,7 +44,7 @@ export default class LightStatistics extends Component {
                 dateTime: {},
                 variable: "power"
             },
-            curEnergy: 'dayEnergy', //默认显示列表第一项对应的能源消耗
+            // curEnergy: 'dayEnergy', //默认显示列表第一项对应的能源消耗
             type: '2',//0,1,2,3是分别以年月日时为单位统计的标识
             totalEnergy: '10000',//显示设备总能耗
             energyList: {
@@ -67,7 +67,6 @@ export default class LightStatistics extends Component {
                 value: '',//域的名字
                 options: []
             },
-            curEnergy: "dayEnergy",
             piechartList: [],
             dataIdBind: [
                 { domainId: '', deviceId: '', planId: '' },
@@ -126,7 +125,7 @@ export default class LightStatistics extends Component {
         if (data.length == 0) {
             index = 0;
             options = [{ name: '请添加域' }];
-            domainlist.value = options[0].name;
+            domainList.value = options[0].name;
             domainList.options = options;
             id = null;
         } else {
@@ -305,17 +304,15 @@ export default class LightStatistics extends Component {
                 this.drawChart(ref, data);
             } else if (refId == "planState") {
                 // data = [8, 4];
-                // data = [8, 4];
                 data = [domainStatus.palnSuccess ? domainStatus.palnSuccess : 0,
                         domainStatus.planFail ? domainStatus.planFail : 0];
                 this.drawChart(ref, data);
             } else if (refId == "lightState") {
                 // data = [9, 2];
-                // data = [9, 2];
                 data = [domainStatus.lightOnPercent ? (domainStatus.lightOnPercent)*100 : 0,
                         (1-domainStatus.lightOnPercent) ? (1-domainStatus.lightOnPercent)*100 : 100
                     ];
-                    console.log("data:", data);
+                    // console.log("data:", data);
                 this.drawChart(ref, data);
             } else {
                 return;
@@ -334,7 +331,7 @@ export default class LightStatistics extends Component {
         } else {
             let box = document.getElementById("pieBox")
             let boxLeftwidth = box.offsetWidth * 0.125;
-            console.log("boxLeftwidth:", boxLeftwidth)
+            // console.log("boxLeftwidth:", boxLeftwidth)
             this.piechart = new PieChart({
                 wrapper: ref,
                 data: data,

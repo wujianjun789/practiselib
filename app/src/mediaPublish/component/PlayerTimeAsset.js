@@ -53,7 +53,7 @@ class PlayerTimeAsset extends PureComponent{
             })
         }
         else{
-            const curIndex = value.target.selectedIndex;
+            const curIndex = data.target.selectedIndex;
             this.setState({
                 property: Object.assign({}, this.state.property, {
                     [id]: Object.assign({}, this.state.property[id], {
