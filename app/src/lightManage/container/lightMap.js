@@ -22,6 +22,7 @@ import {getPoleListByModelWithName, getPoleListByModelDomainId, getPoleAssetById
 import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index'
 import {getDomainListByName} from '../../api/domain'
 import {getIndexByKey} from '../../util/algorithm'
+import { DOMAIN_LEVEL } from '../../common/util/index'
 import {getAssetsBaseByDomain,getSearchAssets,getAssetsByDomainLevelWithCenter} from '../../api/asset'
 import lodash from 'lodash'
 import Immutable from 'immutable';
@@ -62,10 +63,6 @@ export class lightMap extends Component{
             strategyList:Immutable.fromJS({id:"strategy", value:"strategy1", options:[{id:1, name:"strategy1"}, {id:2, name:"strategy2"}]}),
             faultStyle: {"top": "280px"},
             IsOpenFault: false,
-
-            listStyle:{"maxHeight":"200px"},
-            infoStyle:{"maxHeight":"352"},
-            controlStyle:{"maxHeight":"180"},
             IsOpenPoleInfo:false,
             IsOpenPoleControl:false,
 
@@ -100,10 +97,15 @@ export class lightMap extends Component{
 
         this.map = {
             center:{ lng: 121.49971691534425, lat: 31.239658843127756 }
-        }
+        };
 
-        this.domainLevel = 5;
+        this.listStyle = {"maxHeight":"200px"};
+        this.infoStyle = {"maxHeight":"352"};
+        this.controlStyle= {"maxHeight":"180"};
+        this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
+
+        this.andNot= 0;
 
         this.screen = Immutable.fromJS({})
         this.faultKeys = ["sys_fault", "vram_fault", "disp_module_fault", "disp_module_power_fault", "single_pixel_tube_fault",
@@ -117,6 +119,8 @@ export class lightMap extends Component{
             {id:"lamp", className:"icon_lc"},
             {id:"charge", className:"icon_charge_pole"}
         ];
+
+        this.deviceList = []
 
         this.lightList = {id:"lightValue",value:"10",options:[
             {id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
@@ -142,7 +146,6 @@ export class lightMap extends Component{
         this.searchDeviceSelect = this.searchDeviceSelect.bind(this);
         this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
         this.closeClick = this.closeClick.bind(this);
-        this.updateCameraVideo = this.updateCameraVideo.bind(this);
 
         /*  新增－t  */
         this.initDomainList = this.initDomainList.bind(this);
@@ -178,7 +181,6 @@ export class lightMap extends Component{
         getMapConfig(data=>{
                 if(this.mounted){
                     this.map = Object.assign({}, this.map, data, { zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel) });
-                    this.map.zoom = 15;
                     this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
                 }
         })
@@ -205,14 +207,6 @@ export class lightMap extends Component{
         this.props.actions.removeAllNotify();
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (!_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState)) {
-           return true
-        } else {
-           return false
-        }
-    }
-
     updatePlaceholder(){
         const {domainList, domainSearch} = this.state;
         let datalist = [];
@@ -228,27 +222,6 @@ export class lightMap extends Component{
     /*  新增－t  */
     searchInputOnKeyUp(e){
         if (e.keyCode === 13 || e=="toSearch"){}else{return}
-        if(this.state.searchMode=="设备"){
-            /*  先在已经请求到的域内的所有设备中寻找  */
-            let searchObj = this.state.resDevice.toJS();
-            let num = searchObj.length-1;
-            let list = [];
-            searchObj.map((item,index)=>{
-                if(item.name.indexOf(this.state.search.get("value"))>0){
-                    list.push(item);
-                }
-                if(index==num){this.setState({searchList:Immutable.fromJS(list)},()=>{
-                    console.log("success");
-                })}
-            })
-            /*  如没有找到则根据input值执行api获取数据  */
-            /*  根据返回数据添加到searchList变量中  */
-            this.setState({IsSearchResult:true},()=>{
-                this.setState({search:this.state.search.update("value",v=>'')});
-                this.setSize();
-            })
-        }else{
-        }
     }
 
 
@@ -376,35 +349,22 @@ export class lightMap extends Component{
     }
 
     setSize(){
-        if(!this.mounted){
-            return;
-        }
+        if(!this.mounted){return;}
         const {IsSearch, curId} = this.state;
         let height = window.innerHeight;
         if(IsSearch){
-            let listStyle = {"maxHeight":(height<145?0:height-145)+"px"};
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-            this.setState({listStyle:listStyle});
+            this.listStyle = {"maxHeight":(height<145?0:height-145)+"px"};
         }else{
             let defaultHeight = 230;
             if(this.refs.poleInfo){
                 defaultHeight += findDOMNode(this.refs.poleInfo).offsetHeight;
             }
-            let infoStyle = {"maxHeight":(height<230?0:height-230)};
-            let controlStyle = {"maxHeight":(height<defaultHeight?0:height-defaultHeight)};
-            console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-            this.setState({infoStyle:infoStyle, controlStyle:controlStyle});
-        }
-    }
-
-    updateCameraVideo(data){
-        if(this.refs.camera != null && data.hasOwnProperty('camera_url')){
-            this.client = new JSMpeg.Player(data.camera_url, { canvas: this.refs.camera })
+            this.infoStyle = {"maxHeight":(height<230?0:height-230)};
+            this.controlStyle = {"maxHeight":(height<defaultHeight?0:height-defaultHeight)};
         }
     }
 
     formatIntl(formatId){
-        // return this.props.intl.formatMessage({id:formatId});
         return formatId;
     }
 
@@ -532,6 +492,7 @@ export class lightMap extends Component{
 
     requestCurAssets(model){
         getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
+            this.deviceList = Immutable.fromJS(data);
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -542,6 +503,7 @@ export class lightMap extends Component{
 
     requestCurDomain(){
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+            this.deviceList = Immutable.fromJS(data);
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -559,7 +521,7 @@ export class lightMap extends Component{
                             this.state.curList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
                         }
                         if(deviceLen.length == data.length){
-                            this.setState({curList: this.state.curList});
+                            // this.setState({curList: this.state.curList});
                         }
 
                     })
@@ -573,7 +535,6 @@ export class lightMap extends Component{
     }
 
     mapDragend(data){
-        console.log("111111111111111111111111111111111111111")
         return;
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         if(this.map.zoom>15&&this.map.zoom<=18){
@@ -584,8 +545,9 @@ export class lightMap extends Component{
     }
 
     mapZoomend(data){
-        return;
+        if(this.andNot>=2){}else{this.andNot=this.andNot+1;return;}
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         if(this.map.zoom>15&&this.map.zoom<=18){
             this.requestCurAssets("lc");
         }else{
@@ -594,9 +556,16 @@ export class lightMap extends Component{
     }
 
     markerClick(data){
-        console.log("333333333333333333333333333333333333333")
-        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-        this.isMouseEnterSet();
+        if(this.map.zoom>15&&this.map.zoom<=18){
+            this.deviceList.map((item,key)=>{
+                let id = item.get("id");
+                if(id===data.id){this.itemClick(item);}
+            });
+        }else{
+            let zoom = data.zoom+3;
+            this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+            this.isMouseEnterSet();
+        }
     }
 
     transformState(key, sf){
@@ -647,55 +616,6 @@ export class lightMap extends Component{
         let faultList = [];
         const {faultStyle, IsOpenFault} = this.state;
         switch(id){
-            case "screen":
-                const {screen} = this.state;
-                faultList = screen.get("faultList").toJS();
-                return <div className="row state-info screen">
-                    <div className="col-sm-8 prop">
-                        {this.renderState(props, "resolution", "width")}
-                        {this.renderState(props, "online", "online", true)}
-                        {this.renderState(props, "version", "version")}
-                        {this.renderState(props, "brightness_mode", "brightness_mode", true)}
-                        {this.renderState(props, "brightness", "brightness")}
-                        {
-                            <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}>{faultList.length>0?"故障":"运行正常"}</span></div>
-                        }
-                        {
-                            faultList.length>0 &&
-                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
-                                   closeClick={this.closeClick}>
-                                {
-                                    faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl(""+key)}</div>
-                                    })
-                                }
-                            </Panel>
-                        }
-                    </div>
-                    <div className="col-sm-4 img-container"><img src="http://localhost:8080/images/smartLight/screen_test.png"/></div>
-                </div>
-            case "camera":
-                const {camera} = this.state;
-                faultList = camera.get("faultList").toJS();
-                return <div className="row state-info camera">
-                    <div className="col-sm-12 prop">
-                        {this.renderState(props, "online_people", "online_people")}
-                        {
-                            <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
-                        }
-                        {
-                            faultList.length>0 &&
-                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
-                                   closeClick={this.closeClick}>
-                                {
-                                    faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl(""+key)}</div>
-                                    })
-                                }
-                            </Panel>
-                        }
-                    </div>
-                </div>
             case "lamp":
                 const {lamp} = this.state;
                 faultList = lamp.get("faultList").toJS();
@@ -717,98 +637,11 @@ export class lightMap extends Component{
                                 </Panel>
                             }
                         </div>
-                    </div>
-            case "charge":
-                const {charge} = this.state;
-                faultList = charge.get("faultList").toJS();
-                return <div className="row state-info charge">
-                            <div className="col-sm-12 prop">
-                                {this.renderState(props, "charge_state", "charge_state", true)}
-                                {
-                                    <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
-                                }
-                                {
-                                    faultList.length>0 &&
-                                    <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
-                                           closeClick={this.closeClick}>
-                                        {
-                                            faultList.map(key=>{
-                                                return <div key={key}>{this.formatIntl(""+key)}</div>
-                                            })
-                                        }
-                                    </Panel>
-                                }
-                            </div>
-                    </div>
-            case "collect":
-                return <div className="row state-info collect">
-                        <div className="col-sm-12 prop">
-                            {this.renderState(props, "temperature", "temperature", false, '℃')}
-                            {this.renderState(props, "humidity", "humidity", false, 'rh%')}
-                            {this.renderState(props, "air-pressure", "air-pressure", false, 'hPa')}
-                            {this.renderState(props, "noise", "noise", false, 'dB')}
-                            {this.renderState(props, "wind-speed", "wind-speed", false, 'm/s')}
-                            {this.renderState(props, "wind-direction", "wind-direction", true)}
-                            {this.renderState(props, "pm25", "pm25", false, 'ug/m^3')}
-                            {this.renderState(props, "o2", "o2", false, 'VOL')}
-                            {this.renderState(props, "co", "co", false, 'ppm')}
-                        </div>
-                    </div>
+                       </div>
         }
     }
     renderControl(id){
         switch(id){
-            case "screen":
-                const {timeTableList} = this.state
-                return <div className="row state-control screen">
-                        <div className="col-sm-12 form-group switch">
-                            <label className="col-sm-4">显示屏开关:</label>
-                            <select className="col-sm-4" value={this.screenSwitch.value} onChange={event=>this.onChange("screenSwitch", event)}>
-                                {
-                                    this.screenSwitch.options.map(sw=>{
-                                        return <option key={sw.id}>{sw.value}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>应用</button>
-                        </div>
-                        <div className="col-sm-12 form-group time-table">
-                            <label className="col-sm-4">时间表1</label>
-                            <select className="col-sm-4" value={timeTableList.get("value")} onChange={event=>this.onChange("timeTable", event)}>
-                                {
-                                    timeTableList.get("options").map(time=>{
-                                        return <option key={time.get("id")}>{time.get("name")}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>应用</button>
-                        </div>
-                    </div>
-            case "camera":
-                const {camera} = this.state;
-                return <div className="row state-control camera">
-                    <div className="col-sm-12 video">
-                        <canvas ref="camera">
-                        </canvas>
-                    </div>
-                    <div className="col-sm-12 form-group focus">
-                        <label className="col-sm-3">变焦:</label>
-                        <div className="col-sm-9">
-                            <input  type="range" min="0" max="100" step="1" value={camera.get("focus")} onChange={event=>this.onChange("focus", event)}/>
-                        </div>
-                    </div>
-                    <div className="col-sm-12 form-group preset">
-                        <label className="col-sm-3">预置:</label>
-                        <select className="col-sm-6" value={this.presetList.value} onChange={event=>this.onChange("preset", event)}>
-                            {
-                                this.presetList.options.map(sw=>{
-                                    return <option key={sw.id}>{sw.value}</option>
-                                })
-                            }
-                        </select>
-                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("preset")}>切换</button>
-                    </div>
-                </div>
             case "lamp":
                 const {strategyList} = this.state;
                 return <div className="row state-control lamp">
@@ -863,14 +696,16 @@ export class lightMap extends Component{
 
 
     render(){
+        
         const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList,  IsOpenPoleInfo, IsOpenPoleControl} = this.state;
         let IsControl = false;
         let searchListToJS = searchList.toJS();
         let searchListLength = searchListToJS.length;
-        console.log("BBBBBBBBBBBBBBBBBBBBBBBBB===============================================================AAAAAAAAAAAAAAAAAAAAAAA")
+
+        console.log("____________________________________________________________________________________________")
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
-            IsControl = true
+            IsControl = true;
         }
         return (
             <Content onClick={()=>{}}>
@@ -888,7 +723,7 @@ export class lightMap extends Component{
                                 })
                             }
                     </ul>
-                    <ul className={"list-group "+(IsSearch&&IsSearchResult?"":"hidden")} style={listStyle}>
+                    <ul className={"list-group "+(IsSearch&&IsSearchResult?"":"hidden")} style={this.listStyle}>
                         {
                             searchList.map((item,key)=>{
                                 if(searchListLength == (key+1)){
@@ -906,35 +741,35 @@ export class lightMap extends Component{
                         }
                     </ul>
                     <div className={"prevNext "+(IsSearch&&IsSearchResult?"":"hidden")}><span className="next" onClick={()=>{ let num=searchOffset+6; this.requestSearch(num); }}></span><span className="prev" onClick={()=>{ let num=searchOffset-6; this.requestSearch(num); }}></span></div>
-                    <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(infoStyle.maxHeight>0?15:0)+"px"}}
+                    <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(this.infoStyle.maxHeight>0?15:0)+"px"}}
                         onClick={this.backHandler}>
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
                         <span className="name">{"返回搜索结果"}</span>
                     </div>
                     <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsOpenPoleInfo?"":"hidden")}
-                         style={Object.assign({"marginBottom":(controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":infoStyle.maxHeight+"px"})}>
-                        <div className={"panel-heading "+(infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?40:infoStyle.maxHeight)+"px"}}>
-                            <h3 className={"panel-title "+(infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0]?searchListToJS[0].name:''}</h3>
+                         style={Object.assign({"marginBottom":(this.controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":this.infoStyle.maxHeight+"px"})}>
+                        <div className={"panel-heading "+(this.infoStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(this.infoStyle.maxHeight>40?40:this.infoStyle.maxHeight)+"px"}}>
+                            <h3 className={"panel-title "+(this.infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0]?searchListToJS[0].name:''}</h3>
                             <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
                         </div>
-                        <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
+                        <div className={"panel-body "+(this.infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(this.infoStyle.maxHeight>40?this.infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
                                 {
-                                   searchListToJS[0] && <li className={(infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
+                                   searchListToJS[0] && <li className={(this.infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
                                 }
                             </ul>
                             { this.renderInfo(curId,this.state[curId]) }
                         </div>
                     </div>
-                    <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":controlStyle.maxHeight+"px"}}>
-                        <div className={"panel-heading "+(controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(controlStyle.maxHeight>40?40:controlStyle.maxHeight)+"px","borderBottom":(controlStyle.maxHeight<=40?0:1)+"px",
-                        "paddingBottom":(controlStyle.maxHeight<40?0:12)+"px","paddingTop":(controlStyle.maxHeight<30?0:12)+"px"}}>
-                            <h3 className={"panel-title "+(controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
-                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle}></span>
+                    <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || this.controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":this.controlStyle.maxHeight+"px"}}>
+                        <div className={"panel-heading "+(this.controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
+                        "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}}>
+                            <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
+                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle}></span>
                         </div>
-                        <div className={"panel-body "+(!IsOpenPoleControl || controlStyle.maxHeight<=40?"hidden":"")}
-                             style={{"maxHeight":(controlStyle.maxHeight>40?controlStyle.maxHeight-40:0)+"px",
-                             "paddingBottom":(controlStyle.maxHeight<70?0:0)+"px","paddingTop":(controlStyle.maxHeight<55?0:0)+"px"}}>
+                        <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
+                             style={{"maxHeight":(this.controlStyle.maxHeight>40?this.controlStyle.maxHeight-40:0)+"px",
+                             "paddingBottom":(this.controlStyle.maxHeight<70?0:0)+"px","paddingTop":(this.controlStyle.maxHeight<55?0:0)+"px"}}>
                             {
                                 this.renderControl(curId)
                             }
