@@ -284,6 +284,7 @@ export default class LightStatistics extends Component {
     }
 
     renderChart(ref) {
+        const { domainStatus } = this.state;
 
         if (ref == null) {
             this.destroyBarChart();
@@ -296,13 +297,25 @@ export default class LightStatistics extends Component {
                 let data = energyFilt.data;
                 this.drawChart(ref, data)
             } else if (refId == "deviceState") {
-                data = [5, 6, 3, 2];
+                // data = [5, 6, 3, 2];
+                data = [domainStatus.deviceOnlineRunning ? domainStatus.deviceOnlineRunning : 0,
+                        domainStatus.deviceOnlineError ? domainStatus.deviceOnlineError : 0,
+                        domainStatus.deviceOffline ? domainStatus.deviceOffline : 0
+                    ];
                 this.drawChart(ref, data);
             } else if (refId == "planState") {
-                data = [8, 4];
+                // data = [8, 4];
+                // data = [8, 4];
+                data = [domainStatus.palnSuccess ? domainStatus.palnSuccess : 0,
+                        domainStatus.planFail ? domainStatus.planFail : 0];
                 this.drawChart(ref, data);
             } else if (refId == "lightState") {
-                data = [9, 2];
+                // data = [9, 2];
+                // data = [9, 2];
+                data = [domainStatus.lightOnPercent ? (domainStatus.lightOnPercent)*100 : 0,
+                        (1-domainStatus.lightOnPercent) ? (1-domainStatus.lightOnPercent)*100 : 100
+                    ];
+                    console.log("data:", data);
                 this.drawChart(ref, data);
             } else {
                 return;
@@ -415,7 +428,7 @@ export default class LightStatistics extends Component {
                                     <div className="boxRight">
                                         <div className="stateInfo">
                                             <div className="fontbold font">域：<span>{`${this.state.domainList.value}`}</span></div>
-                                            <div className="fontbold font">亮灯率：<span>{domainStatus.lightOnPercent ? domainStatus.lightOnPercent + '%' : '未读取'}</span></div>
+                                            <div className="fontbold font">亮灯率：<span>{domainStatus.lightOnPercent ? domainStatus.lightOnPercent*100 + '%' : '未读取'}</span></div>
                                         </div>
                                     </div>
                                 </div>
