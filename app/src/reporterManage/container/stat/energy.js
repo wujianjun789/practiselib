@@ -23,7 +23,7 @@ export default class Lc extends Component {
         startDate: getYesterday(),
         endDate: getToday(),
 
-        currentMode: 'device',
+        currentMode: 'domain',
         currentDomain: null,
         currentDeviceId: null,
         modeList: [
