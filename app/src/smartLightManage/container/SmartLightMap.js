@@ -324,7 +324,7 @@ export class SmartLightMap extends Component{
     }
 
     updateCameraVideo(data){
-        if(this.refs.camera != null && data.hasOwnProperty('camera_url')){
+        if(this.refs.camera != null && data.hasOwnProperty('camera_url') && JSMpeg){
 
             this.client = new JSMpeg.Player(data.camera_url, { canvas: this.refs.camera })
             /* this.client = new WebSocket(data.camera_url);

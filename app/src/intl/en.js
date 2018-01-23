@@ -210,7 +210,6 @@ export default {
         'sysOperation.device.maintenance':'Device Maintenance',
         'sysOperation.strategy.alert':'please input strategy name',
         'sysOperation.set.param':'please set param',
-        'sysOperation.select.sensor':'please select sensor',
         'sysOperation.select.device':'please select device',
         'sysOperation.select.instruction':'please select instruction',
 
@@ -233,13 +232,6 @@ export default {
         'app.time.difference': 'Time difference',
 
         //智慧路灯
-
-        'app.map': 'map',
-        'app.list': 'list',
-        'app.control': 'control',
-        'app.scene': "scene",
-        'app.strategy': "strategy",
-
         'app.search.placeholder.name': 'Search name or domain',
         'app.search.list': 'Return',
 
@@ -309,9 +301,6 @@ export default {
         'app.total.charge':'total charge',
         'app.total.charge.time':'total charge time',
         'app.last.charge.time':'last charge time',
-
-        'app.time.strategy':'Time dimming strategy',
-        'app.latlng.strategy':'Latlng dimming strategy',      
 
         //media
         'mediaPublish.playList': 'Play List',
@@ -472,7 +461,6 @@ export default {
         'app.height': 'Heigth',
         'app.version': 'Version',
         'app.brightness_mode': 'Brightness Mode',
-        'app.brightness': 'Brightness',
         'app.sys_fault': 'System Fault',
         'app.vram_fault': 'Vram Fault',
         'app.disp_module_fault': 'Display Module Fault',
@@ -516,7 +504,6 @@ export default {
 
         'app.alarm': 'Alarm',
         'app.name': 'name',
-        'app.type': 'type',
         'app.date': 'time',
 
         'manage.title': 'StarRiver Manage',
