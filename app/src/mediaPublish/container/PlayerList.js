@@ -92,7 +92,7 @@ export class PlayerList extends Component {
             return Object.assign({}, project, {"resolution":project.width+"X"+project.height});
         })
 
-        this.setState({data:Immutable.fromJS(data)});
+        this.setState({data:Immutable.fromJS(data), page:this.state.page.update("total", v=>data.length)});
     }
 
     typeChange(selectIndex) {
@@ -139,7 +139,8 @@ export class PlayerList extends Component {
                     height: state.height
                 }
 
-                // addProject(data, ()=>{
+                addProject(data, (response)=>{
+                console.log('response:', response);
                     actions.overlayerHide();
                 const id = Math.random()*9999;
                 let item = { id: id, icon: "", name: state.name, resolution: state.width + "X" + state.height, width: state.width, height: state.height }
@@ -149,7 +150,7 @@ export class PlayerList extends Component {
                         item: item
                     }
                 });
-                // })
+                })
             }} />)
 
     }
@@ -198,6 +199,7 @@ console.log('edit:', data);
         actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.isDeleteList')}
             cancel={() => { actions.overlayerHide() }} confirm={() => {
                 removeProjectById(id, ()=>{
+                    actions.overlayerHide();
                     this.requestSearch();
                 })
             }} />);
@@ -205,6 +207,7 @@ console.log('edit:', data);
 
     render() {
         const { type, search, page, data } = this.state;
+        console.log(page.get('total'));
         return <Content className="player-list">
             <div className="heading">
                 <Select className="type" data={type}
