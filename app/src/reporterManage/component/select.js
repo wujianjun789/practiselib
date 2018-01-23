@@ -6,17 +6,17 @@ const Select = (props, context) => {
 
     let defaultValue = null;
     if (id === 'domain' && current) {
-        defaultValue = current
+        defaultValue = current;
     }
     return (
         <select className={`form-control select ${className}`} disabled={disabled} id={id} onChange={onChange}
             defaultValue={defaultValue}>
             {options.map((item, index) => {
-                return <option key={index} hidden={item.hidden} value={item.name}>{item.name}</option>
+                return <option key={index} hidden={item.hidden} value={item.name}>{item.name}</option>;
             })}
         </select>
-    )
-}
+    );
+};
 
 Select.propTypes = {
     id: PropTypes.string,
@@ -26,6 +26,6 @@ Select.propTypes = {
     options: PropTypes.arrayOf(PropTypes.object),
     onChange: PropTypes.func,
     current: PropTypes.string,
-}
+};
 
 export default Select;

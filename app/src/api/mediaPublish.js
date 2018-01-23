@@ -1,7 +1,8 @@
 /**
  * Created by a on 2017/10/19.
  */
-import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
+import { /*HOST_IP,*/ getHttpHeader, httpRequest } from '../util/network';
+const HOST_IP = "http://172.16.7.216:3002/api";
 import { HeadBar } from '../components/HeadBar';
 
 //上传文件
@@ -110,24 +111,23 @@ export function updateProjectById(data, cb) {
     })
 }
 
-export function delProjectById(data, cb) {
+export function removeProjectById(id, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP + '/projects/' + data.id;
+    let url = HOST_IP + '/projects/' + id;
     httpRequest(url, {
         headers: headers,
         method: 'DELETE',
-        body: JSON.stringify(data)
     }, response => {
         cb && cb(response);
     })
 }
 
 //播放表
-export function getPlayerList(cb) {
+export function getProgramList(projectId, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP + '/programs';
+    let url = HOST_IP + '/projects/'+projectId+'programs';
     httpRequest(url, {
         headers: headers,
         method: 'GET'
@@ -136,10 +136,10 @@ export function getPlayerList(cb) {
     })
 }
 
-export function getPlayerById(id, cb) {
+export function getProgramById(projectId, id, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP + '/programs/' + id;
+    let url = HOST_IP + '/projects/'+projectId+'/programs/' + id;
     httpRequest(url, {
         headers: headers,
         method: 'GET'
@@ -148,10 +148,10 @@ export function getPlayerById(id, cb) {
     })
 }
 
-export function addPlayer(data, cb) {
+export function addProgram(projectId, data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP + '/programs', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
@@ -160,10 +160,10 @@ export function addPlayer(data, cb) {
     })
 }
 
-export function updatePlayerById(data, cb) {
+export function updateProgramById(projectId, data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP + '/programs/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
@@ -172,10 +172,10 @@ export function updatePlayerById(data, cb) {
     })
 }
 
-export function updatePlayerOrders(data, cb) {
+export function updateProgramOrders(projectId, data, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP + '/programs/orders', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/orders', {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
@@ -184,10 +184,10 @@ export function updatePlayerOrders(data, cb) {
     })
 }
 
-export function delPlayerById(data, cb) {
+export function removeProgramsById(projectId, id, cb) {
     let headers = getHttpHeader();
 
-    httpRequest(HOST_IP + '/programs/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/' + id, {
         headers: headers,
         method: 'DELETE'
     }, response => {
@@ -196,9 +196,9 @@ export function delPlayerById(data, cb) {
 }
 
 //场景
-export function getSceneList(cb) {
+export function getSceneList(projectId, programId, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/scenes', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes', {
         headers: headers,
         method: 'GET'
     }, response => {
@@ -206,9 +206,9 @@ export function getSceneList(cb) {
     })
 }
 
-export function getSceneById(id, cb) {
+export function getSceneById(projectId, programId, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/scenes/' + id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/' + id, {
         headers: headers,
         method: 'GET'
     }, response => {
@@ -216,9 +216,9 @@ export function getSceneById(id, cb) {
     })
 }
 
-export function addScene(data, cb) {
+export function addScene(projectId, programId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/scenes', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
@@ -227,9 +227,9 @@ export function addScene(data, cb) {
     })
 }
 
-export function updateSceneById(data, cb) {
+export function updateSceneById(projectId, programId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/scenes/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
@@ -238,20 +238,21 @@ export function updateSceneById(data, cb) {
     })
 }
 
-export function updateSceneOrders(data, cb) {
+export function updateSceneOrders(projectId, programId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/scenes/orders/' + data.id, {
+
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/orders', {
         headers: headers,
-        method: 'POST',
+        method: 'PUT',
         body: JSON.stringify(data)
     }, response => {
         cb && cb(response);
     })
 }
 
-export function delSceneById(data, cb) {
+export function removeSceneById(projectId, programId, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/scenes/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/' + id, {
         headers: headers,
         method: 'DELETE'
     }, response => {
@@ -260,9 +261,9 @@ export function delSceneById(data, cb) {
 }
 
 //区域
-export function getZoneList(cb) {
+export function getZoneList(projectId, programId, sceneId, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/zones', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones', {
         headers: headers,
         method: 'GET'
     }, response => {
@@ -270,9 +271,9 @@ export function getZoneList(cb) {
     })
 }
 
-export function getZoneById(id, cb) {
+export function getZoneById(projectId, programId, sceneId, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/zones/' + id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/' + id, {
         headers: headers,
         method: 'GET'
     }, response => {
@@ -280,9 +281,9 @@ export function getZoneById(id, cb) {
     })
 }
 
-export function addZone(data, cb) {
+export function addZone(projectId, programId, sceneId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/zones', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
@@ -291,9 +292,9 @@ export function addZone(data, cb) {
     })
 }
 
-export function updateZoneById(data, cb) {
+export function updateZoneById(projectId, programId, sceneId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/zones/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
@@ -302,9 +303,9 @@ export function updateZoneById(data, cb) {
     })
 }
 
-export function updateZoneOrders(data, cb) {
+export function updateZoneOrders(projectId, programId, sceneId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/zones/orders', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/orders', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
@@ -313,9 +314,9 @@ export function updateZoneOrders(data, cb) {
     })
 }
 
-export function delZoneById(data, cb) {
+export function removeZoneById(projectId, programId, sceneId, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/zones/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/' + id, {
         headers: headers,
         method: 'DELETE'
     }, response => {
@@ -324,9 +325,9 @@ export function delZoneById(data, cb) {
 }
 
 //播放项
-export function getItemList(data, cb) {
+export function getItemList(projectId, programId, sceneId, zoneId, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/items', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items', {
         headers: headers,
         method: 'GET'
     }, response => {
@@ -334,9 +335,9 @@ export function getItemList(data, cb) {
     })
 }
 
-export function getItembyId(id, cb) {
+export function getItembyId(projectId, programId, sceneId, zoneId, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/items/' + id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/' + id, {
         headers: headers,
         method: 'GET'
     }, response => {
@@ -354,9 +355,9 @@ export function getItemPreviewbyId(id, cb) {
     })
 }
 
-export function addItem(data, cb) {
+export function addItem(projectId, programId, sceneId, zoneId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/items', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
@@ -365,9 +366,9 @@ export function addItem(data, cb) {
     })
 }
 
-export function updateItemById(data, cb) {
+export function updateItemById(projectId, programId, sceneId, zoneId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/items/' + data.id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/' + data.id, {
         headers: headers,
         method: 'PUT',
         body: JSON.stringify(data)
@@ -376,9 +377,9 @@ export function updateItemById(data, cb) {
     })
 }
 
-export function updateItemOrders(data, cb) {
+export function updateItemOrders(projectId, programId, sceneId, zoneId, data, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/items/orders', {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/orders', {
         headers: headers,
         method: 'POST',
         body: JSON.stringify(data)
@@ -387,9 +388,9 @@ export function updateItemOrders(data, cb) {
     })
 }
 
-export function delItemById(id, cb) {
+export function removeItemById(projectId, programId, sceneId, zoneId, id, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/items/' + id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/' + id, {
         headers: headers,
         method: 'DELETE'
     }, response => {

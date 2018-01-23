@@ -89,9 +89,6 @@ class PlayerText extends PureComponent {
                     property: Object.assign({}, this.state.property, {
                         textContent: Object.assign({}, textContent, { value: '' }),
                         fontType: Object.assign({}, fontType, { index: 0, name: '微软雅黑' }),
-                        fontColor: Object.assign({}, fontColor),
-                        bgColor: Object.assign({}, bgColor),
-                        bgTransparent: Object.assign({}, bgTransparent),
                         alignment: Object.assign({}, alignment, { index: 0, name: '左上' }),
                         fontSize: Object.assign({}, fontSize, { index: 0, name: '12pt' }),
                         animation: Object.assign({}, animation, { index: 0, name: "立即显示" }),

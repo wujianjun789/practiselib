@@ -56,7 +56,6 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "postcss-loader": "^2.0.9",
-    "pre-commit": "^1.2.2",
     "prop-types": "^15.5.10",
     "pump": "^1.0.3",
     "react": "^15.3.2",
@@ -114,7 +113,7 @@
   },
   "scripts": {
     "test": "jest --coverage",
-    "lint": "eslint .",
+    "lint": "eslint --ext .js --ext .jsx app/src",
     "fix": "eslint --fix .",
     "dev:server": "cd server & node server --dev ",
     "dev:client": "webpack-dev-server --public",
@@ -124,10 +123,6 @@
     "build": "gulp && start npm run build:lib && start npm run build:app ",
     "start": "cd dist & npm start"
   },
-  "pre-commit": [
-    "fix",
-    "lint"
-  ],
   "author": "刘夏",
   "license": "ISC",
   "repository": "http://202.11.11.201/led-control/sr_pro/starriver_pro_web.git"

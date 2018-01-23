@@ -27,7 +27,8 @@ app/src/login
 app/src/mediaPublish
 app/src/mediaPublishManage
 app/src/permissionManage
-app/src/reporterManage
+app/src/reporterManage/old
+app/src/reporterManage/container/device/power.js
 app/src/root
 app/src/routes
 app/src/serviceMonitoring

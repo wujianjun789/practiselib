@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import Immutable from 'immutable';
 import Content from '../../../components/Content';
 import SearchText from '../../../components/SearchText';
@@ -8,13 +8,13 @@ import Select from '../../component/select';
 import Chart from '../../component/chart';
 import { DatePicker } from 'antd';
 import Modal from 'antd/lib/modal';
-import '../../../../public/styles/antd-modal.less'
+import '../../../../public/styles/antd-modal.less';
 import { getYesterday, getToday } from '../../../util/time';
-import { getDomainList } from '../../../api/domain'
-import { getSearchAssets, getSearchCount } from '../../../api/asset'
-import { getHistoriesDataInDevice } from '../../../api/reporter'
+import { getDomainList } from '../../../api/domain';
+import { getSearchAssets, getSearchCount } from '../../../api/asset';
+import { getHistoriesDataInDevice } from '../../../api/reporter';
 import '../../../../public/styles/reporterManage-device.less';
-import { momentDateFormat } from '../../../util/time'
+import { momentDateFormat } from '../../../util/time';
 
 export default class Lc extends Component {
     state = {
@@ -69,7 +69,7 @@ export default class Lc extends Component {
         this.paramColumns = [
             { field: 'param', title: '采样参数' },
             { field: 'unit', title: '单位' }
-        ]
+        ];
         this.maxSelectNum = 5;
         this.initDomainData();
     }
@@ -81,13 +81,13 @@ export default class Lc extends Component {
     initDomainData = () => {
         getDomainList(data => {
             this._isMounted && this.updateDomainData(data);
-        })
+        });
     }
     updateDomainData = (data) => {
         if (data.length === 0) {
             return;
         } else {
-            this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData)
+            this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData);
         }
     }
     //初始化设备、更新设备列表、选择设备
@@ -96,7 +96,7 @@ export default class Lc extends Component {
             return;
         }
         if (isSearch) {
-            this.setState({ page: { ...this.state.page, current: 1 } })
+            this.setState({ page: { ...this.state.page, current: 1 } });
         }
         if (this.state.currentDomain) {
             const { currentDomain, search: { value }, page: { current, limit } } = this.state;
@@ -106,33 +106,33 @@ export default class Lc extends Component {
         }
     }
     updateDeviceData = (data) => {
-        this._isMounted && this.setState({ multiDeviceList: data })
+        this._isMounted && this.setState({ multiDeviceList: data });
     }
     //侧边栏展开关闭、选择起始日期
     collapseHandler = () => {
-        this.setState({ sidebarCollapse: !this.state.sidebarCollapse })
+        this.setState({ sidebarCollapse: !this.state.sidebarCollapse });
     }
     startDateChange = (date, dateStr) => {
-        this.setState({ startDate: date })
+        this.setState({ startDate: date });
     }
     endDateChange = (date, dateStr) => {
-        this.setState({ endDate: date })
+        this.setState({ endDate: date });
     }
     //模态框、搜索栏、分页
     showModal = () => {
-        this.setState({ visible: !this.state.visible })
+        this.setState({ visible: !this.state.visible });
     }
     searchChange = (value) => {
-        this.setState({ search: { ...this.state.search, value } })
+        this.setState({ search: { ...this.state.search, value } });
     }
     searchSubmit = () => {
-        this.initDeviceData(true)
+        this.initDeviceData(true);
     }
     updatePageSize = (data) => {
-        this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } })
+        this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     changePagination = (index) => {
-        this.setState({ page: { ...this.state.page, current: index } }, this.initDeviceData)
+        this.setState({ page: { ...this.state.page, current: index } }, this.initDeviceData);
     }
 
     //选择多设备、多参数、单一设备
@@ -142,11 +142,11 @@ export default class Lc extends Component {
             if (selectedMultiDeviceIdList.length < this.maxSelectNum) {
                 this.setState({
                     selectedMultiDeviceIdList: [...selectedMultiDeviceIdList, rowId],
-                })
+                });
             }
         } else {
-            selectedMultiDeviceIdList.splice(selectedMultiDeviceIdList.findIndex(item => item === rowId), 1) //注意，此处一定要指明删除数量为1
-            this.setState({ selectedMultiDeviceIdList })
+            selectedMultiDeviceIdList.splice(selectedMultiDeviceIdList.findIndex(item => item === rowId), 1); //注意，此处一定要指明删除数量为1
+            this.setState({ selectedMultiDeviceIdList });
         }
     }
     selectParam = (rowId, checked) => {
@@ -154,11 +154,11 @@ export default class Lc extends Component {
         if (checked) {
             this.setState({
                 selectedMultiParamIdList: [...selectedMultiParamIdList, rowId],
-            })
+            });
         } else {
             selectedMultiParamIdList.splice(selectedMultiParamIdList.findIndex(item => item === rowId), 1);
 
-            this.setState({ selectedMultiParamIdList })
+            this.setState({ selectedMultiParamIdList });
         }
     }
     selectSingleDevice = (rowId, checked) => {
@@ -167,9 +167,9 @@ export default class Lc extends Component {
             this.setState({
                 currentDeviceId: rowId,
                 showDeviceName: multiDeviceList.find(item => item.id === rowId)['name']
-            })
+            });
         } else {
-            this.setState({ currentDeviceId: null, showDeviceName: '' })
+            this.setState({ currentDeviceId: null, showDeviceName: '' });
         }
     }
     //不同模式下拉菜单处理
@@ -177,28 +177,28 @@ export default class Lc extends Component {
         const { id, selectedIndex } = e.target;
         if (id === 'mode') {
             switch (selectedIndex) {
-                case 1:
-                    this.setState({ currentMode: 'device' });
-                    break;
-                case 2:
-                    this.setState({ currentMode: 'param' });
-                    break;
+            case 1:
+                this.setState({ currentMode: 'device' });
+                break;
+            case 2:
+                this.setState({ currentMode: 'param' });
+                break;
             }
         }
         if (id === 'param') {
             switch (selectedIndex) {
-                case 1:
-                    this.setState({ currentParam: 'brightness' })
-                    break;
-                case 2:
-                    this.setState({ currentParam: 'current' })
-                    break;
-                case 3:
-                    this.setState({ currentParam: 'voltage' })
-                    break;
-                case 4:
-                    this.setState({ currentParam: 'power' })
-                    break;
+            case 1:
+                this.setState({ currentParam: 'brightness' });
+                break;
+            case 2:
+                this.setState({ currentParam: 'current' });
+                break;
+            case 3:
+                this.setState({ currentParam: 'voltage' });
+                break;
+            case 4:
+                this.setState({ currentParam: 'power' });
+                break;
             }
         }
         if (id === 'domain') {
@@ -212,13 +212,13 @@ export default class Lc extends Component {
         const end = momentDateFormat(endDate, 'YYYY-MM-DD');
         if (currentMode === 'device') {
             const { currentParam, selectedMultiDeviceIdList } = this.state;
-            const deviceList = selectedMultiDeviceIdList.map(item => ({ asset: item }))
-            getHistoriesDataInDevice('prop', currentParam, deviceList, start, end, 'asset', multiDeviceList, 'name', res => this.setState({ data: res }))
+            const deviceList = selectedMultiDeviceIdList.map(item => ({ asset: item }));
+            getHistoriesDataInDevice('prop', currentParam, deviceList, start, end, 'asset', multiDeviceList, 'name', res => this.setState({ data: res }));
         }
         if (currentMode === 'param') {
             const { currentDeviceId, selectedMultiParamIdList } = this.state;
-            const paramList = selectedMultiParamIdList.map(item => ({ prop: item }))
-            getHistoriesDataInDevice('asset', currentDeviceId, paramList, start, end, 'prop', multiParamList, 'param', res => this.setState({ data: res }))
+            const paramList = selectedMultiParamIdList.map(item => ({ prop: item }));
+            getHistoriesDataInDevice('asset', currentDeviceId, paramList, start, end, 'prop', multiParamList, 'param', res => this.setState({ data: res }));
 
         }
     }
@@ -235,50 +235,50 @@ export default class Lc extends Component {
 
         let currentDomainName = null, applyDisabled = true, modePanel = null;
         if (currentDomain) {
-            currentDomainName = currentDomain['name']
+            currentDomainName = currentDomain['name'];
         }
         switch (currentMode) {
-            case 'device': {
-                if (currentParam !== null && selectedMultiDeviceIdList.length) {
-                    applyDisabled = false;
-                }
-                modePanel = <div class='device-select-mode'>
-                    <Select id='domain' className='select-domain' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
-                    <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
-                    <div class='device-panel'>
-                        <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={selectedMultiDeviceIdList} rowCheckChange={this.selectDevice} />
+        case 'device': {
+            if (currentParam !== null && selectedMultiDeviceIdList.length) {
+                applyDisabled = false;
+            }
+            modePanel = <div class='device-select-mode'>
+                <Select id='domain' className='select-domain' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
+                <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                <div class='device-panel'>
+                    <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={selectedMultiDeviceIdList} rowCheckChange={this.selectDevice} />
+                    <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
+                        <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
+                    </div>
+                </div>
+            </div>;
+        } break;
+        case 'param': {
+            if (currentDeviceId !== null && selectedMultiParamIdList.length) {
+                applyDisabled = false;
+            }
+            modePanel = <div class='device-select-mode param-select-panel'>
+                <div class='select-device'>
+                    <input disabled value={showDeviceName} />
+                    <button class='btn btn-gray' onClick={this.showModal}>选择设备</button>
+                </div>
+                <Modal class='reporter-modal' title='选择设备' visible={visible} onCancel={this.showModal} onOk={this.showModal} maskClosable={false}>
+                    <div class='select-input'>
+                        <Select id='domain' className='' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
+                        <SearchText className='' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+                    </div>
+                    <div class='select-panel'>
+                        <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={currentDeviceId ? [currentDeviceId] : []} rowCheckChange={this.selectSingleDevice} />
                         <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
                             <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
                         </div>
                     </div>
-                </div>;
-            }; break;
-            case 'param': {
-                if (currentDeviceId !== null && selectedMultiParamIdList.length) {
-                    applyDisabled = false;
-                }
-                modePanel = <div class='device-select-mode param-select-panel'>
-                    <div class='select-device'>
-                        <input disabled value={showDeviceName} />
-                        <button class='btn btn-gray' onClick={this.showModal}>选择设备</button>
-                    </div>
-                    <Modal class='reporter-modal' title='选择设备' visible={visible} onCancel={this.showModal} onOk={this.showModal} maskClosable={false}>
-                        <div class='select-input'>
-                            <Select id='domain' className='' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
-                            <SearchText className='' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
-                        </div>
-                        <div class='select-panel'>
-                            <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={currentDeviceId ? [currentDeviceId] : []} rowCheckChange={this.selectSingleDevice} />
-                            <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
-                                <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
-                            </div>
-                        </div>
-                    </Modal>
-                    <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
-                        checked={selectedMultiParamIdList} rowCheckChange={this.selectParam} />
+                </Modal>
+                <Table columns={this.paramColumns} data={Immutable.fromJS(multiParamList)} allChecked={false}
+                    checked={selectedMultiParamIdList} rowCheckChange={this.selectParam} />
 
-                </div>
-            }; break;
+            </div>;
+        } break;
         }
         return (
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
@@ -292,7 +292,7 @@ export default class Lc extends Component {
                     <div class='panel panel-default panel-1'>
                         <div class='panel-heading'>
                             <span class='icon_touch'></span>选择时间
-						</div>
+                        </div>
                         <div class='panel-body'>
                             <DatePicker class='start-date' placeholder='选择起始日期' value={startDate}
                                 allowClear={false} onChange={this.startDateChange} />
@@ -318,6 +318,6 @@ export default class Lc extends Component {
                     </div>
                 </div>
             </Content >
-        )
+        );
     }
 }

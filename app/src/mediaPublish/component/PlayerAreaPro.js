@@ -104,8 +104,8 @@ class PlayerAreaPro extends PureComponent {
                 areaName: data.name ? false : true,
                 width: data.width ? false : true,
                 height: data.height ? false : true,
-                axisX_a: axisX ? false : true,
-                axisY_a: axisY ? false : true
+                axisX_a: data.axisX ? false : true,
+                axisY_a: data.axisY ? false : true
             }
         });
     }

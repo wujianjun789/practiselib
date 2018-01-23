@@ -80,7 +80,7 @@ export function getPoleAssetById(id, cb) {
     })
 }
 
-export function getPoleListByModelDomainId(model, domainId) {
+export function getPoleListByModelDomainId(model, domainId, cb) {
     let headers = getHttpHeader();
     httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({
             "include": ["extend"],

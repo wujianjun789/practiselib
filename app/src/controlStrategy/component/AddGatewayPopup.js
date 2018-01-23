@@ -11,7 +11,8 @@ import Immutable from 'immutable';
 import { getDomainList } from '../../api/domain'
 import { getSearchAssets, getSearchCount } from '../../api/asset'
 import Page from '../../components/Page';
-import {getObjectByKeyObj,spliceInArray,getObjectByKey} from '../../util/algorithm'
+import {getObjectByKeyObj,spliceInArray,getObjectByKey} from '../../util/algorithm';
+import {Name2Valid} from '../../util/index'
 export default class AddGatewayPopup extends Component{
     constructor(props){
         super(props);
