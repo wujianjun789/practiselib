@@ -82,6 +82,7 @@ export default class Brightness extends PureComponent {
 
     componentWillUnmount() {
         this.mounted = false;
+        this.destroyLineChart();
     }
 
     initData() {
@@ -233,9 +234,6 @@ export default class Brightness extends PureComponent {
         }
     }
 
-    componentWillUnmount() {
-        this.destroyLineChart();
-    }
 
     drawLineChart(ref) {
         const {selectDevices, startDate, endDate} = this.state;

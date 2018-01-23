@@ -105,6 +105,7 @@ export default class Sensor extends PureComponent {
 
     componentWillUnmount() {
         this.mounted = false;
+        this.destroyLineChart();
     }
 
     initDomainData() {
@@ -296,9 +297,6 @@ export default class Sensor extends PureComponent {
         }
     }
 
-    componentWillUnmount() {
-        this.destroyLineChart();
-    }
 
     drawLineChart(ref) {
         const {selectDevices, startDate, endDate} = this.state;
