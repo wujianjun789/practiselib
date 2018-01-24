@@ -562,7 +562,7 @@ export class lightMap extends Component{
                 if(id===data.id){this.itemClick(item);}
             });
         }else{
-            let zoom = data.zoom+3;
+            let zoom = this.map.zoom+3;
             this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
             this.isMouseEnterSet();
         }
@@ -775,15 +775,6 @@ export class lightMap extends Component{
                             }
                         </div>
                     </div>
-                </div>
-                <div className="filter-container">
-                    <ul className="btn-group">
-                        {   
-                            this.deviceTypes.map(device=>{
-                                return <li key={device.id} className={"btn "+(deviceId==device.id?"btn-primary":"btn-default")} onClick={()=>this.searchDeviceSelect(device.id)}><span className={device.className}></span></li>
-                            })
-                        }
-                    </ul>
                 </div>
                 <NotifyPopup />
             </Content>

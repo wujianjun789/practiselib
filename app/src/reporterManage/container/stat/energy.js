@@ -6,7 +6,7 @@ import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Select from '../../component/select';
 import Chart from '../../component/chart';
-import { DatePicker } from 'antd';
+import { DatePicker, message } from 'antd';
 import Modal from 'antd/lib/modal';
 import '../../../../public/styles/antd-modal.less';
 import { getYesterday, getToday } from '../../../util/time';
@@ -135,12 +135,12 @@ export default class Lc extends Component {
         const { id, selectedIndex } = e.target;
         if (id === 'mode') {
             switch (selectedIndex) {
-            case 0:
-                this.setState({ currentMode: 'device' });
-                break;
-            case 1:
-                this.setState({ currentMode: 'domain' });
-                break;
+                case 0:
+                    this.setState({ currentMode: 'device' });
+                    break;
+                case 1:
+                    this.setState({ currentMode: 'domain' });
+                    break;
             }
         }
         if (id === 'domain') {
@@ -155,11 +155,23 @@ export default class Lc extends Component {
         // const timeRange = JSON.stringify([start, end]);
         if (currentMode === 'device') {
             const name = multiDeviceList.find(item => item.id === currentDeviceId)['name'];
-            getHistoriesDataInStat('assets', currentDeviceId, start, end, name, res => this.setState({ data: res }));
+            getHistoriesDataInStat('assets', currentDeviceId, start, end, name, res => {
+                if (typeof res === 'string') {
+                    message.info(res);
+                    return;
+                }
+                this.setState({ data: res })
+            });
         }
         if (currentMode === 'domain') {
             const { id, name } = currentDomain;
-            getHistoriesDataInStat('domains', id, start, end, name, res => this.setState({ data: res }));
+            getHistoriesDataInStat('domains', id, start, end, name, res => {
+                if (typeof res === 'string') {
+                    message.info(res);
+                    return;
+                }
+                this.setState({ data: res })
+            });
         }
     }
     //测试数据
@@ -181,42 +193,42 @@ export default class Lc extends Component {
             currentDomainName = currentDomain['name'];
         }
         switch (currentMode) {
-        case 'device': {
-            if (currentDeviceId !== null) {
-                applyDisabled = false;
-            }
-            modePanel = <div class='device-select-mode param-select-panel'>
-                <div class='select-device'>
-                    <input disabled value={showDeviceName} />
-                    <button class='btn btn-gray' onClick={this.showModal}>选择设备</button>
-                </div>
-                <Modal class='reporter-modal' title='选择设备' visible={visible} onCancel={this.showModal} onOk={this.showModal} maskClosable={false}>
-                    <div class='select-input'>
-                        <Select id='domain' className='' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
-                        <SearchText className='' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
+            case 'device': {
+                if (currentDeviceId !== null) {
+                    applyDisabled = false;
+                }
+                modePanel = <div class='device-select-mode param-select-panel'>
+                    <div class='select-device'>
+                        <input disabled value={showDeviceName} />
+                        <button class='btn btn-gray' onClick={this.showModal}>选择设备</button>
                     </div>
-                    <div class='select-panel'>
-                        <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={currentDeviceId ? [currentDeviceId] : []} rowCheckChange={this.selectSingleDevice} />
-                        <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
-                            <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
+                    <Modal class='reporter-modal' title='选择设备' visible={visible} onCancel={this.showModal} onOk={this.showModal} maskClosable={false}>
+                        <div class='select-input'>
+                            <Select id='domain' className='' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
+                            <SearchText className='' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
                         </div>
-                    </div>
-                </Modal>
-            </div>;
-        } break;
-        case 'domain': {
-            if (currentDomain !== null) {
-                applyDisabled = false;
+                        <div class='select-panel'>
+                            <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={currentDeviceId ? [currentDeviceId] : []} rowCheckChange={this.selectSingleDevice} />
+                            <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
+                                <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.changePagination} />
+                            </div>
+                        </div>
+                    </Modal>
+                </div>;
+            } break;
+            case 'domain': {
+                if (currentDomain !== null) {
+                    applyDisabled = false;
+                }
+                modePanel = <Select id='domain' className='select-domain' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />;
             }
-            modePanel = <Select id='domain' className='select-domain' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />;
-        }
-            break;
+                break;
         }
 
         return (
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                 <div class='content-left'>
-                    <Chart start={startDate} end={endDate} data={data} />
+                    <Chart start={startDate} end={endDate} data={data} unit='KWh' />
                 </div>
                 <div class={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
                     <div class='row collapse-container fix-width' onClick={this.collapseHandler}>
