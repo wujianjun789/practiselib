@@ -32,6 +32,7 @@ export default {
         'app.set.param':'set param',
 
         'app.input.minute':'input minute',
+        '':'',
 
         'app.timetable':'Timetable',
         'app.sensor':'Sensor',
@@ -69,7 +70,7 @@ export default {
 
         'app.input.numbers':'only input numbers',
         'app.exceed.maximum.support':'exceed maximum support',
-        '':'',
+        'app.group':'group',
 
         //按钮
         ' ': ' ',
@@ -282,6 +283,8 @@ export default {
         'app.task.record':'Task record',
         'app.status.started':'Started',
         'app.status.paused':'Paused',
+        'app.status.start':'Are you sure to start the selected ',
+        'app.status.pause':'Are you sure to pause the selected ',
 
         'app.input.device.name':'input device name',
         'app.device.name': 'device name',

@@ -1520,6 +1520,34 @@ width:24px;
 
 }
 
+.icon.icon_popup_start{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 5px;
+
+    background: url("/images/icon_popup_start.png");
+    background-size: 100% 100%;
+
+}
+
+.icon.icon_popup_pause{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 5px;
+
+    background: url("/images/icon_popup_pause.png");
+    background-size: 100% 100%;
+
+}
+
 /*.icon.icon_calendar{*/
     /*display: inline-block;*/
     /*width: 15px;*/
