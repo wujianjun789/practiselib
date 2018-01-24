@@ -62,7 +62,7 @@ class LatlngStrategy extends Component{
             selectedDevicesData:[],
             allDevicesData:[],
             lightList:[{id:1,name:"0"},{id:2,name:"10"},{id:3,name:"20"},{id:4,name:"30"}],
-            sunList:[{id:1,name:'日出'},{id:1,name:'日落'}],
+            sunList:[{id:1,name:this.formatIntl('app.sunrise')},{id:1,name:this.formatIntl('app.sunset')}],
             allDevices:{
                 allChecked:false,
                 checked:[]
@@ -343,6 +343,16 @@ class LatlngStrategy extends Component{
                 default:
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
             }
+            switch(selectItem.excuteTime){
+                case 0:
+                    selectItem.excuteTime=this.formatIntl('app.sunrise');
+                    break;
+                case 1:
+                    selectItem.excuteTime=this.formatIntl('app.sunset');
+                    break;
+                default:
+                    selectItem.excuteTime=this.formatIntl('app.sunrise');
+            }
         }
        
         this.setState({
@@ -386,8 +396,15 @@ class LatlngStrategy extends Component{
                 light:0
             }
         }
-        if(!selectItem.hasOwnProperty('excuteTime')){
-            selectItem.excuteTime=0
+        switch(selectItem.excuteTime){
+            case this.formatIntl('app.sunrise'):
+                    selectItem.excuteTime=0;
+                    break;
+                case this.formatIntl('app.sunset'):
+                    selectItem.excuteTime=1;
+                    break;
+                default:
+                    selectItem.excuteTime=0;
         }
         updateStrategy({id:selectItem.id,execution:selectItem.execution,excuteTime:selectItem.excuteTime,excuteOffset:selectItem.excuteOffset},this.requestSearch);
     }
@@ -578,7 +595,7 @@ class LatlngStrategy extends Component{
                                 <div className='form-group'>
                                     <label>{this.formatIntl('app.strategy.identifying')}</label>
                                     <div className='input-container'>
-                                        <select className='form-control' value={selectItem.excuteTime?selectItem.excuteTime:''} onChange={e=>this.onChange("excuteTime",e.target.value)}>
+                                        <select className='form-control' value={selectItem.excuteTime} onChange={e=>this.onChange("excuteTime",e.target.value)}>
                                         {
                                             sunList.map((item, index) => {
                                                 return <option key={index} value={item.name}>{item.name}</option>

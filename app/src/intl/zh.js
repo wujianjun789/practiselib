@@ -71,6 +71,8 @@ export default {
         'app.input.numbers':'仅能输入数字',
         'app.exceed.maximum.support':'超过最大支持',
 
+        'app.group':'组',
+        
         //按钮
         ' ':' ',
         'button.add': '添加',
@@ -277,6 +279,8 @@ export default {
         'app.task.record':'任务记录',
         'app.status.started':'已启用',
         'app.status.paused':'已停用',
+        'app.status.start':'是否启用',
+        'app.status.pause':'是否停用',
 
         'app.input.device.name':'请输入设备名称',
         'app.device.name': '设备名称',
