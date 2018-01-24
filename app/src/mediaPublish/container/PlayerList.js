@@ -14,7 +14,7 @@ import Page from '../../components/Page'
 import PlayerListPopup from '../component/PlayerListPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 
-import {searchProjectList, addProject, updateProjectById, removeProjectById} from '../../api/mediaPublish';
+import {searchProjectList, getProjectByName, addProject, updateProjectById, removeProjectById} from '../../api/mediaPublish';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer'
 import Immutable from 'immutable';
@@ -84,7 +84,12 @@ export class PlayerList extends Component {
         const offset = (page.get('current')-1)*limit;
         const searchName = search.get('value');
 
-        searchProjectList(0, searchName, offset, limit, data=>{this.mounted && this.updateSearch(data)})
+        getProjectByName(0, searchName, data=>{this.mounted && this.updatePageTotal(data)});
+        searchProjectList(0, searchName, offset, limit, data=>{this.mounted && this.updateSearch(data)});
+    }
+
+    updatePageTotal = (data)=>{
+        this.setState({page:this.state.page.update("total", v=>data.length)});
     }
 
     updateSearch(data){
@@ -92,7 +97,7 @@ export class PlayerList extends Component {
             return Object.assign({}, project, {"resolution":project.width+"X"+project.height});
         })
 
-        this.setState({data:Immutable.fromJS(data), page:this.state.page.update("total", v=>data.length)});
+        this.setState({data:Immutable.fromJS(data)});
     }
 
     typeChange(selectIndex) {
