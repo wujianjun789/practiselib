@@ -137,3 +137,33 @@ export function updateGroup(data,cb){
         cb && cb(response);
     })
 }
+
+export function getPlanStatus(id,cb){
+    let headers = getHttpHeader();
+    httpRequest(HOST_IP+'/plans/'+id+'/status',{
+        headers:headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function startPlan(id,cb){
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/plans/${id}/enable`,{
+        headers:headers,
+        method: 'PUT'
+    }, response=>{
+        cb && cb();
+    })
+}
+
+export function pausePlan(id,cb){
+    let headers = getHttpHeader();
+    httpRequest(`${HOST_IP}/plans/${id}/disable`,{
+        headers:headers,
+        method: 'PUT'
+    }, response=>{
+        cb && cb();
+    })
+}

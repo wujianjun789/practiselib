@@ -48,7 +48,7 @@ export default class DataOriginPopup extends Component {
     }
 
     onConfirm() {
-        let data = this.props.type == 'XES-200S'?getCheckedSensor():this.state.rfidList;
+        let data = this.props.type == 'XES-200S'?this.getCheckedSensor():this.state.rfidList;
         this.props.overlayerHide();
         this.props.onConfirm && this.props.onConfirm(data,this.props.type);
     }

@@ -39,7 +39,7 @@ export default class LightStatistics extends Component {
             },
             energyFilter: {
                 id: '',
-                domainId: '1',
+                domainId: '',
                 // type:'2',
                 dateTime: {},
                 variable: "power"
@@ -80,8 +80,8 @@ export default class LightStatistics extends Component {
                     id: '',
                     domainId: '1',
                     deviceTotal: '100', deviceOnlineRunning: '90', deviceOnlineError: '3', deviceOffline: '7',
-                    planTotal: '25', palnSuccess: '23', planFail: '22',
-                    lightTotal: '180', lightOnPercent: '95', lighton: '195', lightOff: '10'
+                    planTotal: '25', palnSuccess: '23', planFail: '2',
+                    lightTotal: '180', lightOnPercent: '0.95', lighton: '195', lightOff: '10'
                 },
             pieWIdth: 150,
             pieHeight: 170,

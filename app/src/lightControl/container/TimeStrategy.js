@@ -28,7 +28,7 @@ import {getModelData, getModelList} from '../../data/assetModels'
 import { DatePicker} from 'antd';
 import {getObjectByKeyObj,getIndexByKey,getProByKey,getIndexsByKey,spliceInArray,getObjectByKey,getListKeyByKey,IsExitInArray2,IsExitInArray3,getListByKey2} from '../../util/algorithm'
 // import {getLightLevelConfig} from '../../util/network'
-import {getStrategyList,getGroupListPlan,getNoGroupStrategy,delStrategy,delGroup,addStrategy,updateStrategy,updateGroup} from '../../api/plan';
+import {getStrategyList,getGroupListPlan,getNoGroupStrategy,delStrategy,delGroup,addStrategy,updateStrategy,updateGroup,getPlanStatus,startPlan,pausePlan} from '../../api/plan';
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
@@ -69,8 +69,7 @@ class TimeStrategy extends Component{
         this.columns =  [
             {id: 0, field:"name", title:this.formatIntl('app.strategy.name')},
             {id: 1, field: "timeRange", title: this.formatIntl('app.time.range')},
-            {id: 2, field: "state", title: this.formatIntl('app.strategy.state')},            
-            
+            {id: 2, field: "status", title: this.formatIntl('app.strategy.state')},            
         ];
 
         this.deviceColumns = [
@@ -94,10 +93,6 @@ class TimeStrategy extends Component{
         this.mounted = false;
     }
 
-    // setHeight = ()=>{
-    //     console.log(document.getElementsByClassName('select-devices')[0])
-    //     document.getElementsByClassName('select-devices')[0].style.height = document.getElementsByClassName('content')[0].scrollHeight + "px";         
-    // }
 
     formatIntl=(formatId)=>{
         const {intl} = this.props;
@@ -169,16 +164,33 @@ class TimeStrategy extends Component{
                 })
             }
         })
-        result.length>0 && result.map(item=>{
-            item.key = (item.plans?"group":"plan")+item.id;
-        });
 
-        this.setState({[key]:Immutable.fromJS(result)});
-
-        result.length>0 && this.setState({selectItem:result[0]},()=>{
-            // !this.state.selectItem.plans && this.getDeviceData(this.state.selectItem.devices)
-            this.getGroupTasks(this.state.selectItem.id);
-        })
+        if(result.length>0){
+            let len1=0,
+                len2=0;
+            result.map(item=>{
+                item.key = (item.plans?"group":"plan")+item.id;
+                !item.plans && len1++;
+            })
+            const promise = new Promise((resolve, reject)=>{
+                result.map(item=>{
+                    !item.plans && getPlanStatus(item.id,res=>{
+                        len2++;
+                        item.status = res.status && res.status == 1?this.formatIntl('app.status.started'):this.formatIntl('app.status.paused');
+                        if(len2 == len1){
+                            resolve(result);
+                        }
+                    })
+                });
+            })
+    
+            promise.then(result=>{
+                this.setState({[key]:Immutable.fromJS(result)});
+                result.length>0 && this.setState({selectItem:result[0]},()=>{
+                    this.getGroupTasks(this.state.selectItem.id);
+                })
+            })
+        }
     }
 
     getGroupTasks=(id)=>{
@@ -307,10 +319,10 @@ class TimeStrategy extends Component{
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
                     break;
                 case 1:
-                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    selectItem.levelTitle=this.formatIntl('sysOperation.gateway');
                     break;
                 case 2:
-                    selectItem.levelTitle=this.formatIntl('app.strategy.platform');
+                    selectItem.levelTitle=this.formatIntl('app.device');
                     break;
                 default:
                     selectItem.levelTitle=this.formatIntl('app.strategy.platform');
@@ -321,7 +333,9 @@ class TimeStrategy extends Component{
             selectItem: selectItem
         },()=>{
             !item.plans && this.getDeviceData(this.state.selectItem.devices);
+            // item.plans && this.getGroupTasks(this.state.selectItem.id);            
             item.plans && this.getGroupTasks(this.state.selectItem.id);
+
         });
     }
 
@@ -364,6 +378,18 @@ class TimeStrategy extends Component{
             }}/>)
     }
 
+    switchStrategy=(key)=>{
+        const {selectItem}=this.state;
+        if(selectItem.plans){
+            selectItem.plans.map(item=>{
+                key == 'start'? startPlan(item.id,this.requestSearch):pausePlan(item.id,this.requestSearch)
+            })
+        }
+        else{
+            key == 'start'? startPlan(selectItem.id,this.requestSearch):pausePlan(selectItem.id,this.requestSearch)            
+        }
+    }
+
     render(){
         const {search, selectedDevicesData,allDevicesData, page, strategyData, sidebarInfo, selectItem,property,domainList,lightList,taskData} = this.state;
         const valid = selectItem.excuteTime;
@@ -382,8 +408,8 @@ class TimeStrategy extends Component{
                 </div>
                 <div className="switch-container">
                     <span className="domain-name" title = {selectItem.name}>{selectItem.name}</span>
-                    <button className="btn btn-primary pull-right">{this.formatIntl('button.start')}</button>
-                    <button className="btn btn-danger pull-right">{this.formatIntl('button.pause')}</button>
+                    <button className="btn btn-primary pull-right" disabled={selectItem.status==this.formatIntl('app.status.started')?true:false} onClick={()=>this.switchStrategy('start')}>{this.formatIntl('button.start')}</button>
+                    <button className="btn btn-danger pull-right" disabled={selectItem.status==this.formatIntl('app.status.paused')?true:false} onClick={()=>this.switchStrategy('pause')}>{this.formatIntl('button.pause')}</button>
                 </div>
                 {
                     !selectItem.id || selectItem.plans?
