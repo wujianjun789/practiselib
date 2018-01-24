@@ -51,17 +51,17 @@ import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
-
 import { updateTree } from '../util/index'
 
-
+import {getProgramList, getSceneList, getZoneList} from '../../api/mediaPublish';
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
-
+import lodash from 'lodash';
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            project: null,
             curNode: null,
             curType: 'digitalClock',
             playerData: [
@@ -186,9 +186,6 @@ export class PlayerArea extends Component {
 
         this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }]
 
-        this.formatIntl = this.formatIntl.bind(this);
-
-        this.onToggle = this.onToggle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
         this.assetSelect = this.assetSelect.bind(this);
@@ -204,14 +201,12 @@ export class PlayerArea extends Component {
         this.areaClick = this.areaClick.bind(this);
         this.playerListAssetClick = this.playerListAssetClick.bind(this);
         this.assetList = this.assetList.bind(this);
-        this.sidebarClick = this.sidebarClick.bind(this);
 
         this.addClick = this.addClick.bind(this);
         this.assetLibRemove = this.assetLibRemove.bind(this);
         this.playerAssetRemove = this.playerAssetRemove.bind(this);
         this.playerAssetMove = this.playerAssetMove.bind(this);
 
-        this.updatePlayerTree = this.updatePlayerTree.bind(this);
         this.updateTreeData = this.updateTreeData.bind(this);
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -232,13 +227,19 @@ export class PlayerArea extends Component {
     }
     componentWillMount() {
         this.mounted = true;
-        this.updatePlayerTree();
+        // this.updatePlayerTree();
         this.mounted && this.setSize();
         window.onresize = event => {
             this.mounted && this.setSize();
         }
 
-        console.log(this.props.router);
+        const { router } = this.props;
+        if (router && router.location) {
+            const routerState = router.location.state;
+            this.setState({project:routerState?routerState.item:null},()=>{
+                this.requestProgrameList();
+            })
+        }
     }
 
     componentDidMount() {
@@ -247,13 +248,13 @@ export class PlayerArea extends Component {
         console.log(this.props.router);
     }
 
-    formatIntl(formatId){
+    formatIntl=(formatId)=>{
         const {intl} = this.props;
         return intl?intl.formatMessage({id:formatId}):null;
         // return formatId;
     }
 
-    handleMouseMove({ pageX, pageY }) {
+    handleMouseMove = ({ pageX, pageY })=> {
         const { isPressed, mouseCircleDelta: [dx, dy] } = this.state;
         if (isPressed) {
             const mouseXY = [pageX - dx, pageY - dy];
@@ -261,7 +262,7 @@ export class PlayerArea extends Component {
         }
     }
 
-    handleMouseDown(item, [pressX, pressY], { pageX, pageY }) {
+    handleMouseDown = (item, [pressX, pressY], { pageX, pageY })=> {
         this.assetSelect(item);
         this.setState({
             lastPress: item.get('id'),
@@ -271,7 +272,7 @@ export class PlayerArea extends Component {
         })
     }
 
-    handleMouseUp() {
+    handleMouseUp = ()=> {
         this.setState({ isPressed: false, mouseCircleDelta: [0, 0] });
     }
 
@@ -293,7 +294,7 @@ export class PlayerArea extends Component {
         })
     }
 
-    setSize() {
+    setSize = ()=> {
         let width = window.innerWidth;
         let height = window.innerHeight;
         let cleft = "auto";
@@ -307,7 +308,55 @@ export class PlayerArea extends Component {
         this.setState({ controlStyle: { "left": cleft, "right": cright } });
     }
 
-    updatePlayerTree() {
+    requestProgrameList=()=>{
+        const {project} = this.state;
+        getProgramList(project.id, data=>{this.mounted && this.updateProgramList(data)})
+    }
+
+    updateProgramList=(data)=>{
+        let newData = data.map(program=>{
+            return Object.assign({}, program, {type:'plan', toggled:true, active: false, children:[]});
+        })
+
+        this.setState({playerData: newData}, ()=>{
+            this.updatePlayerTree();
+        });
+    }
+
+    requestSceneList = (programId)=>{
+        const {project} = this.state;
+        getSceneList(project.id, programId, data=>{this.mounted && this.updateProgramList(programId, data)})
+    }
+
+    updateSceneList = (programId, data)=>{
+        let index = lodash.findIndex(this.state.playerData, program=>{return program.id == programId});
+        let newData = data.map(scene=>{
+            return Object.assign({}, scene, {type:'scene', toggled:true, active:false, children:[]});
+        })
+
+        this.state.playerData[index].children.push(newData);
+        this.setState({playerData: this.state.playerData});
+    }
+
+    requestZoneList = (programId, sceneId)=>{
+        const {project} = this.state;
+        getZoneList(project.id, programId, sceneId, data=>{this.mounted && this.updateProgramList(programId, sceneId, data)})
+    }
+
+    updateZoneList = (programId, sceneId, data)=>{
+        let programItem = lodash.find(this.state.playerData, program=>{return program.id == programId});
+        let programIndex = lodash.findIndex(this.state.playerData, program=>{return program.id == programId});
+
+        let sceneIndex = lodash.findIndex(programItem, scene=>{return scene.id == sceneId});
+        let newData = data.map(scene=>{
+            return Object.assign({}, scene, {type:'scene', toggled:true, active:false, children:[]});
+        })
+
+        this.state.playerData[programIndex].children[sceneIndex].push(newData);
+        this.setState({playerData: this.state.playerData});
+    }
+
+    updatePlayerTree = ()=> {
         const { playerData } = this.state;
         const { actions } = this.props;
         console.log("playerData:", playerData);
@@ -315,7 +364,7 @@ export class PlayerArea extends Component {
 
     }
 
-    updateTreeData(parentNode, node) {
+    updateTreeData = (parentNode, node)=> {
         const treeList = updateTree(this.state.playerData, parentNode, node);
         console.log()
         this.setState({ playerData: treeList }, () => {
@@ -323,7 +372,7 @@ export class PlayerArea extends Component {
         })
     }
 
-    assetSelect(item) {
+    assetSelect = (item)=> {
         console.log(item.toJS());
         this.state.assetList = this.state.assetList.update('id', v => item.get('id'));
         this.setState({ assetList: this.state.assetList.update('name', v => item.get('name')) });
@@ -331,7 +380,7 @@ export class PlayerArea extends Component {
         // this.setState({assetList: this.state.assetList.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
-    playerAssetSelect(item) {
+    playerAssetSelect = (item)=> {
         console.log(item.toJS());
 
         let curType = "playerText";
@@ -355,7 +404,7 @@ export class PlayerArea extends Component {
         // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
-    onChange(id, value) {
+    onChange = (id, value)=> {
         console.log("id:", id);
         let prompt = false;
         if (id == "assetType" || id == "assetSort") {
@@ -377,13 +426,13 @@ export class PlayerArea extends Component {
         }
     }
 
-    pageChange(current, pageSize) {
+    pageChange = (current, pageSize)=> {
         let page = this.state.page.set('current', current);
         this.setState({ page: page }, () => {
         });
     }
 
-    playerListAssetClick(id) {
+    playerListAssetClick = (id)=> {
         if (id == 'add') {
             let addList = [];
             const { assetList } = this.state;
@@ -409,7 +458,7 @@ export class PlayerArea extends Component {
         }
     }
 
-    assetList(id) {
+    assetList = (id)=> {
         if (id == 'add') {
 
         } else if (id == 'edit') {
@@ -427,11 +476,11 @@ export class PlayerArea extends Component {
 
 
 
-    addClick(item) {
+    addClick = (item)=> {
         console.log('addClick:', item.toJS());
     }
 
-    assetLibRemove(item) {
+    assetLibRemove = (item)=> {
         console.log('assetLibRemove:', item.toJS());
         const { actions } = this.props;
         actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={"是否删除选中素材？"}
@@ -447,7 +496,7 @@ export class PlayerArea extends Component {
 
     }
 
-    playerAssetRemove(item) {
+    playerAssetRemove = (item)=> {
         console.log('playerAssetRemove:', item.toJS());
 
         const itemId = item.get("id");
@@ -457,7 +506,7 @@ export class PlayerArea extends Component {
         this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(curIndex, 1)) });
     }
 
-    playerAssetMove(id, item) {
+    playerAssetMove = (id, item)=> {
         console.log('playerAssetMove:', id, item);
         const itemId = item.get("id");
         const list = this.state.playerListAsset.get("list");
@@ -467,7 +516,7 @@ export class PlayerArea extends Component {
         this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item)) });
     }
 
-    updatePlayerScenePopup() {
+    updatePlayerScenePopup = ()=> {
         const { actions } = this.props;
 
         let data = {}
@@ -485,7 +534,7 @@ export class PlayerArea extends Component {
         }} />)
     }
 
-    updatePlayerPlanPopup() {
+    updatePlayerPlanPopup = ()=> {
         const { actions } = this.props;
         let data = {}
         data.typeList = this.typeList;
@@ -508,7 +557,7 @@ export class PlayerArea extends Component {
         }} />)
     }
 
-    updatePlayerAreaPopup() {
+    updatePlayerAreaPopup = ()=> {
         const { actions } = this.props;
 
         let data = {}
@@ -531,7 +580,7 @@ export class PlayerArea extends Component {
 
     }
 
-    areaClick(id) {
+    areaClick = (id)=> {
         const { actions } = this.props;
         let data = {}
         console.log(id);
@@ -639,27 +688,27 @@ export class PlayerArea extends Component {
         }
     }
 
-    playHandler() {
+    playHandler = ()=> {
 
     }
 
-    zoomOutHandler() {
+    zoomOutHandler = ()=> {
 
     }
 
-    zoomInHandler() {
+    zoomInHandler = ()=> {
 
     }
 
-    saveHandler() {
+    saveHandler = ()=> {
 
     }
 
-    savePlanHandler() {
+    savePlanHandler = ()=> {
 
     }
 
-    quitHandler() {
+    quitHandler = ()=> {
         const { actions } = this.props;
         actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="未保存内容将会丢失，是否退出？"
 
@@ -669,11 +718,11 @@ export class PlayerArea extends Component {
             }} />)
     }
 
-    positionHandler(id) {
+    positionHandler = (id)=> {
         console.log(id);
     }
 
-    searchSubmit() {
+    searchSubmit = ()=> {
 
     }
 
@@ -896,7 +945,7 @@ export class PlayerArea extends Component {
         }
     }
 
-    onToggle(node) {
+    onToggle = (node)=> {
         console.log("node:", node);
         let type = "scene";
         switch (node.type) {
@@ -920,7 +969,7 @@ export class PlayerArea extends Component {
         this.setState({ curNode: node, curType: type, isClick: false });
     }
 
-    sidebarClick(id) {
+    sidebarClick = (id)=> {
         const libStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
         const assetStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}:{'height':'309px'}
         this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }), libStyle:libStyle, assetStyle:assetStyle});
@@ -928,15 +977,11 @@ export class PlayerArea extends Component {
 
     render() {
         const {
-            curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,
+            project, curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
-        const { router } = this.props;
-        let routerState = null;
-        if (router && router.location) {
-            routerState = router.location.state;
-        }
-        const projectItem = routerState ? routerState.item : null;
+        const {router} = this.props;
+
         let add_title = "";
         switch (curType) {
             case "cyclePlan":
@@ -951,7 +996,7 @@ export class PlayerArea extends Component {
 
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
-            <SideBar data={playerData} title={projectItem && projectItem.name} isClick={isClick} isAddClick={isAddClick}
+            <SideBar data={playerData} title={project && project.name} isClick={isClick} isAddClick={isAddClick}
                 onClick={this.areaClick} onToggle={this.onToggle} />
 
             <Content className="player-area">

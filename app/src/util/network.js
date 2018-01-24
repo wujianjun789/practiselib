@@ -110,7 +110,6 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-    console.log('response:',response, response.status);
     if(response.statusText == "OK"){
         return response.json().then(json => {
                 return new Promise((resolve) => {
@@ -118,7 +117,12 @@ function parseJSON(response) {
                 })
             }
         )
-    }else{
+    }else if(response.status >= 200 && response.status < 300 && response.statusText == "No Content") {
+        return new Promise((resolve, reject)=>{
+            resolve({undefined, response});
+        });
+    }
+    else{
         return response.json().then(json=>{
             return new Promise((resolve)=>{
                 resolve({json, response});

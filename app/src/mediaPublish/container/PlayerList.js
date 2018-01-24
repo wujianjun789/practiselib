@@ -14,7 +14,7 @@ import Page from '../../components/Page'
 import PlayerListPopup from '../component/PlayerListPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 
-import {searchProjectList, addProject, updateProjectById, removeProjectById} from '../../api/mediaPublish';
+import {searchProjectList, getProjectByName, addProject, updateProjectById, removeProjectById} from '../../api/mediaPublish';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer'
 import Immutable from 'immutable';
@@ -84,7 +84,12 @@ export class PlayerList extends Component {
         const offset = (page.get('current')-1)*limit;
         const searchName = search.get('value');
 
-        searchProjectList(0, searchName, offset, limit, data=>{this.mounted && this.updateSearch(data)})
+        getProjectByName(0, searchName, data=>{this.mounted && this.updatePageTotal(data)});
+        searchProjectList(0, searchName, offset, limit, data=>{this.mounted && this.updateSearch(data)});
+    }
+
+    updatePageTotal = (data)=>{
+        this.setState({page:this.state.page.update("total", v=>data.length)});
     }
 
     updateSearch(data){
@@ -139,7 +144,8 @@ export class PlayerList extends Component {
                     height: state.height
                 }
 
-                // addProject(data, ()=>{
+                addProject(data, (response)=>{
+                console.log('response:', response);
                     actions.overlayerHide();
                 const id = Math.random()*9999;
                 let item = { id: id, icon: "", name: state.name, resolution: state.width + "X" + state.height, width: state.width, height: state.height }
@@ -149,7 +155,7 @@ export class PlayerList extends Component {
                         item: item
                     }
                 });
-                // })
+                })
             }} />)
 
     }
@@ -198,6 +204,7 @@ console.log('edit:', data);
         actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.isDeleteList')}
             cancel={() => { actions.overlayerHide() }} confirm={() => {
                 removeProjectById(id, ()=>{
+                    actions.overlayerHide();
                     this.requestSearch();
                 })
             }} />);
@@ -205,6 +212,7 @@ console.log('edit:', data);
 
     render() {
         const { type, search, page, data } = this.state;
+        console.log(page.get('total'));
         return <Content className="player-list">
             <div className="heading">
                 <Select className="type" data={type}

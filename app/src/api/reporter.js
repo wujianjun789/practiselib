@@ -5,15 +5,15 @@ import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
  *
  * }}
  */
-export function getHistoriesDataByAssetId(options) {
-	let _url = `${HOST_IP}/histories`;
-	_url += `?filter=${encodeURIComponent(JSON.stringify(options))}`;
-	return fetch(_url, {
-		headers: getHttpHeader(),
-		method: 'GET'
-	})
-		.then(res => res.json());
-}
+// export function getHistoriesDataByAssetId(options) {
+// 	let _url = `${HOST_IP}/histories`;
+// 	_url += `?filter=${encodeURIComponent(JSON.stringify(options))}`;
+// 	return fetch(_url, {
+// 		headers: getHttpHeader(),
+// 		method: 'GET'
+// 	})
+// 		.then(res => res.json());
+// }
 
 export function getHistoriesDataInDevice(mode, currentId, queryList, start, end, type, list, name, cb) {
 	const _querystring = JSON.stringify({
@@ -30,6 +30,10 @@ export function getHistoriesDataInDevice(mode, currentId, queryList, start, end,
 		headers: getHttpHeader(),
 		method: 'GET'
 	}, response => {
+		if(!response.length){
+			cb&&cb('请求的数据为空');
+			return;
+		}
 		const _obj = _.groupBy(response, (item) => {
 			return item[type]
 		})
@@ -37,12 +41,15 @@ export function getHistoriesDataInDevice(mode, currentId, queryList, start, end,
 		const _arr = Object.keys(_obj);
 		_arr.forEach(item => {
 			let _item = {
-				name: list.find(i => i.id === item)[name],
+				name: list[item][name],
 				values: _obj[item]
 			}
 			_data.push(_item)
 		})
+		console.log(_data)
 		cb && cb(_data)
+	}, undefined, err => {
+		console.log(err)
 	})
 }
 
@@ -59,6 +66,10 @@ export function getHistoriesDataInStat(mode, id, start, end, name, cb) {
 		headers: getHttpHeader(),
 		method: 'GET'
 	}, response => {
+		if(!response.length){
+			cb&&cb('请求的数据为空');
+			return;
+		}
 		const _data = [];
 		const _response = response.map(item => {
 			return {
@@ -72,5 +83,7 @@ export function getHistoriesDataInStat(mode, id, start, end, name, cb) {
 		};
 		_data.push(_obj);
 		cb && cb(_data)
+	}, undefined, err => {
+		console.log(err)
 	})
 }
