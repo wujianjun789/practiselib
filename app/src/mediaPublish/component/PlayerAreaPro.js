@@ -55,7 +55,7 @@ class PlayerAreaPro extends PureComponent {
                 playEnd: {
                     key: "play_end",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.playEnd'}),
-                    list: [{id: 1, name: "最后一帧"}, {id: 1, name: "最后三帧"}],
+                    list: [{id: 1, name: "最后一帧", type: 0}, {id: 1, name: "循环播放", type:1}],
                     defaultIndex: 0,
                     index: 0,
                     name: "最后一帧"
@@ -75,11 +75,18 @@ class PlayerAreaPro extends PureComponent {
 
     componentWillMount() {
         this.mounted = true;
-        const {id, playEndIndex} = this.props;
-        this.updatePlayEnd(playEndIndex);
-        getZoneById(id, data=> {
-            this.mounted && this.initProperty(data)
-        });
+        const {projectId, parentId, parentParentId, data} = this.props;
+        if(!data){
+            return;
+        }
+
+        const index = lodash.findIndex(this.state.property.playEnd.list, mode=>{ return mode.type == data.lastFrame});
+        this.updatePlayEnd(index);
+        if(projectId && parentId && parentParentId && data.id && (typeof data.id || data.id.indexOf("area&&")) < 0){
+            getZoneById(projectId, parentId, parentParentId, data.id, data=> {
+                this.mounted && this.initProperty(data)
+            });
+        }
     }
 
     componwntWillUnmount() {
@@ -125,6 +132,18 @@ class PlayerAreaPro extends PureComponent {
         console.log(id);
         switch (id) {
             case "apply":
+                const {property} = this.state;
+                this.props.applyClick && this.props.applyClick({
+                    name: property.areaName,
+                    userDefine: '',
+                    position: {
+                        x: property.axisX_a,
+                        y: property.axisY_a,
+                        w: property.width,
+                        h: property.height
+                    },
+                    lastFrame: property.playEnd.list[property.playEnd.index].type
+                })
                 break;
             case "reset":
                 for (let key in this.state.property) {

@@ -15,7 +15,6 @@ export default class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isProject: false,
             isEdit: true,
             isRemove: false,
             isMove: true
@@ -52,9 +51,9 @@ export default class SideBar extends Component {
         // }
         //
         // this.setState({cursor:node});
-        this.setState({isProject: false},()=>{
+        // this.setState({isProject: false},()=>{
             this.props.onToggle && this.props.onToggle(node);
-        })
+        // })
     }
 
     onClick(id){
@@ -69,19 +68,20 @@ export default class SideBar extends Component {
     }
 
     onProject(){
-        this.setState({isProject: true}, ()=>{
+        // this.setState({isProject: true}, ()=>{
             this.props.onClick && this.props.onClick('project');
-        });
+        // });
     }
 
     render() {
-        const {data, title, isClick, isAddClick} = this.props;
-        const {isProject, isEdit, isRemove, isMove}  = this.state;
+        const {data, title, isActive, isClick, isAddClick} = this.props;
+        const {isEdit, isRemove, isMove}  = this.state;
+console.log('isProject:', isActive);
         return <div className="sidebar">
 
             <div className="edit-container">
                 <div className={"btn-group "+(isEdit?'':'hidden')}>
-                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}><FormattedMessage id='button.add'/>{isProject && !isClick && isAddClick && <span>&nbsp;&or;</span>}</button>
+                    <button className="btn btn-primary" onClick={()=>this.onClick("add")}><FormattedMessage id='button.add'/>{isActive && !isClick && isAddClick && <span>&nbsp;&or;</span>}</button>
                     <button className="btn btn-gray" onClick={()=>this.onClick("edit")}><FormattedMessage id='button.edit'/></button>
                 </div>
                 <div className={"btn-group "+(isEdit?'hidden':'')}>
@@ -89,14 +89,14 @@ export default class SideBar extends Component {
                     <button className="btn btn-primary" onClick={()=>this.onClick("complete")}><FormattedMessage id='button.finish'/></button>
                 </div>
             </div>
-            <div className={"add-poppup "+(isProject && !isClick && isAddClick?'active':'')}>
+            <div className={"add-poppup "+(isActive && !isClick && isAddClick?'active':'')}>
                 <span className="glyphicon glyphicon-triangle-top"></span>
                 <span className="icon icon_mediaPublish_general" onClick={()=>this.onClick("general")}></span>
                 <span className="icon icon_mediaPublish_cycle" onClick={()=>this.onClick("cycle")}></span>
                 <span className="icon icon_mediaPublish_regular" onClick={()=>this.onClick("regular")}></span>
             </div>
-            <div className={"title "+(isProject && !isClick ?'active':'')} onClick={()=>this.onProject()}>{title}</div>
-            <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isProject || isClick}
+            <div className={"title "+(isActive && !isClick ?'active':'')} onClick={()=>this.onProject()}>{title}</div>
+            <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isActive || isClick}
                       onToggle={ (node) => this.onToggle(node) } onMove={this.onMove}/>
             {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>

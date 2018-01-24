@@ -2,7 +2,7 @@
  * Created by a on 2017/10/19.
  */
 import { /*HOST_IP,*/ getHttpHeader, httpRequest } from '../util/network';
-const HOST_IP = "http://172.16.7.216:3002/api";
+const HOST_IP = "http://192.168.155.196:3002/api";
 import { HeadBar } from '../components/HeadBar';
 
 //上传文件
@@ -34,6 +34,23 @@ import { HeadBar } from '../components/HeadBar';
 export function searchProjectList(type, projectName, offset, limit, cb) {
     let headers = getHttpHeader();
     let obj = { "offset": offset, "limint": limit }
+    if (projectName) {
+        obj = Object.assign({ "where": { type: type, name: { like: projectName } } }, obj);
+    }
+
+    let param = JSON.stringify(obj);
+    let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
+    httpRequest(url, {
+        headers: headers,
+        method: 'GET'
+    }, response => {
+        cb && cb(response);
+    })
+}
+
+export function getProjectByName(type, projectName, cb) {
+    let headers = getHttpHeader();
+    let obj = { }
     if (projectName) {
         obj = Object.assign({ "where": { type: type, name: { like: projectName } } }, obj);
     }
@@ -127,7 +144,7 @@ export function removeProjectById(id, cb) {
 export function getProgramList(projectId, cb) {
     let headers = getHttpHeader();
 
-    let url = HOST_IP + '/projects/'+projectId+'programs';
+    let url = HOST_IP + '/projects/'+projectId+'/programs';
     httpRequest(url, {
         headers: headers,
         method: 'GET'

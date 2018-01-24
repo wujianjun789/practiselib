@@ -18,7 +18,7 @@ class PlayerScene extends PureComponent{
             property: {
                 //场景名称
                 sceneName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:sceneName?sceneName:"", value: sceneName?sceneName:"" },
-                playMode: { key: "playMode", title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: "按次播放" }, { id: 2, name: "按时长播放" }, { id: 3, name: "循环播放" }], defaultIndex: 0, index: 0, name: "按次播放" },
+                playMode: { key: "playMode", title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: "按次播放",type:0 }, { id: 2, name: "按时长播放", type:1 }, { id: 3, name: "循环播放", type:2 }], defaultIndex: 0, index: 0, name: "按次播放" },
                 playModeCount: { key: "playModeCount", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), active: true,
                     defaultValue: playModeCount?playModeCount:"", value: playModeCount?playModeCount:"",
                     defaultValue2: playModeCount?playModeCount:"", value2: playModeCount?playModeCount:""}
@@ -37,9 +37,16 @@ class PlayerScene extends PureComponent{
 
     componentWillMount(){
         this.mounted = true;
-        const {id, playMode} = this.props;
-        this.updatePlayMode(playMode);
-        getSceneById(id, data=>{this.mounted && this.initProperty(data)})
+        const {projectId, parentId, data} = this.props;
+        if(!data){
+            return;
+        }
+
+        const index = lodash.findIndex(this.state.property.playMode.list, mode=>{ return mode.type == data.playMode});
+        this.updatePlayMode(index);
+        if(projectId && parentId && data.id && (typeof data.id == 'number' || data.id.indexOf("scene&&") < 0)){
+            getSceneById(projectId, parentId, data.id, data=>{this.mounted && this.initProperty(data)})
+        }
     }
 
     componentWillUnmount(){
@@ -81,6 +88,14 @@ class PlayerScene extends PureComponent{
         console.log(id);
         switch (id) {
             case "apply":
+                const {property} = this.state;
+                this.props.applyClick && this.props.applyClick({
+                    name: property.sceneName.value,
+                    type: 0,
+                    playMode: property.playMode.list[property.playMode.index].type,
+                    playDuration: property.playModeCount.value,
+                    playTimes: property.playModeCount.value2
+                });
                 break;
             case "reset":
                 for(let key in this.state.property){

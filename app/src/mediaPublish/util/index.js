@@ -12,15 +12,54 @@ export function weekReplace(list) {
     return weekStr;
 }
 
-export function updateTree(treeList, parentNode, node) {
-    treeList = clearState(treeList);
+export function weekTranformArray(week) {
+    console.log('week:',week);
+    let str = week.toString(2);
+    let arr = [];
+    for (let i=0;i<str.length;i++){
+        let value = str.charAt(i);
+        if(i==0 && parseInt(value)){
+            arr.push(7)
+        }else if(parseInt(value)){
+            arr.push(i);
+        }
+    }
 
+    return arr;
+}
+
+export function arrayTranformWeek(array) {
+    let str = '';
+    let arr = [];
+    let week = 0;
+    for (let i=0;i<array.length;i++){
+        let val = array[i];
+        if(val == 7){
+            arr[0] = 1;
+        }else{
+            arr[val] = 1;
+        }
+    }
+
+    str = arr.join('');
+    if(str == ""){
+        week = 0;
+    }else{
+        week = parseInt(str);
+    }
+
+    return week;
+}
+
+export function updateTree(treeList, parentNode, node) {
+    // treeList = clearState(treeList);
     if(!parentNode){
         treeList.push(node);
         return treeList;
     }else{
         return treeList.map(curNode=>{
             if (curNode.id == parentNode.id){
+                curNode.toggled = true;
                 if(!curNode.children){
                     curNode.children = [];
                 }

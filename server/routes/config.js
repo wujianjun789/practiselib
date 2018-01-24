@@ -7,12 +7,17 @@ const http = require('http');
 
 const lodash = require('lodash');
 
-const host_ip = require('../util/index').host_ip;
+// const host_ip = require('../util/index').host_ip;
 const client =  require('../models/config').client;
 
 /* GET config listing. */
 router.get('/', function (req, res, next) {
-    res.json("http://"+(client.HOST?client.HOST:host_ip)+":"+client.PORT+client.PATH);
+    const config = {
+        host: client.HOST,
+        port: client.PORT,
+        path: client.PATH,
+    }
+    res.json(config);
 });
 
 router.get('/map', function (req, res, next) {
