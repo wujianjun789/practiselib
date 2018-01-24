@@ -19,7 +19,7 @@ export default class Chart extends PureComponent {
     }
     //d3图表
     drawLineChart = (node) => {
-        const { start, end } = this.props;
+        const { start, end, unit, yMax = 100 } = this.props;
         this.chart = new DrawChart({
             wrapper: node,
             data: [],
@@ -27,9 +27,9 @@ export default class Chart extends PureComponent {
             xAccessor: d => d3.timeParse('%Y-%m-%dT%H:%M:%S.%LZ')(d.timestamp),
             yAccessor: d => d.value,
             xDomain: [start, end],
-            yDomain: [0,100],
+            yDomain: [0, yMax],
             curveFactory: d3.curveStepAfter,//eslint-disable-line
-            yTickFormat: d => { if (d === 0) return ''; return `${d}%`; },
+            yTickFormat: d => { if (d === 0) return ''; return `${d}`; },
             tooltipAccessor: d => d.y
         });
     }
