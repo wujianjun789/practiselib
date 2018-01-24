@@ -6,7 +6,7 @@ export default function BarChart(data) {
 	// console.log("柱状体传入的data:", data)
 	let ID = data.wrapper.id
 	let parent = d3.select(`#${ID}`)
-	if (parent == null) return;
+	if (parent === null) return;
 
 	let wrapper = data.wrapper;
 	let dataset = data.data;
@@ -20,14 +20,13 @@ export default function BarChart(data) {
 	let padding = { left: 0, right: 30, top: 20, bottom: 40 };
 
 	// dataset数据插值,如果没有，设置为零
-
 	if (dataset.length != 0) {
 		let yearNum = new Date(dataset[0].x).getFullYear();
 		let monthNum = new Date(dataset[0].x).getMonth() + 1;
 		let dayNum = new Date(dataset[0].x).getDate();
 		let hoursNum = new Date(dataset[0].x).getHours() - 8;
 		let dataFixed = [];
-		if (type == 1) {//按年统计12
+		if (type === '1') {//按年统计12
 			dataFixed = []
 			// let month0 = new Date(yearNum,0,1)
 			for (let i = 0; i < 12; i++) {
@@ -35,7 +34,7 @@ export default function BarChart(data) {
 				item.x = new Date(yearNum, i, 1);
 				item.y = 0;
 				for (let j = 0; j < dataset.length; j++) {
-					if (new Date(dataset[j].x).getMonth() == i) {
+					if (new Date(dataset[j].x).getMonth() === i) {
 						item.y = dataset[j].y;
 					}
 				}
@@ -44,7 +43,7 @@ export default function BarChart(data) {
 			dataset = dataFixed;
 			// console.log("monthfix:",dataFixed );
 		}
-		if (type == 2) {//按月统计28,29,30,31
+		if (type === '2') {//按月统计28,29,30,31
 			let day = new Date(yearNum, monthNum+1, 0);
 			let daylength = day.getDate();
 			dataFixed = [];
@@ -53,7 +52,7 @@ export default function BarChart(data) {
 				item.x = new Date(yearNum,monthNum,i+1);
 				item.y = 0;
 				for (let j = 0; j<dataset.length; j++) {
-					if (new Date(dataset[j].x).getDate() == i+1){
+					if (new Date(dataset[j].x).getDate() === i+1){
 						item.y = dataset[j].y;
 					}
 				}	
@@ -63,14 +62,14 @@ export default function BarChart(data) {
 			}
 			dataset = dataFixed;
 		}
-		if (type == 3) {//按日统计24
+		if (type === '3') {//按日统计24
 			dataFixed = [];
 			for (let i = 0; i < 24; i++) {
 				let item = {};
 				item.x = new Date(yearNum,monthNum,dayNum,i);
 				item.y = 0;
 				for (let j = 0; j<dataset.length; j++) {
-					if (new Date(dataset[j].x).getHours()-8 == i){
+					if (new Date(dataset[j].x).getHours()-8 === i){
 						item.y = dataset[j].y;
 					}
 				}	
@@ -80,9 +79,6 @@ export default function BarChart(data) {
 		}
 	}
 	
-
-
-
 	//定义一个数组日，月，年，
 	// let dataset = [10, 20,32, 5, 30,  12, 5, 10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
 	// let dataset = [10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
