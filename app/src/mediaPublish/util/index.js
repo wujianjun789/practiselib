@@ -76,6 +76,52 @@ export function updateTree(treeList, parentNode, node) {
     }
 }
 
+export function getTreeParentNode(treeList, node, parentNode) {
+    if(!treeList || !node){
+        return null;
+    }
+
+    let newParentNode = null;
+    treeList.map(curNode=>{
+
+    })
+
+    for(let i=0;i<treeList.length;i++){
+        let curNode = treeList[i];
+        if(curNode.type == node.type && curNode.id == node.id){
+            newParentNode = parentNode;
+        }else{
+            if(curNode.children && curNode.children.length){
+                newParentNode = getTreeParentNode(curNode.children, node, curNode);
+            }
+        }
+
+        if(newParentNode){
+            break;
+        }
+    }
+
+    return newParentNode;
+}
+
+export function clearTreeListState(treeList) {
+    return treeList.map(node=>{
+        if(node.children && node.children.length){
+            node.children = clearTreeListState(node.children);
+        }
+
+        if(node.hasOwnProperty("toggled")){
+            node.toggled = false;
+        }
+
+        if(node.hasOwnProperty("active")){
+            node.active = false;
+        }
+
+        return node;
+    })
+}
+
 function clearState(treeList) {
     return treeList.map(node=>{
         if(node.hasOwnProperty("toggled")){

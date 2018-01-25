@@ -40,6 +40,10 @@ export default class SideBar extends Component {
 
     }
 
+    onRemove = (node)=>{
+
+    }
+    
     onToggle(node, toggled) {
         // if(this.state.cursor){
         //     this.state.cursor.active = false;
@@ -97,7 +101,7 @@ console.log('isProject:', isActive);
             </div>
             <div className={"title "+(isActive && !isClick ?'active':'')} onClick={()=>this.onProject()}>{title}</div>
             <TreeView className="mediaPublish" IsRemove={isRemove} IsMove={isMove} IsCancelSelect={isActive || isClick}
-                      onToggle={ (node) => this.onToggle(node) } onMove={this.onMove}/>
+                      onToggle={ (node) => this.onToggle(node) } onMove={this.onMove} onRemove={this.onRemove}/>
             {/* <Treebeard data={data} style={treeStyle} onToggle={this.onToggle}/>*/}
         </div>
     }

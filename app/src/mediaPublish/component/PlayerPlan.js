@@ -18,31 +18,27 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 class PlayerPlan extends PureComponent{
     constructor(props){
         super(props);
-        const {name="", startDate=moment(), endDate=moment(), startTime=moment(), endTime=moment(), week} = props.data;
-        const num = 8;
-
-        let weekArr = weekTranformArray(week);
         this.state = {
             //计划
             property:{
-                plan: { key: "plan", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:name, value: name },
-                startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue:startDate,value: startDate },
-                endDate: { key: "endDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue:endDate, value: endDate },
-                startTime: { key: "startTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue:startTime, value: startTime },
-                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue:endTime, value: endTime },
+                plan: { key: "plan", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:"", value: "" },
+                startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue: moment(),value: moment() },
+                endDate: { key: "endDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue: moment(), value: moment() },
+                startTime: { key: "startTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue: moment(), value: moment() },
+                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue: moment(), value: moment() },
                 week: {
                     key: "week", title:this.props.intl.formatMessage({id:'mediaPublish.weekday'}),
                     list: [{ label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1 }, { label:this.props.intl.formatMessage({id:'mediaPublish.tuesday'}), value: 2 },
                         { label:this.props.intl.formatMessage({id:'mediaPublish.wednesday'}), value: 3 }, { label: this.props.intl.formatMessage({id:'mediaPublish.thursday'}), value: 4 },
                         { label: this.props.intl.formatMessage({id:'mediaPublish.friday'}), value: 5 }, { label:this.props.intl.formatMessage({id:'mediaPublish.saturday'}), value: 6 },
                         { label: this.props.intl.formatMessage({id:'mediaPublish.sunday'}), value: 7 }],
-                    defaultValue: weekArr,
-                    value: weekArr
+                    defaultValue: [],
+                    value: []
                 }
             },
             prompt:{
                 //计划
-                plan:name?false:true,week:week && week.length?false:true,
+                plan:false,week:false,
                 /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
             }
         }
@@ -54,12 +50,17 @@ class PlayerPlan extends PureComponent{
     }
 
     componentWillMount(){
+        console.log('playerPlan render:', this.props.data);
         this.mounted = true;
         const {projectId, data} = this.props;
         console.log(typeof data.id);
         if(projectId && data.id && (typeof data.id == 'number' || data.id.indexOf("plan&&") < 0)){
             getProgramById(projectId, data.id, response=>{this.mounted && this.initProperty(response);})
         }
+    }
+
+    componentDidUpdate(){
+
     }
 
     componentWillUnmount(){
