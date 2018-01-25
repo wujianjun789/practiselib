@@ -51,7 +51,7 @@ import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey } from '../../util/algorithm';
-import { updateTree, getTreeParentNode, clearTreeListState } from '../util/index'
+import { updateTree, removeTree, getTreeParentNode, clearTreeListState } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, addProgram, addScene, addZone,updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateProgramOrders, updateSceneOrders, updateZoneOrders,
@@ -1080,6 +1080,37 @@ export class PlayerArea extends Component {
         }
     }
 
+    onRemove = node=>{
+        const {project, playerData} = this.state;
+        let parentNode = getTreeParentNode(playerData, node);
+        let parentParentNode = getTreeParentNode(playerData, parentNode);
+        switch (node.type) {
+            case "scene":
+console.log('onRemove:');
+                removeSceneById(project.id, parentNode.id, node.id, ()=>{
+                    console.log('onRemove response:');
+                    this.setState({playerData:removeTree(node)});
+                })
+                break;
+            case 'plan':
+                removeProgramsById(project.id, node.id, ()=>{
+                    this.setState({playerData:removeTree(node)});
+                })
+                break;
+            case 'plan2':
+                type = 'cyclePlan';
+                break;
+            case 'plan3':
+                type = 'timingPlan';
+                break;
+            case 'area':
+                removeZoneById(project.id, parentNode.id, parentParentNode.id, node.id, ()=>{
+                    this.setState({playerData:removeTree(node)});
+                })
+                break;
+        }
+    }
+
     onToggle = (node)=> {
         console.log("node:", node);
         clearTreeListState(this.state.playerData);
@@ -1151,7 +1182,7 @@ export class PlayerArea extends Component {
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
             <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
-                onClick={this.areaClick} onToggle={this.onToggle} />
+                onClick={this.areaClick} onToggle={this.onToggle} onRemove={this.onRemove}/>
 
             <Content className="player-area">
                 <div className="left">

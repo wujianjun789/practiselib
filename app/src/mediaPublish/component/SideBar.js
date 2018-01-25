@@ -37,13 +37,13 @@ export default class SideBar extends Component {
     }
 
     onMove(key, node){
-
+        this.props.onMove && this.props.onMove(key, node);
     }
 
     onRemove = (node)=>{
-
+        this.props.onRemove && this.props.onRemove(node);
     }
-    
+
     onToggle(node, toggled) {
         // if(this.state.cursor){
         //     this.state.cursor.active = false;

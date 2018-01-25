@@ -42,7 +42,7 @@ export class TreeView extends Component{
     onRemove(node){
         console.log("remove:", node);
         const {actions} = this.props;
-        actions && actions.onRemove(node);
+        setTimeout(()=>{actions && actions.onRemove(node)}, 33);
         this.setState({update: true});
         this.props.onRemove && this.props.onRemove(node);
     }
