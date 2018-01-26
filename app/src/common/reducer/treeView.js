@@ -33,8 +33,8 @@ function treeViewInit(state, data, router) {
     let paths = path.split("/");
     let url = paths.pop();
     let urlParent = paths.pop();
-    let curParentNode = searchNode(data, urlParent);
-    let curNode = searchNode(data, url);
+    let curParentNode = Object.assign({}, searchNode(data, urlParent),{level:1});
+    let curNode = Object.assign({}, searchNode(data, url), {level:2});
 
     let list = addTreeLevel(data, 1);
     console.log('renderTree:', data);
@@ -180,9 +180,20 @@ function IsChildren(childrens, child) {
         return false;
     }
 
-    for(var key in childrens){
-        if(childrens[key].level == child.level && childrens[key].id == child.id){
-            return true;
+    let index = lodash.findIndex(childrens, node=>{ return node.level == child.level && node.id == child.id});
+    if(index>-1){
+        return true;
+    }else{
+        for(let i=0;i<childrens.length;i++){
+            const node = childrens[i];
+            let callBack = false;
+            if(node.children && node.children.length){
+                callBack = IsChildren(node.children, child);
+                if(callBack){
+                    return true;
+                }
+            }
+
         }
     }
 
