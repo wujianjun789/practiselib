@@ -36,20 +36,32 @@ function treeViewInit(state, data, router) {
     let curParentNode = searchNode(data, urlParent);
     let curNode = searchNode(data, url);
 
-    let list = data;
+    let list = addTreeLevel(data, 1);
+    console.log('renderTree:', data);
+
     if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
         list = update(list, 1, null, curParentNode);
     }
 
     if(curNode && !curNode.toggled){
-        list = update(data, 1, null, curNode);
+        list = update(list, 1, null, curNode);
     }
 
     if(curNode && curNode.children && curNode.children.length){
-        list = update(data, 1, null, curNode.children[0]);
+        list = update(list, 1, null, curNode.children[0]);
     }
 
-    return curNode ? Object.assign({}, state, {datalist:list}):Object.assign({}, state, {datalist:data});
+    return Object.assign({}, state, {datalist:list});
+}
+
+function addTreeLevel(treeList,level){
+    return treeList.map(node=>{
+        if(node.children && node.children.length){
+            node.children = addTreeLevel(node.children, level+1);
+        }
+
+        return Object.assign({}, node, {level:level});
+    })
 }
 
 function onToggle(state, data) {
@@ -89,7 +101,7 @@ function searchNode(list, id) {
 }
 
 function move(list, data) {
-    let curIndex = lodash.findIndex(list, node=>{return node.id == data.node.id});
+    let curIndex = lodash.findIndex(list, node=>{return node.level == data.node.level && node.id == data.node.id});
     if(curIndex>-1){
         list.splice(curIndex, 1);
         console.log(curIndex+1);
@@ -107,7 +119,7 @@ function move(list, data) {
 }
 
 function remove(list, data) {
-    let curIndex = lodash.findIndex(list, node=>{return node.id == data.id});
+    let curIndex = lodash.findIndex(list, node=>{return node.level == data.level && node.id == data.id});
     if(curIndex>-1){
         list.splice(curIndex, 1);
         console.log(curIndex, list);
@@ -124,11 +136,11 @@ function remove(list, data) {
 }
 
 function update(list, index, parentId, data) {
-    // console.log(index);
+    console.log('update tree:',index);
     let curIndex = index;
     let nextIndex = index + 1;
     return list.map(node=>{
-        if(node.id == data.id){
+        if(node.level == data.level && node.id == data.id){
             node.active = true;
         }else{
             node.active = false;
@@ -138,7 +150,7 @@ function update(list, index, parentId, data) {
         //     return node;
         // }
 
-        if(node.id == data.id && node.children && node.children.length){
+        if(node.level == data.level && node.id == data.id && node.children && node.children.length){
             node.toggled = !node.toggled;
             if(!node.defaultSelect){
                 if(node.toggled && node.children && node.children.length){//默认选中第一个子节点
@@ -151,7 +163,7 @@ function update(list, index, parentId, data) {
                 return node;
             }
             // return node;
-        }else if(node.id != data.id && !IsChildren(node.children, data.id) && !node.defaultSelect){
+        }else if(node.id != data.id && !IsChildren(node.children, data) && !node.defaultSelect){
             node.toggled = false;
         }
 
@@ -163,13 +175,13 @@ function update(list, index, parentId, data) {
     })
 }
 
-function IsChildren(childrens, id) {
+function IsChildren(childrens, child) {
     if(!childrens){
         return false;
     }
 
     for(var key in childrens){
-        if(childrens[key].id == id){
+        if(childrens[key].level == child.level && childrens[key].id == child.id){
             return true;
         }
     }

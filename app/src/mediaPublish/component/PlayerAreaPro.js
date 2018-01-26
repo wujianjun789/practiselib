@@ -13,7 +13,7 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 class PlayerAreaPro extends PureComponent {
     constructor(props) {
         super(props);
-        const {name, width, height, axisX, axisY, playEndIndex} = props;
+        const {name, width, height, axisX, axisY, playEndIndex} = props.data;
         this.state = {
             property: {
                 //区域
@@ -96,7 +96,7 @@ class PlayerAreaPro extends PureComponent {
     initProperty(data) {
         const playEndList = this.state.property.playEnd.list;
         const playEndIndex = lodash.findIndex(playEndList, item=> {
-            return item.name = data.playEndName;
+            return item.type = data.lastFrame;
         })
         this.state.property.areaName.defaultValue = this.state.property.areaName.value = data.name;
         this.state.property.width.defaultValue = this.state.property.width.value = data.width;
@@ -134,13 +134,13 @@ class PlayerAreaPro extends PureComponent {
             case "apply":
                 const {property} = this.state;
                 this.props.applyClick && this.props.applyClick({
-                    name: property.areaName,
+                    name: property.areaName.value,
                     userDefine: '',
                     position: {
-                        x: property.axisX_a,
-                        y: property.axisY_a,
-                        w: property.width,
-                        h: property.height
+                        x: property.axisX_a.value,
+                        y: property.axisY_a.value,
+                        w: property.width.value,
+                        h: property.height.value
                     },
                     lastFrame: property.playEnd.list[property.playEnd.index].type
                 })

@@ -1,6 +1,8 @@
 /**
  * Created by a on 2017/11/16.
  */
+import lodash from 'lodash';
+
 const week = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"日"};
 export function weekReplace(list) {
     let weekStr = "";
@@ -58,7 +60,7 @@ export function updateTree(treeList, parentNode, node) {
         return treeList;
     }else{
         return treeList.map(curNode=>{
-            if (curNode.id == parentNode.id){
+            if (curNode.type == parentNode.type && curNode.id == parentNode.id){
                 curNode.toggled = true;
                 if(!curNode.children){
                     curNode.children = [];
@@ -74,6 +76,76 @@ export function updateTree(treeList, parentNode, node) {
             return curNode;
         })
     }
+}
+
+export function removeTree(treeList, node) {
+    if(!treeList || !node){
+        return false;
+    }
+
+    let curIndex = lodash.findIndex(treeList, curNode=>{return curNode.level == node.level && curNode.id == node.id});
+    if(curIndex>-1){
+        treeList.splice(curIndex, 1);
+        return treeList;
+    }else{
+        return treeList.map(node=>{
+            if(node.children && node.children.length){
+                removeTree(node.children,  data);
+            }
+
+            return node;
+        })
+    }
+}
+
+export function getTreeParentNode(treeList, node, parentNode) {
+    if(!treeList || !node){
+        return null;
+    }
+
+    let newParentNode = null;
+    treeList.map(curNode=>{
+
+    })
+
+    for(let i=0;i<treeList.length;i++){
+        let curNode = treeList[i];
+        if(curNode.type == node.type && curNode.id == node.id){
+            newParentNode = parentNode;
+        }else{
+            if(curNode.children && curNode.children.length){
+                newParentNode = getTreeParentNode(curNode.children, node, curNode);
+            }
+        }
+
+        if(newParentNode){
+            break;
+        }
+    }
+
+    return newParentNode;
+}
+
+export function clearTreeListState(treeList) {
+    if(!treeList){
+        return false;
+    }
+
+    return treeList.map(node=>{
+        if(node.children && node.children.length){
+            node.children = clearTreeListState(node.children);
+        }
+
+        if(node.hasOwnProperty("toggled")){
+            node.toggled = false;
+        }
+
+        if(node.hasOwnProperty("active")){
+            node.active = false;
+        }
+
+        return node;
+    })
 }
 
 function clearState(treeList) {
