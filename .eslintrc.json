@@ -1,0 +1,21 @@
+{
+  "extends": "fbjs",
+  "globals": {
+    "$": true,
+    "d3": true,
+    "L": true,
+    "XLSX": true,
+    "JSMpeg": true
+  },
+  "rules": {
+    "indent":[1,2],
+    "quotes":[1,"single"],
+    "semi":[1,"always"],
+    "camelcase":1,
+    "consistent-return":0,
+    "default-case":2,
+    "no-alert":2,
+    "no-case-declarations":2,
+    "no-invalid-this":2
+  }
+}
