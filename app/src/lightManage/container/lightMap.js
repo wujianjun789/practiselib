@@ -13,19 +13,19 @@ import MapView from '../../components/MapView'
 import Panel from '../component/FaultPanel'
 
 /*  新增－t  */
-import NotifyPopup from '../../common/containers/NotifyPopup';
+import NotifyPopup from '../../common/containers/NotifyPopup'
 import {addNotify, removeAllNotify, removeNotify} from '../../common/actions/notifyPopup'
 import {getDomainList,getDomainByDomainLevelWithCenter} from '../../api/domain'
 import {getObjectByKey} from '../../util/index'
 import {getMapConfig} from '../../util/network'
 import {getPoleListByModelWithName, getPoleListByModelDomainId, getPoleAssetById} from '../../api/pole'
-import {getDomainLevelByMapLevel, IsMapCircleMarker} from '../../util/index'
+import {getDomainLevelByMapLevel, getZoomByMapLevel, IsMapCircleMarker} from '../../util/index'
 import {getDomainListByName} from '../../api/domain'
 import {getIndexByKey} from '../../util/algorithm'
 import { DOMAIN_LEVEL } from '../../common/util/index'
-import {getAssetsBaseByDomain,getSearchAssets,getAssetsByDomainLevelWithCenter} from '../../api/asset'
+import {getAssetsBaseByDomain,getSearchAssets,getAssetsBaseById,getAssetsByDomainLevelWithCenter} from '../../api/asset'
 import lodash from 'lodash'
-import Immutable from 'immutable';
+import Immutable from 'immutable'
 export class lightMap extends Component{
     constructor(props){
         super(props);
@@ -98,7 +98,7 @@ export class lightMap extends Component{
         this.map = {
             center:{ lng: 121.49971691534425, lat: 31.239658843127756 }
         };
-
+        this.panLatlng = null;
         this.listStyle = {"maxHeight":"200px"};
         this.infoStyle = {"maxHeight":"352"};
         this.controlStyle= {"maxHeight":"180"};
@@ -207,17 +207,17 @@ export class lightMap extends Component{
         this.props.actions.removeAllNotify();
     }
 
-    updatePlaceholder(){
-        const {domainList, domainSearch} = this.state;
-        let datalist = [];
-        for(var key in domainList){
-            let item = domainList[key];
-            if(!domainSearch.value || item.name.indexOf(domainSearch.value)>-1){
-                datalist.push({id:item.id, value:item.name})
-            }
-        }
-        this.setState({placeholderList:datalist});
-    }
+    // updatePlaceholder(){
+    //     const {domainList, domainSearch} = this.state;
+    //     let datalist = [];
+    //     for(var key in domainList){
+    //         let item = domainList[key];
+    //         if(!domainSearch.value || item.name.indexOf(domainSearch.value)>-1){
+    //             datalist.push({id:item.id, value:item.name})
+    //         }
+    //     }
+    //     this.setState({placeholderList:datalist});
+    // }
 
     /*  新增－t  */
     searchInputOnKeyUp(e){
@@ -280,9 +280,7 @@ export class lightMap extends Component{
 
     requestPoleAsset(data){
         const {model} = this.state;
-        if(model != "pole"){
-            return;
-        };
+        if(model != "pole"){return;};
         let assets = [];
         let ids = [];
         let datas = [];
@@ -422,21 +420,32 @@ export class lightMap extends Component{
 
     itemClick(item){
         this.setState({searchList:Immutable.fromJS([item])},()=>{
-            let data  = item.toJS()
-            if(this.state.tableIndex==0){
-                    if(this.map.zoom>15&&this.map.zoom<=18){
+            let data  = item.toJS();
+            if(this.state.tableIndex===0&&this.state.IsSearchResult){
+                    if(this.domainCurLevel===5){
                         this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
                     }else{
-                        this.map = Object.assign({}, this.map, {zoom:16,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                        this.map = Object.assign({}, this.map, {zoom:17,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
                     }
                     this.setState({IsSearch:false, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:false},()=>{});
-            }else{
-                    if(this.map.zoom>6&&this.map.zoom<=15){
+            }else if(this.state.tableIndex===1&&this.state.IsSearchResult){
+                    if(data.level===this.domainCurLevel){
                         this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
                     }else{
-                        this.map = Object.assign({}, this.map, {zoom:14,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                        let zoom = getZoomByMapLevel(data.level,this.domainLevel,this.map);
+                        this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                        this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
                     }
                     this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{});
+            }else{
+                    if(this.domainCurLevel===5){
+                        this.map = Object.assign({}, this.map, {center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                        this.setState({IsSearch:false, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:false},()=>{});
+                    }else if(this.domainCurLevel<5){
+                        let zoom = this.map.zoom+3;
+                        this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:data.geoPoint.lng, lat:data.geoPoint.lat}});
+                        this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{});
+                    }else{}
             }
             this.setSize();
         })
@@ -459,17 +468,23 @@ export class lightMap extends Component{
     }
 
     searchSubmit(index){
-        const {domainList, domainSearch} = this.state;
-        if(index==1){
-            for(let i=0;i<domainList.length;i++){
-                let item = domainList[i];
-                if(!domainSearch.value || item.name.indexOf(domainSearch.value)>-1){
-                    this.map.center = item.geoPoint;
-                    this.setState({panLatlng:item.geoPoint});
-                    break;
-                }
-            }
-        }
+        // console.log(index)
+        // const {domainList, domainSearch} = this.state;
+        // console.log(domainList.length)
+        // console.log(domainList.options.length)
+        // if(index===1){
+            
+        //     for(let i=0;i<domainList.options.length;i++){
+        //         let item = domainList.options[i];
+        //         console.log(item)
+        //         console.log(domainSearch)
+        //         if(domainSearch.value && item.name.indexOf(domainSearch.value)>-1){
+        //             this.map.center = item.geoPoint;
+        //             this.panLatlng = item.geoPoint;
+        //             break;
+        //         }
+        //     }
+        // }
         //this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.setState({interactive:false, tableIndex:index, IsOpenPoleInfo:false, IsOpenPoleControl:false, IsSearch:true},()=>{
             this.requestSearch();
@@ -492,7 +507,6 @@ export class lightMap extends Component{
 
     requestCurAssets(model){
         getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
-            this.deviceList = Immutable.fromJS(data);
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -503,16 +517,14 @@ export class lightMap extends Component{
 
     requestCurDomain(){
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
-            this.deviceList = Immutable.fromJS(data);
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
-                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+                return Object.assign(geoPoint, { "device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
             })
             this.setState({curList: data, positionList:positionList},()=>{
                 let deviceLen = [];
                 data.map(item=>{
                     getAssetsBaseByDomain(item.id, asset=>{
-
                         deviceLen.push(item.id);
                         let curIndex = lodash.findIndex(this.state.curList, domain=>{
                             return domain.id == item.id
@@ -523,7 +535,6 @@ export class lightMap extends Component{
                         if(deviceLen.length == data.length){
                             // this.setState({curList: this.state.curList});
                         }
-
                     })
                 })
             })
@@ -531,21 +542,23 @@ export class lightMap extends Component{
     }
 
     panCallFun(){
-        this.setState({panLatlng:null});
+        this.panLatlng = null;
     }
 
     mapDragend(data){
         return;
-        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-        if(this.map.zoom>15&&this.map.zoom<=18){
-            this.requestCurAssets("lc");
-        }else{
-            this.requestCurDomain();
-        }
+        // this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        // this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+        // if(this.map.zoom>15&&this.map.zoom<=18){
+        //     this.requestCurAssets("lc");
+        // }else{
+        //     this.requestCurDomain();
+        // }
     }
 
     mapZoomend(data){
-        if(this.andNot>=2){}else{this.andNot=this.andNot+1;return;}
+
+        if(this.andNot===1){}else{this.andNot=this.andNot+1;return;}
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         if(this.map.zoom>15&&this.map.zoom<=18){
@@ -553,16 +566,17 @@ export class lightMap extends Component{
         }else{
             this.requestCurDomain();
         }
+
     }
 
     markerClick(data){
         if(this.map.zoom>15&&this.map.zoom<=18){
-            this.deviceList.map((item,key)=>{
-                let id = item.get("id");
-                if(id===data.id){this.itemClick(item);}
-            });
+            getAssetsBaseById(data.id,(data)=>{
+                this.itemClick(Immutable.fromJS(data))
+            })
         }else{
-            let zoom = this.map.zoom+3;
+            let zoom = '';
+            if(this.map.zoom===13){zoom = this.map.zoom+2;}else{zoom = this.map.zoom+3;};
             this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
             this.isMouseEnterSet();
         }
@@ -690,11 +704,6 @@ export class lightMap extends Component{
         }
     }
 
-
-    
-
-
-
     render(){
         
         const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
@@ -702,14 +711,12 @@ export class lightMap extends Component{
         let IsControl = false;
         let searchListToJS = searchList.toJS();
         let searchListLength = searchListToJS.length;
-
-        console.log("____________________________________________________________________________________________")
         if(curId=="screen" || curId=="lamp" || curId=="camera"){
             IsControl = true;
         }
         return (
             <Content onClick={()=>{}}>
-                <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
+                <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={this.panLatlng} panCallFun={this.panCallFun}/>
                 <div className="search-container" onMouseLeave={()=>{}} onMouseEnter={()=>{}}>
                     <div className="input-group searchBlock">
                         <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
