@@ -62,7 +62,6 @@ class PlayerProject extends PureComponent{
 
     render(){
         const {property, prompt} = this.state;
-        console.log('project:',this.props.data);
         return <div className={"pro-container playerProject "}>
             <div className="row">
                 <div className="form-group project-name">

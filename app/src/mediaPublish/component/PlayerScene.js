@@ -13,46 +13,56 @@ import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 class PlayerScene extends PureComponent{
     constructor(props){
         super(props);
-        const {name="", playMode, playDuration,playTimes} = props.data;
-        console.log('playerScene:',props.data);
         this.state = {
+            id:"",
             property: {
                 //场景名称
-                sceneName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:name?name:"", value: name?name:"" },
+                sceneName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:name?name:"", value: "" },
                 playMode: { key: "playMode", title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: "按次播放",type:0 }, { id: 2, name: "按时长播放", type:1 }, { id: 3, name: "循环播放", type:2 }], defaultIndex: 0, index: 0, name: "按次播放" },
                 playModeCount: { key: "playModeCount", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), active: true,
-                    defaultValue: playDuration?playDuration:"", value: playDuration?playDuration:"",
-                    defaultValue2: playTimes?playTimes:"", value2: playTimes?playTimes:""}
+                    defaultValue: "", value: "",
+                    defaultValue2: "", value2: ""}
             },
             prompt: {
                 //场景
-                sceneName: name?false:true, /*playMode: playMode?false:true,*/ playModeCount: playDuration?false:true,
+                sceneName: false, /*playMode: playMode?false:true,*/ playModeCount: false
             }
         }
 
         this.onChange = this.onChange.bind(this);
         this.playerSceneClick = this.playerSceneClick.bind(this);
         this.updatePlayMode = this.updatePlayMode.bind(this);
+        this.init = this.init.bind(this);
         this.initProperty = this.initProperty.bind(this);
     }
 
     componentWillMount(){
-        console.log('mount mount mount mount mount');
         this.mounted = true;
-        const {projectId, parentId, data} = this.props;
-        if(!data){
-            return;
-        }
+        this.init();
+    }
 
-        const index = lodash.findIndex(this.state.property.playMode.list, mode=>{ return mode.type == data.playMode});
-        this.updatePlayMode(index);
-        if(projectId && parentId && data.id && (typeof data.id == 'number' || data.id.indexOf("scene&&") < 0)){
-            getSceneById(projectId, parentId, data.id, data=>{this.mounted && this.initProperty(data)})
-        }
+    componentDidUpdate(){
+        this.init();
     }
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    init(){
+        const {projectId, parentId, data} = this.props;
+        console.log('scene:', data.id, this.state.id);
+        if(!data || !data.id || data.id == this.state.id){
+            return false;
+        }
+
+        if(projectId && parentId && data.id && (typeof data.id == 'number' || data.id.indexOf("scene&&") < 0)){
+            getSceneById(projectId, parentId, data.id, data=>{this.mounted && this.initProperty(data)})
+        }else if(typeof data.id == 'string' && data.id.indexOf("scene&&")>-1){
+            this.state.property.sceneName.defaultValue = this.state.property.sceneName.value = data.name;
+            this.setState({id:data.id, property: Object.assign({}, this.state.property),
+                prompt: {sceneName:data.name?false:true}})
+        }
     }
 
     initProperty(data){
@@ -67,7 +77,7 @@ class PlayerScene extends PureComponent{
         this.state.property.playModeCount.defaultValue = this.state.property.playModeCount.value = data.playDuration;
         this.state.property.playModeCount.defaultValue2 = this.state.property.playModeCount.value2 = data.playTimes;
 
-        this.setState({property: Object.assign({}, this.state.property),
+        this.setState({id: data.id, property: Object.assign({}, this.state.property),
             prompt: {sceneName: data.name?false:true,  playModeCount: (modeIndex==0 && data.count || modeIndex==1 && data.time)?false:true,}})
     }
 

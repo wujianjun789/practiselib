@@ -45,42 +45,25 @@ export default class SideBar extends Component {
     }
 
     onToggle(node, toggled) {
-        // if(this.state.cursor){
-        //     this.state.cursor.active = false;
-        // }
-        //
-        // node.active = true;
-        // if(node.children){
-        //     node.toggled = toggled;
-        // }
-        //
-        // this.setState({cursor:node});
-        // this.setState({isProject: false},()=>{
-            this.props.onToggle && this.props.onToggle(node);
-        // })
+        this.props.onToggle && this.props.onToggle(node);
     }
 
     onClick(id){
         if(id == 'edit' || id == 'complete'){
-            this.setState({isProject:false, isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
+            this.setState({isEdit:!this.state.isEdit, isRemove:id=='edit'?true:false}, ()=>{this.props.onClick && this.props.onClick(id)})
         }else{
-            if(id == "general" || id == "cycle" || id == "regular"){
-                this.setState({isProject:false});
-            }
             this.props.onClick && this.props.onClick(id);
         }
     }
 
     onProject(){
-        // this.setState({isProject: true}, ()=>{
-            this.props.onClick && this.props.onClick('project');
-        // });
+        this.props.onClick && this.props.onClick('project');
     }
 
     render() {
         const {data, title, isActive, isClick, isAddClick} = this.props;
         const {isEdit, isRemove, isMove}  = this.state;
-console.log('isProject:', isActive);
+
         return <div className="sidebar">
 
             <div className="edit-container">

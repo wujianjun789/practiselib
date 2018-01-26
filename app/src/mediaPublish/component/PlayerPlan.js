@@ -20,6 +20,7 @@ class PlayerPlan extends PureComponent{
         super(props);
         this.state = {
             //计划
+            id: "",
             property:{
                 plan: { key: "plan", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:"", value: "" },
                 startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue: moment(),value: moment() },
@@ -50,21 +51,34 @@ class PlayerPlan extends PureComponent{
     }
 
     componentWillMount(){
-        console.log('playerPlan render:', this.props.data);
         this.mounted = true;
         const {projectId, data} = this.props;
-        console.log(typeof data.id);
-        if(projectId && data.id && (typeof data.id == 'number' || data.id.indexOf("plan&&") < 0)){
-            getProgramById(projectId, data.id, response=>{this.mounted && this.initProperty(response);})
-        }
+
     }
 
     componentDidUpdate(){
-
+        console.log('playerPlan:',this.props.data);
+        this.init();
     }
 
     componentWillUnmount(){
         this.mounted = false;
+        this.init();
+    }
+
+    init(){
+        const {projectId, data} = this.props;
+        if(!data.id || data.id == this.state.id){
+            return false;
+        }
+
+        if(projectId && (typeof data.id == 'number' || data.id.indexOf("plan&&") < 0)){
+            getProgramById(projectId, data.id, response=>{this.mounted && this.initProperty(response);})
+        }else if(typeof data.id == 'string' && data.id.indexOf("plan&&")>-1){
+            this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
+            this.setState({id:data.id, property: Object.assign({}, this.state.property),
+                prompt: {plan:data.name?false:true}})
+        }
     }
 
     initProperty(data){
@@ -81,47 +95,55 @@ class PlayerPlan extends PureComponent{
         this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(timeEnd.hour+':'+timeEnd.minute+':'+timeEnd.second+':'+timeEnd.milliseconds);;
         this.state.property.week.defaultValue = this.state.property.week.value = week;
 
-        this.setState({property: Object.assign({}, this.state.property),
-        prompt: {plan:data.name?false:true,week: week && week.length?false:true,}})
+        this.setState({id:data.id, property: Object.assign({}, this.state.property),
+        prompt: {plan:data.name?false:true,week: week && week.length?false:true}})
+    }
+
+    applyHandler = ()=>{
+        const {property} = this.state;
+        let planId = this.props.data.id;
+
+        let data = {
+            name: property.plan.value,
+            startDate: property.startDate.value,
+            endDate: property.endDate.value,
+            startTime: property.startTime.value,
+            endTime: property.endTime.value,
+            week: arrayTranformWeek(property.week.value)
+        };
+
+        if(planId && (typeof planId == 'number' || planId.indexOf("plan&&") < 0)){
+            data = Object.assign({}, data, {id:planId});
+        }
+
+        this.props.applyClick && this.props.applyClick(data);
+    }
+
+    resetHandler = ()=>{
+        for(let key in this.state.property){
+            this.state.property[key].value = this.state.property[key].defaultValue;
+        }
+
+        for (let key in this.state.prompt){
+            if(key == "week"){
+                const defaultValue = this.state.property[key].defaultValue;
+                this.state.prompt[key] = defaultValue && defaultValue.length ? false:true;
+            }else{
+                const defaultValue2 = this.state.property[key].defaultValue;
+                this.state.prompt[key] = defaultValue2 ? false:true;
+            }
+        }
+        this.setState({property:Object.assign({}, this.state.property), prompt:Object.assign({}, this.state.prompt)});
     }
 
     planClick(id) {
         console.log(id);
         switch (id) {
             case "apply":
-                const {property} = this.state;
-                let planId = this.props.data.id;
-
-                let data = {
-                    name: property.plan.value,
-                    startDate: property.startDate.value,
-                    endDate: property.endDate.value,
-                    startTime: property.startTime.value,
-                    endTime: property.endTime.value,
-                    week: arrayTranformWeek(property.week.value)
-                };
-
-                if(planId && (typeof planId == 'number' || planId.indexOf("plan&&") < 0)){
-                    data = Object.assign({}, data, {id:planId});
-                }
-
-                this.props.applyClick && this.props.applyClick(data);
+                this.applyHandler();
                 break;
             case "reset":
-                for(let key in this.state.property){
-                    this.state.property[key].value = this.state.property[key].defaultValue;
-                }
-
-                for (let key in this.state.prompt){
-                    if(key == "week"){
-                        const defaultValue = this.state.property[key].defaultValue;
-                        this.state.prompt[key] = defaultValue && defaultValue.length ? false:true;
-                    }else{
-                        const defaultValue2 = this.state.property[key].defaultValue;
-                        this.state.prompt[key] = defaultValue2 ? false:true;
-                    }
-                }
-                this.setState({property:Object.assign({}, this.state.property), prompt:Object.assign({}, this.state.prompt)});
+                this.resetHandler();
                 break;
         }
     }
