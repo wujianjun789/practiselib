@@ -118,7 +118,7 @@
   },
   "scripts": {
     "test": "jest --coverage",
-    "lint":"eslint --quiet .",
+    "lint": "eslint --quiet .",
     "dev:server": "cd server & node server --dev ",
     "dev:client": "webpack-dev-server --public",
     "dev": "start npm run dev:server &&start npm run dev:client ",

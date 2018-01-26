@@ -16,6 +16,7 @@
     "default-case":2,
     "no-alert":2,
     "no-case-declarations":2,
-    "no-invalid-this":0
+    "no-invalid-this":0,
+    "max-len":[1, 120]
   }
 }
