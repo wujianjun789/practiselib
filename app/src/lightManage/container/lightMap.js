@@ -23,7 +23,7 @@ import {getDomainLevelByMapLevel, getZoomByMapLevel, IsMapCircleMarker} from '..
 import {getDomainListByName} from '../../api/domain'
 import {getIndexByKey} from '../../util/algorithm'
 import { DOMAIN_LEVEL } from '../../common/util/index'
-import {getAssetsBaseByDomain,getSearchAssets,getAssetsByDomainLevelWithCenter} from '../../api/asset'
+import {getAssetsBaseByDomain,getSearchAssets,getAssetsBaseById,getAssetsByDomainLevelWithCenter} from '../../api/asset'
 import lodash from 'lodash'
 import Immutable from 'immutable'
 export class lightMap extends Component{
@@ -507,7 +507,6 @@ export class lightMap extends Component{
 
     requestCurAssets(model){
         getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, model, (data)=>{
-            this.deviceList = Immutable.fromJS(data);
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -518,7 +517,6 @@ export class lightMap extends Component{
 
     requestCurDomain(){
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
-            this.deviceList = Immutable.fromJS(data);
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, { "device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
@@ -549,13 +547,13 @@ export class lightMap extends Component{
 
     mapDragend(data){
         return;
-        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-        this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
-        if(this.map.zoom>15&&this.map.zoom<=18){
-            this.requestCurAssets("lc");
-        }else{
-            this.requestCurDomain();
-        }
+        // this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        // this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+        // if(this.map.zoom>15&&this.map.zoom<=18){
+        //     this.requestCurAssets("lc");
+        // }else{
+        //     this.requestCurDomain();
+        // }
     }
 
     mapZoomend(data){
@@ -573,12 +571,12 @@ export class lightMap extends Component{
 
     markerClick(data){
         if(this.map.zoom>15&&this.map.zoom<=18){
-            this.deviceList.map((item,key)=>{
-                let id = item.get("id");
-                if(id===data.id){this.itemClick(item);}
-            });
+            getAssetsBaseById(data.id,(data)=>{
+                this.itemClick(Immutable.fromJS(data))
+            })
         }else{
-            let zoom = this.map.zoom+3;
+            let zoom = '';
+            if(this.map.zoom===13){zoom = this.map.zoom+2;}else{zoom = this.map.zoom+3;};
             this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
             this.isMouseEnterSet();
         }
