@@ -33,11 +33,13 @@ function treeViewInit(state, data, router) {
     let paths = path.split("/");
     let url = paths.pop();
     let urlParent = paths.pop();
-    let curParentNode = Object.assign({}, searchNode(data, urlParent),{level:1});
-    let curNode = Object.assign({}, searchNode(data, url), {level:2});
+
+    let searNode = searchNode(data, urlParent);
+    let curParentNode = searNode? Object.assign({}, searNode,{level:1}):searNode;
+    let sear2Node = searchNode(data, url);
+    let curNode = sear2Node? Object.assign({}, sear2Node, {level:2}):sear2Node;
 
     let list = addTreeLevel(data, 1);
-    console.log('renderTree:', data);
 
     if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
         list = update(list, 1, null, curParentNode);
