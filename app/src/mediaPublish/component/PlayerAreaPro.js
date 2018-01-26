@@ -82,7 +82,7 @@ class PlayerAreaPro extends PureComponent {
 
         const index = lodash.findIndex(this.state.property.playEnd.list, mode=>{ return mode.type == data.lastFrame});
         this.updatePlayEnd(index);
-        if(projectId && parentId && parentParentId && data.id && (typeof data.id || data.id.indexOf("area&&")) < 0){
+        if(projectId && parentId && parentParentId && data.id && (typeof data.id == "number" || data.id.indexOf("area&&")) < 0){
             getZoneById(projectId, parentId, parentParentId, data.id, data=> {
                 this.mounted && this.initProperty(data)
             });
@@ -128,41 +128,56 @@ class PlayerAreaPro extends PureComponent {
         }
     }
 
+    applyHandler = ()=>{
+        const {property} = this.state;
+        let areaId = this.props.data.id;
+        let data = {
+            name: property.areaName.value,
+            userDefine: '',
+            position: {
+                x: property.axisX_a.value,
+                y: property.axisY_a.value,
+                w: property.width.value,
+                h: property.height.value
+            },
+            lastFrame: property.playEnd.list[property.playEnd.index].type
+        };
+
+        if(areaId && (typeof areaId == "number" || areaId.indexOf("area&&") < 0)){
+            data = Object.assign({}, data, {id:areaId});
+        }
+
+        this.props.applyClick && this.props.applyClick(data);
+    }
+
+    resetHandler = ()=>{
+        for (let key in this.state.property) {
+            if (key == "playEnd") {
+                this.updatePlayEnd(this.state.property[key].defaultIndex);
+            } else {
+                this.state.property[key].value = this.state.property[key].defaultValue;
+            }
+        }
+
+        for (let key in this.state.prompt) {
+            const defaultValue = this.state.property[key].defaultValue;
+            this.state.prompt[key] = defaultValue ? false : true;
+        }
+
+        this.setState({
+            property: Object.assign({}, this.state.property),
+            prompt: Object.assign({}, this.state.prompt)
+        });
+    }
+
     playerAreaClick(id) {
         console.log(id);
         switch (id) {
             case "apply":
-                const {property} = this.state;
-                this.props.applyClick && this.props.applyClick({
-                    name: property.areaName.value,
-                    userDefine: '',
-                    position: {
-                        x: property.axisX_a.value,
-                        y: property.axisY_a.value,
-                        w: property.width.value,
-                        h: property.height.value
-                    },
-                    lastFrame: property.playEnd.list[property.playEnd.index].type
-                })
+                this.applyHandler();
                 break;
             case "reset":
-                for (let key in this.state.property) {
-                    if (key == "playEnd") {
-                        this.updatePlayEnd(this.state.property[key].defaultIndex);
-                    } else {
-                        this.state.property[key].value = this.state.property[key].defaultValue;
-                    }
-                }
-
-                for (let key in this.state.prompt) {
-                    const defaultValue = this.state.property[key].defaultValue;
-                    this.state.prompt[key] = defaultValue ? false : true;
-                }
-
-                this.setState({
-                    property: Object.assign({}, this.state.property),
-                    prompt: Object.assign({}, this.state.prompt)
-                });
+                this.resetHandler();
                 break;
         }
     }

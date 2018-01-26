@@ -175,17 +175,26 @@ export function getDomainLevelByMapLevel(domainLevel, map) {
     if(map.zoom == map.minZoom){
         return Math.min(1, domainLevel);
     }
-
     if(map.zoom == map.maxZoom){
         return Math.max(1, domainLevel);
     }
-
-    return Math.ceil((map.zoom-map.minZoom)*domainLevel/(map.maxZoom-map.minZoom));
+    return Math.round((map.zoom-map.minZoom+1)*domainLevel/(map.maxZoom-map.minZoom));
 }
+
+export function getZoomByMapLevel(curLevel, domainLevel, map) {
+    if(map.zoom == map.minZoom){
+        return Math.min(5, 18);
+    }
+    if(map.zoom == map.maxZoom){
+        return Math.max(5, 18);
+    }
+    return Math.round(curLevel*(map.maxZoom-map.minZoom)/domainLevel+map.minZoom-1);
+}
+
+
 export const DOMAIN_NAME_LENGTH = 16;
 export const DEVICE_ID_LENGTH = 16;
 export const DEVICE_NAME_LENGTH = 16;
-
 export const STRATEGY_NAME_LENGTH = 16;
 
 export function numbersValid(number) {
@@ -211,7 +220,6 @@ export function PORTValid(port) {
     if (port < 1 || port > 65535) {
         return false;
     }
-
     return /^([1-9]\d*|0)$/.test(port)
 }
 
@@ -243,7 +251,7 @@ export function makeTree(pre){
     let groupedByParents = _.groupBy(data, 'parentId');
     let keysById = _.keyBy(data, 'id');
     _.each(_.omit(groupedByParents, ''), function(children, parentId) {
-        keysById[parentId].children = children; 
+        keysById[parentId].children = children;
     });
     return groupedByParents[''];
 }

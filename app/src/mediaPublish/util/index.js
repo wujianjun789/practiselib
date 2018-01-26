@@ -53,13 +53,17 @@ export function arrayTranformWeek(array) {
     return week;
 }
 
-export function updateTree(treeList, parentNode, node) {
+export function updateTree(treeList, node, parentNode, parentParentNode) {
     // treeList = clearState(treeList);
     if(!parentNode){
         treeList.push(node);
         return treeList;
     }else{
         return treeList.map(curNode=>{
+            if(parentParentNode && curNode.type == parentParentNode.type && curNode.id == parentParentNode.id){
+                curNode.toggled = true;
+            }
+
             if (curNode.type == parentNode.type && curNode.id == parentNode.id){
                 curNode.toggled = true;
                 if(!curNode.children){
@@ -69,7 +73,7 @@ export function updateTree(treeList, parentNode, node) {
                 curNode.children.push(node);
             }else{
                 if(curNode.children && curNode.children.length){
-                    updateTree(curNode.children, parentNode, node);
+                    updateTree(curNode.children, node, parentNode, parentParentNode);
                 }
             }
 
