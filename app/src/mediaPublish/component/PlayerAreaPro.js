@@ -13,7 +13,7 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 class PlayerAreaPro extends PureComponent {
     constructor(props) {
         super(props);
-        const {name, width, height, axisX, axisY, playEndIndex} = props;
+        const {name, width, height, axisX, axisY, playEndIndex} = props.data;
         this.state = {
             property: {
                 //区域
@@ -55,7 +55,7 @@ class PlayerAreaPro extends PureComponent {
                 playEnd: {
                     key: "play_end",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.playEnd'}),
-                    list: [{id: 1, name: "最后一帧"}, {id: 1, name: "最后三帧"}],
+                    list: [{id: 1, name: "最后一帧", type: 0}, {id: 1, name: "循环播放", type:1}],
                     defaultIndex: 0,
                     index: 0,
                     name: "最后一帧"
@@ -75,11 +75,18 @@ class PlayerAreaPro extends PureComponent {
 
     componentWillMount() {
         this.mounted = true;
-        const {id, playEndIndex} = this.props;
-        this.updatePlayEnd(playEndIndex);
-        getZoneById(id, data=> {
-            this.mounted && this.initProperty(data)
-        });
+        const {projectId, parentId, parentParentId, data} = this.props;
+        if(!data){
+            return;
+        }
+
+        const index = lodash.findIndex(this.state.property.playEnd.list, mode=>{ return mode.type == data.lastFrame});
+        this.updatePlayEnd(index);
+        if(projectId && parentId && parentParentId && data.id && (typeof data.id == "number" || data.id.indexOf("area&&")) < 0){
+            getZoneById(projectId, parentId, parentParentId, data.id, data=> {
+                this.mounted && this.initProperty(data)
+            });
+        }
     }
 
     componwntWillUnmount() {
@@ -89,7 +96,7 @@ class PlayerAreaPro extends PureComponent {
     initProperty(data) {
         const playEndList = this.state.property.playEnd.list;
         const playEndIndex = lodash.findIndex(playEndList, item=> {
-            return item.name = data.playEndName;
+            return item.type = data.lastFrame;
         })
         this.state.property.areaName.defaultValue = this.state.property.areaName.value = data.name;
         this.state.property.width.defaultValue = this.state.property.width.value = data.width;
@@ -121,29 +128,56 @@ class PlayerAreaPro extends PureComponent {
         }
     }
 
+    applyHandler = ()=>{
+        const {property} = this.state;
+        let areaId = this.props.data.id;
+        let data = {
+            name: property.areaName.value,
+            userDefine: '',
+            position: {
+                x: property.axisX_a.value,
+                y: property.axisY_a.value,
+                w: property.width.value,
+                h: property.height.value
+            },
+            lastFrame: property.playEnd.list[property.playEnd.index].type
+        };
+
+        if(areaId && (typeof areaId == "number" || areaId.indexOf("area&&") < 0)){
+            data = Object.assign({}, data, {id:areaId});
+        }
+
+        this.props.applyClick && this.props.applyClick(data);
+    }
+
+    resetHandler = ()=>{
+        for (let key in this.state.property) {
+            if (key == "playEnd") {
+                this.updatePlayEnd(this.state.property[key].defaultIndex);
+            } else {
+                this.state.property[key].value = this.state.property[key].defaultValue;
+            }
+        }
+
+        for (let key in this.state.prompt) {
+            const defaultValue = this.state.property[key].defaultValue;
+            this.state.prompt[key] = defaultValue ? false : true;
+        }
+
+        this.setState({
+            property: Object.assign({}, this.state.property),
+            prompt: Object.assign({}, this.state.prompt)
+        });
+    }
+
     playerAreaClick(id) {
         console.log(id);
         switch (id) {
             case "apply":
+                this.applyHandler();
                 break;
             case "reset":
-                for (let key in this.state.property) {
-                    if (key == "playEnd") {
-                        this.updatePlayEnd(this.state.property[key].defaultIndex);
-                    } else {
-                        this.state.property[key].value = this.state.property[key].defaultValue;
-                    }
-                }
-
-                for (let key in this.state.prompt) {
-                    const defaultValue = this.state.property[key].defaultValue;
-                    this.state.prompt[key] = defaultValue ? false : true;
-                }
-
-                this.setState({
-                    property: Object.assign({}, this.state.property),
-                    prompt: Object.assign({}, this.state.prompt)
-                });
+                this.resetHandler();
                 break;
         }
     }

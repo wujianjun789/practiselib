@@ -10,11 +10,12 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 class PlayerProject extends PureComponent{
     constructor(props){
         super(props);
-        const {name=""} = props;
+        const {id, name=""} = props.data;
         this.state = {
             property: {
                 //方案
-                project: { key: "project", title: this.props.intl.formatMessage({id:'mediaPublish.schemeName'}), placeholder:this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'}), defaultValue: name, value: name }
+                project: { key: "project", title: this.props.intl.formatMessage({id:'mediaPublish.schemeName'}),
+                    placeholder:this.props.intl.formatMessage({id:'mediaPublish.inputSchemeName'}), defaultValue: name, value: name }
             },
             prompt: {
                 //方案
@@ -29,6 +30,10 @@ class PlayerProject extends PureComponent{
     projectClick(id) {
         switch (id) {
             case "apply":
+                this.props.applyClick && this.props.applyClick({
+                    id : this.props.data.id,
+                    name:this.state.property.project.value
+                });
                 break;
             case "reset":
                 const defaultValue = this.state.property.project.defaultValue;
@@ -57,6 +62,7 @@ class PlayerProject extends PureComponent{
 
     render(){
         const {property, prompt} = this.state;
+        console.log('project:',this.props.data);
         return <div className={"pro-container playerProject "}>
             <div className="row">
                 <div className="form-group project-name">

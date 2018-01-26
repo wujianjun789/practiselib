@@ -198,7 +198,8 @@ export function getConfig(cb) {
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {
-        setCookie("host_ip",response);
+        const host_ip = "http://"+(response.host?response.host:location.hostname)+":"+response.port+response.path;
+        setCookie("host_ip",host_ip);
         cb && cb();
     })
 }

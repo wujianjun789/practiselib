@@ -9,36 +9,36 @@ const CheckboxGroup = Checkbox.Group;
 
 import moment from 'moment'
 
-import {getPlayerById} from '../../api/mediaPublish'
+import {getProgramById} from '../../api/mediaPublish'
 import { NameValid } from '../../util/index';
+import {weekTranformArray, arrayTranformWeek} from '../util/index'
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 class PlayerPlan extends PureComponent{
     constructor(props){
         super(props);
-        const {name="", startDate=moment(), endDate=moment(), startTime=moment(), endTime=moment(), week=[]} = props;
         this.state = {
             //计划
             property:{
-                plan: { key: "plan", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:name, value: name },
-                startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue:startDate,value: startDate },
-                endDate: { key: "endDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue:endDate, value: endDate },
-                startTime: { key: "startTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue:startTime, value: startTime },
-                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue:endTime, value: endTime },
+                plan: { key: "plan", title: this.props.intl.formatMessage({id:'mediaPublish.planName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:"", value: "" },
+                startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue: moment(),value: moment() },
+                endDate: { key: "endDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue: moment(), value: moment() },
+                startTime: { key: "startTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue: moment(), value: moment() },
+                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue: moment(), value: moment() },
                 week: {
                     key: "week", title:this.props.intl.formatMessage({id:'mediaPublish.weekday'}),
                     list: [{ label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1 }, { label:this.props.intl.formatMessage({id:'mediaPublish.tuesday'}), value: 2 },
                         { label:this.props.intl.formatMessage({id:'mediaPublish.wednesday'}), value: 3 }, { label: this.props.intl.formatMessage({id:'mediaPublish.thursday'}), value: 4 },
                         { label: this.props.intl.formatMessage({id:'mediaPublish.friday'}), value: 5 }, { label:this.props.intl.formatMessage({id:'mediaPublish.saturday'}), value: 6 },
                         { label: this.props.intl.formatMessage({id:'mediaPublish.sunday'}), value: 7 }],
-                    defaultValue: week,
-                    value: week
+                    defaultValue: [],
+                    value: []
                 }
             },
             prompt:{
                 //计划
-                plan:name?false:true,week:week && week.length?false:true,
+                plan:false,week:false,
                 /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
             }
         }
@@ -50,9 +50,17 @@ class PlayerPlan extends PureComponent{
     }
 
     componentWillMount(){
+        console.log('playerPlan render:', this.props.data);
         this.mounted = true;
-        const {id} = this.props;
-        getPlayerById(id, data=>{this.mounted && this.initProperty(data);})
+        const {projectId, data} = this.props;
+        console.log(typeof data.id);
+        if(projectId && data.id && (typeof data.id == 'number' || data.id.indexOf("plan&&") < 0)){
+            getProgramById(projectId, data.id, response=>{this.mounted && this.initProperty(response);})
+        }
+    }
+
+    componentDidUpdate(){
+
     }
 
     componentWillUnmount(){
@@ -60,21 +68,44 @@ class PlayerPlan extends PureComponent{
     }
 
     initProperty(data){
+        console.log('data:', data);
+        let dateBegin = data.dateRange.dateBegin;
+        let dateEnd = data.dateRange.dateEnd;
+        let timeBegin = data.timeRange.timeBegin;
+        let timeEnd = data.timeRange.timeEnd;
+        let week = weekTranformArray(data.week);
         this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
-        this.state.property.startDate.defaultValue = this.state.property.startDate.value = data.startDate;
-        this.state.property.endDate.defaultValue = this.state.property.endDate.value = data.endDate;
-        this.state.property.startTime.defaultValue = this.state.property.startTime.value = data.startTime;
-        this.state.property.endTime.defaultValue = this.state.property.endTime.value = data.endTime;
-        this.state.property.endTime.defaultValue = this.state.property.endTime.value = data.week;
+        this.state.property.startDate.defaultValue = this.state.property.startDate.value = moment(dateBegin.year+'-'+dateBegin.month+'-'+dateBegin.day);
+        this.state.property.endDate.defaultValue = this.state.property.endDate.value = moment(dateEnd.year+'-'+dateEnd.month+'-'+dateEnd.day);
+        this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(timeBegin.hour+':'+timeBegin.minute+':'+timeBegin.second+':'+timeBegin.milliseconds);
+        this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(timeEnd.hour+':'+timeEnd.minute+':'+timeEnd.second+':'+timeEnd.milliseconds);;
+        this.state.property.week.defaultValue = this.state.property.week.value = week;
 
         this.setState({property: Object.assign({}, this.state.property),
-        prompt: {plan:data.name?false:true,week: data.week && data.week.length?false:true,}})
+        prompt: {plan:data.name?false:true,week: week && week.length?false:true,}})
     }
 
     planClick(id) {
         console.log(id);
         switch (id) {
             case "apply":
+                const {property} = this.state;
+                let planId = this.props.data.id;
+
+                let data = {
+                    name: property.plan.value,
+                    startDate: property.startDate.value,
+                    endDate: property.endDate.value,
+                    startTime: property.startTime.value,
+                    endTime: property.endTime.value,
+                    week: arrayTranformWeek(property.week.value)
+                };
+
+                if(planId && (typeof planId == 'number' || planId.indexOf("plan&&") < 0)){
+                    data = Object.assign({}, data, {id:planId});
+                }
+
+                this.props.applyClick && this.props.applyClick(data);
                 break;
             case "reset":
                 for(let key in this.state.property){

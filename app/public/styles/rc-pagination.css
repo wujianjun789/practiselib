@@ -122,6 +122,7 @@
 }
 .rc-pagination-disabled a {
   color: #ccc;
+  cursor: not-allowed;  
 }
 .rc-pagination-options {
   float: left;

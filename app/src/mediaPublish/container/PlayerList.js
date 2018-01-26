@@ -179,24 +179,11 @@ export class PlayerList extends Component {
             width: obj.width,
             height: obj.height
         }
-console.log('edit:', data);
-        actions.overlayerShow(<PlayerListPopup title="添加方案" data={data}
-                                               onCancel={()=>{actions.overlayerHide()}} onConfirm={(state)=>{
-                                               let project = {
-                                                    id: state.id,
-                                                    name: state.name,
-                                                    width: state.width,
-                                                    height: state.height
-                                                }
-                                               updateProjectById(project, ()=>{
-                                                    actions.overlayerHide();
-                                                    this.props.router.push({
-                                                        pathname: "/mediaPublish/playerArea",
-                                                        state: { item: project }
-                                                    });
-                                               })
 
-        }}/>)
+        this.props.router.push({
+            pathname: "/mediaPublish/playerArea",
+            state: { item: data }
+        });
     }
 
     removeHandler(id) {

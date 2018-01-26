@@ -50,10 +50,12 @@ import moment from 'moment'
 import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
-import { getIndexByKey } from '../../util/algorithm';
-import { updateTree } from '../util/index'
+import { getIndexByKey, DeepCopy } from '../../util/algorithm';
+import { updateTree, removeTree, getTreeParentNode, clearTreeListState } from '../util/index'
 
-import {getProgramList, getSceneList, getZoneList} from '../../api/mediaPublish';
+import {getProgramList, getSceneList, getZoneList, addProgram, addScene, addZone,updateProjectById,
+    updateProgramById, updateSceneById, updateZoneById, updateProgramOrders, updateSceneOrders, updateZoneOrders,
+    removeProgramsById, removeSceneById, removeZoneById} from '../../api/mediaPublish';
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
 import lodash from 'lodash';
@@ -63,7 +65,9 @@ export class PlayerArea extends Component {
         this.state = {
             project: null,
             curNode: null,
-            curType: 'digitalClock',
+            parentNode: null,
+            parentParentNode: null,
+            curType: 'playerProject',
             playerData: [
                 {
                     "id": "player1",
@@ -186,28 +190,6 @@ export class PlayerArea extends Component {
 
         this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }]
 
-        this.onChange = this.onChange.bind(this);
-        this.pageChange = this.pageChange.bind(this);
-        this.assetSelect = this.assetSelect.bind(this);
-        this.playerAssetSelect = this.playerAssetSelect.bind(this);
-        this.positionHandler = this.positionHandler.bind(this);
-        this.searchSubmit = this.searchSubmit.bind(this);
-        this.playHandler = this.playHandler.bind(this);
-        this.zoomOutHandler = this.zoomOutHandler.bind(this);
-        this.zoomInHandler = this.zoomInHandler.bind(this);
-        this.saveHandler = this.saveHandler.bind(this);
-        this.savePlanHandler = this.savePlanHandler.bind(this);
-        this.quitHandler = this.quitHandler.bind(this);
-        this.areaClick = this.areaClick.bind(this);
-        this.playerListAssetClick = this.playerListAssetClick.bind(this);
-        this.assetList = this.assetList.bind(this);
-
-        this.addClick = this.addClick.bind(this);
-        this.assetLibRemove = this.assetLibRemove.bind(this);
-        this.playerAssetRemove = this.playerAssetRemove.bind(this);
-        this.playerAssetMove = this.playerAssetMove.bind(this);
-
-        this.updateTreeData = this.updateTreeData.bind(this);
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
         this.showUploadNotify = this.showUploadNotify.bind(this);
@@ -216,14 +198,6 @@ export class PlayerArea extends Component {
         this.hideUploadFile = this.hideUploadFile.bind(this);
         this.addUploadFile = this.addUploadFile.bind(this);
         this.cancelUploadFile = this.cancelUploadFile.bind(this);
-        this.updatePlayerPlanPopup = this.updatePlayerPlanPopup.bind(this);
-        this.updatePlayerScenePopup = this.updatePlayerScenePopup.bind(this);
-        this.updatePlayerAreaPopup = this.updatePlayerAreaPopup.bind(this);
-
-        this.setSize = this.setSize.bind(this);
-        this.handleMouseMove = this.handleMouseMove.bind(this);
-        this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handleMouseUp = this.handleMouseUp.bind(this);
     }
     componentWillMount() {
         this.mounted = true;
@@ -236,7 +210,8 @@ export class PlayerArea extends Component {
         const { router } = this.props;
         if (router && router.location) {
             const routerState = router.location.state;
-            this.setState({project:routerState?routerState.item:null},()=>{
+            const project = routerState?routerState.item:null;
+            this.setState({project:project},()=>{
                 this.requestProgrameList();
             })
         }
@@ -314,8 +289,9 @@ export class PlayerArea extends Component {
     }
 
     updateProgramList=(data)=>{
+        console.log('program:',data);
         let newData = data.map(program=>{
-            return Object.assign({}, program, {type:'plan', toggled:true, active: false, children:[]});
+            return Object.assign({}, program, {type:'plan', toggled:false, active: false, children:[]});
         })
 
         this.setState({playerData: newData}, ()=>{
@@ -325,48 +301,61 @@ export class PlayerArea extends Component {
 
     requestSceneList = (programId)=>{
         const {project} = this.state;
-        getSceneList(project.id, programId, data=>{this.mounted && this.updateProgramList(programId, data)})
+        getSceneList(project.id, programId, data=>{this.mounted && this.updateSceneList(programId, data)})
     }
 
     updateSceneList = (programId, data)=>{
+        console.log('scene:', data);
         let index = lodash.findIndex(this.state.playerData, program=>{return program.id == programId});
         let newData = data.map(scene=>{
-            return Object.assign({}, scene, {type:'scene', toggled:true, active:false, children:[]});
+            return Object.assign({}, scene, {type:'scene', toggled:false, active:false, children:[]});
         })
 
-        this.state.playerData[index].children.push(newData);
-        this.setState({playerData: this.state.playerData});
+        clearTreeListState(this.state.playerData);
+
+        this.state.playerData[index].active = true;
+        this.state.playerData[index].toggled = true;
+        this.state.playerData[index].children = newData;
+        console.log('update sceneData:',this.state.playerData[index]);
+        this.setState({playerData: this.state.playerData}, ()=>{
+            this.updatePlayerTree();
+        });
     }
 
     requestZoneList = (programId, sceneId)=>{
         const {project} = this.state;
-        getZoneList(project.id, programId, sceneId, data=>{this.mounted && this.updateProgramList(programId, sceneId, data)})
+        getZoneList(project.id, programId, sceneId, data=>{this.mounted && this.updateZoneList(programId, sceneId, data)})
     }
 
     updateZoneList = (programId, sceneId, data)=>{
         let programItem = lodash.find(this.state.playerData, program=>{return program.id == programId});
         let programIndex = lodash.findIndex(this.state.playerData, program=>{return program.id == programId});
 
-        let sceneIndex = lodash.findIndex(programItem, scene=>{return scene.id == sceneId});
-        let newData = data.map(scene=>{
-            return Object.assign({}, scene, {type:'scene', toggled:true, active:false, children:[]});
-        })
+        let sceneIndex = lodash.findIndex(programItem.children, scene=>{return scene.id == sceneId});
+        let newData = data.map(area=>{
+            return Object.assign({}, area, {type:'area', active:false});
+        });
 
-        this.state.playerData[programIndex].children[sceneIndex].push(newData);
-        this.setState({playerData: this.state.playerData});
+        clearTreeListState(this.state.playerData);
+
+        this.state.playerData[programIndex].toggled = true;
+        this.state.playerData[programIndex].children[sceneIndex].toggled = true;
+        this.state.playerData[programIndex].children[sceneIndex].active = true;
+        this.state.playerData[programIndex].children[sceneIndex].children = newData;
+        this.setState({playerData: this.state.playerData}, ()=>{
+            this.updatePlayerTree();
+        });
     }
 
     updatePlayerTree = ()=> {
         const { playerData } = this.state;
         const { actions } = this.props;
-        console.log("playerData:", playerData);
         actions && actions.treeViewInit(playerData);
 
     }
 
-    updateTreeData = (parentNode, node)=> {
-        const treeList = updateTree(this.state.playerData, parentNode, node);
-        console.log()
+    updateTreeData = (node, parentNode, parentParentNode)=> {
+        const treeList = updateTree(this.state.playerData, node, parentNode, parentParentNode);
         this.setState({ playerData: treeList }, () => {
             this.updatePlayerTree();
         })
@@ -376,8 +365,6 @@ export class PlayerArea extends Component {
         console.log(item.toJS());
         this.state.assetList = this.state.assetList.update('id', v => item.get('id'));
         this.setState({ assetList: this.state.assetList.update('name', v => item.get('name')) });
-        // const curIndex = getIndexByKey(this.state.assetList.get('list'), 'id', item.get('id'));
-        // this.setState({assetList: this.state.assetList.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
     }
 
     playerAssetSelect = (item)=> {
@@ -516,114 +503,60 @@ export class PlayerArea extends Component {
         this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item)) });
     }
 
-    updatePlayerScenePopup = ()=> {
-        const { actions } = this.props;
+    addPlayerScene = ()=>{
+        const parentNode = this.state.curNode;
 
-        let data = {}
-        data.typeList = this.typeList;
-        data.sceneName = '';
-        actions.overlayerShow(<PlayerScenePopup title="添加计划/场景/区域" data={data} onChange={state => {
-            const type = state.typeList.get('index');
-            if (type == 0) {
-                this.updatePlayerPlanPopup();
-            } else if (type == 2) {
-                this.updatePlayerAreaPopup();
-            }
-        }} onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
+        let type = 'scene';
+        let name = "场景新建";
 
-        }} />)
+        let node = {
+            "id": "scene&&" + parseInt(Math.random() * 999),
+            "type": type,
+            "name": name,
+            "toggled": false,
+            "active": true,
+            "level": 2,
+            children: []
+        }
+
+        this.setState({ curType: 'playerScene',curNode: node, parentNode: parentNode }, () => {this.updateTreeData(node, parentNode)});
     }
 
-    updatePlayerPlanPopup = ()=> {
-        const { actions } = this.props;
-        let data = {}
-        data.typeList = this.typeList;
-        data.sceneName = '';
-        data.startDate = moment();
-        data.endDate = moment();
-        data.startTime = moment();
-        data.endTime = moment();
-        data.week = [1, 0, 1, 0, 0, 0, 0];
+    addPlayerArea = ()=>{
+        const parentParentNode = this.state.parentNode;
+        const parentNode = this.state.curNode;
 
-        actions.overlayerShow(<PlayerPlanPopup title="添加计划/场景/区域" data={data} onChange={state => {
-            const type = state.typeList.get('index');
-            if (type == 1) {
-                this.updatePlayerScenePopup();
-            } else if (type == 2) {
-                this.updatePlayerAreaPopup();
-            }
-        }} onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
+        let type = 'area';
+        let name = "区域新建";
+        let node = {
+            "id": "area&&" + parseInt(Math.random() * 999),
+            "type": type,
+            "name": name,
+            "active": true,
+            "level": 3
+        }
 
-        }} />)
-    }
-
-    updatePlayerAreaPopup = ()=> {
-        const { actions } = this.props;
-
-        let data = {}
-        data.typeList = this.typeList;
-        data.sceneName = '';
-        data.width = 1920;
-        data.height = 1080;
-        data.axisX = 10;
-        data.axisY = 10;
-        actions.overlayerShow(<PlayerAreaPopup title="添加计划/场景/区域" data={data} onChange={state => {
-            const type = state.typeList.get('index');
-            if (type == 0) {
-                this.updatePlayerPlanPopup();
-            } else if (type == 1) {
-                this.updatePlayerScenePopup();
-            }
-        }} onCancel={() => { actions.overlayerHide() }} onConfirm={(state) => {
-
-        }} />)
-
+        this.setState({ curType: 'playerArea', curNode: node, parentNode: parentNode, parentParentNode:parentParentNode }, this.updateTreeData(node, parentNode, parentParentNode));
     }
 
     areaClick = (id)=> {
         const { actions } = this.props;
+        const { project }  = this.state;
         let data = {}
         console.log(id);
         if (id == "add") {
             if (this.state.curType == "playerProject") {
                 this.setState({ isAddClick: true });
             } else {
-                let type = "scene";
-                let name = "场景新建";
-                let isChildren = false;
-                let node = null;
+                clearTreeListState(this.state.playerData);
                 switch (this.state.curType) {
                     case "playerPlan":
                     case "playerPlan2":
                     case "playerPlan3":
-                        type = 'scene';
-                        name = "场景新建";
-                        isChildren = true;
-
-                        node = {
-                            "id": "scene" + parseInt(Math.random() * 999),
-                            "type": type,
-                            "name": name,
-                            "toggled": false,
-                            "active": true,
-                            "level": 2,
-                            children: []
-                        }
-
-                        this.setState({ curType: 'playerScene' }, () => this.updateTreeData(this.state.curNode, node));
+                        this.addPlayerScene();
                         break;
                     case 'playerScene':
-                        type = 'area';
-                        name = "区域新建";
-                        isChildren = false;
-                        node = {
-                            "id": "area" + parseInt(Math.random() * 999),
-                            "type": type,
-                            "name": name,
-                            "active": true,
-                            "level": 3
-                        }
-                        this.setState({ curType: 'playerArea' }, this.updateTreeData(this.state.curNode, node));
+                        this.addPlayerArea();
                         break;
                 }
             }
@@ -651,6 +584,7 @@ export class PlayerArea extends Component {
         } else if (id == "complete") {
 
         } else {
+            clearTreeListState(this.state.playerData);
             this.setState({ isAddClick: false }, () => {
                 let type = "plan";
                 let proType = "playerPlan";
@@ -674,7 +608,7 @@ export class PlayerArea extends Component {
                 }
 
                 const node = {
-                    "id": "player" + parseInt(Math.random() * 999),
+                    "id": "plan&&" + parseInt(Math.random() * 999),
                     "type": type,
                     "name": name,
                     "toggled": false,
@@ -683,8 +617,157 @@ export class PlayerArea extends Component {
                     "children": []
                 }
 
-                this.setState({ curType: proType }, () => this.updateTreeData(null, node));
+                // addProgram(project.id, )
+                this.setState({ curType: proType, curNode: node }, () => this.updateTreeData(node));
             })
+        }
+    }
+
+    addUpdatePlan = (data)=>{
+        let planData = {
+            name: data.name,
+            type: 0,
+            dateRange: {
+                dateBegin: {
+                    year: data.startDate.format('YYYY'),
+                    month: data.startDate.format('MM'),
+                    day: data.startDate.format('DD'),
+                },
+                dateEnd: {
+                    year: data.endDate.format('YYYY'),
+                    month: data.endDate.format('MM'),
+                    day: data.endDate.format('DD'),
+                },
+                enableFlag: true
+            },
+            week: data.week,
+            timeRange: {
+                timeBegin: {
+                    hour: data.startDate.format('HH'),
+                    minute: data.startDate.format('mm'),
+                    second: data.startDate.format('ss'),
+                    milliseconds: data.startDate.format('SS'),
+                },
+                timeEnd: {
+                    hour: data.endDate.format('HH'),
+                    minute: data.endDate.format('mm'),
+                    second: data.endDate.format('ss'),
+                    milliseconds: data.endDate.format('SS'),
+                },
+                enableFlag: true
+            },
+            pause: true,
+            interval: 0,
+            playMode: 0,
+            playDuration: 0,
+            playTimes: 0
+        }
+        console.log('planData:',planData);
+        if(data.id){
+            planData = Object.assign({}, planData, {id: data.id});
+            updateProgramById(this.state.project.id, planData, (response)=>{
+                console.log('update response:', response);
+                this.updatePlayerPlanData(planData);
+            })
+        }else{
+            addProgram(this.state.project.id, planData, response=>{
+                console.log('response:');
+                this.updatePlayerPlanData(response);
+            })
+        }
+
+    }
+
+    addUpdateScene = data=>{
+        let sceneData = data;
+        console.log('sceneData:',sceneData);
+        if(data.id){
+            sceneData = Object.assign({}, sceneData, {id: data.id});
+            updateSceneById(this.state.project.id, this.state.parentNode.id, sceneData, (response)=>{
+                console.log('update response:', response);
+                this.updatePlayerSceneData(sceneData);
+            })
+        }else{
+            addScene(this.state.project.id, this.state.parentNode.id, sceneData, response=>{
+                console.log('response:');
+
+                this.updatePlayerSceneData(Object.assign({},sceneData, {id:response.sceneId}));
+            })
+        }
+    }
+
+    addUpdateArea = data=>{
+        let areaData = data;
+        console.log('areaData:',areaData);
+        if(data.id){
+            areaData = Object.assign({}, areaData, {id: data.id});
+            updateZoneById(this.state.project.id, this.state.parentNode.id, this.state.parentParentNode.id, areaData, (response)=>{
+                console.log('area response:', response);
+                this.updatePlayerAreaData(areaData);
+            })
+        }else{
+            addZone(this.state.project.id, this.state.parentParentNode.id, this.state.parentNode.id, areaData, response=>{
+                console.log('area response:');
+                this.updatePlayerAreaData(Object.assign({}, areaData, {id:response.regionId}));
+            })
+        }
+    }
+
+    updatePlayerPlanData = (response)=>{
+        let playerData = this.state.playerData.map(plan=>{
+            if((typeof plan.id === 'string' && plan.id.indexOf("plan&&")>-1) || plan.id == response.id){
+                return Object.assign({}, plan, response);
+            }
+
+            return project;
+        })
+        this.setState({playerData: playerData}, ()=>this.updatePlayerTree());
+    }
+
+    updatePlayerSceneData = (response)=>{
+        const {playerData, parentNode} = this.state;
+        let index = lodash.findIndex(playerData, plan=>{ return plan.id == parentNode.id});
+        this.state.playerData[index].children = playerData[index].children.map(scene=>{
+            if((typeof scene.id === 'string' && scene.id.indexOf("scene&&")>-1) || scene.id == response.id){
+                return Object.assign({}, scene, response);
+            }
+
+            return plan;
+        })
+        this.setState({playerData: this.state.playerData}, ()=>this.updatePlayerTree());
+    }
+
+    updatePlayerAreaData = (response)=>{
+        const {playerData, parentNode,parentParentNode} = this.state;
+        let planIndex = lodash.findIndex(playerData, plan=>{ return plan.id == parentParentNode.id});
+        let sceneIndex = lodash.findIndex(playerData[planIndex].children, scene=>{ return scene.id == parentNode.id});
+        this.state.playerData[planIndex].children[sceneIndex].children = playerData[planIndex].children[sceneIndex].children.map(area=>{
+            if((typeof area.id === 'string' && area.id.indexOf("area&&")>-1) || area.id == response.id){
+                return Object.assign({}, area, response);
+            }
+
+            return area;
+        })
+        this.setState({playerData: this.state.playerData}, ()=>this.updatePlayerTree());
+    }
+
+    applyClick = (id, data)=>{
+        console.log('applyClick:', id, data);
+        switch(id){
+            case "playerProject":
+                updateProjectById(data, response=>{
+                    this.setState({project:Object.assign({}, this.state.project, response)});
+                })
+                break;
+            case "playerPlan":
+                this.addUpdatePlan();
+                break;
+            case "playerScene":
+                this.addUpdateScene(data);
+                break;
+            case "playerAreaPro":
+                this.addUpdateArea(data);
+                break;
         }
     }
 
@@ -945,8 +1028,40 @@ export class PlayerArea extends Component {
         }
     }
 
+    onRemove = node=>{
+        const {project, playerData} = this.state;
+        let parentNode = getTreeParentNode(playerData, node);
+        let parentParentNode = getTreeParentNode(playerData, parentNode);
+        switch (node.type) {
+            case "scene":
+console.log('onRemove:');
+                removeSceneById(project.id, parentNode.id, node.id, ()=>{
+                    console.log('onRemove response:');
+                    this.setState({playerData:removeTree(playerData, node)});
+                })
+                break;
+            case 'plan':
+                removeProgramsById(project.id, node.id, ()=>{
+                    this.setState({playerData:removeTree(playerData, node)});
+                })
+                break;
+            case 'plan2':
+                type = 'cyclePlan';
+                break;
+            case 'plan3':
+                type = 'timingPlan';
+                break;
+            case 'area':
+                removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, ()=>{
+                    this.setState({playerData:removeTree(playerData, node)});
+                })
+                break;
+        }
+    }
+
     onToggle = (node)=> {
-        console.log("node:", node);
+        // clearTreeListState(this.state.playerData);
+        const {project, playerData} = this.state;
         let type = "scene";
         switch (node.type) {
             case "scene":
@@ -966,7 +1081,25 @@ export class PlayerArea extends Component {
                 break;
         }
 
-        this.setState({ curNode: node, curType: type, isClick: false });
+        const parentNode = getTreeParentNode(this.state.playerData, node);
+        const parentParentNode = getTreeParentNode(this.state.playerData, parentNode);
+        console.log('onToggle:', node, parentNode, parentParentNode);
+        this.setState({ parentParentNode: parentParentNode, parentNode:parentNode, curNode: node, curType: type, isClick: false },()=>{
+            if(typeof node.id == 'string' && (node.id.indexOf("plan&&") > -1 || node.id.indexOf("scene&&") > -1)){
+                return;
+            }
+
+            switch(type){
+                case "playerPlan":
+                    console.log('requestScene:', node.toggled);
+                    !node.toggled && this.requestSceneList(node.id);
+                    break;
+                case "playerScene":
+                    console.log('click scene');
+                    !node.toggled && this.requestZoneList(parentNode.id, node.id);
+                    break;
+            }
+        });
     }
 
     sidebarClick = (id)=> {
@@ -977,7 +1110,7 @@ export class PlayerArea extends Component {
 
     render() {
         const {
-            project, curType, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,
+            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
         const {router} = this.props;
@@ -992,12 +1125,12 @@ export class PlayerArea extends Component {
                 break;
         }
 
-        console.log(assetStyle);
+        console.log('curType:', curType);
 
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
-            <SideBar data={playerData} title={project && project.name} isClick={isClick} isAddClick={isAddClick}
-                onClick={this.areaClick} onToggle={this.onToggle} />
+            <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
+                onClick={this.areaClick} onToggle={this.onToggle} onRemove={this.onRemove}/>
 
             <Content className="player-area">
                 <div className="left">
@@ -1065,10 +1198,10 @@ export class PlayerArea extends Component {
                             "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{`${this.formatIntl('mediaPublish.property')}${add_title}`}
                     </div>
                     <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-                        {curType == 'playerProject' && <PlayerProject />}
-                        {curType == 'playerPlan' && <PlayerPlan />}
-                        {curType == 'playerScene' && <PlayerScene />}
-                        {curType == 'playerArea' && <PlayerAreaPro playEndIndex={1} />}
+                        {curType == 'playerProject' && <PlayerProject data={project} applyClick={data=>{this.applyClick('playerProject', data)}}/>}
+                        {curType == 'playerPlan' && <PlayerPlan projectId={project.id} data={curNode} applyClick={data=>{this.applyClick('playerPlan', data)}}/>}
+                        {curType == 'playerScene' && <PlayerScene projectId={project.id} parentId={parentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerScene', data)}}/>}
+                        {curType == 'playerArea' && <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>}
                         {curType == 'cyclePlan' && <CyclePlan pause={1} />}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} />}
                         {curType == 'playerPicAsset' && <PlayerPicAsset />}

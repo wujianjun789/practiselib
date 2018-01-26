@@ -380,14 +380,31 @@ class TimeStrategy extends Component{
 
     switchStrategy=(key)=>{
         const {selectItem}=this.state;
-        if(selectItem.plans){
-            selectItem.plans.map(item=>{
-                key == 'start'? startPlan(item.id,this.requestSearch):pausePlan(item.id,this.requestSearch)
-            })
-        }
-        else{
-            key == 'start'? startPlan(selectItem.id,this.requestSearch):pausePlan(selectItem.id,this.requestSearch)            
-        }
+        const {actions} = this.props;
+        actions.overlayerShow(<ConfirmPopup tips={this.formatIntl(key == 'start'?'app.status.start':'app.status.pause')+this.formatIntl(selectItem.plans?'app.group':'app.strategy')+"?"} iconClass={key == 'start'?'icon_popup_start':'icon_popup_pause'} cancel={()=>{
+            actions.overlayerHide();
+        }} confirm={()=>{
+            if(selectItem.plans){
+                selectItem.plans.map(item=>{
+                    key == 'start'? startPlan(item.id,()=>{
+                        this.requestSearch();
+                        actions.overlayerHide();
+                    }):pausePlan(item.id,()=>{
+                        this.requestSearch();
+                        actions.overlayerHide();
+                    })
+                })
+            }
+            else{
+                key == 'start'? startPlan(selectItem.id,()=>{
+                    this.requestSearch();
+                    actions.overlayerHide();
+                }):pausePlan(selectItem.id,()=>{
+                    this.requestSearch();
+                    actions.overlayerHide();
+                })            
+            }
+        }}/>)
     }
 
     render(){
