@@ -82,6 +82,23 @@ export function updateTree(treeList, node, parentNode, parentParentNode) {
     }
 }
 
+export function moveTree(treeList, data) {
+    let curIndex = lodash.findIndex(treeList, node=>{return node.type == data.node.type && node.id == data.node.id});
+    if(curIndex>-1){
+        treeList.splice(curIndex, 1);
+        treeList.splice(data.key=="down"?curIndex+1:curIndex-1, 0, data.node);
+        return treeList;
+    }else{
+        return treeList.map(node=>{
+            if(node.children && node.children.length){
+                moveTree(node.children,  data)
+            }
+
+            return node;
+        })
+    }
+}
+
 export function removeTree(treeList, node) {
     if(!treeList || !node){
         return false;

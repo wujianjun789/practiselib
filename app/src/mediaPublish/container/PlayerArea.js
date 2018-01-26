@@ -50,12 +50,13 @@ import moment from 'moment'
 import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
-import { getIndexByKey, DeepCopy } from '../../util/algorithm';
-import { updateTree, removeTree, getTreeParentNode, clearTreeListState } from '../util/index'
+import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
+import { updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, addProgram, addScene, addZone,updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateProgramOrders, updateSceneOrders, updateZoneOrders,
     removeProgramsById, removeSceneById, removeZoneById} from '../../api/mediaPublish';
+
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
 import lodash from 'lodash';
@@ -220,7 +221,6 @@ export class PlayerArea extends Component {
     componentDidMount() {
         // window.addEventListener("mousemove", this.handleMouseMove, true);
         // window.addEventListener("mouseup", this.handleMouseUp, true);
-        console.log(this.props.router);
     }
 
     formatIntl=(formatId)=>{
@@ -289,7 +289,6 @@ export class PlayerArea extends Component {
     }
 
     updateProgramList=(data)=>{
-        console.log('program:',data);
         let newData = data.map(program=>{
             return Object.assign({}, program, {type:'plan', toggled:false, active: false, children:[]});
         })
@@ -305,7 +304,6 @@ export class PlayerArea extends Component {
     }
 
     updateSceneList = (programId, data)=>{
-        console.log('scene:', data);
         let index = lodash.findIndex(this.state.playerData, program=>{return program.id == programId});
         let newData = data.map(scene=>{
             return Object.assign({}, scene, {type:'scene', toggled:false, active:false, children:[]});
@@ -316,7 +314,6 @@ export class PlayerArea extends Component {
         this.state.playerData[index].active = true;
         this.state.playerData[index].toggled = true;
         this.state.playerData[index].children = newData;
-        console.log('update sceneData:',this.state.playerData[index]);
         this.setState({playerData: this.state.playerData}, ()=>{
             this.updatePlayerTree();
         });
@@ -392,7 +389,6 @@ export class PlayerArea extends Component {
     }
 
     onChange = (id, value)=> {
-        console.log("id:", id);
         let prompt = false;
         if (id == "assetType" || id == "assetSort") {
             this.state[id] = this.state[id].update('index', v => value);
@@ -542,8 +538,7 @@ export class PlayerArea extends Component {
     areaClick = (id)=> {
         const { actions } = this.props;
         const { project }  = this.state;
-        let data = {}
-        console.log(id);
+
         if (id == "add") {
             if (this.state.curType == "playerProject") {
                 this.setState({ isAddClick: true });
@@ -561,7 +556,7 @@ export class PlayerArea extends Component {
                 }
             }
         } else if (id == "edit") {
-            this.setState({ isAddClick: true });
+            this.setState({ isAddClick: false });
         } else if (id == "remove") {
             let tips = "是否删除选中场景与场景中所有内容";
             switch (this.state.curType) {
@@ -617,7 +612,6 @@ export class PlayerArea extends Component {
                     "children": []
                 }
 
-                // addProgram(project.id, )
                 this.setState({ curType: proType, curNode: node }, () => this.updateTreeData(node));
             })
         }
@@ -662,17 +656,14 @@ export class PlayerArea extends Component {
             playDuration: 0,
             playTimes: 0
         }
-        console.log('planData:',planData);
         if(data.id){
             planData = Object.assign({}, planData, {id: data.id});
             updateProgramById(this.state.project.id, planData, (response)=>{
-                console.log('update response:', response);
                 this.updatePlayerPlanData(planData);
             })
         }else{
             addProgram(this.state.project.id, planData, response=>{
-                console.log('response:');
-                this.updatePlayerPlanData(response);
+                this.updatePlayerPlanData(Object.assign({}, planData, {id:response.playlistId}));
             })
         }
 
@@ -680,17 +671,13 @@ export class PlayerArea extends Component {
 
     addUpdateScene = data=>{
         let sceneData = data;
-        console.log('sceneData:',sceneData);
         if(data.id){
             sceneData = Object.assign({}, sceneData, {id: data.id});
             updateSceneById(this.state.project.id, this.state.parentNode.id, sceneData, (response)=>{
-                console.log('update response:', response);
                 this.updatePlayerSceneData(sceneData);
             })
         }else{
             addScene(this.state.project.id, this.state.parentNode.id, sceneData, response=>{
-                console.log('response:');
-
                 this.updatePlayerSceneData(Object.assign({},sceneData, {id:response.sceneId}));
             })
         }
@@ -698,16 +685,13 @@ export class PlayerArea extends Component {
 
     addUpdateArea = data=>{
         let areaData = data;
-        console.log('areaData:',areaData);
         if(data.id){
             areaData = Object.assign({}, areaData, {id: data.id});
             updateZoneById(this.state.project.id, this.state.parentNode.id, this.state.parentParentNode.id, areaData, (response)=>{
-                console.log('area response:', response);
                 this.updatePlayerAreaData(areaData);
             })
         }else{
             addZone(this.state.project.id, this.state.parentParentNode.id, this.state.parentNode.id, areaData, response=>{
-                console.log('area response:');
                 this.updatePlayerAreaData(Object.assign({}, areaData, {id:response.regionId}));
             })
         }
@@ -719,7 +703,7 @@ export class PlayerArea extends Component {
                 return Object.assign({}, plan, response);
             }
 
-            return project;
+            return plan;
         })
         this.setState({playerData: playerData}, ()=>this.updatePlayerTree());
     }
@@ -732,7 +716,7 @@ export class PlayerArea extends Component {
                 return Object.assign({}, scene, response);
             }
 
-            return plan;
+            return scene;
         })
         this.setState({playerData: this.state.playerData}, ()=>this.updatePlayerTree());
     }
@@ -752,7 +736,6 @@ export class PlayerArea extends Component {
     }
 
     applyClick = (id, data)=>{
-        console.log('applyClick:', id, data);
         switch(id){
             case "playerProject":
                 updateProjectById(data, response=>{
@@ -760,7 +743,7 @@ export class PlayerArea extends Component {
                 })
                 break;
             case "playerPlan":
-                this.addUpdatePlan();
+                this.addUpdatePlan(data);
                 break;
             case "playerScene":
                 this.addUpdateScene(data);
@@ -1034,9 +1017,7 @@ export class PlayerArea extends Component {
         let parentParentNode = getTreeParentNode(playerData, parentNode);
         switch (node.type) {
             case "scene":
-console.log('onRemove:');
                 removeSceneById(project.id, parentNode.id, node.id, ()=>{
-                    console.log('onRemove response:');
                     this.setState({playerData:removeTree(playerData, node)});
                 })
                 break;
@@ -1057,6 +1038,66 @@ console.log('onRemove:');
                 })
                 break;
         }
+    }
+
+    onMove = (key,node)=>{
+        switch (node.type){
+            case "plan":
+            case "plan2":
+            case "plan3":
+                this.updatePlanOrders({key:key, node:node});
+                break;
+            case "scene":
+                this.updateScenesOrders({key:key, node:node});
+                break;
+            case "area":
+                this.updateAreaOrders({key:key, node:node});
+                break;
+        }
+    }
+
+    updatePlanOrders = (data)=>{
+        const {project} = this.state;
+
+        this.setState({playerData: moveTree(this.state.playerData, data)}, ()=>{
+            let ids = getListObjectByKey(this.state.playerData, 'id');
+
+            updateProgramOrders(project.id, ids, response=>{
+                console.log('plan orders:', ids);
+            });
+        });
+    }
+
+    updateScenesOrders = (data)=>{
+        const {project, playerData} = this.state;
+        let parentNode = getTreeParentNode(playerData, data.node);
+        let index = lodash.findIndex(playerData, plan=>{ return plan.type == parentNode.type && plan.id == parentNode.id})
+
+        // this.state.playerData[index].children = moveTree(parentNode.children, data);
+        this.setState({playerData: this.state.playerData}, ()=>{
+            let ids = getListObjectByKey(this.state.playerData[index].children, 'id');
+            updateSceneOrders(project.id, parentNode.id, ids, response=>{
+                console.log('scene orders:', ids);
+            });
+        });
+
+    }
+
+    updateAreaOrders = (data)=>{
+        const {project, playerData} = this.state;
+        let parentNode = getTreeParentNode(playerData, data.node);
+        let parentParentNode = getTreeParentNode(playerData, parentNode);
+
+        let planIndex = lodash.findIndex(playerData, plan=>{ return plan.type == parentParentNode.type && plan.id == parentParentNode.id});
+        let sceneIndex = lodash.findIndex(parentParentNode.children, scene=>{ return scene.type == parentNode.type && scene.id == parentNode.id});
+
+        this.state.playerData[planIndex].children[sceneIndex].children = moveTree(parentNode.children,data);
+        this.setState({playerData: this.state.playerData}, ()=>{
+            let ids = getListObjectByKey(this.state.playerData[planIndex].children[sceneIndex].children, 'id');
+            updateZoneOrders(project.id, parentParentNode.id, parentNode.id, ids, response=>{
+                console.log('area orders:', ids);
+            });
+        })
     }
 
     onToggle = (node)=> {
@@ -1083,7 +1124,7 @@ console.log('onRemove:');
 
         const parentNode = getTreeParentNode(this.state.playerData, node);
         const parentParentNode = getTreeParentNode(this.state.playerData, parentNode);
-        console.log('onToggle:', node, parentNode, parentParentNode);
+
         this.setState({ parentParentNode: parentParentNode, parentNode:parentNode, curNode: node, curType: type, isClick: false },()=>{
             if(typeof node.id == 'string' && (node.id.indexOf("plan&&") > -1 || node.id.indexOf("scene&&") > -1)){
                 return;
@@ -1125,12 +1166,10 @@ console.log('onRemove:');
                 break;
         }
 
-        console.log('curType:', curType);
-
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
             <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
-                onClick={this.areaClick} onToggle={this.onToggle} onRemove={this.onRemove}/>
+                onClick={this.areaClick} onToggle={this.onToggle} onMove={this.onMove} onRemove={this.onRemove}/>
 
             <Content className="player-area">
                 <div className="left">

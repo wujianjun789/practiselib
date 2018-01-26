@@ -13,7 +13,6 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 class PlayerAreaPro extends PureComponent {
     constructor(props) {
         super(props);
-        const {name, width, height, axisX, axisY, playEndIndex} = props.data;
         this.state = {
             property: {
                 //区域
@@ -21,36 +20,36 @@ class PlayerAreaPro extends PureComponent {
                     key: "areaName",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.areaName'}),
                     placeholder: this.props.intl.formatMessage({id: 'mediaPublish.areaName'}),
-                    defaultValue: name ? name : "",
-                    value: name ? name : ""
+                    defaultValue: "",
+                    value: ""
                 },
                 width: {
                     key: "width",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.areaWidth'}),
                     placeholder: '请输入宽度',
-                    defaultValue: width ? width : 0,
-                    value: width ? width : 0
+                    defaultValue: 0,
+                    value: 0
                 },
                 height: {
                     key: "height",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.areaHeight'}),
                     placeholder: '请输入高度',
-                    defaultValue: height ? height : 0,
-                    value: height ? height : 0
+                    defaultValue: 0,
+                    value: 0
                 },
                 axisX_a: {
                     key: "axisX_a",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.x'}),
                     placeholder: '请输入X轴坐标',
-                    defaultValue: axisX ? axisX : 0,
-                    value: axisX ? axisX : 0
+                    defaultValue: 0,
+                    value: 0
                 },
                 axisY_a: {
                     key: "axisY_a",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.y'}),
                     placeholder: '请输入Y轴坐标',
-                    defaultValue: axisY ? axisY : 0,
-                    value: axisY ? axisY : 0
+                    defaultValue: 0,
+                    value: 0
                 },
                 playEnd: {
                     key: "play_end",
@@ -63,34 +62,45 @@ class PlayerAreaPro extends PureComponent {
             },
             prompt: {
                 //区域
-                areaName: name ? false : true, width: true, height: true, axisX_a: true, axisY_a: true,
+                areaName: true, width: true, height: true, axisX_a: true, axisY_a: true,
             }
         }
 
         this.onChange = this.onChange.bind(this);
         this.playerAreaClick = this.playerAreaClick.bind(this);
         this.updatePlayEnd = this.updatePlayEnd.bind(this);
+        this.init = this.init.bind(this);
         this.initProperty = this.initProperty.bind(this);
     }
 
     componentWillMount() {
         this.mounted = true;
-        const {projectId, parentId, parentParentId, data} = this.props;
-        if(!data){
-            return;
-        }
+        this.init();
+    }
 
-        const index = lodash.findIndex(this.state.property.playEnd.list, mode=>{ return mode.type == data.lastFrame});
-        this.updatePlayEnd(index);
-        if(projectId && parentId && parentParentId && data.id && (typeof data.id == "number" || data.id.indexOf("area&&")) < 0){
-            getZoneById(projectId, parentId, parentParentId, data.id, data=> {
-                this.mounted && this.initProperty(data)
-            });
-        }
+    componentDidUpdate(){
+        this.init();
     }
 
     componwntWillUnmount() {
         this.mounted = false;
+    }
+
+    init(){
+        const {projectId, parentId, parentParentId, data} = this.props;
+        if(!data || !data.id || data.id == this.state.id){
+            return false;
+        }
+
+        if(projectId && parentId && parentParentId && data.id && (typeof data.id == "number" || data.id.indexOf("area&&") < 0)){
+            getZoneById(projectId, parentParentId, parentId, data.id, data=> {
+                this.mounted && this.initProperty(data)
+            });
+        }else if(typeof data.id == 'string' && data.id.indexOf("area&&")>-1){
+            this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
+            this.setState({id:data.id, property: Object.assign({}, this.state.property),
+                prompt: {areaName:data.name?false:true}})
+        }
     }
 
     initProperty(data) {
@@ -99,13 +109,14 @@ class PlayerAreaPro extends PureComponent {
             return item.type = data.lastFrame;
         })
         this.state.property.areaName.defaultValue = this.state.property.areaName.value = data.name;
-        this.state.property.width.defaultValue = this.state.property.width.value = data.width;
-        this.state.property.height.defaultValue = this.state.property.height.value = data.height;
-        this.state.property.axisX_a.defaultValue = this.state.property.axisX_a.value = data.axisX;
-        this.state.property.axisY_a.defaultValue = this.state.property.axisY_a.value = data.axisY;
+        this.state.property.width.defaultValue = this.state.property.width.value = data.width?data.width:0;
+        this.state.property.height.defaultValue = this.state.property.height.value = data.height?data.height:0;
+        this.state.property.axisX_a.defaultValue = this.state.property.axisX_a.value = data.axisX?data.axisX:0;
+        this.state.property.axisY_a.defaultValue = this.state.property.axisY_a.value = data.axisY?data.axisY:0;
 
         this.updatePlayEnd(playEndIndex);
         this.setState({
+            id: data.id,
             property: Object.assign({}, this.state.property),
             prompt: {
                 areaName: data.name ? false : true,
@@ -171,7 +182,6 @@ class PlayerAreaPro extends PureComponent {
     }
 
     playerAreaClick(id) {
-        console.log(id);
         switch (id) {
             case "apply":
                 this.applyHandler();
@@ -182,13 +192,13 @@ class PlayerAreaPro extends PureComponent {
         }
     }
 
-    onChange(id, value) {
-        console.log("id:", id);
+    onChange(event) {
         let prompt = false;
 
-        const val = value.target.value;
+        const id = event.target.id;
+        const val = event.target.value;
         if (id == "playEnd") {
-            const selectIndex = value.target.selectedIndex;
+            const selectIndex = event.target.selectedIndex;
             this.setState({
                 property: Object.assign({}, this.state.property, {
                     [id]: Object.assign({}, this.state.property[id], {
@@ -197,7 +207,7 @@ class PlayerAreaPro extends PureComponent {
                     })
                 })
             })
-            return;
+            return false;
         }
         else if (id == "areaName") {
             if (!Name2Valid(val)) {
@@ -218,17 +228,16 @@ class PlayerAreaPro extends PureComponent {
 
     render() {
         const {property, prompt} = this.state;
-        console.log(property.width);
         return <div className={"pro-container playerArea "}>
             <div className="row">
                 <div className="form-group  area-name">
                     <label className="control-label"
                            htmlFor={property.areaName.key}>{property.areaName.title}</label>
                     <div className="input-container input-w-1">
-                        <input type="text" className={"form-control "}
+                        <input id="areaName" type="text" className={"form-control "}
                                placeholder={property.areaName.placeholder} maxLength="8"
                                value={property.areaName.value}
-                               onChange={event => this.onChange("areaName", event)}/>
+                               onChange={this.onChange}/>
                         <span className={prompt.areaName ? "prompt " : "prompt hidden"}><FormattedMessage
                             id='mediaPublish.check'/></span>
 
@@ -240,10 +249,10 @@ class PlayerAreaPro extends PureComponent {
                     <label className="col-sm-3 control-label"
                            htmlFor={property.width.key}>{property.width.title}</label>
                     <div className="input-container input-w-2">
-                        <input type="text" className={"form-control "}
+                        <input id="width" type="text" className={"form-control "}
                                placeholder={property.width.placeholder} maxLength="8"
                                value={property.width.value}
-                               onChange={event => this.onChange("width", event)}/>
+                               onChange={this.onChange}/>
                         <span className={prompt.width ? "prompt " : "prompt hidden"}><FormattedMessage
                             id='mediaPublish.check'/></span>
                     </div>
@@ -252,10 +261,10 @@ class PlayerAreaPro extends PureComponent {
                     <label className="col-sm-3 control-label"
                            htmlFor={property.height.key}>{property.height.title}</label>
                     <div className="input-container input-w-2">
-                        <input type="text" className={"form-control "}
+                        <input id="height" type="text" className={"form-control "}
                                placeholder={property.height.placeholder} maxLength="8"
                                value={property.height.value}
-                               onChange={event => this.onChange("height", event)}/>
+                               onChange={this.onChange}/>
                         <span className={prompt.height ? "prompt " : "prompt hidden"}><FormattedMessage
                             id='mediaPublish.check'/></span>
                     </div>
@@ -266,10 +275,10 @@ class PlayerAreaPro extends PureComponent {
                     <label className="col-sm-3 control-label"
                            htmlFor={property.axisX_a.key}>{property.axisX_a.title}</label>
                     <div className="input-container input-w-2">
-                        <input type="text" className={"form-control "}
+                        <input id="axisX_a" type="text" className={"form-control "}
                                placeholder={property.axisX_a.placeholder} maxLength="8"
                                value={property.axisX_a.value}
-                               onChange={event => this.onChange("axisX_a", event)}/>
+                               onChange={ this.onChange}/>
                     <span className={prompt.axisX_a ? "prompt " : "prompt hidden"}><FormattedMessage
                         id='mediaPublish.check'/></span>
                     </div>
@@ -277,11 +286,11 @@ class PlayerAreaPro extends PureComponent {
                 <div className="form-group  pull-right axisY_a">
                     <label className="col-sm-3 control-label"
                            htmlFor={property.axisY_a.key}>{property.axisY_a.title}</label>
-                    <div className="input-container input-w-2">
-                        <input type="text" className={"form-control "}
+                    <div  className="input-container input-w-2">
+                        <input id="axisY_a" type="text" className={"form-control "}
                                placeholder={property.axisY_a.placeholder} maxLength="8"
                                value={property.axisY_a.value}
-                               onChange={event => this.onChange("axisY_a", event)}/>
+                               onChange={this.onChange}/>
                     <span className={prompt.axisY_a ? "prompt " : "prompt hidden"}><FormattedMessage
                         id='mediaPublish.check'/></span>
                     </div>
@@ -292,8 +301,8 @@ class PlayerAreaPro extends PureComponent {
                     <label className="col-sm-3 control-label"
                            htmlFor={property.playEnd.key}>{property.playEnd.title}</label>
                     <div className="input-container input-w-2">
-                        <select className={"form-control"} value={property.playEnd.name}
-                                onChange={event => this.onChange("playEnd", event)}>
+                        <select id="playEnd" className={"form-control"} value={property.playEnd.name}
+                                onChange={this.onChange}>
                             {
                                 property.playEnd.list.map((option, index) => {
                                     let value = option.name;

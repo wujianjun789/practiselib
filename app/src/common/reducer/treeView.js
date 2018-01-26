@@ -112,7 +112,7 @@ function move(list, data) {
     }else{
         return list.map(node=>{
             if(node.children && node.children.length){
-                move(node.children,  data)
+                node.children = move(node.children,  data)
             }
 
             return node;
