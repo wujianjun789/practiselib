@@ -15,33 +15,34 @@ import React, {Component} from 'react';
  */
 export default class FaultPanel extends Component {
 
-    closeClick() {
-        this.props.closeClick ? this.props.closeClick() : null;
-    }
+  closeClick() {
+    this.props.closeClick ? this.props.closeClick() : null;
+  }
 
-    render() {
-        let clsName = 'panel ' + (!!this.props.className ? this.props.className : 'panel-primary');
-        let style = this.props.style ? this.props.style : null;
-        let props = this.props;
-        let _props = {
-            title: props.title ? props.title : '　',
-            body: props.body ? props.body :
-                <div className="row pull-center">{props.text ? props.text : "No data"}</div>,
-            footer: props.footer ? <div className="panel-footer clearfix">{props.footer}</div> : null,
-            closeBtn: props.closeBtn ? true : false
-        };
+  render() {
+    let clsName = 'panel ' + (this.props.className ? this.props.className : 'panel-primary');
+    let style = this.props.style ? this.props.style : null;
+    let props = this.props;
+    let _props = {
+      title: props.title ? props.title : '　',
+      body: props.body ? props.body :
+        <div className="row pull-center">{props.text ? props.text : 'No data'}</div>,
+      footer: props.footer ? <div className="panel-footer clearfix">{props.footer}</div> : null,
+      closeBtn: !!props.closeBtn,
+    };
 
-        return (
-            <div className={clsName} style={style}>
-                <div className="panel-heading">
-                    <h3 className="panel-title">{_props.title}</h3>
-                    {_props.closeBtn ? <button type="button" className="close" onClick={()=>this.closeClick()}><span>&times;</span></button> : null}
-                </div>
-                <div className="panel-body">
-                    {this.props.children ? this.props.children : _props.body }
-                </div>
-                { _props.footer }
-            </div>
-        )
-    }
+    return (
+      <div className={clsName} style={style}>
+        <div className="panel-heading">
+          <h3 className="panel-title">{_props.title}</h3>
+          {_props.closeBtn ? <button type="button" className="close" 
+            onClick={() => this.closeClick()}><span>&times;</span></button> : null}
+        </div>
+        <div className="panel-body">
+          {this.props.children ? this.props.children : _props.body }
+        </div>
+        { _props.footer }
+      </div>
+    );
+  }
 }
