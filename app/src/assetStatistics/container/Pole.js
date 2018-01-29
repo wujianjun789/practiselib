@@ -22,7 +22,7 @@ import {getDomainList} from '../../api/domain';
 import {getDeviceTypeByModel} from '../../util/index';
 import {getObjectByKey} from '../../util/algorithm';
 
-import {FormattedMessage, injectIntl} from 'react-intl';
+import { injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 
 import Immutable from 'immutable';
