@@ -155,9 +155,14 @@ export class sysConfigSmartLight extends Component {
       ...this.state.domainList,
       ...newObject,
     };
-    this.setState({
-      domainList: domainList,
-    }, () => this.requestSearch());
+    return new Promise((resolve, reject) => {
+      return resolve(
+        this.setState({domainList:domainList})
+      ); 
+    }).then(() => {return this.requestSearch();});
+    // this.setState({
+    //   domainList: domainList,
+    // }, () => this.requestSearch());
   }
 
   initAssetList(data) {
@@ -180,20 +185,37 @@ export class sysConfigSmartLight extends Component {
         let cameraCount = 0;
         let chargePoleCount = 0;
         data.map(item => {
-          if (item.extendType === 'lc') {
-            lcCount++;
-          } else if (item.extendType === 'screen') {
-            screenCount++;
-          } else if (item.extendType === 'sensor') {
-            sensorCount++;
-          } else if (item.extendType === 'camera') {
-            cameraCount++;
-          } else if (item.extendType === 'chargePole') {
-            chargePoleCount++;
+          switch (item.extendType) {
+          case 'lc':
+            return lcCount++;
+          case 'screen':
+            return screenCount++;
+          case 'camera':
+            return cameraCount++;
+          case 'chargePole':
+            return chargePoleCount++;
+          default:
+            return lcCount++;  
           }
+        //   if (item.extendType === 'lc') {
+        //     lcCount++;
+        //   } else if (item.extendType === 'screen') {
+        //     screenCount++;
+        //   } else if (item.extendType === 'sensor') {
+        //     sensorCount++;
+        //   } else if (item.extendType === 'camera') {
+        //     cameraCount++;
+        //   } else if (item.extendType === 'chargePole') {
+        //     chargePoleCount++;
+        //   }
         });
 
-        const equipmentsCount = this.state.tableData.get(index).set('lcCount', lcCount).set('screenCount', screenCount).set('sensorCount', sensorCount).set('cameraCount', cameraCount).set('chargePoleCount', chargePoleCount);
+        const equipmentsCount = this.state.tableData.get(index)
+          .set('lcCount', lcCount)
+          .set('screenCount', screenCount)
+          .set('sensorCount', sensorCount)
+          .set('cameraCount', cameraCount)
+          .set('chargePoleCount', chargePoleCount);
         const tableData = this.state.tableData.set(index, equipmentsCount);
         this.setState({
           tableData: tableData,
