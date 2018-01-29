@@ -28,29 +28,31 @@
   content: "\e900";
 }
 .icon_bottom:before {
-  content: "\e902";
+  content: "\e901";
 }
 .icon_branch:before {
-  content: "\e903";
+  content: "\e902";
 }
 .icon_calendar:before {
-  content: "\e904";
+  content: "\e903";
 }
 .icon_camera:before {
-  content: "\e905";
+  content: "\e904";
 }
 .icon_center:before {
-  content: "\e906";
+  content: "\e905";
 }
 .icon_charge_pole:before {
-  content: "\e907";
+  content: "\e906";
 }
 .icon_chart:before {
-  content: "\e908";
+  content: "\e907";
 }
 .icon_chinese:before {
+  content: "\e908";
+}
+.icon_collapse:before {
   content: "\e909";
-  /*color: #4a5064;*/
 }
 .icon_collect:before {
   content: "\e90a";
