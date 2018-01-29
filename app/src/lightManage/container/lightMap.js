@@ -638,7 +638,7 @@ export class lightMap extends Component{
                             {this.renderState(props, "online", "在线状态", true)}
                             {this.renderState(props, "brightness", "当前亮度")}
                             {
-                                <div className="fault-container"><span className="name">{this.formatIntl('工作状态')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}>{faultList.length>0?"故障":"运行正常"}</span></div>
+                                <div className="fault-container"><span className="name">{this.formatIntl('工作状态')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}} role="button">{faultList.length>0?"故障":"运行正常"}</span></div>
                             }
                             {
                                 faultList.length>0 &&
@@ -715,18 +715,18 @@ export class lightMap extends Component{
             IsControl = true;
         }
         return (
-            <Content onClick={()=>{}}>
+            <Content>
                 <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={this.panLatlng} panCallFun={this.panCallFun}/>
                 <div className="search-container" onMouseLeave={()=>{}} onMouseEnter={()=>{}}>
                     <div className="input-group searchBlock">
                         <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
                         <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
-                        <span className={"cancel-control "+(interactive||IsSearchResult?'active':'')} onClick={()=>{this.searchCancel()}}>cancel</span>
+                        <span className={"cancel-control "+(interactive||IsSearchResult?'active':'')} onClick={()=>{this.searchCancel()}} role="cancel-control">cancel</span>
                     </div>
                     <ul className={"list-group mode-select "+(interactive?'select-active':'')}>
                             {
                                 this.searchPromptList.map((item, index)=>{
-                                    return <li className={"list-group-item "+(index==tableIndex?"":"")} key={index} value={item.value} onClick={()=>this.searchSubmit(index)}>{item.value}<span></span> {search.get("value")}</li>
+                                    return <li className={"list-group-item "+(index==tableIndex?"":"")} key={index} value={item.value} onClick={()=>this.searchSubmit(index)} role="button">{item.value}<span></span> {search.get("value")}</li>
                                 })
                             }
                     </ul>
@@ -734,12 +734,12 @@ export class lightMap extends Component{
                         {
                             searchList.map((item,key)=>{
                                 if(searchListLength == (key+1)){
-                                    return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
+                                    return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)} role="button">
                                         {item.get("name")}
                                         {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                     </li>
                                 }else{
-                                    return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)}>
+                                    return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)} role="button">
                                         {item.get("name")}
                                         {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                     </li>
@@ -747,9 +747,9 @@ export class lightMap extends Component{
                             })
                         }
                     </ul>
-                    <div className={"prevNext "+(IsSearch&&IsSearchResult?"":"hidden")}><span className="next" onClick={()=>{ let num=searchOffset+6; this.requestSearch(num); }}></span><span className="prev" onClick={()=>{ let num=searchOffset-6; this.requestSearch(num); }}></span></div>
+                    <div className={"prevNext "+(IsSearch&&IsSearchResult?"":"hidden")}><span className="next" onClick={()=>{ let num=searchOffset+6; this.requestSearch(num); }} role="next"></span><span className="prev" onClick={()=>{ let num=searchOffset-6; this.requestSearch(num); }} role="prev"></span></div>
                     <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(this.infoStyle.maxHeight>0?15:0)+"px"}}
-                        onClick={this.backHandler}>
+                        onClick={this.backHandler} role="back-handler">
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
                         <span className="name">{"返回搜索结果"}</span>
                     </div>
@@ -762,7 +762,7 @@ export class lightMap extends Component{
                         <div className={"panel-body "+(this.infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(this.infoStyle.maxHeight>40?this.infoStyle.maxHeight-40:0)+"px"}}>
                             <ul className="btn-group">
                                 {
-                                   searchListToJS[0] && <li className={(this.infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")}><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
+                                   searchListToJS[0] && <li className={(this.infoStyle.maxHeight<88?"hidden ":" ")+(curId=="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")} role="button"><span className={"this"+(curId=="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
                                 }
                             </ul>
                             { this.renderInfo(curId,this.state[curId]) }
@@ -772,7 +772,7 @@ export class lightMap extends Component{
                         <div className={"panel-heading "+(this.controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}}>
                             <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
-                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle}></span>
+                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle} role="triangle-toggle"></span>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
                              style={{"maxHeight":(this.controlStyle.maxHeight>40?this.controlStyle.maxHeight-40:0)+"px",
