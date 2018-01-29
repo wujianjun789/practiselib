@@ -54,7 +54,7 @@ import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import { updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType, getAssetData } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
-    updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,
+    updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,updateItemOrders,
     removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetList, addAsset, removeAssetById} from '../../api/mediaPublish';
 
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
@@ -377,7 +377,10 @@ console.log('newData:', newData);
 
     updateItemList = (programId, sceneId, zoneId, data)=>{
         console.log('playerItem:', data);
-        this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS(data))});
+        const newData = data.map(item=>{
+            return Object.assign({}, item, {assetType:'source'});
+        })
+        this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS(newData))});
     }
 
     updatePlayerTree = ()=> {
@@ -534,7 +537,7 @@ console.log('newData:', newData);
         const list = this.state.playerListAsset.get("list");
         const curIndex = getIndexByKey(list, "id", itemId);
 
-        removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, data=>{
+        removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, item.get('type'), data=>{
             this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
         })
         // this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(curIndex, 1)) });
@@ -542,12 +545,16 @@ console.log('newData:', newData);
 
     playerAssetMove = (id, item)=> {
         console.log('playerAssetMove:', id, item);
+        const {project, parentParentNode, parentNode, curNode} = this.state;
         const itemId = item.get("id");
         const list = this.state.playerListAsset.get("list");
         const curIndex = getIndexByKey(list, "id", itemId);
 
         this.state.playerListAsset = this.state.playerListAsset.update("list", v => v.splice(curIndex, 1));
-        this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item)) });
+        this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(id == "left" ? curIndex - 1 : curIndex + 1, 0, item)) },()=>{
+            updateItemOrders(project.id, parentParentNode.id, parentNode.id, curNode.id, getListObjectByKey(this.state.playerListAsset.get('list').toJS(), 'id'), ()=>{
+            });
+        });
     }
 
     addPlayerScene = ()=>{
@@ -1250,7 +1257,7 @@ console.log('newData:', newData);
                     </div>
                 </div>
                 <div className="mediaPublish-footer">
-                    <span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>
+                    {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
                     <ul>
                         {
                             playerListAsset.get('list').map((item, index) => {
@@ -1259,7 +1266,7 @@ console.log('newData:', newData);
                                 return <li key={itemId} className="player-list-asset" onClick={() => this.playerAssetSelect(item)}>
                                     <div className={"background " + (curId == itemId ? '' : 'hidden')}></div>
                                     <span className="icon"></span>
-                                    <span className="name">{item.get("file")}</span>
+                                    <span className="name" title={item.get('file')}>{item.get("file")}</span>
                                     {curId == itemId && index > 0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('left', item) }}></span>}
                                     {curId == itemId && index < playerListAsset.get("list").size - 1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('right', item) }}></span>}
                                     {!playerListAsset.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.playerAssetRemove(item) }}></span>}

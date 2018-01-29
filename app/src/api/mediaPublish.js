@@ -415,9 +415,9 @@ export function updateItemOrders(projectId, programId, sceneId, zoneId, data, cb
     })
 }
 
-export function removeItemById(projectId, programId, sceneId, zoneId, id, cb) {
+export function removeItemById(projectId, programId, sceneId, zoneId, id, itemType, cb) {
     let headers = getHttpHeader();
-    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/' + id, {
+    httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/' + id +"?itemType="+itemType, {
         headers: headers,
         method: 'DELETE'
     }, response => {

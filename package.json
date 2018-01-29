@@ -10,6 +10,7 @@
     "express": "~4.13.4",
     "express-http-proxy": "^1.0.4",
     "express-session": "^1.15.3",
+    "file-loader": "^1.1.6",
     "identity-obj-proxy": "^3.0.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
@@ -20,7 +21,8 @@
     "react-datepicker": "^0.53.0",
     "react-fontawesome": "^1.6.1",
     "react-treebeard": "^2.0.3",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "url-loader": "^0.6.2"
   },
   "devDependencies": {
     "antd": "^2.13.6",
