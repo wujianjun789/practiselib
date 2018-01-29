@@ -886,11 +886,12 @@ export class PlayerArea extends Component {
         
         const self = this;
         const url = 'http://192.168.155.196:3001/api/file/upload';
-        const name = file.name, key = file.key;
+        const name = file.name, key = file.key,type=file.type
 
         const form = new FormData();
         form.append('file', file.data);
         form.append('name', name)
+        form.append('type',type)
 
         const xhr = new XMLHttpRequest();
         xhr.key = key, xhr.upload.key = key;

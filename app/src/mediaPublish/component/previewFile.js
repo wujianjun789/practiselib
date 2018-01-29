@@ -34,7 +34,7 @@ class PreviewFile extends Component {
             }
             const url = URL.createObjectURL(file);
             const show = <img src={url} />
-            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file })
+            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file,type:'image' })
         }
         else if (/^video\/.+$/.test(file.type)) {
             if (this.state.url) {
@@ -42,7 +42,7 @@ class PreviewFile extends Component {
             }
             const url = URL.createObjectURL(file);
             const show = <video src={url} controls loop />;
-            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file })
+            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file,type:'video' })
         }
         else if (/^text\/plain$/.test(file.type)) {
             const reader = new FileReader();
@@ -50,7 +50,7 @@ class PreviewFile extends Component {
             reader.onload = (e) => {
                 const data = e.target.result;
                 const show = <textarea value={data} readOnly></textarea>
-                this.setState({ name: file.name, path: file.name, url: null, show: show, data: file })
+                this.setState({ name: file.name, path: file.name, url: null, show: show, data: file,type:'text' })
             }
         } else {
             alert('The file format is not supported');
