@@ -2,19 +2,19 @@
  * Created by a on 2017/4/21.
  */
 import {
-    SIDEBAR_TOGGLE
+  SIDEBAR_TOGGLE,
 } from '../actionType/index';
 import Immutable from 'immutable';
 const initialState = {
-    sidebarNode: null
+  sidebarNode: null,
 };
 
 
-export default function assetManage (state=Immutable.fromJS(initialState), action) {
-    switch(action.type) {
-    case SIDEBAR_TOGGLE:
-        return state.update('sidebarNode', v=>action.data);
-    default:
-        return state;
-    }
+export default function assetManage(state = Immutable.fromJS(initialState), action) {
+  switch (action.type) {
+  case SIDEBAR_TOGGLE:
+    return state.update('sidebarNode', v => action.data);
+  default:
+    return state;
+  }
 }
