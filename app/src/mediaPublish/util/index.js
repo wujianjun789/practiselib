@@ -182,3 +182,162 @@ function clearState(treeList) {
         return node;
     })
 }
+
+const imagesType = ['.jpg','.jpeg','.png'];
+const textType = ['txt'];
+const videoType = ['video'];
+export function formatTransformType(filepath) {
+    const urlArr = filepath.split('.')
+    const url = urlArr.length>1?urlArr[1]:undefined;
+    if(url === undefined){
+        return 3;
+    }
+
+    if(textType.indexOf(url)>-1){
+        return 2;
+    }
+
+    if(imagesType.indexOf(url)>-1){
+        return 3;
+    }
+
+    if(videoType.indexOf(url)>-1){
+        return 4;
+    }
+
+    return 3;
+}
+
+export function getAssetData(data) {
+    let obj = {};
+    let itemType = formatTransformType(data.filepath);
+    switch(itemType){
+        case 2:
+            return getTxtFileData(data);
+        case 3:
+            return getImageData(data);
+        case 4:
+            return getVideoData(data);
+    }
+    return obj;
+}
+
+function getTxtFileData(data) {
+    return {
+        "baseInfo": {
+            "type": data.type?data.type:formatTransformType(data.filepath),
+            "file": data.filepath,
+            "playDuration": 0,
+            "logFlag": 0,
+            "materialId": data.id
+        },
+        "background": {
+            "transparent": 0,
+            "picture": "string",
+            "picAlignment": 0,
+            "color": {
+                "red": 0,
+                "green": 0,
+                "blue": 0,
+                "amber": 0,
+                "alpha": 0
+            },
+            "colorKey": {
+                "red": 0,
+                "green": 0,
+                "blue": 0,
+                "amber": 0,
+                "alpha": 0
+            },
+            "materialId": "string"
+        },
+        "transparency": 0,
+        "colorReseversal": 0,
+        "alignment": 0,
+        "charSpace": 0,
+        "rowSpace": 0,
+        "fontColor": {
+            "red": 0,
+            "green": 0,
+            "blue": 0,
+            "amber": 0,
+            "alpha": 0
+        },
+        "font": {
+            "name": "string",
+            "size": 0,
+            "bold": true,
+            "italic": true,
+            "underline": true,
+            "strikeout": true
+        },
+        "skipTime": 0,
+        "skipType": 0,
+        "inTransition": {
+            "transition": 0,
+            "speed": 0
+        }
+    }
+}
+
+function getImageData(data) {
+    return {
+        "baseInfo": {
+            "type": data.type?data.type:formatTransformType(data.filepath),
+            "file": data.filepath,
+            "playDuration": 0,
+            "logFlag": 0,
+            "materialId": data.id
+        },
+        "scale": 0,
+        "inTransition": {
+            "transition": 0,
+            "speed": 0
+        },
+        "id": 0
+    }
+}
+
+function getVideoData(data) {
+    return {
+        "baseInfo": {
+            "type": data.type?data.type:formatTransformType(data.filepath),
+            "file": data.filepath,
+            "playDuration": 0,
+            "logFlag": 0,
+            "materialId": data.id
+        },
+        "playType": 0,
+        "playTimeBegin": 0,
+        "playTimeEnd": 0,
+        "scale": 0,
+        "text": {
+            "text": "string",
+            "color": {
+                "red": 0,
+                "green": 0,
+                "blue": 0,
+                "amber": 0,
+                "alpha": 0
+            },
+            "font": {
+                "name": "string",
+                "size": 0,
+                "bold": true,
+                "italic": true,
+                "underline": true,
+                "strikeout": true
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "w": 0,
+                "h": 0
+            },
+            "inTransition": {
+                "transition": 0,
+                "speed": 0
+            }
+        }
+    }
+}
