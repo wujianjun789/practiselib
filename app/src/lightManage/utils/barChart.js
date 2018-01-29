@@ -44,12 +44,12 @@ export default function BarChart(data) {
       // console.log("monthfix:",dataFixed );
     }
     if (type === '2') {//按月统计28,29,30,31
-      let day = new Date(yearNum, monthNum + 1, 0);
+      let day = new Date(yearNum, monthNum, 0);
       let daylength = day.getDate();
       dataFixed = [];
       for (let i = 0; i < daylength; i++) {
         let item = {};
-        item.x = new Date(yearNum, monthNum, i + 1);
+        item.x = new Date(yearNum, monthNum - 1, i + 1);
         item.y = 0;
         for (let j = 0; j < dataset.length; j++) {
           if (new Date(dataset[j].x).getDate() === i + 1) {
