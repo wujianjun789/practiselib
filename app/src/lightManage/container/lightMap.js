@@ -772,7 +772,7 @@ export class lightMap extends Component{
                         <div className={"panel-heading "+(this.controlStyle.maxHeight==0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}}>
                             <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
-                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"") role="triangle-toggle"} onClick={this.onToggle}></span>
+                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle} role="triangle-toggle"></span>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
                              style={{"maxHeight":(this.controlStyle.maxHeight>40?this.controlStyle.maxHeight-40:0)+"px",
