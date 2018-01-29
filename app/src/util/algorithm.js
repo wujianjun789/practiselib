@@ -383,3 +383,19 @@ export function IsExistInArray1(arr, accessor, value) {
     }
     return false;
 }
+
+export function getListObjectByKey(list, key) {
+    if(!list || !key){
+        return [];
+    }
+
+    let newList = [];
+    for (let i=0;i<list.length;i++){
+        if(list[i].hasOwnProperty(key)){
+            newList.push(list[i][key]);
+        }
+
+    }
+
+    return newList;
+}

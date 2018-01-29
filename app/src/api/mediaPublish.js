@@ -194,7 +194,7 @@ export function updateProgramOrders(projectId, data, cb) {
 
     httpRequest(HOST_IP + '/projects/'+projectId+'/orders', {
         headers: headers,
-        method: 'PUT',
+        method: 'POST',
         body: JSON.stringify(data)
     }, response => {
         cb && cb(response);
@@ -260,7 +260,7 @@ export function updateSceneOrders(projectId, programId, data, cb) {
 
     httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/orders', {
         headers: headers,
-        method: 'PUT',
+        method: 'POST',
         body: JSON.stringify(data)
     }, response => {
         cb && cb(response);
