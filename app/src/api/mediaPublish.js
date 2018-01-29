@@ -33,10 +33,7 @@ import { HeadBar } from '../components/HeadBar';
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
     let headers = getHttpHeader();
-    let obj = { "offset": offset, "limint": limit }
-    if (projectName) {
-        obj = Object.assign({ "where": { type: type, name: { like: projectName } } }, obj);
-    }
+    let obj = Object.assign({}, { "where": getProjectParam(type, projectName)}, { "offset": offset, "limit": limit });
 
     let param = JSON.stringify(obj);
     let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
@@ -46,6 +43,19 @@ export function searchProjectList(type, projectName, offset, limit, cb) {
     }, response => {
         cb && cb(response);
     })
+}
+
+function getProjectParam(type, projectName) {
+    let param = {};
+    if(type){
+        param = Object.assign(param, {type: type});
+    }
+
+    if(projectName){
+        param = Object.assign(param, { name: { like: projectName } })
+    }
+
+    return param;
 }
 
 export function getProjectByName(type, projectName, cb) {
@@ -414,3 +424,82 @@ export function removeItemById(projectId, programId, sceneId, zoneId, id, cb) {
         cb && cb(response);
     })
 }
+
+//素材库
+const FILE_HOST_IP = 'http://192.168.155.196:3001/api';
+export function getAssetList(cb) {
+    let headers = getHttpHeader();
+    httpRequest(FILE_HOST_IP+'/file', {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function searchAssetList(type, name, offset, limit, cb) {
+    let headers = getHttpHeader();
+    let obj = Object.assign({},{ "where": getAssetParam(type, name)}, { "offset": offset, "limit": limit });
+
+    let param = JSON.stringify(obj);
+    let url = FILE_HOST_IP + '/file?filter=' + encodeURIComponent(param);
+    httpRequest(url, {
+        headers: headers,
+        method: 'GET'
+    }, response => {
+        cb && cb(response);
+    })
+}
+
+function getAssetParam(type, name) {
+    let param = {};
+    // if(type){
+    //     param = Object.assign(param, {type: type});
+    // }
+
+    if(name){
+        param = Object.assign(param, { name: { like: name }})
+    }
+
+    return param;
+}
+/**
+ *
+ * @param data({"id": "string",
+                    "name": "string",
+                    "fingerprint": "string",
+                    "filepath": "string",
+                    "size": 0})
+ * @param cb
+ */
+export function addAsset(data, cb) {
+    let headers = getHttpHeader();
+    httpRequest(FILE_HOST_IP+'/file', {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify(data)
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function getAssetById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(FILE_HOST_IP+'/file/'+id, {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
+export function removeAssetById(id, cb) {
+    let headers = getHttpHeader();
+    httpRequest(FILE_HOST_IP+'/file/'+id, {
+        headers: headers,
+        method: 'DELETE'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+

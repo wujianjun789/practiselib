@@ -53,9 +53,9 @@ import { Name2Valid } from '../../util/index';
 import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import { updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState } from '../util/index'
 
-import {getProgramList, getSceneList, getZoneList, addProgram, addScene, addZone,updateProjectById,
-    updateProgramById, updateSceneById, updateZoneById, updateProgramOrders, updateSceneOrders, updateZoneOrders,
-    removeProgramsById, removeSceneById, removeZoneById} from '../../api/mediaPublish';
+import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
+    updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,
+    removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetList, addAsset, removeAssetById} from '../../api/mediaPublish';
 
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
@@ -145,18 +145,17 @@ export class PlayerArea extends Component {
 
             assetType: Immutable.fromJS({ list: [{ id: 1, value: '类别1' }, { id: 2, value: '类别2' }], index: 0, value: '类别1' }),
             assetSort: Immutable.fromJS({
-                list: [{ id: 1, value: '素材文字' }, { id: 2, value: '素材图片' }],
-                index: 0,
-                value: '素材文字'
+                list: [{ id: 1, type:1, value: '素材文字' }, { id: 2, type:2, value: '素材图片' }, { id: 3, type:3, value: '素材视频' }],
+                index: 0, value: '素材文字'
             }),
             assetSearch: Immutable.fromJS({ placeholder: this.props.intl.formatMessage({id:'sysOperation.input.asset'}), value: '' }),
             assetList: Immutable.fromJS({
-                list: [{ id: 1, name: '素材1', active: true, assetType: "system", type: "word" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
-                { id: 4, name: '素材4', assetType: "source", type: "video" }], id: 1, name: '素材1', isEdit: true
+                list: [/*{ id: 1, name: '素材1', active: true, assetType: "system", type: "word" }, { id: 2, name: '素材2', assetType: "source", type: "video" },
+                    { id: 3, name: '素材3', assetType: "source", type: "picture" }, { id: 4, name: '素材4', assetType: "source", type: "video" }*/], id: 1, name: '素材1', isEdit: true
             }),
             playerListAsset: Immutable.fromJS({
-                list: [{ id: 1, name: '素材1', assetType: "system", type: "text" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
-                { id: 4, name: '素材4', assetType: "source", type: "timing" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }],
+                list: [/*{ id: 1, name: '素材1', assetType: "system", type: "text" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
+                { id: 4, name: '素材4', assetType: "source", type: "timing" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }*/],
                 id: 1, name: '素材1', isEdit: true
             }),
             page: Immutable.fromJS({
@@ -216,6 +215,9 @@ export class PlayerArea extends Component {
                 this.requestProgrameList();
             })
         }
+
+        this.requestAssetList();
+        this.requestSearchAssetList();
     }
 
     componentDidMount() {
@@ -283,6 +285,30 @@ export class PlayerArea extends Component {
         this.setState({ controlStyle: { "left": cleft, "right": cright } });
     }
 
+    requestAssetList = ()=>{
+        getAssetList(data=>{this.mounted && this.updatePageTotal(data)});
+    }
+
+    requestSearchAssetList = ()=>{
+        const { assetSort, assetSearch, page} = this.state;
+        const aType = assetSort.getIn(['list', assetSort.get('index'), 'type']);
+        const name = assetSearch.get('value');
+        const limit = page.get('pageSize');
+        const offset = (page.get('current')-1)*limit;
+        searchAssetList(aType, name, offset, limit, data=>{this.mounted && this.updateAssetList(data)});
+    }
+    
+    updatePageTotal = (data)=>{
+        this.setState({page: this.state.page.update('total', v=>data.length)});
+    }
+
+    updateAssetList= (data)=>{
+        const newData = data.map(item=>{
+            return Object.assign({}, item, {assetType:'source'});
+        })
+        this.setState({assetList: this.state.assetList.update('list', v=>Immutable.fromJS(newData))});
+    }
+
     requestProgrameList=()=>{
         const {project} = this.state;
         getProgramList(project.id, data=>{this.mounted && this.updateProgramList(data)})
@@ -292,7 +318,7 @@ export class PlayerArea extends Component {
         let newData = data.map(program=>{
             return Object.assign({}, program, {type:'plan', toggled:false, active: false, children:[]});
         })
-
+console.log('newData:', newData);
         this.setState({playerData: newData}, ()=>{
             this.updatePlayerTree();
         });
@@ -342,6 +368,16 @@ export class PlayerArea extends Component {
         this.setState({playerData: this.state.playerData}, ()=>{
             this.updatePlayerTree();
         });
+    }
+
+    requestItemList = (programId, sceneId, zoneId)=>{
+        const {project} = this.state;
+        getItemList(project.id, programId, sceneId, zoneId, data=>{this.mounted && this.updateItemList(programId, sceneId, zoneId)});
+    }
+
+    updateItemList = (programId, sceneId, zoneId, data)=>{
+        console.log('playerItem:', data);
+        // this.setState({playerListAsset: Immutable.fromJS(data)});
     }
 
     updatePlayerTree = ()=> {
@@ -412,6 +448,7 @@ export class PlayerArea extends Component {
     pageChange = (current, pageSize)=> {
         let page = this.state.page.set('current', current);
         this.setState({ page: page }, () => {
+            this.requestSearchAssetList();
         });
     }
 
@@ -461,6 +498,11 @@ export class PlayerArea extends Component {
 
     addClick = (item)=> {
         console.log('addClick:', item.toJS());
+        const {project, parentParentNode, parentNode, curNode} = this.state;
+        const data = item.toJS();
+        addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, {id:data.id}, data=>{
+            this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
+        })
     }
 
     assetLibRemove = (item)=> {
@@ -472,21 +514,27 @@ export class PlayerArea extends Component {
                 const list = this.state.assetList.get("list");
                 const curIndex = getIndexByKey(list, "id", itemId);
 
-                this.setState({ assetList: this.state.assetList.update("list", v => v.splice(curIndex, 1)) }, () => {
-                    actions.overlayerHide();
+                removeAssetById(itemId, data=>{
+                    this.requestSearchAssetList();
                 });
+                // this.setState({ assetList: this.state.assetList.update("list", v => v.splice(curIndex, 1)) }, () => {
+                //     actions.overlayerHide();
+                // });
             }} />)
 
     }
 
     playerAssetRemove = (item)=> {
         console.log('playerAssetRemove:', item.toJS());
-
+        const {project, parentParentNode, parentNode, curNode} = this.state;
         const itemId = item.get("id");
         const list = this.state.playerListAsset.get("list");
         const curIndex = getIndexByKey(list, "id", itemId);
 
-        this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(curIndex, 1)) });
+        removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, data=>{
+            this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
+        })
+        // this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(curIndex, 1)) });
     }
 
     playerAssetMove = (id, item)=> {
@@ -1139,6 +1187,9 @@ export class PlayerArea extends Component {
                     console.log('click scene');
                     !node.toggled && this.requestZoneList(parentNode.id, node.id);
                     break;
+                case "playerArea":
+                    this.requestItemList(parentParentNode.id, parentNode.id, node.id);
+                    break;
             }
         });
     }
@@ -1299,7 +1350,7 @@ export class PlayerArea extends Component {
                                                 {/*onMouseDown={event=>{this.handleMouseDown(item, [x, y],{pageX:event.pageX, pageY:event.pageY})}}*/}
                                                 <div className={"background " + (curId == id ? '' : 'hidden')}></div>
                                                 <span className="icon"></span>
-                                                <span className="name">{item.get('name')}</span>
+                                                <span className="name" title={item.get('name')}>{item.get('name')}</span>
                                                 {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event) => { event.stopPropagation(); this.addClick(item) }}></span>}
                                                 {!assetList.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.assetLibRemove(item) }}></span>}
                                             </li>
