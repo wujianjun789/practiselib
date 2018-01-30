@@ -8,12 +8,12 @@ export default function BarChart(data) {
   let parent = d3.select(`#${ID}`);
   if (parent === null) {return;}
 
-  let wrapper = data.wrapper;
+  // let wrapper = data.wrapper;
   let dataset = data.data;
   let type = data.type;
   // 画布大小
   // let width = 900;
-  let width = wrapper.offsetWidth;
+  let width = data.width;
   let height = 170;
 
   //画布周边的空白
@@ -79,11 +79,7 @@ export default function BarChart(data) {
     }
   }
 	
-  //定义一个数组日，月，年，
-  // let dataset = [10, 20,32, 5, 30,  12, 5, 10, 40, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
-  // let dataset = [10, 40, 33, 24, 20,12, 5,32, 5, 10, 40,33, 24, 20, 33, 10, 40, 33, 24, 30, 40, 33, 24, 12, 5];
-  // dataset = [{x:3, y: 10},{x:4, y: 20},{x:5, y: 14},{x:6, y: 15},{x:7, y: 12},{x:8, y: 17},{x:9, y: 14}];
-  // let dataset = data	
+
   //x轴的比例尺
   let xScale = d3.scaleBand()
     .domain(d3.range(dataset.length))
@@ -108,7 +104,7 @@ export default function BarChart(data) {
         time = `${month}月`;
         break;
       case '2':
-        time = `${day}日`;
+        time = `${day}`;
         break;
       case '3':
         time = `${hours}时`;
@@ -140,6 +136,9 @@ export default function BarChart(data) {
 
   //在 body 里添加一个 SVG 画布	
   let svg = parent.append('svg')
+    // .attr('viewBox', '0 0 ' + width + ' ' + height)
+    // .attr('style', 'width:100%')
+    // .attr('preserveAspectRatio', 'xMinYMin slice')
     .attr('width', width)
     .attr('height', height)
     .append('g')

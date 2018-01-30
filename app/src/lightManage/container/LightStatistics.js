@@ -109,6 +109,21 @@ export default class LightStatistics extends Component {
     this.mounted = false;
   }
 
+  componentDidMount() {
+
+    let resiseWaiter = false;
+    window.onresize = function() {
+      if (!resiseWaiter) {
+        resiseWaiter = true;
+        setTimeout(function() {
+          window.location.reload();
+          resiseWaiter = false;
+        });
+      }
+    };
+    
+  }
+
   initData() {
     getDomainList(data => {
       this.mounted && this.updateDomainData(data);
@@ -321,6 +336,8 @@ export default class LightStatistics extends Component {
     if (ref.id == 'energyStatistics') {
       this.barchart = new BarChart({
         wrapper: ref,
+        width:ref.parentNode.offsetWidth,
+        // width:ref.clientWith,
         // wrapper: ref.parentNode,
         data: data,
         type: this.state.type,
