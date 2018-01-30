@@ -59,6 +59,8 @@ import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addS
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
 import lodash from 'lodash';
+
+import systemFile from '../data/systemFile.json';
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -142,12 +144,12 @@ export class PlayerArea extends Component {
                 assetLibCollapsed: false
             },
 
-            assetType: Immutable.fromJS({ list: [{ id: 1, value: '类别1' }, { id: 2, value: '类别2' }], index: 0, value: '类别1' }),
+            assetType: Immutable.fromJS({ list: [{ id: 1, value: '系统' }, { id: 2, value: '自定义' }], index: 0, value: '系统' }),
             assetSort: Immutable.fromJS({
                 list: [{ id: 1, type:1, value: '素材文字' }, { id: 2, type:2, value: '素材图片' }, { id: 3, type:3, value: '素材视频' }],
                 index: 0, value: '素材文字'
             }),
-            assetSearch: Immutable.fromJS({ placeholder: this.props.intl.formatMessage({id:'sysOperation.input.asset'}), value: '' }),
+            assetSearch: Immutable.fromJS({ placeholder: this.formatIntl('sysOperation.input.asset'), value: '' }),
             assetList: Immutable.fromJS({
                 list: [/*{ id: 1, name: '素材1', active: true, assetType: "system", type: "word" }, { id: 2, name: '素材2', assetType: "source", type: "video" },
                     { id: 3, name: '素材3', assetType: "source", type: "picture" }, { id: 4, name: '素材4', assetType: "source", type: "video" }*/], id: 1, name: '素材1', isEdit: true
@@ -189,7 +191,9 @@ export class PlayerArea extends Component {
             isAddClick: false,
         }
 
-        this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }]
+        this.systemFile = [];
+        this.systemInitFile = [];
+        this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }];
 
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -207,6 +211,10 @@ export class PlayerArea extends Component {
         window.onresize = event => {
             this.mounted && this.setSize();
         }
+
+        this.systemFile = systemFile.map(file=>{
+            return Object.assign({}, file, {assetType: "system"});
+        });
 
         const { router } = this.props;
         if (router && router.location) {
@@ -307,20 +315,24 @@ export class PlayerArea extends Component {
         const { assetSort, assetSearch, page} = this.state;
         const aType = assetSort.getIn(['list', assetSort.get('index'), 'type']);
         const name = assetSearch.get('value');
-        const limit = page.get('pageSize');
-        const offset = (page.get('current')-1)*limit;
+        const current = page.get('current');
+        const pageSize = page.get('pageSize');
+        const limit = current===1?pageSize-5:pageSize;
+        const offset = current===1?(current-1)*limit:(current-1)*limit-5;
         searchAssetList(aType, name, offset, limit, data=>{this.mounted && this.updateAssetList(data)});
     }
     
     updatePageTotal = (data)=>{
-        this.setState({page: this.state.page.update('total', v=>data.length)});
+        this.setState({page: this.state.page.update('total', v=>this.systemFile.concat(data).length)});
     }
 
     updateAssetList= (data)=>{
+        const {page} = this.state;
+        const curPage = page.get('current');
         const newData = data.map(item=>{
             return Object.assign({}, item, {assetType:'source'});
         })
-        this.setState({assetList: this.state.assetList.update('list', v=>Immutable.fromJS(newData))});
+        this.setState({assetList: this.state.assetList.update('list', v=>Immutable.fromJS(curPage===1?this.systemFile.concat(newData):newData))});
     }
 
     requestProgrameList=()=>{
@@ -1178,9 +1190,7 @@ console.log('newData:', newData);
             this.state.sidebarInfo['propertyCollapsed'] = state;
         }
 
-        const libStyle = sidebarInfo['propertyCollapsed']? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
-        const assetStyle = sidebarInfo['propertyCollapsed'] ? {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}:{'height':'309px'}
-        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state }), /*libStyle:libStyle,*/ /*assetStyle:assetStyle*/});
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state })});
     }
 
     render() {
@@ -1220,11 +1230,11 @@ console.log('newData:', newData);
                     </div>
                     <div className="control-container-bottom" style={controlStyle}>
                         <div className="form-group pull-right quit-container " onClick={() => this.quitHandler()}>
-                            <span className="icon icon_send"></span><span><FormattedMessage id='mediaPublish.quit'/></span>
+                            <span className="icon icon_send"></span><FormattedMessage id='mediaPublish.quit'/>
                         </div>
                         <div className="form-group pull-right save-plan-container "
                             onClick={() => this.savePlanHandler()}>
-                            <span className="icon icon_save save-plan"></span><span><FormattedMessage id='mediaPublish.savePlan'/></span>
+                            <span className="icon icon_save save-plan"></span><FormattedMessage id='mediaPublish.savePlan'/>
                         </div>
                     </div>
                 </div>
@@ -1274,14 +1284,14 @@ console.log('newData:', newData);
                         {curType == 'playerPlan' && <PlayerPlan projectId={project.id} data={curNode} applyClick={data=>{this.applyClick('playerPlan', data)}}/>}
                         {curType == 'playerScene' && <PlayerScene projectId={project.id} parentId={parentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerScene', data)}}/>}
                         {curType == 'playerArea' && <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>}
-                        {curType == 'cyclePlan' && <CyclePlan pause={1} />}
-                        {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} />}
-                        {curType == 'playerPicAsset' && <PlayerPicAsset />}
-                        {curType == 'playerVideoAsset' && <PlayerVideoAsset />}
-                        {curType == 'playerText' && <PlayerText />}
-                        {curType === 'digitalClock' && <DigitalClock />}
-                        {curType === 'virtualClock' && <VirtualClock />}
-                        {curType === 'playerTimeAsset' && <PlayerTimeAsset />}
+                        {curType == 'cyclePlan' && <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType == 'playerText' && <PlayerText projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType === 'digitalClock' && <DigitalClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType === 'virtualClock' && <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType === 'playerTimeAsset' && <PlayerTimeAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                     </div>
                 </div>
 

@@ -1,0 +1,7 @@
+[
+  {"id":"countDown", "type":11, "name":"倒计时", "filepath":"29032ebe-b22c-4912-bf06-dddbd6f5b567.jpeg"},
+  {"id":"digitalClock","type":10, "name":"数字时钟", "filepath":"29032ebe-b22c-4912-bf06-dddbd6f5b567.jpeg"},
+  {"id":"formatText", "type":1, "name":"格式化文本", "filepath":"29032ebe-b22c-4912-bf06-dddbd6f5b567.jpeg"},
+  {"id":"simpleText", "type":0, "name":"简单文本", "filepath":"29032ebe-b22c-4912-bf06-dddbd6f5b567.jpeg"},
+  {"id":"virtualClock", "type":9, "name":"虚拟时钟", "filepath":"29032ebe-b22c-4912-bf06-dddbd6f5b567.jpeg"}
+]
