@@ -118,7 +118,7 @@ export default class LightStatistics extends Component {
         setTimeout(function() {
           window.location.reload();
           resiseWaiter = false;
-        });
+        }, 1500);
       }
     };
     
