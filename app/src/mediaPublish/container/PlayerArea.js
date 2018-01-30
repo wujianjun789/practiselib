@@ -227,11 +227,15 @@ export class PlayerArea extends Component {
     }
 
     componentDidUpdate(){
-        let pageStyle = {};
         const sidebarInfoDom = findDOMNode(this.refs.sidebarInfo);
-        if(sidebarInfoDom && sidebarInfoDom.scrollHeight !== this.state.scrollHeight){
-            pageStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight?{}:{position: 'absolute'};
-            this.setState({scrollHeight: sidebarInfoDom.scrollHeight, pageStyle: pageStyle});
+        const assetPropertyDom = findDOMNode(this.refs.assetProperty);
+        if(sidebarInfoDom && sidebarInfoDom.scrollHeight !== this.state.scrollHeight || assetPropertyDom && assetPropertyDom.offsetHeight !== this.state.assetProperHeight){
+            const pageStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight?{}:{position: 'absolute'};
+            const libStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight? {} : {'position':'absolute', 'top':assetPropertyDom.offsetHeight+30+'px', 'bottom':'0px'};
+            const assetStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight ? {'height':'309px'} : {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}
+
+            this.setState({IsScroll: sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight, scrollHeight: sidebarInfoDom.scrollHeight, assetProperHeight: assetPropertyDom.offsetHeight,
+                libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle});
         }
     }
 
@@ -515,7 +519,7 @@ console.log('newData:', newData);
 
     addClick = (item)=> {
         const {project, parentParentNode, parentNode, curNode} = this.state;
-        if(!curNode || curNode.type !== "playerArea"){
+        if(!curNode || curNode.type !== "area"){
             this.props.actions.addNotify(0, this.formatIntl('mediaPublish.area.alert'));
             return false;
         }
@@ -1176,12 +1180,12 @@ console.log('newData:', newData);
 
         const libStyle = sidebarInfo['propertyCollapsed']? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
         const assetStyle = sidebarInfo['propertyCollapsed'] ? {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}:{'height':'309px'}
-        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state }), libStyle:libStyle, assetStyle:assetStyle});
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state }), /*libStyle:libStyle,*/ /*assetStyle:assetStyle*/});
     }
 
     render() {
         const {
-            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,pageStyle,
+            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, IsScroll, assetStyle, controlStyle,libStyle,pageStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
         const {router} = this.props;
@@ -1260,7 +1264,7 @@ console.log('newData:', newData);
                 <div className="row collapse-container" onClick={() => this.sidebarClick('collapsed')}>
                     <span className={sidebarInfo.collapsed ? "icon_horizontal" : "icon_vertical"}></span>
                 </div>
-                <div className="panel panel-default asset-property">
+                <div ref="assetProperty" className="panel panel-default asset-property">
                     <div className="panel-heading pro-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('propertyCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_info" :
                             "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{`${this.formatIntl('mediaPublish.property')}${add_title}`}
@@ -1285,8 +1289,8 @@ console.log('newData:', newData);
                     <div className="panel-heading lib-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_file" : "glyphicon " + (sidebarInfo.assetLibCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span><FormattedMessage id='mediaPublish.materialLib'/>
                     </div>
-                    <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')} style={sidebarInfo.propertyCollapsed?{'position':'absolute','top':'49px', 'bottom':0,'right':0,'left':0}:{}}>
-                        <div className="asset-container" style={{height:sidebarInfo.propertyCollapsed?'100%':'auto'}}>
+                    <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')} style={!IsScroll?{'position':'absolute','top':'49px', 'bottom':0,'right':0,'left':0}:{}}>
+                        <div className="asset-container" style={{height:!IsScroll?'100%':'auto'}}>
 
                             <div className="top">
                                 <Select className="asset-type" data={assetType}
