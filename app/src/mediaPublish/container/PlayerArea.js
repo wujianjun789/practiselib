@@ -535,9 +535,11 @@ console.log('newData:', newData);
             this.props.actions.addNotify(0, this.formatIntl('mediaPublish.area.alert'));
             return false;
         }
+
         const data = item.toJS();
-        const itemType = formatTransformType(data.filepath);
-        const itemData = getAssetData(data);
+        const index = lodash.findIndex(this.systemInitFile, file=>{ return file.baseInfo.type == data.type});
+        const itemType = index>-1?data.type:formatTransformType(data.filepath);
+        const itemData = index>-1?this.systemInitFile[index]:getAssetData(data);
         addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, itemType, itemData, data=>{
             this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
         })
