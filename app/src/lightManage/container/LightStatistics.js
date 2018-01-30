@@ -321,6 +321,7 @@ export default class LightStatistics extends Component {
     if (ref.id == 'energyStatistics') {
       this.barchart = new BarChart({
         wrapper: ref,
+        // wrapper: ref.parentNode,
         data: data,
         type: this.state.type,
       });
@@ -359,10 +360,10 @@ export default class LightStatistics extends Component {
             value={energyList.value} options={energyList.options} onChange={this.energySelect} />
           </div>
           <div className="row panel-body lightenergychart">
-            <div className="col-sm-9">
+            <div className="col-sm-9 col-xs-9">
               <div id="energyStatistics" className="energyChart" ref={ref => { this.renderChart(ref); }}></div>
             </div>
-            <div className="col-sm-3">
+            <div className="col-sm-3 col-xs-3">
               <div className="energyInfo">
                 <div className="fontbold font">域： <span>{`${this.state.domainList.value}`}</span></div>
                 <div className="fontbold font">设备总能耗：<span>{`${this.state.totalEnergy}KWh`}</span></div>
@@ -372,7 +373,7 @@ export default class LightStatistics extends Component {
         </div>
         <div className="state-container">
           <div className="row" id="pieBox" >
-            <div className="col-sm-4">
+            <div className="col-sm-4 col-xs-4">
               <div className=" panel">
                 <div className="panel-heading">设备状态图
                 </div>
@@ -396,7 +397,7 @@ export default class LightStatistics extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-sm-4">
+            <div className="col-sm-4 col-xs-4">
               <div className=" panel">
                 <div className="panel-heading">计划执行状态
                 </div>
@@ -418,7 +419,7 @@ export default class LightStatistics extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-sm-4">
+            <div className="col-sm-4 col-xs-4">
               <div className=" panel">
                 <div className="panel-heading">亮灯率</div>
                 <div className="panel-body statecircle3">
