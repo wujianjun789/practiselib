@@ -153,6 +153,20 @@
       top: 70px;
     }
   }
+  .sidebar-info{
+    &.deviceCollapse .whitelist,&.deviceCollapse .dataOrigin{
+      top: 73px;
+    }
+    &.deviceCollapse .map-position{
+      top:173px;
+    }
+    &.whiteListCollapse .map-position,&.dataOriginCollapse .map-position{
+      top: 173px;        
+    }
+    &.deviceCollapse.whiteListCollapse .map-position,&.deviceCollapse.dataOriginCollapse .map-position{
+      top: 113px;
+    }
+  }
 }
 
 .config-lc,
@@ -170,6 +184,11 @@
       top: 70px;
     }
 
+  }
+  .sidebar-info{
+    &.deviceCollapse .map-position{
+      top:73px;
+    }
   }
 }
 

@@ -88,7 +88,7 @@ class LatlngStrategy extends Component {
     }
 
     requestSearch=() => {
-      getGroupListPlan(data => {
+      getGroupListPlan(1, data => {
         data.map(item => {
           item.plans = getListByKey2(item.plans, 'type', 1);
         });

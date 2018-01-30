@@ -44,7 +44,7 @@ export default class TimeStrategyPopup extends Component {
   componentWillMount() {
     this.mounted = true;
         
-    getGroupList(data => {
+    getGroupList(this.props.type, data => {
       this.setState({groupList:data});
     });
 
@@ -100,8 +100,8 @@ export default class TimeStrategyPopup extends Component {
     
     addGroup=() => {
       const {search} = this.state;
-      addGroup({name:search}, () => {
-        getGroupList(data => {
+      addGroup({name:search, type:this.props.type}, () => {
+        getGroupList(this.props.type, data => {
           this.setState({groupList:data, search:''});
         });
       });

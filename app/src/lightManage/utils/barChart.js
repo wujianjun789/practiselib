@@ -104,7 +104,7 @@ export default function BarChart(data) {
         time = `${month}月`;
         break;
       case '2':
-        time = `${day}`;
+        time = `${day}日`;
         break;
       case '3':
         time = `${hours}时`;
@@ -135,12 +135,13 @@ export default function BarChart(data) {
     });
 
   //在 body 里添加一个 SVG 画布	
-  let svg = parent.append('svg')
-    // .attr('viewBox', '0 0 ' + width + ' ' + height)
-    // .attr('style', 'width:100%')
-    // .attr('preserveAspectRatio', 'xMinYMin slice')
-    .attr('width', width)
+  let svg = parent.append('svg').attr('width', width)
     .attr('height', height)
+    .attr('viewBox', '0 0 ' + width + ' ' + height)
+    .attr('style', 'width:100%')
+    // .attr('preserveAspectRatio', 'xMinYMin slice')
+    // .attr('width', width)
+    // .attr('height', height)
     .append('g')
     .attr('transform', 'translate(10,10)');
 

@@ -6,7 +6,7 @@ import SearchText from '../../components/SearchText';
 import Table from '../../components/Table3';
 import {injectIntl} from 'react-intl';
 import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
-import TimeStrategyPopup from '../component/TimeStrategyPopup';
+import StrategyPopup from '../component/StrategyPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import TimeGroupPopup from '../component/TimeGroupPopup';
 import AddGatewayPopup from '../component/AddGatewayPopup';
@@ -81,7 +81,7 @@ class LatlngStrategy extends Component {
     }
 
     requestSearch=() => {
-      getGroupListPlan(data => {
+      getGroupListPlan(1, data => {
         data.map(item => {
           item.plans = getListByKey2(item.plans, 'type', 1);
         });
@@ -239,7 +239,7 @@ class LatlngStrategy extends Component {
 
     addHandler=() => {
       const {actions} = this.props;
-      actions.overlayerShow(<TimeStrategyPopup intl={this.props.intl} title={this.formatIntl('app.add.strategy')} 
+      actions.overlayerShow(<StrategyPopup intl={this.props.intl} title={this.formatIntl('app.add.strategy')} type="1"
         onConfirm={(data) => {
           data.type = 1;
           addStrategy(data, () => {
@@ -269,7 +269,7 @@ class LatlngStrategy extends Component {
         return;
       }
         
-      actions.overlayerShow(<TimeStrategyPopup isEdit intl={this.props.intl} title="修改策略" data={row.toJS()}
+      actions.overlayerShow(<StrategyPopup isEdit intl={this.props.intl} title="修改策略" data={row.toJS()} type="1"
         onConfirm={(data) => {
           data.id = row.get('id');
           data.type = 1;
