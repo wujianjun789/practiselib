@@ -23,6 +23,8 @@ export default function PieChart(data) {
   var svg = parent.append('svg')
     .attr('width', width)
     .attr('height', height)
+    .attr('viewBox', '0 0 ' + width + ' ' + height)
+    .attr('style', 'width:100%')
     .append('g')
     .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 

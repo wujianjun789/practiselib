@@ -111,16 +111,16 @@ export default class LightStatistics extends Component {
 
   componentDidMount() {
 
-    let resiseWaiter = false;
-    window.onresize = function() {
-      if (!resiseWaiter) {
-        resiseWaiter = true;
-        setTimeout(function() {
-          window.location.reload();
-          resiseWaiter = false;
-        });
-      }
-    };
+    // let resiseWaiter = false;
+    // window.onresize = function() {
+    //   if (!resiseWaiter) {
+    //     resiseWaiter = true;
+    //     setTimeout(function() {
+    //       window.location.reload();
+    //       resiseWaiter = false;
+    //     }, 1500);
+    //   }
+    // };
     
   }
 
