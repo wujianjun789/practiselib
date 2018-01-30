@@ -430,6 +430,7 @@ export default {
         'mediaPublish.specifyDate':'指定日期',
         'mediaPublish.specifyTime':'指定时间',
 
+        'mediaPublish.area.alert':'请选择区域',
 
         //以前的
         'app.link.index': '首页',

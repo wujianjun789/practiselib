@@ -53,6 +53,41 @@ export function arrayTranformWeek(array) {
     return week;
 }
 
+export function addTreeNode(id) {
+    let type = "plan";
+    let proType = "playerPlan";
+    let name = "";
+    switch (id) {
+        case "general":
+            type = "plan";
+            proType = "playerPlan";
+            name = '播放计划新建';
+            break;
+        case "cycle":
+            type = "plan2";
+            proType = "cyclePlan";
+            name = '周期插播计划'
+            break;
+        case "regular":
+            type = "plan3";
+            proType = "timingPlan";
+            name = '定时插播计划';
+            break;
+    }
+
+    const node = {
+        "id": "plan&&" + parseInt(Math.random() * 999),
+        "type": type,
+        "name": name,
+        "toggled": false,
+        "active": true,
+        "level": 1,
+        "children": []
+    }
+
+    return {proType: proType, node:node};
+}
+
 export function updateTree(treeList, node, parentNode, parentParentNode) {
     // treeList = clearState(treeList);
     if(!parentNode){
@@ -181,6 +216,47 @@ function clearState(treeList) {
 
         return node;
     })
+}
+
+export function parsePlanData(data) {
+    return {
+        name: data.name,
+        type: 0,
+        dateRange: {
+            dateBegin: {
+                year: data.startDate.format('YYYY'),
+                month: data.startDate.format('MM'),
+                day: data.startDate.format('DD'),
+            },
+            dateEnd: {
+                year: data.endDate.format('YYYY'),
+                month: data.endDate.format('MM'),
+                day: data.endDate.format('DD'),
+            },
+            enableFlag: true
+        },
+        week: data.week,
+        timeRange: {
+            timeBegin: {
+                hour: data.startDate.format('HH'),
+                minute: data.startDate.format('mm'),
+                second: data.startDate.format('ss'),
+                milliseconds: data.startDate.format('SS'),
+            },
+            timeEnd: {
+                hour: data.endDate.format('HH'),
+                minute: data.endDate.format('mm'),
+                second: data.endDate.format('ss'),
+                milliseconds: data.endDate.format('SS'),
+            },
+            enableFlag: true
+        },
+        pause: true,
+        interval: 0,
+        playMode: 0,
+        playDuration: 0,
+        playTimes: 0
+    }
 }
 
 const imagesType = ['.jpg','.jpeg','.png'];

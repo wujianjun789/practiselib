@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import {findDOMNode} from 'react-dom';
 
 import '../../../public/styles/mediaPublish-playList.less';
 
@@ -31,9 +32,6 @@ import VirtualClock from '../component/VirtualClock';
 import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
-import PlayerScenePopup from '../component/PlayerScenePopup';
-import PlayerPlanPopup from '../component/PlayerPlanPopup';
-import PlayerAreaPopup from '../component/PlayerAreaPopup';
 
 import PreviewFile from '../component/previewFile';
 import UploadNotify from '../component/uploadNotify';
@@ -51,7 +49,8 @@ import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
-import { updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType, getAssetData } from '../util/index'
+import { addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
+    getAssetData,parsePlanData } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,updateItemOrders,
@@ -176,6 +175,8 @@ export class PlayerArea extends Component {
             assetStyle: { "height": "309px", "position":"relative" },
             controlStyle: { "left": "auto", "right": "auto" },
             libStyle: {},
+            pageStyle: {},
+            scrollHeight: 0,
             //拖拽
             mouseXY: [0, 0],
             mouseCircleDelta: [0, 0],
@@ -225,6 +226,33 @@ export class PlayerArea extends Component {
         // window.addEventListener("mouseup", this.handleMouseUp, true);
     }
 
+    componentDidUpdate(){
+        let pageStyle = {};
+        const sidebarInfoDom = findDOMNode(this.refs.sidebarInfo);
+        if(sidebarInfoDom && sidebarInfoDom.scrollHeight !== this.state.scrollHeight){
+            pageStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight?{}:{position: 'absolute'};
+            this.setState({scrollHeight: sidebarInfoDom.scrollHeight, pageStyle: pageStyle});
+        }
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+        this.props.actions.removeAllNotify();
+        window.onresize = event => {
+
+        }
+
+        const list = this.state.uploadFileList;
+        list.map((item) => {
+            if (item !== undefined) {
+                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
+                item.xhr.removeEventListener('load', this.uploadComplete);
+                item.xhr.removeEventListener('error', this.uploadFailed);
+                item.xhr.removeEventListener('abort', this.uploadCanceled);
+            }
+        })
+    }
+
     formatIntl=(formatId)=>{
         const {intl} = this.props;
         return intl?intl.formatMessage({id:formatId}):null;
@@ -253,24 +281,6 @@ export class PlayerArea extends Component {
         this.setState({ isPressed: false, mouseCircleDelta: [0, 0] });
     }
 
-    componentWillUnmount() {
-        this.mounted = false;
-        this.props.actions.removeAllNotify();
-        window.onresize = event => {
-
-        }
-
-        const list = this.state.uploadFileList;
-        list.map((item) => {
-            if (item !== undefined) {
-                item.xhr.upload.removeEventListener('progress', this.uploadProgress)
-                item.xhr.removeEventListener('load', this.uploadComplete);
-                item.xhr.removeEventListener('error', this.uploadFailed);
-                item.xhr.removeEventListener('abort', this.uploadCanceled);
-            }
-        })
-    }
-
     setSize = ()=> {
         let width = window.innerWidth;
         let height = window.innerHeight;
@@ -282,7 +292,7 @@ export class PlayerArea extends Component {
             cleft = "535px";
         }
 
-        this.setState({ controlStyle: { "left": cleft, "right": cright } });
+        this.setState({ controlStyle: { "left": cleft, "right": cright }});
     }
 
     requestAssetList = ()=>{
@@ -381,6 +391,10 @@ console.log('newData:', newData);
             return Object.assign({}, item, {assetType:'source'});
         })
         this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS(newData))});
+    }
+
+    initItemList = ()=>{
+        this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS([]))});
     }
 
     updatePlayerTree = ()=> {
@@ -500,8 +514,11 @@ console.log('newData:', newData);
 
 
     addClick = (item)=> {
-        console.log('addClick:', item.toJS());
         const {project, parentParentNode, parentNode, curNode} = this.state;
+        if(!curNode || curNode.type !== "playerArea"){
+            this.props.actions.addNotify(0, this.formatIntl('mediaPublish.area.alert'));
+            return false;
+        }
         const data = item.toJS();
         const itemType = formatTransformType(data.filepath);
         const itemData = getAssetData(data);
@@ -614,7 +631,9 @@ console.log('newData:', newData);
                 }
             }
         } else if (id == "edit") {
-            this.setState({ isAddClick: false });
+            this.setState({ isAddClick: false }, ()=>{
+                this.initItemList();
+            });
         } else if (id == "remove") {
             let tips = "是否删除选中场景与场景中所有内容";
             switch (this.state.curType) {
@@ -639,81 +658,15 @@ console.log('newData:', newData);
         } else {
             clearTreeListState(this.state.playerData);
             this.setState({ isAddClick: false }, () => {
-                let type = "plan";
-                let proType = "playerPlan";
-                let name = "";
-                switch (id) {
-                    case "general":
-                        type = "plan";
-                        proType = "playerPlan";
-                        name = '播放计划新建';
-                        break;
-                    case "cycle":
-                        type = "plan2";
-                        proType = "cyclePlan";
-                        name = '周期插播计划'
-                        break;
-                    case "regular":
-                        type = "plan3";
-                        proType = "timingPlan";
-                        name = '定时插播计划';
-                        break;
-                }
 
-                const node = {
-                    "id": "plan&&" + parseInt(Math.random() * 999),
-                    "type": type,
-                    "name": name,
-                    "toggled": false,
-                    "active": true,
-                    "level": 1,
-                    "children": []
-                }
-
+                addTreeNode(id);
                 this.setState({ curType: proType, curNode: node }, () => this.updateTreeData(node));
             })
         }
     }
 
     addUpdatePlan = (data)=>{
-        let planData = {
-            name: data.name,
-            type: 0,
-            dateRange: {
-                dateBegin: {
-                    year: data.startDate.format('YYYY'),
-                    month: data.startDate.format('MM'),
-                    day: data.startDate.format('DD'),
-                },
-                dateEnd: {
-                    year: data.endDate.format('YYYY'),
-                    month: data.endDate.format('MM'),
-                    day: data.endDate.format('DD'),
-                },
-                enableFlag: true
-            },
-            week: data.week,
-            timeRange: {
-                timeBegin: {
-                    hour: data.startDate.format('HH'),
-                    minute: data.startDate.format('mm'),
-                    second: data.startDate.format('ss'),
-                    milliseconds: data.startDate.format('SS'),
-                },
-                timeEnd: {
-                    hour: data.endDate.format('HH'),
-                    minute: data.endDate.format('mm'),
-                    second: data.endDate.format('ss'),
-                    milliseconds: data.endDate.format('SS'),
-                },
-                enableFlag: true
-            },
-            pause: true,
-            interval: 0,
-            playMode: 0,
-            playDuration: 0,
-            playTimes: 0
-        }
+        let planData = parsePlanData(data);
         if(data.id){
             planData = Object.assign({}, planData, {id: data.id});
             updateProgramById(this.state.project.id, planData, (response)=>{
@@ -1074,6 +1027,12 @@ console.log('newData:', newData);
         const {project, playerData} = this.state;
         let parentNode = getTreeParentNode(playerData, node);
         let parentParentNode = getTreeParentNode(playerData, parentNode);
+        if(node.type === this.state.curNode.type && node.id === this.state.curNode.id
+            ||  parentNode.type === this.state.parentNode.type && parentNode.id === this.state.parentNode.id
+            ||  parentParentNode.type === this.state.parentParentNode.type  &&  parentParentNode.id === this.state.parentParentNode.id){
+            this.initItemList();
+        }
+
         switch (node.type) {
             case "scene":
                 removeSceneById(project.id, parentNode.id, node.id, ()=>{
@@ -1184,10 +1143,13 @@ console.log('newData:', newData);
         const parentNode = getTreeParentNode(this.state.playerData, node);
         const parentParentNode = getTreeParentNode(this.state.playerData, parentNode);
 
+        this.initItemList();
+
         this.setState({ parentParentNode: parentParentNode, parentNode:parentNode, curNode: node, curType: type, isClick: false },()=>{
             if(typeof node.id == 'string' && (node.id.indexOf("plan&&") > -1 || node.id.indexOf("scene&&") > -1)){
                 return;
             }
+
 
             switch(type){
                 case "playerPlan":
@@ -1206,14 +1168,20 @@ console.log('newData:', newData);
     }
 
     sidebarClick = (id)=> {
-        const libStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
-        const assetStyle = id == 'propertyCollapsed' && !this.state.sidebarInfo[id] ? {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}:{'height':'309px'}
-        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: !this.state.sidebarInfo[id] }), libStyle:libStyle, assetStyle:assetStyle});
+        const {sidebarInfo} = this.state;
+        const state = !sidebarInfo[id];
+        if(id == 'propertyCollapsed'){
+            this.state.sidebarInfo['propertyCollapsed'] = state;
+        }
+
+        const libStyle = sidebarInfo['propertyCollapsed']? {'position':'absolute', 'top':'79px', 'bottom':'0px'} : {};
+        const assetStyle = sidebarInfo['propertyCollapsed'] ? {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}:{'height':'309px'}
+        this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state }), libStyle:libStyle, assetStyle:assetStyle});
     }
 
     render() {
         const {
-            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,
+            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, assetStyle, controlStyle,libStyle,pageStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
         const {router} = this.props;
@@ -1288,8 +1256,7 @@ console.log('newData:', newData);
                     </div>
                 </div>
             </Content>
-
-            <div className={"right sidebar-info "}>
+            <div ref="sidebarInfo" className={"right sidebar-info "}>
                 <div className="row collapse-container" onClick={() => this.sidebarClick('collapsed')}>
                     <span className={sidebarInfo.collapsed ? "icon_horizontal" : "icon_vertical"}></span>
                 </div>
@@ -1318,7 +1285,7 @@ console.log('newData:', newData);
                     <div className="panel-heading lib-title" onClick={() => { !sidebarInfo.collapsed && this.sidebarClick('assetLibCollapsed') }}>
                         <span className={sidebarInfo.collapsed ? "icon_file" : "glyphicon " + (sidebarInfo.assetLibCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span><FormattedMessage id='mediaPublish.materialLib'/>
                     </div>
-                    <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')} style={sidebarInfo.propertyCollapsed?{'position':'absolute','top':'49px', 'bottom':0}:{}}>
+                    <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')} style={sidebarInfo.propertyCollapsed?{'position':'absolute','top':'49px', 'bottom':0,'right':0,'left':0}:{}}>
                         <div className="asset-container" style={{height:sidebarInfo.propertyCollapsed?'100%':'auto'}}>
 
                             <div className="top">
@@ -1355,7 +1322,7 @@ console.log('newData:', newData);
                                                 [x, y] = [0, 0];
                                             }
 
-                                            return <li key={id} className={index > 0 && index % 4 == 0 ? "margin-right" : ""}
+                                            return <li key={id} className={index > 0 && (index+1) % 5 == 0 ? "margin-right" : ""}
                                                 style={{ transform: `translate(${x}px,${y}px)`, zIndex: id == lastPress ? 99 : 0 }}
                                                 onClick={() => this.assetSelect(item)}>
                                                 {/*onMouseDown={event=>{this.handleMouseDown(item, [x, y],{pageX:event.pageX, pageY:event.pageY})}}*/}
@@ -1368,7 +1335,7 @@ console.log('newData:', newData);
                                         })
                                     }
                                 </ul>
-                                <div className="page-container">
+                                <div className="page-container" style={pageStyle}>
                                     <Page className={"page " + (page.get('total') == 0 ? "hidden" : "")} showSizeChanger
                                         pageSize={page.get('pageSize')}
                                         current={page.get('current')} total={page.get('total')}
@@ -1378,9 +1345,9 @@ console.log('newData:', newData);
                         </div>
                     </div>
                 </div>
-                <NotifyPopup />
-                <Overlayer />
             </div >
+            <NotifyPopup />
+            <Overlayer />
             <UploadNotify showUploadNotify={this.state.showUploadNotify} hideUploadNotify={this.hideUploadNotify} showUploadFile={this.showUploadFile} />
             {this.state.showUploadFile ? <UploadFile showUploadFile={this.state.showUploadFile} hideUploadFile={this.hideUploadFile} uploadFileList={this.state.uploadFileList} cancelUploadFile={this.cancelUploadFile} /> : null}
         </div>

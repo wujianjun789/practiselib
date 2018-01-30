@@ -435,6 +435,8 @@ export default {
         'mediaPublish.specifyDate':'specify date',
         'mediaPublish.specifyTime':'specify time',
 
+        'mediaPublish.area.alert':'Please select area',
+
         //last
         'app.link.index': 'home',
         'app.link.config': 'config',
