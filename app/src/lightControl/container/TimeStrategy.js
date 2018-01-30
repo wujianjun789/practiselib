@@ -84,7 +84,7 @@ class TimeStrategy extends Component {
     }
 
     requestSearch=() => {
-      getGroupListPlan(data => {
+      getGroupListPlan(0, data => {
         data.map(item => {
           item.plans = getListByKey2(item.plans, 'type', 0);
         });
