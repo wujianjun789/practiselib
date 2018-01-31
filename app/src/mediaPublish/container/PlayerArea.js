@@ -429,17 +429,27 @@ console.log('newData:', newData);
         })
         this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS(newData))}, ()=>{
             this.state.playerListAsset.get('list').map(item=>{
-                !IsSystemFile(item.get('type')) && this.requestAssetNameById(item.toJS());
+                const itemObject  = item.toJS();
+                if(IsSystemFile(item.get('type'))){
+                    const name = lodash.find(this.systemFile, file=>{return file.id === itemObject.materialId}).name;
+                    this.updateItemName(itemObject, name);
+                }else{
+                    this.requestAssetNameById(itemObject);
+                }
             })
         });
     }
 
     requestAssetNameById = (item)=>{
-        const {playerListAsset} = this.state;
-        const index = getIndexByKey(this.state.playerListAsset, 'id', item.id);
         getAssetById(item.materialId, response=>{
-            this.setState({playerListAsset: playerListAsset.updateIn(['list', index], v=>Immutable.fromJS(Object.assign({}, playerListAsset.getIn(['list', index]).toJS(), {name: response.name})))})
+            this.updateItemName(item, response.name)
         })
+    }
+
+    updateItemName = (item, name)=>{
+        const {playerListAsset} = this.state;
+        const index = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.id);
+        this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', index], v=>Immutable.fromJS(Object.assign({}, playerListAsset.getIn(['list', index]).toJS(), {name: name})))})
     }
 
     initItemList = ()=>{
@@ -1247,7 +1257,7 @@ console.log('newData:', newData);
                 add_title = ` (${this.formatIntl('mediaPublish.timingPlayPlan')})`;
                 break;
         }
-console.log('curType:', curType);
+console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list').toJS());
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
             <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
@@ -1326,9 +1336,9 @@ console.log('curType:', curType);
                         {curType == 'playerArea' && <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>}
                         {curType == 'cyclePlan' && <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                                                         applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
-                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                                                             applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
                         {curType == 'playerText' && <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
                                                                 applyClick={data=>{this.applyClick('playerText', data)}}/>}
