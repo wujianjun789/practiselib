@@ -90,6 +90,9 @@ export default {
     'button.add.gateway':'Add gateway',
     'button.start': 'Start',
     'button.pause': 'Pause',
+    'button.ignore':'Ignore',
+    'button.solve':'Solve',
+    'button.to.fault':'To fault',
 
     //用户中心
     'update.password':'Update password',
@@ -233,6 +236,19 @@ export default {
     'app.strategy.select.devices':'Select devices',
     'app.strategy.identifying':'Identifying',
     'app.time.difference': 'Time difference',
+
+    //故障管理
+    'sysOperation.fault.manage':'Fault management', 
+    'sysOperation.alarm.type':'Alarm type',
+    'sysOperation.alarm.device.model':'Device model',
+    'sysOperation.alarm.level':'Alarm level',
+    'sysOperation.alarm.threshold':'Threshold',
+    'sysOperation.alarm.test.value':'Test value',
+    'sysOperation.alarm.time':'Alarm time',
+    'sysOperation.alarm.status':'Alarm status',
+    'sysOperation.alarm.person':'Handle person',
+    'sysOperation.alarm.handle.time':'Handle time',
+    'sysOperation.alarm.statistical.info':'Alarm statistical info',
 
     //智慧路灯
     'app.search.placeholder.name': 'Search name or domain',

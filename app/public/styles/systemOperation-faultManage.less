@@ -1,0 +1,79 @@
+@import url(./sideBarInfo.less);
+
+.systemOperation-faultManagement{
+  .content {
+    min-width: 1217px;
+    .heading{
+      height: 70px;
+      background: #fff;
+
+      .select {
+        width: 120px;
+        height: 30px;
+        margin-left: 20px;
+      }
+
+      .datePicker{
+        margin-left: 20px;
+        .ant-calendar-picker input {
+            height: 30px;
+            padding: 6px;
+            font-size: 14px;
+            color: #4d4d4d;
+        }
+        >span{
+            margin-right:8px;
+        }
+      }
+      .button-group{
+        margin-left: auto;
+        button{
+            height: 30px;
+            padding: 4px 12px;
+            border: 0;
+            color: #fff;
+            margin-right: 20px;
+          }
+      }
+    }
+
+    .table-container{
+      transition: margin-right .3s;
+      margin: 20px 320px 20px 20px;
+      padding: 20px;
+      background: #fff;
+      border: solid 1px #e6e6e6;
+
+      .table{
+        min-width: 520px;
+      }
+
+      .page{
+        text-align:center;
+      }
+      .page li{
+        display:inline-block;
+      }
+    }
+
+    &.collapsed {
+        .table-container{
+            margin-right: 80px;
+        }
+    }
+    
+    .sidebar-info{
+        .statistical-info{
+            >.panel-body{
+                height: 160px;
+            }
+        }
+        .map-position{
+            top: 233px;
+        }
+        &.infoCollapse .map-position{
+            top:73px;
+        }
+    }
+  }
+}

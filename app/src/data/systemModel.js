@@ -148,6 +148,29 @@ export const TreeData = [
         'link': '/systemOperation/deviceMaintenance/deviceUpdate',
       },
     ],
+  }, {
+    'id': 'faultManagement',
+    'name': 'sysOperation.fault.manage',
+    'toggled': false,
+    'active': true,
+    'link': '/systemOperation/faultManagement/alarm',
+    'level': 1,
+    'children': [
+      {
+        'id': 'alarm',
+        'name': '告警',
+        'class': 'icon_update',
+        'active': false,
+        'link': '/systemOperation/faultManagement/alarm',
+      },
+      {
+        'id': 'fault',
+        'name': '故障',
+        'class': 'icon_upgrade',
+        'active': false,
+        'link': '/systemOperation/faultManagement/fault',
+      },
+    ],
   },
 ];
 
