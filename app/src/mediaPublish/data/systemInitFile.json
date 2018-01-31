@@ -391,7 +391,7 @@
       "logFlag": 0,
       "materialId": "string"
     },
-    "texts": [
+    "textsList": [
       {
         "baseInfo": {
           "type": 0,
