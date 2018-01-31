@@ -1282,10 +1282,14 @@ console.log('curType:', curType);
                         {curType == 'playerArea' && <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>}
                         {curType == 'cyclePlan' && <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}/>}
-                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}/>}
-                        {curType == 'playerText' && <PlayerText projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType === 'digitalClock' && <DigitalClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                                                                        applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
+                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                                                                            applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
+                        {curType == 'playerText' && <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                                                                applyClick={data=>{this.applyClick('playerText', data)}}/>}
+                        {curType === 'digitalClock' && <DigitalClock projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                                                                     applyClick={data=>{this.applyClick('digitalClock', data)}}/>}
                         {curType === 'virtualClock' && <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                         {curType === 'playerTimeAsset' && <PlayerTimeAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                     </div>
