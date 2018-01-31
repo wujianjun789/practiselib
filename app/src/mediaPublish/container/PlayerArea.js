@@ -61,6 +61,7 @@ import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 import lodash from 'lodash';
 
 import systemFile from '../data/systemFile.json';
+import systemInitFile from '../data/systemInitFile.json';
 export class PlayerArea extends Component {
     constructor(props) {
         super(props);
@@ -192,7 +193,7 @@ export class PlayerArea extends Component {
         }
 
         this.systemFile = [];
-        this.systemInitFile = [];
+        this.systemInitFile = systemInitFile;
         this.typeList = [{ id: 'playerPlan', name: '播放计划' }, { id: 'playerScene', name: '场景' }, { id: 'playerArea', name: "区域" }];
 
         this.showModal = this.showModal.bind(this);
@@ -232,19 +233,11 @@ export class PlayerArea extends Component {
     componentDidMount() {
         // window.addEventListener("mousemove", this.handleMouseMove, true);
         // window.addEventListener("mouseup", this.handleMouseUp, true);
+        this.updateSidebarInfoStyle();
     }
 
     componentDidUpdate(){
-        const sidebarInfoDom = findDOMNode(this.refs.sidebarInfo);
-        const assetPropertyDom = findDOMNode(this.refs.assetProperty);
-        if(sidebarInfoDom && sidebarInfoDom.scrollHeight !== this.state.scrollHeight || assetPropertyDom && assetPropertyDom.offsetHeight !== this.state.assetProperHeight){
-            const pageStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight?{}:{position: 'absolute'};
-            const libStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight? {} : {'position':'absolute', 'top':assetPropertyDom.offsetHeight+30+'px', 'bottom':'0px'};
-            const assetStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight ? {'height':'309px'} : {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}
-
-            this.setState({IsScroll: sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight, scrollHeight: sidebarInfoDom.scrollHeight, assetProperHeight: assetPropertyDom.offsetHeight,
-                libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle});
-        }
+        this.updateSidebarInfoStyle();
     }
 
     componentWillUnmount() {
@@ -269,6 +262,19 @@ export class PlayerArea extends Component {
         const {intl} = this.props;
         return intl?intl.formatMessage({id:formatId}):null;
         // return formatId;
+    }
+
+    updateSidebarInfoStyle = ()=>{
+        const sidebarInfoDom = findDOMNode(this.refs.sidebarInfo);
+        const assetPropertyDom = findDOMNode(this.refs.assetProperty);
+        if(sidebarInfoDom && sidebarInfoDom.scrollHeight !== this.state.scrollHeight || assetPropertyDom && assetPropertyDom.offsetHeight !== this.state.assetProperHeight){
+            const pageStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight?{}:{position: 'absolute'};
+            const libStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight? {} : {'position':'absolute', 'top':assetPropertyDom.offsetHeight+30+'px', 'bottom':'0px'};
+            const assetStyle = sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight ? {'height':'309px'} : {'position':'absolute','top':'61px','right':'20px','bottom':0,'left':'20px'}
+
+            this.setState({IsScroll: sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight, scrollHeight: sidebarInfoDom.scrollHeight, assetProperHeight: assetPropertyDom.offsetHeight,
+                libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle});
+        }
     }
 
     handleMouseMove = ({ pageX, pageY })=> {
@@ -537,6 +543,7 @@ console.log('newData:', newData);
         }
 
         const data = item.toJS();
+        console.log('addClick:', data);
         const index = lodash.findIndex(this.systemInitFile, file=>{ return file.baseInfo.type == data.type});
         const itemType = index>-1?data.type:formatTransformType(data.filepath);
         const itemData = index>-1?this.systemInitFile[index]:getAssetData(data);
