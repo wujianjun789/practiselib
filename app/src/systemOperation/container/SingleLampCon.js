@@ -7,7 +7,6 @@ import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select.1';
-import WhiteListPopup from '../components/WhiteListPopup';
 import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Immutable from 'immutable';
