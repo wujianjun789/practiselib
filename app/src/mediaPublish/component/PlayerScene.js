@@ -74,11 +74,11 @@ class PlayerScene extends PureComponent{
         // this.state.property.playMode.defaultIndex = this.state.property.playMode.index = modeIndex;
         // this.state.property.playMode.name = modeList[modeIndex].name;
         this.updatePlayMode(modeIndex);
-        this.state.property.playModeCount.defaultValue = this.state.property.playModeCount.value = data.playDuration;
-        this.state.property.playModeCount.defaultValue2 = this.state.property.playModeCount.value2 = data.playTimes;
+        this.state.property.playModeCount.defaultValue = this.state.property.playModeCount.value = data.playTimes;
+        this.state.property.playModeCount.defaultValue2 = this.state.property.playModeCount.value2 = data.playDuration;
 
         this.setState({id: data.id, property: Object.assign({}, this.state.property),
-            prompt: {sceneName: data.name?false:true,  playModeCount: (modeIndex==0 && data.count || modeIndex==1 && data.time)?false:true,}})
+            prompt: {sceneName: data.name?false:true,  playModeCount: (modeIndex==0 && numbersValid(data.playTimes) || modeIndex==1 && numbersValid(data.playDuration))?false:true,}})
     }
 
     updatePlayMode(playMode){
@@ -106,8 +106,8 @@ class PlayerScene extends PureComponent{
                     name: property.sceneName.value,
                     type: 0,
                     playMode: property.playMode.list[property.playMode.index].type,
-                    playDuration: property.playModeCount.value,
-                    playTimes: property.playModeCount.value2
+                    playDuration: parseInt(property.playModeCount.value2),
+                    playTimes: parseInt(property.playModeCount.value)
                 };
 
                 if(sceneId && (typeof sceneId == 'number' || sceneId.indexOf("scene&&") < 0)){
@@ -183,9 +183,9 @@ class PlayerScene extends PureComponent{
             }
             let valueKey = {}
             if(id == "playModeCount" && this.state.property.playMode.index == 1){
-                valueKey = {value2: val};
+                valueKey = {value2: parseInt(val)};
             }else{
-                valueKey = {value: val};
+                valueKey = {value: parseInt(val)};
             }
             this.setState({
                 property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], valueKey) }),

@@ -82,17 +82,15 @@ class PlayerPlan extends PureComponent{
     }
 
     initProperty(data){
-        console.log('data:', data);
-        let dateBegin = data.dateRange.dateBegin;
-        let dateEnd = data.dateRange.dateEnd;
-        let timeBegin = data.timeRange.timeBegin;
-        let timeEnd = data.timeRange.timeEnd;
-        let week = weekTranformArray(data.week);
+        const {dateBegin, dateEnd} = data.dateRange;
+        const {timeBegin, timeEnd} = data.timeRange;
+
+        const week = weekTranformArray(data.week);
         this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
         this.state.property.startDate.defaultValue = this.state.property.startDate.value = moment(dateBegin.year+'-'+dateBegin.month+'-'+dateBegin.day);
         this.state.property.endDate.defaultValue = this.state.property.endDate.value = moment(dateEnd.year+'-'+dateEnd.month+'-'+dateEnd.day);
-        this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(timeBegin.hour+':'+timeBegin.minute+':'+timeBegin.second+':'+timeBegin.milliseconds);
-        this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(timeEnd.hour+':'+timeEnd.minute+':'+timeEnd.second+':'+timeEnd.milliseconds);;
+        this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(dateBegin.year+'-'+dateBegin.month+'-'+dateBegin.day+' '+timeBegin.hour+':'+timeBegin.minute+':'+timeBegin.second+':'+timeBegin.milliseconds);
+        this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(dateEnd.year+'-'+dateEnd.month+'-'+dateEnd.day+' '+timeEnd.hour+':'+timeEnd.minute+':'+timeEnd.second+':'+timeEnd.milliseconds);;
         this.state.property.week.defaultValue = this.state.property.week.value = week;
 
         this.setState({id:data.id, property: Object.assign({}, this.state.property),

@@ -27,8 +27,8 @@ export default class Lc extends Component {
         currentDomain: null,
         currentDeviceId: null,
         modeList: [
-            // { name: '按设备' },
-            { name: '按域' }
+            { name: '按域' },
+            { name: '按设备' },
         ],
         domainList: [
             { name: '选择域' }
@@ -136,10 +136,10 @@ export default class Lc extends Component {
         if (id === 'mode') {
             switch (selectedIndex) {
                 case 0:
-                    this.setState({ currentMode: 'device' });
+                    this.setState({ currentMode: 'domain' });
                     break;
                 case 1:
-                    this.setState({ currentMode: 'domain' });
+                    this.setState({ currentMode: 'device' });
                     break;
             }
         }

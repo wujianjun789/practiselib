@@ -108,11 +108,13 @@ class PlayerAreaPro extends PureComponent {
         const playEndIndex = lodash.findIndex(playEndList, item=> {
             return item.type = data.lastFrame;
         })
+
+        const {x, y, w, h} = data.position;
         this.state.property.areaName.defaultValue = this.state.property.areaName.value = data.name;
-        this.state.property.width.defaultValue = this.state.property.width.value = data.width?data.width:0;
-        this.state.property.height.defaultValue = this.state.property.height.value = data.height?data.height:0;
-        this.state.property.axisX_a.defaultValue = this.state.property.axisX_a.value = data.axisX?data.axisX:0;
-        this.state.property.axisY_a.defaultValue = this.state.property.axisY_a.value = data.axisY?data.axisY:0;
+        this.state.property.width.defaultValue = this.state.property.width.value = w ? w : 0;
+        this.state.property.height.defaultValue = this.state.property.height.value = h ? h : 0;
+        this.state.property.axisX_a.defaultValue = this.state.property.axisX_a.value = x ? x : 0;
+        this.state.property.axisY_a.defaultValue = this.state.property.axisY_a.value = y ? y : 0;
 
         this.updatePlayEnd(playEndIndex);
         this.setState({
@@ -120,10 +122,10 @@ class PlayerAreaPro extends PureComponent {
             property: Object.assign({}, this.state.property),
             prompt: {
                 areaName: data.name ? false : true,
-                width: data.width ? false : true,
-                height: data.height ? false : true,
-                axisX_a: data.axisX ? false : true,
-                axisY_a: data.axisY ? false : true
+                width: numbersValid(w) ? false : true,
+                height: numbersValid(h) ? false : true,
+                axisX_a: numbersValid(x) ? false : true,
+                axisY_a: numbersValid(y) ? false : true
             }
         });
     }
@@ -146,10 +148,10 @@ class PlayerAreaPro extends PureComponent {
             name: property.areaName.value,
             userDefine: '',
             position: {
-                x: property.axisX_a.value,
-                y: property.axisY_a.value,
-                w: property.width.value,
-                h: property.height.value
+                x: parseInt(property.axisX_a.value),
+                y: parseInt(property.axisY_a.value),
+                w: parseInt(property.width.value),
+                h: parseInt(property.height.value)
             },
             lastFrame: property.playEnd.list[property.playEnd.index].type
         };
@@ -214,6 +216,7 @@ class PlayerAreaPro extends PureComponent {
                 prompt = true;
             }
         } else {
+            console.log('playerAreaPro：');
             if (!numbersValid(val)) {
                 prompt = true;
             }
