@@ -258,7 +258,7 @@ export function parsePlanData(data) {
     }
 }
 
-const imagesType = ['.jpg','.jpeg','.png'];
+const imagesType = ['jpg','jpeg','png'];
 const textType = ['txt'];
 const videoType = ['video'];
 export function formatTransformType(filepath) {
@@ -368,8 +368,7 @@ function getImageData(data) {
         "inTransition": {
             "transition": 0,
             "speed": 0
-        },
-        "id": 0
+        }
     }
 }
 
@@ -438,4 +437,12 @@ export function tranformAssetType(type) {
         default:
             return "";
     }
+}
+
+export function IsSystemFile(type){
+    if(type == 0 || type == 1 || type == 9 || type == 10 || type == 11){
+        return true;
+    }
+
+    return false;
 }

@@ -5,7 +5,7 @@
     "file": "倒计时",
     "playDuration": 0,
     "logFlag": 0,
-    "materialId": "string"
+    "materialId": "countDown"
   },
   "type": 0,
   "background": {
@@ -150,7 +150,7 @@
     "file": "数字时钟",
     "playDuration": 0,
     "logFlag": 0,
-    "materialId": "string"
+    "materialId": "digitalClock"
   },
   "background": {
     "transparent": 0,
@@ -389,7 +389,7 @@
       "file": "格式文本",
       "playDuration": 0,
       "logFlag": 0,
-      "materialId": "string"
+      "materialId": "formatText"
     },
     "textsList": [
       {
@@ -462,7 +462,7 @@
       "file": "简单文本",
       "playDuration": 0,
       "logFlag": 0,
-      "materialId": "string"
+      "materialId": "simpleText"
     },
     "text": "string",
     "background": {
@@ -514,7 +514,7 @@
       "file": "虚拟时钟",
       "playDuration": 0,
       "logFlag": 0,
-      "materialId": "string"
+      "materialId": "virtualClock"
     },
     "background": {
       "transparent": 0,

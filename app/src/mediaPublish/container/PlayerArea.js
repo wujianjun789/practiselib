@@ -50,11 +50,11 @@ import Immutable from 'immutable';
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import { addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
-    getAssetData,parsePlanData, tranformAssetType } from '../util/index'
+    getAssetData,parsePlanData, tranformAssetType, IsSystemFile } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,updateItemOrders,
-    removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetList, addAsset, removeAssetById} from '../../api/mediaPublish';
+    removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetList, addAsset, getAssetById, removeAssetById} from '../../api/mediaPublish';
 
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
@@ -314,22 +314,38 @@ export class PlayerArea extends Component {
     }
 
     requestAssetList = ()=>{
-        getAssetList(data=>{this.mounted && this.updatePageTotal(data)});
+        const { assetType, assetSort, assetSearch } = this.state;
+        const type = assetType.get('index');
+        const aType = assetSort.getIn(['list', assetSort.get('index'), 'type']);
+        const name = assetSearch.get('value');
+        if(type === 0){
+            this.updatePageTotal(this.systemFile)
+        }else{
+            getAssetList(data=>{this.mounted && this.updatePageTotal(data)});
+        }
     }
 
     requestSearchAssetList = ()=>{
-        const { assetSort, assetSearch, page} = this.state;
+        const { assetType, assetSort, assetSearch, page} = this.state;
+        const type = assetType.get('index');
         const aType = assetSort.getIn(['list', assetSort.get('index'), 'type']);
         const name = assetSearch.get('value');
-        const current = page.get('current');
-        const pageSize = page.get('pageSize');
-        const limit = current===1?pageSize-5:pageSize;
-        const offset = current===1?(current-1)*limit:(current-1)*limit-5;
-        searchAssetList(aType, name, offset, limit, data=>{this.mounted && this.updateAssetList(data)});
+        if( type === 0){
+            this.setState({assetList: this.state.assetList.update('list', v=>Immutable.fromJS(this.systemFile))});
+        }else{
+
+            const current = page.get('current');
+            const pageSize = page.get('pageSize');
+            const limit = pageSize;
+            const offset = (current-1)*limit;
+            searchAssetList(aType, name, offset, limit, data=>{this.mounted && this.updateAssetList(data)});
+        }
+
+
     }
     
     updatePageTotal = (data)=>{
-        this.setState({page: this.state.page.update('total', v=>this.systemFile.concat(data).length)});
+        this.setState({page: this.state.page.update('total', v=> data.length)});
     }
 
     updateAssetList= (data)=>{
@@ -338,7 +354,7 @@ export class PlayerArea extends Component {
         const newData = data.map(item=>{
             return Object.assign({}, item, {assetType:'source'});
         })
-        this.setState({assetList: this.state.assetList.update('list', v=>Immutable.fromJS(curPage===1?this.systemFile.concat(newData):newData))});
+        this.setState({assetList: this.state.assetList.update('list', v=>Immutable.fromJS(newData))});
     }
 
     requestProgrameList=()=>{
@@ -408,11 +424,22 @@ console.log('newData:', newData);
     }
 
     updateItemList = (programId, sceneId, zoneId, data)=>{
-        console.log('playerItem:', data);
         const newData = data.map(item=>{
             return Object.assign({}, item, {assetType:'source'});
         })
-        this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS(newData))});
+        this.setState({playerListAsset: this.state.playerListAsset.update('list', v=>Immutable.fromJS(newData))}, ()=>{
+            this.state.playerListAsset.get('list').map(item=>{
+                !IsSystemFile(item.get('type')) && this.requestAssetNameById(item.toJS());
+            })
+        });
+    }
+
+    requestAssetNameById = (item)=>{
+        const {playerListAsset} = this.state;
+        const index = getIndexByKey(this.state.playerListAsset, 'id', item.id);
+        getAssetById(item.materialId, response=>{
+            this.setState({playerListAsset: playerListAsset.updateIn(['list', index], v=>Immutable.fromJS(Object.assign({}, playerListAsset.getIn(['list', index]).toJS(), {name: response.name})))})
+        })
     }
 
     initItemList = ()=>{
@@ -454,7 +481,10 @@ console.log('newData:', newData);
         let prompt = false;
         if (id == "assetType" || id == "assetSort") {
             this.state[id] = this.state[id].update('index', v => value);
-            this.setState({ [id]: this.state[id].update('value', v => this.state[id].getIn(["list", value, "value"])) });
+            this.setState({ [id]: this.state[id].update('value', v => this.state[id].getIn(["list", value, "value"])) },()=>{
+                this.requestAssetList();
+                this.requestSearchAssetList();
+            });
         }
         else if (id == "assetSearch") {
             this.setState({ assetSearch: this.state.assetSearch.update('value', v => value) });
@@ -1252,11 +1282,13 @@ console.log('curType:', curType);
                         {
                             playerListAsset.get('list').map((item, index) => {
                                 const itemId = item.get('id');
+                                const name = item.get('name');
                                 const curId = playerListAsset.get('id');
+
                                 return <li key={itemId} className="player-list-asset" onClick={() => this.playerAssetSelect(item)}>
                                     <div className={"background " + (curId == itemId ? '' : 'hidden')}></div>
                                     <span className="icon"></span>
-                                    <span className="name" title={item.get('file')}>{item.get("file")}</span>
+                                    <span className="name" title={name}>{name}</span>
                                     {curId == itemId && index > 0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('left', item) }}></span>}
                                     {curId == itemId && index < playerListAsset.get("list").size - 1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('right', item) }}></span>}
                                     {!playerListAsset.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.playerAssetRemove(item) }}></span>}
