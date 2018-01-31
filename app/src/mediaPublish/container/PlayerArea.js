@@ -679,13 +679,14 @@ console.log('newData:', newData);
 
     addUpdatePlan = (data)=>{
         let planData = parsePlanData(data);
+        const {project} = this.state;
         if(data.id){
             planData = Object.assign({}, planData, {id: data.id});
-            updateProgramById(this.state.project.id, planData, (response)=>{
+            updateProgramById(project.id, planData, (response)=>{
                 this.updatePlayerPlanData(planData);
             })
         }else{
-            addProgram(this.state.project.id, planData, response=>{
+            addProgram(project.id, planData, response=>{
                 this.updatePlayerPlanData(Object.assign({}, planData, {id:response.playlistId}));
             })
         }
@@ -694,13 +695,14 @@ console.log('newData:', newData);
 
     addUpdateScene = data=>{
         let sceneData = data;
+        const {project, parentNode} = this.state;
         if(data.id){
             sceneData = Object.assign({}, sceneData, {id: data.id});
-            updateSceneById(this.state.project.id, this.state.parentNode.id, sceneData, (response)=>{
+            updateSceneById(project.id, parentNode.id, sceneData, (response)=>{
                 this.updatePlayerSceneData(sceneData);
             })
         }else{
-            addScene(this.state.project.id, this.state.parentNode.id, sceneData, response=>{
+            addScene(project.id, parentNode.id, sceneData, response=>{
                 this.updatePlayerSceneData(Object.assign({},sceneData, {id:response.sceneId}));
             })
         }
@@ -708,16 +710,24 @@ console.log('newData:', newData);
 
     addUpdateArea = data=>{
         let areaData = data;
+        const {project, parentParentNode, parentNode} = this.state;
         if(data.id){
             areaData = Object.assign({}, areaData, {id: data.id});
-            updateZoneById(this.state.project.id, this.state.parentNode.id, this.state.parentParentNode.id, areaData, (response)=>{
+            updateZoneById(project.id, parentParentNode.id, parentNode.id, areaData, (response)=>{
                 this.updatePlayerAreaData(areaData);
             })
         }else{
-            addZone(this.state.project.id, this.state.parentParentNode.id, this.state.parentNode.id, areaData, response=>{
+            addZone(project.id, parentParentNode.id, parentNode.id, areaData, response=>{
                 this.updatePlayerAreaData(Object.assign({}, areaData, {id:response.regionId}));
             })
         }
+    }
+
+    addUpdateItem = data=>{
+        const {project, parentParentNode, parentNode, curNode, playerListAsset} = this.state;
+        updateItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, data, response=>{
+            this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
+        })
     }
 
     updatePlayerPlanData = (response)=>{
@@ -774,6 +784,8 @@ console.log('newData:', newData);
             case "playerAreaPro":
                 this.addUpdateArea(data);
                 break;
+            default:
+                this.addUpdateItem(data);
         }
     }
 
