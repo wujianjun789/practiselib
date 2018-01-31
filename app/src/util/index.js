@@ -199,7 +199,7 @@ export const STRATEGY_NAME_LENGTH = 16;
 
 export function numbersValid(number) {
     // return /^([1-9]\d*)|0$/.test(number)
-    if(!number){
+    if(number == null){
         return false;
     }
     return /^[+-]?\d*\.?\d*$/.test(number);

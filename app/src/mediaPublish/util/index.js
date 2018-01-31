@@ -15,8 +15,7 @@ export function weekReplace(list) {
 }
 
 export function weekTranformArray(week) {
-    console.log('week:',week);
-    let str = week.toString(2);
+    const str = week.toString(2).split('').reverse().join('');
     let arr = [];
     for (let i=0;i<str.length;i++){
         let value = str.charAt(i);
@@ -31,11 +30,10 @@ export function weekTranformArray(week) {
 }
 
 export function arrayTranformWeek(array) {
-    let str = '';
-    let arr = [];
-    let week = 0;
+    let arr = [0,0,0,0,0,0,0];
+
     for (let i=0;i<array.length;i++){
-        let val = array[i];
+        const val = array[i];
         if(val == 7){
             arr[0] = 1;
         }else{
@@ -43,11 +41,12 @@ export function arrayTranformWeek(array) {
         }
     }
 
-    str = arr.join('');
+    const str = arr.reverse().join('');
+    let week = 0;
     if(str == ""){
         week = 0;
     }else{
-        week = parseInt(str);
+        week = parseInt(str, 2);
     }
 
     return week;
@@ -238,16 +237,16 @@ export function parsePlanData(data) {
         week: data.week,
         timeRange: {
             timeBegin: {
-                hour: data.startDate.format('HH'),
-                minute: data.startDate.format('mm'),
-                second: data.startDate.format('ss'),
-                milliseconds: data.startDate.format('SS'),
+                hour: data.startTime.format('HH'),
+                minute: data.startTime.format('mm'),
+                second: data.startTime.format('ss'),
+                milliseconds: data.startTime.format('SS'),
             },
             timeEnd: {
-                hour: data.endDate.format('HH'),
-                minute: data.endDate.format('mm'),
-                second: data.endDate.format('ss'),
-                milliseconds: data.endDate.format('SS'),
+                hour: data.endTime.format('HH'),
+                minute: data.endTime.format('mm'),
+                second: data.endTime.format('ss'),
+                milliseconds: data.endTime.format('SS'),
             },
             enableFlag: true
         },
