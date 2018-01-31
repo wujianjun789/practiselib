@@ -50,7 +50,7 @@ import Immutable from 'immutable';
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import { addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
-    getAssetData,parsePlanData } from '../util/index'
+    getAssetData,parsePlanData, tranformAssetType } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,updateItemOrders,
@@ -441,22 +441,9 @@ console.log('newData:', newData);
 
     playerAssetSelect = (item)=> {
         console.log(item.toJS());
+        const type = item.get("type");
+        const curType = tranformAssetType(type);
 
-        let curType = "playerText";
-        switch (item.get("type")) {
-            case "text":
-                curType = "playerText";
-                break;
-            case "picture":
-                curType = "playerPicAsset";
-                break;
-            case "video":
-                curType = "playerVideoAsset";
-                break;
-            case "timing":
-                curType = "playerTimeAsset";
-                break;
-        }
         this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
         this.setState({ isClick: true, curType: curType, playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')) });
         // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
@@ -1218,7 +1205,7 @@ console.log('newData:', newData);
                 add_title = ` (${this.formatIntl('mediaPublish.timingPlayPlan')})`;
                 break;
         }
-
+console.log('curType:', curType);
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
             <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
@@ -1295,8 +1282,8 @@ console.log('newData:', newData);
                         {curType == 'playerArea' && <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>}
                         {curType == 'cyclePlan' && <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                         {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}/>}
+                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}/>}
                         {curType == 'playerText' && <PlayerText projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                         {curType === 'digitalClock' && <DigitalClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
                         {curType === 'virtualClock' && <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}

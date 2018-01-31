@@ -417,3 +417,18 @@ function getVideoData(data) {
         }
     }
 }
+
+export function tranformAssetType(type) {
+    switch (type) {
+        case 0:
+            return "playerText";
+        case 1:
+            return "";
+        case 3:
+            return "playerPicAsset";
+        case 4:
+            return "playerVideoAsset";
+        case "timing":
+            return "playerTimeAsset";
+    }
+}

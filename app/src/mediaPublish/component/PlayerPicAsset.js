@@ -6,7 +6,6 @@ import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 class PlayerPicAsset extends PureComponent{
     constructor(props){
         super(props);
-
         this.state = {
             //计划
             property:{
@@ -41,6 +40,12 @@ class PlayerPicAsset extends PureComponent{
         this.playerPicAssetClick = this.playerPicAssetClick.bind(this);
     }
 
+    componentWillMount(){
+        console.log('playerPicAsset:',this.props);
+    }
+    componentDidUpdate(){
+        console.log('playerPicAsset:',this.props);
+    }
 
     onChange(id, value) {
         console.log("id:", id);
