@@ -13,7 +13,7 @@ export const moduleInfo = {
 	control: {key: 'control', title: 'app.smart.light', link: '/smartLight/map'},
 	light: {key: 'light', title: 'app.light', link: '/light/map'},
 	report: {key: 'report', title: 'app.report.manage', link: '/reporterManage/device'},
-	publish: {key: 'publish', title: 'app.mediaPublish', link: '/mediaPublish/playerList'},
+	publish: {key: 'publish', title: 'app.mediaPublish', link: '/mediaPublish/statistics'},
 	visual: {key: 'visual', title: 'app.visualization', link: '/'},
 	domain: {key: 'domain', title: 'app.domain.manage', link: '/domainManage/domainEdit/list'}
 };

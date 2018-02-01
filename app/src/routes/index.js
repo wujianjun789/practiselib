@@ -342,18 +342,29 @@ export default (
         </Route>
       </Route>
       <Route path="/mediaPublish" component={MediaPublish}>
-        <Route path="playerList">
-          <IndexRoute getComponent={(nextState, cb) => {
+        <Route path="statistics" getComponent={(nextState, cb)=>{
+            require.ensure([], require=>{
+              cb(null, require('../mediaPublishStatistics/container/index').default);
+            }, 'starriverpro.mediaPublishStatistics.container.statistics')
+        }}/>
+        <Route path="map" getComponent={(nextState, cb) => {
+            require.ensure([], require => {
+              cb(null, require('../mediaPublishMap/container/index').default);
+            }, 'starriverpro.mediaPublishMap.container.map');
+          }}>
+        </Route>
+        <Route path="screen" getComponent={(nextState, cb) => {
+            require.ensure([], require => {
+              cb(null, require('../mediaPublishScreen/container/index').default);
+            }, 'starriverpro.mediaPublishScreen.container.screen');
+          }}>
+        </Route>
+        <Route path="playProject" getComponent={(nextState, cb) => {
             require.ensure([], require => {
               cb(null, require('../mediaPublish/container/PlayerList').default);
             }, 'starriverpro.mediaPublish.container.PlayerList');
-          }} />
+          }}>
         </Route>
-        <Route path="publish" getComponent={(nextState, cb) => {
-          require.ensure([], require => {
-            cb(null, require('../mediaPublishManage/container/PublishManage').default);
-          }, 'starriverpro.mediaPublishManage.container.PublishManage');
-        }} />
       </Route>
       <Route path="/mediaPublish/playerArea">
         <IndexRoute getComponent={(nextState, cb) => {

@@ -54,7 +54,7 @@ import { addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clear
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,updateItemOrders,
-    removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetList, addAsset, getAssetById, removeAssetById} from '../../api/mediaPublish';
+    removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById} from '../../api/mediaPublish';
 
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 
@@ -321,7 +321,7 @@ export class PlayerArea extends Component {
         if(type === 0){
             this.updatePageTotal(this.systemFile)
         }else{
-            getAssetList(data=>{this.mounted && this.updatePageTotal(data)});
+            getAssetListByTypeWithName(aType, name, data=>{this.mounted && this.updatePageTotal(data)});
         }
     }
 
@@ -497,7 +497,10 @@ console.log('newData:', newData);
             });
         }
         else if (id == "assetSearch") {
-            this.setState({ assetSearch: this.state.assetSearch.update('value', v => value) });
+            this.setState({ assetSearch: this.state.assetSearch.update('value', v => value) },()=>{
+                this.requestAssetList();
+                this.requestSearchAssetList();
+            });
         } else {
             const val = value.target.value;
             if (!Name2Valid(val)) {
@@ -864,7 +867,8 @@ console.log('newData:', newData);
     }
 
     searchSubmit = ()=> {
-
+        this.requestAssetList();
+        this.requestSearchAssetList();
     }
 
     showModal() {

@@ -72,6 +72,7 @@ export default {
     'app.exceed.maximum.support':'超过最大支持',
 
     'app.group':'组',
+    'app.statistics':'统计',
         
     //按钮
     ' ':' ',

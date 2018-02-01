@@ -3,21 +3,39 @@
  */
 export const TreeData = [
   {
-    'id': 'playerList',
-    'name':'mediaPublish.playList',
+    'id': 'statistics',
+    'name':'app.statistics',
     'toggled': false,
     'active': true,
-    'link': '/mediaPublish/playerList',
+    'link': '/mediaPublish/statistics',
     'level': 1,
     'children':[],
   },
   {
-    'id': 'publish',
-    'name': 'mediaPublish.manage',
+    'id': 'map',
+    'name':'app.map',
     'toggled': false,
     'active': true,
-    'link': '/mediaPublish/publish',
+    'link': '/mediaPublish/map',
     'level': 1,
     'children':[],
   },
+  {
+    'id': 'screen',
+    'name':'app.screen',
+    'toggled': false,
+    'active': true,
+    'link': '/mediaPublish/screen',
+    'level': 1,
+    'children':[],
+  },
+  {
+    'id': 'playProject',
+    'name':'mediaPublish.playPlan',
+    'toggled': false,
+    'active': true,
+    'link': '/mediaPublish/playProject',
+    'level': 1,
+    'children':[],
+  }
 ];
