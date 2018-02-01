@@ -258,9 +258,9 @@ export function parsePlanData(data) {
     }
 }
 
-const imagesType = ['jpg','jpeg','png'];
+const imagesType = ['jpg','jpeg','png','gif'];
 const textType = ['txt'];
-const videoType = ['video'];
+const videoType = ['mp4'];
 export function formatTransformType(filepath) {
     const urlArr = filepath.split('.')
     const url = urlArr.length>1?urlArr[1]:undefined;

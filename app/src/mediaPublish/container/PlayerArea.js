@@ -16,7 +16,6 @@ import Content from '../../components/Content';
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
 import Page from '../../components/Page';
-import Panel from '../../components/Panel';
 
 import PlayerProject from '../component/PlayerProject';
 import PlayerPlan from '../component/PlayerPlan';
@@ -44,7 +43,6 @@ import { treeViewInit } from '../../common/actions/treeView';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup'
 
-import moment from 'moment'
 import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
@@ -340,8 +338,6 @@ export class PlayerArea extends Component {
             const offset = (current-1)*limit;
             searchAssetList(aType, name, offset, limit, data=>{this.mounted && this.updateAssetList(data)});
         }
-
-
     }
     
     updatePageTotal = (data)=>{
