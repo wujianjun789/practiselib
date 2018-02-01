@@ -1344,12 +1344,12 @@ console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list')
                                                                         applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
                         {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                                                             applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
-                        {curType == 'playerText' && <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                        {curType == 'playerText' && <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                                                 applyClick={data=>{this.applyClick('playerText', data)}}/>}
-                        {curType === 'digitalClock' && <DigitalClock projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={playerListAsset.get("id")}
+                        {curType === 'digitalClock' && <DigitalClock projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                                                      applyClick={data=>{this.applyClick('digitalClock', data)}}/>}
-                        {curType === 'virtualClock' && <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType === 'playerTimeAsset' && <PlayerTimeAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
+                        {curType === 'virtualClock' && <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>}
+                        {curType === 'playerTimeAsset' && <PlayerTimeAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>}
                     </div>
                 </div>
 
