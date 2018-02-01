@@ -13,29 +13,17 @@ import SideBar from '../component/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
 import Content from '../../components/Content';
-import Select from '../../components/Select';
-import SearchText from '../../components/SearchText';
 import Page from '../../components/Page';
 
-import PlayerProject from '../component/PlayerProject';
-import PlayerPlan from '../component/PlayerPlan';
-import PlayerScene from '../component/PlayerScene';
-import PlayerAreaPro from '../component/PlayerAreaPro';
-import CyclePlan from '../component/CyclePlan';
-import TimingPlan from '../component/TimingPlan';
-import PlayerPicAsset from '../component/PlayerPicAsset';
-import PlayerVideoAsset from '../component/PlayerVideoAsset';
-import PlayerText from '../component/PlayerText';
-import DigitalClock from '../component/digitalClock';
-import VirtualClock from '../component/VirtualClock';
-import PlayerTimeAsset from '../component/PlayerTimeAsset';
+import RenderPropertyPanel from '../component/RenderPropertyPanel';
+import RenderAssetLibTop from '../component/RenderAssetLibTop';
+import RenderAssetLib from '../component/RenderAssetLib';
+import RenderPlayerAsset from '../component/RenderPlayerAsset';
 
 import ConfirmPopup from '../../components/ConfirmPopup'
 
-import PreviewFile from '../component/previewFile';
 import UploadNotify from '../component/uploadNotify';
 import UploadFile from '../component/uploadFile';
-
 
 import NotifyPopup from '../../common/containers/NotifyPopup';
 
@@ -48,13 +36,13 @@ import Immutable from 'immutable';
 import { Name2Valid } from '../../util/index';
 import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import { addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
-    getAssetData,parsePlanData, tranformAssetType, IsSystemFile } from '../util/index'
+    getAssetData,parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem } from '../util/index'
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone,addItem, updateProjectById,
     updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders,updateItemOrders,
     removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById} from '../../api/mediaPublish';
 
-import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
+import {FormattedMessage,injectIntl} from 'react-intl';
 
 import lodash from 'lodash';
 
@@ -519,13 +507,7 @@ console.log('newData:', newData);
 
     playerListAssetClick = (id)=> {
         if (id == 'add') {
-            let addList = [];
-            const { assetList } = this.state;
-            assetList.get('list').map(item => {
-                if (item.get('active')) {
-                    addList.push(item);
-                }
-            })
+            let addList = getActiveItem(this.state.assetList);
 
             if (addList.length == 0) {
                 this.props.actions.addNotify(0, '请选中右边素材库素材');
@@ -569,7 +551,6 @@ console.log('newData:', newData);
         }
 
         const data = item.toJS();
-        console.log('addClick:', data);
         const index = lodash.findIndex(this.systemInitFile, file=>{ return file.baseInfo.type == data.type});
         const itemType = index>-1?data.type:formatTransformType(data.filepath);
         const itemData = index>-1?this.systemInitFile[index]:getAssetData(data);
@@ -591,28 +572,20 @@ console.log('newData:', newData);
                     actions.overlayerHide();
                     this.requestSearchAssetList();
                 });
-                // this.setState({ assetList: this.state.assetList.update("list", v => v.splice(curIndex, 1)) }, () => {
-                //     actions.overlayerHide();
-                // });
             }} />)
 
     }
 
     playerAssetRemove = (item)=> {
-        console.log('playerAssetRemove:', item.toJS());
         const {project, parentParentNode, parentNode, curNode} = this.state;
         const itemId = item.get("id");
-        const list = this.state.playerListAsset.get("list");
-        const curIndex = getIndexByKey(list, "id", itemId);
 
         removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, item.get('type'), data=>{
             this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
         })
-        // this.setState({ playerListAsset: this.state.playerListAsset.update("list", v => v.splice(curIndex, 1)) });
     }
 
     playerAssetMove = (id, item)=> {
-        console.log('playerAssetMove:', id, item);
         const {project, parentParentNode, parentNode, curNode} = this.state;
         const itemId = item.get("id");
         const list = this.state.playerListAsset.get("list");
@@ -627,19 +600,7 @@ console.log('newData:', newData);
 
     addPlayerScene = ()=>{
         const parentNode = this.state.curNode;
-
-        let type = 'scene';
-        let name = "场景新建";
-
-        let node = {
-            "id": "scene&&" + parseInt(Math.random() * 999),
-            "type": type,
-            "name": name,
-            "toggled": false,
-            "active": true,
-            "level": 2,
-            children: []
-        }
+        let node = getInitData('scene', "场景新建");
 
         this.setState({ curType: 'playerScene',curNode: node, parentNode: parentNode }, () => {this.updateTreeData(node, parentNode)});
     }
@@ -647,16 +608,7 @@ console.log('newData:', newData);
     addPlayerArea = ()=>{
         const parentParentNode = this.state.parentNode;
         const parentNode = this.state.curNode;
-
-        let type = 'area';
-        let name = "区域新建";
-        let node = {
-            "id": "area&&" + parseInt(Math.random() * 999),
-            "type": type,
-            "name": name,
-            "active": true,
-            "level": 3
-        }
+        let node = getInitData('area', "区域新建");
 
         this.setState({ curType: 'playerArea', curNode: node, parentNode: parentNode, parentParentNode:parentParentNode }, this.updateTreeData(node, parentNode, parentParentNode));
     }
@@ -686,18 +638,7 @@ console.log('newData:', newData);
                 this.initItemList();
             });
         } else if (id == "remove") {
-            let tips = "是否删除选中场景与场景中所有内容";
-            switch (this.state.curType) {
-                case "playerPlan":
-                    tips = "是否删除选中计划与计划中所有内容";
-                    break;
-                case "playerScene":
-                    tips = "是否删除选中场景与场景中所有内容";
-                    break;
-                case "playerArea":
-                    tips = "是否删除选中区域与区域中所有内容";
-                    break;
-            }
+            let tips = getTipByType(this.state.curType);
 
             actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
                 cancel={() => { actions.overlayerHide() }} confirm={() => {
@@ -729,7 +670,6 @@ console.log('newData:', newData);
                 this.updatePlayerPlanData(Object.assign({}, planData, {id:response.playlistId}));
             })
         }
-
     }
 
     addUpdateScene = data=>{
@@ -1183,27 +1123,7 @@ console.log('newData:', newData);
     }
 
     onToggle = (node)=> {
-        // clearTreeListState(this.state.playerData);
-        const {project, playerData} = this.state;
-        let type = "scene";
-        switch (node.type) {
-            case "scene":
-                type = 'playerScene';
-                break;
-            case 'plan':
-                type = 'playerPlan';
-                break;
-            case 'plan2':
-                type = 'cyclePlan';
-                break;
-            case 'plan3':
-                type = 'timingPlan';
-                break;
-            case 'area':
-                type = 'playerArea';
-                break;
-        }
-
+        const type = getPropertyTypeByNodeType(node);
         const parentNode = getTreeParentNode(this.state.playerData, node);
         const parentParentNode = getTreeParentNode(this.state.playerData, parentNode);
 
@@ -1214,14 +1134,11 @@ console.log('newData:', newData);
                 return;
             }
 
-
             switch(type){
                 case "playerPlan":
-                    console.log('requestScene:', node.toggled);
                     !node.toggled && this.requestSceneList(node.id);
                     break;
                 case "playerScene":
-                    console.log('click scene');
                     !node.toggled && this.requestZoneList(parentNode.id, node.id);
                     break;
                 case "playerArea":
@@ -1243,20 +1160,13 @@ console.log('newData:', newData);
 
     render() {
         const {
-            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset, assetList, assetType, assetSort, assetSearch, page, IsScroll, assetStyle, controlStyle,libStyle,pageStyle,
+            project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset,
+            assetList, assetType, assetSort, assetSearch, page, IsScroll, assetStyle, controlStyle,libStyle,pageStyle,
             lastPress, isPressed, mouseXY, isClick, isAddClick
         } = this.state;
         const {router} = this.props;
+        const add_title = getTitleByType(curType, this.formatIntl);
 
-        let add_title = "";
-        switch (curType) {
-            case "cyclePlan":
-                add_title = ` (${this.formatIntl('mediaPublish.cyclePlayPlan')})`;
-                break;
-            case "timingPlan":
-                add_title = ` (${this.formatIntl('mediaPublish.timingPlayPlan')})`;
-                break;
-        }
 console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list').toJS());
         return <div className={"container " + "mediaPublish-playerArea " + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName='app.mediaPublish' router={router} />
@@ -1288,24 +1198,7 @@ console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list')
                 </div>
                 <div className="mediaPublish-footer">
                     {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
-                    <ul>
-                        {
-                            playerListAsset.get('list').map((item, index) => {
-                                const itemId = item.get('id');
-                                const name = item.get('name');
-                                const curId = playerListAsset.get('id');
-
-                                return <li key={itemId} className="player-list-asset" onClick={() => this.playerAssetSelect(item)}>
-                                    <div className={"background " + (curId == itemId ? '' : 'hidden')}></div>
-                                    <span className="icon"></span>
-                                    <span className="name" title={name}>{name}</span>
-                                    {curId == itemId && index > 0 && <span className="glyphicon glyphicon-triangle-left move-left" title="左移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('left', item) }}></span>}
-                                    {curId == itemId && index < playerListAsset.get("list").size - 1 && <span className="glyphicon glyphicon-triangle-right move-right" title="右移" onClick={(event) => { event.stopPropagation(); this.playerAssetMove('right', item) }}></span>}
-                                    {!playerListAsset.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.playerAssetRemove(item) }}></span>}
-                                </li>
-                            })
-                        }
-                    </ul>
+                    <RenderPlayerAsset playerListAsset={playerListAsset} playerAssetSelect={this.playerAssetSelect} playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove}/>
                     <div className="pull-right control-container">
                         <div className={"list-group " + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
                             <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id='button.add'/></button>
@@ -1330,22 +1223,7 @@ console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list')
                             "glyphicon " + (sidebarInfo.propertyCollapsed ? "glyphicon-triangle-right" : "glyphicon-triangle-bottom")}></span>{`${this.formatIntl('mediaPublish.property')}${add_title}`}
                     </div>
                     <div className={"panel-body " + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-                        {curType == 'playerProject' && <PlayerProject data={project} applyClick={data=>{this.applyClick('playerProject', data)}}/>}
-                        {curType == 'playerPlan' && <PlayerPlan projectId={project.id} data={curNode} applyClick={data=>{this.applyClick('playerPlan', data)}}/>}
-                        {curType == 'playerScene' && <PlayerScene projectId={project.id} parentId={parentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerScene', data)}}/>}
-                        {curType == 'playerArea' && <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>}
-                        {curType == 'cyclePlan' && <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType == 'timingPlan' && <TimingPlan actions={this.props.actions} projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} data={curNode}/>}
-                        {curType == 'playerPicAsset' && <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                                                        applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
-                        {curType == 'playerVideoAsset' && <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                                                            applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>}
-                        {curType == 'playerText' && <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                                                applyClick={data=>{this.applyClick('playerText', data)}}/>}
-                        {curType === 'digitalClock' && <DigitalClock projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                                                     applyClick={data=>{this.applyClick('digitalClock', data)}}/>}
-                        {curType === 'virtualClock' && <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>}
-                        {curType === 'playerTimeAsset' && <PlayerTimeAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id} areaId={curNode.id} data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>}
+                        <RenderPropertyPanel curType={curType} project={project} parentParentNode={parentParentNode} parentNode={parentNode} curNode={curNode} playerListAsset={playerListAsset}/>
                     </div>
                 </div>
 
@@ -1355,54 +1233,10 @@ console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list')
                     </div>
                     <div className={"panel-body " + (sidebarInfo.assetLibCollapsed ? 'assetLib-collapsed' : '')} style={!IsScroll?{'position':'absolute','top':'49px', 'bottom':0,'right':0,'left':0}:{}}>
                         <div className="asset-container" style={{height:!IsScroll?'100%':'auto'}}>
-
-                            <div className="top">
-                                <Select className="asset-type" data={assetType}
-                                    onChange={selectIndex => this.onChange("assetType", selectIndex)}></Select>
-                                <Select className="asset-sort" data={assetSort}
-                                    onChange={selectedIndex => this.onChange("assetSort", selectedIndex)}></Select>
-                                <SearchText className="asset-search" placeholder={assetSearch.get('placeholder')}
-                                    value={assetSearch.get('value')}
-                                    onChange={value => this.onChange("assetSearch", value)}
-                                    submit={this.searchSubmit}></SearchText>
-                                <div className={"btn-group " + (assetList.get('isEdit') ? '' : 'hidden')}>
-                                    <button className="btn btn-gray" onClick={() => this.assetList('edit')}><FormattedMessage id='button.edit'/></button>
-                                    <button className="btn btn-primary add" onClick={this.showModal}><FormattedMessage id='button.import'/></button>
-                                </div>
-                                <div className={"btn-group " + (assetList.get('isEdit') ? 'hidden' : '')}>
-                                    <button className="btn btn-gray" onClick={() => this.assetList('remove')}><FormattedMessage id='button.delete'/>
-                                    </button>
-                                    <button className="btn btn-primary" onClick={() => this.assetList('complete')}><FormattedMessage id='button.finish'/>
-                                    </button>
-                                </div>
-                                <PreviewFile showModal={this.state.showModal} hideModal={this.hideModal} addUploadFile={this.addUploadFile} />
-                            </div>
+                            <RenderAssetLibTop assetType={assetType} assetSort={assetSort} assetSearch={assetSearch} assetListPro={assetList} showModalPro={this.state.showModal}
+                                               onChange={this.onChange} searchSubmit={this.searchSubmit} assetList={this.assetList} showModal={this.showModal} hideModal={this.hideModal} addUploadFile={this.addUploadFile}/>
                             <div className="bottom" style={assetStyle}>
-                                <ul className="asset-list">
-                                    {
-                                        assetList.get('list').map((item, index) => {
-                                            let x, y;
-                                            const id = item.get('id');
-                                            const curId = assetList.get('id');
-                                            if (id == lastPress && isPressed) {
-                                                [x, y] = mouseXY;
-                                            } else {
-                                                [x, y] = [0, 0];
-                                            }
-
-                                            return <li key={id} className={index > 0 && (index+1) % 5 == 0 ? "margin-right" : ""}
-                                                style={{ transform: `translate(${x}px,${y}px)`, zIndex: id == lastPress ? 99 : 0 }}
-                                                onClick={() => this.assetSelect(item)}>
-                                                {/*onMouseDown={event=>{this.handleMouseDown(item, [x, y],{pageX:event.pageX, pageY:event.pageY})}}*/}
-                                                <div className={"background " + (curId == id ? '' : 'hidden')}></div>
-                                                <span className="icon"></span>
-                                                <span className="name" title={item.get('name')}>{item.get('name')}</span>
-                                                {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event) => { event.stopPropagation(); this.addClick(item) }}></span>}
-                                                {!assetList.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); this.assetLibRemove(item) }}></span>}
-                                            </li>
-                                        })
-                                    }
-                                </ul>
+                                <RenderAssetLib playerListAsset={playerListAsset} assetList={assetList} lastPress={lastPress} isPressed={isPressed} mouseXY={mouseXY} assetSelect={this.assetSelect} addClick={this.addClick} assetLibRemove={this.assetLibRemove}/>
                                 <div className="page-container" style={pageStyle}>
                                     <Page className={"page " + (page.get('total') == 0 ? "hidden" : "")} showSizeChanger
                                         pageSize={page.get('pageSize')}
