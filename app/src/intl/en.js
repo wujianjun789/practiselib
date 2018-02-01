@@ -72,6 +72,8 @@ export default {
     'app.exceed.maximum.support':'exceed maximum support',
     'app.group':'group',
 
+    'app.statistics':'statistics',
+
     //按钮
     ' ': ' ',
     'button.add': 'Add',
