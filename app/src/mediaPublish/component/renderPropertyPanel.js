@@ -17,6 +17,10 @@ import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 const RenderPropertyPanel = (props)=>{
     const {curType, project, parentParentNode, parentNode, curNode, playerListAsset} = props;
+    if(!project || !parentParentNode || !parentNode || !curNode){
+        return <div>server no response</div>
+    }
+
     switch(curType) {
         case 'playerProject':
             return <PlayerProject data={project} applyClick={data=>{this.applyClick('playerProject', data)}}/>;

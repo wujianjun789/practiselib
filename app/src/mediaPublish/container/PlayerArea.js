@@ -60,7 +60,7 @@ export class PlayerArea extends Component {
       parentParentNode: null,
       curType: 'playerProject',
       playerData: [
-        {
+        /*{
           'id': 'player1',
           'type': 'plan',
           'name': '播放计划1',
@@ -125,7 +125,7 @@ export class PlayerArea extends Component {
           'toggled': false,
           'level': 1,
           'children': [],
-        },
+        },*/
       ],
       sidebarInfo: {
         collapsed: false,
@@ -195,7 +195,7 @@ export class PlayerArea extends Component {
   }
   componentWillMount() {
     this.mounted = true;
-    // this.updatePlayerTree();
+    this.updatePlayerTree();
     this.mounted && this.setSize();
     window.onresize = event => {
       this.mounted && this.setSize();
@@ -410,17 +410,24 @@ export class PlayerArea extends Component {
     }
 
     updateItemList = (programId, sceneId, zoneId, data) => {
-      const newData = data.map(item => {
-        return Object.assign({}, item, {assetType:'source'});
-      });
-      this.setState({playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData))}, () => {
-        this.state.playerListAsset.get('list').map(item => {
-          const itemObject  = item.toJS();
-          if (IsSystemFile(item.get('type'))) {
-            const name = lodash.find(this.systemFile, file => {return file.id === itemObject.materialId;}).name;
-            this.updateItemName(itemObject, name);
-          } else {
-            this.requestAssetNameById(itemObject);
+        const newData = data.map(item => {
+            return Object.assign({}, item, {assetType:'source'});
+        });
+
+        if(newData && newData.length){
+            this.playerAssetSelect(Immutable.fromJS(newData[0]));
+        }else{
+
+        }
+
+        this.setState({playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData))}, () => {
+            this.state.playerListAsset.get('list').map(item => {
+            const itemObject  = item.toJS();
+            if (IsSystemFile(item.get('type'))) {
+                const name = lodash.find(this.systemFile, file => {return file.id === itemObject.materialId;}).name;
+                this.updateItemName(itemObject, name);
+            } else {
+                this.requestAssetNameById(itemObject);
           }
         });
       });
