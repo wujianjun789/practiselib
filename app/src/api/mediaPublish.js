@@ -437,6 +437,19 @@ export function getAssetList(cb) {
     })
 }
 
+export function getAssetListByTypeWithName(type, name, cb) {
+    let headers = getHttpHeader();
+    let obj = Object.assign({}, { "where": getAssetParam(type, name)});
+    let param = JSON.stringify(obj);
+
+    httpRequest(FILE_HOST_IP+'/file?filter='+encodeURIComponent(param), {
+        headers: headers,
+        method: 'GET'
+    }, response=>{
+        cb && cb(response);
+    })
+}
+
 export function searchAssetList(type, name, offset, limit, cb) {
     let headers = getHttpHeader();
     let obj = Object.assign({},{ "where": getAssetParam(type, name)}, { "offset": offset, "limit": limit });
