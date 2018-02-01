@@ -6,7 +6,7 @@
 import React from 'react';
 import '../../../public/styles/previewImg.less';
 
-// scaling - 缩放等级，默认1.
+// scaling - 缩放等级，默认1.大于1则放大，小于1则缩小.
 // imgInfo - 图片信息，包括图片的src及宽长
 
 const PreviewImg = (props) => {

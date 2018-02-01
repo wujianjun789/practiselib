@@ -1277,7 +1277,7 @@ export class PlayerArea extends Component {
                 <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow"/></span></div>
             </div>
             <div className="img-container">
-              <PreviewImg />
+              <PreviewImg/>
             </div>
             <div className="control-container-bottom" style={controlStyle}>
               <div className="form-group pull-right quit-container " onClick={() => this.quitHandler()}>

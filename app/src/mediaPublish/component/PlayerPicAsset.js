@@ -7,101 +7,91 @@ class PlayerPicAsset extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      id:'',
       //计划
       property:{
         //图片素材
-        assetName: { key: 'assetName', title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), 
-          placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: '' },
-        displayMode: { key: 'displayMode', title: this.props.intl.formatMessage({id:'mediaPublish.displayMethod'}),
-          list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, 
-            { id: 5, name: '16.9' }], index: 0, name: '铺满' },
-        animation: {
-          key: 'animation', title: this.props.intl.formatMessage({id:'mediaPublish.animation'}),
-          list: [
-            { id: 1, name: '立即显示' }, { id: 2, name: '闪烁' }, { id: 3, name: '长串左移' },
-            { id: 4, name: '上移' }, { id: 5, name: '下移' }, { id: 6, name: '左移' }, { id: 7, name: '右移' },
-            { id: 8, name: '自上而下展现' }, { id: 9, name: '自下而上展现' }, { id: 10, name: '自右而左展现' }, 
-            { id: 11, name: '自左而右展现' }, { id: 12, name: '自上而下百叶窗' }, { id: 13, name: '自下而上百叶窗' }, 
-            { id: 14, name: '自右而左百叶窗' }, { id: 15, name: '自左而右百叶窗' }, { id: 16, name: '自上而下棋盘格' },
-            { id: 17, name: '自下而上棋盘格' }, { id: 18, name: '自右而左棋盘格' }, { id: 19, name: '自左而右棋盘格' },
-            { id: 20, name: '上下向中间合拢' }, { id: 21, name: '中间向上下展开' }, { id: 22, name: '左右向中间合拢' }, 
-            { id: 23, name: '中间向左右展开' }, { id: 24, name: '矩形自四周向中心合拢' }, { id: 25, name: '矩形自中心向四周展开' },
-            { id: 26, name: '向左拉幕' }, { id: 27, name: '向右拉幕' }, { id: 28, name: '向上拉幕' },
-            { id: 29, name: '向下拉幕' }, { id: 30, name: '矩形自左下向右上展现' }, { id: 31, name: '矩形自左上向右下展现' },
-            { id: 32, name: '矩形自右下向左上展现' }, { id: 33, name: '矩形自右上向左下展现' }, { id: 34, name: '斜线自左上向右下展现' },
-            { id: 35, name: '斜线自右下向左上展现' }, { id: 36, name: '随机' },
-          ], index: 0, name:'立即显示',
-        },
-        playDuration: { key: 'playDuration', title: this.props.intl.formatMessage({id:'mediaPublish.playDuration'}),
-          placeholder: 's', value: '' },
-        playSpeed: { key: 'playSpeed', title: this.props.intl.formatMessage({id:'mediaPublish.playSpeed'}),
-          placeholder: 'm/s', value: '' },
+        assetName:'',
+        displayMode:'',
+        animation: '',
+        playDuration: '',
+        playSpeed: '',
       },
       prompt:{
         //计划
         playDuration: false, playSpeed: false,
       },
     };
+    this.data = {};
+    this.animationList = [
+      { value: 0, title: '立即显示' }, { value: 1, title: '闪烁' }, { value: 2, title: '长串左移' },
+      { value: 3, title: '上移' }, { value: 4, title: '下移' }, { value: 5, title: '左移' },
+      { value: 6, title: '右移' }, { value: 7, title: '自上而下展现' }, { value: 8, title: '自下而上展现' },
+      { value: 9, title: '自右而左展现' }, { value: 10, title: '自左而右展现' }, { value: 11, title: '自上而下百叶窗' },
+      { value: 12, title: '自下而上百叶窗' }, { value: 13, title: '自右而左百叶窗' }, { value: 14, title: '自左而右百叶窗' },
+      { value: 15, title: '自上而下棋盘格' }, { value: 16, title: '自下而上棋盘格' }, { value: 17, title: '自右而左棋盘格' },
+      { value: 18, title: '自左而右棋盘格' }, { value: 19, title: '上下向中间合拢' }, { value: 20, title: '中间向上下展开' },
+      { value: 21, title: '左右向中间合拢' }, { value: 22, title: '中间向左右展开' }, { value: 23, title: '矩形自四周向中心合拢' },
+      { value: 24, title: '矩形自中心向四周展开' }, { value: 25, title: '向左拉幕' }, { value: 26, title: '向右拉幕' },
+      { value: 27, title: '向上拉幕' }, { value: 28, title: '向下拉幕' }, { value: 29, title: '矩形自左下向右上展现' },
+      { value: 30, title: '矩形自左上向右下展现' }, { value: 31, title: '矩形自右下向左上展现' }, { value: 32, title: '矩形自右上向左下展现' },
+      { value: 33, title: '斜线自左上向右下展现' }, { value: 34, title: '斜线自右下向左上展现' }, { value: 255, title: '随机' },
+    ];
+    this.displayModeList = [{ value: 0, title: '平铺' }, { value: 1, title: '拉伸' }, { value: 2, title: '缩放' }];
   }
 
   componentWillMount() {
-    console.log('playerPicAsset:', this.props);
-    // this.requestItem();
+    this.requestItem();
   }
   componentDidUpdate() {
-    console.log('playerPicAsset:', this.props);
+    const {data} = this.props;
+    if (data.id !== this.state.id) {
+      this.setState({id: data.id}, () => {this.requestItem();});
+    }
+        
   }
 
   requestItem=() => {
     const {projectId, planId, sceneId, areaId, data} = this.props;
     let {property} = this.state;
-    getItembyId(projectId, planId, sceneId, areaId, data, (res) => {
-      for (let key in res) {
-        this.setState({[key]:Object.assign({}, this.state[key], {value:res[key]})});
-      }
+    property.assetName = data.name;
+    getItembyId(projectId, planId, sceneId, areaId, data.id, 3, (res) => {
+      this.data = res;
+      property.displayMode = res.scale ? res.scale : this.displayModeList[0].value;
+      property.animation = res.inTransition ? res.inTransition.transition : this.animationList[0].value;
+      property.playDuration = res.baseInfo ? res.baseInfo.playDuration : null;
+      property.playSpeed = res.inTransition ? res.inTransition.speed : null;
+      this.setState({property:Object.assign({}, property)});
     });
   }
 
-  onChange=(id, value) => {
-    console.log('id:', id);
-    if (id == 'displayMode' || id == 'animation') {
-      const curIndex = value.target.selectedIndex;
-      this.setState({
-        property: Object.assign({}, this.state.property, {
-          [id]: Object.assign({}, this.state.property[id], {
-            index: curIndex,
-            name: this.state.property[id].list[curIndex].name,
-          }),
-        }),
-      });
-    } else {
-      let prompt = false;        
-      const val = value.target.value;
+  onChange=(id, e) => {
+    let prompt = false;
+    const val = e.target.value;
+    if (id == 'playDuration' || id == 'playSpeed') {
       if (!numbersValid(val)) {
         prompt = true;
+        this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});
       }
-    
-      this.setState({
-        property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
-        prompt: Object.assign({}, this.state.prompt, { [id]: prompt }),
-      });
     }
+    this.setState({property: Object.assign({}, this.state.property, {[id]: val})});
   }
 
   playerPicAssetClick=(id) => {
     const { displayMode, animation, playDuration, playSpeed } = this.state.property;
     switch (id) {
-    case 'apply':
+    case 'apply': {
+      this.data.baseInfo.playDuration = playDuration;
+      this.data.scale = displayMode;
+      this.data.inTransition = {
+        transition: animation,
+        speed: playSpeed,
+      };
+      this.props.applyClick && this.props.applyClick(this.data);
       break;
-    case 'reset':
-      this.setState({
-        property: Object.assign({}, this.state.property, {
-          displayMode: Object.assign({}, displayMode, { index: 0, name: '铺满' }),
-          animation: Object.assign({}, animation, { index: 0, name: '立即显示' }),
-          playDuration: Object.assign({}, playDuration, { value: '' }),
-          playSpeed: Object.assign({}, playSpeed, { value: '' }),
-        }),
-      });
+    }
+    case 'reset': 
+      this.requestItem();
       break;
     default:
       break;
@@ -113,39 +103,37 @@ class PlayerPicAsset extends PureComponent {
     return <div className="pro-container playerPicAsset">
       <div className="row">
         <div className="form-group">
-          <label className="control-label">{property.assetName.title}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.materialName'})}</label>
           <div className="input-container input-w-1">
             <input type="text" className="form-control" disabled="disabled"
-              value={property.assetName.value} />
+              value={property.assetName} />
           </div>
         </div>
       </div>
       <div className="row">
         <div className="form-group">
-          <label className="control-label">{property.displayMode.title}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.displayMethod'})}</label>
           <div className="input-container input-w-2">
-            <select className="form-control" value={property.displayMode.name}
+            <select className="form-control" value={property.displayMode}
               onChange={event => this.onChange('displayMode', event)}>
               {
-                property.displayMode.list.map((option, index) => {
-                  let value = option.name;
-                  return <option key={index} value={value}>
-                    {value}
+                this.displayModeList.map((option, index) => {
+                  return <option key={index} value={option.value}>
+                    {option.title}
                   </option>;
                 })}
             </select>
           </div>
         </div>
         <div className="form-group pull-right">
-          <label className="control-label">{property.animation.title}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.animation'})}</label>
           <div className="input-container">
-            <select className="form-control input-w-2" value={property.animation.name}
+            <select className="form-control input-w-2" value={property.animation}
               onChange={event => this.onChange('animation', event)}>
               {
-                property.animation.list.map((option, index) => {
-                  let value = option.name;
-                  return <option key={index} value={value}>
-                    {value}
+                this.animationList.map((option, index) => {
+                  return <option key={index} value={option.value}>
+                    {option.title}
                   </option>;
                 })}
             </select>
@@ -154,29 +142,30 @@ class PlayerPicAsset extends PureComponent {
       </div>
       <div className="row">
         <div className="form-group">
-          <label className="control-label">{property.playDuration.title}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.playDuration'})}</label>
           <div className="input-container input-w-2">
-            <input type="text" className="form-control"
-              placeholder={property.playDuration.placeholder} maxLength="8"
-              value={property.playDuration.value}
+            <input type="text" className="form-control" maxLength="8" value={property.playDuration}
               onChange={event => this.onChange('playDuration', event)} />
-            <span className={prompt.playDuration ? 'prompt ' : 'prompt hidden'}><FormattedMessage id="mediaPublish.check"/></span>
+            <span className={prompt.playDuration ? 'prompt ' : 'prompt hidden'}>
+              <FormattedMessage id="mediaPublish.check"/></span>
           </div>
         </div>
         <div className="form-group pull-right">
-          <label className="col-sm-3 control-label">{property.playSpeed.title}</label>
+          <label className="col-sm-3 control-label">
+            {this.props.intl.formatMessage({id:'mediaPublish.playSpeed'})}</label>
           <div className="input-container input-w-2">
-            <input type="text" className="form-control"
-              placeholder={property.playSpeed.placeholder} maxLength="8"
-              value={property.playSpeed.value}
+            <input type="text" className="form-control" maxLength="8" value={property.playSpeed}
               onChange={event => this.onChange('playSpeed', event)} />
-            <span className={prompt.playSpeed ? 'prompt ' : 'prompt hidden'}><FormattedMessage id="mediaPublish.check"/></span>
+            <span className={prompt.playSpeed ? 'prompt ' : 'prompt hidden'}>
+              <FormattedMessage id="mediaPublish.check"/></span>
           </div>
         </div>
       </div>
       <div className="row">
-        <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply'); }}><FormattedMessage id="mediaPublish.apply"/></button>
-        <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerPicAssetClick('reset'); }}><FormattedMessage id="mediaPublish.reset"/></button>
+        <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply'); }}>
+          <FormattedMessage id="mediaPublish.apply"/></button>
+        <button className="btn btn-gray margin-right-1 pull-right" 
+          onClick={() => { this.playerPicAssetClick('reset'); }}><FormattedMessage id="mediaPublish.reset"/></button>
       </div>
     </div>;
   }
