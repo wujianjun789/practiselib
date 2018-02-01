@@ -1,178 +1,210 @@
-import React,{ PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { numbersValid } from '../../util/index';
 import moment from 'moment';
 import { TimePicker } from 'antd';
-import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
-class PlayerPicAsset extends PureComponent{
-    constructor(props){
-        super(props);
-        this.state = {
-            //计划
-            property:{
-                //视频素材
-                assetName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), value: "" },
-                playTimes: { key: "playTimes", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), value: "" },
-                playType: { key: "playType", title: this.props.intl.formatMessage({id:'mediaPublish.playType'}), list: [{ id: 1, name: '片段播放' }, { id: 2, name: '完整播放' }], index: 0, name: "片段播放" },
-                clipsRage: { key: "clipsRage", title: this.props.intl.formatMessage({id:'mediaPublish.fragmentRange'}), clipsRage1: moment('00:00:00', 'HH:mm:ss'), clipsRage2: moment('00:00:00', 'HH:mm:ss') },
-                scaling: { key: "scaling", title: this.props.intl.formatMessage({id:'mediaPublish.scalingRatio'}), list: [{ id: 1, name: '铺满' }, { id: 2, name: '原始比例' }, { id: 3, name: '4:3' }, { id: 4, name: '5:4' }, { id: 5, name: '16.9' }], index: 0, name: "铺满" },
-                volume: {
-                    key: "volume", title: this.props.intl.formatMessage({id:'mediaPublish.volume'}), list: [{ id: 1, name: '100' }, { id: 2, name: '90' }, { id: 3, name: '80' },
-                    { id: 4, name: '70' }, { id: 5, name: '60' }, { id: 6, name: '50' }, { id: 7, name: '40' }, { id: 8, name: '30' }, { id: 9, name: '20' }, { id: 10, name: '10' }, { id: 11, name: '11' }], index: 0, name: "100"
-                },
-            },
-            prompt:{
-                //计划
-                playTimes: true, clipsRage: true,
-            }
-        }
-        this.onChange = this.onChange.bind(this);
-        this.playerVideoAssetClick = this.playerVideoAssetClick.bind(this);
-    }
+import {FormattedMessage, injectIntl} from 'react-intl';
+import {getItembyId} from '../../api/mediaPublish';
 
-    componentWillMount(){
-        this.initData();
-    }
+class PlayerPicAsset extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      //计划
+      property:{
+        //视频素材
+        assetName: '',
+        playTimes: '',
+        playType: '',
+        playTimeBegin: moment('00:00:00', 'HH:mm:ss'),
+        playTimeEnd: moment('00:00:00', 'HH:mm:ss'),
+        scale: '',
+        volume: '',
+      },
+      prompt:{
+        //计划
+        playTimes: false, clipsRage: false,
+      },
+    };
+    this.playTypeList = [
+      { value: 1, title: '片段播放' }, { value: 0, title: '完整播放' },
+    ];
+    this.scaleList = [
+      { value: 0, title: '铺满' }, { value: 1, title: '原始比例' }, { value: 2, title: '4:3' },
+      { value: 3, title: '5:4' }, { value: 4, title: '16:9' },
+    ];
+    this.volumeList = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+    //   { id: 1, name: '100' }, { id: 2, name: '90' }, { id: 3, name: '80' }, { id: 4, name: '70' }, 
+    //   { id: 5, name: '60' }, { id: 6, name: '50' }, { id: 7, name: '40' }, { id: 8, name: '30' }, 
+    //   { id: 9, name: '20' }, { id: 10, name: '10' }, { id: 11, name: '0' },
+    ];
+  }
 
-    initData(){
-        // getVideoAsset((data)=>{
-        //     this.setState({})
-        // })
+  componentWillMount() {
+    this.requestItem();
+  }
+  componentDidUpdate() {
+    const {data} = this.props;
+    if (data.id !== this.state.id) {
+      this.setState({id: data.id}, () => {this.requestItem();});
     }
+        
+  }
 
-    onChange(id, value) {
-        console.log("id:", id);
-        let prompt = false;        
-        if(id == "playTimes"){
-            const val = value.target.value;
-            if (!numbersValid(val)) {
-                prompt = true;
-            }
-    
-            this.setState({
-                property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: val }) }),
-                prompt: Object.assign({}, this.state.prompt, { [id]: prompt })
-            })
-        }
-        else if(id == "clipsRage1" || id == "clipsRage2") {
-            prompt = !value;
-            this.setState({
-                property: Object.assign({}, this.state.property, { clipsRage: Object.assign({}, this.state.property.clipsRage, { [id]: value }) }),
-                prompt: Object.assign({}, this.state.prompt, { clipsRage: prompt })
-            })
-            
-        }
-        else{
-            const curIndex = value.target.selectedIndex;
-            this.setState({
-                property: Object.assign({}, this.state.property, {
-                    [id]: Object.assign({}, this.state.property[id], {
-                        index: curIndex,
-                        name: this.state.property[id].list[curIndex].name
-                    })
-                })
-            })
-        }
+  requestItem=() => {
+    const {projectId, planId, sceneId, areaId, data} = this.props;
+    let {property} = this.state;
+    property.assetName = data.name;
+    getItembyId(projectId, planId, sceneId, areaId, data.id, 4, (res) => {
+      this.data = res;
+      property.playTimes = res.playTimes ? res.playTimes : '';
+      property.playType = res.playType ? res.inTransition.playType : this.playTypeList[0].value;
+      property.playTimeBegin = res.playTimeBegin ? this.initTime(res.playTimeBegin) : moment('00:00:00', 'HH:mm:ss');
+      property.playTimeEnd = res.playTimeEnd ? this.initTime(res.playTimeEnd) : moment('00:00:00', 'HH:mm:ss');
+      property.scale = res.scale ? res.scale : this.scaleList[0].value;
+      property.volume = res.volume ? res.volume : this.volumeList[0];
+      this.setState({property:Object.assign({}, property)});
+    });
+  }
+
+  initTime=(data) => {
+    return moment.utc(moment(data));
+  }
+
+  getTime=(data) => {
+    return data.hour() * 60 * 60 * 1000 + data.minute() * 60 * 1000 + data.second() * 1000;
+  }
+
+  onChange=(id, e) => {
+    let prompt = false;
+    const val = e.target.value;
+    if (id == 'playTimes') {
+      if (!numbersValid(val)) {
+        prompt = true;
+        this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});
+      }
     }
+    this.setState({property: Object.assign({}, this.state.property, {[id]: val})});
+  }
 
-    playerVideoAssetClick(id) {
-        const { playTimes, playType, clipsRage, scaling, volume } = this.state.property;
-        switch (id) {
-            case "apply":
-                break;
-            case "reset":
-                this.initData()
-                break;
-        }
+  timeChange=(id, value) => {
+    this.setState({property: Object.assign({}, this.state.property, {[id]: value})}, () => {
+      const {playTimeBegin, playTimeEnd} = this.state.property;  
+      let prompt = (playTimeBegin && playTimeEnd) && playTimeEnd.isBefore(playTimeBegin);                  
+      this.setState({prompt:Object.assign({}, this.state.prompt, {clipsRage:prompt})});
+    });
+  }
+
+  playerVideoAssetClick=(id) => {
+    const { playTimes, playType, playTimeBegin, playTimeEnd, scale} = this.state.property;
+    switch (id) {
+    case 'apply': {
+      this.data.playType = playType;
+      this.data.playTimes = playTimes;
+      this.data.playTimeBegin = this.getTime(playTimeBegin);
+      this.data.playTimeEnd = this.getTime(playTimeEnd);
+      this.data.scale = scale;
+      this.props.applyClick && this.props.applyClick(this.data);
+      break;
     }
+    case 'reset': 
+      this.requestItem();
+      break;
+    default:
+      break;
+    }
+  }
 
-    render(){
-        const {property, prompt} = this.state;
-        return <div className="pro-container playerVideoAsset">
-            <div className="row">
-                <div className="form-group">
-                    <label className="control-label">{property.assetName.title}</label>
-                    <div className="input-container input-w-1">
-                        <input type="text" className="form-control" disabled="disabled"
-                            value={property.assetName.value} />
-                    </div>
-                </div>
-            </div>          
-            <div className="row">
-                <div className="form-group">
-                    <label className="control-label">{property.playTimes.title}</label>
-                    <div className="input-container input-w-2">
-                        <input type="text" className="form-control"
-                            placeholder={property.playTimes.placeholder} maxLength="8"
-                            value={property.playTimes.value}
-                            onChange={event => this.onChange("playTimes", event)} />
-                        <span className={prompt.playTimes ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
-                    </div>
-                </div>
-                <div className="form-group pull-right">
-                    <label className="control-label">{property.scaling.title}</label>
-                    <div className="input-container input-w-2">
-                        <select className="form-control" value={property.scaling.name}
-                            onChange={event => this.onChange("scaling", event)}>
-                            {
-                                property.scaling.list.map((option, index) => {
-                                    let value = option.name;
-                                    return <option key={index} value={value}>
-                                        {value}
-                                    </option>
-                                })}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="form-group">
-                    <label className="control-label">{property.playType.title}</label>
-                    <div className="input-container input-w-2">
-                        <select className="form-control" value={property.playType.name}
-                            onChange={event => this.onChange("playType", event)}>
-                            {
-                                property.playType.list.map((option, index) => {
-                                    let value = option.name;
-                                    return <option key={index} value={value}>
-                                        {value}
-                                    </option>
-                                })}
-                        </select>
-                    </div>
-                </div>
-                <div className="form-group pull-right clipsRage">
-                    <label className="control-label">{property.clipsRage.title}</label>
-                    <div className="input-container input-w-2">
-                        <TimePicker disabled={property.playType.name == "完整播放"?true:false} size="large" onChange={value => this.onChange("clipsRage1", value)} value={property.clipsRage.clipsRage1} />
-                        <span className="text"><FormattedMessage id='mediaPublish.to'/></span>
-                        <TimePicker disabled={property.playType.name == "完整播放"?true:false} size="large" onChange={value => this.onChange("clipsRage2", value)} value={property.clipsRage.clipsRage2} />
-                        <span className={prompt.clipsRage ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check'/></span>
-                    </div>
-                </div>
-            </div> 
-            <div className="row">
-                <div className="form-group pull-right">
-                    <label className="control-label">{property.volume.title}</label>
-                    <div className="input-container input-w-2">
-                        <select className="form-control" value={property.volume.name}
-                            onChange={event => this.onChange("volume", event)}>
-                            {
-                                property.volume.list.map((option, index) => {
-                                    let value = option.name;
-                                    return <option key={index} value={value}>
-                                        {value}
-                                    </option>
-                                })}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply') }}><FormattedMessage id='mediaPublish.apply'/></button>
-                <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerVideoAssetClick('reset') }}><FormattedMessage id='mediaPublish.reset'/></button>
-            </div>
+
+  render() {
+    const {property, prompt} = this.state;
+    return <div className="pro-container playerVideoAsset">
+      <div className="row">
+        <div className="form-group">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.materialName'})}</label>
+          <div className="input-container input-w-1">
+            <input type="text" className="form-control" disabled="disabled"
+              value={property.assetName} />
+          </div>
         </div>
-    }
+      </div>          
+      <div className="row">
+        <div className="form-group">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'})}</label>
+          <div className="input-container input-w-2">
+            <input type="text" className="form-control" maxLength="8"
+              value={property.playTimes} onChange={event => this.onChange('playTimes', event)} />
+            <span className={prompt.playTimes ? 'prompt ' : 'prompt hidden'}>
+              <FormattedMessage id="mediaPublish.check"/></span>
+          </div>
+        </div>
+        <div className="form-group pull-right">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.scalingRatio'})}</label>
+          <div className="input-container input-w-2">
+            <select className="form-control" value={property.scale}
+              onChange={event => this.onChange('scale', event)}>
+              {
+                this.scaleList.map((option, index) => {
+                  return <option key={index} value={option.value}>
+                    {option.title}
+                  </option>;
+                })}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="form-group">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.playType'})}</label>
+          <div className="input-container input-w-2">
+            <select className="form-control" value={property.playType}
+              onChange={event => this.onChange('playType', event)}>
+              {
+                this.playTypeList.map((option, index) => {
+                  return <option key={index} value={option.value}>
+                    {option.title}
+                  </option>;
+                })}
+            </select>
+          </div>
+        </div>
+        <div className="form-group pull-right clipsRage">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.fragmentRange'})}</label>
+          <div className="input-container input-w-2">
+            <TimePicker disabled={property.playType == '0'} size="large" 
+              onChange={value => this.timeChange('playTimeBegin', value)} value={property.playTimeBegin} />
+            <span className="text"><FormattedMessage id="mediaPublish.to"/></span>
+            <TimePicker disabled={property.playType == '0'} size="large" 
+              onChange={value => this.timeChange('playTimeEnd', value)} value={property.playTimeEnd} />
+            <span className={prompt.clipsRage ? 'prompt ' : 'prompt hidden'}>
+              <FormattedMessage id="mediaPublish.check"/></span>
+          </div>
+        </div>
+      </div> 
+      <div className="row">
+        <div className="form-group pull-right">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.volume'})}</label>
+          <div className="input-container input-w-2">
+            <select className="form-control" value={property.volume}
+              onChange={event => this.onChange('volume', event)}>
+              {
+                this.volumeList.map((option, index) => {
+                  return <option key={index} value={option}>
+                    {option}
+                  </option>;
+                })}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply'); }}>
+          <FormattedMessage id="mediaPublish.apply"/></button>
+        <button className="btn btn-gray margin-right-1 pull-right" 
+          onClick={() => { this.playerVideoAssetClick('reset'); }}>
+          <FormattedMessage id="mediaPublish.reset"/></button>
+      </div>
+    </div>;
+  }
 }
 
-export default injectIntl(PlayerPicAsset)
+export default injectIntl(PlayerPicAsset);
