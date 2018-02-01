@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import ColorPicker from '../../components/ColorPicker'
+import reactCSS from 'reactcss'
+import { SketchPicker } from 'react-color'
 import { FormattedMessage, injectIntl, FormattedDate } from 'react-intl';
 import { getItembyId } from '../../api/mediaPublish'
 import { numbersValid } from '../../util/index'
@@ -11,26 +12,12 @@ class PlayerText extends Component {
         fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '微软雅黑' }, { id: 1, name: '宋体' }, { id: 2, name: 'serif' }, { id: 3, name: 'monospace' }], index: 0 },
         fontColor: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.fontColor' }),
-            // value: {
-            //     'red': 10,
-            //     'green': 100,
-            //     'blue': 278,
-            //     'amber': 0,
-            //     'alpha': 0
-            // }
-            value: '#456'
+            value: { r: 241, g: 112, b: 19, a: 1, },
         },
         fontSize: { title: this.props.intl.formatMessage({ id: 'mediaPublish.fontSize' }), list: [{ id: 0, name: '12pt' }, { id: 1, name: '13pt' }, { id: 2, name: '14pt' }, { id: 3, name: '15pt' }, { id: 4, name: '16pt' },], index: 0 },
         bgColor: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.bgColor' }),
-            // value: {
-            //     'red': 10,
-            //     'green': 100,
-            //     'blue': 278,
-            //     'amber': 0,
-            //     'alpha': 0
-            // }
-            value: '#678'
+            value: { r: 241, g: 112, b: 19, a: 1, },
         },
         bgTransparent: { title: this.props.intl.formatMessage({ id: 'mediaPublish.bgTransparent' }), value: false },
         alignment: {
@@ -57,6 +44,8 @@ class PlayerText extends Component {
         playSpeed: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playSpeed' }), placeholder: '秒', value: '' },
         rowSpace: { title: this.props.intl.formatMessage({ id: 'mediaPublish.lineSpacing' }), placeholder: 'pt', value: '' },
         charSpace: { title: this.props.intl.formatMessage({ id: 'mediaPublish.wordSpacing' }), placeholder: 'pt', value: '' },
+        showFontColor: false,
+        showBgColor: false,
     }
 
     componentDidMount() {
@@ -66,6 +55,7 @@ class PlayerText extends Component {
     initPlayerText = () => {
         const { projectId, sceneId, planId, areaId, data } = this.props;
         getItembyId(projectId, planId, sceneId, areaId, data.id, 0, res => {
+            this._data = res;
             const {
                 text,
                 font: { name, size },
@@ -82,27 +72,21 @@ class PlayerText extends Component {
                 text: { ...this.state.text, value: text },
                 fontType: { ...this.state.fontType, index: 0 },
                 fontColor: {
-                    ...this.state.fontColor,
-                    // value: {
-                    //     'red': 10,
-                    //     'green': 100,
-                    //     'blue': 278,
-                    //     'amber': 0,
-                    //     'alpha': 0
-                    // }
-                    value: '#456'
+                    ...this.state.fontColor, value: {
+                        r: fontColor.red,
+                        g: fontColor.green,
+                        b: fontColor.blue,
+                        a: fontColor.alpha
+                    }
                 },
                 fontSize: { ...this.state.fontSize, index: 0 },
                 bgColor: {
-                    ...this.state.bgColor,
-                    // value: {
-                    //     'red': 10,
-                    //     'green': 100,
-                    //     'blue': 278,
-                    //     'amber': 0,
-                    //     'alpha': 0
-                    // }
-                    value: '#678'
+                    ...this.state.bgColor, value: {
+                        r: color.red,
+                        g: color.green,
+                        b: color.blue,
+                        a: color.alpha
+                    }
                 },
                 bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },
                 alignment: { ...this.state.alignment, index: alignment },
@@ -114,12 +98,23 @@ class PlayerText extends Component {
             })
         })
     }
+    handleBgTransparent = (e) => {
+        this.setState({
+            bgTransparent: { ...this.state.bgTransparent, value: e.target.checked }
+        })
+    }
+    handleColorClick = (e) => {
+        this.setState({ [e.target.id]: !this.state[e.target.id] })
+    }
+    handleColorHide = (e) => {
+        this.setState({ [e.target.id]: false })
+    }
     onChange = (type, e) => {
         switch (type) {
             case 'fontColor':
             case 'bgColor': {
                 this.setState({
-                    [type]: { ...this.state[type], value: e }
+                    [type]: { ...this.state[type], value: e.rgb }
                 })
                 break;
             }
@@ -147,47 +142,122 @@ class PlayerText extends Component {
                 break;
         }
     }
-    handleBgTransparent = (e) => {
-        // e.stopPropagation();
-        this.setState({
-            bgTransparent: { ...this.state.bgTransparent, value: e.target.checked }
-        })
-    }
-    handleBtnClick = (type) => {
+    handleSubmit = (type) => {
+        const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent,
+            alignment, playDuration, animation, playSpeed, rowSpace, charSpace, } = this.state;
         switch (type) {
             case 'apply':
-                console.log('点击应用');
+                let _data = {
+                    "baseInfo": {
+                        "id": 1,
+                        "type": 0,
+                        "file": "简单文本",
+                        "playDuration": 0,
+                        "logFlag": 0,
+                        "materialId": "simpleText"
+                    },
+                    "text": "string",
+                    "background": {
+                        "transparent": 0,
+                        "picture": "string",
+                        "picAlignment": 0,
+                        "color": {
+                            "red": 0,
+                            "green": 0,
+                            "blue": 0,
+                            "amber": 0,
+                            "alpha": 0
+                        },
+                        "colorKey": {
+                            "red": 0,
+                            "green": 0,
+                            "blue": 0,
+                            "amber": 0,
+                            "alpha": 0
+                        },
+                        "materialId": ""
+                    },
+                    "alignment": 0,
+                    "charSpace": 0,
+                    "rowSpace": 0,
+                    "fontColor": {
+                        "red": 0,
+                        "green": 0,
+                        "blue": 0,
+                        "amber": 0,
+                        "alpha": 0
+                    },
+                    "font": {
+                        "name": "string",
+                        "size": 0,
+                        "bold": true,
+                        "italic": false,
+                        "underline": true,
+                        "strikeout": false
+                    },
+                    "inTransition": {
+                        "transition": 0,
+                        "speed": 0
+                    }
+                }
+                const { baseInfo, background, font } = this._data
+                const data = Object.assign({}, this._data, {
+                    baseInfo: {
+                        ...baseInfo,
+                        playDuration: playDuration.value
+                    },
+                    text: text.value,
+                    background: {
+                        ...background,
+                        transparent: bgTransparent.value,
+                        color: {
+                            red: bgColor.value.r,
+                            greeen: bgColor.value.g,
+                            blue: bgColor.value.b,
+                            amber: 0,
+                            alpha: bgColor.value.a
+                        },
+                        colorKey: {
+                            red: bgColor.value.r,
+                            greeen: bgColor.value.g,
+                            blue: bgColor.value.b,
+                            amber: 0,
+                            alpha: bgColor.value.a
+                        }
+                    },
+                    alignment: alignment.list[alignment.index].name,
+                    charSpace: charSpace.value,
+                    rowSpace: rowSpace.value,
+                    fontColor: {
+                        red: fontColor.value.r,
+                        greeen: fontColor.value.g,
+                        blue: fontColor.value.b,
+                        amber: 0,
+                        alpha: fontColor.value.a
+                    },
+                    font: {
+                        ...font,
+                        name: fontType.list[fontType.index].name,
+                        size: fontSize.list[fontSize.index].name,
+                    },
+                    inTransition: {
+                        transition: animation.list[animation.index].name,
+                        speed: playSpeed.value
+                    }
+                })
+                console.log(data)
+                this.props.applyClick && this.props.applyClick(data);
+                //after apply
+                // this.initPlayerText()
                 break;
             case 'reset':
-                const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent,
-                    alignment, playDuration, animation, playSpeed, rowSpace, charSpace, } = this.state;
                 this.setState({
                     name: { ...name, value: '' },
                     text: { ...text, value: '' },
                     fontType: { ...fontType, index: 0 },
-                    fontColor: {
-                        ...fontColor,
-                        // value: {
-                        //     'red': 10,
-                        //     'green': 100,
-                        //     'blue': 278,
-                        //     'amber': 0,
-                        //     'alpha': 0
-                        // }
-                        value: '#456'
-                    },
+                    fontColor: { ...fontColor, value: { r: 241, g: 112, b: 19, a: 1, }, },
                     fontSize: { ...fontSize, index: 0 },
-                    bgColor: {
-                        ...bgColor,
-                        // value: {
-                        //     'red': 10,
-                        //     'green': 100,
-                        //     'blue': 278,
-                        //     'amber': 0,
-                        //     'alpha': 0
-                        // }
-                        value: '#678'
-                    },
+                    bgColor: { ...bgColor, value: { r: 241, g: 112, b: 19, a: 1, }, },
                     bgTransparent: { ...bgTransparent, value: false },
                     alignment: { ...alignment, index: 0 },
                     playDuration: { ...playDuration, value: '' },
@@ -199,9 +269,47 @@ class PlayerText extends Component {
                 break;
         }
     }
+
     render() {
         const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent,
-            alignment, playDuration, animation, playSpeed, rowSpace, charSpace, } = this.state;
+            alignment, playDuration, animation, playSpeed, rowSpace, charSpace, showFontColor, showBgColor } = this.state;
+        const styles = reactCSS({
+            'default': {
+                fontColor: {
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '2px',
+                    background: `rgba(${fontColor.value.r}, ${fontColor.value.g}, ${fontColor.value.b}, ${fontColor.value.a})`,
+                },
+                bgColor: {
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '2px',
+                    background: `rgba(${bgColor.value.r}, ${bgColor.value.g}, ${bgColor.value.b}, ${bgColor.value.a})`,
+                },
+                swatch: {
+                    // padding: '5px',
+                    background: '#fff',
+                    borderRadius: '1px',
+                    boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                    display: 'inline-block',
+                    cursor: 'pointer',
+                },
+                popover: {
+                    position: 'absolute',
+                    zIndex: '2',
+                    top: '40px',
+                    left: '-204px'
+                },
+                cover: {
+                    position: 'fixed',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                },
+            },
+        });
         return (
             <div class='pro-container playerText'>
                 <div class='row'>
@@ -237,7 +345,13 @@ class PlayerText extends Component {
                     <div class='form-group'>
                         <label>{fontColor.title}</label>
                         <div class='input-container'>
-                            <ColorPicker onChange={value => this.onChange('fontColor', value)} value={fontColor.value} />
+                            <div style={styles.swatch} >
+                                <div id='showFontColor' style={styles.fontColor} onClick={this.handleColorClick} />
+                            </div>
+                            {showFontColor ? <div style={styles.popover}>
+                                <div id='showFontColor' style={styles.cover} onClick={this.handleColorHide} />
+                                <SketchPicker color={fontColor.value} onChange={e => this.onChange('fontColor', e)} />
+                            </div> : null}
                         </div>
                     </div>
                 </div>
@@ -258,7 +372,13 @@ class PlayerText extends Component {
                     <div class='form-group'>
                         <label>{bgColor.title}</label>
                         <div class='input-container'>
-                            <ColorPicker onChange={value => this.onChange('bgColor', value)} value={bgColor.value} />
+                            <div style={styles.swatch} >
+                                <div id='showBgColor' style={styles.bgColor} onClick={this.handleColorClick} />
+                            </div>
+                            {showBgColor ? <div style={styles.popover}>
+                                <div id='showBgColor' style={styles.cover} onClick={this.handleColorHide} />
+                                <SketchPicker color={bgColor.value} onChange={e => this.onChange('bgColor', e)} />
+                            </div> : null}
                         </div>
                     </div>
                     <div class='form-group'>
@@ -340,8 +460,8 @@ class PlayerText extends Component {
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn btn-primary pull-right" onClick={() => { this.handleBtnClick('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
-                    <button class="btn btn-gray pull-right margin-right-1" onClick={() => { this.handleBtnClick('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
+                    <button class="btn btn-primary pull-right" onClick={() => { this.handleSubmit('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
+                    <button class="btn btn-gray pull-right margin-right-1" onClick={() => { this.handleSubmit('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
                 </div>
             </div>
         )
