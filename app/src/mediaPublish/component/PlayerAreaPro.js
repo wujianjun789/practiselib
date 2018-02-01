@@ -82,7 +82,7 @@ class PlayerAreaPro extends PureComponent {
         this.init();
     }
 
-    componwntWillUnmount() {
+    componentWillUnmount() {
         this.mounted = false;
     }
 
@@ -94,7 +94,7 @@ class PlayerAreaPro extends PureComponent {
 
         if(projectId && parentId && parentParentId && data.id && (typeof data.id == "number" || data.id.indexOf("area&&") < 0)){
             getZoneById(projectId, parentParentId, parentId, data.id, data=> {
-                this.mounted && this.initProperty(data)
+                this.mounted && this.initProperty(data);
             });
         }else if(typeof data.id == 'string' && data.id.indexOf("area&&")>-1){
             this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
@@ -104,6 +104,10 @@ class PlayerAreaPro extends PureComponent {
     }
 
     initProperty(data) {
+        if(!this.mounted){
+            return false;
+        }
+
         const playEndList = this.state.property.playEnd.list;
         const playEndIndex = lodash.findIndex(playEndList, item=> {
             return item.type = data.lastFrame;

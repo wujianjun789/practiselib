@@ -446,3 +446,80 @@ export function IsSystemFile(type){
 
     return false;
 }
+
+export function getTitleByType(curType, formatIntl) {
+    switch (curType) {
+        case "cyclePlan":
+            return ` (${formatIntl('mediaPublish.cyclePlayPlan')})`;
+        case "timingPlan":
+            return ` (${formatIntl('mediaPublish.timingPlayPlan')})`;
+    }
+
+    return "";
+}
+
+export function getPropertyTypeByNodeType(node) {
+    let type = 'playerScene';
+    switch (node.type) {
+        case "scene":
+            type = 'playerScene';
+            break;
+        case 'plan':
+            type = 'playerPlan';
+            break;
+        case 'plan2':
+            type = 'cyclePlan';
+            break;
+        case 'plan3':
+            type = 'timingPlan';
+            break;
+        case 'area':
+            type = 'playerArea';
+            break;
+    }
+
+    return type;
+}
+
+export function getTipByType(curType) {
+    let tips = "是否删除选中场景与场景中所有内容";
+    switch (this.state.curType) {
+        case "playerPlan":
+            tips = "是否删除选中计划与计划中所有内容";
+            break;
+        case "playerScene":
+            tips = "是否删除选中场景与场景中所有内容";
+            break;
+        case "playerArea":
+            tips = "是否删除选中区域与区域中所有内容";
+            break;
+    }
+
+    return tips;
+}
+
+export function getInitData(type, name) {
+   let data =  {
+        "id": type+"&&" + parseInt(Math.random() * 999),
+        "type": type,
+        "name": name,
+        "active": true,
+        "level": type=='scene'?2:3
+    };
+    
+    if(type == 'scene'){
+        data = Object.assign({}, data, {toggled:false, children:[]})
+    }
+    return data;
+}
+
+export function getActiveItem(assetList) {
+    let addList = [];
+    assetList.get('list').map(item => {
+        if (item.get('active')) {
+            addList.push(item);
+        }
+    })
+
+    return addList;
+}
