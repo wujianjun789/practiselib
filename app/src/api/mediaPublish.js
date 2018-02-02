@@ -12,6 +12,9 @@ import { HeadBar } from '../components/HeadBar';
 export function uploadMaterialFile(list, index) {
   const currentXhr = list[index].xhr;
   const data = list[index].form;
+  console.log('formdata',data.get('name'))
+  console.log('formdata',data.get('file'))
+  console.log('formdata',data.get('type'))
   currentXhr.open('POST', UPLOAD_IP, true);
   currentXhr.send(data);
 }

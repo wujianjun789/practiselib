@@ -158,6 +158,7 @@ export class PlayerArea extends Component {
         total: 2,
       }),
 
+      //上传文件模块字段
       showModal: false,
       showUploadNotify: false,
       showUploadFile: false,
@@ -236,10 +237,7 @@ export class PlayerArea extends Component {
     const list = this.state.uploadFileList;
     list.map((item) => {
       if (item !== undefined) {
-        item.xhr.upload.removeEventListener('progress', this.uploadProgress);
-        item.xhr.removeEventListener('load', this.uploadComplete);
-        item.xhr.removeEventListener('error', this.uploadFailed);
-        item.xhr.removeEventListener('abort', this.uploadCanceled);
+        this.cancelXhr(item.xhr)
       }
     });
   }
