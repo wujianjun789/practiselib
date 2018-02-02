@@ -350,6 +350,7 @@ export default class LightStatistics extends Component {
         wrapper: ref,
         data: data,
         width: boxLeftwidth,
+        height:'170',        
       });
       this.piechart && this.state.piechartList.push(this.piechart);
     }
