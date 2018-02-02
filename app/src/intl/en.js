@@ -254,6 +254,11 @@ export default {
     'sysOperation.alarm.person':'Handle person',
     'sysOperation.alarm.handle.time':'Handle time',
     'sysOperation.alarm.statistical.info':'Alarm statistical info',
+    'sysOperation.alarm.count.deadly':'Deadly',
+    'sysOperation.alarm.count.serious':'Serious',
+    'sysOperation.alarm.count.general':'General',
+    'sysOperation.alarm.count.hint':'Hint',
+    'sysOperation.alarm.noCount':'No count',
 
     //智慧路灯
     'app.search.placeholder.name': 'Search name or domain',

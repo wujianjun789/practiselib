@@ -16,6 +16,7 @@ import {injectIntl} from 'react-intl';
 import {getChildDomainList} from '../../api/domain';
 import { DatePicker} from 'antd';
 import moment from 'moment';
+import PieChart from '../../lightManage/utils/pieChart';
 
 export class Alarm extends Component {
   constructor(props) {
@@ -53,7 +54,13 @@ export class Alarm extends Component {
         options: [],
       },
       start:moment(),
-      end:moment(),      
+      end:moment(),
+      statisticalInfo:{
+        deadly:50,
+        serious:30,
+        general:10,
+        hint:10,
+      },
     };
 
     this.columns = [
@@ -123,6 +130,10 @@ export class Alarm extends Component {
 
   componentDidMount() {}
 
+  formatIntl=(formatId) => {
+    const {intl} = this.props;
+    return intl ? intl.formatMessage({id:formatId}) : null;
+  }
 
   initDomainList=(data) => {
     let domainList = Object.assign({}, this.state.domainList, {index: 0},
@@ -175,8 +186,28 @@ export class Alarm extends Component {
     });
   }
 
+  drawChart=(ref) => {
+    if (ref == null) {
+      this.piechart.destroy();
+    } else {
+      const {statisticalInfo} = this.state;
+      let data = [
+        statisticalInfo.deadly,
+        statisticalInfo.serious,
+        statisticalInfo.general,
+        statisticalInfo.hint,
+      ];
+      this.piechart = new PieChart({
+        wrapper: ref,
+        data: data,
+        color:['#F83D59', '#FA919C', '#FA9E17', '#FBEF35'],
+      });
+    }
+  }
+
   render() {
-    const {collapse, infoCollapse, page, data, domainList, paramList, levelList, start, end} = this.state;
+    const {collapse, infoCollapse, page, data, domainList, paramList, levelList, start, end, statisticalInfo}
+     = this.state;
     return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
       <div className="heading">
         <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField} 
@@ -187,10 +218,10 @@ export class Alarm extends Component {
         <Select id="level" titleField={levelList.valueField} valueField={levelList.valueField}
           options={levelList.options} value={levelList.value} onChange={(e) => {this.selectChange(e, 'levelList');}}/>
         <div className="datePicker">
-          <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: '100px' }}
+          <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: '106px' }}
             defaultValue={start} value={start} onChange={value => this.dateChange('start', value)} />
           <span>-</span>
-          <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: '100px' }}
+          <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: '106px' }}
             defaultValue={end} value={end} onChange={value => this.dateChange('end', value)} />
         </div>
         <div className="button-group">
@@ -214,8 +245,31 @@ export class Alarm extends Component {
             <span className="icon icon_collapse pull-right"></span>      
           </div>
           <div className={'panel-body' + (infoCollapse ? 'collapsed' : '')}>
-            <div className="left"></div>
-            <div className="right"></div>
+            <div className="left">
+              <div id="alarm" className="circle" ref={this.drawChart}></div>
+            </div>
+            <div className="right">
+              <div className="count deadly">
+                <div className="dot"></div>
+                {this.formatIntl('sysOperation.alarm.count.deadly')} :  { statisticalInfo.deadly ?
+                  statisticalInfo.deadly : this.formatIntl('sysOperation.alarm.noCount')}
+              </div>
+              <div className="count serious">
+                <div className="dot"></div>
+                {this.formatIntl('sysOperation.alarm.count.serious')} :  {statisticalInfo.serious ?
+                  statisticalInfo.serious : this.formatIntl('sysOperation.alarm.noCount')}
+              </div>
+              <div className="count general">
+                <div className="dot"></div>
+                {this.formatIntl('sysOperation.alarm.count.general') } :  { statisticalInfo.general ?
+                  statisticalInfo.general : this.formatIntl('sysOperation.alarm.noCount')}
+              </div>
+              <div className="count hint">
+                <div className="dot"></div>
+                {this.formatIntl('sysOperation.alarm.count.hint') } :  {statisticalInfo.hint ?
+                  statisticalInfo.hint : this.formatIntl('sysOperation.alarm.noCount')}
+              </div>
+            </div>
           </div>
         </div>
       </SideBarInfo>
