@@ -16,49 +16,49 @@ import VirtualClock from '../component/VirtualClock';
 import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 const RenderPropertyPanel = (props)=>{
-    const {curType, project, parentParentNode, parentNode, curNode, playerListAsset} = props;
+    const {curType, project, parentParentNode, parentNode, curNode, playerListAsset, actions, applyClick} = props;
     if(!project || !parentParentNode || !parentNode || !curNode){
         return <div>server no response</div>
     }
 
     switch(curType) {
         case 'playerProject':
-            return <PlayerProject data={project} applyClick={data=>{this.applyClick('playerProject', data)}}/>;
+            return <PlayerProject data={project} applyClick={data=>{applyClick('playerProject', data)}}/>;
         case 'playerPlan':
             return <PlayerPlan projectId={project.id} data={curNode}
-                               applyClick={data=>{this.applyClick('playerPlan', data)}}/>;
+                               applyClick={data=>{applyClick('playerPlan', data)}}/>;
         case 'playerScene':
             return <PlayerScene projectId={project.id} parentId={parentNode.id} data={curNode}
-                                applyClick={data=>{this.applyClick('playerScene', data)}}/>;
+                                applyClick={data=>{applyClick('playerScene', data)}}/>;
         case 'playerArea':
             return <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id}
-                                  data={curNode} applyClick={data=>{this.applyClick('playerAreaPro', data)}}/>;
+                                  data={curNode} applyClick={data=>{applyClick('playerAreaPro', data)}}/>;
         case 'cyclePlan':
             return <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id}
                               parentParentId={parentParentNode.id} data={curNode}/>;
         case 'timingPlan':
-            return <TimingPlan actions={this.props.actions} projectId={project.id} parentId={parentNode.id}
+            return <TimingPlan actions={actions} projectId={project.id} parentId={parentNode.id}
                                parentParentId={parentParentNode.id} data={curNode}/>
         case 'playerPicAsset':
             return <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
                                    areaId={curNode.id}
                                    data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                   applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>;
+                                   applyClick={data=>{applyClick('playerPicAsset', data)}}/>;
         case 'playerVideoAsset':
             return <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
                                      areaId={curNode.id}
                                      data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                     applyClick={data=>{this.applyClick('playerPicAsset', data)}}/>
+                                     applyClick={data=>{applyClick('playerPicAsset', data)}}/>
         case 'playerText':
             return <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
                                areaId={curNode.id}
                                data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                               applyClick={data=>{this.applyClick('playerText', data)}}/>
+                               applyClick={data=>{applyClick('playerText', data)}}/>
         case 'digitalClock':
             return <DigitalClock projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
                                  areaId={curNode.id}
                                  data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
-                                 applyClick={data=>{this.applyClick('digitalClock', data)}}/>
+                                 applyClick={data=>{applyClick('digitalClock', data)}}/>
         case 'virtualClock':
             return <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id}
                                  areaId={curNode.id}

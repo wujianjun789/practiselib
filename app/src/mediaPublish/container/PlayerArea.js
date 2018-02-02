@@ -1229,7 +1229,8 @@ export class PlayerArea extends Component {
                 'glyphicon ' + (sidebarInfo.propertyCollapsed ? 'glyphicon-triangle-right' : 'glyphicon-triangle-bottom')}></span>{`${this.formatIntl('mediaPublish.property')}${add_title}`}
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-              <RenderPropertyPanel curType={curType} project={project} parentParentNode={parentParentNode} parentNode={parentNode} curNode={curNode} playerListAsset={playerListAsset}/>
+              <RenderPropertyPanel curType={curType} project={project} parentParentNode={parentParentNode} parentNode={parentNode} curNode={curNode} playerListAsset={playerListAsset}
+                                   actions={this.props.actions} applyClick={this.applyClick}/>
             </div>
           </div>
 
