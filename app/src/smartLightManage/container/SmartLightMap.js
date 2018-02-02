@@ -15,7 +15,7 @@ import NotifyPopup from '../../common/containers/NotifyPopup';
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 
 import Immutable from 'immutable';
-import {injectIntl} from 'react-intl'
+import {injectIntl} from 'react-intl';
 
 import {getMapConfig,getLightLevelConfig} from '../../util/network'
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain'
@@ -177,7 +177,7 @@ export class SmartLightMap extends Component{
     componentWillUnmount(){
         this.mounted = false;
         window.onresize = event=>{
-            this.setSize();
+            // this.setSize();
         }
 
         this.props.actions.removeAllNotify();
