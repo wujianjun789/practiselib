@@ -17,55 +17,55 @@ import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 const RenderPropertyPanel = (props)=>{
     const {curType, project, parentParentNode, parentNode, curNode, playerListAsset, actions, applyClick} = props;
-    if(!project || !parentParentNode || !parentNode || !curNode){
-        return <div>server no response</div>
-    }
+    // if(!project || !parentParentNode || !parentNode || !curNode){
+    //     return <div>server no response</div>
+    // }
 
     switch(curType) {
         case 'playerProject':
             return <PlayerProject data={project} applyClick={data=>{applyClick('playerProject', data)}}/>;
         case 'playerPlan':
-            return <PlayerPlan projectId={project.id} data={curNode}
+            return <PlayerPlan projectId={project?project.id:null} data={curNode}
                                applyClick={data=>{applyClick('playerPlan', data)}}/>;
         case 'playerScene':
-            return <PlayerScene projectId={project.id} parentId={parentNode.id} data={curNode}
+            return <PlayerScene projectId={project?project.id:null} parentId={parentNode?parentNode.id:null} data={curNode}
                                 applyClick={data=>{applyClick('playerScene', data)}}/>;
         case 'playerArea':
-            return <PlayerAreaPro projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id}
+            return <PlayerAreaPro projectId={project?project.id:null} parentId={parentNode?parentNode.id:null} parentParentId={parentParentNode?parentParentNode.id:null}
                                   data={curNode} applyClick={data=>{applyClick('playerAreaPro', data)}}/>;
         case 'cyclePlan':
-            return <CyclePlan pause={1} projectId={project.id} parentId={parentNode.id}
-                              parentParentId={parentParentNode.id} data={curNode}/>;
+            return <CyclePlan pause={1} projectId={project?project.id:null} parentId={parentNode?parentNode.id:null}
+                              parentParentId={parentParentNode?parentParentNode.id:null} data={curNode}/>;
         case 'timingPlan':
-            return <TimingPlan actions={actions} projectId={project.id} parentId={parentNode.id}
-                               parentParentId={parentParentNode.id} data={curNode}/>
+            return <TimingPlan actions={actions} projectId={project?project.id:null} parentId={parentNode?parentNode.id:null}
+                               parentParentId={parentParentNode?parentParentNode.id:null} data={curNode}/>
         case 'playerPicAsset':
-            return <PlayerPicAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
-                                   areaId={curNode.id}
+            return <PlayerPicAsset projectId={project?project.id:null} sceneId={parentNode?parentNode.id:null} planId={parentParentNode?parentParentNode.id:null}
+                                   areaId={curNode?curNode.id:null}
                                    data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                    applyClick={data=>{applyClick('playerPicAsset', data)}}/>;
         case 'playerVideoAsset':
-            return <PlayerVideoAsset projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
-                                     areaId={curNode.id}
+            return <PlayerVideoAsset projectId={project?project.id:null} sceneId={parentNode?parentNode.id:null} planId={parentParentNode?parentParentNode.id:null}
+                                     areaId={curNode?curNode.id:null}
                                      data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                      applyClick={data=>{applyClick('playerPicAsset', data)}}/>
         case 'playerText':
-            return <PlayerText projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
-                               areaId={curNode.id}
+            return <PlayerText projectId={project?project.id:null} sceneId={parentNode?parentNode.id:null} planId={parentParentNode?parentParentNode.id:null}
+                               areaId={curNode?curNode.id:null}
                                data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                applyClick={data=>{applyClick('playerText', data)}}/>
         case 'digitalClock':
-            return <DigitalClock projectId={project.id} sceneId={parentNode.id} planId={parentParentNode.id}
-                                 areaId={curNode.id}
+            return <DigitalClock projectId={project?project.id:null} sceneId={parentNode?parentNode.id:null} planId={parentParentNode?parentParentNode.id:null}
+                                 areaId={curNode?curNode.id:null}
                                  data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                  applyClick={data=>{applyClick('digitalClock', data)}}/>
         case 'virtualClock':
-            return <VirtualClock projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id}
-                                 areaId={curNode.id}
+            return <VirtualClock projectId={project?project.id:null} parentId={parentNode?parentNode.id:null} parentParentId={parentParentNode?parentParentNode.id:null}
+                                 areaId={curNode?curNode.id:null}
                                  data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>
         case 'playerTimeAsset':
-            return <PlayerTimeAsset projectId={project.id} parentId={parentNode.id} parentParentId={parentParentNode.id}
-                                    areaId={curNode.id}
+            return <PlayerTimeAsset projectId={project?project.id:null} parentId={parentNode?parentNode.id:null} parentParentId={parentParentNode?parentParentNode.id:null}
+                                    areaId={curNode?curNode.id:null}
                                     data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>;
     }
 }
