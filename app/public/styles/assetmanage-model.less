@@ -14,7 +14,7 @@
         margin-right: 10px;
       }
 
-      .property, .type, .param {
+      .property, .type, .param, .propertyTable {
         font-size: 14px;
         color: #333744;
 
@@ -41,7 +41,8 @@
       }
 
       .equipment {
-        width: 560px;
+        // width: 560px;
+        width: 80%;
         /*border: solid 1px #e6e6e6;*/
         text-align: center;
 
@@ -62,7 +63,7 @@
           }
 
           tr th:first-child{
-            width:200px;
+            // width:200px;
           }
         }
 
@@ -75,9 +76,32 @@
 
             height: 40px;
             line-height: 40px;
+
+            .icon_edit{
+              color: #8a8a8a;
+          
+            }
+            .edit{
+              color: gray;
+            }
+            .icon_delete{
+              color: #fa6262;
+            }
+            .delete{
+              color: #fa6262;
+            }
+            .btn:hover .update{color:#4a5064;}
+            .btn:hover .icon_edit{color:#4a5064;}
+            .btn:hover .del{color:red;}
+            .btn:hover .icon_delete{color:red;}
+            .btn {border: 0px solid transparent;}
+            span {
+              border-right: solid 0px;
+              margin-right: 10px;
+            }
           }
           tr td:first-child{
-            width:200px;
+            width:150px;
           }
         }
 
@@ -86,5 +110,71 @@
         }
       }
     }
+  }
+}
+
+
+
+/**设备型号添加、编辑弹出框*/
+/******************** type popup **************************/
+.type-popup{
+  // width: 700px;
+  width: 450px;
+  .form-group {
+      .control-label{
+          text-align: left;
+          padding-right: 0;
+          height: 40px;
+          line-height: 33px;
+          color: #4d4d4d;
+      }
+  }
+
+  .modal-body {
+    .form-group{
+      .prompt {
+        position: absolute;
+        font-size: 12px;
+        top:44px;
+        line-height:12px;
+        color: #ff5c68;
+      }
+    }
+    .popup-left{
+      padding-top:20px;
+      .form-group {
+
+        .fixed-width-left{
+          width: 25%;
+          float: left;
+          position: relative;
+          min-height: 1px;
+          padding-right: 0px;
+          padding-left: 30px;
+        }
+        .fixed-width-right{
+          width:69%;
+          float:left;
+          position: relative;
+          min-height: 1px;
+          padding-right: 15px;
+          padding-left: 15px;
+          .error{
+            border:1px solid red;
+            border-color:#ff2939;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #ffc2c6;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #ffc2c6
+          }
+        }
+        .form-control{
+          height:40px;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    border-top: none;
+    padding-top: 15px;
+    padding-right: 22px;
+    padding-bottom: 20px;
   }
 }

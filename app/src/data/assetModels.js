@@ -1,217 +1,230 @@
 /**
  * Created by a on 2017/7/3.
  */
-import {getAssetModelList} from '../api/asset'
-import {intlFormat, getClassByModel} from '../util/index'
+import {getAssetModelList} from '../api/asset';
+import {intlFormat, getClassByModel} from '../util/index';
 
-let models=[
+let models = [
 
-]
+];
 
-export const TreeData=[
-    {
-        "id": "model",
-        "name":"asset.model",
-        "toggled": false,
-        "active": true,
-        "link": "/assetManage/model",
-        "level":1,
-        "children": [
-            {
-                "id": 11,
-                "name":"灯集中控制器",
-                "class":"icon_gateway",
-                "active":true
-            },
-            {
-                "id": 12,
-                "name":"LED灯",
-                "class":"icon_lc",
-                "active":false
-            },{
-                "id": 13,
-                "name":"PLC回路控制器",
-                "class":"icon_control",
-                "active":false
-            },
-            {
-                "id": 14,
-                "name":"智慧电表",
-                "class":"icon_ammeter",
-                "active":false
-            },
-            {
-                "id": 15,
-                "name":"灯杆",
-                "class":"icon_pole",
-                "active":false
-            },
-            {
-                "id": 16,
-                "name":"广告屏",
-                "class":"icon_screen",
-                "active":false
-            },
-            {
-                "id": 17,
-                "name":"数据采集仪",
-                "class":"icon_collect",
-                "active":false
-            }
-        ]
-    },
-    {
-        "id": "statistics",
-        "name":"asset.statistics",
-        "toggled": false,
-        "active": true,
-        "link": "/assetManage/statistics",
-        "level": 1,
-        "children": [
-            {
-                "id": 11,
-                "name":"灯集中控制器",
-                "class":"icon_gateway",
-                "active":true
-            },
-            {
-                "id": 12,
-                "name":"LED灯",
-                "class":"icon_lc",
-                "active":false
-            }
+export const TreeData = [
+  {
+    'id': 'model',
+    'name':'asset.model',
+    'toggled': false,
+    'active': true,
+    'link': '/assetManage/model',
+    'level':1,
+    'children': [
+      {
+        'id': 11,
+        'name':'灯集中控制器',
+        'class':'icon_gateway',
+        'active':true,
+      },
+      {
+        'id': 12,
+        'name':'LED灯',
+        'class':'icon_lc',
+        'active':false,
+      }, {
+        'id': 13,
+        'name':'PLC回路控制器',
+        'class':'icon_control',
+        'active':false,
+      },
+      {
+        'id': 14,
+        'name':'智慧电表',
+        'class':'icon_ammeter',
+        'active':false,
+      },
+      {
+        'id': 15,
+        'name':'灯杆',
+        'class':'icon_pole',
+        'active':false,
+      },
+      {
+        'id': 16,
+        'name':'广告屏',
+        'class':'icon_screen',
+        'active':false,
+      },
+      {
+        'id': 17,
+        'name':'数据采集仪',
+        'class':'icon_collect',
+        'active':false,
+      },
+    ],
+  },
+  {
+    'id': 'statistics',
+    'name':'asset.statistics',
+    'toggled': false,
+    'active': true,
+    'link': '/assetManage/statistics',
+    'level': 1,
+    'children': [
+      {
+        'id': 11,
+        'name':'灯集中控制器',
+        'class':'icon_gateway',
+        'active':true,
+      },
+      {
+        'id': 12,
+        'name':'LED灯',
+        'class':'icon_lc',
+        'active':false,
+      },
 
-        ]
-    }
-]
+    ],
+  },
+];
 
-export let first_child = {}
+export let first_child = {};
 export function getModelData(cb) {
-    // if(models && models.length>0){
-    //     cb && cb();
-    //     return
-    // }
+  // if(models && models.length>0){
+  //     cb && cb();
+  //     return
+  // }
 
-    getAssetModelList(response=>{
-        models = response;
-        TreeData.map(item=>{
-            if(item.children){
-                item.children = [];
-                response.map((data, index)=>{
-                    let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false,link:getLinkByModel(item.id, data.key)};
-                    if(index==0 ){
-                        item.link = "/assetManage/"+item.id+"/"+data.key;
-                    }
-                    item.children.push(child)
-                })
-            }
-        })
-
-        cb && cb();
+  getAssetModelList(response => {
+    console.log('response:', response);
+    models = response;
+    TreeData.map(item => {
+      if (item.children) {
+        item.children = [];
+        response.map((data, index) => {
+          let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false, link:getLinkByModel(item.id, data.key)};
+          
+          console.log('child:', child);
+          if (index == 0 ) {
+            item.link = '/assetManage/' + item.id + '/' + data.key;
+          }
+          item.children.push(child);
+        });
+      }
     });
+
+    cb && cb();
+  });
 }
 
 function getLinkByModel(parentId, key) {
-    switch(key){
-        case 'gateway':
-            return '/assetManage/'+parentId+'/gateway';
-        case 'lc':
-            return '/assetManage/'+parentId+'/lc';
-        case 'sensor':
-            return '/assetManage/'+parentId+'/sensor';
-        case 'ammeter':
-            return 'icon_ammeter';
-        case 'pole':
-            return '/assetManage/'+parentId+'/pole'
-        case 'screen':
-            return '/assetManage/'+parentId+'/screen';
-        case 'xes':
-            return '/assetManage/'+parentId+'/xes';
-        case 'smartlight':
-            return '/assetManage/'+parentId+'/smartlight'
-        default:
-            return 'icon_led_light';
-    }
+  switch (key) {
+  case 'gateway':
+    return '/assetManage/' + parentId + '/gateway';
+  case 'lc':
+    return '/assetManage/' + parentId + '/lc';
+  case 'sensor':
+    return '/assetManage/' + parentId + '/sensor';
+  case 'ammeter':
+    return 'icon_ammeter';
+  case 'pole':
+    return '/assetManage/' + parentId + '/pole';
+  case 'screen':
+    return '/assetManage/' + parentId + '/screen';
+  case 'xes':
+    return '/assetManage/' + parentId + '/xes';
+  case 'smartlight':
+    return '/assetManage/' + parentId + '/smartlight';
+  default:
+    return 'icon_led_light';
+  }
 }
 
 export function getModelList() {
-    let list = []
-    for(let key in models){
-        let model = models[key]
-        list.push({id:model.key, name:intlFormat(model.intl.name)})
-    }
+  let list = [];
+  for (let key in models) {
+    let model = models[key];
+    list.push({id:model.key, name:intlFormat(model.intl.name)});
+  }
 
-    return list;
+  return list;
 }
 
 export function getModelById(id) {
-    for(let key in models){
-        if(models[key].key == id){
-            return models[key];
-        }
+  for (let key in models) {
+    if (models[key].key == id) {
+      return models[key];
     }
+  }
 
-    return null;
+  return null;
 }
 
 export function getModelNameById(id) {
-    let model = getModelById(id)
-    if(model){
-        return intlFormat(model.intl.name);
-    }
+  let model = getModelById(id);
+  if (model) {
+    return intlFormat(model.intl.name);
+  }
 
-    return "";
+  return '';
 }
 
 export function getModelProps(id) {
-    let model = getModelById(id)
-    let list = []
-    for(var i=0;i<model.props.length;i++){
-        let prop = model.props[i];
-        list.push(intlFormat(model.intl.props[prop]))
-    }
+  let model = getModelById(id);
+  let list = [];
+  for (var i = 0; i < model.props.length; i++) {
+    let prop = model.props[i];
+    list.push(intlFormat(model.intl.props[prop]));
+  }
 
-    return list;
+  return list;
 }
 
 export function getModelTypes(id) {
-    let model = getModelById(id)
-    let list = []
-    for(var i=0;i<model.types.length;i++){
-        let type = model.types[i];
-        list.push({type:type, detail:intlFormat(model.intl.types[type])})
-    }
-    return list;
+  let model = getModelById(id);
+  let list = [];
+  for (var i = 0; i < model.types.length; i++) {
+    let type = model.types[i];
+    list.push({type:type, detail:intlFormat(model.intl.types[type])});
+  }
+  return list;
 }
 
 export function getModelDefaults(id) {
-    let model = getModelById(id)
-    let list = [];
-    // list.push({field:"type", title:"型号"});
-    list.push({field:"type", title:intlFormat({en:'type',zh:'产品类别'})});
-    for(var i in model.defaults.props) {
-        let props = model.defaults.props[i]; 
-    list.push({field:props, title:intlFormat(model.intl.props[props])})
-    }
-    return list;
+  let model = getModelById(id);
+  let list = [];
+  // list.push({field:"type", title:"型号"});
+  list.push({field:'type', title:intlFormat({en:'type', zh:'产品类别'})});
+  for (var i in model.defaults.props) {
+    let props = model.defaults.props[i]; 
+    list.push({field:props, title:intlFormat(model.intl.props[props])});
+  }
+  return list;
 }
 
 export function getModelDefaultsValues(id) {
-    let model = getModelById(id);
-    let list = [];
-    for(var key in model.defaults.values) {
-        list.push(Object.assign({},{type:key}, model.defaults.values[key])); 
-    }
-    return list;
+  let model = getModelById(id);
+  let list = [];
+  for (var key in model.defaults.values) {
+    list.push(Object.assign({}, {type:key}, model.defaults.values[key])); 
+  }
+  return list;
 }
 
 /**获取传感器默认值**/
 export function getSensorDefaultValues() {
-    let model = getModelById("sensor");
-    let sensor = {}
-    for(var key in model.defaults.values){
-        sensor[key] = model.defaults.values[key];
-    }
+  let model = getModelById('sensor');
+  let sensor = {};
+  for (var key in model.defaults.values) {
+    sensor[key] = model.defaults.values[key];
+  }
 
-    return sensor;
+  return sensor;
+}
+
+/**删除设备型号 */
+export function deleteModalTypes() {
+    
+}
+
+/**添加设备型号 */
+export function addModalTypes() {
+    
 }

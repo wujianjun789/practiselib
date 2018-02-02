@@ -67,6 +67,8 @@ const RenderPropertyPanel = (props)=>{
             return <PlayerTimeAsset projectId={project?project.id:null} parentId={parentNode?parentNode.id:null} parentParentId={parentParentNode?parentParentNode.id:null}
                                     areaId={curNode?curNode.id:null}
                                     data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}/>;
+        default:
+            return <div>no type</div>
     }
 }
 
