@@ -5,16 +5,32 @@ import { FormattedMessage, injectIntl, FormattedDate } from 'react-intl';
 import { getItembyId } from '../../api/mediaPublish'
 import { numbersValid } from '../../util/index'
 
+function getIdByValue(list, value) {
+    const index = list.findIndex(item => item.name === value)
+    if (index !== -1) {
+        return list[index].id
+    } else {
+        return list[0].id
+    }
+}
+function getValueById(list, id) {
+    const index = list.findIndex(item => item.id === id);
+    if (index !== -1) {
+        return list[index].name
+    } else {
+        return list[0].name
+    }
+}
 class PlayerText extends Component {
     state = {
         name: { title: this.props.intl.formatMessage({ id: 'mediaPublish.materialName' }), value: '' },
         text: { title: this.props.intl.formatMessage({ id: 'mediaPublish.textContent' }), value: '' },
-        fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '微软雅黑' }, { id: 1, name: '宋体' }, { id: 2, name: 'serif' }, { id: 3, name: 'monospace' }], index: 0 },
+        fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '微软雅黑' }, { id: 1, name: '宋体' }, { id: 2, name: '黑体' }, { id: 3, name: 'monospace' }], index: 0 },//index代表当前选中项的id，非下标
         fontColor: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.fontColor' }),
             value: { r: 241, g: 112, b: 19, a: 1, },
         },
-        fontSize: { title: this.props.intl.formatMessage({ id: 'mediaPublish.fontSize' }), list: [{ id: 0, name: '12pt' }, { id: 1, name: '13pt' }, { id: 2, name: '14pt' }, { id: 3, name: '15pt' }, { id: 4, name: '16pt' },], index: 0 },
+        fontSize: { title: this.props.intl.formatMessage({ id: 'mediaPublish.fontSize' }), list: [{ id: 0, name: 12 }, { id: 1, name: 13 }, { id: 2, name: 14 }, { id: 3, name: 15 }, { id: 4, name: 16 },], index: 0 },
         bgColor: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.bgColor' }),
             value: { r: 241, g: 112, b: 19, a: 1, },
@@ -25,7 +41,7 @@ class PlayerText extends Component {
             list: [{ id: 0, name: '左上' }, { id: 1, name: '左中' }, { id: 2, name: '左下' }, { id: 3, name: '中上' }, { id: 4, name: '上下居中' }, { id: 5, name: '中下' }, { id: 6, name: '右上' }, { id: 7, name: '右中' }, { id: 8, name: '右下' },],
             index: 0
         },
-        playDuration: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playDuration' }), placeholder: '秒', value: '' },
+        playDuration: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playDuration' }), placeholder: '毫秒', value: 0 },
         animation: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.animation' }),
             list: [
@@ -39,21 +55,34 @@ class PlayerText extends Component {
                 { id: 27, name: '向上拉幕' }, { id: 28, name: '向下拉幕' }, { id: 29, name: '矩形自左下向右上展现' }, { id: 30, name: '矩形自左上向右下展现' },
                 { id: 31, name: '矩形自右下向左上展现' }, { id: 32, name: '矩形自右上向左下展现' }, { id: 33, name: '斜线自左上向右下展现' }, { id: 34, name: '斜线自右下向左上展现' },
                 { id: 35, name: '随机' }
-            ], index: 0
+            ],
+            index: 0
         },
-        playSpeed: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playSpeed' }), placeholder: '秒', value: '' },
-        rowSpace: { title: this.props.intl.formatMessage({ id: 'mediaPublish.lineSpacing' }), placeholder: 'pt', value: '' },
-        charSpace: { title: this.props.intl.formatMessage({ id: 'mediaPublish.wordSpacing' }), placeholder: 'pt', value: '' },
+        playSpeed: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playSpeed' }), placeholder: '', value: 0 },
+        rowSpace: { title: this.props.intl.formatMessage({ id: 'mediaPublish.lineSpacing' }), placeholder: 'pt', value: 0 },
+        charSpace: { title: this.props.intl.formatMessage({ id: 'mediaPublish.wordSpacing' }), placeholder: 'pt', value: 0 },
         showFontColor: false,
         showBgColor: false,
+        prompt: {
+            playDuration: false,
+            playSpeed: false,
+            rowSpace: false,
+            charSpace: false
+        }
     }
 
     componentDidMount() {
         this._isMounted = true;
         this.initPlayerText();
     }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data.id !== this.id) {
+            this.initPlayerText()
+        }
+    }
     initPlayerText = () => {
         const { projectId, sceneId, planId, areaId, data } = this.props;
+        this.id = data.id
         getItembyId(projectId, planId, sceneId, areaId, data.id, 0, res => {
             this._data = res;
             const {
@@ -70,7 +99,7 @@ class PlayerText extends Component {
             this._isMounted && this.setState({
                 name: { ...this.state.name, value: data.name },
                 text: { ...this.state.text, value: text },
-                fontType: { ...this.state.fontType, index: 0 },
+                fontType: { ...this.state.fontType, index: getIdByValue(this.state.fontType.list, name) },
                 fontColor: {
                     ...this.state.fontColor, value: {
                         r: fontColor.red,
@@ -79,7 +108,7 @@ class PlayerText extends Component {
                         a: fontColor.alpha
                     }
                 },
-                fontSize: { ...this.state.fontSize, index: 0 },
+                fontSize: { ...this.state.fontSize, index: getIdByValue(this.state.fontSize.list, size) },
                 bgColor: {
                     ...this.state.bgColor, value: {
                         r: color.red,
@@ -88,13 +117,21 @@ class PlayerText extends Component {
                         a: color.alpha
                     }
                 },
-                bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },
-                alignment: { ...this.state.alignment, index: alignment },
+                bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },//返回值为0或1，或者bool值
+                alignment: { ...this.state.alignment, index: alignment },//这里返回的即对齐方式的id
                 playDuration: { ...this.state.playDuration, value: playDuration },
-                animation: { ...this.state.animation, index: transition },
+                animation: { ...this.state.animation, index: transition },//这里返回的即过渡效果的id
                 playSpeed: { ...this.state.playSpeed, value: speed },
                 rowSpace: { ...this.state.rowSpace, value: rowSpace },
                 charSpace: { ...this.state.charSpace, value: charSpace },
+                showFontColor: false,
+                showBgColor: false,
+                prompt: {
+                    playDuration: false,
+                    playSpeed: false,
+                    rowSpace: false,
+                    charSpace: false
+                }
             })
         })
     }
@@ -118,13 +155,26 @@ class PlayerText extends Component {
                 })
                 break;
             }
-            case 'text':
+            case 'text': {
+                this.setState({
+                    [type]: { ...this.state[type], value: e.target.value }
+                })
+                break;
+            }
             case 'playDuration':
             case 'playSpeed':
             case 'rowSpace':
             case 'charSpace': {
+                if (!numbersValid(e.target.value)) {
+                    this.setState({
+                        [type]: { ...this.state[type], value: e.target.value },
+                        prompt: { ...this.state.prompt, [type]: true }
+                    })
+                    return;
+                }
                 this.setState({
-                    [type]: { ...this.state[type], value: e.target.value }
+                    [type]: { ...this.state[type], value: Number(e.target.value) },
+                    prompt: { ...this.state.prompt, [type]: false }
                 })
                 break;
             }
@@ -133,7 +183,7 @@ class PlayerText extends Component {
             case 'alignment':
             case 'animation': {
                 this.setState({
-                    [type]: { ...this.state[type], index: e.target.selectedIndex }
+                    [type]: { ...this.state[type], index: this.state[type].list[e.target.selectedIndex].id }//此处的inde应该是选中项的id
                 })
                 break;
             }
@@ -144,62 +194,12 @@ class PlayerText extends Component {
     }
     handleSubmit = (type) => {
         const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent,
-            alignment, playDuration, animation, playSpeed, rowSpace, charSpace, } = this.state;
+            alignment, playDuration, animation, playSpeed, rowSpace, charSpace, prompt } = this.state;
         switch (type) {
-            case 'apply':
-                let _data = {
-                    "baseInfo": {
-                        "id": 1,
-                        "type": 0,
-                        "file": "简单文本",
-                        "playDuration": 0,
-                        "logFlag": 0,
-                        "materialId": "simpleText"
-                    },
-                    "text": "string",
-                    "background": {
-                        "transparent": 0,
-                        "picture": "string",
-                        "picAlignment": 0,
-                        "color": {
-                            "red": 0,
-                            "green": 0,
-                            "blue": 0,
-                            "amber": 0,
-                            "alpha": 0
-                        },
-                        "colorKey": {
-                            "red": 0,
-                            "green": 0,
-                            "blue": 0,
-                            "amber": 0,
-                            "alpha": 0
-                        },
-                        "materialId": ""
-                    },
-                    "alignment": 0,
-                    "charSpace": 0,
-                    "rowSpace": 0,
-                    "fontColor": {
-                        "red": 0,
-                        "green": 0,
-                        "blue": 0,
-                        "amber": 0,
-                        "alpha": 0
-                    },
-                    "font": {
-                        "name": "string",
-                        "size": 0,
-                        "bold": true,
-                        "italic": false,
-                        "underline": true,
-                        "strikeout": false
-                    },
-                    "inTransition": {
-                        "transition": 0,
-                        "speed": 0
-                    }
-                }
+            case 'apply': {
+                // if (prompt.playDuration || prompt.playSpeed || prompt.rowSpace || prompt.charSpace) {
+                //     return;
+                // }
                 const { baseInfo, background, font } = this._data
                 const data = Object.assign({}, this._data, {
                     baseInfo: {
@@ -209,7 +209,7 @@ class PlayerText extends Component {
                     text: text.value,
                     background: {
                         ...background,
-                        transparent: bgTransparent.value,
+                        transparent: Number(bgTransparent.value),
                         color: {
                             red: bgColor.value.r,
                             greeen: bgColor.value.g,
@@ -223,9 +223,10 @@ class PlayerText extends Component {
                             blue: bgColor.value.b,
                             amber: 0,
                             alpha: bgColor.value.a
-                        }
+                        },
+                        materialId: Number(this.id)
                     },
-                    alignment: alignment.list[alignment.index].name,
+                    alignment: alignment.index,
                     charSpace: charSpace.value,
                     rowSpace: rowSpace.value,
                     fontColor: {
@@ -237,42 +238,50 @@ class PlayerText extends Component {
                     },
                     font: {
                         ...font,
-                        name: fontType.list[fontType.index].name,
-                        size: fontSize.list[fontSize.index].name,
+                        name: getValueById(fontType.list, fontType.index),
+                        size: getValueById(fontSize.list, fontSize.index),
                     },
                     inTransition: {
-                        transition: animation.list[animation.index].name,
+                        transition: animation.index,
                         speed: playSpeed.value
                     }
                 })
-                console.log(data)
                 this.props.applyClick && this.props.applyClick(data);
-                //after apply
-                // this.initPlayerText()
                 break;
+            }
             case 'reset':
-                this.setState({
-                    name: { ...name, value: '' },
-                    text: { ...text, value: '' },
-                    fontType: { ...fontType, index: 0 },
-                    fontColor: { ...fontColor, value: { r: 241, g: 112, b: 19, a: 1, }, },
-                    fontSize: { ...fontSize, index: 0 },
-                    bgColor: { ...bgColor, value: { r: 241, g: 112, b: 19, a: 1, }, },
-                    bgTransparent: { ...bgTransparent, value: false },
-                    alignment: { ...alignment, index: 0 },
-                    playDuration: { ...playDuration, value: '' },
-                    animation: { ...animation, index: 0 },
-                    playSpeed: { ...playSpeed, value: '' },
-                    rowSpace: { ...rowSpace, value: '' },
-                    charSpace: { ...charSpace, value: '' },
-                })
-                break;
+                {
+                    this.setState({
+                        name: { ...name, value: '' },
+                        text: { ...text, value: '' },
+                        fontType: { ...fontType, index: 0 },
+                        fontColor: { ...fontColor, value: { r: 241, g: 112, b: 19, a: 1, }, },
+                        fontSize: { ...fontSize, index: 0 },
+                        bgColor: { ...bgColor, value: { r: 241, g: 112, b: 19, a: 1, }, },
+                        bgTransparent: { ...bgTransparent, value: false },
+                        alignment: { ...alignment, index: 0 },
+                        playDuration: { ...playDuration, value: 0 },
+                        animation: { ...animation, index: 0 },
+                        playSpeed: { ...playSpeed, value: 0 },
+                        rowSpace: { ...rowSpace, value: 0 },
+                        charSpace: { ...charSpace, value: 0 },
+                        showFontColor: false,
+                        showBgColor: false,
+                        prompt: {
+                            playDuration: false,
+                            playSpeed: false,
+                            rowSpace: false,
+                            charSpace: false
+                        }
+                    })
+                    break;
+                }
         }
     }
 
     render() {
-        const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent,
-            alignment, playDuration, animation, playSpeed, rowSpace, charSpace, showFontColor, showBgColor } = this.state;
+        const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent, alignment, playDuration,
+            animation, playSpeed, rowSpace, charSpace, showFontColor, showBgColor, prompt } = this.state;
         const styles = reactCSS({
             'default': {
                 fontColor: {
@@ -409,7 +418,7 @@ class PlayerText extends Component {
                                 placeholder={playDuration.placeholder} maxLength="8"
                                 value={playDuration.value}
                                 onChange={e => this.onChange("playDuration", e)} />
-                            {/* <span class={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span> */}
+                            <span class={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                         </div>
                     </div>
                 </div>
@@ -433,7 +442,7 @@ class PlayerText extends Component {
                                 placeholder={playSpeed.placeholder} maxLength="8"
                                 value={playSpeed.value}
                                 onChange={e => this.onChange("playSpeed", e)} />
-                            {/* <span class={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span> */}
+                            <span class={prompt.playSpeed ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                         </div>
                     </div>
                 </div>
@@ -445,7 +454,7 @@ class PlayerText extends Component {
                                 placeholder={rowSpace.placeholder} maxLength="8"
                                 value={rowSpace.value}
                                 onChange={e => this.onChange("rowSpace", e)} />
-                            {/* <span class={prompt.rowSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span> */}
+                            <span class={prompt.rowSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -455,7 +464,7 @@ class PlayerText extends Component {
                                 placeholder={charSpace.placeholder} maxLength="8"
                                 value={charSpace.value}
                                 onChange={e => this.onChange("charSpace", e)} />
-                            {/* <span class={prompt.charSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span> */}
+                            <span class={prompt.charSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                         </div>
                     </div>
                 </div>
