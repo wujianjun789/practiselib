@@ -115,7 +115,7 @@ export class MapPreview extends Component{
                 this.mounted && this.setState({curDomainList: data, positionList:devPositionList});
             })
 
-            return;
+            return false;
         }
 
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{

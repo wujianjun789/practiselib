@@ -308,6 +308,39 @@ export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
   });
 }
 
+export function getSearchAssetsByDomainWithCenter(domain, map, model, name, offset, limit, cb) {
+  const headers = getHttpHeader();
+  let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
+  if(domain.level == 1){
+      nearParam = {};
+  }
+
+  const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam)};
+  let paramStr = JSON.stringify({ 'include': ['extend'], 'where': Object.assign({}, param, getSearchParam(domain.id, model, name)), 'offset': offset, 'limit': limit });
+  httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
+    headers: headers,
+    method: 'GET',
+  }, response => {
+    cb && cb(response);
+  });
+}
+
+export function getSearchAssetCountByDomainWithCenter(domain, map, model, name, cb) {
+  const headers = getHttpHeader();
+  let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
+  if(domain.level == 1){
+      nearParam = {};
+  }
+
+  const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam)};
+  let paramStr = JSON.stringify({ 'include': ['extend'], 'where': Object.assign({}, param, getSearchParam(domain.id, model, name)) });
+  httpRequest(HOST_IP + '/assets/count?filter=' + encodeURIComponent(paramStr), {
+    headers: headers,
+    method: 'GET',
+  }, response => {
+    cb && cb(response);
+  });
+}
 /**
  * 获取设备的状态
  * @param {String} model
