@@ -221,10 +221,12 @@ export class PlayerArea extends Component {
   componentDidMount() {
     // window.addEventListener("mousemove", this.handleMouseMove, true);
     // window.addEventListener("mouseup", this.handleMouseUp, true);
+
     this.updateSidebarInfoStyle();
   }
 
   componentDidUpdate() {
+    // console.info('arealist', this.state.parentNode);
     this.updateSidebarInfoStyle();
   }
 
@@ -410,24 +412,24 @@ export class PlayerArea extends Component {
     }
 
     updateItemList = (programId, sceneId, zoneId, data) => {
-        const newData = data.map(item => {
-            return Object.assign({}, item, {assetType:'source'});
-        });
+      const newData = data.map(item => {
+        return Object.assign({}, item, {assetType:'source'});
+      });
 
-        if(newData && newData.length){
-            this.playerAssetSelect(Immutable.fromJS(newData[0]));
-        }else{
+      if (newData && newData.length) {
+        this.playerAssetSelect(Immutable.fromJS(newData[0]));
+      } else {
 
-        }
+      }
 
-        this.setState({playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData))}, () => {
-            this.state.playerListAsset.get('list').map(item => {
-            const itemObject  = item.toJS();
-            if (IsSystemFile(item.get('type'))) {
-                const name = lodash.find(this.systemFile, file => {return file.id === itemObject.materialId;}).name;
-                this.updateItemName(itemObject, name);
-            } else {
-                this.requestAssetNameById(itemObject);
+      this.setState({playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData))}, () => {
+        this.state.playerListAsset.get('list').map(item => {
+          const itemObject  = item.toJS();
+          if (IsSystemFile(item.get('type'))) {
+            const name = lodash.find(this.systemFile, file => {return file.id === itemObject.materialId;}).name;
+            this.updateItemName(itemObject, name);
+          } else {
+            this.requestAssetNameById(itemObject);
           }
         });
       });
@@ -470,7 +472,7 @@ export class PlayerArea extends Component {
     }
 
     playerAssetSelect = (item) => {
-      console.log(item.toJS());
+      //   console.log(item.toJS());
       const type = item.get('type');
       const curType = tranformAssetType(type);
 
@@ -1173,7 +1175,7 @@ export class PlayerArea extends Component {
       const {router} = this.props;
       const add_title = getTitleByType(curType, this.formatIntl);
 
-      console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list').toJS());
+      // console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list').toJS());
       return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
         <HeadBar moduleName="app.mediaPublish" router={router} />
         <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
@@ -1204,7 +1206,11 @@ export class PlayerArea extends Component {
           </div>
           <div className="mediaPublish-footer">
             {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
-            <RenderPlayerAsset playerListAsset={playerListAsset} playerAssetSelect={this.playerAssetSelect} playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove}/>
+            <RenderPlayerAsset
+              playerListAsset={playerListAsset}
+              playerAssetSelect={this.playerAssetSelect}
+              playerAssetMove={this.playerAssetMove}
+              playerAssetRemove={this.playerAssetRemove} />
             <div className="pull-right control-container">
               <div className={'list-group ' + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
                 <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id="button.add"/></button>
@@ -1230,7 +1236,7 @@ export class PlayerArea extends Component {
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
               <RenderPropertyPanel curType={curType} project={project} parentParentNode={parentParentNode} parentNode={parentNode} curNode={curNode} playerListAsset={playerListAsset}
-                                   actions={this.props.actions} applyClick={this.applyClick}/>
+                actions={this.props.actions} applyClick={this.applyClick}/>
             </div>
           </div>
 
