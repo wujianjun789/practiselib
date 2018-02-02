@@ -2,7 +2,7 @@
 
 .systemOperation-faultManagement{
   .content {
-    min-width: 1217px;
+    min-width: 1228px;
     .heading{
       height: 70px;
       background: #fff;
@@ -65,11 +65,50 @@
     .sidebar-info{
         .statistical-info{
             >.panel-body{
-                height: 160px;
+              height: 150px;
+              .left{
+                float: left;
+                width: 50%;
+                height: 100%;
+                >.circle{
+                  height: 100%;
+                }
+              }
+              .right{
+                float: left;
+                width: 50%;
+                padding-left: 10px;
+                .count{
+                  width: 100%;
+                  padding-bottom: 10px;
+                  overflow: hidden;
+                  text-overflow:ellipsis;
+                  white-space: nowrap;
+                  .dot{
+                    float: left;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    margin:6px 6px 0 0;
+                  }
+                }
+                .deadly .dot{
+                  background-color: #F83D59
+                }
+                .serious .dot{
+                  background-color: #FA919C
+                }
+                .general .dot{
+                  background-color: #FA9E17
+                }
+                .hint .dot{
+                  background-color: #FBEF35
+                }
+              }
             }
         }
         .map-position{
-            top: 233px;
+            top: 223px;
         }
         &.infoCollapse .map-position{
             top:73px;
