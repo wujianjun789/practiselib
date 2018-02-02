@@ -338,3 +338,36 @@ export const updateAssetsRpcById = (id, data, cb) => {
     cb && cb(response);
   });
 };
+
+
+/**
+ * 删除设备型号
+ * @param {number | string } id
+ * @param {function} cb
+ */
+export const deleteModalTypesById = (id, cb) => {
+  // httpRequest(`${HOST_IP}/`, {
+  //   headers: getHttpHeader(),
+  //   method: 'DELETE',
+  // }, response => {
+  //   cb && cb();
+  // });
+  console.log(id);
+  cb && cb();
+};
+
+/**
+ * 添加设备型号
+ * @param {number | string } id
+ * @param {function} cb
+ */
+export const addModalTypesById = (id, data, cb) => {
+  // httpRequest(`${HOST_IP}/`, {
+  //   headers: getHttpHeader(),
+  //   method: 'POST',
+  //   body: JSON.stringify(data),
+  // }, response => {
+  //   cb && cb(response);
+  // });
+  cb && cb();
+};
