@@ -3,37 +3,26 @@
  */
 import { /*HOST_IP,*/ getHttpHeader, httpRequest } from '../util/network';
 const HOST_IP = 'http://192.168.155.196:3002/api';
+const UPLOAD_IP = 'http://192.168.155.196:3001/api/file/upload'; //上传文件地址
 import { HeadBar } from '../components/HeadBar';
 
+
 //上传文件
-// export function uploadMaterialFile(type, file) {
 
-//     const url = 'http://192.168.155.207:3000/api/containers/common/upload';
-
-//     const form = new FormData();
-//     form.append('file', file);
-
-//     const xhr = new XMLHttpRequest();
-//     xhr.upload.addEventListener('progress',uploadProgress,false);
-//     // xhr.addEventListener('load',uploadComplete,false);
-//     // xhr.addEventListener('error',uploadFail,false);
-//     // xhr.addEventListener('abort',uploadCancel,false)
-
-//     xhr.open('POST',url,true);
-//     xhr.send(form)
-
-//     function uploadProgress(e){
-//         if(e.lengthComputable){
-//             const progress=Math.round((e.loaded/e.total)*100);
-//             console.log(progress);
-//         }
-//     }
-// }
+export function uploadMaterialFile(list, index) {
+  const currentXhr = list[index].xhr;
+  const data = list[index].form;
+  console.log('formdata',data.get('name'))
+  console.log('formdata',data.get('file'))
+  console.log('formdata',data.get('type'))
+  currentXhr.open('POST', UPLOAD_IP, true);
+  currentXhr.send(data);
+}
 
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
   let headers = getHttpHeader();
-  let obj = Object.assign({}, { 'where': getProjectParam(type, projectName)}, { 'offset': offset, 'limit': limit });
+  let obj = Object.assign({}, { 'where': getProjectParam(type, projectName) }, { 'offset': offset, 'limit': limit });
 
   let param = JSON.stringify(obj);
   let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
@@ -48,7 +37,7 @@ export function searchProjectList(type, projectName, offset, limit, cb) {
 function getProjectParam(type, projectName) {
   let param = {};
   if (type) {
-    param = Object.assign(param, {type: type});
+    param = Object.assign(param, { type: type });
   }
 
   if (projectName) {
@@ -60,7 +49,7 @@ function getProjectParam(type, projectName) {
 
 export function getProjectByName(type, projectName, cb) {
   let headers = getHttpHeader();
-  let obj = { };
+  let obj = {};
   if (projectName) {
     obj = Object.assign({ 'where': { type: type, name: { like: projectName } } }, obj);
   }
@@ -438,21 +427,21 @@ export function getAssetList(cb) {
 }
 
 export function getAssetListByTypeWithName(type, name, cb) {
-    let headers = getHttpHeader();
-    let obj = Object.assign({}, { "where": getAssetParam(type, name)});
-    let param = JSON.stringify(obj);
+  let headers = getHttpHeader();
+  let obj = Object.assign({}, { "where": getAssetParam(type, name) });
+  let param = JSON.stringify(obj);
 
-    httpRequest(FILE_HOST_IP+'/file?filter='+encodeURIComponent(param), {
-        headers: headers,
-        method: 'GET'
-    }, response=>{
-        cb && cb(response);
-    })
+  httpRequest(FILE_HOST_IP + '/file?filter=' + encodeURIComponent(param), {
+    headers: headers,
+    method: 'GET'
+  }, response => {
+    cb && cb(response);
+  })
 }
 
 export function searchAssetList(type, name, offset, limit, cb) {
   let headers = getHttpHeader();
-  let obj = Object.assign({}, { 'where': getAssetParam(type, name)}, { 'offset': offset, 'limit': limit });
+  let obj = Object.assign({}, { 'where': getAssetParam(type, name) }, { 'offset': offset, 'limit': limit });
 
   let param = JSON.stringify(obj);
   let url = FILE_HOST_IP + '/file?filter=' + encodeURIComponent(param);
@@ -471,7 +460,7 @@ function getAssetParam(type, name) {
   // }
 
   if (name) {
-    param = Object.assign(param, { name: { like: name }});
+    param = Object.assign(param, { name: { like: name } });
   }
 
   return param;
@@ -516,3 +505,14 @@ export function removeAssetById(id, cb) {
   });
 }
 
+export function previewPlayItem(itemInfo, callback) {
+  const { projectId, programId, sceneId, zoneId, items } = itemInfo;
+  const urlItems = encodeURIComponent('['+items.toString()+']');
+  const headers = getHttpHeader();
+  httpRequest('http://192.168.155.196:3002/api' + '/projects/' + projectId + '/programs/' + programId + '/scenes/' + sceneId + '/zones/' + zoneId + '/preview' + '?items=' + urlItems, {
+    headers: headers,
+    method: 'GET',
+  }, (response) => {
+    return callback(response);
+  })
+}

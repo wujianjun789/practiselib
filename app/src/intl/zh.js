@@ -252,7 +252,7 @@ export default {
     'sysOperation.alarm.count.serious':'严重数',
     'sysOperation.alarm.count.general':'一般数',
     'sysOperation.alarm.count.hint':'提示数',
-
+    'sysOperation.alarm.noCount':'未读取',
     
     //智慧路灯
     'app.search.placeholder.name': '搜索名称或域',

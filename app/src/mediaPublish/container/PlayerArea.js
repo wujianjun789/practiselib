@@ -40,7 +40,7 @@ import { addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clear
 
 import {getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
   updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
-  removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById} from '../../api/mediaPublish';
+  removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById,previewPlayItem} from '../../api/mediaPublish';
 
 import {FormattedMessage, injectIntl} from 'react-intl';
 
@@ -178,6 +178,7 @@ export class PlayerArea extends Component {
       isClick: false,
       //左侧栏添加单击
       isAddClick: false,
+      previewPlayList:[],
     };
 
     this.systemFile = [];
@@ -221,12 +222,10 @@ export class PlayerArea extends Component {
   componentDidMount() {
     // window.addEventListener("mousemove", this.handleMouseMove, true);
     // window.addEventListener("mouseup", this.handleMouseUp, true);
-
     this.updateSidebarInfoStyle();
   }
 
   componentDidUpdate() {
-    // console.info('arealist', this.state.parentNode);
     this.updateSidebarInfoStyle();
   }
 
@@ -466,21 +465,66 @@ export class PlayerArea extends Component {
     }
 
     assetSelect = (item) => {
-      console.log(item.toJS());
+    //  console.log(item.toJS());
       this.state.assetList = this.state.assetList.update('id', v => item.get('id'));
       this.setState({ assetList: this.state.assetList.update('name', v => item.get('name')) });
     }
 
-    playerAssetSelect = (item) => {
-      //   console.log(item.toJS());
-      const type = item.get('type');
-      const curType = tranformAssetType(type);
-
-      this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
-      this.setState({ isClick: true, curType: curType, playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')) });
-      // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
-      // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
+  playerAssetSelect = (item) => {
+    const targetType = this.state.parentNode.type || '';
+    let arealist = [];
+    const type = item.get('type');
+    if (targetType === 'scene') {
+      arealist = this.state.parentNode.children; 
     }
+    const curType = tranformAssetType(type);
+
+    this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
+    this.setState({
+      isClick: true,
+      curType: curType,
+      playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')),
+    }, () => {return this.setPlayItemArray(arealist);});
+  }
+
+  setPlayItemArray(areaList) {
+    if (areaList === []) {
+      return undefined;
+    } else {
+      const itemList = areaList.map(item => {
+        if (item.id === this.state.curNode.id) {
+          return {areaId:item.id, playItemId:this.state.playerListAsset.get('id')};
+        } else {
+          const playlist = this.state.previewPlayList;
+          if (playlist === []) {
+            return { areaId: item.id, playItemId: 65535 };
+          } else {
+            for (let i = 0; i < playlist.length; i++) {
+              if (playlist[i].areaId === item.id) {
+                return playlist[i];
+              } else {
+                return { areaId: item.id, playItemId:item.id || 65535 };
+              }
+            }
+          }
+          return { areaId: item.id, playItemId: 65535 };
+        }
+      });
+      this.setState({
+        previewPlayList: itemList,
+      }, () => {return this.getPreviewImg()});
+    }
+  }
+
+  getPreviewImg() {
+    const projectId = this.state.project.id;
+    const programId = this.state.parentParentNode.id;
+    const sceneId = this.state.parentNode.id;
+    const zoneId = this.state.curNode.id;
+    const items = this.state.previewPlayList.map(item => { return item.playItemId });
+    const requestJson = ({ projectId, programId, sceneId, zoneId, items });
+    return previewPlayItem(requestJson, data => { console.log(data) });
+  }
 
     onChange = (id, value) => {
       let prompt = false;
@@ -623,49 +667,49 @@ export class PlayerArea extends Component {
       this.setState({ curType: 'playerArea', curNode: node, parentNode: parentNode, parentParentNode:parentParentNode }, this.updateTreeData(node, parentNode, parentParentNode));
     }
 
-    areaClick = (id) => {
-      const { actions } = this.props;
-      const { project }  = this.state;
+  areaClick = (id) => {
+    const { actions } = this.props;
+    const { project }  = this.state;
 
-      if (id == 'add') {
-        if (this.state.curType == 'playerProject') {
-          this.setState({ isAddClick: true });
-        } else {
-          clearTreeListState(this.state.playerData);
-          switch (this.state.curType) {
-          case 'playerPlan':
-          case 'playerPlan2':
-          case 'playerPlan3':
-            this.addPlayerScene();
-            break;
-          case 'playerScene':
-            this.addPlayerArea();
-            break;
-          }
-        }
-      } else if (id == 'edit') {
-        this.setState({ isAddClick: false }, () => {
-          this.initItemList();
-        });
-      } else if (id == 'remove') {
-        let tips = getTipByType(this.state.curType);
-
-        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
-          cancel={() => { actions.overlayerHide(); }} confirm={() => {
-          }} />);
-      } else if (id == 'project') {
-        this.setState({ curType: 'playerProject', isClick: false });
-      } else if (id == 'complete') {
-
+    if (id == 'add') {
+      if (this.state.curType == 'playerProject') {
+        this.setState({ isAddClick: true });
       } else {
         clearTreeListState(this.state.playerData);
-        this.setState({ isAddClick: false }, () => {
-
-          addTreeNode(id);
-          this.setState({ curType: proType, curNode: node }, () => this.updateTreeData(node));
-        });
+        switch (this.state.curType) {
+        case 'playerPlan':
+        case 'playerPlan2':
+        case 'playerPlan3':
+          this.addPlayerScene();
+          break;
+        case 'playerScene':
+          this.addPlayerArea();
+          break;
+        }
       }
+    } else if (id == 'edit') {
+      this.setState({ isAddClick: false }, () => {
+        this.initItemList();
+      });
+    } else if (id == 'remove') {
+      let tips = getTipByType(this.state.curType);
+
+      actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
+        cancel={() => { actions.overlayerHide(); }} confirm={() => {
+        }} />);
+    } else if (id == 'project') {
+      this.setState({ curType: 'playerProject', isClick: false });
+    } else if (id == 'complete') {
+
+    } else {
+      clearTreeListState(this.state.playerData);
+      this.setState({ isAddClick: false }, () => {
+
+        addTreeNode(id);
+        this.setState({ curType: proType, curNode: node }, () => this.updateTreeData(node));
+      });
     }
+  }
 
     addUpdatePlan = (data) => {
       let planData = parsePlanData(data);
@@ -1174,8 +1218,6 @@ export class PlayerArea extends Component {
       } = this.state;
       const {router} = this.props;
       const add_title = getTitleByType(curType, this.formatIntl);
-
-      // console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list').toJS());
       return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
         <HeadBar moduleName="app.mediaPublish" router={router} />
         <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
@@ -1210,7 +1252,8 @@ export class PlayerArea extends Component {
               playerListAsset={playerListAsset}
               playerAssetSelect={this.playerAssetSelect}
               playerAssetMove={this.playerAssetMove}
-              playerAssetRemove={this.playerAssetRemove} />
+              playerAssetRemove={this.playerAssetRemove}
+            />
             <div className="pull-right control-container">
               <div className={'list-group ' + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
                 <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id="button.add"/></button>

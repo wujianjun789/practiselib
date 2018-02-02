@@ -13,7 +13,7 @@ export default class RenderPlayerAsset extends Component {
   onClick(event, item, direction) {
     event.stopPropagation();
     return this.props.playerAssetMove(direction, item);
-  }  
+  }
   
     
   render() {
