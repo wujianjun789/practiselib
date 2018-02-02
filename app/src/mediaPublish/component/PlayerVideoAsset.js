@@ -13,18 +13,19 @@ class PlayerPicAsset extends PureComponent {
       property:{
         //视频素材
         assetName: '',
-        playTimes: '',
+        // playTimes: '',
         playType: '',
         playTimeBegin: moment('00:00:00', 'HH:mm:ss'),
         playTimeEnd: moment('00:00:00', 'HH:mm:ss'),
         scale: '',
-        volume: '',
+        // volume: '',
       },
       prompt:{
         //计划
         playTimes: false, clipsRage: false,
       },
     };
+    this.data = {};
     this.playTypeList = [
       { value: 1, title: '片段播放' }, { value: 0, title: '完整播放' },
     ];
@@ -32,11 +33,7 @@ class PlayerPicAsset extends PureComponent {
       { value: 0, title: '铺满' }, { value: 1, title: '原始比例' }, { value: 2, title: '4:3' },
       { value: 3, title: '5:4' }, { value: 4, title: '16:9' },
     ];
-    this.volumeList = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
-    //   { id: 1, name: '100' }, { id: 2, name: '90' }, { id: 3, name: '80' }, { id: 4, name: '70' }, 
-    //   { id: 5, name: '60' }, { id: 6, name: '50' }, { id: 7, name: '40' }, { id: 8, name: '30' }, 
-    //   { id: 9, name: '20' }, { id: 10, name: '10' }, { id: 11, name: '0' },
-    ];
+    // this.volumeList = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   }
 
   componentWillMount() {
@@ -47,7 +44,6 @@ class PlayerPicAsset extends PureComponent {
     if (data.id !== this.state.id) {
       this.setState({id: data.id}, () => {this.requestItem();});
     }
-        
   }
 
   requestItem=() => {
@@ -56,12 +52,12 @@ class PlayerPicAsset extends PureComponent {
     property.assetName = data.name;
     getItembyId(projectId, planId, sceneId, areaId, data.id, 4, (res) => {
       this.data = res;
-      property.playTimes = res.playTimes ? res.playTimes : '';
-      property.playType = res.playType ? res.inTransition.playType : this.playTypeList[0].value;
+      // property.playTimes = res.playTimes ? res.playTimes : '';
+      property.playType = res.playType ? res.playType : this.playTypeList[0].value;
       property.playTimeBegin = res.playTimeBegin ? this.initTime(res.playTimeBegin) : moment('00:00:00', 'HH:mm:ss');
       property.playTimeEnd = res.playTimeEnd ? this.initTime(res.playTimeEnd) : moment('00:00:00', 'HH:mm:ss');
       property.scale = res.scale ? res.scale : this.scaleList[0].value;
-      property.volume = res.volume ? res.volume : this.volumeList[0];
+      // property.volume = res.volume ? res.volume : this.volumeList[0];
       this.setState({property:Object.assign({}, property)});
     });
   }
@@ -75,14 +71,14 @@ class PlayerPicAsset extends PureComponent {
   }
 
   onChange=(id, e) => {
-    let prompt = false;
+    // let prompt = false;
     const val = e.target.value;
-    if (id == 'playTimes') {
-      if (!numbersValid(val)) {
-        prompt = true;
-        this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});
-      }
-    }
+    // if (id == 'playTimes') {
+    //   if (!numbersValid(val)) {
+    //     prompt = true;
+    //     this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});
+    //   }
+    // }
     this.setState({property: Object.assign({}, this.state.property, {[id]: val})});
   }
 
@@ -95,11 +91,11 @@ class PlayerPicAsset extends PureComponent {
   }
 
   playerVideoAssetClick=(id) => {
-    const { playTimes, playType, playTimeBegin, playTimeEnd, scale} = this.state.property;
+    const { playType, playTimeBegin, playTimeEnd, scale} = this.state.property;
     switch (id) {
     case 'apply': {
       this.data.playType = playType;
-      this.data.playTimes = playTimes;
+      // this.data.playTimes = playTimes;
       this.data.playTimeBegin = this.getTime(playTimeBegin);
       this.data.playTimeEnd = this.getTime(playTimeEnd);
       this.data.scale = scale;
@@ -128,7 +124,7 @@ class PlayerPicAsset extends PureComponent {
         </div>
       </div>          
       <div className="row">
-        <div className="form-group">
+        {/* <div className="form-group"> 
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'})}</label>
           <div className="input-container input-w-2">
             <input type="text" className="form-control" maxLength="8"
@@ -136,8 +132,8 @@ class PlayerPicAsset extends PureComponent {
             <span className={prompt.playTimes ? 'prompt ' : 'prompt hidden'}>
               <FormattedMessage id="mediaPublish.check"/></span>
           </div>
-        </div>
-        <div className="form-group pull-right">
+        </div> */}
+        <div className="form-group">
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.scalingRatio'})}</label>
           <div className="input-container input-w-2">
             <select className="form-control" value={property.scale}
@@ -151,9 +147,7 @@ class PlayerPicAsset extends PureComponent {
             </select>
           </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="form-group">
+        <div className="form-group pull-right">
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.playType'})}</label>
           <div className="input-container input-w-2">
             <select className="form-control" value={property.playType}
@@ -167,6 +161,22 @@ class PlayerPicAsset extends PureComponent {
             </select>
           </div>
         </div>
+      </div>
+      <div className="row">
+        {/* <div className="form-group">
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.playType'})}</label>
+          <div className="input-container input-w-2">
+            <select className="form-control" value={property.playType}
+              onChange={event => this.onChange('playType', event)}>
+              {
+                this.playTypeList.map((option, index) => {
+                  return <option key={index} value={option.value}>
+                    {option.title}
+                  </option>;
+                })}
+            </select>
+          </div>
+        </div> */}
         <div className="form-group pull-right clipsRage">
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.fragmentRange'})}</label>
           <div className="input-container input-w-2">
@@ -180,7 +190,7 @@ class PlayerPicAsset extends PureComponent {
           </div>
         </div>
       </div> 
-      <div className="row">
+      {/* <div className="row">
         <div className="form-group pull-right">
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.volume'})}</label>
           <div className="input-container input-w-2">
@@ -195,7 +205,7 @@ class PlayerPicAsset extends PureComponent {
             </select>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="row">
         <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>
