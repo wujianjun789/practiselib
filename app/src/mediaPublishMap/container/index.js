@@ -9,21 +9,28 @@ import '../../../public/styles/mediaPublish-map.less';
 
 import Content from '../../components/Content';
 import MapView from '../../components/MapView';
+import Panel from '../../components/Panel';
 import Page from '../../components/Page';
 
+import {getSearchAssetCountByDomainWithCenter,getSearchAssetsByDomainWithCenter} from '../../api/asset';
+
 import Immutable from 'immutable';
+import {DOMAIN_LEVEL} from '../../common/util/index';
+import {getMapConfig} from '../../util/network';
+import {getDomainLevelByMapLevel} from '../../util/index';
 export  class MediaPublishMap extends Component{
     constructor(props){
         super(props);
         this.state = {
+            model: 'screen',
             IsSearch: true,
             IsSearchResult: false,
 
-            map:{
-                id: "mediaPublishMap",
-                latlng: []
-            },
+            mapId: "mediaPublishMap",
+            panLatlng: null,
             search:Immutable.fromJS({placeholder:'输入屏名称搜索', value:''}),
+
+            positionList:[/*{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}*/],
             searchList: Immutable.fromJS([{id:1, name:'屏幕1号'},{id:2, name:'屏幕2号'}]),
 
             page: Immutable.fromJS({
@@ -34,27 +41,43 @@ export  class MediaPublishMap extends Component{
 
             curDevice:Immutable.fromJS({id:1, name:'屏幕1号'}),
 
-            screen:Immutable.fromJS({width:192, height:576, online:1, brightness:100, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:["sys_fault"]}),
+            screen:Immutable.fromJS({width:192, height:576, online:1, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:["sys_fault"]}),
             screenSwitch:{list:[{id:'open', value:'开'},{id:'close', value:'关'}], id:'open'},
             playerList:{list:[{id:1, name:'播放列表1'}, {id:2, name:'播放列表2'}], id:1, name:'播放列表1'},
 
             IsOpenPoleInfo:true,
             IsOpenPoleControl:true,
             IsOpenPreview: false,
+            IsOpenFault: false,
 
             listStyle:{"maxHeight":"200px"},
             infoStyle:{"maxHeight":"352"},
             controlStyle:{"maxHeight":"180"},
+            faultStyle: {"top": "280px"}
         };
 
+        this.map = {
+            center:{lng: 121.49971691534425, lat: 31.239658843127756}
+        };
+        this.domainLevel = DOMAIN_LEVEL+1;
+        this.domainCurLevel = 0;
         this.setSizeOut = -1;
     }
     componentWillMount(){
         this.mounted = true;
+        getMapConfig(data=>{
+            if(this.mounted){
+                this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
+                this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+            }
+        })
+
         window.onresize = event=>{
             this.setSizeOut && clearTimeout(this.setSizeOut);
             this.setSizeOut = setTimeout(()=>{this.setSize()}, 33);
         }
+
+        this.requestSearch();
     }
 
     componentDidMount(){
@@ -97,9 +120,32 @@ export  class MediaPublishMap extends Component{
     }
 
     requestSearch = ()=>{
-        this.setState({IsSearchResult: true}, ()=>{
+        const {model, search, page} = this.state;
+        const limit = page.get('pageSize');
+        const current = page.get('current');
+        const offset =  (current-1)*limit;
+        const name = search.get('value');
 
+        this.setState({IsSearchResult: true}, ()=>{
+            return false;
+            getSearchAssetCountByDomainWithCenter({id:null, level:this.domainCurLevel}, this.map, model, name, data=>{this.mounted && this.updatePageTotal(data)});
+            getSearchAssetsByDomainWithCenter({id:null, level:this.domainCurLevel}, this.map, model, name, offset, limit, data=>{this.mounted && this.updateSearch(data)});
         })
+    }
+
+    updatePageTotal = data=>{
+        this.setState({page: this.state.page.update('total', v=>data.count), IsSearchResult:false});
+    }
+
+    updateSearch = (data)=>{
+        const searchList = Immutable.fromJS(data);
+        const positionList = data.map((pole)=>{
+            let latlng = pole.geoPoint;
+            return Object.assign({}, {"device_id": pole.id,"device_type": 'SCREEN', IsCircleMarker:false}, latlng)
+        });
+
+        this.setState({searchList:searchList, positionList:positionList}, ()=>{
+        });
     }
 
     onChange = (key, event)=>{
@@ -128,8 +174,16 @@ export  class MediaPublishMap extends Component{
         }
     }
 
+    faultCloseClick = ()=>{
+        this.setState({IsOpenFault: false})
+    }
+
     preview = ()=>{
         this.setState({IsOpenPreview: true});
+    }
+
+    faultClick = (event)=>{
+        this.setState({IsOpenFault: true, faultStyle:{"top":(event.pageY+20)+"px"}});
     }
 
     onToggle = ()=>{
@@ -159,6 +213,22 @@ export  class MediaPublishMap extends Component{
 
     onkeydown = ()=>{
 
+    }
+
+    panCallFun(){
+        this.mounted && this.setState({panLatlng:null});
+    }
+
+    mapDragend = (data)=>{
+        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+
+        this.requestSearch();
+    }
+
+    mapZoomend = (data)=>{
+        this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+        this.requestSearch();
     }
 
     transformState = (key, sf)=>{
@@ -200,10 +270,14 @@ export  class MediaPublishMap extends Component{
     }
 
     render(){
-        const {map, search, page, IsSearch, IsSearchResult, searchList, curDevice, screen, screenSwitch, playerList,
-            IsOpenPoleInfo, IsOpenPoleControl, IsOpenPreview, listStyle, infoStyle, controlStyle} = this.state;
+        const {mapId, panLatlng, search, page, IsSearch, IsSearchResult, positionList, searchList, curDevice, screen, screenSwitch, playerList,
+            IsOpenPoleInfo, IsOpenPoleControl, IsOpenPreview, IsOpenFault, listStyle, infoStyle, controlStyle,faultStyle} = this.state;
+        console.log(page.toJS());
+        const faultList = screen.get('faultList').toJS();
         return <Content>
-            <MapView mapData={map}></MapView>
+            <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:searchList.toJS()}}
+                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}} panLatlng={panLatlng} panCallFun={this.panCallFun}>
+            </MapView>
             <div className="search-container">
                 <div className={"searchText smartLight-map"} onKeyDown={this.onkeydown}>
                     <input type="search" className="form-control" placeholder={search.get('placeholder')} value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>
@@ -239,25 +313,23 @@ export  class MediaPublishMap extends Component{
                     <div className={"panel-body "+(infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(infoStyle.maxHeight>40?infoStyle.maxHeight-40:0)+"px"}}>
                         <div className="row state-info screen">
                             <div className="col-sm-8 prop">
-                                {this.renderState(screen, "resolution", "width")}
-                                {this.renderState(screen, "online", "online", true)}
-                                {this.renderState(screen, "version", "version")}
+                                {this.renderState(screen, "resolution", "resolution")}
+                                {this.renderState(screen, "online", "online.state", true)}
+                                {
+                                    <div className="fault-container"><span className="name">{this.formatIntl('app.work.state')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                                }
+                                {
+                                    faultList.length>0 &&
+                                    <Panel id="faultClose" className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                           closeClick={this.faultCloseClick}>
+                                        {
+                                            faultList.map(key=>{
+                                                return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                            })
+                                        }
+                                    </Panel>
+                                }
                                 {this.renderState(screen, "brightness_mode", "brightness_mode", true)}
-                                {this.renderState(screen, "brightness", "brightness")}
-                                {
-                                    // <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
-                                }
-                                {
-                                    // faultList.length>0 &&
-                                    // <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('app.fault_info')} closeBtn={true}
-                                    //        closeClick={this.closeClick}>
-                                    //     {
-                                    //         faultList.map(key=>{
-                                    //             return <div key={key}>{this.formatIntl("app."+key)}</div>
-                                    //         })
-                                    //     }
-                                    // </Panel>
-                                }
                             </div>
                             <div className="col-sm-4 img-container">
                                 <img src="http://localhost:8080/images/smartLight/screen_test.png"/>

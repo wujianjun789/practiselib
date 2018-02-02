@@ -73,6 +73,9 @@ export default {
 
     'app.group':'组',
     'app.statistics':'统计',
+
+    'app.resolution':'屏分辨率',
+    'app.work.state': '工作状态',
         
     //按钮
     ' ':' ',

@@ -74,6 +74,9 @@ export default {
 
     'app.statistics':'statistics',
 
+    'app.resolution':'resolution',
+    'app.work.state': 'work state',
+
     //按钮
     ' ': ' ',
     'button.add': 'Add',
