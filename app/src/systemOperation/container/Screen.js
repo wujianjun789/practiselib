@@ -334,14 +334,18 @@ export class Screen extends Component {
     const {collapse, deviceCollapse, page, search, selectDevice, domainList, data} = this.state;
     return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
       <div className="heading">
-        <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField}
-          options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
-        <SearchText placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})}
-          value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit}/>
-        <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>
-          {this.props.intl.formatMessage({id:'button.add'})}</button>
-        <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>
-          {this.props.intl.formatMessage({id:'button.import'})}</button>
+        <div className="flex-left">
+          <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField}
+            options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
+          <SearchText placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})}
+            value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit}/>
+        </div>
+        <div className="flex-right">
+          <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>
+            {this.props.intl.formatMessage({id:'button.add'})}</button>
+          <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>
+            {this.props.intl.formatMessage({id:'button.import'})}</button>
+        </div>
       </div>
       <div className="table-container">
         <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}
