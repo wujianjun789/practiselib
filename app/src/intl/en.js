@@ -241,7 +241,8 @@ export default {
 
     //故障管理
     'sysOperation.fault.manage':'Fault management', 
-    'sysOperation.alarm.type':'Alarm type',
+    'sysOperation.alarm.type':'Alarm type',    
+    'sysOperation.alarm.param':'Alarm param',    
     'sysOperation.alarm.device.model':'Device model',
     'sysOperation.alarm.level':'Alarm level',
     'sysOperation.alarm.threshold':'Threshold',
