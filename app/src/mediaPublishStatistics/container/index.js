@@ -5,13 +5,25 @@ import React, { Component } from 'react';
 import Content from '../../components/Content';
 import PieChart from '../util/pieChart'
 import '../../../public/styles/media-publish-stat.less'
+import { getStatDeviceCount } from '../../api/mediaPublish';
 
 export default class MediaPublishStatistics extends Component {
+    state = {
+        count: 0,
+        inline: 0,
+        outline: 0,
+        normal: 0,
+        fault: 0,
+    }
     componentWillMount() {
         //当有ref回调函数时，需要注意
         this._isMounted = true;
         this.normalChart = null;
         this.faultChart = null;
+        getStatDeviceCount(res => {
+            const { count, inline, outline, normal, fault } = res;
+            this.setState({ count, inline, outline, normal, fault })
+        })
     }
     componentWillUnmount() {
         this.destoryChart()
@@ -24,12 +36,13 @@ export default class MediaPublishStatistics extends Component {
         }
         switch (node.id) {
             case 'normal-device': {
-                const data = [400, 100];
-                this.normalChart = new PieChart(node, data);
+                const data = [this.state.inline, this.state.outline];
+                const color = ['#fa919c', '#f83d59']
+                this.normalChart = new PieChart(node, data, color);
                 break;
             }
             case 'fault-device': {
-                const data = [300, 200];
+                const data = [this.state.normal, this.state.fault];
                 this.faultChart = new PieChart(node, data);
                 break;
             }
@@ -38,9 +51,6 @@ export default class MediaPublishStatistics extends Component {
                 break;
         }
     }
-    updateChart = () => {
-
-    }
     destoryChart = () => {
         this.normalChart.destory();
         this.faultChart.destory();
@@ -48,27 +58,32 @@ export default class MediaPublishStatistics extends Component {
         this.faultChart = null;
     }
     render() {
+        const { count, inline, outline, normal, fault, show } = this.state;
         return (
             <Content>
                 <div class='media-publish-stat'>
                     <h4>在线设备图</h4>
                     <div class='normal-device clearfix'>
-                        <div id='normal-device' class='left' ref={this.drawChart}></div>
+                        {count ? <div id='normal-device' class='left' ref={this.drawChart}></div>
+                            : <div class='left'>暂无设备</div>
+                        }
                         <div class='right'>
-                            <h5>设备数：500</h5>
-                            <p>在线正常数：100</p>
-                            <p>离线数：400</p>
+                            <h5>设备数：{count}</h5>
+                            <p><i class='dot normal-inline' />在线：{inline}</p>
+                            <p><i class='dot normal-outline' />离线：{outline}</p>
                         </div>
                     </div>
                 </div>
                 <div class='media-publish-stat'>
                     <h4>设备故障图</h4>
                     <div class='fault-device clearfix'>
-                        <div id='fault-device' class='left' ref={this.drawChart}></div>
+                        {count ? <div id='fault-device' class='left' ref={this.drawChart}></div>
+                            : <div class='left'>暂无设备</div>
+                        }
                         <div class='right'>
-                            <h5>设备数：500</h5>
-                            <p>正常故障数：200</p>
-                            <p>故障设备数：200</p></div>
+                            <h5>设备数：{count}</h5>
+                            <p><i class='dot fault-inline' />正常：{normal}</p>
+                            <p><i class='dot fault-outline' />故障：{fault}</p></div>
                     </div>
                 </div>
             </Content>
