@@ -224,9 +224,9 @@ export class DomainEditList extends Component {
                                                                     domain.name = data.domainName;
                                                                     domain.geoType = 0;
                                                                     domain.geoPoint = {lat:data.lat, lng:data.lng};
-                                                                    if(data.prevDomain){
-                                                                        domain.parentId = data.prevDomain;
-                                                                    }
+                                                                    // if(data.prevDomain){
+                                                                    //     domain.parentId = data.prevDomain;
+                                                                    // }
 
                                                                     updateDomainById(domain, ()=>{
                                                                         actions.overlayerHide();
