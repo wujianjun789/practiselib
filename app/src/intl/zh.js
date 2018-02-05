@@ -97,6 +97,8 @@ export default {
     'button.ignore':'忽略',
     'button.solve':'解决',
     'button.to.fault':'转故障',
+    'button.acceptable':'可接受',
+    'button.hangUp':'挂起',
 
     //用户中心
     'update.password':'修改密码',
@@ -243,20 +245,28 @@ export default {
     'sysOperation.fault.manage':'故障管理', 
     'sysOperation.alarm.type':'告警类别',
     'sysOperation.alarm.param':'告警参数',    
+    'sysOperation.fault.param':'故障参数',    
     'sysOperation.alarm.device.model':'设备模型',
     'sysOperation.alarm.level':'告警级别',
+    'sysOperation.fault.level':'故障级别',
     'sysOperation.alarm.threshold':'阈值',
     'sysOperation.alarm.test.value':'检测值',
     'sysOperation.alarm.time':'告警时间',
+    'sysOperation.fault.time':'故障时间',
     'sysOperation.alarm.status':'告警状态',
+    'sysOperation.fault.status':'故障状态',
     'sysOperation.alarm.person':'处理人',
     'sysOperation.alarm.handle.time':'处理时间',
+    'sysOperation.fault.id':'故障编号',
+    
     'sysOperation.alarm.statistical.info':'告警统计信息',
-    'sysOperation.alarm.count.deadly':'致命数',
-    'sysOperation.alarm.count.serious':'严重数',
-    'sysOperation.alarm.count.general':'一般数',
-    'sysOperation.alarm.count.hint':'提示数',
-    'sysOperation.alarm.noCount':'未读取',
+    'sysOperation.fault.statistical.info':'故障统计信息',
+    
+    'sysOperation.count.deadly':'致命数',
+    'sysOperation.count.serious':'严重数',
+    'sysOperation.count.general':'一般数',
+    'sysOperation.count.hint':'提示数',
+    'sysOperation.noCount':'未读取',
     
     //智慧路灯
     'app.search.placeholder.name': '搜索名称或域',

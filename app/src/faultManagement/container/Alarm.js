@@ -23,7 +23,6 @@ export class Alarm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'sensor',
       collapse: false,
       infoCollapse:false,
       allChecked:false,
@@ -312,23 +311,23 @@ export class Alarm extends Component {
             <div className="right">
               <div className="count deadly">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.deadly')} :  { statisticalInfo.deadly ?
-                  statisticalInfo.deadly : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.deadly')} :  { statisticalInfo.deadly ?
+                  statisticalInfo.deadly : this.formatIntl('sysOperation.noCount')}
               </div>
               <div className="count serious">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.serious')} :  {statisticalInfo.serious ?
-                  statisticalInfo.serious : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.serious')} :  {statisticalInfo.serious ?
+                  statisticalInfo.serious : this.formatIntl('sysOperation.noCount')}
               </div>
               <div className="count general">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.general') } :  { statisticalInfo.general ?
-                  statisticalInfo.general : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.general') } :  { statisticalInfo.general ?
+                  statisticalInfo.general : this.formatIntl('sysOperation.noCount')}
               </div>
               <div className="count hint">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.hint') } :  {statisticalInfo.hint ?
-                  statisticalInfo.hint : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.hint') } :  {statisticalInfo.hint ?
+                  statisticalInfo.hint : this.formatIntl('sysOperation.noCount')}
               </div>
             </div>
           </div>
