@@ -37,13 +37,13 @@ import { Name2Valid } from '../../util/index';
 import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import {
   addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
-  getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem
+  getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem,
 } from '../util/index';
 
 import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
   updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
-  removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById,previewPlayItem} from '../../api/mediaPublish';
+  removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById, previewPlayItem} from '../../api/mediaPublish';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -185,6 +185,7 @@ export class PlayerArea extends Component {
       previewPlayList: [], // 发送给后台的图片预览队列
       previewSrc: '', //图片预览的src
       scaling: 1, //图片预览缩放系数
+      parentInfo:{}, // 图片预览父元素对比
     };
 
     this.systemFile = [];
@@ -225,6 +226,7 @@ export class PlayerArea extends Component {
 
   componentDidUpdate() {
     this.updateSidebarInfoStyle();
+    // this.setParentInfo();
   }
 
   componentWillUnmount() {
@@ -237,7 +239,7 @@ export class PlayerArea extends Component {
     const list = this.state.uploadFileList;
     list.map((item) => {
       if (item !== undefined) {
-        this.cancelXhr(item.xhr)
+        this.cancelXhr(item.xhr);
       }
     });
   }
@@ -259,8 +261,18 @@ export class PlayerArea extends Component {
       this.setState({
         IsScroll: sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight, scrollHeight: sidebarInfoDom.scrollHeight, assetProperHeight: assetPropertyDom.offsetHeight,
         libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle
+      }, () => { 
+        setTimeout(() => {
+          this.setParentInfo();
+        }, 400);
       });
     }
+  }
+
+  setParentInfo() {
+    this.setState({
+      parentInfo:{ width: this._previewImg.offsetWidth, height: this._previewImg.offsetHeight }
+    },() => {console.log(this.state.parentInfo)})
   }
 
   handleMouseMove = ({ pageX, pageY }) => {
@@ -476,7 +488,7 @@ export class PlayerArea extends Component {
     }, () => {return this.setPlayItemArray(arealist);});
   }
   setPlayItemArray(areaList) {
-    console.log('=== ==== === === ',areaList);
+    console.log('=== ==== === === ', areaList);
     if (areaList === []) {
       return undefined;
     } else {
@@ -501,7 +513,7 @@ export class PlayerArea extends Component {
       });
       this.setState({
         previewPlayList: itemList,
-      }, () => {return this.getPreviewImg()});
+      }, () => {return this.getPreviewImg();});
     }
   }
 
@@ -690,14 +702,14 @@ export class PlayerArea extends Component {
       } else {
         clearTreeListState(this.state.playerData);
         switch (this.state.curType) {
-          case 'playerPlan':
-          case 'playerPlan2':
-          case 'playerPlan3':
-            this.addPlayerScene();
-            break;
-          case 'playerScene':
-            this.addPlayerArea();
-            break;
+        case 'playerPlan':
+        case 'playerPlan2':
+        case 'playerPlan3':
+          this.addPlayerScene();
+          break;
+        case 'playerScene':
+          this.addPlayerArea();
+          break;
         }
       }
     } else if (id == 'edit') {
@@ -816,22 +828,22 @@ export class PlayerArea extends Component {
 
   applyClick = (id, data) => {
     switch (id) {
-      case 'playerProject':
-        updateProjectById(data, response => {
-          this.setState({ project: Object.assign({}, this.state.project, response) });
-        });
-        break;
-      case 'playerPlan':
-        this.addUpdatePlan(data);
-        break;
-      case 'playerScene':
-        this.addUpdateScene(data);
-        break;
-      case 'playerAreaPro':
-        this.addUpdateArea(data);
-        break;
-      default:
-        this.addUpdateItem(data);
+    case 'playerProject':
+      updateProjectById(data, response => {
+        this.setState({ project: Object.assign({}, this.state.project, response) });
+      });
+      break;
+    case 'playerPlan':
+      this.addUpdatePlan(data);
+      break;
+    case 'playerScene':
+      this.addUpdateScene(data);
+      break;
+    case 'playerAreaPro':
+      this.addUpdateArea(data);
+      break;
+    default:
+      this.addUpdateItem(data);
     }
   }
 
@@ -840,11 +852,25 @@ export class PlayerArea extends Component {
   }
 
   zoomOutHandler = () => {
-
+    const { scaling: curScaling } = this.state;
+    const scaling = curScaling + 0.3;
+    if (scaling > 2) { 
+      return false;
+    }
+    this.setState({
+      scaling: scaling,
+    });
   }
 
   zoomInHandler = () => {
-
+    const { scaling: curScaling } = this.state;
+    const scaling = curScaling - 0.3;
+    if (scaling < 0) {
+      return false;
+    }
+    this.setState({
+      scaling: scaling,
+    })
   }
 
   saveHandler = () => {
@@ -887,10 +913,10 @@ export class PlayerArea extends Component {
     this.setState({ showUploadNotify: false });
   }
   showUploadFile = () => {
-    this.setState({ showUploadFile: true, });
+    this.setState({ showUploadFile: true });
   }
   hideUploadFile = () => {
-    this.setState({ showUploadFile: false, });
+    this.setState({ showUploadFile: false });
   }
   uploadProgress = (e) => {
     if (e.lengthComputable) {
@@ -913,7 +939,7 @@ export class PlayerArea extends Component {
     for (let i = nextKey; i < list.length; i++) {
       if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress === 'Waiting')) {
         const currentXhr = list[i].xhr;
-        uploadMaterialFile(list, i)
+        uploadMaterialFile(list, i);
         this.setState({ currentXhr });
         return;
       }
@@ -929,7 +955,7 @@ export class PlayerArea extends Component {
     for (let i = nextKey; i < list.length; i++) {
       if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress === 'Waiting')) {
         const currentXhr = list[i].xhr;
-        uploadMaterialFile(list, i)
+        uploadMaterialFile(list, i);
         this.setState({ currentXhr });
         return;
       }
@@ -940,7 +966,7 @@ export class PlayerArea extends Component {
     console.log('取消上传');
   }
   createUploadXHR = (file, cb) => {
-    const { name, key, type } = file
+    const { name, key, type } = file;
     const form = new FormData();
     form.append('file', file.data);
     form.append('name', name);
@@ -953,7 +979,7 @@ export class PlayerArea extends Component {
     xhr.addEventListener('abort', this.uploadCanceled);
     const { uploadFileList, usefulListLength } = this.state;
     uploadFileList.push({ name: file.name, progress: file.progress, xhr: xhr, form: form });
-    this.setState({ uploadFileList, usefulListLength: usefulListLength + 1 }, cb)
+    this.setState({ uploadFileList, usefulListLength: usefulListLength + 1 }, cb);
   }
   addUploadFile = (file) => {
     this.createUploadXHR(file, () => {
@@ -961,8 +987,8 @@ export class PlayerArea extends Component {
       const { uploadFileList, afterFirstUpload, isUpload } = this.state;
       //第一次上传文件
       if (!afterFirstUpload) {
-        const currentXhr = uploadFileList[0].xhr
-        uploadMaterialFile(uploadFileList, 0)
+        const currentXhr = uploadFileList[0].xhr;
+        uploadMaterialFile(uploadFileList, 0);
         this.setState({ currentXhr, afterFirstUpload: true, isUpload: true });
         return;
       }
@@ -971,9 +997,9 @@ export class PlayerArea extends Component {
       }
       //已上传过文件，所有已完成，下次继续上传触发最新的文件
       const currentXhr = uploadFileList[uploadFileList.length - 1].xhr;
-      uploadMaterialFile(uploadFileList, uploadFileList.length - 1)
+      uploadMaterialFile(uploadFileList, uploadFileList.length - 1);
       this.setState({ currentXhr, isUpload: true });
-    })
+    });
   }
   cancelXhr = (xhr) => {
     xhr.abort();
@@ -988,11 +1014,11 @@ export class PlayerArea extends Component {
     for (let i = nextKey; i < list.length; i++) {
       if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress === 'Waiting')) {
         const currentXhr = list[i].xhr;
-        uploadMaterialFile(list, i)
+        uploadMaterialFile(list, i);
         this.setState({
           uploadFileList: list,
           usefulListLength,
-          currentXhr
+          currentXhr,
         }, () => {
           if (this.state.usefulListLength === 0) {
             this.hideUploadNotify();
@@ -1016,7 +1042,7 @@ export class PlayerArea extends Component {
   cancelUploadFile = (index) => {
     const list = this.state.uploadFileList, xhr = list[index].xhr;
     this.cancelXhr(xhr);
-    list[index] = undefined
+    list[index] = undefined;
     const usefulListLength = this.state.usefulListLength - 1;
     if (xhr === this.state.currentXhr) {
       //取消当前正在上传的文件
@@ -1026,7 +1052,7 @@ export class PlayerArea extends Component {
     //取消已上传或未上传的文件
     this.setState({
       uploadFileList: list,
-      usefulListLength
+      usefulListLength,
     }, () => {
       if (this.state.usefulListLength === 0) {
         this.hideUploadNotify();
@@ -1045,43 +1071,43 @@ export class PlayerArea extends Component {
     }
 
     switch (node.type) {
-      case 'scene':
-        removeSceneById(project.id, parentNode.id, node.id, () => {
-          this.setState({ playerData: removeTree(playerData, node) });
-        });
-        break;
-      case 'plan':
-        removeProgramsById(project.id, node.id, () => {
-          this.setState({ playerData: removeTree(playerData, node) });
-        });
-        break;
-      case 'plan2':
-        type = 'cyclePlan';
-        break;
-      case 'plan3':
-        type = 'timingPlan';
-        break;
-      case 'area':
-        removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
-          this.setState({ playerData: removeTree(playerData, node) });
-        });
-        break;
+    case 'scene':
+      removeSceneById(project.id, parentNode.id, node.id, () => {
+        this.setState({ playerData: removeTree(playerData, node) });
+      });
+      break;
+    case 'plan':
+      removeProgramsById(project.id, node.id, () => {
+        this.setState({ playerData: removeTree(playerData, node) });
+      });
+      break;
+    case 'plan2':
+      type = 'cyclePlan';
+      break;
+    case 'plan3':
+      type = 'timingPlan';
+      break;
+    case 'area':
+      removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
+        this.setState({ playerData: removeTree(playerData, node) });
+      });
+      break;
     }
   }
 
   onMove = (key, node) => {
     switch (node.type) {
-      case 'plan':
-      case 'plan2':
-      case 'plan3':
-        this.updatePlanOrders({ key: key, node: node });
-        break;
-      case 'scene':
-        this.updateScenesOrders({ key: key, node: node });
-        break;
-      case 'area':
-        this.updateAreaOrders({ key: key, node: node });
-        break;
+    case 'plan':
+    case 'plan2':
+    case 'plan3':
+      this.updatePlanOrders({ key: key, node: node });
+      break;
+    case 'scene':
+      this.updateScenesOrders({ key: key, node: node });
+      break;
+    case 'area':
+      this.updateAreaOrders({ key: key, node: node });
+      break;
     }
   }
 
@@ -1142,15 +1168,15 @@ export class PlayerArea extends Component {
       }
 
       switch (type) {
-        case 'playerPlan':
-          !node.toggled && this.requestSceneList(node.id);
-          break;
-        case 'playerScene':
-          !node.toggled && this.requestZoneList(parentNode.id, node.id);
-          break;
-        case 'playerArea':
-          this.requestItemList(parentParentNode.id, parentNode.id, node.id);
-          break;
+      case 'playerPlan':
+        !node.toggled && this.requestSceneList(node.id);
+        break;
+      case 'playerScene':
+        !node.toggled && this.requestZoneList(parentNode.id, node.id);
+        break;
+      case 'playerArea':
+        this.requestItemList(parentParentNode.id, parentNode.id, node.id);
+        break;
       }
     });
   }
@@ -1165,16 +1191,18 @@ export class PlayerArea extends Component {
     this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state }) });
   }
 
+  
+
   render() {
-    // console.log('PROJECT------------',this.state.project)
     const {
-        project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset,
+      project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset,
       assetList, assetType, assetSort, assetSearch, page, IsScroll, assetStyle, controlStyle, libStyle, pageStyle,
-      lastPress, isPressed, mouseXY, isClick, isAddClick, previewSrc, scaling
-      } = this.state;
+      lastPress, isPressed, mouseXY, isClick, isAddClick, previewSrc, scaling, parentInfo,
+    } = this.state;
     const { router } = this.props;
     const add_title = getTitleByType(curType, this.formatIntl);
     const imgInfo = { width: project.width, height: project.height, src: previewSrc };
+
     return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} />
       <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
@@ -1190,8 +1218,8 @@ export class PlayerArea extends Component {
             <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
               <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
           </div>
-          <div className="img-container">
-            <PreviewImg imgInfo={imgInfo} scaling={scaling}/>
+          <div className="img-container" ref={_previewImg => this._previewImg = _previewImg}>
+            <PreviewImg imgInfo={imgInfo} scaling={scaling} parentInfo={parentInfo}/>
           </div>
           <div className="control-container-bottom" style={controlStyle}>
             <div className="form-group pull-right quit-container " onClick={() => this.quitHandler()}>

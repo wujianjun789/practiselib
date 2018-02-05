@@ -55,7 +55,6 @@ export default class SideBar extends Component {
             this.props.onClick && this.props.onClick(id);
         }
     }
-
     onProject(){
         this.props.onClick && this.props.onClick('project');
     }
