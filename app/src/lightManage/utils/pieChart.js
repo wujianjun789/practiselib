@@ -9,12 +9,11 @@ export default function PieChart(data) {
   // var height = 170;  
   let dataset = data.data;
   let ID = data.wrapper.id;
-  let parent = d3.select(`#${ID}`);
+  // let parent = d3.select(`#${ID}`);
+  let parent = d3.select(data.wrapper);
   if (parent == null) {return;}
-  var color = d3.scaleOrdinal(d3.schemeCategory20);
-  if (data.color) {
-    color = d3.scaleOrdinal().domain(d3.range(data.color.length)).range(data.color);
-  }
+  var color = d3.scaleOrdinal(data.color?data.color:d3.schemeCategory20);
+
   var pie = d3.pie()
     .value(function(d, i) { return d; })
     .padAngle(0.03)
