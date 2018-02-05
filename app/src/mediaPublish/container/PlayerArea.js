@@ -413,11 +413,12 @@ export class PlayerArea extends Component {
     });
 
     if (newData && newData.length) {
-      this.playerAssetSelect(Immutable.fromJS(newData[0]));
+      // this.playerAssetSelect(Immutable.fromJS(newData[0]));
     } else {
 
     }
 
+    this.state.playerListAsset = this.state.playerListAsset.update('id', v=>-1);
     this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)) }, () => {
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
@@ -608,8 +609,6 @@ export class PlayerArea extends Component {
     }
   }
 
-
-
   addClick = (item) => {
     const { project, parentParentNode, parentNode, curNode } = this.state;
     if (!curNode || curNode.type !== 'area') {
@@ -667,6 +666,9 @@ export class PlayerArea extends Component {
 
   addPlayerScene = () => {
     const parentNode = this.state.curNode;
+    if(typeof parentNode.id === 'string' && parentNode.id.indexOf("plan")>-1){
+      return this.props.actions.addNotify(0, '请提交播放列表');
+    }
     let node = getInitData('scene', '场景新建');
 
     this.setState({ curType: 'playerScene', curNode: node, parentNode: parentNode }, () => { this.updateTreeData(node, parentNode); });
@@ -675,6 +677,9 @@ export class PlayerArea extends Component {
   addPlayerArea = () => {
     const parentParentNode = this.state.parentNode;
     const parentNode = this.state.curNode;
+    if(typeof parentNode.id === 'string' && parentNode.id.indexOf("scene")>-1){
+      return this.props.actions.addNotify(0, '请提交播放场景');
+    }
     let node = getInitData('area', '区域新建');
 
     this.setState({ curType: 'playerArea', curNode: node, parentNode: parentNode, parentParentNode: parentParentNode }, this.updateTreeData(node, parentNode, parentParentNode));
@@ -718,8 +723,8 @@ export class PlayerArea extends Component {
       clearTreeListState(this.state.playerData);
       this.setState({ isAddClick: false }, () => {
 
-        addTreeNode(id);
-        this.setState({ curType: proType, curNode: node }, () => this.updateTreeData(node));
+        const node = addTreeNode(id);
+        this.setState({ curType: node.proType, curNode: node.node }, () => this.updateTreeData(node.node));
       });
     }
   }
@@ -730,11 +735,11 @@ export class PlayerArea extends Component {
     if (data.id) {
       planData = Object.assign({}, planData, { id: data.id });
       updateProgramById(project.id, planData, (response) => {
-        this.updatePlayerPlanData(planData);
+        this.updatePlayerPlanData(Object.assign({}, planData, {type:'plan'}));
       });
     } else {
       addProgram(project.id, planData, response => {
-        this.updatePlayerPlanData(Object.assign({}, planData, { id: response.playlistId }));
+        this.updatePlayerPlanData(Object.assign({}, planData, { id: response.playlistId }, {type:'plan'}));
       });
     }
   }
@@ -745,11 +750,11 @@ export class PlayerArea extends Component {
     if (data.id) {
       sceneData = Object.assign({}, sceneData, { id: data.id });
       updateSceneById(project.id, parentNode.id, sceneData, (response) => {
-        this.updatePlayerSceneData(sceneData);
+        this.updatePlayerSceneData(Object.assign({}, sceneData, {type:'scene'}));
       });
     } else {
       addScene(project.id, parentNode.id, sceneData, response => {
-        this.updatePlayerSceneData(Object.assign({}, sceneData, { id: response.sceneId }));
+        this.updatePlayerSceneData(Object.assign({}, sceneData, { id: response.sceneId }, {type: 'scene'}));
       });
     }
   }
@@ -760,11 +765,11 @@ export class PlayerArea extends Component {
     if (data.id) {
       areaData = Object.assign({}, areaData, { id: data.id });
       updateZoneById(project.id, parentParentNode.id, parentNode.id, areaData, (response) => {
-        this.updatePlayerAreaData(areaData);
+        this.updatePlayerAreaData(Object.assign({},areaData,{type:'area'}));
       });
     } else {
       addZone(project.id, parentParentNode.id, parentNode.id, areaData, response => {
-        this.updatePlayerAreaData(Object.assign({}, areaData, { id: response.regionId }));
+        this.updatePlayerAreaData(Object.assign({}, areaData, { id: response.regionId },{type:'area'}));
       });
     }
   }
@@ -784,7 +789,7 @@ export class PlayerArea extends Component {
 
       return plan;
     });
-    this.setState({ playerData: playerData }, () => this.updatePlayerTree());
+    this.setState({ curNode:response, playerData: playerData }, () => this.updatePlayerTree());
   }
 
   updatePlayerSceneData = (response) => {
@@ -797,7 +802,7 @@ export class PlayerArea extends Component {
 
       return scene;
     });
-    this.setState({ playerData: this.state.playerData }, () => this.updatePlayerTree());
+    this.setState({ curNode:response, playerData: this.state.playerData }, () => this.updatePlayerTree());
   }
 
   updatePlayerAreaData = (response) => {
@@ -811,7 +816,7 @@ export class PlayerArea extends Component {
 
       return area;
     });
-    this.setState({ playerData: this.state.playerData }, () => this.updatePlayerTree());
+    this.setState({ curNode:response, playerData: this.state.playerData }, () => this.updatePlayerTree());
   }
 
   applyClick = (id, data) => {
@@ -1038,9 +1043,9 @@ export class PlayerArea extends Component {
     const { project, playerData } = this.state;
     let parentNode = getTreeParentNode(playerData, node);
     let parentParentNode = getTreeParentNode(playerData, parentNode);
-    if (node.type === this.state.curNode.type && node.id === this.state.curNode.id
-      || parentNode.type === this.state.parentNode.type && parentNode.id === this.state.parentNode.id
-      || parentParentNode.type === this.state.parentParentNode.type && parentParentNode.id === this.state.parentParentNode.id) {
+    if (this.state.curNode && node.type === this.state.curNode.type && node.id === this.state.curNode.id
+      || this.state.parentNode && parentNode.type === this.state.parentNode.type && parentNode.id === this.state.parentNode.id
+      || this.state.parentParentNode && parentParentNode.type === this.state.parentParentNode.type && parentParentNode.id === this.state.parentParentNode.id) {
       this.initItemList();
     }
 

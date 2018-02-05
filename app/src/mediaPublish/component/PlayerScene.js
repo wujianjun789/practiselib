@@ -185,7 +185,7 @@ class PlayerScene extends PureComponent{
             if(id == "playModeCount" && this.state.property.playMode.index == 1){
                 valueKey = {value2: parseInt(val)};
             }else{
-                valueKey = {value: parseInt(val)};
+                valueKey = {value: val};
             }
             this.setState({
                 property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], valueKey) }),

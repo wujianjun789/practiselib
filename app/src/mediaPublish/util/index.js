@@ -138,7 +138,7 @@ export function removeTree(treeList, node) {
         return false;
     }
 
-    let curIndex = lodash.findIndex(treeList, curNode=>{return curNode.level == node.level && curNode.id == node.id});
+    let curIndex = lodash.findIndex(treeList, curNode=>{return curNode.type == node.type && curNode.id == node.id});
     if(curIndex>-1){
         treeList.splice(curIndex, 1);
         return treeList;

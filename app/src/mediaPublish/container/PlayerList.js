@@ -130,8 +130,8 @@ export class PlayerList extends Component {
         const data = {
             id: '',
             name: '',
-            width: 1920,
-            height: 1080
+            width: 800,
+            height: 600
         }
 
         actions.overlayerShow(<PlayerListPopup intl={this.props.intl} title={this.formatIntl('mediaPublish.addPlan')} data={data}
@@ -145,16 +145,13 @@ export class PlayerList extends Component {
                 }
 
                 addProject(data, (response)=>{
-                console.log('response:', response);
-                    actions.overlayerHide();
-                const id = Math.random()*9999;
-                let item = { id: id, icon: "", name: state.name, resolution: state.width + "X" + state.height, width: state.width, height: state.height }
-                this.props.router.push({
-                    pathname: "/mediaPublish/playerArea",
-                    state: {
-                        item: item
-                    }
-                });
+                actions.overlayerHide();
+                    this.props.router.push({
+                        pathname: "/mediaPublish/playerArea",
+                        state: {
+                            item: response
+                        }
+                    });
                 })
             }} />)
 
