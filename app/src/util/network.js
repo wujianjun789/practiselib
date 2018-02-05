@@ -182,13 +182,13 @@ export function getToken() {
 
 export function alertPopup(response) {
     if(typeof response === 'string'){
-        alert(response);
+        console.log(response);
     }else{
         response && parseJSON(response).then(({json, response}) => {
             const errorJson = json && json.error;
-            errorJson && alert(errorJson.message);
+            errorJson && console.log(errorJson.message);
         }).catch(error=>{
-            alert(response.statusText?response.statusText:statusCode[response.statusCode]);
+            console.log(response.statusText?response.statusText:statusCode[response.statusCode]);
         })
     }
 }

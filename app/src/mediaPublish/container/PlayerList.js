@@ -38,8 +38,8 @@ export class PlayerList extends Component {
                 total: 2
             }),
             data: Immutable.fromJS([
-                { id: 1, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 1`, resolution: "1920X1080", width: 1920, height: 1080 },
-                { id: 2, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 2`, resolution: "1920X1080", width: 1920, height: 1080 }
+               /* { id: 1, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 1`, resolution: "800X600", width: 800, height: 600 },
+                { id: 2, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 2`, resolution: "800X600", width: 800, height: 600 }*/
             ])
         }
 
