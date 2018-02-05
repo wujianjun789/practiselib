@@ -333,8 +333,8 @@ export function getSearchAssetCountByDomainWithCenter(domain, map, model, name, 
   }
 
   const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam)};
-  let paramStr = JSON.stringify({ 'include': ['extend'], 'where': Object.assign({}, param, getSearchParam(domain.id, model, name)) });
-  httpRequest(HOST_IP + '/assets/count?filter=' + encodeURIComponent(paramStr), {
+  let paramStr = JSON.stringify(Object.assign({}, param, getSearchParam(domain.id, model, name)));
+  httpRequest(HOST_IP + '/assets/count?where=' + encodeURIComponent(paramStr), {
     headers: headers,
     method: 'GET',
   }, response => {
