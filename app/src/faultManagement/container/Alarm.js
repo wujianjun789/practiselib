@@ -258,7 +258,7 @@ export class Alarm extends Component {
 
   handlePopup=(key) => {
     const {actions} = this.props;
-    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={`是否${this.props.intl.formatMessage({id:'button.' + key})}选中告警`}
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_fault" tips={`是否${this.props.intl.formatMessage({id:'button.' + key})}选中告警`}
       cancel={() => {actions.overlayerHide();}} confirm={() => {
         actions.overlayerHide();
       }}/>);
@@ -300,7 +300,7 @@ export class Alarm extends Component {
         <div className="panel panel-default statistical-info">
           <div className="panel-heading" role="presentation"
             onClick={() => { !collapse && this.collapseHandler('infoCollapse'); }}>
-            <span className="icon_select"></span>
+            <span className="icon_chart"></span>
             {this.props.intl.formatMessage({id:'sysOperation.alarm.statistical.info'})}
             <span className="icon icon_collapse pull-right"></span>      
           </div>
