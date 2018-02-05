@@ -6,36 +6,63 @@
     .heading{
       height: 70px;
       background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .flex-left {
+        .select {
+              width: 160px;
+              height: 30px;
+              margin-left: 21px;
+              margin-right: 25px;
+              //padding-left: 15px;
+          }
 
-      .select {
-            width: 160px;
-            height: 30px;
-            margin-left: 21px;
-            //padding-left: 15px;
-        }
-
-      .searchText{
-        height: 30px;
-        > input[type='search'] {
-          padding-right: 16px;
-          padding-left: 15px;
+        .searchText{
+          height: 30px;
+          > input[type='search'] {
+            padding-right: 16px;
+            padding-left: 15px;
+          }
         }
       }
-      > .btn.btn-primary,.btn.btn-gray {
+      .flex-right {
+        > .btn.btn-primary,.btn.btn-gray {
+            height: 30px;
+            padding: 4px 12px; 
+            // margin-left: 25px;
+            border: 0;
+            color: #fff;
+        }
+
+        button{
           height: 30px;
-          padding: 4px 12px; 
-          margin-left: 25px;
+          //margin: 20px;
+          padding: 4px 12px;
+
           border: 0;
           color: #fff;
-      }
-
-      button{
-        height: 30px;
-        //margin: 20px;
-        padding: 4px 12px;
-
-        border: 0;
-        color: #fff;
+          margin-right: 23px;
+        }
+        .dropdown-menu{
+          min-width: 60px;
+          height: 60px;
+          margin: 0px;
+          padding: 0px;
+          left: -1px;
+          top: 35px;
+          .glyphicon {
+              position: absolute;
+              top: -11px;
+              left: 40px;
+            }
+            .listBox{
+              left: 40px;
+              width: 60px;
+              background-color: #495264;
+              border-radius: 4px;
+            }
+        }
       }
     }
 

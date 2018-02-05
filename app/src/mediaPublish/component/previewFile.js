@@ -13,7 +13,8 @@ class PreviewFile extends Component {
         url: null,
         show: null,
         data: null,
-        currentKey: 0
+        currentKey: 0,
+        type: null
     }
     changeName = (e) => {
         this.setState({ name: e.target.value })
@@ -34,7 +35,7 @@ class PreviewFile extends Component {
             }
             const url = URL.createObjectURL(file);
             const show = <img src={url} />
-            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file,type:'image' })
+            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file, type: 'image' })
         }
         else if (/^video\/.+$/.test(file.type)) {
             if (this.state.url) {
@@ -42,7 +43,7 @@ class PreviewFile extends Component {
             }
             const url = URL.createObjectURL(file);
             const show = <video src={url} controls loop />;
-            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file,type:'video' })
+            this.setState({ name: file.name, path: file.name, url: url, show: show, data: file, type: 'video' })
         }
         else if (/^text\/plain$/.test(file.type)) {
             const reader = new FileReader();
@@ -50,7 +51,7 @@ class PreviewFile extends Component {
             reader.onload = (e) => {
                 const data = e.target.result;
                 const show = <textarea value={data} readOnly></textarea>
-                this.setState({ name: file.name, path: file.name, url: null, show: show, data: file,type:'text' })
+                this.setState({ name: file.name, path: file.name, url: null, show: show, data: file, type: 'text' })
             }
         } else {
             alert('The file format is not supported');
@@ -58,12 +59,13 @@ class PreviewFile extends Component {
         }
     }
     handleOk = () => {
-        const key = this.state.currentKey;
-        this.props.addUploadFile({ name: this.state.name, progress: this.props.intl.formatMessage({ id: 'mediaPublish.waiting' }), data: this.state.data, key: key })
+        // const key = this.state.currentKey;
+        const { name, data, currentKey, type } = this.state;
+        this.props.addUploadFile({ name, progress: this.props.intl.formatMessage({ id: 'mediaPublish.waiting' }), data, key: currentKey, type })
         this.props.hideModal();
-        this.setState({ currentKey: key + 1 })
+        this.setState({ currentKey: currentKey + 1 })
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         if (this.state.url) {
             URL.revokeObjectURL(this.state.url)
         }

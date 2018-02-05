@@ -130,6 +130,7 @@ export class SingleLampCon extends Component {
     this.pageChange = this.pageChange.bind(this);
     this.domainHandler = this.domainHandler.bind(this);
     this.domainSelect = this.domainSelect.bind(this);
+    this.deviceHandler = this.deviceHandler.bind(this); //设备升级，更换设备
 
     this.popupCancel = this.popupCancel.bind(this);
     this.popupConfirm = this.popupConfirm.bind(this);
@@ -290,6 +291,10 @@ export class SingleLampCon extends Component {
     }
   }
 
+  deviceHandler() {
+    
+  }
+
   pageChange(current, pageSize) {
     let page = this.state.page.set('current', current);
     this.setState({page: page}, () => {
@@ -357,14 +362,30 @@ export class SingleLampCon extends Component {
     const {collapse, deviceCollapse, page, search, selectDevice, domainList, data} = this.state;
     return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
       <div className="heading">
-        <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField}
-          options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
-        <SearchText placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})}
-          value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit}/>
-        <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>
-          {this.props.intl.formatMessage({id:'button.add'})}</button>
-        <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>
-          {this.props.intl.formatMessage({id:'button.import'})}</button>
+        <div className="flex-left">
+          <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField}
+            options={domainList.options} value={domainList.value} onChange={this.domainSelect}/>
+          <SearchText placeholder={this.props.intl.formatMessage({id:search.get('placeholder')})}
+            value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit}/>
+        </div>
+        <div className="flex-right">
+          <button id="sys-add" className="btn btn-primary add-domain" onClick={this.domainHandler}>
+            {this.props.intl.formatMessage({id:'button.add'})}</button>
+          <button id="sys-import" className="btn btn-gray" onClick={ this.importHandler }>
+            {this.props.intl.formatMessage({id:'button.import'})}</button>
+          <div className="btn-group">
+            <button id="sys-maintenance" className="btn btn-gray dropdown-toggle"
+              data-toggle="dropdown">操作<span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu" role="menu">
+              <span className="glyphicon glyphicon-triangle-top" id="iconbox"></span>
+              <div className="listBox">
+                <li><button className="btn btn-gray li" id="sys-upgrade" onClick={this.deviceHandler}>升级</button></li>
+                <li><button className="btn btn-gray li" id="sys-replace" onClick={this.deviceHandler}>更换</button></li>
+              </div>
+            </ul>
+          </div>
+        </div>
       </div>
       <div className="table-container">
         <Table columns={this.columns} data={data} activeId={selectDevice.data.length && selectDevice.data[0].id}

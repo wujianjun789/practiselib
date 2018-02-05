@@ -80,10 +80,13 @@ class PlayerText extends Component {
             this.initPlayerText()
         }
     }
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
     initPlayerText = () => {
         const { projectId, sceneId, planId, areaId, data } = this.props;
-        this.id = data.id
-        getItembyId(projectId, planId, sceneId, areaId, data.id, 0, res => {
+        this.id = data.id; 
+            getItembyId(projectId, planId, sceneId, areaId, data.id, 0, res => {
             this._data = res;
             const {
                 text,
@@ -97,13 +100,13 @@ class PlayerText extends Component {
                 charSpace
             } = res;
             this._isMounted && this.setState({
-                name: { ...this.state.name, value: data.name },
+                name: { ...this.state.name, value: data.name ? data.name : '' },
                 text: { ...this.state.text, value: text },
                 fontType: { ...this.state.fontType, index: getIdByValue(this.state.fontType.list, name) },
                 fontColor: {
                     ...this.state.fontColor, value: {
                         r: fontColor.red,
-                        g: fontColor.green,
+                g: fontColor.green,
                         b: fontColor.blue,
                         a: fontColor.alpha
                     }
@@ -147,12 +150,13 @@ class PlayerText extends Component {
         this.setState({ [e.target.id]: false })
     }
     onChange = (type, e) => {
+        
         switch (type) {
             case 'fontColor':
             case 'bgColor': {
                 this.setState({
                     [type]: { ...this.state[type], value: e.rgb }
-                })
+        })
                 break;
             }
             case 'text': {
@@ -197,9 +201,6 @@ class PlayerText extends Component {
             alignment, playDuration, animation, playSpeed, rowSpace, charSpace, prompt } = this.state;
         switch (type) {
             case 'apply': {
-                // if (prompt.playDuration || prompt.playSpeed || prompt.rowSpace || prompt.charSpace) {
-                //     return;
-                // }
                 const { baseInfo, background, font } = this._data
                 const data = Object.assign({}, this._data, {
                     baseInfo: {
@@ -325,7 +326,7 @@ class PlayerText extends Component {
                     <div class='form-group'>
                         <label>{name.title}</label>
                         <div class='input-container input-w-1'>
-                            <input type='text' class='form-control' disabled='disabled' value={name.value} />
+                            <input type='text' class='form-control' disabled value={name.value} onChange={f => f} />
                         </div>
                     </div>
                 </div>
