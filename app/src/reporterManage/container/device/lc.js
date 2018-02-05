@@ -251,17 +251,14 @@ export default class Lc extends Component {
             multiDeviceList, multiParamList, selectedMultiDeviceIdList, selectedMultiParamIdList, showDeviceName, visible, search: { value, placeholder },
             page: { total, current, limit }, data, } = this.state;
 
-        let currentDomainName = null, applyDisabled = true, modePanel = null;
-        if (currentDomain) {
-            currentDomainName = currentDomain['name'];
-        }
+        let applyDisabled = true, modePanel = null;
         switch (currentMode) {
             case 'device': {
                 if (currentParam !== null && selectedMultiDeviceIdList.length) {
                     applyDisabled = false;
                 }
                 modePanel = <div class='device-select-mode'>
-                    <Select id='domain' className='select-domain' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
+                    <Select id='domain' className='select-domain' options={domainList} current={currentDomain} onChange={this.onChangeHandler} />
                     <SearchText className='search-text' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
                     <div class='device-panel'>
                         <Table columns={this.deviceColumns} data={Immutable.fromJS(multiDeviceList)} allChecked={false} checked={selectedMultiDeviceIdList} rowCheckChange={this.selectDevice} />
@@ -282,7 +279,7 @@ export default class Lc extends Component {
                     </div>
                     <Modal class='reporter-modal' title='选择设备' visible={visible} onCancel={this.showModal} onOk={this.showModal} maskClosable={false}>
                         <div class='select-input'>
-                            <Select id='domain' className='' options={domainList} current={currentDomainName} onChange={this.onChangeHandler} />
+                            <Select id='domain' className='' options={domainList} current={currentDomain} onChange={this.onChangeHandler} />
                             <SearchText className='' placeholder={placeholder} value={value} onChange={this.searchChange} submit={this.searchSubmit} />
                         </div>
                         <div class='select-panel'>

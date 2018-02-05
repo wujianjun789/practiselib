@@ -6,7 +6,7 @@ const Select = (props, context) => {
 
     let defaultValue = null;
     if (id === 'domain' && current) {
-        defaultValue = current;
+        defaultValue = current.name;
     }
     return (
         <select className={`form-control select ${className}`} disabled={disabled} id={id} onChange={onChange}
@@ -19,13 +19,13 @@ const Select = (props, context) => {
 };
 
 Select.propTypes = {
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
     hidden: PropTypes.bool,
-    options: PropTypes.arrayOf(PropTypes.object),
-    onChange: PropTypes.func,
-    current: PropTypes.string,
+    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onChange: PropTypes.func.isRequired,
+    current: PropTypes.any,
 };
 
 export default Select;
