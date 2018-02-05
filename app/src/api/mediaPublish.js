@@ -12,13 +12,26 @@ import { HeadBar } from '../components/HeadBar';
 export function uploadMaterialFile(list, index) {
   const currentXhr = list[index].xhr;
   const data = list[index].form;
-  console.log('formdata',data.get('name'))
-  console.log('formdata',data.get('file'))
-  console.log('formdata',data.get('type'))
   currentXhr.open('POST', UPLOAD_IP, true);
   currentXhr.send(data);
 }
 
+//统计
+export function getStatDeviceCount(cb) {
+  //模拟实现
+  console.log('发起请求')
+  setTimeout(() => {
+    const res = {
+      count: 500,
+      inline: 380,
+      outline: 120,
+      normal: 410,
+      fault: 90
+    };
+    cb && cb(res)
+  }, 1000)
+
+}
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
   let headers = getHttpHeader();
@@ -507,7 +520,7 @@ export function removeAssetById(id, cb) {
 
 export function previewPlayItem(itemInfo, callback) {
   const { projectId, programId, sceneId, zoneId, items } = itemInfo;
-  const urlItems = encodeURIComponent('['+items.toString()+']');
+  const urlItems = encodeURIComponent('[' + items.toString() + ']');
   const headers = getHttpHeader();
   httpRequest('http://192.168.155.196:3002/api' + '/projects/' + projectId + '/programs/' + programId + '/scenes/' + sceneId + '/zones/' + zoneId + '/preview' + '?items=' + urlItems, {
     headers: headers,
