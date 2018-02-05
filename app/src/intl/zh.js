@@ -206,6 +206,7 @@ export default {
     'sysOperation.dataOrigins':'个数据源',
     'sysOperation.addDevice':'添加设备',
     'sysOperation.importList':'导入列表',
+    'sysOperation.deviceReplace':'更换设备',
     'sysOperation.select':'选择列表文件路径',
     'sysOperation.cover':'覆盖已有设备',
     'sysOperation.input.asset':'请输入素材名称',
