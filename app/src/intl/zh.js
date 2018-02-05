@@ -242,6 +242,7 @@ export default {
     //故障管理
     'sysOperation.fault.manage':'故障管理', 
     'sysOperation.alarm.type':'告警类别',
+    'sysOperation.alarm.param':'告警参数',    
     'sysOperation.alarm.device.model':'设备模型',
     'sysOperation.alarm.level':'告警级别',
     'sysOperation.alarm.threshold':'阈值',
