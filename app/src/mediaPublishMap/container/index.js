@@ -200,7 +200,11 @@ export  class MediaPublishMap extends Component{
     }
 
     updatePageTotal(data){
-        this.setState({page: this.state.page.update('total', v=>data.count)});
+        let obj = {page: this.state.page.update('total', v=>data.count)};
+        if(!data.count){
+            obj = Object.assign({}, obj, {IsSearchResult:false});
+        }
+        this.setState(obj);
     }
 
     updateSearch(data){
@@ -291,9 +295,9 @@ export  class MediaPublishMap extends Component{
     }
 
     searchClick(e){
-        this.setState({IsSearchResult: true}, ()=>{
+        // this.setState({IsSearchResult: true}, ()=>{
             this.requestSearch();
-        });
+        // });
     }
 
     onkeydown(event){
