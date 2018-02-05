@@ -50,7 +50,7 @@ export default {
     'app.add.strategy':'新建策略',
     'app.edit.strategy':'修改策略',
 
-    'app.screen':'屏幕',
+    'app.screen':'显示屏',
     'app.lamp':'灯',
     'app.sensor.type':'传感器类型',
     'app.sensor.input.placeholder':'输入传感器参数',

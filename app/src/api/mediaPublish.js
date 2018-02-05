@@ -29,7 +29,7 @@ export function getStatDeviceCount(cb) {
       fault: 90
     };
     cb && cb(res)
-  }, 1000)
+  }, 300)
 
 }
 //播放方案
