@@ -788,12 +788,12 @@ export default class Map{
      * @param status设备状态
      */
     static markerIcon = {'CONTROLLER':'lightbulb', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent',
-        'CHARGER':'charger', 'POLE':'lightbulb', 'PLC':'plc', 'Screen':'screen'}
+        'CHARGER':'charger', 'POLE':'lightbulb', 'PLC':'plc', 'SCREEN':'mobile-phone'}
     static getCustomMarkerByDeviceType(type, status, digital) {
         if(type == 'DIGITAL'){
             L.AwesomeMarkers.icon({icon: '' + digital, color:Map.getColorByStatus(status)});
         }
-
+console.log('type:',type);
         return L.AwesomeMarkers.icon({icon: Map.markerIcon[type]?Map.markerIcon[type]:'lightbulb', color:Map.getColorByStatus(status)});
     }
 

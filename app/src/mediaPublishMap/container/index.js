@@ -12,12 +12,15 @@ import MapView from '../../components/MapView';
 import Panel from '../../components/Panel';
 import Page from '../../components/Page';
 
-import {getSearchAssetCountByDomainWithCenter,getSearchAssetsByDomainWithCenter} from '../../api/asset';
+import {getSearchAssetCountByDomainWithCenter,getSearchAssetsByDomainWithCenter,getDeviceStatusByModelAndId} from '../../api/asset';
+import {getProjectList} from '../../api/mediaPublish';
 
 import Immutable from 'immutable';
 import {DOMAIN_LEVEL} from '../../common/util/index';
 import {getMapConfig} from '../../util/network';
 import {getDomainLevelByMapLevel} from '../../util/index';
+
+import {keyboard_key_enter} from '../../util/keyboard';
 export  class MediaPublishMap extends Component{
     constructor(props){
         super(props);
@@ -31,17 +34,17 @@ export  class MediaPublishMap extends Component{
             search:Immutable.fromJS({placeholder:'输入屏名称搜索', value:''}),
 
             positionList:[/*{"device_id": 1,"device_type": 'DEVICE', lng: 121.49971691534425, lat: 31.239658843127756}*/],
-            searchList: Immutable.fromJS([{id:1, name:'屏幕1号'},{id:2, name:'屏幕2号'}]),
+            searchList: Immutable.fromJS([/*{id:1, name:'屏幕1号'},{id:2, name:'屏幕2号'}*/]),
 
             page: Immutable.fromJS({
                 pageSize: 10,
                 current: 1,
-                total: 2,
+                total: 0,
             }),
 
             curDevice:Immutable.fromJS({id:1, name:'屏幕1号'}),
 
-            screen:Immutable.fromJS({width:192, height:576, online:1, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:["sys_fault"]}),
+            screen:Immutable.fromJS({width:192, height:576, online:1, "brightness_mode":"环境亮度", faultList:["sys_fault"]}),
             screenSwitch:{list:[{id:'open', value:'开'},{id:'close', value:'关'}], id:'open'},
             playerList:{list:[{id:1, name:'播放列表1'}, {id:2, name:'播放列表2'}], id:1, name:'播放列表1'},
 
@@ -62,6 +65,35 @@ export  class MediaPublishMap extends Component{
         this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
         this.setSizeOut = -1;
+
+        this.faultKeys = ["sys_fault", "vram_fault", "disp_module_fault", "disp_module_power_fault", "single_pixel_tube_fault",
+            "detection_sys_fault", "ac_fault", "lightning_arrester_fault", "photosensor_fault", "abnormal_temperature_fault",
+            "door_switch_fault"];
+
+        this.formatIntl = this.formatIntl.bind(this);
+        this.setSize = this.setSize.bind(this);
+        this.renderState = this.renderState.bind(this);
+        this.transformState = this.transformState.bind(this);
+        this.mapZoomend = this.mapZoomend.bind(this);
+        this.mapDragend = this.mapDragend.bind(this);
+        this.panCallFun = this.panCallFun.bind(this);
+        this.onkeydown = this.onkeydown.bind(this);
+        this.searchClick = this.searchClick.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.pageChange = this.pageChange.bind(this);
+        this.itemClick = this.itemClick.bind(this);
+        this.backHandler = this.backHandler.bind(this);
+        this.onToggle = this.onToggle.bind(this);
+        this.faultClick = this.faultClick.bind(this);
+        this.preview = this.preview.bind(this);
+        this.faultCloseClick = this.faultCloseClick.bind(this);
+        this.closeClick = this.closeClick.bind(this);
+        this.submit = this.submit.bind(this);
+        this.requestSearch = this.requestSearch.bind(this);
+        this.updateSearch = this.updateSearch.bind(this);
+        this.updatePageTotal = this.updatePageTotal.bind(this);
+        this.requestScreenStatus = this.requestScreenStatus.bind(this);
+        this.IsHaveFault = this.IsHaveFault.bind(this);
     }
     componentWillMount(){
         this.mounted = true;
@@ -69,6 +101,16 @@ export  class MediaPublishMap extends Component{
             if(this.mounted){
                 this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+            }
+        })
+
+        getProjectList(data=>{
+            if(this.mounted){
+                let obj = {list:data};
+                if(data && data.length){
+                    obj = Object.assign({}, obj, {id:data[0].id, name:data[0].name});
+                }
+                this.setState({playerList: Object.assign({}, this.state.playerList, obj)});
             }
         })
 
@@ -91,12 +133,12 @@ export  class MediaPublishMap extends Component{
         }
     }
 
-    formatIntl = (formatId)=>{
+    formatIntl(formatId){
         const {intl} = this.props;
         return intl?intl.formatMessage({id:formatId}):"";
     }
 
-    setSize = ()=>{
+    setSize(){
         if(!this.mounted){
             return;
         }
@@ -119,25 +161,48 @@ export  class MediaPublishMap extends Component{
         }
     }
 
-    requestSearch = ()=>{
+    requestSearch(){
         const {model, search, page} = this.state;
         const limit = page.get('pageSize');
         const current = page.get('current');
         const offset =  (current-1)*limit;
         const name = search.get('value');
 
-        this.setState({IsSearchResult: true}, ()=>{
-            return false;
-            getSearchAssetCountByDomainWithCenter({id:null, level:this.domainCurLevel}, this.map, model, name, data=>{this.mounted && this.updatePageTotal(data)});
-            getSearchAssetsByDomainWithCenter({id:null, level:this.domainCurLevel}, this.map, model, name, offset, limit, data=>{this.mounted && this.updateSearch(data)});
+
+        getSearchAssetCountByDomainWithCenter({id:null, level:this.domainCurLevel}, this.map, model, name, data=>{this.mounted && this.updatePageTotal(data)});
+        getSearchAssetsByDomainWithCenter({id:null, level:this.domainCurLevel}, this.map, model, name, offset, limit, data=>{this.mounted && this.updateSearch(data)});
+    }
+
+    requestScreenStatus(){
+        const {model, curDevice,screenSwitch} = this.state;
+        const fun = getDeviceStatusByModelAndId(model, curDevice.get('id'));
+        fun(data=>{
+            console.log('data:', data);
+            if(!data){
+                let faultList = this.IsHaveFault(data, this.faultKeys);
+                this.state.screen = this.state.screen.update('faultList', v=>faultList);
+                this.state.screen = this.state.screen.update('brightness_mode', v=>data['brightness_mode']);
+                this.setState({screen:this.state.screen.update('online', v=>{data.online}),screenSwitch:Object.assign({}, screenSwitch, {id:data["power_switch"]?'open':'close'})});
+            }
         })
     }
 
-    updatePageTotal = data=>{
-        this.setState({page: this.state.page.update('total', v=>data.count), IsSearchResult:false});
+    IsHaveFault(parentPro, faultKeys){
+        let faultList = [];
+        for(var i=0;i<faultKeys.length;i++){
+            if(parentPro.get(faultKeys[i]) == 1){
+                faultList.push(faultKeys[i]);
+            }
+        }
+
+        return faultList;
     }
 
-    updateSearch = (data)=>{
+    updatePageTotal(data){
+        this.setState({page: this.state.page.update('total', v=>data.count)});
+    }
+
+    updateSearch(data){
         const searchList = Immutable.fromJS(data);
         const positionList = data.map((pole)=>{
             let latlng = pole.geoPoint;
@@ -148,7 +213,7 @@ export  class MediaPublishMap extends Component{
         });
     }
 
-    onChange = (key, event)=>{
+    onChange(key, event){
         const { search } = this.state;
         if(key == "search"){
             this.setState({search:this.state.search.update('value', v=>event.target.value)}, ()=>{
@@ -162,11 +227,15 @@ export  class MediaPublishMap extends Component{
 
     }
 
-    submit = (id)=>{
+    submit(id){
+        if(id === "screenSwitch"){
 
+        }else if(id === "playerList"){
+
+        }
     }
 
-    closeClick = (event)=>{
+    closeClick(event){
         if(event.target.id === "poleInfoClose"){
             this.setState({IsOpenPoleInfo: false, IsOpenPreview: false})
         }else{
@@ -174,66 +243,62 @@ export  class MediaPublishMap extends Component{
         }
     }
 
-    faultCloseClick = ()=>{
+    faultCloseClick(){
         this.setState({IsOpenFault: false})
     }
 
-    preview = ()=>{
+    preview(){
         this.setState({IsOpenPreview: true});
     }
 
-    faultClick = (event)=>{
+    faultClick(event){
         this.setState({IsOpenFault: true, faultStyle:{"top":(event.pageY+20)+"px"}});
     }
 
-    onToggle = ()=>{
+    onToggle(){
         this.setState({IsOpenPoleControl: !this.state.IsOpenPoleControl});
     }
 
-    backHandler = ()=>{
+    backHandler(){
         this.setState({IsSearch: true});
     }
 
-    itemClick = (pole)=>{
-        this.setState({IsSearch: false, IsSearchResult:false, curDevice: pole},()=>{
+    itemClick(pole){
+        let state = {IsSearch: false, IsSearchResult:false, curDevice: pole}
+        const extend = pole.get('extend');
+        if(extend.has('resWidth')){
+            state = Object.assign({}, state, {screen:this.state.screen.update('width', v=>extend.get('resWidth'))});
+        }
+
+        if(extend.has('resHeight')){
+            state = Object.assign({}, state, {screen:this.state.screen.update('height', v=>extend.get('resHeight'))});
+        }
+
+        this.setState(state,()=>{
+            console.log('pole:', pole.toJS());
             this.setSize();
+            this.requestScreenStatus();
         })
     }
 
-    pageChange = (current, pageSize) => {
+    pageChange(current, pageSize){
         let page = this.state.page.set('current', current);
         this.setState({ page: page }, () => {
             this.requestSearchAssetList();
         });
     }
 
-    searchClick = (e)=>{
-        this.requestSearch();
+    searchClick(e){
+        this.setState({IsSearchResult: true}, ()=>{
+            this.requestSearch();
+        });
     }
 
-    onkeydown = ()=>{
-
-        if(key == 'charge_state'){
-            return this.formatIntl(sf ? 'app.charging' : 'app.charging.fault');
-        }
-        return this.formatIntl(sf ? 'abnormal':'normal');
-    }
-
-    renderState = (parentPro, key, name, IsTransform, unit)=>{
-        if(key == "resolution"){
-            if(parentPro && parentPro.has("width") && parentPro.has("height")){
-                return <div key={key} className="pro"><span>{name?this.formatIntl("app."+name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
-            }
-        }
-        if(parentPro && parentPro.has(key)){
-            if(key == 'wind-direction'){
-                return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{this.transformState(key, parentPro.get(key))}</div>
-            }
-
-            if(key == 'o2'){
-                return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{(parentPro.get(key))+(unit ? ' %'+unit:'')}</div>
-            }
-            return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
+    onkeydown(event){
+        if(event.key === keyboard_key_enter){
+            this.setState({IsSearchResult: true}, ()=>{
+                this.requestSearch();
+            })
         }
     }
 
@@ -241,19 +306,19 @@ export  class MediaPublishMap extends Component{
         this.mounted && this.setState({panLatlng:null});
     }
 
-    mapDragend = (data)=>{
+    mapDragend(data){
         this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
 
         this.requestSearch();
     }
 
-    mapZoomend = (data)=>{
+    mapZoomend(data){
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         this.requestSearch();
     }
 
-    transformState = (key, sf)=>{
+    transformState(key, sf){
         if(key == 'wind-direction'){
             // return this.formatIntl('app.'+sf);
             return <span className="glyphicon glyphicon-arrow-up" style={{transform:`rotate(${sf}deg)`}}></span>
@@ -273,7 +338,7 @@ export  class MediaPublishMap extends Component{
         return this.formatIntl(sf ? 'abnormal':'normal');
     }
 
-    renderState = (parentPro, key, name, IsTransform, unit)=>{
+    renderState(parentPro, key, name, IsTransform, unit){
         if(key == "resolution"){
             if(parentPro && parentPro.has("width") && parentPro.has("height")){
                 return <div key={key} className="pro"><span>{name?this.formatIntl("app."+name):key}:</span>{parentPro.get("width")}x{parentPro.get("height")}</div>
@@ -294,14 +359,15 @@ export  class MediaPublishMap extends Component{
     render(){
         const {mapId, panLatlng, search, page, IsSearch, IsSearchResult, positionList, searchList, curDevice, screen, screenSwitch, playerList,
             IsOpenPoleInfo, IsOpenPoleControl, IsOpenPreview, IsOpenFault, listStyle, infoStyle, controlStyle,faultStyle} = this.state;
-        console.log(page.toJS());
+
         const faultList = screen.get('faultList').toJS();
+        console.log('render:',IsSearch,IsSearchResult, screen.toJS());
         return <Content>
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:searchList.toJS()}}
                      mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}} panLatlng={panLatlng} panCallFun={this.panCallFun}>
             </MapView>
             <div className="search-container">
-                <div className={"searchText smartLight-map"} onKeyDown={this.onkeydown}>
+                <div id="" className={"searchText smartLight-map"} onKeyDown={this.onkeydown}>
                     <input type="search" className="form-control" placeholder={search.get('placeholder')} value={search.get("value")} onChange={(event)=>this.onChange('search', event)}/>
                     <span role="mediaPublishMapSearch" className="glyphicon glyphicon-search" onClick={this.searchClick}></span>
                 </div>
