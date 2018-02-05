@@ -209,6 +209,7 @@ export default {
     'sysOperation.dataOrigins':'data origins',
     'sysOperation.addDevice':'Add device',
     'sysOperation.importList':'Import list',
+    'sysOperation.deviceReplace':'replace list',
     'sysOperation.select':'Select the list file path',
     'sysOperation.cover':'Cover existing devices',
     'sysOperation.input.asset':'Please input asset name',
