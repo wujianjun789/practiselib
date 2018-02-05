@@ -17,14 +17,16 @@ import {getChildDomainList} from '../../api/domain';
 import { DatePicker} from 'antd';
 import moment from 'moment';
 import PieChart from '../../lightManage/utils/pieChart';
+import {spliceInArray} from '../../util/algorithm';
 
 export class Alarm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'sensor',
       collapse: false,
       infoCollapse:false,
+      allChecked:false,
+      checked:[],
       page: Immutable.fromJS({
         pageSize: 10,
         current: 1,
@@ -39,19 +41,52 @@ export class Alarm extends Component {
         value: '',
         options: [],
       },
-      paramList: {
+      typeList: {
         titleField: 'name',
         valueField: 'name',
         index: 0,
-        value: '',
-        options: [],
+        value: '通用',
+        options: [
+          {
+            name:'通用',
+          },
+          {
+            name:'传感器',
+          },
+          {
+            name:'能量',
+          },
+          {
+            name:'照明',
+          },
+          {
+            name:'显示',
+          },
+          {
+            name:'资源',
+          },
+          
+        ],
       },
       levelList: {
         titleField: 'name',
         valueField: 'name',
         index: 0,
-        value: '',
-        options: [],
+        value: '致命',
+        options: [
+          {
+            name:'致命',
+          },
+          {
+            name:'严重',
+          },
+          {
+            name:'一般',
+          },
+          {
+            name:'提示',
+          },
+        ],
       },
       start:moment(),
       end:moment(),
@@ -66,18 +101,18 @@ export class Alarm extends Component {
     this.columns = [
       {
         id: 0,
-        field: 'type',
-        title: this.props.intl.formatMessage({id:'sysOperation.alarm.type'}),
-      },
-      {
-        id: 1,
         field: 'model',
         title: this.props.intl.formatMessage({id:'sysOperation.alarm.device.model'}),
       },
       {
-        id: 2,
+        id: 1,
         field: 'name',
         title: this.props.intl.formatMessage({id:'app.device.name'}),
+      },
+      {
+        id: 3,
+        field: 'param',
+        title: this.props.intl.formatMessage({id:'sysOperation.alarm.param'}),
       },
       {
         id: 3,
@@ -205,16 +240,40 @@ export class Alarm extends Component {
     }
   }
 
+  allCheckChange=(value) => {
+    const {data} = this.state;
+    let checked = [];
+    value && data.map(item => {
+      checked.push(item.get('id'));
+    });
+    this.setState({allChecked:value, checked:checked});
+  }
+
+  rowCheckChange=(id, value) => {
+    let {data, checked} = this.state;
+    value ? checked.push(id) : spliceInArray(checked, id);
+    let allChecked = data.size == checked.length;
+    this.setState({allChecked:allChecked, checked:checked});        
+  }
+
+  handlePopup=(key) => {
+    const {actions} = this.props;
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={`是否${this.props.intl.formatMessage({id:'button.' + key})}选中告警`}
+      cancel={() => {actions.overlayerHide();}} confirm={() => {
+        actions.overlayerHide();
+      }}/>);
+  }
+
   render() {
-    const {collapse, infoCollapse, page, data, domainList, paramList, levelList, start, end, statisticalInfo}
+    const {collapse, infoCollapse, page, data, domainList, typeList, levelList, start, end, statisticalInfo, allChecked, checked}
      = this.state;
     return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
       <div className="heading">
         <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField} 
           options={domainList.options} value={domainList.value}
           onChange={(e) => {this.selectChange(e, 'domainList');}}/>
-        <Select id="param" titleField={paramList.valueField} valueField={paramList.valueField}
-          options={paramList.options} value={paramList.value} onChange={(e) => {this.selectChange(e, 'paramList');}}/>
+        <Select id="type" titleField={typeList.valueField} valueField={typeList.valueField}
+          options={typeList.options} value={typeList.value} onChange={(e) => {this.selectChange(e, 'typeList');}}/>
         <Select id="level" titleField={levelList.valueField} valueField={levelList.valueField}
           options={levelList.options} value={levelList.value} onChange={(e) => {this.selectChange(e, 'levelList');}}/>
         <div className="datePicker">
@@ -225,13 +284,14 @@ export class Alarm extends Component {
             defaultValue={end} value={end} onChange={value => this.dateChange('end', value)} />
         </div>
         <div className="button-group">
-          <button className="btn btn-primary">{this.props.intl.formatMessage({id:'button.ignore'})}</button>
-          <button className="btn btn-primary">{this.props.intl.formatMessage({id:'button.solve'})}</button>
-          <button className="btn btn-primary">{this.props.intl.formatMessage({id:'button.to.fault'})}</button>
+          <button className="btn btn-primary" onClick={() => {this.handlePopup('ignore');}}>{this.props.intl.formatMessage({id:'button.ignore'})}</button>
+          <button className="btn btn-primary" onClick={() => {this.handlePopup('solve');}}>{this.props.intl.formatMessage({id:'button.solve'})}</button>
+          <button className="btn btn-primary" onClick={() => {this.handlePopup('to.fault');}}>{this.props.intl.formatMessage({id:'button.to.fault'})}</button>
         </div>
       </div>
       <div className="table-container">
-        <Table columns={this.columns} data={data}/>
+        <Table columns={this.columns} data={data} allChecked={allChecked} checked={checked}
+          allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
         <Page className={'page ' + (page.get('total') == 0 ? 'hidden' : '')} pageSize={page.get('pageSize')}
           current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
       </div>
@@ -251,23 +311,23 @@ export class Alarm extends Component {
             <div className="right">
               <div className="count deadly">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.deadly')} :  { statisticalInfo.deadly ?
-                  statisticalInfo.deadly : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.deadly')} :  { statisticalInfo.deadly ?
+                  statisticalInfo.deadly : this.formatIntl('sysOperation.noCount')}
               </div>
               <div className="count serious">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.serious')} :  {statisticalInfo.serious ?
-                  statisticalInfo.serious : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.serious')} :  {statisticalInfo.serious ?
+                  statisticalInfo.serious : this.formatIntl('sysOperation.noCount')}
               </div>
               <div className="count general">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.general') } :  { statisticalInfo.general ?
-                  statisticalInfo.general : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.general') } :  { statisticalInfo.general ?
+                  statisticalInfo.general : this.formatIntl('sysOperation.noCount')}
               </div>
               <div className="count hint">
                 <div className="dot"></div>
-                {this.formatIntl('sysOperation.alarm.count.hint') } :  {statisticalInfo.hint ?
-                  statisticalInfo.hint : this.formatIntl('sysOperation.alarm.noCount')}
+                {this.formatIntl('sysOperation.count.hint') } :  {statisticalInfo.hint ?
+                  statisticalInfo.hint : this.formatIntl('sysOperation.noCount')}
               </div>
             </div>
           </div>

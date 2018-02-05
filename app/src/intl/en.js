@@ -98,6 +98,8 @@ export default {
     'button.ignore':'Ignore',
     'button.solve':'Solve',
     'button.to.fault':'To fault',
+    'button.acceptable':'Acceptable',
+    'button.hangUp':'Hang up',
 
     //用户中心
     'update.password':'Update password',
@@ -244,21 +246,29 @@ export default {
 
     //故障管理
     'sysOperation.fault.manage':'Fault management', 
-    'sysOperation.alarm.type':'Alarm type',
+    'sysOperation.alarm.type':'Alarm type',    
+    'sysOperation.alarm.param':'Alarm param',  
+    'sysOperation.fault.param':'Fault param',  
     'sysOperation.alarm.device.model':'Device model',
     'sysOperation.alarm.level':'Alarm level',
+    'sysOperation.fault.level':'Fault level',
     'sysOperation.alarm.threshold':'Threshold',
     'sysOperation.alarm.test.value':'Test value',
     'sysOperation.alarm.time':'Alarm time',
+    'sysOperation.fault.time':'Fault time',
     'sysOperation.alarm.status':'Alarm status',
+    'sysOperation.fault.status':'Fault status',
     'sysOperation.alarm.person':'Handle person',
     'sysOperation.alarm.handle.time':'Handle time',
+    'sysOperation.fault.id':'Fault id',
+
     'sysOperation.alarm.statistical.info':'Alarm statistical info',
-    'sysOperation.alarm.count.deadly':'Deadly',
-    'sysOperation.alarm.count.serious':'Serious',
-    'sysOperation.alarm.count.general':'General',
-    'sysOperation.alarm.count.hint':'Hint',
-    'sysOperation.alarm.noCount':'No count',
+    'sysOperation.fault.statistical.info':'Fault statistical info',
+    'sysOperation.count.deadly':'Deadly',
+    'sysOperation.count.serious':'Serious',
+    'sysOperation.count.general':'General',
+    'sysOperation.count.hint':'Hint',
+    'sysOperation.noCount':'No count',
 
     //智慧路灯
     'app.search.placeholder.name': 'Search name or domain',

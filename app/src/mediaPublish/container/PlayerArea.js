@@ -182,7 +182,9 @@ export class PlayerArea extends Component {
       isClick: false,
       //左侧栏添加单击
       isAddClick: false,
-      previewPlayList:[],
+      previewPlayList: [], // 发送给后台的图片预览队列
+      previewSrc: '', //图片预览的src
+      scaling: 1, //图片预览缩放系数
     };
 
     this.systemFile = [];
@@ -473,8 +475,8 @@ export class PlayerArea extends Component {
       playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')),
     }, () => {return this.setPlayItemArray(arealist);});
   }
-
   setPlayItemArray(areaList) {
+    console.log('=== ==== === === ',areaList);
     if (areaList === []) {
       return undefined;
     } else {
@@ -508,9 +510,9 @@ export class PlayerArea extends Component {
     const programId = this.state.parentParentNode.id;
     const sceneId = this.state.parentNode.id;
     const zoneId = this.state.curNode.id;
-    const items = this.state.previewPlayList.map(item => { return item.playItemId });
+    const items = this.state.previewPlayList.map(item => { return item.playItemId; });
     const requestJson = ({ projectId, programId, sceneId, zoneId, items });
-    return previewPlayItem(requestJson, data => { console.log(data) });
+    return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
 
   updateTreeData = (node, parentNode, parentParentNode) => {
@@ -520,22 +522,22 @@ export class PlayerArea extends Component {
     });
   }
 
-  assetSelect = (item) => {
-    console.log(item.toJS());
-    this.state.assetList = this.state.assetList.update('id', v => item.get('id'));
-    this.setState({ assetList: this.state.assetList.update('name', v => item.get('name')) });
-  }
+  // assetSelect = (item) => {
+  //   console.log(item.toJS());
+  //   this.state.assetList = this.state.assetList.update('id', v => item.get('id'));
+  //   this.setState({ assetList: this.state.assetList.update('name', v => item.get('name')) });
+  // }
 
-  playerAssetSelect = (item) => {
-    console.log(item.toJS());
-    const type = item.get('type');
-    const curType = tranformAssetType(type);
+  // playerAssetSelect = (item) => {
+  //   console.log(item.toJS());
+  //   const type = item.get('type');
+  //   const curType = tranformAssetType(type);
 
-    this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
-    this.setState({ isClick: true, curType: curType, playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')) });
-    // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
-    // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
-  }
+  //   this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
+  //   this.setState({ isClick: true, curType: curType, playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')) });
+  //   // const curIndex = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.get('id'));
+  //   // this.setState({playerListAsset: this.state.playerListAsset.updateIn(['list', curIndex, 'active'], v=>!item.get('active'))});
+  // }
 
   onChange = (id, value) => {
     let prompt = false;
@@ -1164,15 +1166,15 @@ export class PlayerArea extends Component {
   }
 
   render() {
+    // console.log('PROJECT------------',this.state.project)
     const {
         project, curType, curNode, parentNode, parentParentNode, playerData, sidebarInfo, playerListAsset,
       assetList, assetType, assetSort, assetSearch, page, IsScroll, assetStyle, controlStyle, libStyle, pageStyle,
-      lastPress, isPressed, mouseXY, isClick, isAddClick,
+      lastPress, isPressed, mouseXY, isClick, isAddClick, previewSrc, scaling
       } = this.state;
     const { router } = this.props;
     const add_title = getTitleByType(curType, this.formatIntl);
-
-    console.log('curType:', curType, 'playerListAsset:', playerListAsset.get('list').toJS());
+    const imgInfo = { width: project.width, height: project.height, src: previewSrc };
     return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} />
       <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
@@ -1189,7 +1191,7 @@ export class PlayerArea extends Component {
               <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
           </div>
           <div className="img-container">
-            <PreviewImg />
+            <PreviewImg imgInfo={imgInfo} scaling={scaling}/>
           </div>
           <div className="control-container-bottom" style={controlStyle}>
             <div className="form-group pull-right quit-container " onClick={() => this.quitHandler()}>
