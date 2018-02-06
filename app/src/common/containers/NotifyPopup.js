@@ -48,7 +48,7 @@ export class NotifyPopup extends Component {
 
                          }
                          return <li key={ id } className={ "list-group-item " + ("notify-" + index) + " " + getNotifyStateClass(item.get("notifyType")) + " " + (ani ? "active" : "") }>
-                                <div className="notify-content" title={intl[text]?intl[text]:text}>{intl[text]?<FormattedMessage id={text} />:text}</div>
+                                <div className="notify-content" title={intl.messages[text]?intl.messages[text]:text}>{intl.messages[text]?intl.messages[text]:text}</div>
                                 <span className="glyphicon glyphicon-remove" onClick={ () => this.onClick(id) }></span>
                               </li>
                    }) }

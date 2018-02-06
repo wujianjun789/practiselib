@@ -27,6 +27,11 @@ export default class ExcelPopup extends Component {
     this.onCancel = this.onCancel.bind(this);
   }
 
+  componentWillUnmount(){
+    const {removeAllNotify} = this.props;
+    removeAllNotify();
+  }
+
   onChange(e) {
     const {addNotify, columns, model} = this.props;
     var target = e.target;        
