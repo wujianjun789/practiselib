@@ -41,6 +41,7 @@ export class Sensor extends Component {
       // device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
       search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
       collapse:false,
+      deviceCollapse:false,
       page: Immutable.fromJS({
         pageSize:10,
         current: 1,
@@ -82,7 +83,7 @@ export class Sensor extends Component {
       {field:'typeName', title:intlFormat({en:'typeName', zh:'控制器类型'})},
     ];
 
-    this.collpseHandler = this.collpseHandler.bind(this);
+    this.collapseHandler = this.collapseHandler.bind(this);
     this.tableClick = this.tableClick.bind(this);
     this.onChange = this.onChange.bind(this);
     this.domainChange = this.domainChange.bind(this);
@@ -211,12 +212,14 @@ export class Sensor extends Component {
     })});
   }
 
-  collpseHandler() {
-    this.setState({collapse: !this.state.collapse});
+  collapseHandler(id) {
+    this.setState({
+      [id]: !this.state[id],
+    });
   }
 
   render() {
-    const { data, domain, search, collapse, page, deviceInfo, selectDevice } = this.state;
+    const { data, domain, search, collapse, page, deviceInfo, selectDevice, deviceCollapse } = this.state;
 
     const {total = 0, normal = 0} = deviceInfo;
     let width = 145;
@@ -240,10 +243,12 @@ export class Sensor extends Component {
             current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
         </div>
 
-        <SideBarInfo  mapDevice={selectDevice} collpseHandler={this.collpseHandler}>
+        <SideBarInfo  mapDevice={selectDevice} collpseHandler={this.collpseHandler} className={(deviceCollapse ? 'deviceCollapse ' : '')}>
           <div className="panel panel-default device-statics-info">
-            <div className="panel-heading">
+            <div className="panel-heading" role="presentation"
+              onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
               <span className="icon_chart"></span>{intlFormat({en:'asset information', zh:'设备统计信息'})}
+              <span className="icon icon_collapse pull-right"></span>              
             </div>
             <div className="panel-body view">
               <div className="circle1">
