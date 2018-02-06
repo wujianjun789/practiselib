@@ -2,16 +2,24 @@
  * Created by a on 2018/2/1.
  */
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import Immutable from 'immutable';
 import Content from '../../components/Content';
 import Select from '../../reporterManage/component/select';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table'
 import Page from '../../components/Page'
+
+import ProjectPopup from '../component/ProjectPopup';
+import PreViewPopup from '../component/PreViewPopup';
+
 import { getDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
-import '../../../public/styles/media-publish-screen.less'
-export default class MediaPublishScreen extends Component {
+import '../../../public/styles/media-publish-screen.less';
+
+import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
+export class MediaPublishScreen extends Component {
     state = {
         sidebarCollapse: false,
         domainList: [
@@ -93,10 +101,21 @@ export default class MediaPublishScreen extends Component {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     handleViewDevice = () => {
-        this.setState({ showView: !this.state.showView })
+        // this.setState({ showView: !this.state.showView })
+        const {actions} = this.props;
+        actions.overlayerShow(<PreViewPopup title="显示屏预览" data={{url:"http://localhost:8080/images/smartLight/screen_test.png"}} onCancel={()=>{
+            actions.overlayerHide();
+        }}/>)
     }
     hanldePlanManage = () => {
-        this.setState({ showPlan: !this.state.showPlan })
+        // this.setState({ showPlan: !this.state.showPlan })
+        const {actions} = this.props;
+        const applyProjectList = [{id:'5a67f0216c64c71518b0140f', name:"project1"},{id:'5a67f05c6c64c71518b01410', name:"project3"}];
+        actions.overlayerShow(<ProjectPopup title="方案管理" data={{applyProjectList:applyProjectList}} onConfirm={data=>{
+               actions.overlayerHide();
+        }} onCancel={()=>{
+            actions.overlayerHide();
+        }}/>)
     }
     componentDidUpdate() {
         const { sidebarCollapse, domainList, currentDomain, search: { value, placeholder } } = this.state;
@@ -138,3 +157,22 @@ export default class MediaPublishScreen extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        sidebarNode: state.domainManage.get('sidebarNode')
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            overlayerShow: overlayerShow,
+            overlayerHide: overlayerHide
+        }, dispatch)
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MediaPublishScreen);
