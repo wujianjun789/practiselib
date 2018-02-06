@@ -29,6 +29,7 @@ class DomainEditTopology extends Component{
         this.state = {
             language: getLanguage(),
             collapse: false,
+            propertyCollapse: false,
             IsUpdate:false,
             domainUpdate:{id:null, domain:null},
 
@@ -58,6 +59,7 @@ class DomainEditTopology extends Component{
         this.updateSelectDomain = this.updateSelectDomain.bind(this);
 
         this.collpseHandler = this.collpseHandler.bind(this);
+        this.propertyCollapse = this.propertyCollapse.bind(this);
         this.domainHandler = this.domainHandler.bind(this);
         this.getDomainParentList = this.getDomainParentList.bind(this);
 
@@ -305,6 +307,10 @@ class DomainEditTopology extends Component{
         }
     }
 
+    propertyCollapse(e){
+        this.setState({propertyCollapse: !this.state.propertyCollapse});
+    }
+
     collpseHandler() {
         this.setState({collapse: !this.state.collapse})
     }
@@ -373,7 +379,7 @@ class DomainEditTopology extends Component{
     }
 
     render(){
-        const {language, collapse, search,  selectDomain, domainList} = this.state;
+        const {language, collapse, propertyCollapse, search,  selectDomain, domainList} = this.state;
         
         let curDomain = domainList;
         let renderList = [];
@@ -399,12 +405,14 @@ class DomainEditTopology extends Component{
                         })
                     }
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}>
+                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}
+                             className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
-                        <div className="panel-heading">
+                        <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>
                             <span className="icon_info"></span>{this.props.intl.formatMessage({id:'domain.property'})}
+                            <span className="icon icon_collapse pull-right"></span>
                         </div>
-                        <div className="panel-body domain-property">
+                        <div className={"panel-body domain-property "+ (propertyCollapse?'collapsed':'')}>
                             <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>
                             <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.edit'})}</button>
                             <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>{this.props.intl.formatMessage({id:'button.delete'})}</button>
