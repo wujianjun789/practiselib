@@ -260,7 +260,7 @@ export class PlayerArea extends Component {
 
       this.setState({
         IsScroll: sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight, scrollHeight: sidebarInfoDom.scrollHeight, assetProperHeight: assetPropertyDom.offsetHeight,
-        libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle
+        libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle,
       }, () => { 
         setTimeout(() => {
           this.setParentInfo();
@@ -271,8 +271,8 @@ export class PlayerArea extends Component {
 
   setParentInfo() {
     this.setState({
-      parentInfo:{ width: this._previewImg.offsetWidth, height: this._previewImg.offsetHeight }
-    },() => {console.log(this.state.parentInfo)})
+      parentInfo:{ width: this._previewImg.offsetWidth, height: this._previewImg.offsetHeight },
+    }, () => {console.log(this.state.parentInfo);});
   }
 
   handleMouseMove = ({ pageX, pageY }) => {
@@ -472,14 +472,16 @@ export class PlayerArea extends Component {
     }
 
   playerAssetSelect = (item) => {
+    
     const targetType = this.state.parentNode.type || '';
     let arealist = [];
     const type = item.get('type');
     if (targetType === 'scene') {
-      arealist = this.state.parentNode.children; 
+      arealist = this.state.parentNode.children;
+      
     }
     const curType = tranformAssetType(type);
-
+    
     this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
     this.setState({
       isClick: true,
@@ -488,7 +490,7 @@ export class PlayerArea extends Component {
     }, () => {return this.setPlayItemArray(arealist);});
   }
   setPlayItemArray(areaList) {
-    console.log('=== ==== === === ', areaList);
+    console.log(this.state.playerListAsset.get('list').toJS());
     if (areaList === []) {
       return undefined;
     } else {
@@ -518,13 +520,14 @@ export class PlayerArea extends Component {
   }
 
   getPreviewImg() {
-    const projectId = this.state.project.id;
-    const programId = this.state.parentParentNode.id;
-    const sceneId = this.state.parentNode.id;
-    const zoneId = this.state.curNode.id;
+    const projectId = this.state.project;
+    const programId = this.state.parentParentNode;
+    const sceneId = this.state.parentNode;
+    const zoneId = this.state.curNode;
     const items = this.state.previewPlayList.map(item => { return item.playItemId; });
     const requestJson = ({ projectId, programId, sceneId, zoneId, items });
-    return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
+    console.log('ready to send', requestJson);
+    // return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
 
   updateTreeData = (node, parentNode, parentParentNode) => {
@@ -695,7 +698,7 @@ export class PlayerArea extends Component {
   areaClick = (id) => {
     const { actions } = this.props;
     const { project } = this.state;
-
+    
     if (id == 'add') {
       if (this.state.curType == 'playerProject') {
         this.setState({ isAddClick: true });
@@ -870,7 +873,7 @@ export class PlayerArea extends Component {
     }
     this.setState({
       scaling: scaling,
-    })
+    });
   }
 
   saveHandler = () => {
@@ -1161,7 +1164,6 @@ export class PlayerArea extends Component {
     const parentParentNode = getTreeParentNode(this.state.playerData, parentNode);
 
     this.initItemList();
-
     this.setState({ parentParentNode: parentParentNode, parentNode: parentNode, curNode: node, curType: type, isClick: false }, () => {
       if (typeof node.id == 'string' && (node.id.indexOf('plan&&') > -1 || node.id.indexOf('scene&&') > -1)) {
         return;
