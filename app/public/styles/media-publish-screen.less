@@ -19,6 +19,83 @@
     }
     .body{
         margin:20px;
+        padding:20px;
         background-color: #fff;
+        .page-center{
+            text-align: center;
+        }
+    }
+}
+
+.mediaPublish-screen{
+    .project-popup{
+        width: 730px;
+        .project-container{
+            >.control-label{
+                text-align: right;
+                line-height: 20px;
+                float: left;
+                width: 115px;
+            }
+            >.project-content{
+                width: 545px;
+                margin-left: 15px;
+                float: left;
+            }
+            .project-list,.apply-project-list{
+                float: left;
+                width: 50%;
+                height:230px;
+                border: 1px solid #ccc;
+                overflow-y: scroll;
+                >ul{
+                    padding: 10px 17px 0 20px;
+                    >li{
+                        color: #808080;
+                        font-size: 14px;
+                        line-height: 30px;
+                        height: 30px;
+                        &:hover{
+                            background-color: #e5e5e5;
+                        }
+
+                        .name{
+                            user-select: none;
+                        }
+                        >.icon-add-container,.icon-table-delete{
+                            margin-top: 7px;
+                            float: right;
+                            display: block;
+                            >span{
+                                color: #00bcff;
+                                &.glyphicon{
+                                    color: gray;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                        >.icon-table-delete{
+                            background-image: url(/images/icon_delete.png);
+                            background-size: 100% 100%;
+                            width: 15px;
+                            height: 15px;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .preview-popup{
+        width: 400px;
+        .modal-body{
+            padding-top: 0px;
+            padding-bottom: 0px;
+            img{
+                display: block;
+                margin-right: auto;
+                margin-left: auto;
+            }
+        }
     }
 }
