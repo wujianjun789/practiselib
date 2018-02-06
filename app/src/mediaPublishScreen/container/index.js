@@ -117,12 +117,10 @@ export default class MediaPublishScreen extends Component {
                             onChange={this.handleSearchValue} submit={this.handleSearchSubmit} />
                     </div>
                     <div class='body'>
-                        <div class='device-panel'>
-                            <Table columns={this.deviceColumns} data={Immutable.fromJS(deviceList)} checked={deviceSelectedList}
-                                rowCheckChange={this.selectDevice} />
-                            <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
-                                <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.handlePagination} />
-                            </div>
+                        <Table columns={this.deviceColumns} data={Immutable.fromJS(deviceList)} checked={deviceSelectedList}
+                            rowCheckChange={this.selectDevice} />
+                        <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
+                            <Page class='page' showSizeChanger pageSize={limit} current={current} total={total} onChange={this.handlePagination} />
                         </div>
                     </div>
                 </div>
