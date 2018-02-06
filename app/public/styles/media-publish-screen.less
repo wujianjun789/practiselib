@@ -17,64 +17,101 @@
             margin-left: 20px;
         }
     }
-    .body{
-        margin:20px;
-        padding:20px;
+    .body {
+        margin: 20px;
+        padding: 20px;
         background-color: #fff;
-        .page-center{
+        border: solid 1px #e6e6e6;
+        .page-center {
             text-align: center;
+        }
+    }
+    .sidebar-info {
+        .panel-body {
+            .item {
+                height: 30px;
+                margin-bottom: 20px;
+                span {
+                    display: inline-block;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    line-height: 30px;
+                }
+                form {
+                    input {
+                        margin: 0;
+                        height: 30px;
+                        line-height: 30px;
+                        margin-right: 10px;
+                    }
+                    .action {
+                        display: inline-block;
+                        margin-right: 20px;
+                    }
+                }
+                .play-scheme {
+                    width: 120px;
+                    height: 30px;
+                    vertical-align: top;
+                }
+            }
+        }
+        .map-container {
+            top: 349px;
         }
     }
 }
 
-.mediaPublish-screen{
-    .project-popup{
+.mediaPublish-screen {
+    .project-popup {
         width: 730px;
-        .project-container{
-            >.control-label{
+        .project-container {
+            >.control-label {
                 text-align: right;
                 line-height: 20px;
                 float: left;
                 width: 115px;
             }
-            >.project-content{
+            >.project-content {
                 width: 545px;
                 margin-left: 15px;
                 float: left;
             }
-            .project-list,.apply-project-list{
+            .project-list,
+            .apply-project-list {
                 float: left;
                 width: 50%;
-                height:230px;
+                height: 230px;
                 border: 1px solid #ccc;
                 overflow-y: scroll;
-                >ul{
+                >ul {
                     padding: 10px 17px 0 20px;
-                    >li{
+                    >li {
                         color: #808080;
                         font-size: 14px;
                         line-height: 30px;
                         height: 30px;
-                        &:hover{
+                        &:hover {
                             background-color: #e5e5e5;
                         }
-
-                        .name{
+                        .name {
                             user-select: none;
                         }
-                        >.icon-add-container,.icon-table-delete{
+                        >.icon-add-container,
+                        .icon-table-delete {
                             margin-top: 7px;
                             float: right;
                             display: block;
-                            >span{
+                            >span {
                                 color: #00bcff;
-                                &.glyphicon{
+                                &.glyphicon {
                                     color: gray;
                                     cursor: pointer;
                                 }
                             }
                         }
-                        >.icon-table-delete{
+                        >.icon-table-delete {
                             background-image: url(/images/icon_delete.png);
                             background-size: 100% 100%;
                             width: 15px;
@@ -86,12 +123,12 @@
             }
         }
     }
-    .preview-popup{
+    .preview-popup {
         width: 400px;
-        .modal-body{
+        .modal-body {
             padding-top: 0px;
             padding-bottom: 0px;
-            img{
+            img {
                 display: block;
                 margin-right: auto;
                 margin-left: auto;
