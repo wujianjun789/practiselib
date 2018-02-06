@@ -25,7 +25,7 @@ import {getObjectByKey, getDeviceTypeByModel} from '../../util/index';
 import {treeViewInit} from '../../common/actions/treeView';
 import {getModelSummariesByModelID} from '../../api/asset';
 import ExcelPopup from '../components/ExcelPopup';
-import {addNotify} from '../../common/actions/notifyPopup';
+import {addNotify,removeAllNotify} from '../../common/actions/notifyPopup';
 import {bacthImport} from '../../api/import';
 import {injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
@@ -309,10 +309,10 @@ export class Xes extends Component {
   }
 
   importHandler() {
-    const {overlayerShow, overlayerHide, addNotify} = this.props.actions;
+    const {overlayerShow, overlayerHide, addNotify, removeAllNotify} = this.props.actions;
         
     overlayerShow(<ExcelPopup className="import-popup" columns={this.columns} model={this.state.model}
-      domainList={this.state.domainList} addNotify={addNotify} overlayerHide={overlayerHide}
+      domainList={this.state.domainList} addNotify={addNotify} removeAllNotify={removeAllNotify} overlayerHide={overlayerHide}
       onConfirm={ (datas, isUpdate) => {
         bacthImport(this.state.model, datas, isUpdate, () => {
           this.requestSearch();
@@ -392,6 +392,7 @@ const mapDispatchToProps = (dispatch) => ({
     overlayerShow,
     overlayerHide,
     addNotify,
+    removeAllNotify
   }, dispatch),
 });
 
