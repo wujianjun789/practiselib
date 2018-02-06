@@ -1,7 +1,7 @@
 /**
  * Created by a on 2018/2/6.
  */
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Panel from './../../components/Panel';
 import PanelFooter from './../../components/PanelFooter';
@@ -11,7 +11,7 @@ import {FormattedMessage,injectIntl} from 'react-intl';
 
 import {getProjectList} from '../../api/mediaPublish';
 import lodash from 'lodash';
-export default class ProjectPopup extends PureComponent {
+export default class ProjectPopup extends Component {
     constructor(props) {
         super(props);
         const {applyProjectList} = this.props.data;
@@ -49,17 +49,25 @@ export default class ProjectPopup extends PureComponent {
         this.props.onCancel();
     }
 
-    removeProject(){
+    removeProject(id){
+        const {applyProjectList} = this.state;
+        const index = lodash.findIndex(applyProjectList, project=>{return project.id == id});
+        const item = this.state.applyProjectList.splice(index, 1);
+        // this.projectList.push(item);
+        this.setState({applyProjectList:this.state.applyProjectList}, ()=>{
 
+        });
     }
 
-    addProject(){
-
+    addProject(id){
+        const item = lodash.find(this.projectList, project=>{return project.id == id});
+        this.state.applyProjectList.push(item);
+        this.setState({applyProjectList:this.state.applyProjectList});
     }
 
     render() {
         const {title} = this.props;
-        let {applyProjectList} = this.state;
+        const {applyProjectList} = this.state;
 
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']}
                                   btnClassName={['btn-default', 'btn-primary']}
@@ -80,7 +88,7 @@ console.log('projectList:',this.projectList, applyProjectList);
                                         <span className="name">{item?item.name:""}</span>
                                         <span className="icon-add-container">
                                             {
-                                                index > -1 ? <FormattedMessage id='permission.added'/>:<span className='glyphicon glyphicon-plus' onClick={()=>this.addProject(item.key)}></span>
+                                                index > -1 ? <FormattedMessage id='permission.added'/>:<span className='glyphicon glyphicon-plus' onClick={()=>this.addProject(item.id)}></span>
                                             }
                                         </span>
                                     </li>
@@ -96,7 +104,7 @@ console.log('projectList:',this.projectList, applyProjectList);
                                     console.log(project);
                                     return <li key = {item.id}>
                                         <span className="name">{project?project.name:""}</span>
-                                        <span className="icon-table-delete" onClick={()=>this.removeProject(item)}></span>
+                                        <span className="icon-table-delete" onClick={()=>this.removeProject(item.id)}></span>
                                     </li>
                                 })
                             }
