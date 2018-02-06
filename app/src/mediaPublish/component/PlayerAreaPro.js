@@ -97,7 +97,7 @@ class PlayerAreaPro extends PureComponent {
                 this.mounted && this.initProperty(data);
             });
         }else if(typeof data.id == 'string' && data.id.indexOf("area&&")>-1){
-            this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
+            this.state.property.areaName.defaultValue = this.state.property.areaName.value = data.name;
             this.setState({id:data.id, property: Object.assign({}, this.state.property),
                 prompt: {areaName:data.name?false:true}})
         }

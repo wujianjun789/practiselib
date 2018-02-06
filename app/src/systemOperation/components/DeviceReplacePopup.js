@@ -10,9 +10,9 @@ import NotifyPopup from '../../common/containers/NotifyPopup';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import { getModelTypesNameById } from '../../data/systemModel';
 import { getObjectByKeyObj } from '../../util/algorithm';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, FormattedDate } from 'react-intl';
 
-export default class ImportExcelPopup extends Component {
+export default class DeviceReplacePopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +30,7 @@ export default class ImportExcelPopup extends Component {
         this.onCancel = this.onCancel.bind(this);
     }
 
-    onChange(e) {
+    onChange(e) { //判断导入的文件是否合法，如果合法，在table列表中显示，如果不合法，使用addNotify提示错误
         const { addNotify, columns, model } = this.props;
         var target = e.target;
         excelImport(e, model, columns).then(([data, filename]) => {
@@ -55,7 +55,7 @@ export default class ImportExcelPopup extends Component {
     onConfirm() {
         this.props.overlayerHide();
         // let isUpdate = document.getElementsByName('isUpdate')[0].checked;
-        let isUpdate = true;
+        // let isUpdate = true;
         let datas = this.state.data.map(item => {
             item.type = item.typeName;
             delete item.typeName;
@@ -66,7 +66,7 @@ export default class ImportExcelPopup extends Component {
             return item;
         }
         );
-        this.props.onConfirm && this.props.onConfirm(datas, isUpdate);
+        this.props.onConfirm && this.props.onConfirm(datas);
     }
 
     onCancel() {
@@ -76,12 +76,15 @@ export default class ImportExcelPopup extends Component {
     render() {
         const { className, columns, title } = this.props;
         const { data, page, filename } = this.state;
-
+        //data为通过导入文件读取后的数据，result为根据表格尺寸需要显示的内容
         let result = Immutable.fromJS(data.slice((page.current - 1) * page.pageSize, page.current * page.pageSize));
-        let footer = <PanelFooter funcNames={['onCancel', 'onConfirm']} btnTitles={['button.cancel', 'button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm} />;
+        let footer = <PanelFooter funcNames={['onCancel', 'onConfirm']} btnTitles={['button.cancel', 'button.confirm']}
+            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
+            onCancel={this.onCancel} onConfirm={this.onConfirm} />;
 
         return <div className={className}>
-            <Panel title={title} footer={footer} closeBtn={true} closeClick={this.onCancel}>
+            <Panel title={<FormattedMessage id='sysOperation.deviceReplace' />} footer={footer}
+                closeBtn={true} closeClick={this.onCancel}>
                 <div className='row'>
                     <div className='import-select'>
                         {filename ? filename : '选择列表文件路径'}

@@ -159,14 +159,14 @@ export const TreeData = [
       {
         'id': 'alarm',
         'name': '告警',
-        'class': 'icon_update',
+        'class': 'icon_alarm',
         'active': false,
         'link': '/systemOperation/faultManagement/alarm',
       },
       {
         'id': 'fault',
         'name': '故障',
-        'class': 'icon_upgrade',
+        'class': 'icon_fault',
         'active': false,
         'link': '/systemOperation/faultManagement/fault',
       },

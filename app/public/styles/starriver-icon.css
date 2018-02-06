@@ -26,180 +26,186 @@
 
 .icon_add_c:before {
   content: "\e900";
+  color: #4bd383;
+}
+.icon_alarm:before {
+  content: "\e901";
 }
 .icon_bottom:before {
-  content: "\e901";
-}
-.icon_branch:before {
   content: "\e902";
 }
-.icon_calendar:before {
+.icon_branch:before {
   content: "\e903";
 }
-.icon_camera:before {
+.icon_calendar:before {
   content: "\e904";
 }
-.icon_center:before {
+.icon_camera:before {
   content: "\e905";
 }
-.icon_charge_pole:before {
+.icon_center:before {
   content: "\e906";
 }
-.icon_chart:before {
+.icon_charge_pole:before {
   content: "\e907";
 }
-.icon_chinese:before {
+.icon_chart:before {
   content: "\e908";
 }
-.icon_collapse:before {
+.icon_chinese:before {
   content: "\e909";
 }
-.icon_collect:before {
+.icon_collapse:before {
   content: "\e90a";
 }
-.icon_collect_c1:before {
+.icon_collect:before {
   content: "\e90b";
 }
-.icon_control:before {
+.icon_collect_c1:before {
   content: "\e90c";
 }
-.icon_control_c1:before {
+.icon_control:before {
   content: "\e90d";
 }
-.icon_db:before {
+.icon_control_c1:before {
   content: "\e90e";
 }
-.icon_delete:before {
+.icon_db:before {
   content: "\e90f";
 }
-.icon_delete_c:before {
+.icon_delete:before {
   content: "\e910";
 }
-.icon_device_list:before {
+.icon_delete_c:before {
   content: "\e911";
+  color: #fc5e6b;
 }
-.icon_domain:before {
+.icon_device_list:before {
   content: "\e912";
 }
-.icon_domain_list:before {
+.icon_domain:before {
   content: "\e913";
 }
-.icon_edit:before {
+.icon_domain_list:before {
   content: "\e914";
 }
-.icon_english:before {
+.icon_edit:before {
   content: "\e915";
-  /*color: #4a5064;*/
 }
-.icon_enlarge:before {
+.icon_english:before {
   content: "\e916";
 }
-.icon_exit:before {
+.icon_enlarge:before {
   content: "\e917";
 }
-.icon_file:before {
+.icon_exit:before {
   content: "\e918";
 }
-.icon_gateway:before {
+.icon_fault:before {
   content: "\e919";
 }
-.icon_gateway_c1:before {
+.icon_file:before {
   content: "\e91a";
 }
-.icon_info:before {
+.icon_gateway:before {
   content: "\e91b";
 }
-.icon_latlng:before {
+.icon_gateway_c1:before {
   content: "\e91c";
 }
-.icon_lc:before {
+.icon_info:before {
   content: "\e91d";
 }
-.icon_lc_c1:before {
+.icon_latlng:before {
   content: "\e91e";
 }
-.icon_left:before {
+.icon_lc:before {
   content: "\e91f";
 }
-.icon_list:before {
+.icon_lc_c1:before {
   content: "\e920";
 }
-.icon_map:before {
+.icon_left:before {
   content: "\e921";
 }
-.icon_mediaPublish_cycle:before {
+.icon_list:before {
   content: "\e922";
 }
-.icon_mediaPublish_general:before {
+.icon_map:before {
   content: "\e923";
 }
-.icon_mediaPublish_regular:before {
+.icon_mediaPublish_cycle:before {
   content: "\e924";
 }
-.icon_middle:before {
+.icon_mediaPublish_general:before {
   content: "\e925";
 }
-.icon_module:before {
+.icon_mediaPublish_regular:before {
   content: "\e926";
 }
-.icon_password:before {
+.icon_middle:before {
   content: "\e927";
 }
-.icon_play:before {
+.icon_module:before {
   content: "\e928";
 }
-.icon_pole:before {
+.icon_password:before {
   content: "\e929";
 }
-.icon_pole_c1:before {
+.icon_play:before {
   content: "\e92a";
 }
-.icon_reduce:before {
+.icon_pole:before {
   content: "\e92b";
 }
-.icon_right:before {
+.icon_pole_c1:before {
   content: "\e92c";
 }
-.icon_save:before {
+.icon_reduce:before {
   content: "\e92d";
 }
-.icon_scene:before {
+.icon_right:before {
   content: "\e92e";
 }
-.icon_screen:before {
+.icon_save:before {
   content: "\e92f";
 }
-.icon_screen_c1:before {
+.icon_scene:before {
   content: "\e930";
 }
-.icon_select:before {
+.icon_screen:before {
   content: "\e931";
 }
-.icon_send:before {
+.icon_screen_c1:before {
   content: "\e932";
 }
-.icon_sensor:before {
+.icon_select:before {
   content: "\e933";
 }
-.icon_sensor_c1:before {
+.icon_send:before {
   content: "\e934";
 }
-.icon_status:before {
+.icon_sensor:before {
   content: "\e935";
 }
-.icon_sys_status:before {
+.icon_sensor_c1:before {
   content: "\e936";
 }
-.icon_top:before {
+.icon_status:before {
   content: "\e937";
 }
-.icon_touch:before {
+.icon_sys_status:before {
   content: "\e938";
-  color: #4a5064;
 }
-.icon_update:before {
+.icon_top:before {
   content: "\e939";
 }
+.icon_touch:before {
+  content: "\e93a";
+}
+.icon_update:before {
+  content: "\e93b";
+}
 .icon_upgrade:before {
-  content: "\e901";
+  content: "\e93c";
 }

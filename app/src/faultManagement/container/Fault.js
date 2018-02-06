@@ -249,7 +249,7 @@ export class Fault extends Component {
 
   handlePopup=(key) => {
     const {actions} = this.props;
-    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={`是否${this.props.intl.formatMessage({id:'button.' + key})}选中故障`}
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_fault" tips={`是否${this.props.intl.formatMessage({id:'button.' + key})}选中故障`}
       cancel={() => {actions.overlayerHide();}} confirm={() => {
         actions.overlayerHide();
       }}/>);

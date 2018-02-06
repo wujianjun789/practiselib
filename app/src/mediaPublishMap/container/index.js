@@ -76,6 +76,7 @@ export  class MediaPublishMap extends Component{
         this.transformState = this.transformState.bind(this);
         this.mapZoomend = this.mapZoomend.bind(this);
         this.mapDragend = this.mapDragend.bind(this);
+        this.markerClickHandler = this.markerClickHandler.bind(this);
         this.panCallFun = this.panCallFun.bind(this);
         this.onkeydown = this.onkeydown.bind(this);
         this.searchClick = this.searchClick.bind(this);
@@ -199,7 +200,11 @@ export  class MediaPublishMap extends Component{
     }
 
     updatePageTotal(data){
-        this.setState({page: this.state.page.update('total', v=>data.count)});
+        let obj = {page: this.state.page.update('total', v=>data.count)};
+        if(!data.count){
+            obj = Object.assign({}, obj, {IsSearchResult:false});
+        }
+        this.setState(obj);
     }
 
     updateSearch(data){
@@ -264,6 +269,7 @@ export  class MediaPublishMap extends Component{
     }
 
     itemClick(pole){
+        this.map.center = pole.get('geoPoint').toJS();
         let state = {IsSearch: false, IsSearchResult:false, curDevice: pole}
         const extend = pole.get('extend');
         if(extend.has('resWidth')){
@@ -289,9 +295,9 @@ export  class MediaPublishMap extends Component{
     }
 
     searchClick(e){
-        this.setState({IsSearchResult: true}, ()=>{
+        // this.setState({IsSearchResult: true}, ()=>{
             this.requestSearch();
-        });
+        // });
     }
 
     onkeydown(event){
@@ -307,6 +313,7 @@ export  class MediaPublishMap extends Component{
     }
 
     mapDragend(data){
+        console.log('distance:',data.distance);
         this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
 
         this.requestSearch();
@@ -316,6 +323,10 @@ export  class MediaPublishMap extends Component{
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         this.requestSearch();
+    }
+
+    markerClickHandler(data){
+        // console.log(data);
     }
 
     transformState(key, sf){
@@ -361,10 +372,11 @@ export  class MediaPublishMap extends Component{
             IsOpenPoleInfo, IsOpenPoleControl, IsOpenPreview, IsOpenFault, listStyle, infoStyle, controlStyle,faultStyle} = this.state;
 
         const faultList = screen.get('faultList').toJS();
-        console.log('render:',IsSearch,IsSearchResult, screen.toJS());
+
         return <Content>
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:searchList.toJS()}}
-                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend}} panLatlng={panLatlng} panCallFun={this.panCallFun}>
+                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend,markerClickHandler:this.markerClickHandler}}
+                     panLatlng={panLatlng} panCallFun={this.panCallFun}>
             </MapView>
             <div className="search-container">
                 <div id="" className={"searchText smartLight-map"} onKeyDown={this.onkeydown}>
