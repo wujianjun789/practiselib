@@ -29,12 +29,10 @@ export class MediaPublishScreen extends Component {
         currentDevice: null,
         search: { value: '', placeholder: '输入设备名称' },
         page: { total: 0, current: 1, limit: 10 },
-        showView: false,
-        showPlan: false,
         playScheme: [
-            { name: '播放方案1', id: 0 },
-            { name: '播放方案2', id: 1 },
-            { name: '播放方案3', id: 2 },
+            // { name: '播放方案1', id: 0 },
+            // { name: '播放方案2', id: 1 },
+            // { name: '播放方案3', id: 2 },
             { name: '方案管理...', id: 'manage' }
         ],
         currentPlan: null
@@ -100,14 +98,12 @@ export class MediaPublishScreen extends Component {
         this.setState({ page: { ...this.state.page, current, } }, this.initDeviceData)
     }
     handleViewDevice = () => {
-        // this.setState({ showView: !this.state.showView })
         const { actions } = this.props;
         actions.overlayerShow(<PreViewPopup title="显示屏预览" data={{ url: "http://localhost:8080/images/smartLight/screen_test.png" }} onCancel={() => {
             actions.overlayerHide();
         }} />)
     }
     hanldePlanManage = () => {
-        // this.setState({ showPlan: !this.state.showPlan })
         const { actions } = this.props;
         const applyProjectList = [{ id: '5a67f0216c64c71518b0140f', name: "project1" }, { id: '5a67f05c6c64c71518b01410', name: "project3" }];
         actions.overlayerShow(<ProjectPopup title="方案管理" data={{ applyProjectList: applyProjectList }} onConfirm={data => {
@@ -139,15 +135,14 @@ export class MediaPublishScreen extends Component {
         console.log('应用当前方案', currentDevice, currentPlan)
     }
     componentDidUpdate() {
-        const { sidebarCollapse, domainList, currentDomain, deviceList, currentDevice, showView, showPlan,
+        const { sidebarCollapse, domainList, currentDomain, deviceList, currentDevice,
             search: { value, placeholder }, page: { total, current, limit }, playScheme, currentPlan } = this.state;
         // console.log('currentDevice', currentDevice)
         // console.log(domainList)
         // console.log(currentDomain)
         // console.log(value)
-        console.log(currentDevice)
-        console.log(currentPlan)
-        console.log(showPlan)
+        // console.log(currentDevice)
+        // console.log(currentPlan)
     }
     render() {
         const { sidebarCollapse, domainList, currentDomain, deviceList, currentDevice,
