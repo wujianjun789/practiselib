@@ -26,6 +26,8 @@ export default class MediaPublishScreen extends Component {
         deviceSelectedList: [],
         currentDevice: null,
         page: { total: 0, current: 1, limit: 4 },
+        showView: false,
+        showPlan: false,
     }
     componentWillMount() {
         this._isMounted = true;
@@ -90,6 +92,12 @@ export default class MediaPublishScreen extends Component {
     updatePageSize = (data) => {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
+    handleViewDevice = () => {
+        this.setState({ showView: !this.state.showView })
+    }
+    hanldePlanManage = () => {
+        this.setState({ showPlan: !this.state.showPlan })
+    }
     componentDidUpdate() {
         const { sidebarCollapse, domainList, currentDomain, search: { value, placeholder } } = this.state;
         console.log(domainList)
@@ -123,6 +131,10 @@ export default class MediaPublishScreen extends Component {
                     <div class='row collapse-container' onClick={this.handleCollapse}>
                         <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                     </div>
+                    <div>
+                        <button onClick={this.handleViewDevice}>预览</button>
+                    </div>
+                    <div><button onClick={this.hanldePlanManage}>方案管理</button></div>
                 </div>
             </Content >
         )
