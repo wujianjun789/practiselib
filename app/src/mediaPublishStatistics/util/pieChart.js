@@ -7,7 +7,6 @@ export default class PieChart {
         this.width = width;
         this.height = height;
         this.radius = Math.min(this.width, this.height) / 2;
-        console.log(width,height)
         this.initChart();
     }
     initChart() {
