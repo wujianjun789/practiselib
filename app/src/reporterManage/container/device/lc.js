@@ -94,13 +94,13 @@ export default class Lc extends Component {
         }
     }
     //初始化设备、更新设备列表、选择设备
-    initDeviceData = (isSearch) => {
+    initDeviceData = () => {
         if (!this._isMounted) {
             return;
         }
-        if (isSearch) {
-            this.setState({ page: { ...this.state.page, current: 1 } });
-        }
+        // if (isSearch) {
+        //     this.setState({ page: { ...this.state.page, current: 1 } });
+        // }
         if (this.state.currentDomain) {
             const { currentDomain, search: { value }, page: { current, limit } } = this.state;
             const offset = limit * (current - 1);
@@ -129,7 +129,7 @@ export default class Lc extends Component {
         this.setState({ search: { ...this.state.search, value } });
     }
     searchSubmit = () => {
-        this.initDeviceData(true);
+        this.setState({ page: { ...this.state.page, current: 1 } }, this.initDeviceData)
     }
     updatePageSize = (data) => {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
@@ -208,7 +208,9 @@ export default class Lc extends Component {
             }
         }
         if (id === 'domain') {
-            this.setState({ currentDomain: this.state.domainList[selectedIndex] }, this.initDeviceData);
+            this.setState({
+                currentDomain: this.state.domainList[selectedIndex], page: { ...this.state.page, current: 1 }
+            }, this.initDeviceData);
         }
     }
     //应用
@@ -220,11 +222,11 @@ export default class Lc extends Component {
             const { currentParam, selectedMultiDeviceIdList, selectedMultiDeviceList } = this.state;
             const deviceList = selectedMultiDeviceIdList.map(item => ({ asset: item }));
             getHistoriesDataInDevice('prop', currentParam, deviceList, start, end, 'asset', selectedMultiDeviceList, 'name', res => {
-                if(typeof res==='string'){
+                if (typeof res === 'string') {
                     message.info(res);
                     return;
                 }
-           
+
                 this.setState({ data: res })
             });
         }
@@ -298,7 +300,7 @@ export default class Lc extends Component {
         return (
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                 <div class='content-left'>
-                    <Chart start={startDate} end={endDate} data={data} yMax={300}/>
+                    <Chart start={startDate} end={endDate} data={data} yMax={300} />
                 </div>
                 <div class={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
                     <div class='row collapse-container fix-width' onClick={this.collapseHandler}>

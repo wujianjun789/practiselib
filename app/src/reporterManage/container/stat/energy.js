@@ -71,13 +71,13 @@ export default class Lc extends Component {
         }
     }
     //初始化设备、更新设备列表、选择设备
-    initDeviceData = (isSearch) => {
+    initDeviceData = () => {
         if (!this._isMounted) {
             return;
         }
-        if (isSearch) {
-            this.setState({ page: { ...this.state.page, current: 1 } });
-        }
+        // if (isSearch) {
+        //     this.setState({ page: { ...this.state.page, current: 1 } });
+        // }
         if (this.state.currentDomain) {
             const { currentDomain, search: { value }, page: { current, limit } } = this.state;
             const offset = limit * (current - 1);
@@ -108,7 +108,7 @@ export default class Lc extends Component {
         this.setState({ search: { ...this.state.search, value } });
     }
     searchSubmit = () => {
-        this.initDeviceData(true);
+        this.setState({ page: { ...this.state.page, current: 1 } }, this.initDeviceData)
     }
     updatePageSize = (data) => {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
@@ -144,7 +144,9 @@ export default class Lc extends Component {
             }
         }
         if (id === 'domain') {
-            this.setState({ currentDomain: this.state.domainList[selectedIndex] }, this.initDeviceData);
+            this.setState({
+                currentDomain: this.state.domainList[selectedIndex], page: { ...this.state.page, current: 1 }
+            }, this.initDeviceData);
         }
     }
     //应用
