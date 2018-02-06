@@ -16,7 +16,7 @@ class PlayerAreaPro extends PureComponent {
         this.state = {
             property: {
                 //区域
-                areaName: {
+                    areaName: {
                     key: "areaName",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.areaName'}),
                     placeholder: this.props.intl.formatMessage({id: 'mediaPublish.areaName'}),

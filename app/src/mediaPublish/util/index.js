@@ -252,9 +252,9 @@ export function parsePlanData(data) {
         },
         pause: true,
         interval: 0,
-        playMode: 0,
+        playMode: 2,
         playDuration: 0,
-        playTimes: 0
+        playTimes: 1
     }
 }
 
@@ -364,7 +364,7 @@ function getImageData(data) {
             "logFlag": 0,
             "materialId": data.id
         },
-        "scale": 0,
+        "scale": 1,
         "inTransition": {
             "transition": 0,
             "speed": 0
@@ -382,8 +382,8 @@ function getVideoData(data) {
             "materialId": data.id
         },
         "playType": 0,
-        "playTimeBegin": 0,
-        "playTimeEnd": 0,
+        "playTimeBegin": '0:0:0.000',
+        "playTimeEnd": '0:0:0.000',
         "scale": 0,
         "text": {
             "text": "string",
