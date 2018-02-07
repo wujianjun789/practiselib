@@ -383,8 +383,8 @@ function getVideoData(data) {
             "materialId": data.id
         },
         "playType": 0,
-        "playTimeBegin": '0:0:0.000',
-        "playTimeEnd": '0:0:0.000',
+        "playTimeBegin": 0,
+        "playTimeEnd": 0,
         "scale": 0,
         "text": {
             "text": "string",
