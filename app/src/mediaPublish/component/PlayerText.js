@@ -232,7 +232,7 @@ class PlayerText extends Component {
                     rowSpace: rowSpace.value,
                     fontColor: {
                         red: fontColor.value.r,
-                        greeen: fontColor.value.g,
+                        green: fontColor.value.g,
                         blue: fontColor.value.b,
                         amber: 0,
                         alpha: fontColor.value.a
