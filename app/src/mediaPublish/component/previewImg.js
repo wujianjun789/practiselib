@@ -14,9 +14,8 @@ const PreviewImg = (props) => {
   const initImgInfo = { width: 400, height: 300, src: '' };
   const { imgInfo:noHandleImgInfo = initImgInfo, scaling, parentInfo = initImgInfo } = props;
   const { src } = noHandleImgInfo;
-  console.log('scaling', scaling);
-  // const imgInfo = { width: noHandleImgInfo.width * scaling, height: noHandleImgInfo.height * scaling };
-  const imgInfo = {width:initImgInfo.width * scaling, height:initImgInfo.height * scaling};
+  const imgInfo = { width: noHandleImgInfo.width * scaling, height: noHandleImgInfo.height * scaling };
+  //const imgInfo = {width:initImgInfo.width * scaling, height:initImgInfo.height * scaling};
   const imgStyle = getPreviewStyle(imgInfo, parentInfo);
   return (
     <div id="preview-content">
