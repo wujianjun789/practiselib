@@ -130,3 +130,7 @@ export function getToday() {
 export function getYesterday() {
 	return moment().hour(0).minute(0).second(0).millisecond(0).subtract(1, 'days');
 }
+
+export function getNextSeconds() {
+    return moment().add(1, 's');
+}
