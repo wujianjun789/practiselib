@@ -185,7 +185,8 @@ export class PlayerArea extends Component {
       previewPlayList: [], // 发送给后台的图片预览队列
       previewSrc: '', //图片预览的src
       scaling: 1, //图片预览缩放系数
-      parentInfo:{}, // 图片预览父元素对比
+      parentInfo: {}, // 图片预览父元素对比
+      scenePlayList:{},
     };
 
     this.systemFile = [];
@@ -430,7 +431,7 @@ export class PlayerArea extends Component {
 
     }
 
-    this.state.playerListAsset = this.state.playerListAsset.update('id', v=>-1);
+    this.state.playerListAsset = this.state.playerListAsset.update('id', v => -1);
     this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)) }, () => {
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
@@ -479,7 +480,6 @@ export class PlayerArea extends Component {
     const type = item.get('type');
     if (targetType === 'scene') {
       arealist = this.state.parentNode.children;
-      
     }
     const curType = tranformAssetType(type);
     
@@ -514,21 +514,48 @@ export class PlayerArea extends Component {
           return { areaId: item.id, playItemId: 65535 };
         }
       });
+      const sceneId = this.state.curNode.id;
+      const areaFlagValue = this.state.playerListAsset.get('list').toJS();
+      console.log(sceneId, areaFlagValue);
       this.setState({
         previewPlayList: itemList,
+        scenePlayList: {
+          ...this.state.scenePlayList,
+          [sceneId]: areaFlagValue,
+        },
       }, () => {return this.getPreviewImg();});
     }
   }
 
   getPreviewImg() {
+    console.log(this.state.scenePlayList);
     const projectId = this.state.project;
     const programId = this.state.parentParentNode;
     const sceneId = this.state.parentNode;
     const zoneId = this.state.curNode;
-    const items = this.state.previewPlayList.map(item => { return item.playItemId; });
+    const items = this.checkPreviewItems(this.state.previewPlayList);
     const requestJson = ({ projectId, programId, sceneId, zoneId, items });
     console.log('ready to send', requestJson);
     // return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
+  }
+
+  checkPreviewItems(items) {
+    const { scenePlayList } = this.state;
+    const newItem = items.map((_item) => {
+      const { areaId } = _item;
+      if (scenePlayList[areaId]) {
+        for (let i = 0; i < scenePlayList[areaId].length; i++) {
+          if (scenePlayList[areaId][i].id === _item.playItemId) {
+            return _item;
+          }
+        }
+        _item.playItemId = 65535;
+        return _item;
+      }
+      _item.playItemId = 65535;
+      return _item;
+    });
+    return newItem;
   }
 
   updateTreeData = (node, parentNode, parentParentNode) => {
@@ -681,7 +708,7 @@ export class PlayerArea extends Component {
 
   addPlayerScene = () => {
     const parentNode = this.state.curNode;
-    if(typeof parentNode.id === 'string' && parentNode.id.indexOf("plan")>-1){
+    if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
       return this.props.actions.addNotify(0, '请提交播放列表');
     }
     let node = getInitData('scene', '场景新建');
@@ -692,7 +719,7 @@ export class PlayerArea extends Component {
   addPlayerArea = () => {
     const parentParentNode = this.state.parentNode;
     const parentNode = this.state.curNode;
-    if(typeof parentNode.id === 'string' && parentNode.id.indexOf("scene")>-1){
+    if (typeof parentNode.id === 'string' && parentNode.id.indexOf('scene') > -1) {
       return this.props.actions.addNotify(0, '请提交播放场景');
     }
     let node = getInitData('area', '区域新建');
@@ -780,11 +807,11 @@ export class PlayerArea extends Component {
     if (data.id) {
       areaData = Object.assign({}, areaData, { id: data.id });
       updateZoneById(project.id, parentParentNode.id, parentNode.id, areaData, (response) => {
-        this.updatePlayerAreaData(Object.assign({},areaData,{type:'area'}));
+        this.updatePlayerAreaData(Object.assign({}, areaData, {type:'area'}));
       });
     } else {
       addZone(project.id, parentParentNode.id, parentNode.id, areaData, response => {
-        this.updatePlayerAreaData(Object.assign({}, areaData, { id: response.regionId },{type:'area'}));
+        this.updatePlayerAreaData(Object.assign({}, areaData, { id: response.regionId }, {type:'area'}));
       });
     }
   }
