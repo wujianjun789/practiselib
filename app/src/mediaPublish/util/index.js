@@ -300,7 +300,7 @@ export function getAssetData(data) {
 function getTxtFileData(data) {
     return {
         "baseInfo": {
-            "type": data.type?data.type:formatTransformType(data.filepath),
+            "type": data.type && data.type !== "undefined"?data.type:formatTransformType(data.filepath),
             "file": data.filepath,
             "playDuration": 0,
             "logFlag": 0,
@@ -358,7 +358,7 @@ function getTxtFileData(data) {
 function getImageData(data) {
     return {
         "baseInfo": {
-            "type": data.type?data.type:formatTransformType(data.filepath),
+            "type": data.type && data.type !== "undefined"?data.type:formatTransformType(data.filepath),
             "file": data.filepath,
             "playDuration": 0,
             "logFlag": 0,
@@ -373,9 +373,10 @@ function getImageData(data) {
 }
 
 function getVideoData(data) {
+
     return {
         "baseInfo": {
-            "type": data.type?data.type:formatTransformType(data.filepath),
+            "type": data.type && data.type!=="undefined"?data.type:formatTransformType(data.filepath),
             "file": data.filepath,
             "playDuration": 0,
             "logFlag": 0,
@@ -522,4 +523,68 @@ export function getActiveItem(assetList) {
     })
 
     return addList;
+}
+
+export function addItemToScene(sceneItem, projectId, programId, sceneId, zoneId, data) {
+    console.log('data:', data);
+    if(!sceneItem.hasOwnProperty(projectId)){
+        sceneItem[projectId] = {};
+    }
+
+    if(!sceneItem[projectId].hasOwnProperty(programId)){
+        sceneItem[projectId][programId] = {};
+    }
+
+    if(!sceneItem[projectId][programId].hasOwnProperty(sceneId)){
+        sceneItem[projectId][programId][sceneId] = {};
+    }
+
+    if(!sceneItem[projectId][programId][sceneId].hasOwnProperty(zoneId)){
+        sceneItem[projectId][programId][sceneId][zoneId] = [];
+    }
+
+    sceneItem[projectId][programId][sceneId][zoneId] = data;
+
+    return sceneItem;
+}
+
+export function removeItemInScene(sceneItem, projectId, programId, sceneId, zoneId, data) {
+    if(!sceneItem.hasOwnProperty(projectId)){
+        return sceneItem;
+    }
+
+    if(!sceneItem[projectId].hasOwnProperty(programId)){
+        return sceneItem;
+    }
+
+    if(!sceneItem[projectId][programId].hasOwnProperty(sceneId)){
+        return sceneItem;
+    }
+
+    if(!sceneItem[projectId][programId][sceneId].hasOwnProperty(zoneId)){
+        return sceneItem;
+    }
+
+    const index = lodash.findIndex(sceneItem[projectId][programId][sceneId][zoneId], item=>{return item.id == data.id});
+    if(index>-1){
+        sceneItem[projectId][programId][sceneId][zoneId].splice(index, 1);
+    }
+
+    return sceneItem;
+}
+
+export function getItemOfScene(sceneItem, projectId, programId, sceneId) {
+    if(!sceneItem.hasOwnProperty(projectId)){
+        return [];
+    }
+
+    if(!sceneItem[projectId].hasOwnProperty(programId)){
+        return [];
+    }
+
+    if(!sceneItem[projectId][programId].hasOwnProperty(sceneId)){
+        return [];
+    }
+
+    return sceneItem[projectId][programId][sceneId];
 }

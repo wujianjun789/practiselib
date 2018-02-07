@@ -38,7 +38,7 @@ import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import {
   addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
   getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem,
-} from '../util/index';
+    addItemToScene, removeItemInScene, getItemOfScene} from '../util/index';
 
 import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
@@ -156,6 +156,8 @@ export class PlayerArea extends Component {
         current: 1,
         total: 2,
       }),
+
+      curSceneItem:{},
 
       //上传文件模块字段
       showModal: false,
@@ -430,8 +432,9 @@ export class PlayerArea extends Component {
 
     }
 
+    const sceneItem = addItemToScene(this.state.curSceneItem, this.state.project.id, programId, sceneId, zoneId, data);
     this.state.playerListAsset = this.state.playerListAsset.update('id', v=>-1);
-    this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)) }, () => {
+    this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)), curSceneItem: Object.assign({}, this.state.curSceneItem, sceneItem) }, () => {
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
         if (IsSystemFile(item.get('type'))) {
@@ -490,6 +493,7 @@ export class PlayerArea extends Component {
   }
   setPlayItemArray(areaList) {
     console.log('=== ==== === === ', areaList);
+    console.log('curSceneItem:', getItemOfScene(this.state.curSceneItem, this.state.project.id, this.state.parentParentNode.id, this.state.parentNode.id));
     if (areaList === []) {
       return undefined;
     } else {
