@@ -249,9 +249,9 @@ export default {
     'app.time.difference': 'Time difference',
 
     //设备维护
-    'sysOperation.dviceNum': 'deviceNum',
+    'sysOperation.deviceNum': 'deviceNum',
     'sysOperation.dviceName': 'dviceName',
-    'sysOperation.domainName': 'domainName',
+    'sysOperation.deviceDomain': 'domainName',
 
 
     //故障管理
