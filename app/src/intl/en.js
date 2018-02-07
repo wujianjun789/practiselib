@@ -381,6 +381,7 @@ export default {
     'mediaPublish.property': 'Property',
     'mediaPublish.materialLib': 'Material library',
 
+    'mediaPublish.screen':'name',
     'mediaPublish.materialName': 'name',
     'mediaPublish.textContent': 'content',
     'mediaPublish.selectFont': 'font type',

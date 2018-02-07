@@ -58,7 +58,6 @@ class PlayerPlan extends PureComponent{
     }
 
     componentDidUpdate(){
-        console.log('playerPlan:',this.props.data);
         this.init();
     }
 

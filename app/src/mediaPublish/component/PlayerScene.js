@@ -17,7 +17,7 @@ class PlayerScene extends PureComponent{
             id:"",
             property: {
                 //场景名称
-                sceneName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:name?name:"", value: "" },
+                sceneName: { key: "assetName", title: this.props.intl.formatMessage({id:'mediaPublish.screen'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:name?name:"", value: "" },
                 playMode: { key: "playMode", title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: "按次播放",type:0 }, { id: 2, name: "按时长播放", type:1 }, { id: 3, name: "循环播放", type:2 }], defaultIndex: 2, index: 2, name: "循环播放" },
                 playModeCount: { key: "playModeCount", title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), active: true,
                     defaultValue: 1, value: 1,
