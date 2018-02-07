@@ -403,6 +403,7 @@ export class PlayerArea extends Component {
 
     let sceneIndex = lodash.findIndex(programItem.children, scene => { return scene.id == sceneId; });
     let newData = data.map(area => {
+      this.requestItemList(programId, sceneId, area.id);
       return Object.assign({}, area, { type: 'area', active: false });
     });
 
@@ -435,7 +436,8 @@ export class PlayerArea extends Component {
 
     const sceneItem = addItemToScene(this.state.curSceneItem, this.state.project.id, programId, sceneId, zoneId, data);
     this.state.playerListAsset = this.state.playerListAsset.update('id', v => -1);
-    this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)) }, () => {
+    this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)), curSceneItem: sceneItem }, () => {
+      console.log('curSceneItem:',this.state.curSceneItem);
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
         if (IsSystemFile(item.get('type'))) {
