@@ -5,7 +5,7 @@ import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
 
 export function getAssetModelList(cb) {
   let headers = getHttpHeader();
-  httpRequest(HOST_IP + '/model-summaries', {
+  httpRequest(HOST_IP + '/summaries', {
     headers: headers,
     method: 'GET',
   }, response => {
@@ -20,7 +20,7 @@ export function getAssetModelList(cb) {
  * @return {Object}
  */
 export function getModelSummariesByModelID(modelID, cb) {
-  httpRequest(`${HOST_IP}/model-summaries/${modelID}`, {
+  httpRequest(`${HOST_IP}/summaries/${modelID}`, {
     headers: getHttpHeader(),
     method: 'GET',
   }, response => {
