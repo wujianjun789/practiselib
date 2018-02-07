@@ -138,7 +138,7 @@ export class PlayerArea extends Component {
 
       assetType: Immutable.fromJS({ list: [{ id: 1, value: '系统' }, { id: 2, value: '自定义' }], index: 0, value: '系统' }),
       assetSort: Immutable.fromJS({
-        list: [{ id: 1, type: 1, value: '素材文字' }, { id: 2, type: 2, value: '素材图片' }, { id: 3, type: 3, value: '素材视频' }],
+        list: [{ id: 1, type: "text", value: '素材文字' }, { id: 2, type: "image", value: '素材图片' }, { id: 3, type: "video", value: '素材视频' }],
         index: 0, value: '素材文字',
       }),
       assetSearch: Immutable.fromJS({ placeholder: this.formatIntl('sysOperation.input.asset'), value: '' }),
@@ -1282,7 +1282,7 @@ export class PlayerArea extends Component {
         </div>
         <div className="mediaPublish-footer">
           {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
-          <RenderPlayerAsset playerListAsset={playerListAsset} playerAssetSelect={this.playerAssetSelect} playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} />
+          <RenderPlayerAsset curNode={curNode} playerListAsset={playerListAsset} playerAssetSelect={this.playerAssetSelect} playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} />
           <div className="pull-right control-container">
             <div className={'list-group ' + (playerListAsset.get('isEdit') ? '' : 'hidden')}>
               <button className="btn btn-primary" onClick={() => this.playerListAssetClick('add')}><FormattedMessage id="button.add" /></button>

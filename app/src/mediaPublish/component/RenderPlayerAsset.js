@@ -10,15 +10,15 @@ import React, { Component } from 'react';
 
 export default class RenderPlayerAsset extends Component {
   
-  onClick(event, item, direction) {
+  onClick(event, direction, item) {
     event.stopPropagation();
     return this.props.playerAssetMove(direction, item);
   }
   
     
   render() {
-    const { playerListAsset, playerAssetSelect, playerAssetRemove } = this.props;
-    return (<ul>
+    const { curNode, playerListAsset, playerAssetSelect, playerAssetRemove } = this.props;
+    return (<ul className={curNode && curNode.type==="area"?"":"hidden"}>
       {
         playerListAsset.get('list').map((item, index) => {
           const itemId = item.get('id');

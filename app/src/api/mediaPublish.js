@@ -468,9 +468,9 @@ export function searchAssetList(type, name, offset, limit, cb) {
 
 function getAssetParam(type, name) {
   let param = {};
-  // if(type){
-  //     param = Object.assign(param, {type: type});
-  // }
+  if(type){
+      param = Object.assign(param, {type: type});
+  }
 
   if (name) {
     param = Object.assign(param, { name: { like: name } });

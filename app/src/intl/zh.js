@@ -374,6 +374,7 @@ export default {
     'mediaPublish.property': '属性',
     'mediaPublish.materialLib': '素材库',
 
+    'mediaPublish.screen':'场景名称',
     'mediaPublish.materialName': '素材名称',
     'mediaPublish.textContent': '文本内容',
     'mediaPublish.selectFont': '选择字体',
