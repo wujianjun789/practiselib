@@ -85,8 +85,8 @@ class PlayerText extends Component {
     }
     initPlayerText = () => {
         const { projectId, sceneId, planId, areaId, data } = this.props;
-        this.id = data.id; 
-            getItembyId(projectId, planId, sceneId, areaId, data.id, 0, res => {
+        this.id = data.id;
+        getItembyId(projectId, planId, sceneId, areaId, data.id, 0, res => {
             this._data = res;
             const {
                 text,
@@ -106,7 +106,7 @@ class PlayerText extends Component {
                 fontColor: {
                     ...this.state.fontColor, value: {
                         r: fontColor.red,
-                g: fontColor.green,
+                        g: fontColor.green,
                         b: fontColor.blue,
                         a: fontColor.alpha
                     }
@@ -150,13 +150,13 @@ class PlayerText extends Component {
         this.setState({ [e.target.id]: false })
     }
     onChange = (type, e) => {
-        
+
         switch (type) {
             case 'fontColor':
             case 'bgColor': {
                 this.setState({
                     [type]: { ...this.state[type], value: e.rgb }
-        })
+                })
                 break;
             }
             case 'text': {
@@ -213,14 +213,14 @@ class PlayerText extends Component {
                         transparent: Number(bgTransparent.value),
                         color: {
                             red: bgColor.value.r,
-                            greeen: bgColor.value.g,
+                            green: bgColor.value.g,
                             blue: bgColor.value.b,
                             amber: 0,
                             alpha: bgColor.value.a
                         },
                         colorKey: {
                             red: bgColor.value.r,
-                            greeen: bgColor.value.g,
+                            green: bgColor.value.g,
                             blue: bgColor.value.b,
                             amber: 0,
                             alpha: bgColor.value.a

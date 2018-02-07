@@ -21,6 +21,9 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 export class MediaPublishScreen extends Component {
     state = {
         sidebarCollapse: false,
+        deviceCollapse: false,
+        operationCollapse: false,
+        mapCollapse: false,
         domainList: [
             { name: '域' }
         ],
@@ -30,9 +33,7 @@ export class MediaPublishScreen extends Component {
         search: { value: '', placeholder: '输入设备名称' },
         page: { total: 0, current: 1, limit: 10 },
         playScheme: [
-            // { name: '播放方案1', id: 0 },
-            // { name: '播放方案2', id: 1 },
-            // { name: '播放方案3', id: 2 },
+            { name: '无', id: 'empty' },
             { name: '方案管理...', id: 'manage' }
         ],
         currentPlan: null
@@ -81,8 +82,26 @@ export class MediaPublishScreen extends Component {
     updateDeviceData = (data) => {
         this._isMounted && this.setState({ deviceList: data, currentDevice: data.length ? data[0] : null });
     }
-    handleCollapse = () => {
-        this.setState({ sidebarCollapse: !this.state.sidebarCollapse })
+    handleCollapse = (id) => {
+        this.setState({ [id]: !this.state[id] })
+    }
+    handleCollapseAll = () => {
+        if (this.state.sidebarCollapse) {
+            this.setState({
+                sidebarCollapse: false,
+                deviceCollapse: false,
+                operationCollapse: false,
+                mapCollapse: false
+            })
+        } else {
+            this.setState({
+                sidebarCollapse: true,
+                deviceCollapse: true,
+                operationCollapse: true,
+                mapCollapse: true
+            })
+        }
+
     }
     handleSelectDomain = (e) => {
         const { domainList, page } = this.state;
@@ -97,12 +116,15 @@ export class MediaPublishScreen extends Component {
     handlePagination = (current) => {
         this.setState({ page: { ...this.state.page, current, } }, this.initDeviceData)
     }
+    //预览待时实现
     handleViewDevice = () => {
+        const { currentDevice, currentPlan } = this.state;
         const { actions } = this.props;
         actions.overlayerShow(<PreViewPopup title="显示屏预览" data={{ url: "http://localhost:8080/images/smartLight/screen_test.png" }} onCancel={() => {
             actions.overlayerHide();
         }} />)
     }
+    //弹出方案管理弹框
     hanldePlanManage = () => {
         const { actions } = this.props;
         const applyProjectList = [{ id: '5a67f0216c64c71518b0140f', name: "project1" }, { id: '5a67f05c6c64c71518b01410', name: "project3" }];
@@ -115,6 +137,7 @@ export class MediaPublishScreen extends Component {
     selectDevice = (currentDevice) => {
         this.setState({ currentDevice: currentDevice.toJS() })
     }
+    //设备开关动作
     handleSubmit = (e) => {
         e.preventDefault();
         const { currentDevice } = this.state;
@@ -130,6 +153,7 @@ export class MediaPublishScreen extends Component {
         }
         this.setState({ currentPlan: playScheme[e.target.selectedIndex] })
     }
+    //应用当前方案
     handlePlanApply = () => {
         const { currentDevice, currentPlan } = this.state;
         console.log('应用当前方案', currentDevice, currentPlan)
@@ -145,8 +169,12 @@ export class MediaPublishScreen extends Component {
         // console.log(currentPlan)
     }
     render() {
-        const { sidebarCollapse, domainList, currentDomain, deviceList, currentDevice,
+        const { sidebarCollapse, deviceCollapse, operationCollapse, mapCollapse, domainList, currentDomain, deviceList, currentDevice,
             search: { value, placeholder }, page: { total, current, limit }, playScheme, currentPlan } = this.state;
+
+        const offset1 = deviceCollapse ? 60 : 0
+        const offset2 = operationCollapse ? 130 : 0
+        const top = 349 - offset1 - offset2;
         return (
             <Content id='media-publish-screen' class={`${sidebarCollapse ? 'mr60' : ''}`}>
                 <div class='content-left'>
@@ -165,25 +193,25 @@ export class MediaPublishScreen extends Component {
                     </div>
                 </div>
                 <div class={`sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
-                    <div class='row collapse-container' onClick={this.handleCollapse}>
+                    <div class='row collapse-container' role="presentation" onClick={this.handleCollapseAll}>
                         <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                     </div>
-                    <div class='panel panel-default'>
+                    <div class='panel panel-default' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
                         <div class='panel-heading'>
                             <span class="icon_select"></span>选中设备
-                        <span class="icon icon_collapse pull-right"></span>
+                        <span class="icon icon_collapse pull-right" ></span>
                         </div>
-                        <div class='panel-body'>
+                        <div class={`panel-body ${deviceCollapse ? 'screen-hidden' : ''}`}>
                             <span title={currentDevice === null ? '无设备' : currentDevice.name}>{currentDevice === null ? '无设备' : currentDevice.name}</span>
                             <button onClick={this.handleViewDevice} class='btn btn-primary pull-right' disabled={currentDevice === null ? true : false}>预览</button>
                         </div>
                     </div>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>
+                        <div class='panel-heading' role="presentation" onClick={() => this.handleCollapse('operationCollapse')}>
                             <span class='icon_touch'></span>设备操作
-                            <span class="icon icon_collapse pull-right"></span>
+                            <span class="icon icon_collapse pull-right" ></span>
                         </div>
-                        <div class='panel-body'>
+                        <div class={`panel-body ${operationCollapse ? 'screen-hidden' : ''}`}>
                             <div class='item'>
                                 <form onSubmit={this.handleSubmit}>
                                     <span>设备开关：</span>
@@ -201,11 +229,11 @@ export class MediaPublishScreen extends Component {
                         </div>
                     </div>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>
+                        <div class='panel-heading' role="presentation" onClick={() => this.handleCollapse('mapCollapse')}>
                             <span class="icon_map"></span><span>地图位置</span>
-                            <span class="icon icon_collapse pull-right"></span>
+                            <span class="icon icon_collapse pull-right" ></span>
                         </div>
-                        <div className='panel-body map-container'>
+                        <div class={`panel-body map-container ${mapCollapse ? 'screen-hidden' : ''}`} style={{ top: top }}>
                             <MapView option={{ mapZoom: false }} mapData={{ id: 'example' }} />
                         </div>
                     </div>

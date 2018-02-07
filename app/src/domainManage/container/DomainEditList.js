@@ -29,6 +29,7 @@ export class DomainEditList extends Component {
         super(props);
         this.state = {
             collapse: false,
+            propertyCollapse: false,
             selectDomain: {
                 id:"domain",
                 latlng:{lng: null, lat: null},
@@ -62,6 +63,7 @@ export class DomainEditList extends Component {
 
         this.initTreeData = this.initTreeData.bind(this);
         this.collpseHandler = this.collpseHandler.bind(this);
+        this.propertyCollapse = this.propertyCollapse.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.tableClick = this.tableClick.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
@@ -292,13 +294,18 @@ export class DomainEditList extends Component {
         this.setState({search:this.state.search.update('value', v=>value)});
     }
 
+    propertyCollapse(e){
+        this.setState({propertyCollapse: !this.state.propertyCollapse});
+    }
+
     collpseHandler() {
         this.setState({collapse: !this.state.collapse})
     }
 
     render() {
-        const {collapse, selectDomain, page, search, data, sidebarInfoStyle} = this.state
+        const {collapse, propertyCollapse, selectDomain, page, search, data, sidebarInfoStyle} = this.state
         let disabled = (data.size==0?true:false);
+
         return (
             <Content className={'offset-right list-mode '+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -314,12 +321,14 @@ export class DomainEditList extends Component {
                               current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}>
+                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}
+                        className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
-                        <div className="panel-heading">
+                        <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>
                             <span className="icon_info"></span>{this.formatIntl('domain.property')}
+                            <span className="icon icon_collapse pull-right"></span>
                         </div>
-                        <div className="panel-body domain-property">
+                        <div className={"panel-body domain-property "+ (propertyCollapse?'collapsed':'')}>
                             <span className="domain-name">{selectDomain.data.length?selectDomain.data[0].name:""}</span>
                             <button className="btn btn-primary pull-right" onClick={()=>this.domainHandler('update')} disabled = {disabled}>{this.formatIntl('button.edit')}</button>
                             <button className="btn btn-danger pull-right" onClick={()=>this.domainHandler('delete')} disabled = {disabled}>{this.formatIntl('button.delete')}</button>

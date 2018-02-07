@@ -26,7 +26,7 @@ class PlayerPlan extends PureComponent{
                 startDate: { key: "startDate", title: this.props.intl.formatMessage({id:'mediaPublish.startDate'}), placeholder: "点击选择开始日期", defaultValue: moment(),value: moment() },
                 endDate: { key: "endDate", title: this.props.intl.formatMessage({id:'mediaPublish.endDate'}), placeholder: "点击选择结束日期", defaultValue: moment(), value: moment() },
                 startTime: { key: "startTime", title: this.props.intl.formatMessage({id:'mediaPublish.startTime'}), placeholder: "点击选择开始时间", defaultValue: moment(), value: moment() },
-                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue: moment(), value: moment() },
+                endTime: { key: "endTime", title: this.props.intl.formatMessage({id:'mediaPublish.endTime'}), placeholder: "点击选择结束时间", defaultValue: moment((new Date().getSeconds()+1)*1000), value: moment((new Date().getSeconds()+1)*1000) },
                 week: {
                     key: "week", title:this.props.intl.formatMessage({id:'mediaPublish.weekday'}),
                     list: [{ label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1 }, { label:this.props.intl.formatMessage({id:'mediaPublish.tuesday'}), value: 2 },
