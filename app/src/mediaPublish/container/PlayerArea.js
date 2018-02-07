@@ -38,7 +38,7 @@ import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import {
   addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
   getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem,
-    addItemToScene, removeItemInScene, getItemOfScene} from '../util/index';
+  addItemToScene, removeItemInScene, getItemOfScene} from '../util/index';
 
 import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
@@ -50,7 +50,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import lodash from 'lodash';
 
 import PreviewImg from '../component/previewImg';
-
+import getPreviewListCheck from '../component/previewImgList';
 import systemFile from '../data/systemFile.json';
 import systemInitFile from '../data/systemInitFile.json';
 export class PlayerArea extends Component {
@@ -494,11 +494,6 @@ export class PlayerArea extends Component {
     }, () => {return this.setPlayItemArray(arealist);});
   }
   setPlayItemArray(areaList) {
-
-    console.log('=== ==== === === ', areaList);
-    console.log('curSceneItem:', getItemOfScene(this.state.curSceneItem, this.state.project.id, this.state.parentParentNode.id, this.state.parentNode.id));
-    console.log(this.state.playerListAsset.get('list').toJS());
-
     if (areaList === []) {
       return undefined;
     } else {
@@ -509,41 +504,39 @@ export class PlayerArea extends Component {
           const playlist = this.state.previewPlayList;
           if (playlist === []) {
             return { areaId: item.id, playItemId: 65535 };
-          } else {
-            for (let i = 0; i < playlist.length; i++) {
-              if (playlist[i].areaId === item.id) {
-                return playlist[i];
-              } else {
-                return { areaId: item.id, playItemId:item.id || 65535 };
+          }  else {
+            const playlist = this.state.previewPlayList;
+            if (playlist === []) {
+              return { areaId: item.id, playItemId: 65535 };
+            } else {
+              for (let i = 0; i < playlist.length; i++) {
+                if (playlist[i].areaId === item.id) {
+                  return playlist[i];
+                } else {
+                  return { areaId: item.id, playItemId:item.id || 65535 };
+                }
               }
             }
+            return { areaId: item.id, playItemId: 65535 };
           }
-          return { areaId: item.id, playItemId: 65535 };
         }
       });
-      const sceneId = this.state.curNode.id;
-      const areaFlagValue = this.state.playerListAsset.get('list').toJS();
-      console.log(sceneId, areaFlagValue);
       this.setState({
         previewPlayList: itemList,
-        scenePlayList: {
-          ...this.state.scenePlayList,
-          [sceneId]: areaFlagValue,
-        },
-      }, () => {return this.getPreviewImg();});
+      },()=>{return this.getPreviewImg()});
     }
   }
 
   getPreviewImg() {
-    console.log(this.state.scenePlayList);
-    const projectId = this.state.project;
-    const programId = this.state.parentParentNode;
-    const sceneId = this.state.parentNode;
-    const zoneId = this.state.curNode;
-    const items = this.checkPreviewItems(this.state.previewPlayList);
-    const requestJson = ({ projectId, programId, sceneId, zoneId, items });
-    console.log('ready to send', requestJson);
-    // return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
+    const projectId = this.state.project.id;
+    const programId = this.state.parentParentNode.id;
+    const sceneId = this.state.parentNode.id;
+    const zoneId = this.state.curNode.id;
+    const items = this.state.previewPlayList;
+    const areaDic = getItemOfScene(this.state.curSceneItem, projectId, programId, sceneId);
+    const finalItem = getPreviewListCheck(items, areaDic).map(item => {return item.playItemId})
+    const requestJson = ({ projectId, programId, sceneId, zoneId, finalItem });
+    return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
 
   checkPreviewItems(items) {
@@ -1242,7 +1235,7 @@ export class PlayerArea extends Component {
     } = this.state;
     const { router } = this.props;
     const add_title = getTitleByType(curType, this.formatIntl);
-    const imgInfo = { width: project.width, height: project.height, src: previewSrc };
+    const imgInfo = { width: project.width, height: project.height, src: previewSrc.image };
 
     return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} />
