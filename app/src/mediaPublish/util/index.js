@@ -258,12 +258,14 @@ export function parsePlanData(data) {
     }
 }
 
-const imagesType = ['jpg','jpeg','png','gif'];
-const textType = ['txt'];
-const videoType = ['mp4'];
-export function formatTransformType(filepath) {
-    const urlArr = filepath.split('.')
-    const url = urlArr.length>1?urlArr[1]:undefined;
+const imagesType = ['image'];
+const textType = ['text'];
+const videoType = ['video'];
+export function formatTransformType(type) {
+    // const urlArr = filepath.split('.')
+    // const url = urlArr.length>1?urlArr[1]:undefined;
+    console.log('type:', type);
+    const url = type;
     if(url === undefined){
         return 3;
     }
@@ -285,22 +287,22 @@ export function formatTransformType(filepath) {
 
 export function getAssetData(data) {
     let obj = {};
-    let itemType = formatTransformType(data.filepath);
+    let itemType = formatTransformType(data.type);
     switch(itemType){
         case 2:
-            return getTxtFileData(data);
+            return getTxtFileData(data, itemType);
         case 3:
-            return getImageData(data);
+            return getImageData(data, itemType);
         case 4:
-            return getVideoData(data);
+            return getVideoData(data, itemType);
     }
     return obj;
 }
 
-function getTxtFileData(data) {
+function getTxtFileData(data, type) {
     return {
         "baseInfo": {
-            "type": data.type && data.type !== "undefined"?data.type:formatTransformType(data.filepath),
+            "type": type,
             "file": data.filepath,
             "playDuration": 0,
             "logFlag": 0,
@@ -355,10 +357,10 @@ function getTxtFileData(data) {
     }
 }
 
-function getImageData(data) {
+function getImageData(data, type) {
     return {
         "baseInfo": {
-            "type": data.type && data.type !== "undefined"?data.type:formatTransformType(data.filepath),
+            "type": type,
             "file": data.filepath,
             "playDuration": 0,
             "logFlag": 0,
@@ -372,11 +374,11 @@ function getImageData(data) {
     }
 }
 
-function getVideoData(data) {
+function getVideoData(data, type) {
 
     return {
         "baseInfo": {
-            "type": data.type && data.type!=="undefined"?data.type:formatTransformType(data.filepath),
+            "type": type,
             "file": data.filepath,
             "playDuration": 0,
             "logFlag": 0,

@@ -669,7 +669,10 @@ export class PlayerArea extends Component {
 
     const data = item.toJS();
     const index = lodash.findIndex(this.systemInitFile, file => { return file.baseInfo.type == data.type; });
-    const itemType = index > -1 ? data.type : formatTransformType(data.filepath);
+    if(index<0 && !data.type){
+      return this.props.actions.addNotify(0, 'asset unknow type');
+    }
+    const itemType = index > -1 ? data.type : formatTransformType(data.type);
     const itemData = index > -1 ? this.systemInitFile[index] : getAssetData(data);
     addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, itemType, itemData, data => {
       this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
@@ -687,6 +690,7 @@ export class PlayerArea extends Component {
 
         removeAssetById(itemId, data => {
           actions.overlayerHide();
+          this.requestAssetList();
           this.requestSearchAssetList();
         });
       }} />);
@@ -975,6 +979,8 @@ export class PlayerArea extends Component {
     const list = this.state.uploadFileList;
     if (status === 200) {
       list[key].progress = this.formatIntl('mediaPublish.completed');
+      this.requestAssetList();
+      this.requestSearchAssetList();
     } else {
       list[key].progress = this.formatIntl('mediaPublish.failed');
     }
