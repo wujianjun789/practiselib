@@ -503,10 +503,6 @@ export class PlayerArea extends Component {
         if (item.id === this.state.curNode.id) {
           return {areaId:item.id, playItemId:this.state.playerListAsset.get('id')};
         } else {
-          const playlist = this.state.previewPlayList;
-          if (playlist === []) {
-            return { areaId: item.id, playItemId: 65535 };
-          }  else {
             const playlist = this.state.previewPlayList;
             if (playlist === []) {
               return { areaId: item.id, playItemId: 65535 };
@@ -521,7 +517,6 @@ export class PlayerArea extends Component {
             }
             return { areaId: item.id, playItemId: 65535 };
           }
-        }
       });
       this.setState({
         previewPlayList: itemList,
