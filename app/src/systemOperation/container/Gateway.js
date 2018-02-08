@@ -13,6 +13,7 @@ import Immutable from 'immutable';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import Content from '../../components/Content';
 import { TreeData, getModelData, getModelTypesById, getModelTypesNameById } from '../../data/systemModel';
+import {getModelTypeByModel} from '../../api/asset'
 import {getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel } 
   from '../../api/asset';
@@ -28,7 +29,7 @@ export class Gateway extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'gateway',
+      model: 'ssgw',
       collapse: false,
       deviceCollapse:false,
       whiteListCollapse:false,
@@ -137,18 +138,22 @@ export class Gateway extends Component {
     getModelData(model, () => {
       if (this.mounted) {
         this.props.actions.treeViewInit(TreeData);
-        this.setState({
-          model: model,
-          modelList: Object.assign({}, this.state.modelList, {
-            options: getModelTypesById(model).map((type) => {
-              return {
-                id: type.id,
-                title: type.title,
-                value: type.title,
-              };
-            }),
-          }),
+        getModelTypeByModel(model,res=>{
+          let list = res.length == 0 ? []:res.map((type) => {
+            return {
+              id: type.id,
+              title: type.title,
+              value: type.title,
+            };
+          })
+          this.setState({
+            modelList: Object.assign({}, this.state.modelList, {
+              options: list
+            })
+          });
         });
+        
+        
         getChildDomainList(data => {
           this.mounted && this.initDomainList(data);
         });
@@ -215,7 +220,8 @@ export class Gateway extends Component {
         domainName: domainName,
       },
       {
-        typeName: getModelTypesNameById(this.state.model, asset.extend.type),
+        // typeName: getModelTypesNameById(this.state.model, asset.extend.type),
+        typeName:asset.extend.type?asset.extend.type:' '
       });
     });
 
@@ -297,7 +303,8 @@ export class Gateway extends Component {
       const dataInit2 = {
         id: data ? data.id : null,
         name: data ? data.name : null,
-        model: data ? getModelTypesNameById(model, data.type) : '',
+        // model: data ? getModelTypesNameById(model, data.type) : '',
+        
         modelId: data ? data.type : null,
         domain: selectDevice.domainName,
         domainId: selectDevice.domainId,

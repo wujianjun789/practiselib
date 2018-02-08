@@ -54,11 +54,11 @@ export default class AddGatewayPopup extends Component {
       let cur = page.get('current');
       let size = page.get('pageSize');
       let offset = (cur - 1) * size;
-      getSearchCount(null, 'gateway', name, data => {
+      getSearchCount(null, 'ssgw', name, data => {
         this.mounted && this.initPageSize(data);
       });
 
-      getSearchAssets(null, 'gateway', name, offset, size, data => {
+      getSearchAssets(null, 'ssgw', name, offset, size, data => {
         this.mounted && this.initData(data);
       });
     }

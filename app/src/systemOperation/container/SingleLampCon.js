@@ -15,6 +15,7 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer';
 import Content from '../../components/Content';
 
 import {TreeData, getModelData, getModelTypesById, getModelTypesNameById} from '../../data/systemModel';
+import {getModelTypeByModel} from '../../api/asset'
 
 import {getChildDomainList} from '../../api/domain';
 import {getSearchAssets, getSearchCount, postAssetsByModel, updateAssetsByModel, delAssetsByModel} 
@@ -32,7 +33,7 @@ export class SingleLampCon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'lc',
+      model: 'ssslc',
       collapse: false,
       deviceCollapse:false,
       page: Immutable.fromJS({
@@ -148,11 +149,24 @@ export class SingleLampCon extends Component {
     getModelData(model, () => {
       if (this.mounted) {
         this.props.actions.treeViewInit(TreeData);
-        this.setState({
-          model: model,
-          modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type) => {
-            return  {id: type.id, title: type.title, value: type.title};
-          })}),
+        // this.setState({
+        //   modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type) => {
+        //     return  {id: type.id, title: type.title, value: type.title};
+        //   })}),
+        // });
+        getModelTypeByModel(model,res=>{
+          let list = res.length == 0 ? []:res.map((type) => {
+            return {
+              id: type.id,
+              title: type.title,
+              value: type.title,
+            };
+          })
+          this.setState({
+            modelList: Object.assign({}, this.state.modelList, {
+              options: list
+            })
+          });
         });
         getChildDomainList(data => {
           this.mounted && this.initDomainList(data);
