@@ -2,7 +2,7 @@
  * Created by a on 2017/7/3.
  */
 import {getAssetModelList} from '../api/asset';
-import {intlFormat, getClassByModel} from '../util/index';
+import {intlFormat, getClassByModel,transformKey} from '../util/index';
 
 let models = [
 
@@ -99,11 +99,10 @@ export function getModelData(cb) {
       if (item.children) {
         item.children = [];
         response.map((data, index) => {
-          let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false, link:getLinkByModel(item.id, data.key)};
-          
-          console.log('child:', child);
+          // let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false, link:getLinkByModel(item.id, data.key)};
+          const child = {id:transformKey(data.name), name:data.description, class:getClassByModel(data.name), active:false, link:getLinkByModel(item.id, data.name)}
           if (index == 0 ) {
-            item.link = '/assetManage/' + item.id + '/' + data.key;
+            item.link = getLinkByModel(item.id, data.name);
           }
           item.children.push(child);
         });
@@ -114,19 +113,25 @@ export function getModelData(cb) {
   });
 }
 
+
+
 function getLinkByModel(parentId, key) {
   switch (key) {
   case 'gateway':
+  case 'ssgw':
     return '/assetManage/' + parentId + '/gateway';
   case 'lc':
+  case 'ssslc':
     return '/assetManage/' + parentId + '/lc';
   case 'sensor':
+  case 'sses':
     return '/assetManage/' + parentId + '/sensor';
   case 'ammeter':
     return 'icon_ammeter';
   case 'pole':
     return '/assetManage/' + parentId + '/pole';
   case 'screen':
+  case 'ssads':
     return '/assetManage/' + parentId + '/screen';
   case 'xes':
     return '/assetManage/' + parentId + '/xes';
@@ -141,7 +146,7 @@ export function getModelList() {
   let list = [];
   for (let key in models) {
     let model = models[key];
-    list.push({id:model.key, name:intlFormat(model.intl.name)});
+    list.push({id:model.id, name:/*intlFormat(model.intl.name)*/model.description});
   }
 
   return list;
@@ -149,7 +154,7 @@ export function getModelList() {
 
 export function getModelById(id) {
   for (let key in models) {
-    if (models[key].key == id) {
+    if (models[key].name == id) {
       return models[key];
     }
   }
@@ -160,7 +165,7 @@ export function getModelById(id) {
 export function getModelNameById(id) {
   let model = getModelById(id);
   if (model) {
-    return intlFormat(model.intl.name);
+    return /*intlFormat(model.intl.name)*/model.description;
   }
 
   return '';
@@ -168,23 +173,25 @@ export function getModelNameById(id) {
 
 export function getModelProps(id) {
   let model = getModelById(id);
-  let list = [];
-  for (var i = 0; i < model.props.length; i++) {
-    let prop = model.props[i];
-    list.push(intlFormat(model.intl.props[prop]));
-  }
-
-  return list;
+  return model.specific;
+  // let list = [];
+  // for (var i = 0; i < model.props.length; i++) {
+  //   let prop = model.props[i];
+  //   list.push(intlFormat(model.intl.props[prop]));
+  // }
+  //
+  // return list;
 }
 
 export function getModelTypes(id) {
   let model = getModelById(id);
-  let list = [];
-  for (var i = 0; i < model.types.length; i++) {
-    let type = model.types[i];
-    list.push({type:type, detail:intlFormat(model.intl.types[type])});
-  }
-  return list;
+  return model.specific;
+  // let list = [];
+  // for (var i = 0; i < model.types.length; i++) {
+  //   let type = model.types[i];
+  //   list.push({type:type, detail:intlFormat(model.intl.types[type])});
+  // }
+  // return list;
 }
 
 export function getModelDefaults(id) {

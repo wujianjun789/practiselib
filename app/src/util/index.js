@@ -76,10 +76,13 @@ export function getElementOffwidth(str, fontSize = "14px") {
 export function getClassByModel(key) {
     switch (key) {
         case 'gateway':
+        case 'ssgw':
             return 'icon_gateway';
         case 'lc':
+        case 'ssslc':
             return 'icon_lc';
         case 'sensor':
+        case 'sses':
             return 'icon_control';
             //智慧路灯 icon
         case 'smartlight':
@@ -91,6 +94,7 @@ export function getClassByModel(key) {
         case 'pole':
             return 'icon_pole';
         case 'screen':
+        case 'ssads':
             return 'icon_screen';
         case 'xes':
             return 'icon_collect';
@@ -255,3 +259,16 @@ export function makeTree(pre){
     });
     return groupedByParents[''];
 }
+
+export function transformKey(name) {
+    switch(name){
+      case 'ssgw':
+            return 'gateway';
+      case 'ssslc':
+            return 'lc';
+      case 'sses':
+            return 'sensor';
+      case 'ssads':
+            return 'screen';
+    }
+  }

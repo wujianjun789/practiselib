@@ -529,3 +529,13 @@ export function previewPlayItem(itemInfo, callback) {
     return callback(response);
   })
 }
+
+export function projectPublish(projectId, cb) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP + '/projects/' + projectId + '/publish?id='+projectId, {
+    headers: headers,
+    method: 'PUT',
+  }, (response) => {
+    cb && cb(response);
+  })
+}

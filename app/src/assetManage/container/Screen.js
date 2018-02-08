@@ -18,7 +18,7 @@ export class Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model:'screen',
+      model:'ssads',
       devicePro:Immutable.fromJS([
         '软件版本',
         '系统版本',
@@ -41,6 +41,7 @@ export class Screen extends Component {
   }
 
   componentWillMount() {
+    console.log('screen:');
     this.mounted = true;
     getModelData(() => {this.mounted && this.initTreeData();});
   }

@@ -43,7 +43,8 @@ import {
 import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
   updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
-  removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById, previewPlayItem} from '../../api/mediaPublish';
+  removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById,
+    previewPlayItem, projectPublish} from '../../api/mediaPublish';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -945,12 +946,10 @@ export class PlayerArea extends Component {
     });
   }
 
-  saveHandler = () => {
-
-  }
-
   savePlanHandler = () => {
+    projectPublish(this.state.project.id, ()=>{
 
+    })
   }
 
   quitHandler = () => {
@@ -959,7 +958,7 @@ export class PlayerArea extends Component {
 
       cancel={() => { actions.overlayerHide(); }} confirm={() => {
         actions.overlayerHide();
-        this.props.router.push('/mediaPublish/playerList');
+        this.props.router.push('/mediaPublish/playProject');
       }} />);
   }
 
@@ -1300,7 +1299,7 @@ export class PlayerArea extends Component {
             </div>
             <div className="form-group pull-right save-plan-container "
               onClick={() => this.savePlanHandler()}>
-              <span className="icon icon_save save-plan"></span><FormattedMessage id="mediaPublish.savePlan" />
+              <span className="icon icon_save save-plan"></span><FormattedMessage id="mediaPublish.publish" />
             </div>
           </div>
         </div>

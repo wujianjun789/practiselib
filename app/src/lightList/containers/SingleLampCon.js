@@ -54,7 +54,7 @@ export default class SingleLampCon extends Component {
             },
         };
 
-        this.model = 'lc';
+        this.model = 'ssslc';
 
         this.columns = [
             { accessor: 'name', title: '设备名称' },

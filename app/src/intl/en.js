@@ -484,6 +484,7 @@ export default {
     'mediaPublish.specifyTime': 'specify time',
 
     'mediaPublish.area.alert': 'Please select area',
+    'mediaPublish.publish': 'Publish',
 
     //last
     'app.link.index': 'home',
