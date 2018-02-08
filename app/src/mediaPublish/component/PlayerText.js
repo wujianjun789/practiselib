@@ -25,15 +25,30 @@ class PlayerText extends Component {
     state = {
         name: { title: this.props.intl.formatMessage({ id: 'mediaPublish.materialName' }), value: '' },
         text: { title: this.props.intl.formatMessage({ id: 'mediaPublish.textContent' }), value: '' },
-        fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '微软雅黑' }, { id: 1, name: '宋体' }, { id: 2, name: '黑体' }, { id: 3, name: 'monospace' }], index: 0 },//index代表当前选中项的id，非下标
+        fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '宋体' }, { id: 1, name: '黑体' }], index: 0 },//index代表当前选中项的id，非下标
         fontColor: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.fontColor' }),
-            value: { r: 241, g: 112, b: 19, a: 1, },
+            value: { r: 255, g: 255, b: 255, a: 0, },
         },
-        fontSize: { title: this.props.intl.formatMessage({ id: 'mediaPublish.fontSize' }), list: [{ id: 0, name: 12 }, { id: 1, name: 13 }, { id: 2, name: 14 }, { id: 3, name: 15 }, { id: 4, name: 16 },], index: 0 },
+        fontSize: {
+            title: this.props.intl.formatMessage({ id: 'mediaPublish.fontSize' }),
+            list: [
+                { id: 0, name: 12 }, { id: 1, name: 13 }, { id: 2, name: 14 }, { id: 3, name: 15 }, { id: 4, name: 16 },
+                { id: 5, name: 17 }, { id: 6, name: 18 }, { id: 7, name: 19 }, { id: 8, name: 20 }, { id: 9, name: 21 },
+                { id: 10, name: 22 }, { id: 11, name: 23 }, { id: 12, name: 24 }, { id: 13, name: 25 }, { id: 14, name: 26 },
+                { id: 15, name: 27 }, { id: 16, name: 28 }, { id: 17, name: 29 }, { id: 18, name: 30 }, { id: 19, name: 31 },
+                { id: 20, name: 32 }, { id: 21, name: 33 }, { id: 22, name: 34 }, { id: 23, name: 35 }, { id: 24, name: 36 },
+                { id: 25, name: 37 }, { id: 26, name: 38 }, { id: 27, name: 39 }, { id: 28, name: 40 }, { id: 29, name: 41 },
+                { id: 30, name: 42 }, { id: 31, name: 43 }, { id: 32, name: 44 }, { id: 33, name: 45 }, { id: 34, name: 46 },
+                { id: 35, name: 47 }, { id: 36, name: 48 }, { id: 37, name: 49 }, { id: 38, name: 50 }, { id: 39, name: 51 },
+                { id: 40, name: 52 }, { id: 41, name: 53 }, { id: 42, name: 54 }, { id: 43, name: 55 }, { id: 44, name: 56 },
+                { id: 45, name: 57 }, { id: 46, name: 58 }, { id: 47, name: 59 }, { id: 48, name: 60 }
+            ],
+            index: 0
+        },
         bgColor: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.bgColor' }),
-            value: { r: 241, g: 112, b: 19, a: 1, },
+            value: { r: 255, g: 255, b: 255, a: 0, },
         },
         bgTransparent: { title: this.props.intl.formatMessage({ id: 'mediaPublish.bgTransparent' }), value: false },
         alignment: {
@@ -108,7 +123,7 @@ class PlayerText extends Component {
                         r: fontColor.red,
                         g: fontColor.green,
                         b: fontColor.blue,
-                        a: fontColor.alpha
+                        a: fontColor.alpha / 255
                     }
                 },
                 fontSize: { ...this.state.fontSize, index: getIdByValue(this.state.fontSize.list, size) },
@@ -117,7 +132,7 @@ class PlayerText extends Component {
                         r: color.red,
                         g: color.green,
                         b: color.blue,
-                        a: color.alpha/255
+                        a: color.alpha / 255
                     }
                 },
                 bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },//返回值为0或1，或者bool值
@@ -223,7 +238,7 @@ class PlayerText extends Component {
                             green: 255,
                             blue: 255,
                             amber: 0,
-                            alpha: parseInt(bgColor.value.a*255)
+                            alpha: parseInt(bgColor.value.a * 255)
                         },
                         materialId: Number(this.id)
                     },
@@ -235,7 +250,7 @@ class PlayerText extends Component {
                         green: fontColor.value.g,
                         blue: fontColor.value.b,
                         amber: 0,
-                        alpha: fontColor.value.a
+                        alpha: parseInt(fontColor.value.a * 255)
                     },
                     font: {
                         ...font,

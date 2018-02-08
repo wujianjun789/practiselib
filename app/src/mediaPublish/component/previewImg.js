@@ -13,13 +13,15 @@ import '../../../public/styles/previewImg.less';
 const PreviewImg = (props) => {
   const initImgInfo = { width: 400, height: 300, src: '' };
   const { imgInfo:noHandleImgInfo = initImgInfo, scaling, parentInfo = initImgInfo } = props;
-  const { src } = noHandleImgInfo;
+  const { src = '' } = noHandleImgInfo;
+  const imgSrc = 'data:image/png;base64,' + src;
   const imgInfo = { width: noHandleImgInfo.width * scaling, height: noHandleImgInfo.height * scaling };
   //const imgInfo = {width:initImgInfo.width * scaling, height:initImgInfo.height * scaling};
   const imgStyle = getPreviewStyle(imgInfo, parentInfo);
+  // console.log('imgSrc', imgSrc);
   return (
     <div id="preview-content">
-      <img className="preview-img" src={src} style={imgStyle} role="presentation"/>
+      <img className="preview-img" src={imgSrc} style={imgStyle} alt="" role="presentation"/>
     </div>
   ); 
 };

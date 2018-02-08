@@ -519,8 +519,8 @@ export function removeAssetById(id, cb) {
 }
 
 export function previewPlayItem(itemInfo, callback) {
-  const { projectId, programId, sceneId, zoneId, items } = itemInfo;
-  const urlItems = encodeURIComponent('[' + items.toString() + ']');
+  const { projectId, programId, sceneId, zoneId, finalItem } = itemInfo;
+  const urlItems = encodeURIComponent('[' + finalItem.toString() + ']');
   const headers = getHttpHeader();
   httpRequest('http://192.168.155.196:3002/api' + '/projects/' + projectId + '/programs/' + programId + '/scenes/' + sceneId + '/zones/' + zoneId + '/preview' + '?items=' + urlItems, {
     headers: headers,
