@@ -32,6 +32,18 @@ export function getStatDeviceCount(cb) {
   }, 300)
 
 }
+
+//根据playerId获取projects
+export function getProjectsByPlayerId(id, cb) {
+  let headers = getHttpHeader();
+  let url = HOST_IP + `/players/${id}/projects?detail=true`;
+  httpRequest(url, {
+    headers: headers,
+    method: 'GET',
+  }, response => {
+        cb && cb(response);
+  });
+}
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
   let headers = getHttpHeader();
@@ -468,8 +480,8 @@ export function searchAssetList(type, name, offset, limit, cb) {
 
 function getAssetParam(type, name) {
   let param = {};
-  if(type){
-      param = Object.assign(param, {type: type});
+  if (type) {
+    param = Object.assign(param, { type: type });
   }
 
   if (name) {
@@ -532,7 +544,7 @@ export function previewPlayItem(itemInfo, callback) {
 
 export function projectPublish(projectId, cb) {
   const headers = getHttpHeader();
-  httpRequest(HOST_IP + '/projects/' + projectId + '/publish?id='+projectId, {
+  httpRequest(HOST_IP + '/projects/' + projectId + '/publish?id=' + projectId, {
     headers: headers,
     method: 'PUT',
   }, (response) => {

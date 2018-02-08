@@ -15,6 +15,7 @@ import ProjectPopup from '../component/ProjectPopup';
 import PreViewPopup from '../component/PreViewPopup';
 import { getDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
+import { getProjectsByPlayerId, getProjectPreviewById } from '../../api/mediaPublish'
 import '../../../public/styles/media-publish-screen.less';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
@@ -36,7 +37,9 @@ export class MediaPublishScreen extends Component {
             { name: '无', id: 'empty' },
             { name: '方案管理...', id: 'manage' }
         ],
-        currentPlan: null
+        currentPlan: null,
+        currentPlayerId: null,
+        currentProjectList: [],
     }
     componentWillMount() {
         this._isMounted = true;
@@ -80,8 +83,21 @@ export class MediaPublishScreen extends Component {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     updateDeviceData = (data) => {
-        console.log(data);
-        this._isMounted && this.setState({ deviceList: data, currentDevice: data.length ? data[0] : null });
+        this._isMounted && this.setState({
+            deviceList: data,
+            currentDevice: data.length ? data[0] : null,
+            currentPlayerId: data[0].extend.player
+        }, () => {
+            this.getCurrentProjects()
+        });
+    }
+    getCurrentProjects = () => {
+        const id = this.state.currentPlayerId;
+        getProjectsByPlayerId(id, (res) => {
+            this.setState({ currentProjectList: res },()=>{
+                console.log(this.state.currentProjectList)
+            })
+        })
     }
     handleCollapse = (id) => {
         this.setState({ [id]: !this.state[id] })
@@ -128,8 +144,11 @@ export class MediaPublishScreen extends Component {
     //弹出方案管理弹框
     hanldePlanManage = () => {
         const { actions } = this.props;
-        const applyProjectList = [{ id: '5a67f0216c64c71518b0140f', name: "project1" }, { id: '5a67f05c6c64c71518b01410', name: "project3" }];
-        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ applyProjectList: applyProjectList }} onConfirm={data => {
+        const {currentPlayerId,currentProjectList}=this.state;
+        // const applyProjectList = [{ id: '5a67f0216c64c71518b0140f', name: "project1" }, { id: '5a67f05c6c64c71518b01410', name: "project3" }];
+        // const applyProjectList=this.state.currentProjectList;
+
+        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId:currentPlayerId,applyProjectList: currentProjectList }} onConfirm={data => {
             actions.overlayerHide();
         }} onCancel={() => {
             actions.overlayerHide();
