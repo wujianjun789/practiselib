@@ -117,7 +117,7 @@ class PlayerText extends Component {
                         r: color.red,
                         g: color.green,
                         b: color.blue,
-                        a: color.alpha
+                        a: color.alpha/255
                     }
                 },
                 bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },//返回值为0或1，或者bool值
@@ -216,14 +216,14 @@ class PlayerText extends Component {
                             green: bgColor.value.g,
                             blue: bgColor.value.b,
                             amber: 0,
-                            alpha: bgColor.value.a
+                            alpha: 255
                         },
                         colorKey: {
-                            red: bgColor.value.r,
-                            green: bgColor.value.g,
-                            blue: bgColor.value.b,
+                            red: 255,
+                            green: 255,
+                            blue: 255,
                             amber: 0,
-                            alpha: bgColor.value.a
+                            alpha: parseInt(bgColor.value.a*255)
                         },
                         materialId: Number(this.id)
                     },
