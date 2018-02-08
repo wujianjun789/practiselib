@@ -40,7 +40,7 @@ export default class RenderPlayerAsset extends Component {
                     <span
                       className="glyphicon glyphicon-triangle-right move-right"
                       title="右移"
-                      onClick={(e) => { this.onClick(e, 'left', item); }}
+                      onClick={(e) => { this.onClick(e, 'right', item); }}
                       role="presentation"
                     />}
             {!playerListAsset.get('isEdit') && item.get('assetType') == 'source' &&

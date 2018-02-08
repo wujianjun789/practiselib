@@ -246,9 +246,9 @@ export default {
     'app.time.difference': '时间差',
 
     //设备维护
-    'sysOperation.dviceNum': '编号',
-    'sysOperation.dviceName': '名称',
-    'sysOperation.domainName': '域',
+    'sysOperation.deviceNum': '编号',
+    'sysOperation.deviceName': '名称',
+    'sysOperation.deviceDomain': '域',
     //故障管理
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
