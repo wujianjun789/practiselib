@@ -184,7 +184,7 @@ export class PlayerArea extends Component {
       isClick: false,
       //左侧栏添加单击
       isAddClick: false,
-      previewPlayList: [], // 发送给后台的图片预览队列
+      previewList: [], // 发送给后台的图片预览队列
       previewSrc: '', //图片预览的src
       scaling: 1, //图片预览缩放系数
       parentInfo: {}, // 图片预览父元素对比
@@ -479,48 +479,84 @@ export class PlayerArea extends Component {
     }
 
   playerAssetSelect = (item) => {
-    
-    const targetType = this.state.parentNode.type || '';
-    let arealist = [];
     const type = item.get('type');
-    if (targetType === 'scene') {
-      arealist = this.state.parentNode.children;
-    }
     const curType = tranformAssetType(type);
-    
     this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
     this.setState({
       isClick: true,
       curType: curType,
       playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')),
-    }, () => {return this.setPlayItemArray(arealist);});
+    }, () => {return this.setPlayItemArray();});
   }
-  setPlayItemArray(areaList) {
-    if (areaList === []) {
-      return undefined;
+
+  getAreaList() {
+    let areaList = [];
+    const { parentNode: sceneInfo = [] } = this.state;
+    if (sceneInfo === []) {
+      return false;
     } else {
-      const itemList = areaList.map(item => {
-        if (item.id === this.state.curNode.id) {
-          return {areaId:item.id, playItemId:this.state.playerListAsset.get('id')};
-        } else {
-          const playlist = this.state.previewPlayList;
-          if (playlist === []) {
-            return { areaId: item.id, playItemId: 65535 };
-          } else {
-            for (let i = 0; i < playlist.length; i++) {
-              if (playlist[i].areaId === item.id) {
-                return playlist[i];
-              } else {
-                return { areaId: item.id, playItemId:item.id || 65535 };
-              }
-            }
-          }
-          return { areaId: item.id, playItemId: 65535 };
+      areaList = sceneInfo.children.map(item => { return item.id; });
+    }
+    return areaList;
+  }
+
+  getAreaDic() {
+    let areaDic = {};
+    const projectId = this.state.project.id;
+    const programId = this.state.parentParentNode.id;
+    const sceneId = this.state.parentNode.id;
+    areaDic = getItemOfScene(this.state.curSceneItem, projectId, programId, sceneId);
+    return areaDic;
+  }
+
+  initPreviewList() {
+    const areaList = this.getAreaList();
+    const curAreaId = this.state.curNode.id;
+    const selectedItem = this.state.playerListAsset.get('id');
+    const previewList = areaList.map((areaId) => {
+      if (areaId === curAreaId) {
+        return { areaId: curAreaId, playItemId: selectedItem };
+      }
+      return { areaId: areaId, playItemId: 65535 };
+    });
+    this.setState({
+      previewList: previewList,
+    }, () => {return this.getPreviewImg()});
+  }
+
+  setPreviewListOrder(previewList) {
+    let orderedPreviewList = [];
+    const areaList = this.getAreaList();
+    orderedPreviewList = areaList.map((areaId) => {
+      for (let i = 0; i < previewList.length; i++) {
+        if (areaId === previewList[i].areaId) {
+          return previewList[i];
         }
-      });
+      }
+      return { areaId: areaId, playItemId: 65535 };
+    })
+    return orderedPreviewList;
+  }
+
+  setPlayItemArray() {
+    const { state } = this;
+    if (!state.previewList || state.previewList.length == 0) {
+      return this.initPreviewList();
+    } else {
+      const { previewList } = this.state;
+      const orederedPreviewList = this.setPreviewListOrder(previewList)
+      const curAreaId = this.state.curNode.id;
+      const selectedItem = this.state.playerListAsset.get('id');
+      const newPrevieList = orederedPreviewList.map((previewItem) => {
+        if (previewItem.areaId === curAreaId) {
+          return { areaId: curAreaId, playItemId: selectedItem }
+        } else {
+          return previewItem;
+        }
+      })
       this.setState({
-        previewPlayList: itemList,
-      }, () => {return this.getPreviewImg();});
+        previewList: newPrevieList,
+      },() => {return this.getPreviewImg()})
     }
   }
 
@@ -529,31 +565,31 @@ export class PlayerArea extends Component {
     const programId = this.state.parentParentNode.id;
     const sceneId = this.state.parentNode.id;
     const zoneId = this.state.curNode.id;
-    const items = this.state.previewPlayList;
-    const areaDic = getItemOfScene(this.state.curSceneItem, projectId, programId, sceneId);
-    const finalItem = getPreviewListCheck(items, areaDic).map(item => {return item.playItemId;});
+    const items = this.state.previewList;
+    const areaDic = this.getAreaDic();
+    const finalItem = getPreviewListCheck(items, areaDic).map(item => { return item.playItemId; });
     const requestJson = { projectId, programId, sceneId, zoneId, finalItem };
     return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
 
-  checkPreviewItems(items) {
-    const { scenePlayList } = this.state;
-    const newItem = items.map((_item) => {
-      const { areaId } = _item;
-      if (scenePlayList[areaId]) {
-        for (let i = 0; i < scenePlayList[areaId].length; i++) {
-          if (scenePlayList[areaId][i].id === _item.playItemId) {
-            return _item;
-          }
-        }
-        _item.playItemId = 65535;
-        return _item;
-      }
-      _item.playItemId = 65535;
-      return _item;
-    });
-    return newItem;
-  }
+  // checkPreviewItems(items) {
+  //   const { scenePlayList } = this.state;
+  //   const newItem = items.map((_item) => {
+  //     const { areaId } = _item;
+  //     if (scenePlayList[areaId]) {
+  //       for (let i = 0; i < scenePlayList[areaId].length; i++) {
+  //         if (scenePlayList[areaId][i].id === _item.playItemId) {
+  //           return _item;
+  //         }
+  //       }
+  //       _item.playItemId = 65535;
+  //       return _item;
+  //     }
+  //     _item.playItemId = 65535;
+  //     return _item;
+  //   });
+  //   return newItem;
+  // }
 
   updateTreeData = (node, parentNode, parentParentNode) => {
     const treeList = updateTree(this.state.playerData, node, parentNode, parentParentNode);
