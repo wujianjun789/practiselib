@@ -539,3 +539,24 @@ export function projectPublish(projectId, cb) {
     cb && cb(response);
   })
 }
+
+export function updateScreenProject(playerId, projectId, data) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP+'/players/'+playerId+'/projects/rel/'+projectId, {
+    headers: headers,
+    method: 'PUT',
+    body: JSON.stringify(data)
+  }, response=>{
+    cb && cb(response);
+  })
+}
+
+export function removeScreenProject(playerId, projectId) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP+'/players/'+playerId+'/projects/rel/'+projectId, {
+    headers: headers,
+    method: 'DELETE'
+  }, response=>{
+    cb && cb(response);
+  })
+}

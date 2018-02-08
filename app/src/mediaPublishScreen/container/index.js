@@ -40,7 +40,7 @@ export class MediaPublishScreen extends Component {
     }
     componentWillMount() {
         this._isMounted = true;
-        this.model = 'screen';
+        this.model = 'ssads';
         this.deviceColumns = [
             { field: 'name', title: '名称' },
             { field: 'ratio', title: '分辨率' },
@@ -80,6 +80,7 @@ export class MediaPublishScreen extends Component {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     updateDeviceData = (data) => {
+        console.log(data);
         this._isMounted && this.setState({ deviceList: data, currentDevice: data.length ? data[0] : null });
     }
     handleCollapse = (id) => {

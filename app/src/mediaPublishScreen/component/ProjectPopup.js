@@ -9,13 +9,14 @@ import PanelFooter from './../../components/PanelFooter';
 import NotifyPopup from '../../common/containers/NotifyPopup'
 import {FormattedMessage,injectIntl} from 'react-intl';
 
-import {getProjectList} from '../../api/mediaPublish';
+import {getProjectList, updateScreenProject, removeScreenProject} from '../../api/mediaPublish';
 import lodash from 'lodash';
 export default class ProjectPopup extends Component {
     constructor(props) {
         super(props);
-        const {applyProjectList} = this.props.data;
+        const {playerId, applyProjectList} = this.props.data;
         this.state = {
+            playerId: playerId,
             applyProjectList: applyProjectList
         }
 
@@ -55,14 +56,16 @@ export default class ProjectPopup extends Component {
         const item = this.state.applyProjectList.splice(index, 1);
         // this.projectList.push(item);
         this.setState({applyProjectList:this.state.applyProjectList}, ()=>{
-
+            removeScreenProject(this.state.playerId, id);
         });
     }
 
     addProject(id){
         const item = lodash.find(this.projectList, project=>{return project.id == id});
         this.state.applyProjectList.push(item);
-        this.setState({applyProjectList:this.state.applyProjectList});
+        this.setState({applyProjectList:this.state.applyProjectList}, ()=>{
+            updateScreenProject(this.state.playerId, id, {playerId:this.state.playerId, projectId:id});
+        });
     }
 
     render() {
@@ -119,6 +122,7 @@ console.log('projectList:',this.projectList, applyProjectList);
 ProjectPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
+        playerId: PropTypes.string.isRequired,
         applyProjectList: PropTypes.array.isRequired,
     }).isRequired,
     onConfirm: PropTypes.func.isRequired,
