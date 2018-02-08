@@ -2,7 +2,7 @@
  * Created by a on 2017/7/3.
  */
 import {getAssetModelList} from '../api/asset';
-import {intlFormat, getClassByModel} from '../util/index';
+import {intlFormat, getClassByModel,transformKey} from '../util/index';
 
 let models = [
 
@@ -113,18 +113,7 @@ export function getModelData(cb) {
   });
 }
 
-function transformKey(name) {
-  switch(name){
-    case 'ssgw':
-          return 'gateway';
-    case 'ssslc':
-          return 'lc';
-    case 'sses':
-          return 'sensor';
-    case 'ssads':
-          return 'screen';
-  }
-}
+
 
 function getLinkByModel(parentId, key) {
   switch (key) {

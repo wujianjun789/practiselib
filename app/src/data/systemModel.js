@@ -2,7 +2,7 @@
  * Created by a on 2017/8/1.
  */
 import { getAssetModelList } from '../api/asset';
-import { intlFormat, getClassByModel } from '../util/index';
+import { intlFormat, getClassByModel,transformKey } from '../util/index';
 
 let models = [];
 
@@ -63,7 +63,7 @@ export const TreeData = [
     'active': true,
     'link': '/systemOperation/serviceMonitor/systemRunningState',
     'level': 1,
-    'children':[
+    'children': [
       {
         'id': 'systemRunningState',
         'name': '系统运行状态',
@@ -174,37 +174,25 @@ export const TreeData = [
   },
 ];
 
-
 export function getModelData(model, cb) {
-  // console.log(model);
-  
-  // if(models && models.length>0){     cb && cb();     return }
   getAssetModelList(response => {
-    // console.log(response);
     models = response;
     TreeData.map(item => {
-      if (item.id == 'config') {
-        let curModel = getModelById(model);
-        if (curModel) {
-          // item.link = "/systemOperation/config/" + curModel.key;
-        }
+      if (item.id==='config') {
         item.children = [];
         response.map((data, index) => {
-          let child = {
-            id: data.key,
-            name: intlFormat(data.intl.name),
-            class: getClassByModel(data.key),
-            active: data.key == model,
-            link: getLinkByModel(data.key),
-          };
-          if (index == 0) {
-            item.link = '/systemOperation/' + item.id + '/' + data.key;
+          const child = {
+            id: transformKey(data.name), name: data.description,
+            class: getClassByModel(data.name),active:false,
+            link:getLinkByModel(item.id,data.name)
           }
-          item.children.push(child);
-        });
+          if(index===0){
+            item.link=getLinkByModel(item.id,data.name);
+          }
+          item.children.push(child)
+        })
       }
-    });
-
+    })
     cb && cb();
   });
 }
@@ -219,7 +207,6 @@ export function getModelList() {
       value: intlFormat(model.intl.name),
     });
   }
-
   return list;
 }
 
@@ -229,7 +216,6 @@ export function getModelById(id) {
       return models[key];
     }
   }
-
   return null;
 }
 
@@ -262,25 +248,29 @@ export function getModelTypesNameById(modelId, typeId) {
   return intlFormat(model.intl.types[typeId]);
 }
 
-function getLinkByModel(key) {
+function getLinkByModel(parentId,key) {
   switch (key) {
-  case 'gateway':
-    return '/systemOperation/config/gateway';
-  case 'lc':
-    return '/systemOperation/config/lc';
-  case 'sensor':
-    return '/systemOperation/config/sensor';
-  case 'plc':
-    return 'icon_control';
-  case 'ammeter':
-    return 'icon_ammeter';
-  case 'pole':
-    return '/systemOperation/config/pole';
-  case 'screen':
-    return '/systemOperation/config/screen';
-  case 'xes':
-    return '/systemOperation/config/xes';
-  default:
-    return 'icon_lc';
+    case 'gateway':
+    case 'ssgw':
+      return '/systemOperation/config/gateway';
+    case 'lc':
+    case 'ssslc':
+      return '/systemOperation/config/lc';
+    case 'sensor':
+    case 'sses':
+      return '/systemOperation/config/sensor';
+    case 'plc':
+      return 'icon_control';
+    case 'ammeter':
+      return 'icon_ammeter';
+    case 'pole':
+      return '/systemOperation/config/pole';
+    case 'screen':
+    case 'ssads':
+      return '/systemOperation/config/screen';
+    case 'xes':
+      return '/systemOperation/config/xes';
+    default:
+      return 'icon_lc';
   }
 }

@@ -259,3 +259,16 @@ export function makeTree(pre){
     });
     return groupedByParents[''];
 }
+
+export function transformKey(name) {
+    switch(name){
+      case 'ssgw':
+            return 'gateway';
+      case 'ssslc':
+            return 'lc';
+      case 'sses':
+            return 'sensor';
+      case 'ssads':
+            return 'screen';
+    }
+  }
