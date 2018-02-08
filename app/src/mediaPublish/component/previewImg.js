@@ -21,7 +21,7 @@ const PreviewImg = (props) => {
   // console.log('imgSrc', imgSrc);
   return (
     <div id="preview-content">
-      <img className="preview-img" src={imgSrc} style={imgStyle} role="presentation"/>
+      <img className="preview-img" src={imgSrc} style={imgStyle} alt="" role="presentation"/>
     </div>
   ); 
 };
