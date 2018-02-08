@@ -28,6 +28,38 @@ export function getModelSummariesByModelID(modelID, cb) {
   });
 }
 
+/**
+ * 获取模型型号
+ * @param modelId
+ * @param cb
+ */
+export function getModelTypeByModel(modelId, cb) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP + '/summaries/'+modelId+'/types',{
+    headers: headers,
+    method: 'GET'
+  }, response=>{
+    cb && cb(response);
+  })
+}
+
+/**
+ * 更新模型型号
+ * @param modelId
+ * @param data
+ * @param cb
+ */
+export function updateModelTypeByModel(modelId, data, cb) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP + '/summaries/'+modelId+'/types',{
+    headers: headers,
+    method: 'PUT',
+    body:JSON.stringify(data)
+  }, response=>{
+    cb && cb(response);
+  })
+}
+
 export function getAssetList(cb) {
   let headers = getHttpHeader();
   httpRequest(HOST_IP + '/assets', {
