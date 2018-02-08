@@ -138,7 +138,7 @@ export class PlayerArea extends Component {
 
       assetType: Immutable.fromJS({ list: [{ id: 1, value: '系统' }, { id: 2, value: '自定义' }], index: 0, value: '系统' }),
       assetSort: Immutable.fromJS({
-        list: [{ id: 1, type: "text", value: '素材文字' }, { id: 2, type: "image", value: '素材图片' }, { id: 3, type: "video", value: '素材视频' }],
+        list: [{ id: 1, type: 'text', value: '素材文字' }, { id: 2, type: 'image', value: '素材图片' }, { id: 3, type: 'video', value: '素材视频' }],
         index: 0, value: '素材文字',
       }),
       assetSearch: Immutable.fromJS({ placeholder: this.formatIntl('sysOperation.input.asset'), value: '' }),
@@ -437,7 +437,7 @@ export class PlayerArea extends Component {
     const sceneItem = addItemToScene(this.state.curSceneItem, this.state.project.id, programId, sceneId, zoneId, data);
     this.state.playerListAsset = this.state.playerListAsset.update('id', v => -1);
     this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)), curSceneItem: sceneItem }, () => {
-      console.log('curSceneItem:',this.state.curSceneItem);
+      console.log('curSceneItem:', this.state.curSceneItem);
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
         if (IsSystemFile(item.get('type'))) {
@@ -503,24 +503,24 @@ export class PlayerArea extends Component {
         if (item.id === this.state.curNode.id) {
           return {areaId:item.id, playItemId:this.state.playerListAsset.get('id')};
         } else {
-            const playlist = this.state.previewPlayList;
-            if (playlist === []) {
-              return { areaId: item.id, playItemId: 65535 };
-            } else {
-              for (let i = 0; i < playlist.length; i++) {
-                if (playlist[i].areaId === item.id) {
-                  return playlist[i];
-                } else {
-                  return { areaId: item.id, playItemId:item.id || 65535 };
-                }
+          const playlist = this.state.previewPlayList;
+          if (playlist === []) {
+            return { areaId: item.id, playItemId: 65535 };
+          } else {
+            for (let i = 0; i < playlist.length; i++) {
+              if (playlist[i].areaId === item.id) {
+                return playlist[i];
+              } else {
+                return { areaId: item.id, playItemId:item.id || 65535 };
               }
             }
-            return { areaId: item.id, playItemId: 65535 };
           }
+          return { areaId: item.id, playItemId: 65535 };
+        }
       });
       this.setState({
         previewPlayList: itemList,
-      },()=>{return this.getPreviewImg()});
+      }, () => {return this.getPreviewImg();});
     }
   }
 
@@ -531,8 +531,8 @@ export class PlayerArea extends Component {
     const zoneId = this.state.curNode.id;
     const items = this.state.previewPlayList;
     const areaDic = getItemOfScene(this.state.curSceneItem, projectId, programId, sceneId);
-    const finalItem = getPreviewListCheck(items, areaDic).map(item => {return item.playItemId})
-    const requestJson = ({ projectId, programId, sceneId, zoneId, finalItem });
+    const finalItem = getPreviewListCheck(items, areaDic).map(item => {return item.playItemId;});
+    const requestJson = { projectId, programId, sceneId, zoneId, finalItem };
     return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
 
@@ -657,7 +657,7 @@ export class PlayerArea extends Component {
 
     const data = item.toJS();
     const index = lodash.findIndex(this.systemInitFile, file => { return file.baseInfo.type == data.type; });
-    if(index<0 && !data.type){
+    if (index < 0 && !data.type) {
       return this.props.actions.addNotify(0, 'asset unknow type');
     }
     const itemType = index > -1 ? data.type : formatTransformType(data.type);
