@@ -159,7 +159,7 @@ export function getRelatedDomainById(id,cb){
 
 export function getWhiteListById(id, cb) {
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/gateways/${id}/whiteList`, {
+    httpRequest(`${HOST_IP}/ssgws/${id}/whiteList`, {
         headers: headers,
         method: 'GET'
     }, response=>{
@@ -203,7 +203,7 @@ export function delLcFromWhiteListById(gatewayId, lcId, cb) {
 
 export function requestWhiteListCountById(gatewayId, cb) {
     let headers = getHttpHeader();
-    httpRequest(`${HOST_IP}/gateways/${gatewayId}/whiteList/count`, {
+    httpRequest(`${HOST_IP}/ssgws/${gatewayId}/whiteList/count`, {
         headers: headers,
         method: 'GET',
     }, response=>{
