@@ -474,12 +474,12 @@
         "green": 0,
         "blue": 0,
         "amber": 0,
-        "alpha": 0
+        "alpha": 255
       },
       "colorKey": {
-        "red": 0,
-        "green": 0,
-        "blue": 0,
+        "red": 255,
+        "green": 255,
+        "blue": 255,
         "amber": 0,
         "alpha": 255
       },
@@ -491,8 +491,8 @@
     "fontColor": {
       "red": 255,
       "green": 255,
-      "blue": 255,
-      "amber": 255,
+      "blue": 0,
+      "amber": 0,
       "alpha": 255
     },
     "font": {

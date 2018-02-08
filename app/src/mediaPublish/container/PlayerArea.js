@@ -436,7 +436,8 @@ export class PlayerArea extends Component {
     }
 
     const sceneItem = addItemToScene(this.state.curSceneItem, this.state.project.id, programId, sceneId, zoneId, data);
-    this.state.playerListAsset = this.state.playerListAsset.update('id', v => -1);
+    const assetItem = lodash.find(newData, item=>{return item.id == this.state.playerListAsset.get('id')});
+    this.state.playerListAsset = this.state.playerListAsset.update('id', v => assetItem?assetItem.id:-1);
     this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)), curSceneItem: sceneItem }, () => {
       console.log('curSceneItem:', this.state.curSceneItem);
       this.state.playerListAsset.get('list').map(item => {
@@ -458,9 +459,13 @@ export class PlayerArea extends Component {
   }
 
   updateItemName = (item, name) => {
+    console.log('updateItemName:', name);
     const { playerListAsset } = this.state;
     const index = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.id);
-    this.setState({ playerListAsset: this.state.playerListAsset.updateIn(['list', index], v => Immutable.fromJS(Object.assign({}, playerListAsset.getIn(['list', index]).toJS(), { name: name }))) });
+    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'name'], v => name);
+    this.setState({ playerListAsset:  this.state.playerListAsset},()=>{
+      console.log(this.state.playerListAsset.get('list').toJS());
+    });
   }
 
   initItemList = () => {
@@ -1247,7 +1252,9 @@ export class PlayerArea extends Component {
         !node.toggled && this.requestZoneList(parentNode.id, node.id);
         break;
       case 'playerArea':
-        this.requestItemList(parentParentNode.id, parentNode.id, node.id);
+        this.setState({playerListAsset: this.state.playerListAsset.update('id', v=>-1)}, ()=>{
+          this.requestItemList(parentParentNode.id, parentNode.id, node.id);
+        });
         break;
       }
     });
@@ -1274,7 +1281,7 @@ export class PlayerArea extends Component {
     const { router } = this.props;
     const add_title = getTitleByType(curType, this.formatIntl);
     const imgInfo = { width: project.width, height: project.height, src: previewSrc.image };
-
+console.log('id:',playerListAsset.get('id'));
     return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} />
       <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
