@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Immutable from 'immutable'
 import Panel from './../../components/Panel';
 import PanelFooter from './../../components/PanelFooter';
 
@@ -17,8 +16,8 @@ export default class ProjectPopup extends Component {
         super(props);
         const { playerId, applyProjectList } = this.props.data;
         this.state = {
-            playerId: playerId,
-            applyProjectList: applyProjectList.toJS()
+            playerId,
+            applyProjectList,
         }
 
         this.projectList = [];

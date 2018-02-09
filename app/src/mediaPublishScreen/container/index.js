@@ -91,10 +91,13 @@ export class MediaPublishScreen extends Component {
     getCurrentProjects = () => {
         const id = this.state.currentDevice && this.state.currentDevice.extend.player;
         getProjectsByPlayerId(id, (res) => {
-            const newPlayScheme = this.state.playScheme;
-            newPlayScheme.splice(1, 0, ...res)
-            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] },()=>{
-                console.log('播放计划表',this.state.playScheme)
+            const newPlayScheme = [
+                { name: '无', id: 'empty' },
+                ...res,
+                { name: '方案管理...', id: 'manage' }
+            ]
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] }, () => {
+                console.log('播放计划表', this.state.playScheme)
             })
         })
     }
@@ -145,9 +148,11 @@ export class MediaPublishScreen extends Component {
     handlePlanManage = () => {
         const { actions } = this.props;
         const { playScheme } = this.state;
-        const currentPlayerId = this.state.currentDevice && this.state.currentDevice.extend.playerId;
-
-        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId: currentPlayerId, applyProjectList: Immutable.fromJS(playScheme) }} onConfirm={data => {
+        const currentPlayerId = this.state.currentDevice && this.state.currentDevice.extend.player;
+        const newPlayScheme = Array.from(JSON.parse(JSON.stringify(playScheme)))
+        newPlayScheme.shift();
+        newPlayScheme.pop();
+        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId: currentPlayerId, applyProjectList: newPlayScheme }} onConfirm={data => {
             actions.overlayerHide();
             this.getCurrentProjects();
         }} onCancel={() => {
