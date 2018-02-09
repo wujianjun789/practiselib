@@ -91,11 +91,12 @@ export class MediaPublishScreen extends Component {
     getCurrentProjects = () => {
         const id = this.state.currentDevice && this.state.currentDevice.extend.player;
         getProjectsByPlayerId(id, (res) => {
-            const newPlayScheme = this.state.playScheme;
-            newPlayScheme.splice(1, 0, ...res)
-            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] },()=>{
-                console.log('播放计划表',this.state.playScheme)
-            })
+            const newPlayScheme = [
+                { name: '无', id: 'empty' },
+                ...res,
+                { name: '方案管理...', id: 'manage' }
+            ]
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] })
         })
     }
     handleCollapse = (id) => {
@@ -133,7 +134,8 @@ export class MediaPublishScreen extends Component {
         this.setState({ page: { ...this.state.page, current, } }, this.initDeviceData)
     }
     //预览待时实现
-    handleViewDevice = () => {
+    handleViewDevice = (e) => {
+        e.stopPropagation();
         const { currentDevice, currentPlan } = this.state;
         const { actions } = this.props;
         actions.overlayerShow(<PreViewPopup title="显示屏预览" data={{ url: "http://localhost:8080/images/smartLight/screen_test.png" }} onCancel={() => {
@@ -144,13 +146,16 @@ export class MediaPublishScreen extends Component {
     handlePlanManage = () => {
         const { actions } = this.props;
         const { playScheme } = this.state;
-        const currentPlayerId = this.state.currentDevice && this.state.currentDevice.extend.playerId;
-
-        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId: currentPlayerId, applyProjectList: Immutable.fromJS(playScheme) }} onConfirm={data => {
+        const currentPlayerId = this.state.currentDevice && this.state.currentDevice.extend.player;
+        const newPlayScheme = Array.from(JSON.parse(JSON.stringify(playScheme)))
+        newPlayScheme.shift();
+        newPlayScheme.pop();
+        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId: currentPlayerId, applyProjectList: newPlayScheme }} onConfirm={data => {
             actions.overlayerHide();
             this.getCurrentProjects();
         }} onCancel={() => {
             actions.overlayerHide();
+            this.getCurrentProjects();
         }} />)
     }
     selectDevice = (currentDevice) => {
@@ -194,7 +199,7 @@ export class MediaPublishScreen extends Component {
         // console.log(currentDomain)
         // console.log(value)
         // console.log(currentDevice)
-        console.log(currentPlan)
+        // console.log(currentPlan)
     }
     render() {
         const { sidebarCollapse, deviceCollapse, operationCollapse, mapCollapse, domainList, currentDomain, deviceList, currentDevice,
@@ -224,8 +229,8 @@ export class MediaPublishScreen extends Component {
                     <div class='row collapse-container' role="presentation" onClick={this.handleCollapseAll}>
                         <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                     </div>
-                    <div class='panel panel-default' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
-                        <div class='panel-heading'>
+                    <div class='panel panel-default' >
+                        <div class='panel-heading' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
                             <span class="icon_select"></span>选中设备
                         <span class="icon icon_collapse pull-right" ></span>
                         </div>

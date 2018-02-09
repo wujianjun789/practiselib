@@ -7,6 +7,8 @@ import {injectIntl} from 'react-intl';
 
 import '../../../public/styles/mediaPublish-map.less';
 
+import '../../../public/styles/mediaPublish-map.less';
+
 import Content from '../../components/Content';
 import MapView from '../../components/MapView';
 import Panel from '../../components/Panel';
@@ -61,6 +63,7 @@ export  class MediaPublishMap extends Component{
 
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
+
         };
         this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
@@ -365,6 +368,19 @@ export  class MediaPublishMap extends Component{
             }
             return <div key={key} className="pro"><span>{name ? this.formatIntl("app."+name):key}:</span>{(IsTransform ? this.transformState(key, parentPro.get(key)): parentPro.get(key))+(unit ? ' '+unit:'')}</div>
         }
+    }
+
+    updatePlaceholder = ()=>{
+
+    }
+
+    onChange = (value)=>{
+        const { search } = this.state;
+
+        let newValue = Object.assign({}, search, {value:value});
+        this.setState({search:newValue}, ()=>{
+            this.updatePlaceholder();
+        });
     }
 
     render(){

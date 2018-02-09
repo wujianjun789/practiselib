@@ -265,7 +265,7 @@ export class PlayerArea extends Component {
       this.setState({
         IsScroll: sidebarInfoDom.scrollHeight > sidebarInfoDom.clientHeight, scrollHeight: sidebarInfoDom.scrollHeight, assetProperHeight: assetPropertyDom.offsetHeight,
         libStyle: libStyle, assetStyle: assetStyle, pageStyle: pageStyle,
-      }, () => { 
+      }, () => {
         setTimeout(() => {
           this.setParentInfo();
         }, 400);
@@ -426,7 +426,7 @@ export class PlayerArea extends Component {
 
   updateItemList = (programId, sceneId, zoneId, data) => {
     const newData = data.map(item => {
-      return Object.assign({}, item, { assetType: 'source' });
+      return Object.assign({}, item, { assetType: IsSystemFile(item.type) ? 'system' : 'source' });
     });
 
     if (newData && newData.length) {
@@ -443,8 +443,8 @@ export class PlayerArea extends Component {
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
         if (IsSystemFile(item.get('type'))) {
-          const name = lodash.find(this.systemFile, file => { return file.id === itemObject.materialId; }).name;
-          this.updateItemName(itemObject, name);
+          const sysfile = lodash.find(this.systemFile, file => { return file.id === itemObject.materialId; });
+          this.updateItemName(itemObject, sysfile);
         } else {
           this.requestAssetNameById(itemObject);
         }
@@ -454,15 +454,16 @@ export class PlayerArea extends Component {
 
   requestAssetNameById = (item) => {
     getAssetById(item.materialId, response => {
-      this.updateItemName(item, response.name);
+      this.updateItemName(item, response);
     });
   }
 
-  updateItemName = (item, name) => {
-    console.log('updateItemName:', name);
+  updateItemName = (item, file) => {
+    console.log('updateItemName:', file.name);
     const { playerListAsset } = this.state;
     const index = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.id);
-    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'name'], v => name);
+    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'name'], v => file.name);
+    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'thumbnail'], v => file.thumbnail);
     this.setState({ playerListAsset:  this.state.playerListAsset}, () => {
       console.log(this.state.playerListAsset.get('list').toJS());
     });
@@ -552,7 +553,8 @@ export class PlayerArea extends Component {
   * { areaId: 4, playItemId: 1 }, 
   * { areaId: 5, playItemId: 1 }]
   */
-  setPreviewListOrder(previewList) {
+
+  setPreviewListOrder(previewList) {  
     let orderedPreviewList = [];
     const areaList = this.getAreaList();
     orderedPreviewList = areaList.map((areaId) => {
@@ -603,7 +605,6 @@ export class PlayerArea extends Component {
     return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
   // 设定预览列表 End
-
 
   // checkPreviewItems(items) {
   //   const { scenePlayList } = this.state;
@@ -800,7 +801,7 @@ export class PlayerArea extends Component {
   areaClick = (id) => {
     const { actions } = this.props;
     const { project } = this.state;
-    
+
     if (id == 'add') {
       if (this.state.curType == 'playerProject') {
         this.setState({ isAddClick: true });
@@ -934,8 +935,8 @@ export class PlayerArea extends Component {
 
 
     this.setState({ parentNode: this.state.playerData[planIndex].children[sceneIndex], curNode:response, playerData: this.state.playerData }, () => {
-      this.updatePlayerTree()
-      console.log('curNode children:',this.state.parentNode);
+      this.updatePlayerTree();
+      console.log('curNode children:', this.state.parentNode);
     });
   }
 
@@ -967,7 +968,7 @@ export class PlayerArea extends Component {
   zoomOutHandler = () => {
     const { scaling: curScaling } = this.state;
     const scaling = curScaling + 0.3;
-    if (scaling > 2) { 
+    if (scaling > 2) {
       return false;
     }
     this.setState({
@@ -1305,7 +1306,7 @@ export class PlayerArea extends Component {
     this.setState({ sidebarInfo: Object.assign({}, this.state.sidebarInfo, { [id]: state }) });
   }
 
-  
+
 
   render() {
     const {

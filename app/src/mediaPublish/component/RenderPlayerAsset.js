@@ -7,6 +7,7 @@
  */
 
 import React, { Component } from 'react';
+import {HOST_IP_FILE} from '../../util/network';
 
 export default class RenderPlayerAsset extends Component {
   
@@ -22,13 +23,17 @@ export default class RenderPlayerAsset extends Component {
       {
         playerListAsset.get('list').map((item, index) => {
           const itemId = item.get('id');
+          const assetType = item.get('assetType');
           const name = item.get('name');
+          const thumbnail = item.get('thumbnail');
           const curId = playerListAsset.get('id');
-    
+          console.log(item.toJS());
           return <li key={itemId} className="player-list-asset" onClick={() => playerAssetSelect(item)}
             role="presentation">
             <div className={'background ' + (curId == itemId ? '' : 'hidden')}></div>
-            <span className="icon"></span>
+            <span className="icon">
+              <img src={assetType==='system'?thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+thumbnail}/>
+            </span>
             <span className="name" title={name}>{name}</span>
             {curId == itemId && index > 0 &&
                     <span
