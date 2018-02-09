@@ -22,7 +22,7 @@ import { addNotify } from '../../common/actions/notifyPopup';
 import NotifyPopup from '../../common/containers/NotifyPopup';
 import { message } from 'antd';
 
-export class SingleLamp extends Component {
+export class Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -288,4 +288,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(SingleLamp));
+)(injectIntl(Screen));

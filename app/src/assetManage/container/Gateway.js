@@ -1,85 +1,209 @@
 /**
- * Created by a on 2017/8/23.
+ * Created by m on 2018/2/9.
  */
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Content from '../../components/Content';
 
-import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults} 
+import { getModelData, getModelProps, getModelDefaultsValues, getModelDefaults, deleteModalTypes, addModalTypes }
   from '../../data/assetModels';
+import { addModalTypesById } from '../../api/asset';
 import Immutable from 'immutable';
 
-// import {FormattedMessage, injectIntl} from 'react-intl';
-import { injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { intlFormat } from '../../util/index';
+import ConfirmPopup from '../../components/ConfirmPopup';
+import TypeEditPopup from '../components/TypeEditPopup';
+import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
+import { getModelTypeByModel, updateModelTypeByModel } from '../../api/asset';
+import { addNotify } from '../../common/actions/notifyPopup';
+import NotifyPopup from '../../common/containers/NotifyPopup';
+import { message } from 'antd';
 
 export class Gateway extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model:'gateway',
-      devicePro:Immutable.fromJS([
-        '软件版本',
-        '系统版本',
-        '内核版本',
-      ]),
-      data:Immutable.fromJS([
-        {type:'LC300', detail:'LC300灯控'},
-        {type:'LC600', detail:'LC600灯控'},
-        {type:'LCMINI', detail:'智慧路灯用'},
-      ]),
-      dataDefaults: [],
-      dataDefaultsValues: Immutable.fromJS([]),
+      model: 'ssgw',
+      keyField: 'name',   //主键在数据表的Id属性中，即设备类型的id
+
+      assetPropertyList: [   //设备属性列表
+        { id: '111', name: '三思LC', description: '三思单灯控制器', unit: '0000', accuracy: '0000' },
+        { id: '123', name: '华为LC_NBLot', description: '华为单灯控制器', unit: '0000', accuracy: '0000' },
+      ],
+      assetTypeList: [     //设备型号列表
+        { name: '', description: '' }
+        // { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
+        // {name: '', detail: '', power: '', serviceLife: '', manufacture: '' },
+      ],
     };
 
-    this.columns = [{field:'type', title:intlFormat({en:'type', zh:'型号'})}, 
-      {field:'detail', title:intlFormat({en:'detail', zh:'描述'})}];
-
-    this.initTreeData = this.initTreeData.bind(this);
+    this.assetPropertyColumns = [  //设备属性表头定义
+      { field: 'name', title: '名称' },
+      { field: 'description', title: '描述' },
+      { field: 'unit', title: '单位' },
+      { field: 'accuracy', title: '精度' },
+    ];
+    this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
+      { field: 'name', title: '名称' },
+      { field: 'description', title: '描述' },
+    ];
+    this.formatIntl = this.formatIntl.bind(this);
+    this.rowDelete = this.rowDelete.bind(this);
+    this.rowEdit = this.rowEdit.bind(this);
+    this.rowAdd = this.rowAdd.bind(this);
+    this.getModelType = this.getModelType.bind(this);
+    this.updateModelType = this.updateModelType.bind(this);
   }
 
   componentWillMount() {
+    let { model, assetPropertyList } = this.state;
     this.mounted = true;
-    getModelData(() => {this.mounted && this.initTreeData();});
+    getModelData(() => {
+      this.mounted && this.setState({ assetPropertyList: getModelProps(model) }, () => {
+        console.log("assetPropertyList:", this.state.assetPropertyList)
+      });
+    });
+    this.getModelType();
   }
 
   componentWillUnmount() {
     this.mounted = false;
   }
 
-  initTreeData() {
-    const {model} = this.state;
-    this.setState({
-      devicePro:Immutable.fromJS(getModelProps(model)),
-      data: Immutable.fromJS(getModelTypes(model)),
-      dataDefaults: getModelDefaults(model),
-      dataDefaultsValues: Immutable.fromJS(getModelDefaultsValues(model)),
+  formatIntl(formatId) {
+    const { intl } = this.props;
+    return intl ? intl.formatMessage({ id: formatId }) : null;
+  }
+
+  getModelType() {
+    let { assetTypeList, model } = this.state;
+    getModelTypeByModel(model, (data) => {
+      let types = data[0].types;
+      console.log("types3333333:", types);
+      this.mounted && this.updateModelType(types);
     });
   }
 
+  updateModelType(data) {
+    let dataItem = { name: '', description: '' }
+    data.push(dataItem);
+    this.setState({ assetTypeList: data })
+  }
+
+  deleteModalTypeById(id) {
+    const { assetTypeList, model } = this.state;
+    let data = assetTypeList;
+    let dataleft = _.remove(data, function (n) {
+      return n.name === id;
+    });
+    data.pop();
+    updateModelTypeByModel(model, data, (data) => {
+      this.mounted && this.getModelType();
+    })
+  }
+
+  rowDelete(id) { //id为型号名称
+    const { data } = this.state;
+    const { actions } = this.props;
+    let curId = id; //当前要删除的型号的Id
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete"
+      tips={'是否删除选该行？'} cancel={() => { actions.overlayerHide(); }}
+      confirm={() => {
+        this.deleteModalTypeById(curId);
+        actions.overlayerHide();
+      }} />);
+  }
+
+  rowEdit(id) { //id为选中的设备型号的name，
+    let curId = id;
+    const { assetTypeList, keyField, model } = this.state;
+    const { actions } = this.props;
+    let data = {};
+    for (var key in assetTypeList) {
+      if (curId === assetTypeList[key].name) {
+        data = assetTypeList[key];
+      }
+    }
+
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={'修改设备型号'}
+      data={data}
+      idEdit={false}
+      onCancel={() => {
+        actions.overlayerHide();
+      }}
+      onConfirm={(data) => {
+        //data={type, power, serviceLife, manufacturer, detail,...others}
+        //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
+        let name = data.name;
+        let description = data.description;
+        let typeData = Object.assign({}, {
+          name: name, description: description
+        });
+        //对更新后的数据做合并处理，名字是主键不能更改
+        let list = assetTypeList;
+        list.pop();
+        let editData = list.map(item => {
+          return item.name === typeData.name ? typeData : item
+        })
+        actions.overlayerHide();
+        updateModelTypeByModel(model, editData, (data) => {
+          this.mounted && this.getModelType();
+        })
+      }}></TypeEditPopup>);
+  }
+
+  rowAdd() { //添加设备状态，不传入Id，
+    let curId = '';
+    let { assetTypeList, model } = this.state;
+    const { actions } = this.props;
+    let data = {};
+    data.name = '';
+    data.description = '';
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={'添加设备型号'}
+      addNotify={actions.addNotify}
+      data={data}
+      onCancel={() => {
+        actions.overlayerHide();
+      }}
+      onConfirm={(data) => {
+        //data={type, power, serviceLife, manufacturer, detail, ...others}
+        //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
+        let name = data.name;
+        let description = data.description;
+        let typeData = Object.assign({}, {
+          name: name, description: description
+        });
+        assetTypeList.pop()
+        let dataAdd = assetTypeList;
+        dataAdd.push(typeData);
+        let resPram = ''
+        updateModelTypeByModel(model, dataAdd, (data) => {
+          this.mounted && this.getModelType();
+          actions.overlayerHide();
+        }, resPram, (msg) => {
+          actions.addNotify(0, msg.message)
+        })
+      }}></TypeEditPopup>);
+  }
+
+
+
   render() {
-    const { data, devicePro, dataDefaults, dataDefaultsValues } = this.state;
+    const { data, assetPropertyList, assetTypeList, keyField } = this.state;
+    console.log("assetTypeList:", assetTypeList)
+    let length = assetTypeList.length;
     return (
       <Content>
         <div className="row heading">
-          <div className="property"><span></span>{this.props.intl.formatMessage({id:'asset.property'})}</div>
-          <ul className="property-list">
-            {
-              devicePro.map((item, index) => {
-                return <li key={index}>{item}</li>;
-              })
-            }
-          </ul>
-        </div>
-        <div className="row heading">
-          <div className="type"><span></span>{this.props.intl.formatMessage({id:'asset.type'})}</div>
+          <div className="propertyTable"><span></span>{this.formatIntl('asset.property')}</div>
           <table className="equipment">
             <thead>
               <tr>
                 {
-                  this.columns.map((column, index) => {
+                  this.assetPropertyColumns.map((column, index) => {
                     return <th key={index}>{column.title}</th>;
                   })
                 }
@@ -87,11 +211,12 @@ export class Gateway extends Component {
             </thead>
             <tbody>
               {
-                data.map((row, index) => {
+                assetPropertyList.map((row, index) => {
                   return <tr key={index}>
                     {
-                      this.columns.map((column, index) => {
-                        return <td key={index}>{row.get(column.field)}</td>;
+                      this.assetPropertyColumns.map((column, index) => {
+                        // return <td key={index}>{row.get(column.field)}</td>;
+                        return <td key={index}>{row[column.field]}</td>;
                       })
                     }
                   </tr>;
@@ -101,26 +226,40 @@ export class Gateway extends Component {
           </table>
         </div>
         <div className="row heading">
-          <div className="param"><span></span>{this.props.intl.formatMessage({id:'asset.param'})}</div>
+          <div className="type"><span></span>{this.formatIntl('asset.assetTypes')}</div>
           <table className="equipment">
             <thead>
               <tr>
                 {
-                  dataDefaults.map((column, index) => {
+                  this.assetTypeColumns.map((column, index) => {
                     return <th key={index}>{column.title}</th>;
                   })
                 }
+                {<th>编辑</th>}
               </tr>
             </thead>
             <tbody>
               {
-                dataDefaultsValues.map((row, index) => {
+                assetTypeList.map((row, index) => {
                   return <tr key={index}>
                     {
-                      dataDefaults.map((column, index) => {
-                        return <td key={index}>{row.get(column.field)}</td>;
+                      this.assetTypeColumns.map((column, index) => {
+                        return <td key={index}>{row[column.field]}</td>;
                       })
                     }
+                    {index !== length - 1 ?
+                      <td className="edit">
+                        <a className="btn" role="presentation">
+                          <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
+                            className="icon_edit">修改</span>
+                        </a>
+                        <a className="btn" role="presentation">
+                          <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
+                            className="icon_delete">删除</span></a>
+                      </td>
+                      :
+                      <td><span role="presentation" className="btn"
+                        onClick={this.rowAdd}>+添加</span> </td>}
                   </tr>;
                 })
               }
@@ -142,6 +281,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
+      addNotify: addNotify,
+      overlayerShow: overlayerShow,
+      overlayerHide: overlayerHide,
     }, dispatch),
   };
 }
