@@ -41,7 +41,7 @@ export class SingleLamp extends Component {
     };
 
     this.assetPropertyColumns = [  //设备属性表头定义
-      { field: 'neme', title: '名称' },
+      { field: 'name', title: '名称' },
       { field: 'detail', title: '描述' },
       { field: 'unit', title: '单位' },
       { field: 'accuracy', title: '精度' },
@@ -131,6 +131,9 @@ export class SingleLamp extends Component {
     actions.overlayerShow(<TypeEditPopup id="updateType" title={'修改设备型号'}
       data={data}
       idEdit={false}
+      hasPower={true}
+      hasLife={true}
+      hasManufacture={true}
       onCancel={() => {
         actions.overlayerHide();
       }}
@@ -172,6 +175,9 @@ export class SingleLamp extends Component {
     actions.overlayerShow(<TypeEditPopup id="updateType" title={'添加设备型号'}
       addNotify={actions.addNotify}
       data={data}
+      hasPower={true}
+      hasLife={true}
+      hasManufacture={true}
       onCancel={() => {
         actions.overlayerHide();
       }}
