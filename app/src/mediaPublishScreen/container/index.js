@@ -96,9 +96,7 @@ export class MediaPublishScreen extends Component {
                 ...res,
                 { name: '方案管理...', id: 'manage' }
             ]
-            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] }, () => {
-                console.log('播放计划表', this.state.playScheme)
-            })
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] })
         })
     }
     handleCollapse = (id) => {
@@ -157,6 +155,7 @@ export class MediaPublishScreen extends Component {
             this.getCurrentProjects();
         }} onCancel={() => {
             actions.overlayerHide();
+            this.getCurrentProjects();
         }} />)
     }
     selectDevice = (currentDevice) => {
@@ -200,7 +199,7 @@ export class MediaPublishScreen extends Component {
         // console.log(currentDomain)
         // console.log(value)
         // console.log(currentDevice)
-        console.log(currentPlan)
+        // console.log(currentPlan)
     }
     render() {
         const { sidebarCollapse, deviceCollapse, operationCollapse, mapCollapse, domainList, currentDomain, deviceList, currentDevice,
