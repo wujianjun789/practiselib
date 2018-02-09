@@ -133,7 +133,8 @@ export class MediaPublishScreen extends Component {
         this.setState({ page: { ...this.state.page, current, } }, this.initDeviceData)
     }
     //预览待时实现
-    handleViewDevice = () => {
+    handleViewDevice = (e) => {
+        e.stopPropagation();
         const { currentDevice, currentPlan } = this.state;
         const { actions } = this.props;
         actions.overlayerShow(<PreViewPopup title="显示屏预览" data={{ url: "http://localhost:8080/images/smartLight/screen_test.png" }} onCancel={() => {
@@ -224,8 +225,8 @@ export class MediaPublishScreen extends Component {
                     <div class='row collapse-container' role="presentation" onClick={this.handleCollapseAll}>
                         <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                     </div>
-                    <div class='panel panel-default' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
-                        <div class='panel-heading'>
+                    <div class='panel panel-default' >
+                        <div class='panel-heading' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
                             <span class="icon_select"></span>选中设备
                         <span class="icon icon_collapse pull-right" ></span>
                         </div>
