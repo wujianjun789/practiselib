@@ -19,7 +19,6 @@ export default class RenderPlayerAsset extends Component {
     
   render() {
     const { curNode, playerListAsset, playerAssetSelect, playerAssetRemove } = this.props;
-    console.log('RenderPlayerAsset:',curNode);
     return (<ul className={curNode && curNode.type==="area" && typeof curNode.id === 'number'?"":"hidden"}>
       {
         playerListAsset.get('list').map((item, index) => {
@@ -49,7 +48,7 @@ export default class RenderPlayerAsset extends Component {
                       onClick={(e) => { this.onClick(e, 'right', item); }}
                       role="presentation"
                     />}
-            {!playerListAsset.get('isEdit') && item.get('assetType') == 'source' &&
+            {
                     <span
                       className="icon_delete_c remove"
                       title="删除"
