@@ -91,8 +91,11 @@ export class MediaPublishScreen extends Component {
     getCurrentProjects = () => {
         const id = this.state.currentDevice && this.state.currentDevice.extend.player;
         getProjectsByPlayerId(id, (res) => {
-            const newPlayScheme = this.state.playScheme;
-            newPlayScheme.splice(1, 0, ...res)
+            const newPlayScheme = [
+                { name: '无', id: 'empty' },
+                ...res,
+                { name: '方案管理...', id: 'manage' }
+            ]
             this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] }, () => {
                 console.log('播放计划表', this.state.playScheme)
             })
