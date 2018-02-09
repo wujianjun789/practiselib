@@ -941,6 +941,7 @@ export class PlayerArea extends Component {
 
     this.setState({ parentNode: this.state.playerData[planIndex].children[sceneIndex], curNode:response, playerData: this.state.playerData }, () => {
       this.updatePlayerTree();
+      this.requestItemList(parentParentNode.id, parentNode.id, response.id);
       console.log('curNode children:', this.state.parentNode);
     });
   }
@@ -1247,7 +1248,7 @@ export class PlayerArea extends Component {
     let parentNode = getTreeParentNode(playerData, data.node);
     let index = lodash.findIndex(playerData, plan => { return plan.type == parentNode.type && plan.id == parentNode.id; });
 
-    // this.state.playerData[index].children = moveTree(parentNode.children, data);
+    this.state.playerData[index].children = moveTree(parentNode.children, data);
     this.setState({ playerData: this.state.playerData }, () => {
       let ids = getListObjectByKey(this.state.playerData[index].children, 'id');
       updateSceneOrders(project.id, parentNode.id, ids, response => {
