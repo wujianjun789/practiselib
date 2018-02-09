@@ -162,7 +162,7 @@ export default {
     'asset.model': 'asset model',
     'asset.statistics': 'asset statistics',
     'asset.property': 'asset properties',
-    'asset.equipmentModal': 'equipmentModal',
+    'asset.assetTypes': 'equipmentModal',
     'asset.type': 'asset types',
     'asset.param': 'default params',
 
@@ -381,7 +381,7 @@ export default {
     'mediaPublish.property': 'Property',
     'mediaPublish.materialLib': 'Material library',
 
-    'mediaPublish.screen':'name',
+    'mediaPublish.screen': 'name',
     'mediaPublish.materialName': 'name',
     'mediaPublish.textContent': 'content',
     'mediaPublish.selectFont': 'font type',
