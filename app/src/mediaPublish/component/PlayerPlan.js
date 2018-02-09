@@ -40,7 +40,7 @@ class PlayerPlan extends PureComponent{
             },
             prompt:{
                 //计划
-                plan:false,week:false,
+                plan:false,week:false
                 /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
             }
         }
@@ -109,6 +109,28 @@ class PlayerPlan extends PureComponent{
             endTime: property.endTime.value,
             week: arrayTranformWeek(property.week.value)
         };
+
+        const endDateYear = property.endDate.value.format('YYYY');
+        const endDateMonth = property.endDate.value.format('MM');
+        const endDateDay = property.endDate.value.format('DD');
+        const startDateYear = property.startDate.value.format('YYYY');
+        const startDateMonth = property.startDate.value.format('MM');
+        const startDateDay = property.startDate.value.format('DD');
+        const startTimeHour = property.startTime.value.format('HH');
+        const startTimeMinute = property.startTime.value.format('mm');
+        const startTimeSecond = property.startTime.value.format('ss');
+        const endTimeHour = property.endTime.value.format('HH');
+        const endTimeMinute = property.endTime.value.format('mm');
+        const endTimeSecond = property.endTime.value.format('ss');
+        if( endDateYear < startDateYear
+            || endDateMonth < startDateMonth
+            || endDateDay < startDateDay
+        || endTimeHour < startTimeHour
+        || endTimeMinute < startTimeMinute
+        || endTimeSecond <= startTimeSecond){
+            this.props.actions.addNotify(0, '请输入正确日期');
+            return false;
+        }
 
         if(planId && (typeof planId == 'number' || planId.indexOf("plan&&") < 0)){
             data = Object.assign({}, data, {id:planId});

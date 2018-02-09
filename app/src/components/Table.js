@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import '../../public/styles/table.less'
@@ -12,6 +12,7 @@ import '../../public/styles/table.less'
  * rowCheckChange:Func(rowId:Num,value:bool) 选中或取消事件
  * rowEdit:Func(rowId:Num) 编辑事件
  * rowDelete:Func(rowId:Num) 删除事件
+ * titleCheck:bolean 表头全选框是否显示
  */
 export default class Table extends Component {
     constructor(props) {
@@ -39,58 +40,62 @@ export default class Table extends Component {
         this.props.rowDelete && this.props.rowDelete(rowId);
     }
 
-    rowClick(row){
+    rowClick(row) {
         this.props.rowClick && this.props.rowClick(row);
     }
 
     render() {
-        let {columns=[], data=[], allChecked, checked=[], keyField='id', isEdit, className='', activeId} = this.props;
+        let { columns = [], data = [], allChecked, titleCheck = true, checked = [], keyField = 'id', isEdit, className = '', activeId } = this.props;
         return (
             <div className={`table-responsive ${className}`}>
                 <table className="table table-hover">
                     <thead>
-                    <tr>
-                        <th className={allChecked === undefined?'hidden':''}><input type="checkbox"
-                                                                                    checked={allChecked}
-                                                                                    onChange={e=>this.allCheckChange(e.target.checked)}/>
-                        </th>
-                        {
-                            columns.map((item, index)=> {
-                                return <th key={index}>{item.title}</th>
-                            })
-                        }
-                        {
-                            isEdit && <th></th>
-                        }
-                    </tr>
+                        <tr>
+                            {titleCheck ? <th className={allChecked === undefined ? 'hidden' : ''}><input type="checkbox"
+                                checked={allChecked}
+                                onChange={e => this.allCheckChange(e.target.checked)} />
+                            </th> :
+                                <th>
+                                </th>
+                            }
+                            {
+                                columns.map((item, index) => {
+                                    return <th key={index}>{item.title}</th>
+                                })
+                            }
+                            {
+                                isEdit && <th></th>
+                            }
+                        </tr>
                     </thead>
                     <tbody>
-                    {
-                        data.map((row, index)=> {
-                            let curId = row.get(keyField);
-                            return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
-                                <td className={allChecked === undefined?'hidden':''}>
+                        {
+                            data.map((row, index) => {
+                                let curId = row.get(keyField);
+                                return <tr key={index} className={activeId && curId && activeId == curId ? 'active' : ''} onClick={() => this.rowClick(row)}>
+                                    <td className={allChecked === undefined ? 'hidden' : ''}>
+                                        {
+                                            <input type="checkbox" checked={checked.includes(curId)/* row.get('checked') */}
+                                                onChange={(e) => keyField && this.rowCheckChange(row.get(keyField), e.target.checked)} />
+                                        }
+                                    </td>
                                     {
-                                        <input type="checkbox" checked={checked.includes(curId)/* row.get('checked') */} onChange={(e)=>keyField && this.rowCheckChange(row.get(keyField),e.target.checked)}/>
+                                        columns.map(function (item, index) {
+                                            return <td key={index}>{row.get(item.field)}</td>
+                                        })
                                     }
-                                </td>
-                                {
-                                    columns.map(function (item, index) {
-                                        return <td key={index}>{row.get(item.field)}</td>
-                                    })
-                                }
-                                {
-                                    isEdit &&
+                                    {
+                                        isEdit &&
                                         <td className="edit">
-                                        <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.modify'/></span></a>
-                                        <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete'/></span></a>
+                                            <a className="btn" onClick={() => keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.modify' /></span></a>
+                                            <a className="btn" onClick={() => keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete' /></span></a>
                                         </td>
-                                }
+                                    }
 
 
-                            </tr>
-                        })
-                    }
+                                </tr>
+                            })
+                        }
                     </tbody>
                 </table>
             </div>
