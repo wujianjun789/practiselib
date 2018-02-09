@@ -39,7 +39,7 @@ export function excelImport(e,key,columns,cb){
                         }
                     }
                     //表格内容
-                    let requireProperty = ['id','name','typeName','domainName']
+                    let requireProperty = ['id','name','domainName']
                     for(let i=0; i < items.length; i++){
                         for(let j=0; j < requireProperty.length; j++){
                             if(!items[i].hasOwnProperty(requireProperty[j])) {
