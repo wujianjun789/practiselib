@@ -49,15 +49,16 @@ export function getModelTypeByModel(modelId, cb) {
  * @param data
  * @param cb
  */
-export function updateModelTypeByModel(modelId, data, cb) {
+export function updateModelTypeByModel(modelId, data, cb, resparam, errCb) {
   const headers = getHttpHeader();
   let querystring = JSON.stringify(data);
   httpRequest(HOST_IP + '/summaries/' + modelId + '/types?types=' + encodeURIComponent(querystring), {
     headers: headers,
     method: 'PUT',
-    // body: JSON.stringify(data)
   }, response => {
     cb && cb(response);
+  }, resparam, msg => {
+    errCb && errCb(msg)
   })
 }
 

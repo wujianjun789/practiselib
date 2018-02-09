@@ -82,7 +82,6 @@ export default class TypeEditPopup extends Component {
   }
 
 
-
   render() {
     let { name, description, power, life, manufacture, prompt } = this.state;
     const { idEdit = true } = this.props;
@@ -136,6 +135,7 @@ export default class TypeEditPopup extends Component {
           </div>
           {footer}
         </div>
+        <NotifyPopup />
       </Panel>
     </div>;
   }
