@@ -50,7 +50,6 @@ export default class TypeEditPopup extends Component {
   }
 
   onConfirm() {
-    console.log('state:', this.state);
     this.props.onConfirm && this.props.onConfirm(this.state);
   }
 
@@ -59,7 +58,6 @@ export default class TypeEditPopup extends Component {
   }
 
   onChange(e) {
-    console.log('e.target:', e.target);
     let id = e.target.id;
     let value = e.target.value;
     let newValue = '';
@@ -82,7 +80,6 @@ export default class TypeEditPopup extends Component {
     //输入框值变化后直接改变state中的值以及确定是否合法
     this.setState({ [id]: newValue, prompt: Object.assign({}, this.state.prompt, { [id]: prompt }) });
   }
-
 
 
   render() {
@@ -138,6 +135,7 @@ export default class TypeEditPopup extends Component {
           </div>
           {footer}
         </div>
+        <NotifyPopup />
       </Panel>
     </div>;
   }

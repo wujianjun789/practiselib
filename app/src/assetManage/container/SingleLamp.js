@@ -18,35 +18,28 @@ import ConfirmPopup from '../../components/ConfirmPopup';
 import TypeEditPopup from '../components/TypeEditPopup';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { getModelTypeByModel, updateModelTypeByModel } from '../../api/asset';
+import { addNotify } from '../../common/actions/notifyPopup';
+import NotifyPopup from '../../common/containers/NotifyPopup';
+import { message } from 'antd';
 
 export class SingleLamp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // model:'lc',
       model: 'ssslc',
       keyField: 'name',   //主键在数据表的Id属性中，即设备类型的id
-      // data:[   //关于设备的全部数据
-      //   {id:'111', type:'三思LC', detail:'三思单灯控制器', unit: '0000', 
-      //     accuracy: '0000', power: '0000', serviceLife: '0000', manufacturer: '0000'},
-      //   {id:'123', type:'华为LC_NBLot', detail:'华为单灯控制器', unit: '0000', 
-      //     accuracy: '0000', power: '0000', serviceLife: '0000', manufacturer: '0000'},
-      // ],
+
       assetPropertyList: [   //设备属性列表
         { id: '111', neme: '三思LC', detail: '三思单灯控制器', unit: '0000', accuracy: '0000' },
         { id: '123', neme: '华为LC_NBLot', detail: '华为单灯控制器', unit: '0000', accuracy: '0000' },
       ],
       assetTypeList: [     //设备型号列表
-        { name: '三思单灯', description: '三思单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
-        { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
-        // { id: '', type: '', detail: '', power: '', serviceLife: '', manufacture: '' },
+        // { name: '三思单灯', description: '三思单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
+        // { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
+        // {name: '', detail: '', power: '', serviceLife: '', manufacture: '' },
       ],
     };
 
-    // this.columns = [//设备类别
-    //   {field:'type', title:intlFormat({en:'type', zh:'型号'})}, 
-    //   {field:'detail', title:intlFormat({en:'detail', zh:'描述'})},
-    // ];
     this.assetPropertyColumns = [  //设备属性表头定义
       { field: 'neme', title: '名称' },
       { field: 'detail', title: '描述' },
@@ -54,7 +47,6 @@ export class SingleLamp extends Component {
       { field: 'accuracy', title: '精度' },
     ];
     this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
-      // { field: 'types', title: '型号' },
       { field: 'name', title: '名称' },
       { field: 'description', title: '描述' },
       { field: 'power', title: '功率' },
@@ -85,21 +77,18 @@ export class SingleLamp extends Component {
   formatIntl(formatId) {
     const { intl } = this.props;
     return intl ? intl.formatMessage({ id: formatId }) : null;
-    // return formatId;
   }
 
   getModelType() {
-    console.log('here')
     let { assetTypeList, model } = this.state;
     getModelTypeByModel(model, (data) => {
-      console.log("data3333:", data[0].types)
       let types = data[0].types;
       this.mounted && this.updateModelType(types);
     });
   }
 
   updateModelType(data) {
-    let dataItem = { id: '', type: '', detail: '', power: '', serviceLife: '', manufacture: '' }
+    let dataItem = { name: '', description: '', power: '', life: '', manufacture: '' }
     data.push(dataItem);
     this.setState({ assetTypeList: data })
   }
@@ -129,7 +118,6 @@ export class SingleLamp extends Component {
   }
 
   rowEdit(id) { //id为选中的设备型号的name，
-    console.log('idEdit:', id);
     let curId = id;
     const { assetTypeList, keyField, model } = this.state;
     const { actions } = this.props;
@@ -159,10 +147,13 @@ export class SingleLamp extends Component {
           life: life, manufacture: manufacture
         });
         //对更新后的数据做合并处理，名字是主键不能更改
-
-        console.log('typeData:', typeData)//
+        let list = assetTypeList;
+        list.pop();
+        let editData = list.map(item => {
+          return item.name === typeData.name ? typeData : item
+        })
         actions.overlayerHide();
-        updateModelTypeByModel(model, typeData, (data) => {
+        updateModelTypeByModel(model, editData, (data) => {
           this.mounted && this.getModelType();
         })
       }}></TypeEditPopup>);
@@ -179,6 +170,7 @@ export class SingleLamp extends Component {
     data.life = '';
     data.manufacture = '';
     actions.overlayerShow(<TypeEditPopup id="updateType" title={'添加设备型号'}
+      addNotify={actions.addNotify}
       data={data}
       onCancel={() => {
         actions.overlayerHide();
@@ -198,9 +190,12 @@ export class SingleLamp extends Component {
         assetTypeList.pop()
         let dataAdd = assetTypeList;
         dataAdd.push(typeData);
-        actions.overlayerHide();
+        let resPram = ''
         updateModelTypeByModel(model, dataAdd, (data) => {
           this.mounted && this.getModelType();
+          actions.overlayerHide();
+        }, resPram, (msg) => {
+          actions.addNotify(0, msg.message)
         })
       }}></TypeEditPopup>);
   }
@@ -296,6 +291,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
+      addNotify: addNotify,
       overlayerShow: overlayerShow,
       overlayerHide: overlayerHide,
     }, dispatch),

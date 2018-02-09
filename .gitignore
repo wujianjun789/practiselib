@@ -33,3 +33,6 @@ coverage
 #package lib
 app/public/lib/lib.js
 manifest.json
+
+#localTest
+_test_

@@ -8,6 +8,7 @@ import { setCookie, getCookie } from './cache'
 import {getRequestValue} from './string'
 
 export let HOST_IP = getCookie("host_ip");
+export const HOST_IP_FILE = "http://192.168.155.196:3001";
 
 let  HEADERS_CONTENT_TYPE_JSON = { "Accept": "application/json", "Content-Type": "application/json" };
 
