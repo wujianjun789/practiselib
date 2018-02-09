@@ -93,7 +93,6 @@ export function getModelData(cb) {
   // }
 
   getAssetModelList(response => {
-    console.log('responsegetModelsData:', response);
     models = response;
     TreeData.map(item => {
       if (item.children) {

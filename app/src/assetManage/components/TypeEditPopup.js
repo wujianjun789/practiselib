@@ -50,7 +50,6 @@ export default class TypeEditPopup extends Component {
   }
 
   onConfirm() {
-    console.log('state:', this.state);
     this.props.onConfirm && this.props.onConfirm(this.state);
   }
 
@@ -59,7 +58,6 @@ export default class TypeEditPopup extends Component {
   }
 
   onChange(e) {
-    console.log('e.target:', e.target);
     let id = e.target.id;
     let value = e.target.value;
     let newValue = '';

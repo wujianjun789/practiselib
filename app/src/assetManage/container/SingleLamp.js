@@ -89,10 +89,8 @@ export class SingleLamp extends Component {
   }
 
   getModelType() {
-    console.log('here')
     let { assetTypeList, model } = this.state;
     getModelTypeByModel(model, (data) => {
-      console.log("data3333:", data[0].types)
       let types = data[0].types;
       this.mounted && this.updateModelType(types);
     });
@@ -129,7 +127,6 @@ export class SingleLamp extends Component {
   }
 
   rowEdit(id) { //id为选中的设备型号的name，
-    console.log('idEdit:', id);
     let curId = id;
     const { assetTypeList, keyField, model } = this.state;
     const { actions } = this.props;
@@ -158,16 +155,12 @@ export class SingleLamp extends Component {
           name: name, power: power, description: description,
           life: life, manufacture: manufacture
         });
-        console.log("typeData:", typeData)
-        console.log("assetTypeList:", assetTypeList)
         //对更新后的数据做合并处理，名字是主键不能更改
         let list = assetTypeList;
         list.pop();
-        console.log("list:", list)
         let editData = list.map(item => {
           return item.name === typeData.name ? typeData : item
         })
-        console.log("editData:", editData)
         actions.overlayerHide();
         updateModelTypeByModel(model, editData, (data) => {
           this.mounted && this.getModelType();
