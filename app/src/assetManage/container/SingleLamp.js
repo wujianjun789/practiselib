@@ -1,44 +1,46 @@
 /**
  * Created by a on 2017/8/23.
  */
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Content from '../../components/Content';
 
-import {getModelData, getModelProps, getModelTypes, getModelDefaultsValues, getModelDefaults, deleteModalTypes, addModalTypes} 
+import { getModelData, getModelProps, getModelDefaultsValues, getModelDefaults, deleteModalTypes, addModalTypes }
   from '../../data/assetModels';
-import {deleteModalTypesById, addModalTypesById} from '../../api/asset';
+import { addModalTypesById } from '../../api/asset';
 import Immutable from 'immutable';
 
-import { injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { intlFormat } from '../../util/index';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import TypeEditPopup from '../components/TypeEditPopup';
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
+import { getModelTypeByModel, updateModelTypeByModel } from '../../api/asset';
 
 export class SingleLamp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model:'lc',
-      keyField: 'id',   //主键在数据表的Id属性中，即设备类型的id
+      // model:'lc',
+      model: 'ssslc',
+      keyField: 'name',   //主键在数据表的Id属性中，即设备类型的id
       // data:[   //关于设备的全部数据
       //   {id:'111', type:'三思LC', detail:'三思单灯控制器', unit: '0000', 
       //     accuracy: '0000', power: '0000', serviceLife: '0000', manufacturer: '0000'},
       //   {id:'123', type:'华为LC_NBLot', detail:'华为单灯控制器', unit: '0000', 
       //     accuracy: '0000', power: '0000', serviceLife: '0000', manufacturer: '0000'},
       // ],
-      assetPropertyList:[   //设备属性列表
-        {id:'111', type:'三思LC', detail:'三思单灯控制器',  unit: '0000', accuracy: '0000'},
-        {id:'123', type:'华为LC_NBLot', detail:'华为单灯控制器',  unit: '0000', accuracy: '0000'},
-      ], 
+      assetPropertyList: [   //设备属性列表
+        { id: '111', neme: '三思LC', detail: '三思单灯控制器', unit: '0000', accuracy: '0000' },
+        { id: '123', neme: '华为LC_NBLot', detail: '华为单灯控制器', unit: '0000', accuracy: '0000' },
+      ],
       assetTypeList: [     //设备型号列表
-        {id:'111', type:'三思LC', detail:'三思单灯控制器',  power: '0000', serviceLife: '0000', manufacturer: '0000'},
-        {id:'123', type:'华为LC_NBLot', detail:'华为单灯控制器',  power: '0000', serviceLife: '0000', manufacturer: '0000'},
-        {id:'', type: '', detail: '', power: '', serviceLife: '', manufacturer: ''},
-      ], 
+        { name: '三思单灯', description: '三思单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
+        { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
+        // { id: '', type: '', detail: '', power: '', serviceLife: '', manufacture: '' },
+      ],
     };
 
     // this.columns = [//设备类别
@@ -46,31 +48,34 @@ export class SingleLamp extends Component {
     //   {field:'detail', title:intlFormat({en:'detail', zh:'描述'})},
     // ];
     this.assetPropertyColumns = [  //设备属性表头定义
-      {field:'type', title:'型号'}, 
-      {field:'detail', title:'描述'}, 
-      {field:'unit', title:'单位'}, 
-      {field:'accuracy', title:'精度'}, 
+      { field: 'neme', title: '名称' },
+      { field: 'detail', title: '描述' },
+      { field: 'unit', title: '单位' },
+      { field: 'accuracy', title: '精度' },
     ];
-    this.assetTypeColumns = [  //设备型号表头定义
-      {field:'type', title:'型号'}, 
-      {field:'detail', title:'描述'}, 
-      {field:'power', title:'功率'}, 
-      {field:'serviceLife', title:'使用寿命'}, 
-      {field:'manufacturer', title:'厂商'}, 
+    this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
+      // { field: 'types', title: '型号' },
+      { field: 'name', title: '名称' },
+      { field: 'description', title: '描述' },
+      { field: 'power', title: '功率' },
+      { field: 'life', title: '使用寿命' },
+      { field: 'manufacture', title: '厂商' },
     ];
-    this.initTreeData = this.initTreeData.bind(this);
     this.formatIntl = this.formatIntl.bind(this);
     this.rowDelete = this.rowDelete.bind(this);
     this.rowEdit = this.rowEdit.bind(this);
     this.rowAdd = this.rowAdd.bind(this);
-    this.updateAssetById = this.updateAssetById.bind(this);
-    this.addAsset = this.addAsset.bind(this);
-    this.deleteAssetById = this.deleteAssetById.bind(this);
+    this.getModelType = this.getModelType.bind(this);
+    this.updateModelType = this.updateModelType.bind(this);
   }
 
   componentWillMount() {
+    let { model, assetPropertyList } = this.state;
     this.mounted = true;
-    getModelData(() => {this.mounted && this.initTreeData();});
+    getModelData(() => {
+      this.mounted && this.setState({ assetPropertyList: getModelProps(model) });
+    });
+    this.getModelType();
   }
 
   componentWillUnmount() {
@@ -78,89 +83,101 @@ export class SingleLamp extends Component {
   }
 
   formatIntl(formatId) {
-    const {intl} = this.props;
-    return intl ? intl.formatMessage({id:formatId}) : null;
+    const { intl } = this.props;
+    return intl ? intl.formatMessage({ id: formatId }) : null;
     // return formatId;
   }
 
-  initTreeData() {
-    const {model} = this.state;
-    this.setState({
-      //获取某类设备的属性信息, 并更新到state
-      //获取某类设备的型号信息, 并更新到state
+  getModelType() {
+    let { assetTypeList, model } = this.state;
+    getModelTypeByModel(model, (data) => {
+      let types = data[0].types;
+      this.mounted && this.updateModelType(types);
     });
   }
 
-  addAsset() {
-    //将添加后的数据传给服务器，更新数据，并将操作成功后的数据重新setState，更新视图
+  updateModelType(data) {
+    let dataItem = { name: '', description: '', power: '', life: '', manufacture: '' }
+    data.push(dataItem);
+    this.setState({ assetTypeList: data })
   }
 
-  updateAssetById() {
-    //将编辑后的数据传给服务器，更新数据，并将操作成功后的数据重新setState，更新视图
-
+  deleteModalTypeById(id) {
+    const { assetTypeList, model } = this.state;
+    let data = assetTypeList;
+    let dataleft = _.remove(data, function (n) {
+      return n.name === id;
+    });
+    data.pop();
+    updateModelTypeByModel(model, data, (data) => {
+      this.mounted && this.getModelType();
+    })
   }
-  deleteAssetById() {
-    //将待删除的数据传给服务器，更新数据，并将操作成功后的数据重新setState，更新视图
-  }
-  
 
-  rowDelete(id) {
-    console.log('idDelete:', id);
+  rowDelete(id) { //id为型号名称
     const { data } = this.state;
-    const {actions} = this.props;
+    const { actions } = this.props;
     let curId = id; //当前要删除的型号的Id
     actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete"
-      tips={'是否删除选该行？'} cancel={() => {actions.overlayerHide();}}
+      tips={'是否删除选该行？'} cancel={() => { actions.overlayerHide(); }}
       confirm={() => {
-        deleteModalTypesById(curId, () => {
-          //执行是否删除的操作
-          actions.overlayerHide();
-        });
-      } }/>);
+        this.deleteModalTypeById(curId);
+        actions.overlayerHide();
+      }} />);
   }
 
-  rowEdit(id) { //id为选中的设备型号的Id，
+  rowEdit(id) { //id为选中的设备型号的name，
     let curId = id;
-    const {assetTypeList, keyField } = this.state;
-    const {actions} = this.props;
+    const { assetTypeList, keyField, model } = this.state;
+    const { actions } = this.props;
     let data = {};
     for (var key in assetTypeList) {
-      if (curId === assetTypeList[key].id) {
+      if (curId === assetTypeList[key].name) {
         data = assetTypeList[key];
       }
     }
 
     actions.overlayerShow(<TypeEditPopup id="updateType" title={'修改设备型号'}
       data={data}
+      idEdit={false}
       onCancel={() => {
         actions.overlayerHide();
       }}
       onConfirm={(data) => {
         //data={type, power, serviceLife, manufacturer, detail,...others}
         //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
-        let type = data.type;
+        let name = data.name;
         let power = data.power;
-        let serviceLife = data.serviceLife;
-        let manufacturer = data.manufacturer;
-        let detail = data.detail;
-        let typeData = Object.assign({}, {type:type, power:power, serviceLife:serviceLife,
-          manufacturer:manufacturer, detail:detail });
-        this.updateAssetById(curId, typeData);
-        console.log('编辑设备型号，表单提交得到的数据::', typeData);
+        let description = data.description;
+        let life = data.life;
+        let manufacture = data.manufacture;
+        let typeData = Object.assign({}, {
+          name: name, power: power, description: description,
+          life: life, manufacture: manufacture
+        });
+        //对更新后的数据做合并处理，名字是主键不能更改
+        let list = assetTypeList;
+        list.pop();
+        let editData = list.map(item => {
+          return item.name === typeData.name ? typeData : item
+        })
         actions.overlayerHide();
+        updateModelTypeByModel(model, editData, (data) => {
+          this.mounted && this.getModelType();
+        })
       }}></TypeEditPopup>);
   }
 
   rowAdd() { //添加设备状态，不传入Id，
     let curId = '';
-    const {assetTypeList} = this.state;
-    const {actions} = this.props;
+    let { assetTypeList, model } = this.state;
+    const { actions } = this.props;
     let data = {};
-    data.type = '';
+    data.name = '';
+    data.description = '';
     data.power = '';
-    data.serviceLife = '';
-    data.manufacturer = '';
-    data.detail = '';
+    data.life = '';
+    data.manufacture = '';
     actions.overlayerShow(<TypeEditPopup id="updateType" title={'添加设备型号'}
       data={data}
       onCancel={() => {
@@ -169,16 +186,22 @@ export class SingleLamp extends Component {
       onConfirm={(data) => {
         //data={type, power, serviceLife, manufacturer, detail, ...others}
         //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
-        let type = data.type;
+        let name = data.name;
         let power = data.power;
-        let serviceLife = data.serviceLife;
-        let manufacturer = data.manufacturer;
-        let detail = data.detail;
-        let typeData = Object.assign({}, {type:type, power:power, serviceLife:serviceLife,
-          manufacturer:manufacturer, detail:detail });
-        this.addAsset(typeData);
-        console.log('添加设备型号，表单提交得到的数据:', typeData);
+        let life = data.life;
+        let manufacture = data.manufacture;
+        let description = data.description;
+        let typeData = Object.assign({}, {
+          name: name, power: power, life: life,
+          manufacture: manufacture, description: description
+        });
+        assetTypeList.pop()
+        let dataAdd = assetTypeList;
+        dataAdd.push(typeData);
         actions.overlayerHide();
+        updateModelTypeByModel(model, dataAdd, (data) => {
+          this.mounted && this.getModelType();
+        })
       }}></TypeEditPopup>);
   }
 
@@ -186,7 +209,6 @@ export class SingleLamp extends Component {
 
   render() {
     const { data, assetPropertyList, assetTypeList, keyField } = this.state;
-    // let length = assetTypeList.toJS().length;
     let length = assetTypeList.length;
     return (
       <Content>
@@ -219,7 +241,7 @@ export class SingleLamp extends Component {
           </table>
         </div>
         <div className="row heading">
-          <div className="type"><span></span>{this.formatIntl('asset.equipmentModal')}</div>
+          <div className="type"><span></span>{this.formatIntl('asset.assetTypes')}</div>
           <table className="equipment">
             <thead>
               <tr>
@@ -240,18 +262,18 @@ export class SingleLamp extends Component {
                         return <td key={index}>{row[column.field]}</td>;
                       })
                     }
-                    {index !== length - 1 ? 
+                    {index !== length - 1 ?
                       <td className="edit">
                         <a className="btn" role="presentation">
-                          <span onClick={() => {this.rowEdit(row[keyField]);}} role="presentation" 
+                          <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
                             className="icon_edit">修改</span>
                         </a>
                         <a className="btn" role="presentation">
-                          <span onClick={() => {this.rowDelete(row[keyField]);}} role="presentation" 
+                          <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
                             className="icon_delete">删除</span></a>
                       </td>
-                      : 
-                      <td><span role="presentation" className="btn" 
+                      :
+                      <td><span role="presentation" className="btn"
                         onClick={this.rowAdd}>+添加</span> </td>}
                   </tr>;
                 })

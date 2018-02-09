@@ -12,8 +12,8 @@
  * @param {object} sourcePlayItemList 
  */
 
-const sourcePlayItemObj = {2:[1, 2, 3, 4], 3:[1, 2, 3, 4]};
-const previewList = [{ areaId: 1, playItemId: 10 }, { areaId: 12, playItemId: 2 }, { areaId: 3, playItemId: 30 }];
+// const sourcePlayItemObj = {2:[1, 2, 3, 4], 3:[1, 2, 3, 4], 4:[]};
+// const previewList = [{ areaId: 1, playItemId: 10 }, { areaId: 2, playItemId: 2 }, { areaId: 3, playItemId: 30 }];
 function getPreviewListCheck(previewList, sourcePlayItemObj) {
   // 检查区域是否一致，如果区域少了，删除多余的区域。
   // const areaList = sourcePlayItemObj.map(item => { return item.areaId; });
@@ -39,7 +39,7 @@ function getPlayItemsCheck(areaCheckedPreviewList, sourcePlayItemObj) {
   const itemsCheckedPrevielist = areaCheckedPreviewList.map((item) => {
     const { areaId = 65535 } = item;
     if (sourcePlayItemObj[areaId]) {
-      const handledSourcePlayItemArray = sourcePlayItemObj[areaId].map(item => { return item.id });
+      const handledSourcePlayItemArray = sourcePlayItemObj[areaId].map(item => { return item.id; });
       if (handledSourcePlayItemArray.indexOf(item.playItemId) < 0) {
         item.playItemId = 65535;
       }

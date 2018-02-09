@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
 import Content from '../../components/Content';
-import Select from '../../reporterManage/component/select';
+import Select from '../component/Select';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table'
 import Page from '../../components/Page'
@@ -15,7 +15,7 @@ import ProjectPopup from '../component/ProjectPopup';
 import PreViewPopup from '../component/PreViewPopup';
 import { getDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
-import { getProjectsByPlayerId, getProjectPreviewById } from '../../api/mediaPublish'
+import { getProjectsByPlayerId, getProjectPreviewById, applyProjectOnPlayer } from '../../api/mediaPublish'
 import '../../../public/styles/media-publish-screen.less';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
@@ -38,8 +38,6 @@ export class MediaPublishScreen extends Component {
             { name: '方案管理...', id: 'manage' }
         ],
         currentPlan: null,
-        currentPlayerId: null,
-        currentProjectList: [],
     }
     componentWillMount() {
         this._isMounted = true;
@@ -66,7 +64,8 @@ export class MediaPublishScreen extends Component {
         if (!data.length) {
             return;
         }
-        this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData);
+        const domainList = data.filter(item => item.level >= 4)
+        this.setState({ currentDomain: domainList[0], domainList }, this.initDeviceData);
     }
     initDeviceData = () => {
         if (!this._isMounted) {
@@ -83,19 +82,19 @@ export class MediaPublishScreen extends Component {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     updateDeviceData = (data) => {
+        console.log('device', data)
         this._isMounted && this.setState({
             deviceList: data,
             currentDevice: data.length ? data[0] : null,
-            currentPlayerId: data[0].extend.player
-        }, () => {
-            this.getCurrentProjects()
-        });
+        }, this.getCurrentProjects);
     }
     getCurrentProjects = () => {
-        const id = this.state.currentPlayerId;
+        const id = this.state.currentDevice && this.state.currentDevice.extend.player;
         getProjectsByPlayerId(id, (res) => {
-            this.setState({ currentProjectList: res },()=>{
-                console.log(this.state.currentProjectList)
+            const newPlayScheme = this.state.playScheme;
+            newPlayScheme.splice(1, 0, ...res)
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] },()=>{
+                console.log('播放计划表',this.state.playScheme)
             })
         })
     }
@@ -134,7 +133,8 @@ export class MediaPublishScreen extends Component {
         this.setState({ page: { ...this.state.page, current, } }, this.initDeviceData)
     }
     //预览待时实现
-    handleViewDevice = () => {
+    handleViewDevice = (e) => {
+        e.stopPropagation();
         const { currentDevice, currentPlan } = this.state;
         const { actions } = this.props;
         actions.overlayerShow(<PreViewPopup title="显示屏预览" data={{ url: "http://localhost:8080/images/smartLight/screen_test.png" }} onCancel={() => {
@@ -142,20 +142,20 @@ export class MediaPublishScreen extends Component {
         }} />)
     }
     //弹出方案管理弹框
-    hanldePlanManage = () => {
+    handlePlanManage = () => {
         const { actions } = this.props;
-        const {currentPlayerId,currentProjectList}=this.state;
-        // const applyProjectList = [{ id: '5a67f0216c64c71518b0140f', name: "project1" }, { id: '5a67f05c6c64c71518b01410', name: "project3" }];
-        // const applyProjectList=this.state.currentProjectList;
+        const { playScheme } = this.state;
+        const currentPlayerId = this.state.currentDevice && this.state.currentDevice.extend.playerId;
 
-        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId:currentPlayerId,applyProjectList: currentProjectList }} onConfirm={data => {
+        actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId: currentPlayerId, applyProjectList: Immutable.fromJS(playScheme) }} onConfirm={data => {
             actions.overlayerHide();
+            this.getCurrentProjects();
         }} onCancel={() => {
             actions.overlayerHide();
         }} />)
     }
     selectDevice = (currentDevice) => {
-        this.setState({ currentDevice: currentDevice.toJS() })
+        this.setState({ currentDevice: currentDevice.toJS() }, this.getCurrentProjects)
     }
     //设备开关动作
     handleSubmit = (e) => {
@@ -166,17 +166,26 @@ export class MediaPublishScreen extends Component {
     }
     handleSelectPlayScheme = (e) => {
         const { playScheme, currentPlan } = this.state;
-        const id = playScheme[e.target.selectedIndex].id
+        const index = e.target.selectedIndex;
+        const id = playScheme[index].id
         if (id === 'manage') {
-            this.setState({ currentPlan: null }, this.hanldePlanManage)
+            this.setState({ currentPlan: playScheme[0] }, this.handlePlanManage)
+            this.handlePlanManage()
             return;
         }
-        this.setState({ currentPlan: playScheme[e.target.selectedIndex] })
+        this.setState({ currentPlan: playScheme[index] })
     }
     //应用当前方案
     handlePlanApply = () => {
         const { currentDevice, currentPlan } = this.state;
-        console.log('应用当前方案', currentDevice, currentPlan)
+        const playerId = currentDevice.extend.player;
+        let projectId = currentPlan.id;
+        if (currentPlan.id === 'empty') {
+            projectId = 'null';
+        }
+        applyProjectOnPlayer(playerId, projectId, (res) => {
+            console.log('应用成功', res)
+        })
     }
     componentDidUpdate() {
         const { sidebarCollapse, domainList, currentDomain, deviceList, currentDevice,
@@ -186,7 +195,7 @@ export class MediaPublishScreen extends Component {
         // console.log(currentDomain)
         // console.log(value)
         // console.log(currentDevice)
-        // console.log(currentPlan)
+        console.log(currentPlan)
     }
     render() {
         const { sidebarCollapse, deviceCollapse, operationCollapse, mapCollapse, domainList, currentDomain, deviceList, currentDevice,
@@ -216,8 +225,8 @@ export class MediaPublishScreen extends Component {
                     <div class='row collapse-container' role="presentation" onClick={this.handleCollapseAll}>
                         <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}></span>
                     </div>
-                    <div class='panel panel-default' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
-                        <div class='panel-heading'>
+                    <div class='panel panel-default' >
+                        <div class='panel-heading' role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
                             <span class="icon_select"></span>选中设备
                         <span class="icon icon_collapse pull-right" ></span>
                         </div>
@@ -242,7 +251,8 @@ export class MediaPublishScreen extends Component {
                             </div>
                             <div class='item'>
                                 <span>方案列表：</span>
-                                <Select id='playScheme' className='play-scheme' options={playScheme} onChange={this.handleSelectPlayScheme} />
+                                <Select id='playScheme' className='play-scheme' options={playScheme}
+                                    current={currentPlan} onChange={this.handleSelectPlayScheme} />
                                 <button class='btn btn-primary pull-right' onClick={this.handlePlanApply}
                                     disabled={(currentDevice !== null && currentPlan !== null) ? false : true}>应用</button>
                             </div>

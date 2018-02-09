@@ -64,7 +64,7 @@ export default class Lc extends Component {
     //初始化
     componentWillMount() {
         this._isMounted = true;
-        this.model = 'lc';
+        this.model = 'ssslc';
         this.deviceColumns = [
             { field: 'name', title: '设备名称' },
             { field: 'id', title: '设备编号' }
@@ -89,9 +89,9 @@ export default class Lc extends Component {
     updateDomainData = (data) => {
         if (data.length === 0) {
             return;
-        } else {
-            this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData);
         }
+        const domainList = data.filter(item => item.level >= 4)
+        this.setState({ currentDomain: domainList[0], domainList }, this.initDeviceData);
     }
     //初始化设备、更新设备列表、选择设备
     initDeviceData = () => {
