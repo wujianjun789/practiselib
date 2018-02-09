@@ -914,7 +914,10 @@ export class PlayerArea extends Component {
 
       return scene;
     });
-    this.setState({ curNode:response, playerData: this.state.playerData }, () => this.updatePlayerTree());
+    this.setState({ parentNode: this.state.playerData[index], curNode:response, playerData: this.state.playerData }, () => {
+      this.updatePlayerTree();
+      console.log('curNode children:', this.state.parentNode);
+    });
   }
 
   updatePlayerAreaData = (response) => {
@@ -928,7 +931,12 @@ export class PlayerArea extends Component {
 
       return area;
     });
-    this.setState({ curNode:response, playerData: this.state.playerData }, () => this.updatePlayerTree());
+
+
+    this.setState({ parentNode: this.state.playerData[planIndex].children[sceneIndex], curNode:response, playerData: this.state.playerData }, () => {
+      this.updatePlayerTree()
+      console.log('curNode children:',this.state.parentNode);
+    });
   }
 
   applyClick = (id, data) => {

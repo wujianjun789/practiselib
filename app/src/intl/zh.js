@@ -161,7 +161,7 @@ export default {
     'asset.model': '资产管理',
     'asset.statistics': '资产统计',
     'asset.property': '设备属性',
-    'asset.equipmentModal': '设备型号',
+    'asset.assetTypes': '设备型号',
     'asset.type': '设备类别',
     'asset.param': '默认参数',
 
@@ -374,7 +374,7 @@ export default {
     'mediaPublish.property': '属性',
     'mediaPublish.materialLib': '素材库',
 
-    'mediaPublish.screen':'场景名称',
+    'mediaPublish.screen': '场景名称',
     'mediaPublish.materialName': '素材名称',
     'mediaPublish.textContent': '文本内容',
     'mediaPublish.selectFont': '选择字体',

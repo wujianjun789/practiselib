@@ -35,10 +35,10 @@ export function getModelSummariesByModelID(modelID, cb) {
  */
 export function getModelTypeByModel(modelId, cb) {
   const headers = getHttpHeader();
-  httpRequest(HOST_IP + '/summaries/'+modelId+'/types',{
+  httpRequest(HOST_IP + '/summaries/' + modelId + '/types', {
     headers: headers,
     method: 'GET'
-  }, response=>{
+  }, response => {
     cb && cb(response);
   })
 }
@@ -51,11 +51,12 @@ export function getModelTypeByModel(modelId, cb) {
  */
 export function updateModelTypeByModel(modelId, data, cb) {
   const headers = getHttpHeader();
-  httpRequest(HOST_IP + '/summaries/'+modelId+'/types',{
+  let querystring = JSON.stringify(data);
+  httpRequest(HOST_IP + '/summaries/' + modelId + '/types?types=' + encodeURIComponent(querystring), {
     headers: headers,
     method: 'PUT',
-    body:JSON.stringify(data)
-  }, response=>{
+    // body: JSON.stringify(data)
+  }, response => {
     cb && cb(response);
   })
 }
@@ -343,11 +344,11 @@ export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
 export function getSearchAssetsByDomainWithCenter(domain, map, model, name, offset, limit, cb) {
   const headers = getHttpHeader();
   let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
-  if(domain.level == 1){
-      nearParam = {};
+  if (domain.level == 1) {
+    nearParam = {};
   }
 
-  const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam)};
+  const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam) };
   let paramStr = JSON.stringify({ 'include': ['extend'], 'where': Object.assign({}, param, getSearchParam(domain.id, model, name)), 'offset': offset, 'limit': limit });
   httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
     headers: headers,
@@ -360,11 +361,11 @@ export function getSearchAssetsByDomainWithCenter(domain, map, model, name, offs
 export function getSearchAssetCountByDomainWithCenter(domain, map, model, name, cb) {
   const headers = getHttpHeader();
   let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
-  if(domain.level == 1){
-      nearParam = {};
+  if (domain.level == 1) {
+    nearParam = {};
   }
 
-  const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam)};
+  const param = { geoPoint: Object.assign({}, { near: map.center }, nearParam) };
   let paramStr = JSON.stringify(Object.assign({}, param, getSearchParam(domain.id, model, name)));
   httpRequest(HOST_IP + '/assets/count?where=' + encodeURIComponent(paramStr), {
     headers: headers,
@@ -410,16 +411,16 @@ export const updateAssetsRpcById = (id, data, cb) => {
  * @param {number | string } id
  * @param {function} cb
  */
-export const deleteModalTypesById = (id, cb) => {
-  // httpRequest(`${HOST_IP}/`, {
-  //   headers: getHttpHeader(),
-  //   method: 'DELETE',
-  // }, response => {
-  //   cb && cb();
-  // });
-  console.log(id);
-  cb && cb();
-};
+// export const deleteModalTypesById = (id, cb) => {
+//   // httpRequest(`${HOST_IP}/`, {
+//   //   headers: getHttpHeader(),
+//   //   method: 'DELETE',
+//   // }, response => {
+//   //   cb && cb();
+//   // });
+//   console.log(id);
+//   cb && cb();
+// };
 
 /**
  * 添加设备型号

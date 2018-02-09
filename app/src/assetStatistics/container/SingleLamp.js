@@ -1,9 +1,9 @@
 /**
  * Created by a on 2017/8/23.
  */
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Content from '../../components/Content';
 
@@ -15,15 +15,15 @@ import SideBarInfo from '../../components/SideBarInfo';
 
 import Pie from '../../components/SensorParamsPie';
 
-import {getModelData, getModelList, getModelNameById} from '../../data/assetModels';
+import { getModelData, getModelList, getModelNameById } from '../../data/assetModels';
 
-import {getSearchCount, getSearchAssets} from '../../api/asset';
-import {getDomainList} from '../../api/domain';
-import {getDeviceTypeByModel} from '../../util/index';
-import {getObjectByKey} from '../../util/algorithm';
+import { getSearchCount, getSearchAssets } from '../../api/asset';
+import { getDomainList } from '../../api/domain';
+import { getDeviceTypeByModel } from '../../util/index';
+import { getObjectByKey } from '../../util/algorithm';
 
 // import {FormattedMessage, injectIntl} from 'react-intl';
-import { injectIntl} from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { intlFormat } from '../../util/index';
 
 import Immutable from 'immutable';
@@ -31,37 +31,37 @@ export class SingleLamp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model:'lc',
+      model: 'lc',
       data: Immutable.fromJS([
         /*{id:1,domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}},
                 {id:2, domain:"闵行区", deviceName:"灯集中控制器", soft_v:"1.0", sys_v:"1.0", core_v:"1.0", har_v:"1.0",
                     vendor_info:"上海三思", con_type:485, latlng:{lng:121.49971691534425, lat:31.239658843127756}}*/
       ]),
-      domain:Immutable.fromJS({list:[/*{id:1, value:'域'},{id:2, value:'域2'}*/], index:0, value:'域'}),
+      domain: Immutable.fromJS({ list: [/*{id:1, value:'域'},{id:2, value:'域2'}*/], index: 0, value: '域' }),
       // device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
-      search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
-      collapse:false,
-      deviceCollapse:false,
+      search: Immutable.fromJS({ placeholder: '输入素材名称', value: '' }),
+      collapse: false,
+      deviceCollapse: false,
       page: Immutable.fromJS({
-        pageSize:10,
+        pageSize: 10,
         current: 1,
         total: 0,
       }),
-      deviceInfo:{
+      deviceInfo: {
         total: 0,
         normal: 0,
       },
-      selectDevice:{
-        id:'assetStatistics',
-        latlng:{/*lng:121.49971691534425, lat:31.239658843127756*/},
-        position:[/*{
+      selectDevice: {
+        id: 'assetStatistics',
+        latlng: {/*lng:121.49971691534425, lat:31.239658843127756*/ },
+        position: [/*{
                     "device_id":1,
                     "device_type":'DEVICE',
                     lng:121.49971691534425,
                     lat:31.239658843127756
                 }*/],
-        data:[/*{
+        data: [/*{
                     id:1,
                     name:'example'
                 }*/],
@@ -74,14 +74,14 @@ export class SingleLamp extends Component {
     //  {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}]
 
     this.columns = [
-      {field:'domain', title:intlFormat({en:'domain', zh:'域'})}, 
-      {field:'name', title:intlFormat({en:'name', zh:'设备名称'})},
-      {field:'software', title:intlFormat({en:'software', zh:'软件版本'})}, 
-      {field:'system', title:intlFormat({en:'system', zh:'系统版本'})},
-      {field:'core_v', title:intlFormat({en:'core_v', zh:'内核版本'})}, 
-      {field:'hardware', title:intlFormat({en:'hardware', zh:'硬件版本'})},
-      {field:'vendor_info', title:intlFormat({en:'vendor_info', zh:'厂商信息'})}, 
-      {field:'typeName', title:intlFormat({en:'typeName', zh:'控制器类型'})},
+      { field: 'domain', title: intlFormat({ en: 'domain', zh: '域' }) },
+      { field: 'name', title: intlFormat({ en: 'name', zh: '设备名称' }) },
+      { field: 'software', title: intlFormat({ en: 'software', zh: '软件版本' }) },
+      { field: 'system', title: intlFormat({ en: 'system', zh: '系统版本' }) },
+      { field: 'core_v', title: intlFormat({ en: 'core_v', zh: '内核版本' }) },
+      { field: 'hardware', title: intlFormat({ en: 'hardware', zh: '硬件版本' }) },
+      { field: 'vendor_info', title: intlFormat({ en: 'vendor_info', zh: '厂商信息' }) },
+      { field: 'typeName', title: intlFormat({ en: 'typeName', zh: '控制器类型' }) },
     ];
 
     this.collapseHandler = this.collapseHandler.bind(this);
@@ -102,8 +102,8 @@ export class SingleLamp extends Component {
   componentWillMount() {
     this.mounted = true;
     // const query = this.props.location.query;
-    getModelData(() => {this.mounted && this.initTreeData();});
-    getDomainList(data => {this.mounted && this.initDomain(data);});
+    getModelData(() => { this.mounted && this.initTreeData(); });
+    getDomainList(data => { this.mounted && this.initDomain(data); });
 
     // getAssetsCount(data=>{this.mounted && this.deviceTotal(data)})
   }
@@ -113,7 +113,7 @@ export class SingleLamp extends Component {
   }
 
   requestSearch() {
-    const {model, domain, search, page} = this.state;
+    const { model, domain, search, page } = this.state;
     let cur = page.get('current');
     let size = page.get('pageSize');
     let offset = (cur - 1) * size;
@@ -127,7 +127,7 @@ export class SingleLamp extends Component {
   initTreeData() {
     let modelList = getModelList();
     let list = modelList.map(model => {
-      return Object.assign({}, model, {value:model.name});
+      return Object.assign({}, model, { value: model.name });
     });
 
     // this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:""})})
@@ -137,10 +137,10 @@ export class SingleLamp extends Component {
   initDomain(data) {
     if (data) {
       let list = data.map(domain => {
-        return Object.assign({}, domain, {value:domain.name});
+        return Object.assign({}, domain, { value: domain.name });
       });
 
-      this.setState({domain:Immutable.fromJS({list:list, index:0, value:data.length > 0 ? data[0] : ''})});
+      this.setState({ domain: Immutable.fromJS({ list: list, index: 0, value: data.length > 0 ? data[0] : '' }) });
     }
 
     this.requestSearch();
@@ -148,18 +148,18 @@ export class SingleLamp extends Component {
 
   initPageTotal(data) {
     let page = this.state.page.set('total', data.count);
-    this.setState({page: page, deviceInfo:{total:data.count}});
+    this.setState({ page: page, deviceInfo: { total: data.count } });
   }
 
   searchResult(data) {
     let list = data.map(item => {
       let curDomain = getObjectByKey(this.state.domain.get('list'), 'id', item.domainId);
-      return Object.assign({}, {domain:curDomain ? curDomain.get('name') : ''}, 
-        {typeName:getModelNameById(item.extendType)}, item, item.extend, item.geoPoint);
+      return Object.assign({}, { domain: curDomain ? curDomain.get('name') : '' },
+        { typeName: getModelNameById(item.extendType) }, item, item.extend, item.geoPoint);
       // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, 
       // latlng:item.geoPoint}, item.extend))
     });
-    this.setState({data:Immutable.fromJS(list)}, () => {
+    this.setState({ data: Immutable.fromJS(list) }, () => {
       if (this.state.data && this.state.data.size > 0) {
         let item = this.state.data.get(0);
         this.tableClick(item);
@@ -168,7 +168,7 @@ export class SingleLamp extends Component {
   }
 
   deviceTotal(data) {
-    this.setState({deviceInfo:{total:data.count, normal:data.count == 0 ? 0 : data.count - 1}});
+    this.setState({ deviceInfo: { total: data.count, normal: data.count == 0 ? 0 : data.count - 1 } });
   }
 
   searchSubmit() {
@@ -178,39 +178,47 @@ export class SingleLamp extends Component {
   domainChange(selectIndex) {
     // this.setState({domain:this.state.domain.update('index', v=>selectIndex)})
     this.state.domain = this.state.domain.update('index', v => selectIndex);
-    this.setState({domain:this.state.domain.update('value', v => {
-      return this.state.domain.getIn(['list', selectIndex, 'value']);
-    })}, () => {this.requestSearch();});
+    this.setState({
+      domain: this.state.domain.update('value', v => {
+        return this.state.domain.getIn(['list', selectIndex, 'value']);
+      })
+    }, () => { this.requestSearch(); });
   }
 
   deviceChange(selectIndex) {
     // this.props.actions.onChange('device', selectIndex);
-    this.setState({device:this.state.device.update('index', v => selectIndex)});
-    this.setState({device:this.state.device.update('value', v => {
-      return this.state.device.getIn(['list', selectIndex, 'value']);
-    })});
+    this.setState({ device: this.state.device.update('index', v => selectIndex) });
+    this.setState({
+      device: this.state.device.update('value', v => {
+        return this.state.device.getIn(['list', selectIndex, 'value']);
+      })
+    });
   }
 
   searchChange(value) {
     // this.props.actions.onChange('search', value);
-    this.setState({search:this.state.search.update('value', v => value)});
+    this.setState({ search: this.state.search.update('value', v => value) });
   }
 
   onChange(current, pageSize) {
     let page = this.state.page.set('current', current);
-    this.setState({page: page}, () => {
+    this.setState({ page: page }, () => {
       this.requestSearch();
     });
   }
 
   tableClick(data) {
     const latlng = data.get('geoPoint').toJS();
-    this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
-      latlng: latlng,
-      position:[{'device_id':data.get('id'), 'device_type':getDeviceTypeByModel(data.get('extendType')), 
-        lng:latlng.lng, lat:latlng.lat}],
-      data:[{id:data.get('id'), name:data.get('name')}],
-    })});
+    this.setState({
+      selectDevice: Object.assign({}, this.state.selectDevice, {
+        latlng: latlng,
+        position: [{
+          'device_id': data.get('id'), 'device_type': getDeviceTypeByModel(data.get('extendType')),
+          lng: latlng.lng, lat: latlng.lat
+        }],
+        data: [{ id: data.get('id'), name: data.get('name') }],
+      })
+    });
   }
 
   collapseHandler(id) {
@@ -223,42 +231,42 @@ export class SingleLamp extends Component {
   render() {
     const { data, domain, search, collapse, page, deviceInfo, selectDevice, deviceCollapse } = this.state;
 
-    const {total = 0, normal = 0} = deviceInfo;
+    const { total = 0, normal = 0 } = deviceInfo;
     let width = 145;
     let height = 145;
     return (
       <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
         <div className="heading">
           <Select className="domain" data={domain}
-            onChange={(selectIndex) => this.domainChange(selectIndex)}/>
+            onChange={(selectIndex) => this.domainChange(selectIndex)} />
           {/*<Select className="device" data={device}
                      onChange={(selectIndex)=>this.deviceChange(selectIndex)}/>*/}
           <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}
-            onChange={value => this.searchChange(value)} submit={() => this.searchSubmit()}/>
+            onChange={value => this.searchChange(value)} submit={() => this.searchSubmit()} />
         </div>
         <div className="table-container">
-          <Table columns={this.columns} data={data} 
-            activeId={selectDevice.data.length ? selectDevice.data[0].id : ''} 
-            rowClick={(row) => this.tableClick(row)}/>
-          <Page className={'page ' + (page.get('total') == 0 ? 'hidden' : '')} 
+          <Table columns={this.columns} data={data}
+            activeId={selectDevice.data.length ? selectDevice.data[0].id : ''}
+            rowClick={(row) => this.tableClick(row)} />
+          <Page className={'page ' + (page.get('total') == 0 ? 'hidden' : '')}
             showSizeChanger pageSize={page.get('pageSize')}
             current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
         </div>
 
-        <SideBarInfo  mapDevice={selectDevice} collapseHandler={this.collapseHandler} className={(deviceCollapse ? 'deviceCollapse ' : '')}>
+        <SideBarInfo mapDevice={selectDevice} collapseHandler={this.collapseHandler} className={(deviceCollapse ? 'deviceCollapse ' : '')}>
           <div className="panel panel-default device-statics-info">
             <div className="panel-heading" role="presentation"
               onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
-              <span className="icon_chart"></span>{intlFormat({en:'asset information', zh:'设备统计信息'})}
-              <span className="icon icon_collapse pull-right"></span>              
+              <span className="icon_chart"></span>{intlFormat({ en: 'asset information', zh: '设备统计信息' })}
+              <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className="panel-body view">
               <div className="circle1">
-                <Pie data={{type:'NOISE', val:total}} width={width} height={height} color="#E6BC00" 
+                <Pie data={{ type: 'NOISE', val: total }} width={width} height={height} color="#E6BC00"
                   className="noise" range={[0, total]}></Pie>
               </div>
               <div className="circle2">
-                <Pie data={{type:'TEMPS', val:normal, unit:'%'}} width={width} height={height} color="#E6BC00" 
+                <Pie data={{ type: 'TEMPS', val: normal, unit: '%' }} width={width} height={height} color="#E6BC00"
                   className="temps" range={[0, total]}></Pie>
               </div>
             </div>

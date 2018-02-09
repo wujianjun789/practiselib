@@ -41,9 +41,21 @@ export function getProjectsByPlayerId(id, cb) {
     headers: headers,
     method: 'GET',
   }, response => {
-        cb && cb(response);
+    cb && cb(response);
   });
 }
+//播放器应用选中方案
+export function applyProjectOnPlayer(playerId, projectId, cb) {
+  let headers = getHttpHeader();
+  let url = HOST_IP + `/players/${playerId}/active/${projectId}`;
+  httpRequest(url, {
+    headers,
+    method: 'PUT'
+  }, response => {
+    cb && cb(response);
+  })
+}
+
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
   let headers = getHttpHeader();
@@ -52,7 +64,7 @@ export function searchProjectList(type, projectName, offset, limit, cb) {
   let param = JSON.stringify(obj);
   let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
   httpRequest(url, {
-    headers: headers,
+    headers,
     method: 'GET',
   }, response => {
     cb && cb(response);
@@ -554,21 +566,21 @@ export function projectPublish(projectId, cb) {
 
 export function updateScreenProject(playerId, projectId, data) {
   const headers = getHttpHeader();
-  httpRequest(HOST_IP+'/players/'+playerId+'/projects/rel/'+projectId, {
+  httpRequest(HOST_IP + '/players/' + playerId + '/projects/rel/' + projectId, {
     headers: headers,
     method: 'PUT',
     body: JSON.stringify(data)
-  }, response=>{
+  }, response => {
     cb && cb(response);
   })
 }
 
 export function removeScreenProject(playerId, projectId) {
   const headers = getHttpHeader();
-  httpRequest(HOST_IP+'/players/'+playerId+'/projects/rel/'+projectId, {
+  httpRequest(HOST_IP + '/players/' + playerId + '/projects/rel/' + projectId, {
     headers: headers,
     method: 'DELETE'
-  }, response=>{
+  }, response => {
     cb && cb(response);
   })
 }
