@@ -426,7 +426,7 @@ export class PlayerArea extends Component {
 
   updateItemList = (programId, sceneId, zoneId, data) => {
     const newData = data.map(item => {
-      return Object.assign({}, item, { assetType: 'source' });
+      return Object.assign({}, item, { assetType: IsSystemFile(item.type)?'system':'source' });
     });
 
     if (newData && newData.length) {
