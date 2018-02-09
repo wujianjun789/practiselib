@@ -16,9 +16,9 @@ import VirtualClock from '../component/VirtualClock';
 import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 const RenderPropertyPanel = (props)=>{
-    const {curType, project, parentParentNode, parentNode, curNode, playerListAsset, actions, applyClick} = props;
-    // if(!project || !parentParentNode || !parentNode || !curNode){
-    //     return <div>server no response</div>
+    const {curType, project, parentParentNode, parentNode, curNode, playerListAsset,applyClick} = props;
+    // if(!curType || !project || !parentParentNode || !parentNode || !curNode){
+    //     return <div>server no data</div>;
     // }
 
     switch(curType) {
