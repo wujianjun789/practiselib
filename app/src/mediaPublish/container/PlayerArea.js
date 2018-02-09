@@ -38,7 +38,7 @@ import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import {
   addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
   getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem,
-  addItemToScene, removeItemInScene, getItemOfScene} from '../util/index';
+  addItemToScene, removeItemInScene, getItemOfScene, removeArea} from '../util/index';
 
 import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
@@ -493,7 +493,9 @@ export class PlayerArea extends Component {
       isClick: true,
       curType: curType,
       playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')),
-    }, () => {return this.setPlayItemArray();});
+    }, () => {
+      console.log('sceneItem:',this.state.curSceneItem);
+      return this.setPlayItemArray();});
   }
 
   // 设定预览区域列表 Start
@@ -1209,7 +1211,9 @@ export class PlayerArea extends Component {
       break;
     case 'area':
       removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
-        this.setState({ playerData: removeTree(playerData, node) });
+        const curSceneItem = removeArea(this.state.curSceneItem, project.id, parentParentNode.id, parentNode.id, node.id);
+        this.setState({ playerData: removeTree(playerData, node), curSceneItem: curSceneItem }, ()=>{
+        });
       });
       break;
     }

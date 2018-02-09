@@ -575,6 +575,27 @@ export function removeItemInScene(sceneItem, projectId, programId, sceneId, zone
     return sceneItem;
 }
 
+export function removeArea(sceneItem, projectId, programId, sceneId, zoneId) {
+    if(!sceneItem.hasOwnProperty(projectId)){
+        return sceneItem;
+    }
+
+    if(!sceneItem[projectId].hasOwnProperty(programId)){
+        return sceneItem;
+    }
+
+    if(!sceneItem[projectId][programId].hasOwnProperty(sceneId)){
+        return sceneItem;
+    }
+
+    if(!sceneItem[projectId][programId][sceneId].hasOwnProperty(zoneId)){
+        return sceneItem;
+    }
+
+    delete sceneItem[projectId][programId][sceneId][zoneId];
+    return sceneItem;
+}
+
 export function getItemOfScene(sceneItem, projectId, programId, sceneId) {
     if(!sceneItem.hasOwnProperty(projectId)){
         return [];

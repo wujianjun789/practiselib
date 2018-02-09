@@ -178,7 +178,7 @@ export function addLcToWhiteListById(gatewayId, lcId, cb) {
     httpRequest(`${HOST_IP}/assets/${lcId}`,{
         headers: headers,
         method: 'PATCH',
-        body:JSON.stringify({'gatewayId':gatewayId})
+        body:JSON.stringify({'ssgwId':gatewayId})
     }, response=>{
         cb && cb(response)
     })
@@ -195,7 +195,7 @@ export function delLcFromWhiteListById(gatewayId, lcId, cb) {
     httpRequest(`${HOST_IP}/assets/${lcId}`,{
         headers: headers,
         method: 'PATCH',
-        body:JSON.stringify({'gatewayId':null})
+        body:JSON.stringify({'ssgwId':null})
     }, response=>{
         cb && cb(response)
     })
