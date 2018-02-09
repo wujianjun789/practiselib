@@ -99,7 +99,7 @@ export class SingleLamp extends Component {
   }
 
   updateModelType(data) {
-    let dataItem = { id: '', type: '', detail: '', power: '', serviceLife: '', manufacture: '' }
+    let dataItem = { name: '', description: '', power: '', life: '', manufacture: '' }
     data.push(dataItem);
     this.setState({ assetTypeList: data })
   }
@@ -158,11 +158,18 @@ export class SingleLamp extends Component {
           name: name, power: power, description: description,
           life: life, manufacture: manufacture
         });
+        console.log("typeData:", typeData)
+        console.log("assetTypeList:", assetTypeList)
         //对更新后的数据做合并处理，名字是主键不能更改
-
-        console.log('typeData:', typeData)//
+        let list = assetTypeList;
+        list.pop();
+        console.log("list:", list)
+        let editData = list.map(item => {
+          return item.name === typeData.name ? typeData : item
+        })
+        console.log("editData:", editData)
         actions.overlayerHide();
-        updateModelTypeByModel(model, typeData, (data) => {
+        updateModelTypeByModel(model, editData, (data) => {
           this.mounted && this.getModelType();
         })
       }}></TypeEditPopup>);
