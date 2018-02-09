@@ -16,7 +16,7 @@ import VirtualClock from '../component/VirtualClock';
 import PlayerTimeAsset from '../component/PlayerTimeAsset';
 
 const RenderPropertyPanel = (props)=>{
-    const {curType, project, parentParentNode, parentNode, curNode, playerListAsset,applyClick} = props;
+    const {curType, project, parentParentNode, parentNode, curNode, playerListAsset,actions,applyClick} = props;
     // if(!curType || !project || !parentParentNode || !parentNode || !curNode){
     //     return <div>server no data</div>;
     // }
@@ -25,7 +25,7 @@ const RenderPropertyPanel = (props)=>{
         case 'playerProject':
             return <PlayerProject data={project} applyClick={data=>{applyClick('playerProject', data)}}/>;
         case 'playerPlan':
-            return <PlayerPlan projectId={project?project.id:null} data={curNode}
+            return <PlayerPlan actions={actions} projectId={project?project.id:null} data={curNode}
                                applyClick={data=>{applyClick('playerPlan', data)}}/>;
         case 'playerScene':
             return <PlayerScene projectId={project?project.id:null} parentId={parentNode?parentNode.id:null} data={curNode}

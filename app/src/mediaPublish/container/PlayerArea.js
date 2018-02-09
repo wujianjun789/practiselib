@@ -698,6 +698,11 @@ export class PlayerArea extends Component {
       return false;
     }
 
+    if(typeof curNode.id === 'string' && curNode.id.indexOf('area')>-1){
+      this.props.actions.addNotify(0, '请提交区域');
+      return false;
+    }
+
     const data = item.toJS();
     const index = lodash.findIndex(this.systemInitFile, file => { return file.baseInfo.type == data.type; });
     if (index < 0 && !data.type) {

@@ -19,7 +19,8 @@ export default class RenderPlayerAsset extends Component {
     
   render() {
     const { curNode, playerListAsset, playerAssetSelect, playerAssetRemove } = this.props;
-    return (<ul className={curNode && curNode.type==="area"?"":"hidden"}>
+    console.log('RenderPlayerAsset:',curNode);
+    return (<ul className={curNode && curNode.type==="area" && typeof curNode.id === 'number'?"":"hidden"}>
       {
         playerListAsset.get('list').map((item, index) => {
           const itemId = item.get('id');
@@ -27,7 +28,7 @@ export default class RenderPlayerAsset extends Component {
           const name = item.get('name');
           const thumbnail = item.get('thumbnail');
           const curId = playerListAsset.get('id');
-          console.log(item.toJS());
+
           return <li key={itemId} className="player-list-asset" onClick={() => playerAssetSelect(item)}
             role="presentation">
             <div className={'background ' + (curId == itemId ? '' : 'hidden')}></div>
