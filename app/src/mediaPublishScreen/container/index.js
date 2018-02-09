@@ -13,7 +13,7 @@ import Page from '../../components/Page'
 import MapView from '../../components/MapView'
 import ProjectPopup from '../component/ProjectPopup';
 import PreViewPopup from '../component/PreViewPopup';
-import { getDomainList } from '../../api/domain';
+import { getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
 import { getProjectsByPlayerId, getProjectPreviewById, applyProjectOnPlayer } from '../../api/mediaPublish'
 import '../../../public/styles/media-publish-screen.less';
@@ -56,7 +56,7 @@ export class MediaPublishScreen extends Component {
     }
     //初始化域，更新域列表
     initDomainData = () => {
-        getDomainList(data => {
+        getChildDomainList(data => {
             this._isMounted && this.updateDomainData(data)
         })
     }
@@ -64,8 +64,8 @@ export class MediaPublishScreen extends Component {
         if (!data.length) {
             return;
         }
-        const domainList = data.filter(item => item.level >= 4)
-        this.setState({ currentDomain: domainList[0], domainList }, this.initDeviceData);
+        // const domainList = data.filter(item => item.level >= 4)
+        this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData);
     }
     initDeviceData = () => {
         if (!this._isMounted) {
