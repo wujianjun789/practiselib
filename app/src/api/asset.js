@@ -51,10 +51,12 @@ export function getModelTypeByModel(modelId, cb) {
  */
 export function updateModelTypeByModel(modelId, data, cb, resparam, errCb) {
   const headers = getHttpHeader();
-  let querystring = JSON.stringify(data);
-  httpRequest(HOST_IP + '/summaries/' + modelId + '/types?types=' + encodeURIComponent(querystring), {
+  // let querystring = JSON.stringify(data);
+  // httpRequest(HOST_IP + '/summaries/' + modelId + '/types?types=' + encodeURIComponent(querystring), {
+  httpRequest(HOST_IP + '/summaries/' + modelId + '/types', {
     headers: headers,
     method: 'PUT',
+    body: JSON.stringify(data)
   }, response => {
     cb && cb(response);
   }, resparam, msg => {
@@ -126,7 +128,7 @@ export function getAssetsCount(cb) {
  * @param model(资产模型类型)
  */
 export function getAssetsByModel(model, cb) {
-  let models = model == 'ssads' || model == 'sses' ? model:`${model}s`
+  let models = model == 'ssads' || model == 'sses' ? model : `${model}s`
   let headers = getHttpHeader();
   httpRequest(HOST_IP + '/' + models, {
     headers: headers,
@@ -222,7 +224,7 @@ export function getAssetsBaseByModelWithName(model, name, cb) {
  */
 export function postAssetsByModel(model, data, cb) {
   let headers = getHttpHeader();
-  let models = model == 'ssads' || model == 'sses' ? model:`${model}s`
+  let models = model == 'ssads' || model == 'sses' ? model : `${model}s`
   let dat = { id: data.id, type: data.model, base: { name: data.name, geoPoint: { lat: data.lat, lng: data.lng }, extendType: model, domainId: data.domainId } };
   httpRequest(HOST_IP + '/' + models, {
     headers: headers,
@@ -255,7 +257,7 @@ export function postXes(model, data, cb) {
  */
 export function updateAssetsByModel(model, data, cb) {
   let headers = getHttpHeader();
-  let models = model == 'ssads' || model == 'sses' ? model:`${model}s`;
+  let models = model == 'ssads' || model == 'sses' ? model : `${model}s`;
   let dat = { type: data.model };
   httpRequest(HOST_IP + '/' + models + data.id, {
     headers: headers,
@@ -385,7 +387,7 @@ export function getSearchAssetCountByDomainWithCenter(domain, map, model, name, 
  */
 export const getDeviceStatusByModelAndId = (model, id) => cb => {
   // if(model == 'xes') model = 'xe';
-  let models = model == 'ssads' || model == 'sses' ? model:`${model}s`;
+  let models = model == 'ssads' || model == 'sses' ? model : `${model}s`;
   httpRequest(`${HOST_IP}/${models}/${id}/status`, {
     headers: getHttpHeader(),
     method: 'GET',
