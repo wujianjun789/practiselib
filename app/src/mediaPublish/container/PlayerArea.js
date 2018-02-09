@@ -44,7 +44,7 @@ import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
   updateProgramById, updateSceneById, updateZoneById, updateItemById, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
   removeProgramsById, removeSceneById, removeZoneById, removeItemById, searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById,
-    previewPlayItem, projectPublish} from '../../api/mediaPublish';
+  previewPlayItem, projectPublish} from '../../api/mediaPublish';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -436,8 +436,8 @@ export class PlayerArea extends Component {
     }
 
     const sceneItem = addItemToScene(this.state.curSceneItem, this.state.project.id, programId, sceneId, zoneId, data);
-    const assetItem = lodash.find(newData, item=>{return item.id == this.state.playerListAsset.get('id')});
-    this.state.playerListAsset = this.state.playerListAsset.update('id', v => assetItem?assetItem.id:-1);
+    const assetItem = lodash.find(newData, item => {return item.id == this.state.playerListAsset.get('id');});
+    this.state.playerListAsset = this.state.playerListAsset.update('id', v => assetItem ? assetItem.id : -1);
     this.setState({ playerListAsset: this.state.playerListAsset.update('list', v => Immutable.fromJS(newData)), curSceneItem: sceneItem }, () => {
       console.log('curSceneItem:', this.state.curSceneItem);
       this.state.playerListAsset.get('list').map(item => {
@@ -463,7 +463,7 @@ export class PlayerArea extends Component {
     const { playerListAsset } = this.state;
     const index = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.id);
     this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'name'], v => name);
-    this.setState({ playerListAsset:  this.state.playerListAsset},()=>{
+    this.setState({ playerListAsset:  this.state.playerListAsset}, () => {
       console.log(this.state.playerListAsset.get('list').toJS());
     });
   }
@@ -495,6 +495,9 @@ export class PlayerArea extends Component {
     }, () => {return this.setPlayItemArray();});
   }
 
+  // 设定预览区域列表 Start
+  // 获取区域列表，通过map拿到按照顺序排列的区域列表，
+  // 此步并没有使用区域字典，因为区域字典是JSON无序，而要求的预览列表必须有序
   getAreaList() {
     let areaList = [];
     const { parentNode: sceneInfo = [] } = this.state;
@@ -506,6 +509,7 @@ export class PlayerArea extends Component {
     return areaList;
   }
 
+  // 获取区域字典，作为接下来所有验证的凭据
   getAreaDic() {
     let areaDic = {};
     const projectId = this.state.project.id;
@@ -515,6 +519,7 @@ export class PlayerArea extends Component {
     return areaDic;
   }
 
+  // 初始化预览列表，被调用于新场景下第一次预览，此时没有任何播放项被选中
   initPreviewList() {
     const areaList = this.getAreaList();
     const curAreaId = this.state.curNode.id;
@@ -527,9 +532,26 @@ export class PlayerArea extends Component {
     });
     this.setState({
       previewList: previewList,
-    }, () => {return this.getPreviewImg()});
+    }, () => {return this.getPreviewImg();});
   }
 
+  /* 根据获取到的区域列表对选择的播放项进行排序
+  *  如果该区域下没有播放项被选中，则设为65535
+  *  test_case: 
+  * areaList: [1, 2, 3, 4, 5] 
+  * previewList [
+  * { areaId: 1, playItemId: 1 }, 
+  * { areaId: 3, playItemId: 1 }, 
+  * { areaId: 4, playItemId: 1 }, 
+  * { areaId: 5, playItemId: 1 }
+  * ]
+  * 最终得到: [
+  * { areaId: 1, playItemId: 1 },
+  * { areaId: 2, playitem:65535 },
+  * { areaId: 3, playItemId: 1 }, 
+  * { areaId: 4, playItemId: 1 }, 
+  * { areaId: 5, playItemId: 1 }]
+  */
   setPreviewListOrder(previewList) {
     let orderedPreviewList = [];
     const areaList = this.getAreaList();
@@ -540,29 +562,30 @@ export class PlayerArea extends Component {
         }
       }
       return { areaId: areaId, playItemId: 65535 };
-    })
+    });
     return orderedPreviewList;
   }
 
+  // 设置被选中，将要预览的播放项
   setPlayItemArray() {
     const { state } = this;
     if (!state.previewList || state.previewList.length == 0) {
       return this.initPreviewList();
     } else {
       const { previewList } = this.state;
-      const orederedPreviewList = this.setPreviewListOrder(previewList)
+      const orederedPreviewList = this.setPreviewListOrder(previewList);
       const curAreaId = this.state.curNode.id;
       const selectedItem = this.state.playerListAsset.get('id');
       const newPrevieList = orederedPreviewList.map((previewItem) => {
         if (previewItem.areaId === curAreaId) {
-          return { areaId: curAreaId, playItemId: selectedItem }
+          return { areaId: curAreaId, playItemId: selectedItem };
         } else {
           return previewItem;
         }
-      })
+      });
       this.setState({
         previewList: newPrevieList,
-      },() => {return this.getPreviewImg()})
+      }, () => {return this.getPreviewImg();});
     }
   }
 
@@ -573,10 +596,14 @@ export class PlayerArea extends Component {
     const zoneId = this.state.curNode.id;
     const items = this.state.previewList;
     const areaDic = this.getAreaDic();
+    // 最后再确认一次数值，避免因为各种原因导致区域字典发生改变以引起的BUG.
+    // 此步主要解决的是当用户删除了区域最后一个播放项后，将无法通过点击来记录这一操作，将通过数据验证将原本的Id替换为65535.
     const finalItem = getPreviewListCheck(items, areaDic).map(item => { return item.playItemId; });
     const requestJson = { projectId, programId, sceneId, zoneId, finalItem };
     return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
+  // 设定预览列表 End
+
 
   // checkPreviewItems(items) {
   //   const { scenePlayList } = this.state;
@@ -952,9 +979,9 @@ export class PlayerArea extends Component {
   }
 
   savePlanHandler = () => {
-    projectPublish(this.state.project.id, ()=>{
+    projectPublish(this.state.project.id, () => {
 
-    })
+    });
   }
 
   quitHandler = () => {
@@ -1252,7 +1279,7 @@ export class PlayerArea extends Component {
         !node.toggled && this.requestZoneList(parentNode.id, node.id);
         break;
       case 'playerArea':
-        this.setState({playerListAsset: this.state.playerListAsset.update('id', v=>-1)}, ()=>{
+        this.setState({playerListAsset: this.state.playerListAsset.update('id', v => -1)}, () => {
           this.requestItemList(parentParentNode.id, parentNode.id, node.id);
         });
         break;
@@ -1281,7 +1308,7 @@ export class PlayerArea extends Component {
     const { router } = this.props;
     const add_title = getTitleByType(curType, this.formatIntl);
     const imgInfo = { width: project.width, height: project.height, src: previewSrc.image };
-console.log('id:',playerListAsset.get('id'));
+    console.log('id:', playerListAsset.get('id'));
     return <div className={'container ' + 'mediaPublish-playerArea ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} />
       <SideBar data={playerData} title={project && project.name} isActive={curType == 'playerProject'} isClick={isClick} isAddClick={isAddClick}
