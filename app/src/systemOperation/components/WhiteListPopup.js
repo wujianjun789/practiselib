@@ -40,7 +40,7 @@ export default class WhiteListPopup extends Component {
   componentWillMount() {  //需要更新data
     this.mounted = true;
     this.initWhiteList();
-    ['lc', 'screen', 'xes'].forEach(key => {
+    ['ssslc', 'ssads'].forEach(key => {
       getAssetsBaseByModelWithDomain(key, this.props.domainId, data => {
         this.mounted && this.initAssetsList(data);
       });

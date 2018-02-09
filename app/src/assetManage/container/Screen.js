@@ -34,7 +34,7 @@ export class Screen extends Component {
         { id: '123', name: '华为LC_NBLot', description: '华为单灯控制器', unit: '0000', accuracy: '0000' },
       ],
       assetTypeList: [     //设备型号列表
-        { name: '三思ssads', description: '三思ssads' }
+        { name: '', description: '' }
         // { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
         // {name: '', detail: '', power: '', serviceLife: '', manufacture: '' },
       ],
