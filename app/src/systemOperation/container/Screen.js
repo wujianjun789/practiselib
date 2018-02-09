@@ -331,7 +331,7 @@ export class Screen extends Component {
     overlayerShow(<ExcelPopup className="import-popup" columns={this.columns} model={this.state.model}
       domainList={this.state.domainList} addNotify={addNotify} removeAllNotify={removeAllNotify} overlayerHide={overlayerHide}
       onConfirm={ (datas, isUpdate) => {
-        bacthImport(`${this.state.model}s`, datas, isUpdate, () => {
+        bacthImport(this.state.model, datas, isUpdate, () => {
           this.requestSearch();
         });
       } } />);
