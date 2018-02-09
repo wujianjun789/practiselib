@@ -30,7 +30,7 @@ const RenderAssetLib = props=>{
                         <img src={assetType==="system"?thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+thumbnail}/>
                     </span>
                     <span className="name" title={item.get('name')}>{item.get('name')}</span>
-                    {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event) => { event.stopPropagation(); addClick(item) }}></span>}
+                    {!playerListAsset.get('isEdit') && <span className="icon_add_c add" title="添加" onClick={(event) => { event.stopPropagation(); setTimeout(()=>{addClick(item)}, 33) }}></span>}
                     {!assetList.get('isEdit') && item.get("assetType") == "source" && <span className="icon_delete_c remove" title="删除" onClick={(event) => { event.stopPropagation(); assetLibRemove(item) }}></span>}
                 </li>
             })

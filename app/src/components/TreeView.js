@@ -34,7 +34,7 @@ export class TreeView extends Component{
 
     onMove(key, node){
         const {actions} = this.props;
-        actions && actions.onMove(key, node);
+        // setTimeout(()=>{actions && actions.onMove(key, node)}, 33);
         this.setState({update: true});
         this.props.onMove && this.props.onMove(key, node);
     }
