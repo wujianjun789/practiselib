@@ -9,7 +9,7 @@ import PanelFooter from './../../components/PanelFooter';
 import NotifyPopup from '../../common/containers/NotifyPopup'
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import { getProjectList, updateScreenProject, removeScreenProject } from '../../api/mediaPublish';
+import { getPublishProjectList, updateScreenProject, removeScreenProject } from '../../api/mediaPublish';
 import lodash from 'lodash';
 export default class ProjectPopup extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ export default class ProjectPopup extends Component {
 
     componentWillMount() {
         this.mounted = true;
-        getProjectList(data => {
+        getPublishProjectList(data => {
             if (this.mounted) {
                 this.projectList = data;
                 this.setState(this.projectList);

@@ -113,6 +113,18 @@ export function getProjectList(cb) {
   });
 }
 
+export function getPublishProjectList(cb) {
+  let headers = getHttpHeader();
+  const param = JSON.stringify({"where":{"binKey":{"neq":""}}});
+  let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
+  httpRequest(url, {
+    headers: headers,
+    method: 'GET',
+  }, response => {
+    cb && cb(response);
+  });
+}
+
 export function getProjectById(data, cb) {
   let headers = getHttpHeader();
 
