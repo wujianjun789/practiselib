@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
 import Content from '../../components/Content';
-import Select from '../../reporterManage/component/select';
+import Select from '../component/Select';
 import SearchText from '../../components/SearchText';
 import Table from '../../components/Table'
 import Page from '../../components/Page'
@@ -64,7 +64,7 @@ export class MediaPublishScreen extends Component {
         if (!data.length) {
             return;
         }
-        const domainList = data.filter(item => item.level === 4)
+        const domainList = data.filter(item => item.level >= 4)
         this.setState({ currentDomain: domainList[0], domainList }, this.initDeviceData);
     }
     initDeviceData = () => {
@@ -93,8 +93,8 @@ export class MediaPublishScreen extends Component {
         getProjectsByPlayerId(id, (res) => {
             const newPlayScheme = this.state.playScheme;
             newPlayScheme.splice(1, 0, ...res)
-            this.setState({ playScheme: newPlayScheme }, () => {
-                console.log(this.state.playScheme)
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] },()=>{
+                console.log('播放计划表',this.state.playScheme)
             })
         })
     }
@@ -141,13 +141,14 @@ export class MediaPublishScreen extends Component {
         }} />)
     }
     //弹出方案管理弹框
-    hanldePlanManage = () => {
+    handlePlanManage = () => {
         const { actions } = this.props;
         const { playScheme } = this.state;
         const currentPlayerId = this.state.currentDevice && this.state.currentDevice.extend.playerId;
 
         actions.overlayerShow(<ProjectPopup title="方案管理" data={{ playerId: currentPlayerId, applyProjectList: Immutable.fromJS(playScheme) }} onConfirm={data => {
             actions.overlayerHide();
+            this.getCurrentProjects();
         }} onCancel={() => {
             actions.overlayerHide();
         }} />)
@@ -164,12 +165,14 @@ export class MediaPublishScreen extends Component {
     }
     handleSelectPlayScheme = (e) => {
         const { playScheme, currentPlan } = this.state;
-        const id = playScheme[e.target.selectedIndex].id
+        const index = e.target.selectedIndex;
+        const id = playScheme[index].id
         if (id === 'manage') {
-            this.setState({ currentPlan: null }, this.hanldePlanManage)
+            this.setState({ currentPlan: playScheme[0] }, this.handlePlanManage)
+            this.handlePlanManage()
             return;
         }
-        this.setState({ currentPlan: playScheme[e.target.selectedIndex] })
+        this.setState({ currentPlan: playScheme[index] })
     }
     //应用当前方案
     handlePlanApply = () => {
@@ -191,7 +194,7 @@ export class MediaPublishScreen extends Component {
         // console.log(currentDomain)
         // console.log(value)
         // console.log(currentDevice)
-        // console.log(currentPlan)
+        console.log(currentPlan)
     }
     render() {
         const { sidebarCollapse, deviceCollapse, operationCollapse, mapCollapse, domainList, currentDomain, deviceList, currentDevice,
@@ -247,7 +250,8 @@ export class MediaPublishScreen extends Component {
                             </div>
                             <div class='item'>
                                 <span>方案列表：</span>
-                                <Select id='playScheme' className='play-scheme' options={playScheme} onChange={this.handleSelectPlayScheme} />
+                                <Select id='playScheme' className='play-scheme' options={playScheme}
+                                    current={currentPlan} onChange={this.handleSelectPlayScheme} />
                                 <button class='btn btn-primary pull-right' onClick={this.handlePlanApply}
                                     disabled={(currentDevice !== null && currentPlan !== null) ? false : true}>应用</button>
                             </div>
