@@ -139,11 +139,11 @@ export class Gateway extends Component {
       if (this.mounted) {
         this.props.actions.treeViewInit(TreeData);
         getModelTypeByModel(model,res=>{
-          let list = res.length == 0 ? []:res.map((type) => {
+          let types = res.length==0 ? []:res[0].types;
+          let list = types.length==0? []:types.map((type) => {
             return {
-              id: type.id,
-              title: type.title,
-              value: type.title,
+              title: type.name,
+              value: type.name,
             };
           })
           this.setState({
@@ -152,8 +152,6 @@ export class Gateway extends Component {
             })
           });
         });
-        
-        
         getChildDomainList(data => {
           this.mounted && this.initDomainList(data);
         });
@@ -219,10 +217,7 @@ export class Gateway extends Component {
       return Object.assign({}, asset, asset.extend, asset.geoPoint, {
         domainName: domainName,
       },
-      {
-        // typeName: getModelTypesNameById(this.state.model, asset.extend.type),
-        typeName:asset.extend.type?asset.extend.type:' '
-      });
+      {typeName:asset.extend.type});
     });
 
     this.setState({
@@ -278,7 +273,6 @@ export class Gateway extends Component {
         id: '',
         name: '',
         model: curType ? curType.title : '',
-        modelId: curType ? curType.id : '',
         domain: domainList.value,
         domainId: curDomain ? curDomain.id : '',
         lng: addLatlng ? addLatlng.lng : '',
@@ -303,9 +297,7 @@ export class Gateway extends Component {
       const dataInit2 = {
         id: data ? data.id : null,
         name: data ? data.name : null,
-        // model: data ? getModelTypesNameById(model, data.type) : '',
-        
-        modelId: data ? data.type : null,
+        model: data ?  data.type : '',
         domain: selectDevice.domainName,
         domainId: selectDevice.domainId,
         lng: latlng.lng,

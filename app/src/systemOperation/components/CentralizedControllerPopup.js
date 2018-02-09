@@ -15,7 +15,6 @@ export default class CentralizedControllerPopup extends Component {
       id: id,
       name: name,
       model: model,
-      modelId: modelId,
       domain: domain,
       domainId: domainId,
       lng: lng,
@@ -38,11 +37,11 @@ export default class CentralizedControllerPopup extends Component {
 
   onChange(e) {
     let id = e.target.id;
-    if (id == 'model') {
-      this.setState({
-        modelId: this.props.modelList.options[e.target.selectedIndex].id,
-      });
-    }
+    // if (id == 'model') {
+    //   this.setState({
+    //     modelId: this.props.modelList.options[e.target.selectedIndex].id,
+    //   });
+    // }
 
     if (id == 'domain') {
       this.setState({

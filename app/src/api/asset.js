@@ -221,7 +221,7 @@ export function getAssetsBaseByModelWithName(model, name, cb) {
  */
 export function postAssetsByModel(model, data, cb) {
   let headers = getHttpHeader();
-  let dat = { id: data.id, type: data.modelId, base: { name: data.name, geoPoint: { lat: data.lat, lng: data.lng }, extendType: model, domainId: data.domainId } };
+  let dat = { id: data.id, type: data.model, base: { name: data.name, geoPoint: { lat: data.lat, lng: data.lng }, extendType: model, domainId: data.domainId } };
   httpRequest(HOST_IP + '/' + model + 's', {
     headers: headers,
     method: 'POST',
