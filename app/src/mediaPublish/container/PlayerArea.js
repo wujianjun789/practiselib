@@ -443,8 +443,8 @@ export class PlayerArea extends Component {
       this.state.playerListAsset.get('list').map(item => {
         const itemObject = item.toJS();
         if (IsSystemFile(item.get('type'))) {
-          const name = lodash.find(this.systemFile, file => { return file.id === itemObject.materialId; }).name;
-          this.updateItemName(itemObject, name);
+          const sysfile = lodash.find(this.systemFile, file => { return file.id === itemObject.materialId; });
+          this.updateItemName(itemObject, sysfile);
         } else {
           this.requestAssetNameById(itemObject);
         }
@@ -454,15 +454,16 @@ export class PlayerArea extends Component {
 
   requestAssetNameById = (item) => {
     getAssetById(item.materialId, response => {
-      this.updateItemName(item, response.name);
+      this.updateItemName(item, response);
     });
   }
 
-  updateItemName = (item, name) => {
-    console.log('updateItemName:', name);
+  updateItemName = (item, file) => {
+    console.log('updateItemName:', file.name);
     const { playerListAsset } = this.state;
     const index = getIndexByKey(this.state.playerListAsset.get('list'), 'id', item.id);
-    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'name'], v => name);
+    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'name'], v => file.name);
+    this.state.playerListAsset = this.state.playerListAsset.updateIn(['list', index, 'thumbnail'], v => file.thumbnail);
     this.setState({ playerListAsset:  this.state.playerListAsset},()=>{
       console.log(this.state.playerListAsset.get('list').toJS());
     });
