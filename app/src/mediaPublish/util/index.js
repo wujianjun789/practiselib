@@ -326,7 +326,7 @@ function getTxtFileData(data, type) {
                 "amber": 0,
                 "alpha": 255
             },
-            "materialId": "string"
+            "materialId": ""
         },
         "transparency": 0,
         "colorReseversal": 0,

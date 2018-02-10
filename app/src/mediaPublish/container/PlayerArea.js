@@ -487,6 +487,7 @@ export class PlayerArea extends Component {
 
   playerAssetSelect = (item) => {
     const type = item.get('type');
+    console.log('selectType:', type);
     const curType = tranformAssetType(type);
     this.state.playerListAsset = this.state.playerListAsset.update('id', v => item.get('id'));
     this.setState({
