@@ -41,8 +41,14 @@ class PlayerPicAsset extends PureComponent {
   }
 
   componentWillMount() {
+    this.mounted = true;
     this.requestItem();
   }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+  
   componentDidUpdate() {
     const {data} = this.props;
     if (data.id !== this.state.id) {
@@ -61,7 +67,7 @@ class PlayerPicAsset extends PureComponent {
       property.animation = res.inTransition ? res.inTransition.transition : this.animationList[0].value;
       property.playDuration = res.baseInfo ? res.baseInfo.playDuration : null;
       property.playSpeed = res.inTransition ? res.inTransition.speed : null;
-      this.setState({property:Object.assign({}, property)});
+      this.mounted && this.setState({property:Object.assign({}, property)});
     });
   }
 

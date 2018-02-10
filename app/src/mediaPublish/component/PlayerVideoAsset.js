@@ -37,8 +37,14 @@ class PlayerPicAsset extends PureComponent {
   }
 
   componentWillMount() {
+    this.mounted = true;
     this.requestItem();
   }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   componentDidUpdate() {
     const {data} = this.props;
     if (data.id !== this.state.id) {
@@ -58,7 +64,7 @@ class PlayerPicAsset extends PureComponent {
       property.playTimeEnd = res.playTimeEnd ? this.initTime(res.playTimeEnd) : moment('00:00:00', 'HH:mm:ss');
       property.scale = res.scale ? res.scale : this.scaleList[0].value;
       // property.volume = res.volume ? res.volume : this.volumeList[0];
-      this.setState({property:Object.assign({}, property)});
+      this.mounted && this.setState({property:Object.assign({}, property)});
     });
   }
 
