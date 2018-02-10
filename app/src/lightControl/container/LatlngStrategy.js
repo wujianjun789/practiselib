@@ -235,7 +235,7 @@ class LatlngStrategy extends Component {
               len++;
               selectedDevices.push(res);
               //所有网关Id          
-              !gatewayIds.includes(res.gatewayId) && gatewayIds.push(res.gatewayId);
+              !gatewayIds.includes(res.ssgwId) && gatewayIds.push(res.ssgwId);
               if (len == devices.length) {
                 resolve(gatewayIds);
               }
@@ -264,7 +264,7 @@ class LatlngStrategy extends Component {
             gateways.forEach(item => {
               //网关白名单中的选中设备
               selectedDevicesData.push(Object.assign({}, item, {whiteList:
-                getListByKey2(selectedDevices, 'gatewayId', item.id)}));
+                getListByKey2(selectedDevices, 'ssgwId', item.id)}));
             });
             this.initDeviceData('selectedDevicesData', selectedDevicesData);
           });
@@ -355,7 +355,7 @@ class LatlngStrategy extends Component {
         let parentId = getProByKey(data, 'key', id, 'id');
         childs = getIndexsByKey(data, 'groupId', parentId);
       } else {
-        childs = getIndexsByKey(data, 'gatewayId', id);
+        childs = getIndexsByKey(data, 'ssgwId', id);
       }
       childs.length !== 0 && childs.map(item => {
         data = data.setIn([item, 'hidden'], !data.getIn([item, 'hidden']));

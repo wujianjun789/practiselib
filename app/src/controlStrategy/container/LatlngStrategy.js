@@ -154,7 +154,7 @@ class LatlngStrategy extends Component {
               len++;
               selectedDevices.push(res);
               //所有网关Id          
-              !gatewayIds.includes(res.gatewayId) && gatewayIds.push(res.gatewayId);
+              !gatewayIds.includes(res.ssgwId) && gatewayIds.push(res.ssgwId);
               if (len == devices.length) {
                 resolve(gatewayIds);
               }
@@ -184,7 +184,7 @@ class LatlngStrategy extends Component {
             gateways.forEach(item => {
               //网关白名单中的选中设备
               selectedDevicesData.push(Object.assign({}, item, {
-                whiteList:getListByKey2(selectedDevices, 'gatewayId', item.id)}));
+                whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)}));
               getWhiteListById(item.id, (res) => {
                 len++;
                 allDevicesData.push(Object.assign({}, item, {whiteList:res}));
@@ -396,7 +396,7 @@ class LatlngStrategy extends Component {
         let parentId = getProByKey(data, 'key', id, 'id');
         childs = getIndexsByKey(data, 'groupId', parentId);
       } else {
-        childs = getIndexsByKey(data, 'gatewayId', id);
+        childs = getIndexsByKey(data, 'ssgwId', id);
       }
       childs.length !== 0 && childs.map(item => {
         data = data.setIn([item, 'hidden'], !data.getIn([item, 'hidden']));
@@ -423,17 +423,17 @@ class LatlngStrategy extends Component {
       let obj = getObjectByKey(allDevicesData, 'id', id);
       let childs = [];
       if (obj.get('whiteList')) {
-        childs = getListKeyByKey(allDevicesData, 'gatewayId', id, 'id');
+        childs = getListKeyByKey(allDevicesData, 'ssgwId', id, 'id');
         childs.map(item => {
           value ? !allDevices.checked.includes(item) && allDevices.checked.push(item) :
             spliceInArray(allDevices.checked, item);
         });
       } else {
-        childs = getListKeyByKey(allDevicesData, 'gatewayId', obj.get('gatewayId'), 'id');
+        childs = getListKeyByKey(allDevicesData, 'ssgwId', obj.get('ssgwId'), 'id');
         if (value) {
-          IsExitInArray3(allDevices.checked, childs) && allDevices.checked.push(obj.get('gatewayId'));
+          IsExitInArray3(allDevices.checked, childs) && allDevices.checked.push(obj.get('ssgwId'));
         } else {
-          spliceInArray(allDevices.checked, obj.get('gatewayId'));
+          spliceInArray(allDevices.checked, obj.get('ssgwId'));
         }
       }
       allDevices.allChecked = allDevicesData.size == allDevices.checked.length;
@@ -478,7 +478,7 @@ class LatlngStrategy extends Component {
       const {allDevices, allDevicesData, selectItem} = this.state;
       let res = [];
       allDevices.checked.map(id => {
-        if (getProByKey(allDevicesData, 'id', id, 'extendType') !== 'gateway') {
+        if (getProByKey(allDevicesData, 'id', id, 'extendType') !== 'ssgw') {
           res.push(id);
         }
       });
