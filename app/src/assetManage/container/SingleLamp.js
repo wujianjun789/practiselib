@@ -34,7 +34,7 @@ export class SingleLamp extends Component {
         { id: '123', neme: '华为LC_NBLot', detail: '华为单灯控制器', unit: '0000', accuracy: '0000' },
       ],
       assetTypeList: [     //设备型号列表
-        // { name: '三思单灯', description: '三思单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
+        { name: '', description: '', power: '', life: '', manufacture: '' },
         // { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
         // {name: '', detail: '', power: '', serviceLife: '', manufacture: '' },
       ],

@@ -10,7 +10,7 @@ import { DatePicker, message } from 'antd';
 import Modal from 'antd/lib/modal';
 import '../../../../public/styles/antd-modal.less';
 import { getYesterday, getToday } from '../../../util/time';
-import { getDomainList } from '../../../api/domain';
+import { getChildDomainList } from '../../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../../api/asset';
 import { getHistoriesDataInStat } from '../../../api/reporter';
 import '../../../../public/styles/reporterManage-device.less';
@@ -57,18 +57,18 @@ export default class Lc extends Component {
     componentWillUnmount() {
         this._isMounted = false;
     }
-    //初始化域、更新域列表
+    //初始化域，更新域列表
     initDomainData = () => {
-        getDomainList(data => {
-            this._isMounted && this.updateDomainData(data);
-        });
+        getChildDomainList(data => {
+            this._isMounted && this.updateDomainData(data)
+        })
     }
     updateDomainData = (data) => {
-        if (data.length === 0) {
+        if (!data.length) {
             return;
         }
-        const domainList = data.filter(item => item.level >= 4)
-        this.setState({ currentDomain: domainList[0], domainList }, this.initDeviceData);
+        // const domainList = data.filter(item => item.level >= 4)
+        this.setState({ currentDomain: data[0], domainList: data }, this.initDeviceData);
     }
     //初始化设备、更新设备列表、选择设备
     initDeviceData = () => {

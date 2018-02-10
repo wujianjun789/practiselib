@@ -22,7 +22,7 @@ import { addNotify } from '../../common/actions/notifyPopup';
 import NotifyPopup from '../../common/containers/NotifyPopup';
 import { message } from 'antd';
 
-export class SingleLamp extends Component {
+export class Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,7 @@ export class SingleLamp extends Component {
         { id: '123', name: '华为LC_NBLot', description: '华为单灯控制器', unit: '0000', accuracy: '0000' },
       ],
       assetTypeList: [     //设备型号列表
-        { name: '三思ssads', description: '三思ssads' }
+        { name: '', description: '' }
         // { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
         // {name: '', detail: '', power: '', serviceLife: '', manufacture: '' },
       ],
@@ -288,4 +288,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(SingleLamp));
+)(injectIntl(Screen));

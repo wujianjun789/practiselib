@@ -38,7 +38,7 @@ import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
 import {
   addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
   getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem,
-  addItemToScene, removeItemInScene, getItemOfScene} from '../util/index';
+  addItemToScene, removeItemInScene, getItemOfScene, removeArea} from '../util/index';
 
 import {
   uploadMaterialFile, getProgramList, getSceneList, getZoneList, getItemList, addProgram, addScene, addZone, addItem, updateProjectById,
@@ -493,7 +493,9 @@ export class PlayerArea extends Component {
       isClick: true,
       curType: curType,
       playerListAsset: this.state.playerListAsset.update('name', v => item.get('name')),
-    }, () => {return this.setPlayItemArray();});
+    }, () => {
+      console.log('sceneItem:',this.state.curSceneItem);
+      return this.setPlayItemArray();});
   }
 
   // 设定预览区域列表 Start
@@ -937,6 +939,7 @@ export class PlayerArea extends Component {
 
     this.setState({ parentNode: this.state.playerData[planIndex].children[sceneIndex], curNode:response, playerData: this.state.playerData }, () => {
       this.updatePlayerTree();
+      this.requestItemList(parentParentNode.id, parentNode.id, response.id);
       console.log('curNode children:', this.state.parentNode);
     });
   }
@@ -1204,7 +1207,9 @@ export class PlayerArea extends Component {
       break;
     case 'area':
       removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
-        this.setState({ playerData: removeTree(playerData, node) });
+        const curSceneItem = removeArea(this.state.curSceneItem, project.id, parentParentNode.id, parentNode.id, node.id);
+        this.setState({ playerData: removeTree(playerData, node), curSceneItem: curSceneItem }, ()=>{
+        });
       });
       break;
     }
@@ -1243,7 +1248,7 @@ export class PlayerArea extends Component {
     let parentNode = getTreeParentNode(playerData, data.node);
     let index = lodash.findIndex(playerData, plan => { return plan.type == parentNode.type && plan.id == parentNode.id; });
 
-    // this.state.playerData[index].children = moveTree(parentNode.children, data);
+    this.state.playerData[index].children = moveTree(parentNode.children, data);
     this.setState({ playerData: this.state.playerData }, () => {
       let ids = getListObjectByKey(this.state.playerData[index].children, 'id');
       updateSceneOrders(project.id, parentNode.id, ids, response => {

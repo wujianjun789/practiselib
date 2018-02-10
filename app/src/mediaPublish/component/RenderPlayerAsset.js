@@ -19,7 +19,6 @@ export default class RenderPlayerAsset extends Component {
     
   render() {
     const { curNode, playerListAsset, playerAssetSelect, playerAssetRemove } = this.props;
-    console.log('RenderPlayerAsset:',curNode);
     return (<ul className={curNode && curNode.type==="area" && typeof curNode.id === 'number'?"":"hidden"}>
       {
         playerListAsset.get('list').map((item, index) => {
@@ -29,11 +28,11 @@ export default class RenderPlayerAsset extends Component {
           const thumbnail = item.get('thumbnail');
           const curId = playerListAsset.get('id');
 
-          return <li key={itemId} className="player-list-asset" onClick={() => playerAssetSelect(item)}
+          return <li key={index} className="player-list-asset" onClick={() => playerAssetSelect(item)}
             role="presentation">
             <div className={'background ' + (curId == itemId ? '' : 'hidden')}></div>
             <span className="icon">
-              <img src={assetType==='system'?thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+thumbnail}/>
+              {thumbnail && <img src={assetType==='system'?thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+thumbnail}/>}
             </span>
             <span className="name" title={name}>{name}</span>
             {curId == itemId && index > 0 &&
@@ -49,7 +48,7 @@ export default class RenderPlayerAsset extends Component {
                       onClick={(e) => { this.onClick(e, 'right', item); }}
                       role="presentation"
                     />}
-            {!playerListAsset.get('isEdit') && item.get('assetType') == 'source' &&
+            {!playerListAsset.get('isEdit')  &&
                     <span
                       className="icon_delete_c remove"
                       title="删除"
