@@ -259,7 +259,7 @@ export function updateAssetsByModel(model, data, cb) {
   let headers = getHttpHeader();
   let models = model == 'ssads' || model == 'sses' ? model : `${model}s`;
   let dat = { type: data.model };
-  httpRequest(HOST_IP + '/' + models + '/' +data.id, {
+  httpRequest(HOST_IP + '/' + models + '/' + data.id, {
     headers: headers,
     method: 'PATCH',
     body: JSON.stringify(dat),
