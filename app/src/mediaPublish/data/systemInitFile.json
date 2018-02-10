@@ -491,7 +491,7 @@
     "fontColor": {
       "red": 255,
       "green": 255,
-      "blue": 0,
+      "blue": 255,
       "amber": 0,
       "alpha": 255
     },
