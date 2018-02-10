@@ -557,6 +557,7 @@ export class PlayerArea extends Component {
   setPreviewListOrder(previewList) {  
     let orderedPreviewList = [];
     const areaList = this.getAreaList();
+    console.log('setPreviewList ======================== ', areaList);
     orderedPreviewList = areaList.map((areaId) => {
       for (let i = 0; i < previewList.length; i++) {
         if (areaId === previewList[i].areaId) {
@@ -591,6 +592,15 @@ export class PlayerArea extends Component {
     }
   }
 
+  getFixedPlayItemList(areaIdList, playItemObj) {
+    let fixedPlayItemObj = {};
+    for (let i = 0; i < areaIdList.length; i++) {
+      const areaId = areaIdList[i];
+      fixedPlayItemObj[areaId] = playItemObj[areaId] || [];
+    }
+    return fixedPlayItemObj;
+  }
+
   getPreviewImg() {
     const projectId = this.state.project.id;
     const programId = this.state.parentParentNode.id;
@@ -598,32 +608,18 @@ export class PlayerArea extends Component {
     const zoneId = this.state.curNode.id;
     const items = this.state.previewList;
     const areaDic = this.getAreaDic();
+    const compareAreaDic = this.getAreaList();
+    const finalAreaDic = this.getFixedPlayItemList(compareAreaDic, areaDic);
+    console.log('Befor Compare =======', areaDic);
+
     // 最后再确认一次数值，避免因为各种原因导致区域字典发生改变以引起的BUG.
     // 此步主要解决的是当用户删除了区域最后一个播放项后，将无法通过点击来记录这一操作，将通过数据验证将原本的Id替换为65535.
-    const finalItem = getPreviewListCheck(items, areaDic).map(item => { return item.playItemId; });
+    const finalItem = getPreviewListCheck(items, finalAreaDic).map(item => { return item.playItemId; });
     const requestJson = { projectId, programId, sceneId, zoneId, finalItem };
+    console.log(requestJson);
     return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
   // 设定预览列表 End
-
-  // checkPreviewItems(items) {
-  //   const { scenePlayList } = this.state;
-  //   const newItem = items.map((_item) => {
-  //     const { areaId } = _item;
-  //     if (scenePlayList[areaId]) {
-  //       for (let i = 0; i < scenePlayList[areaId].length; i++) {
-  //         if (scenePlayList[areaId][i].id === _item.playItemId) {
-  //           return _item;
-  //         }
-  //       }
-  //       _item.playItemId = 65535;
-  //       return _item;
-  //     }
-  //     _item.playItemId = 65535;
-  //     return _item;
-  //   });
-  //   return newItem;
-  // }
 
   updateTreeData = (node, parentNode, parentParentNode) => {
     const treeList = updateTree(this.state.playerData, node, parentNode, parentParentNode);
