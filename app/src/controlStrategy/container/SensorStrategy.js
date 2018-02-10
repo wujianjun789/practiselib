@@ -25,6 +25,7 @@ export class SensorStrategy extends Component{
     constructor(props){
         super(props);
         this.state = {
+            model: "sses",
             data: [],
             search: {
                 placeholder: this.formatIntl('app.input.strategy.name'),
@@ -97,7 +98,7 @@ export class SensorStrategy extends Component{
     componentWillMount() {
         this.mounted = true;
         this.initData();
-        getModelSummariesByModelID('sensor', this.updateSensorTypeList);
+        getModelSummariesByModelID(this.state.model, this.updateSensorTypeList);
         getStrategyDeviceConfig(this.updateControlDeviceList);
         getLightLevelConfig(this.updateBrightnessList);
     }
@@ -237,7 +238,7 @@ export class SensorStrategy extends Component{
     }
 
     initData(isSearch) {
-        const {search: {value}, page} = this.state;
+        const {model, search: {value}, page} = this.state;
         if(isSearch){
             page.current = 1;
             this.setState({page:page});
@@ -245,8 +246,8 @@ export class SensorStrategy extends Component{
 
         const {pageSize, current} = this.state.page;
         const offset = pageSize * ( current - 1 );
-        getStrategyListByName('sensor', value, offset, pageSize, this.mounted&&this.updateSensorStrategyList );
-        getStrategyCountByName('sensor', value, this.mounted&&this.updatePageData );
+        getStrategyListByName(model, value, offset, pageSize, this.mounted&&this.updateSensorStrategyList );
+        getStrategyCountByName(model, value, this.mounted&&this.updatePageData );
     }
 
     updateSensorStrategyList(data) {

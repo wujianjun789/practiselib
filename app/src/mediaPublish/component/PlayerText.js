@@ -317,7 +317,7 @@ class PlayerText extends Component {
                     background: '#fff',
                     borderRadius: '1px',
                     boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                    display: 'inline-block',
+                    // display: 'inline-block',
                     cursor: 'pointer',
                 },
                 popover: {
@@ -367,7 +367,7 @@ class PlayerText extends Component {
                             </select>
                         </div>
                     </div>
-                    <div class='form-group'>
+                    <div class='form-group' style={{verticalAlign:'top',height:'40px'}}>
                         <label>{fontColor.title}</label>
                         <div class='input-container'>
                             <div style={styles.swatch} >
@@ -394,7 +394,7 @@ class PlayerText extends Component {
                             </select>
                         </div>
                     </div>
-                    <div class='form-group'>
+                    <div class='form-group' style={{verticalAlign:'top',height:'40px'}}>
                         <label>{bgColor.title}</label>
                         <div class='input-container'>
                             <div style={styles.swatch} >

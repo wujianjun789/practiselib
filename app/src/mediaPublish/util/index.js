@@ -310,21 +310,21 @@ function getTxtFileData(data, type) {
         },
         "background": {
             "transparent": 0,
-            "picture": "string",
+            "picture": "",
             "picAlignment": 0,
             "color": {
                 "red": 0,
                 "green": 0,
                 "blue": 0,
                 "amber": 0,
-                "alpha": 0
+                "alpha": 255
             },
             "colorKey": {
-                "red": 0,
-                "green": 0,
-                "blue": 0,
+                "red": 255,
+                "green": 255,
+                "blue": 255,
                 "amber": 0,
-                "alpha": 0
+                "alpha": 255
             },
             "materialId": "string"
         },
@@ -334,19 +334,19 @@ function getTxtFileData(data, type) {
         "charSpace": 0,
         "rowSpace": 0,
         "fontColor": {
-            "red": 0,
-            "green": 0,
-            "blue": 0,
+            "red": 255,
+            "green": 255,
+            "blue": 255,
             "amber": 0,
-            "alpha": 0
+            "alpha": 255
         },
         "font": {
-            "name": "string",
-            "size": 0,
-            "bold": true,
-            "italic": true,
-            "underline": true,
-            "strikeout": true
+            "name": "宋体",
+            "size": 20,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikeout": false
         },
         "skipTime": 0,
         "skipType": 0,
