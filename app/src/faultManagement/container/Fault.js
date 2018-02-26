@@ -268,10 +268,10 @@ export class Fault extends Component {
         <Select id="level" titleField={levelList.valueField} valueField={levelList.valueField}
           options={levelList.options} value={levelList.value} onChange={(e) => {this.selectChange(e, 'levelList');}}/>
         <div className="datePicker">
-          <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="点击选择开始日期" style={{ width: '106px' }}
+          <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="开始日期" style={{ width: '106px' }}
             defaultValue={start} value={start} onChange={value => this.dateChange('start', value)} />
           <span>-</span>
-          <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="点击选择结束日期" style={{ width: '106px' }}
+          <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="结束日期" style={{ width: '106px' }}
             defaultValue={end} value={end} onChange={value => this.dateChange('end', value)} />
         </div>
         <div className="button-group">
@@ -291,7 +291,7 @@ export class Fault extends Component {
         <div className="panel panel-default statistical-info">
           <div className="panel-heading" role="presentation"
             onClick={() => { !collapse && this.collapseHandler('infoCollapse'); }}>
-            <span className="icon_select"></span>
+            <span className="icon_chart"></span>
             {this.props.intl.formatMessage({id:'sysOperation.fault.statistical.info'})}
             <span className="icon icon_collapse pull-right"></span>      
           </div>

@@ -291,7 +291,8 @@ export function updateXes(model, data, cb) {
 
 export function delAssetsByModel(model, id, cb) {
   let headers = getHttpHeader();
-  httpRequest(HOST_IP + '/' + model + 's/' + id, {
+  let models = model == 'ssads' || model == 'sses' ? model : `${model}s`;
+  httpRequest(HOST_IP + '/' + models + '/' + id, {
     headers: headers,
     method: 'DELETE',
   }, response => {
