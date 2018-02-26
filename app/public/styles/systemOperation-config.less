@@ -578,7 +578,7 @@
       .form-group{
         &.left{
           // margin-right: 61px
-          margin-right: 21px
+          margin-right: 35px
         }
         // :last-child{
         //   margin-right: 20px;
@@ -615,13 +615,19 @@
           padding-bottom: 0px;
           padding-right: 7px;
           padding-left: 7px;
+          float: left;
         }
         &.right{
           width: 202px;
           .ant-calendar-picker{
-            width: 125px;
+            float: left;
+            width: 110px !important;
             .ant-input{
-              width: 125px;
+              width: 150px;
+              font-size: 13px;
+              height: 30px;
+              -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+              box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
             }
             .ant-calendar-picker-icon {
               // color: rgba(0,0,0,.43);
@@ -629,7 +635,6 @@
               }
           }
         }
-        
       }
     }
     .table-container{
@@ -640,6 +645,7 @@
       position:relative;
       &.updatebox{
         margin-top:5px;
+        margin-bottom: 20px;
         .import-select{
           color: #aaa;
           padding-left: 0px;
@@ -680,6 +686,7 @@
   .modal-footer{
     border: none;
     padding: 20px;
+    padding-top: 0px;
     padding-right: 30px;
   }
   
