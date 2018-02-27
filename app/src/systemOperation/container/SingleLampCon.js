@@ -40,7 +40,7 @@ export class SingleLampCon extends Component {
       collapse: false,
       deviceCollapse: false,
       page: Immutable.fromJS({
-        pageSize: 10,
+        pageSize: 5,
         current: 1,
         total: 0,
       }),
@@ -316,7 +316,7 @@ export class SingleLampCon extends Component {
       //需要传入的数据：
       const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
 
-      overlayerShow(<DeviceUpgradePopup className='deviceUpgrade-popup' overlayerHide={overlayerHide}
+      overlayerShow(<DeviceUpgradePopup className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
         intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
           //升级
 

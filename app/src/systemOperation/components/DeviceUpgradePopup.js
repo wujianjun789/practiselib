@@ -25,23 +25,24 @@ export default class DeviceUpgradePopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            displayStep1: true,
+            displayStep1: true, //初始状态，显示第一步的弹框
             checkedValue: 1,  //1为全部升级，2为部分升级
             // page: Immutable.fromJS({
             //     pageSize: 10,
             //     current: 1,
             //     total: 0,
             // }),
-            checked: ['123', '124'],//定义多选框中被选中的选项
+            checked: ['12', '13'],//定义多选框中被选中的选项的Id
             search: Immutable.fromJS({
                 placeholder: 'sysOperation.input.device',
                 value: '',
             }),
+            stateData: this.props.tableData,
             data: [],
             page: {
-                pageSize: 10,
+                pageSize: 4,
                 current: 1,
-                total: 1
+                total: this.props.tableData.toJS().length,
             },
             filename: '',
             packageData: [
@@ -72,6 +73,8 @@ export default class DeviceUpgradePopup extends Component {
         this.onPackageChange = this.onPackageChange.bind(this);
         this.onTimeSelect = this.onTimeSelect.bind(this);
         this.onTimeConfirm = this.onTimeConfirm.bind(this);
+        this.searchChange = this.searchChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this);
     }
 
     onChange(e) {
@@ -89,22 +92,25 @@ export default class DeviceUpgradePopup extends Component {
         let { checked } = this.state;
         console.log("value:", value);
         if (value) {//在checked中push curId
-
+            // for (let i = 0; i < )
+            let repetition = false;
+            checked.map((item, index) => {
+                if (item === curId) {
+                    repetition = ture;
+                }
+            }
+            )
+            !repetition && checked.push(curId);//如果checked中没有重复的id那么就将该值push进入
+            this.setState({ checked: checked });
         } else {  //从checked中删除curId
             for (let i = 0; i < checked.length; i++) {
-                if (checked[i] === value) {
+                if (checked[i] === curId) {
                     checked.splice(i, 1)
-                    return
+                    this.setState({ checked: checked });
                 }
             }
         }
-
-        this.setState({ checked: checked }); //重新setState更新视图
-
     }
-
-
-
 
     /**
      *  导入文件包后触发此事件，用以校验文件是否符合要求，
@@ -118,9 +124,6 @@ export default class DeviceUpgradePopup extends Component {
         } else {
             //报错升级包不合法，提示重新选择，停留到当前页面，不可点击确定按钮
         }
-
-
-
     }
 
     validatePackage() {
@@ -166,6 +169,30 @@ export default class DeviceUpgradePopup extends Component {
     }
     selectChange() { }
 
+    searchChange(value) { //搜索内容
+        // let { search } = this.state;
+        // search.update('value', v => v = value);   //错误的示范 
+        // let content = search.update('value', v => v = value);  //可行的办法
+        this.setState({ search: this.state.search.update('value', v => v = value) }); //immutable是不改变search本身的值的。只有通过setstate才能实现值的改变。
+    }
+
+    searchSubmit() {  // 提交搜索内容
+        //查询tableData中的数据，获取匹配的数据，展现在列表中，以供选择。
+        const { search, stateData, page } = this.state;
+        const { tableData } = this.props;
+        let totalData = tableData.toJS(); //被查询数据
+        let queriedData = [];//过滤后的数据
+        let queryString = search.toJS().value; //查询条件数据
+
+        totalData.map((item, index) => {
+            if (item.name.indexOf(queryString) >= 0) {
+                //数据匹配
+                queriedData.push(item);
+            }
+        })
+        this.setState({ stateData: Immutable.fromJS(queriedData), page: Object.assign({}, page, { total: queriedData.length }) });
+    }
+
     onConfirm() { //确定升级
         const { checkedValue, checked } = this.state;
         this.props.overlayerHide();
@@ -183,9 +210,9 @@ export default class DeviceUpgradePopup extends Component {
 
     render() {
         const { className, title, tableData } = this.props;
-        const { page, filename, displayStep1, search, packageData, checked, checkedValue } = this.state;
+        const { page, filename, displayStep1, search, packageData, checked, checkedValue, stateData } = this.state;
         //tableData为父级页面传入的设备数据，result为根据表格尺寸需要显示的部分tableData内容
-        let result = Immutable.fromJS(tableData.slice((page.current - 1) * page.pageSize, page.current * page.pageSize));
+        let result = Immutable.fromJS(stateData.slice((page.current - 1) * page.pageSize, page.current * page.pageSize));
         let footer1 = <PanelFooter funcNames={['onCancel', 'onNextStep']} btnTitles={['button.cancel', 'button.nextStep']}
             btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
             onCancel={this.onCancel} onNextStep={this.onNextStep} />;
@@ -202,7 +229,7 @@ export default class DeviceUpgradePopup extends Component {
                 <SearchText placeholder={this.props.intl.formatMessage({ id: search.get('placeholder') })}
                     value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit} />
                 {
-                    tableData.length !== 0 && <div className="table-container">
+                    stateData.length !== 0 && <div className="table-container">
                         <Table columns={this.columns} data={result} checked={checked} allChecked={true}
                             titleCheck={false} rowCheckChange={this.rowCheckChange} />
                         <Page className={'page ' + (page.total == 0 ? 'hidden' : '')} showSizeChanger
