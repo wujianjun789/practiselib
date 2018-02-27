@@ -217,7 +217,7 @@ export class PlayerList extends Component {
 
 const mapStateToProps = state => {
     return {
-        sidebarNode: state.mediaPublish.get('sidebarNode')
+        sidebarNode: state.mediaPublish.sidebarNode
     }
 }
 

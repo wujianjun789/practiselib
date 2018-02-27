@@ -20,7 +20,6 @@ const RenderPropertyPanel = (props)=>{
     // if(!curType || !project || !parentParentNode || !parentNode || !curNode){
     //     return <div>server no data</div>;
     // }
-console.log('curType:',curType);
     switch(curType) {
         case 'playerProject':
             return <PlayerProject data={project} applyClick={data=>{applyClick('playerProject', data)}}/>;

@@ -10,8 +10,14 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 class PlayerProject extends PureComponent{
     constructor(props){
         super(props);
-        const {id, name=""} = props.data;
+        let id = undefined;
+        let name = "";
+        if(props.data){
+            id = props.data.id;
+            name = props.data.name;
+        }
         this.state = {
+            id: id,
             property: {
                 //方案
                 project: { key: "project", title: this.props.intl.formatMessage({id:'mediaPublish.schemeName'}),
@@ -25,6 +31,28 @@ class PlayerProject extends PureComponent{
 
         this.onChange = this.onChange.bind(this);
         this.projectClick = this.projectClick.bind(this);
+    }
+    componentWillMount(){
+        this.mounted = true;
+        this.init();
+    }
+
+    componentDidUpdate(){
+        this.init();
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+    init(){
+        const {data} = this.props;
+        if(!data || !data.id || data.id == this.state.id){
+            return false;
+        }
+
+        this.state.property.project.defaultValue = this.state.property.project.value = data.name;
+        this.mounted && this.setState({id: data.id, property: Object.assign({}, this.state.property),
+            prompt: {sceneName:data.name?false:true}})
     }
 
     projectClick(id) {

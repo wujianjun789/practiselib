@@ -106,8 +106,8 @@ class PlayerScene extends PureComponent{
                     name: property.sceneName.value,
                     type: 0,
                     playMode: property.playMode.list[property.playMode.index].type,
-                    playDuration: parseInt(property.playModeCount.value2),
-                    playTimes: parseInt(property.playModeCount.value)
+                    playDuration: isNaN(parseInt(property.playModeCount.value2)) ?  0:parseInt(property.playModeCount.value2),
+                    playTimes: isNaN(parseInt(property.playModeCount.value))? 0:parseInt(property.playModeCount.value)
                 };
 
                 if(sceneId && (typeof sceneId == 'number' || sceneId.indexOf("scene&&") < 0)){
@@ -183,7 +183,7 @@ class PlayerScene extends PureComponent{
             }
             let valueKey = {}
             if(id == "playModeCount" && this.state.property.playMode.index == 1){
-                valueKey = {value2: parseInt(val)};
+                valueKey = {value2: val};
             }else{
                 valueKey = {value: val};
             }

@@ -88,6 +88,7 @@ class PlayerAreaPro extends PureComponent {
 
     init(){
         const {projectId, parentId, parentParentId, data} = this.props;
+        console.log('playerAreaPro:');
         if(!data || !data.id || data.id == this.state.id){
             return false;
         }
@@ -152,10 +153,10 @@ class PlayerAreaPro extends PureComponent {
             name: property.areaName.value,
             userDefine: '',
             position: {
-                x: parseInt(property.axisX_a.value),
-                y: parseInt(property.axisY_a.value),
-                w: parseInt(property.width.value),
-                h: parseInt(property.height.value)
+                x: isNaN(parseInt(property.axisX_a.value))?0:parseInt(property.axisX_a.value),
+                y: isNaN(parseInt(property.axisY_a.value))?0:parseInt(property.axisY_a.value),
+                w: isNaN(parseInt(property.width.value))?0:parseInt(property.width.value),
+                h: isNaN(parseInt(property.height.value))?0:parseInt(property.height.value)
             },
             lastFrame: property.playEnd.list[property.playEnd.index].type
         };

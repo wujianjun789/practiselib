@@ -98,7 +98,7 @@ export function updateTree(treeList, node, parentNode, parentParentNode) {
                 curNode.toggled = true;
             }
 
-            if (curNode.type == parentNode.type && curNode.id == parentNode.id){
+            if (parentNode && curNode.type == parentNode.type && curNode.id == parentNode.id){
                 curNode.toggled = true;
                 if(!curNode.children){
                     curNode.children = [];
