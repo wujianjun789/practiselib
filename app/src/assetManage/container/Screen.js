@@ -30,8 +30,8 @@ export class Screen extends Component {
       keyField: 'name',   //主键在数据表的Id属性中，即设备类型的id
 
       assetPropertyList: [   //设备属性列表
-        { id: '111', name: '三思LC', description: '三思单灯控制器', unit: '0000', accuracy: '0000' },
-        { id: '123', name: '华为LC_NBLot', description: '华为单灯控制器', unit: '0000', accuracy: '0000' },
+        // { id: '111', name: '三思LC', description: '三思单灯控制器', unit: '0000', accuracy: '0000' },
+        // { id: '123', name: '华为LC_NBLot', description: '华为单灯控制器', unit: '0000', accuracy: '0000' },
       ],
       assetTypeList: [     //设备型号列表
         { name: '', description: '' }

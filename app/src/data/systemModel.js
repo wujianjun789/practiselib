@@ -2,7 +2,7 @@
  * Created by a on 2017/8/1.
  */
 import { getAssetModelList } from '../api/asset';
-import { intlFormat, getClassByModel,transformKey } from '../util/index';
+import { intlFormat, getClassByModel, transformKey } from '../util/index';
 
 let models = [];
 
@@ -41,13 +41,15 @@ export const TreeData = [
         'class': 'icon_calendar',
         'active': false,
         'link': '/systemOperation/strategy/timeTable',
-      }, {
-        'id': 'sensor',
-        'name': 'app.sensor',
-        'class': 'icon_sensor',
-        'active': false,
-        'link': '/systemOperation/strategy/sensor',
-      }, {
+      }, 
+      // {
+      //   'id': 'sensor',
+      //   'name': 'app.sensor',
+      //   'class': 'icon_sensor',
+      //   'active': false,
+      //   'link': '/systemOperation/strategy/sensor',
+      // }, 
+      {
         'id': 'latlng',
         'name': 'app.latlng',
         'class': 'icon_latlng',
@@ -178,21 +180,21 @@ export function getModelData(model, cb) {
   getAssetModelList(response => {
     models = response;
     TreeData.map(item => {
-      if (item.id==='config') {
+      if (item.id === 'config') {
         item.children = [];
         response.map((data, index) => {
           const child = {
             id: transformKey(data.name), name: data.description,
-            class: getClassByModel(data.name),active:false,
-            link:getLinkByModel(item.id,data.name)
+            class: getClassByModel(data.name), active:false,
+            link:getLinkByModel(item.id, data.name),
+          };
+          if (index === 0) {
+            item.link = getLinkByModel(item.id, data.name);
           }
-          if(index===0){
-            item.link=getLinkByModel(item.id,data.name);
-          }
-          item.children.push(child)
-        })
+          item.children.push(child);
+        });
       }
-    })
+    });
     cb && cb();
   });
 }
@@ -248,29 +250,29 @@ export function getModelTypesNameById(modelId, typeId) {
   return intlFormat(model.intl.types[typeId]);
 }
 
-function getLinkByModel(parentId,key) {
+function getLinkByModel(parentId, key) {
   switch (key) {
-    case 'gateway':
-    case 'ssgw':
-      return '/systemOperation/config/gateway';
-    case 'lc':
-    case 'ssslc':
-      return '/systemOperation/config/lc';
-    case 'sensor':
-    case 'sses':
-      return '/systemOperation/config/sensor';
-    case 'plc':
-      return 'icon_control';
-    case 'ammeter':
-      return 'icon_ammeter';
-    case 'pole':
-      return '/systemOperation/config/pole';
-    case 'screen':
-    case 'ssads':
-      return '/systemOperation/config/screen';
-    case 'xes':
-      return '/systemOperation/config/xes';
-    default:
-      return 'icon_lc';
+  case 'gateway':
+  case 'ssgw':
+    return '/systemOperation/config/gateway';
+  case 'lc':
+  case 'ssslc':
+    return '/systemOperation/config/lc';
+  case 'sensor':
+  case 'sses':
+    return '/systemOperation/config/sensor';
+  case 'plc':
+    return 'icon_control';
+  case 'ammeter':
+    return 'icon_ammeter';
+  case 'pole':
+    return '/systemOperation/config/pole';
+  case 'screen':
+  case 'ssads':
+    return '/systemOperation/config/screen';
+  case 'xes':
+    return '/systemOperation/config/xes';
+  default:
+    return 'icon_lc';
   }
 }

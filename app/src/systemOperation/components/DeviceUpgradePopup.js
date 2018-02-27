@@ -242,13 +242,8 @@ export default class DeviceUpgradePopup extends Component {
                     </div>
                     <div className='form-group right'>
                         <label>开始时间</label>
-                        {/* <input type="select" className="form-control" placeholder={"请选择开始时间"} value={""}
-                            onChange={this.timeChange} /> */}
-                        {/* datePicker */}
-                        {/* <div>
-                            <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" placeholder="请选择开始时间"
-                                onChange={this.onTimeSelect} onTimeConfirm={this.onTimeConfirm} />
-                        </div> */}
+                        <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" placeholder="请选择开始时间"
+                            onChange={this.onTimeSelect} onTimeConfirm={this.onTimeConfirm} />
                     </div>
                 </div>
                 <NotifyPopup />

@@ -206,7 +206,7 @@ export class PlayerArea extends Component {
   setParentInfo() {
     this.setState({
       parentInfo:{ width: this._previewImg.offsetWidth, height: this._previewImg.offsetHeight },
-    }, () => {console.log(this.state.parentInfo);});
+    });
   }
 
   handleMouseMove = ({ pageX, pageY }) => {
@@ -371,7 +371,6 @@ export class PlayerArea extends Component {
   setPreviewListOrder(previewList) {  
     let orderedPreviewList = [];
     const areaList = this.getAreaList();
-    console.log('setPreviewList ======================== ', areaList);
     orderedPreviewList = areaList.map((areaId) => {
       for (let i = 0; i < previewList.length; i++) {
         if (areaId === previewList[i].areaId) {
@@ -424,13 +423,12 @@ export class PlayerArea extends Component {
     const areaDic = this.getAreaDic();
     const compareAreaDic = this.getAreaList();
     const finalAreaDic = this.getFixedPlayItemList(compareAreaDic, areaDic);
-    console.log('Befor Compare =======', areaDic);
+    console.log('Befor Compare =======', areaDic, 'Target AreaList =======', compareAreaDic, finalAreaDic);
 
     // 最后再确认一次数值，避免因为各种原因导致区域字典发生改变以引起的BUG.
     // 此步主要解决的是当用户删除了区域最后一个播放项后，将无法通过点击来记录这一操作，将通过数据验证将原本的Id替换为65535.
     const finalItem = getPreviewListCheck(items, finalAreaDic).map(item => { return item.playItemId; });
     const requestJson = { projectId, programId, sceneId, zoneId, finalItem };
-    console.log(requestJson);
     return previewPlayItem(requestJson, data => { this.setState({ previewSrc:data }); });
   }
   // 设定预览列表 End
@@ -511,7 +509,7 @@ export class PlayerArea extends Component {
       return false;
     }
 
-    if(typeof curNode.id === 'string' && curNode.id.indexOf('area')>-1){
+    if (typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
       this.props.actions.addNotify(0, '请提交区域');
       return false;
     }
