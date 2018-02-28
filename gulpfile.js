@@ -55,6 +55,10 @@ gulp.task('server.webpack', function (cb) {
 });
 
 gulp.task('server.config', function () {
+    return gulp.src('server/config.js')
+        .pipe(gulp.dest(dest_server));
+});
+gulp.task('server.config.json', function () {
     return gulp.src('config.json')
         .pipe(gulp.dest(path.resolve(dest_server, '..')));
 });
@@ -64,7 +68,7 @@ gulp.task('server.package', function () {
         .pipe(gulp.dest(path.resolve(dest_server, '..')));
 });
 
-gulp.task('server', ['server.webpack', 'server.config', 'server.package']);
+gulp.task('server', ['server.webpack', 'server.config', 'server.config.json', 'server.package']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start(['app', 'server']);

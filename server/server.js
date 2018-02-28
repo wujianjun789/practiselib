@@ -6,7 +6,7 @@ const app = require('./app');
 const debug = require('debug')('server:server');
 const http = require('http');
 // const config = require('./config.js').server;
-const config = require('./models/config').server;
+const config = require('./config').server;
 /**
  * Get port from environment and store in Express.
  */

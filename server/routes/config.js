@@ -8,7 +8,7 @@ const http = require('http');
 const lodash = require('lodash');
 
 // const host_ip = require('../util/index').host_ip;
-const client =  require('../models/config').client;
+const client =  require('../config').client;
 
 /* GET config listing. */
 router.get('/', function (req, res, next) {
