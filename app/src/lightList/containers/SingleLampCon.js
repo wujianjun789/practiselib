@@ -9,7 +9,7 @@ import Select from '../../components/Select.1';
 import TableWithHeader from '../components/TableWithHeader';
 import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
-import { getDomainList } from '../../api/domain';
+import { getDomainList, getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById } from '../../api/asset';
 import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
@@ -22,7 +22,7 @@ export default class SingleLampCon extends Component {
             page: {
                 total: 0,
                 current: 1,
-                limit: 10
+                limit: 2
             },
             search: {
                 value: '',
@@ -100,7 +100,7 @@ export default class SingleLampCon extends Component {
     }
 
     initData() {
-        getDomainList((data) => {
+        getChildDomainList((data) => {
             this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
         getLightLevelConfig(this.updateBrightnessList);
@@ -119,18 +119,16 @@ export default class SingleLampCon extends Component {
         });
     }
 
-    initDeviceData(isSearch) {
-
-        const { search: { value }, page, currentDomain } = this.state;
-        if (isSearch) {
-            page.current = 1;
-            this.setState({ page: page });
+    initDeviceData() {
+        if (!this.mounted) {
+            return;
         }
-        const { limit, current } = this.state.page;
-        const offset = limit * (current - 1);
-        getSearchAssets(currentDomain ? currentDomain.id : null, this.model, value, offset, limit, this.mounted && this.updateDeviceData);
-        getSearchCount(currentDomain ? currentDomain.id : null, this.model, value, this.mounted && this.updatePageSize);
-
+        if (this.state.currentDomain) {
+            const { currentDomain, search: { value }, page: { current, limit } } = this.state;
+            const offset = limit * (current - 1);
+            getSearchCount(currentDomain.id, this.model, value, this.mounted && this.updatePageSize);
+            getSearchAssets(currentDomain.id, this.model, value, offset, limit, this.mounted && this.updateDeviceData);
+        }
     }
 
     updateDeviceData(data) {
@@ -176,12 +174,12 @@ export default class SingleLampCon extends Component {
 
     searchChange(value) {
         this.setState({
-            search: { ...this.state.search, value: value }
+            search: { ...this.state.search, value }
         })
     }
 
     searchSubmit() {
-        this.initDeviceData(true);
+        this.setState({ page: { ...this.state.page, current: 1 } }, this.initDeviceData)
     }
 
     collapseHandler() {
