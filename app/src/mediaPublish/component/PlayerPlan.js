@@ -68,7 +68,7 @@ class PlayerPlan extends PureComponent{
 
     init(){
         const {projectId, data} = this.props;
-        if(!data.id || data.id == this.state.id){
+        if(!data || !data.id || data.id == this.state.id){
             return false;
         }
 
