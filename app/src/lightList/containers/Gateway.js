@@ -9,7 +9,7 @@ import Select from '../../components/Select.1';
 import TableWithHeader from '../components/TableWithHeader';
 import TableTr from '../components/TableTr';
 import Page from '../../components/Page';
-import { getDomainList } from '../../api/domain';
+import { getDomainList, getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById } from '../../api/asset';
 import { getMomentDate, momentDateFormat } from '../../util/time';
 import { message } from 'antd'
@@ -48,7 +48,7 @@ export default class Gateway extends Component {
             }
         };
 
-        this.model = 'gateway';
+        this.model = 'ssgw';
 
         this.columns = [
             { accessor: 'name', title: '设备名称' },
@@ -88,7 +88,7 @@ export default class Gateway extends Component {
     }
 
     initData() {
-        getDomainList((data) => {
+        getChildDomainList((data) => {
             this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
     }
@@ -106,17 +106,16 @@ export default class Gateway extends Component {
         });
     }
 
-    initDeviceData(isSearch) {
-        const { search: { value }, page, currentDomain } = this.state;
-        if (isSearch) {
-            page.current = 1;
-            this.setState({ page: page });
+    initDeviceData() {
+        if (!this.mounted) {
+            return;
         }
-
-        const { limit, current } = this.state.page;
-        const offset = limit * (current - 1);
-        getSearchAssets(currentDomain ? currentDomain.id : null, this.model, value, offset, limit, this.mounted && this.updateDeviceData);
-        getSearchCount(currentDomain ? currentDomain.id : null, this.model, value, this.mounted && this.updatePageSize);
+        if (this.state.currentDomain) {
+            const { currentDomain, search: { value }, page: { current, limit } } = this.state;
+            const offset = limit * (current - 1);
+            getSearchCount(currentDomain.id, this.model, value, this.mounted && this.updatePageSize);
+            getSearchAssets(currentDomain.id, this.model, value, offset, limit, this.mounted && this.updateDeviceData);
+        }
     }
 
     updateDeviceData(data) {
@@ -152,7 +151,7 @@ export default class Gateway extends Component {
     }
 
     searchSubmit() {
-        this.initDeviceData(true);
+        this.setState({ page: { ...this.state.page, current: 1 } }, this.initDeviceData)
     }
 
     collapseHandler() {

@@ -34,19 +34,14 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import Immutable from 'immutable';
 
 import { Name2Valid } from '../../util/index';
-import { getIndexByKey, getListObjectByKey } from '../../util/algorithm';
-import {
-  addTreeNode, updateTree, moveTree, removeTree, getTreeParentNode, clearTreeListState, formatTransformType,
-  getAssetData, parsePlanData, tranformAssetType, IsSystemFile, getTitleByType, getPropertyTypeByNodeType, getTipByType, getInitData, getActiveItem,
-  addItemToScene, removeItemInScene, getItemOfScene, removeArea} from '../util/index';
+import { getIndexByKey } from '../../util/algorithm';
+import {formatTransformType, getAssetData, getTitleByType, getPropertyTypeByNodeType, getTipByType, getActiveItem, getItemOfScene} from '../util/index';
 
 import {
-  uploadMaterialFile, getSceneList, getZoneList, getItemList,  addItem, updateProjectById, updateItemOrders,
-   searchAssetList, getAssetListByTypeWithName, addAsset, getAssetById, removeAssetById,
-  previewPlayItem, projectPublish} from '../../api/mediaPublish';
+  uploadMaterialFile, addItem, searchAssetList, getAssetListByTypeWithName, removeAssetById, previewPlayItem, projectPublish} from '../../api/mediaPublish';
 
 import { initProject, updateOnToggle, updateCurType, updateCurNode, initItemList, playerAssetSelect, playerAssetCancel, updateItemEdit,
-    addPlayerPlan, addPlayerSceneArea, applyClick, treeOnMove, treeOnRemove, playerAssetMove, playerAssetRemove } from '../action/index';
+    addPlayerPlan, addPlayerSceneArea, applyClick, updateTreeJudge, treeOnMove, treeOnRemove, playerAssetMove, playerAssetRemove } from '../action/index';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import lodash from 'lodash';
@@ -59,7 +54,6 @@ export class PlayerArea extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      IsUpdateTree: true,
       sidebarInfo: {
         collapsed: false,
         propertyCollapsed: false,
@@ -151,12 +145,13 @@ export class PlayerArea extends Component {
   componentWillReceiveProps(nextProps){
     this.updatePlayerTree();
   }
+  /*shouldComponentUpdate(nextProps, nextState){
+    if(this.props.IsUpdateTree){
+      return true;
+    }
 
-  shouldComponentUpdate(nextProps, nextState){
-    this.updatePlayerTree();
-    return true;
-  }
-
+    return false;
+  }*/
   componentDidUpdate() {
     this.updatePlayerTree();
     this.updateSidebarInfoStyle();
@@ -288,15 +283,12 @@ export class PlayerArea extends Component {
   }
 
   updatePlayerTree(){
-    const { actions, playerData } = this.props;
-    console.log('updatePlayerTree:',playerData);
-    // if(this.state.IsUpdateTree){
-    //   this.setState({IsUpdateTree:false}, ()=>{
-        actions && actions.treeViewInit(playerData);
-      // })
-    // }
-
-
+    const { actions, playerData, IsUpdateTree } = this.props;
+    console.log('IsUpdateTree:', IsUpdateTree, playerData);
+    if(IsUpdateTree){
+      actions.updateTreeJudge(false);
+      actions.treeViewInit(playerData);
+    }
   }
 
   assetSelect = (item) => {
@@ -932,7 +924,8 @@ const mapStateToProps = state => {
     curType:state.mediaPublish.curType,
     playerData: state.mediaPublish.playerData,
     playerListAsset: state.mediaPublish.playerListAsset,
-    curSceneItem: state.mediaPublish.curSceneItem
+    curSceneItem: state.mediaPublish.curSceneItem,
+    IsUpdateTree: state.mediaPublish.IsUpdateTree
   };
 };
 
@@ -943,7 +936,7 @@ const mapDispatchToProps = (dispatch) => {
       treeViewInit: treeViewInit, initProject: initProject, updateCurType: updateCurType, updateCurNode: updateCurNode,
       updateOnToggle: updateOnToggle, initItemList: initItemList, playerAssetSelect: playerAssetSelect, playerAssetCancel: playerAssetCancel,
       updateItemEdit: updateItemEdit, addPlayerPlan: addPlayerPlan, addPlayerSceneArea: addPlayerSceneArea, applyClick: applyClick,
-      treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetMove: playerAssetMove, playerAssetRemove: playerAssetRemove
+      treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetMove: playerAssetMove, playerAssetRemove: playerAssetRemove,updateTreeJudge:updateTreeJudge
     }, dispatch),
   };
 };

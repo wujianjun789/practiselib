@@ -62,7 +62,7 @@ export default class SideBar extends Component {
     render() {
         const {data, title, isActive, isClick, isAddClick} = this.props;
         const {isEdit, isRemove, isMove}  = this.state;
-console.log(isActive, isClick, isAddClick);
+
         return <div className="sidebar">
 
             <div className="edit-container">

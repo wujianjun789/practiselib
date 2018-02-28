@@ -58,7 +58,7 @@ export const TreeData = [
       },
     ],
 
-  }, {
+  },/* {
     'id': 'serviceMonitor',
     'name': 'sysOperation.service.monitoring',
     'toggled': false,
@@ -127,33 +127,30 @@ export const TreeData = [
         'link': '/systemOperation/deviceMonitor/deviceTopology',
       },
     ],
-  }
-  // ,
-  // {
-  //   'id': 'deviceMaintenance',
-  //   'name': 'sysOperation.device.maintenance',
-  //   'toggled': false,
-  //   'active': true,
-  //   'link': '/systemOperation/deviceMaintenance/deviceReplace',
-  //   'level': 1,
-  //   'children': [
-  //     {
-  //       'id': 'deviceReplace',
-  //       'name': '设备更换',
-  //       'class': 'icon_update',
-  //       'active': false,
-  //       'link': '/systemOperation/deviceMaintenance/deviceReplace',
-  //     },
-  //     {
-  //       'id': 'deviceUpdate',
-  //       'name': '设备升级',
-  //       'class': 'icon_upgrade',
-  //       'active': false,
-  //       'link': '/systemOperation/deviceMaintenance/deviceUpdate',
-  //     },
-  //   ],
-  // }
-  , {
+  }, {
+    'id': 'deviceMaintenance',
+    'name': 'sysOperation.device.maintenance',
+    'toggled': false,
+    'active': true,
+    'link': '/systemOperation/deviceMaintenance/deviceReplace',
+    'level': 1,
+    'children': [
+      {
+        'id': 'deviceReplace',
+        'name': '设备更换',
+        'class': 'icon_update',
+        'active': false,
+        'link': '/systemOperation/deviceMaintenance/deviceReplace',
+      },
+      {
+        'id': 'deviceUpdate',
+        'name': '设备升级',
+        'class': 'icon_upgrade',
+        'active': false,
+        'link': '/systemOperation/deviceMaintenance/deviceUpdate',
+      },
+    ],
+  },*/ {
     'id': 'faultManagement',
     'name': 'sysOperation.fault.manage',
     'toggled': false,

@@ -18,6 +18,7 @@ import {
     INIT_CUR_TYPE,
     INIT_CURNODE,
 
+    UPDATE_TREE_JUDGE,
     UPDATE_TREE_DATA,
     UPDATE_TREE_LIST,
     CLEAR_TREE_STATE,
@@ -106,6 +107,7 @@ const initialState = {
          'children': [],
          },*/
     ],
+    IsUpdateTree: true,
     playerListAsset: Immutable.fromJS({
         list: [/*{ id: 1, name: '素材1', assetType: "system", type: "text" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
          { id: 4, name: '素材4', assetType: "source", type: "timing" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }*/],
@@ -121,7 +123,6 @@ export default function mediaPublish(state=initialState, action) {
         case SIDEBAR_TOGGLE:
             return Object.assign({}, state, {sidebarNode:action.data});
         case INIT_PROJECT:
-            console.log('init_project:',action.data);
             return Object.assign({}, state, {project:action.data});
         case INIT_PROGRAM_LIST:
             return updateProgramList(state, action.data);
@@ -149,16 +150,17 @@ export default function mediaPublish(state=initialState, action) {
             return Object.assign({}, state, {curType: action.curType, isClick: action.isClick});
         case INIT_CURNODE:
             return Object.assign({}, state, {parentParentNode: action.parentParentNode, parentNode: action.parentNode, curNode: action.curNode});
+        case UPDATE_TREE_JUDGE:
+            return Object.assign({}, state, {IsUpdateTree: action.data});
         case UPDATE_TREE_DATA:
             return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
         case UPDATE_TREE_LIST:
-            return Object.assign({}, state, {playerData: action.data});
+            return Object.assign({}, state, {playerData: action.data, IsUpdateTree: true});
         case CLEAR_TREE_STATE:
             clearTreeListState(state.playerData);
-            return Object.assign({}, state, {playerData: state.playerData});
+            return Object.assign({}, state, {playerData: state.playerData, IsUpdateTree: true});
         case ADD_ITEM_TO_SCENE:
             const sceneItem = addItemToScene(state.curSceneItem, state.project.id, action.programId, action.sceneId, action.zoneId, action.data);
-            console.log('addItemToScene:');
             return Object.assign({}, state, {sceneItem:sceneItem});
         default:
             return state;
@@ -170,14 +172,13 @@ function initItemList(state){
 }
 
 function localUpdateItemList(state, data) {
-    console.log(data)
     return Object.assign({}, state, {playerListAsset: Immutable.fromJS(data)});
 }
 
 function updateTreeData(state, node, parentNode, parentParentNode){
     const treeList = updateTree(state.playerData, node, parentNode, parentParentNode);
 
-    return Object.assign({}, state, {playerData: treeList});
+    return Object.assign({}, state, {playerData: treeList, IsUpdateTree: true});
 }
 
 function updateProgramList(state, data) {
@@ -187,7 +188,7 @@ function updateProgramList(state, data) {
         newData.push(Object.assign({}, program, { type: 'plan', toggled: false, active: false, children: [] }));
     }
 
-    return Object.assign({}, state, {playerData:newData});
+    return Object.assign({}, state, {playerData:newData, IsUpdateTree: true});
 }
 
 function updateSceneList(state, programId, data){
@@ -204,7 +205,7 @@ function updateSceneList(state, programId, data){
     playerData[index].toggled = true;
     playerData[index].children = newData;
 
-    return Object.assign({}, state, {playerData: playerData});
+    return Object.assign({}, state, {playerData: playerData, IsUpdateTree: true});
 }
 
 function updateZoneList(state, programId, sceneId, data){
@@ -226,7 +227,7 @@ function updateZoneList(state, programId, sceneId, data){
     playerData[programIndex].children[sceneIndex].active = true;
     playerData[programIndex].children[sceneIndex].children = newData;
 
-    return Object.assign({}, state, {playerData: playerData});
+    return Object.assign({}, state, {playerData: playerData, IsUpdateTree: true});
 }
 
 function updateItemList(state, programId, sceneId, zoneId, data){

@@ -20,6 +20,7 @@ import {
     UPDATE_ITEM_EDIT,
     UPDATE_CUR_SCENE_ITEM,
 
+    UPDATE_TREE_JUDGE,
     UPDATE_TREE_DATA,
     UPDATE_TREE_LIST,
     CLEAR_TREE_STATE,
@@ -66,7 +67,6 @@ export function initProject(project) {
 function requestProgrameList(project) {
     return (dispatch)=>{
         getProgramList(project.id, data=>{
-            console.log('updateProgramList:');
             dispatch({type: INIT_PROGRAM_LIST, data:data});
         })
     }
@@ -86,6 +86,7 @@ export function updateOnToggle(node) {
 
         switch (type) {
             case 'playerPlan':
+                console.log('toggle:',node.toggled);
                 !node.toggled && dispatch(requestSceneList(node.id));
                 break;
             case 'playerScene':
@@ -275,12 +276,20 @@ export function updateTreeData(node, parentNode, parentParentNode) {
     }
 }
 
+export function updateTreeJudge(IsUpdateTree) {
+    return {
+        type: UPDATE_TREE_JUDGE,
+        data: IsUpdateTree
+    }
+}
+
 function updateTreeList(treeList) {
     return {
         type: UPDATE_TREE_LIST,
         data: treeList
     }
 }
+
 export function clearTreeState() {
     return {
         type: CLEAR_TREE_STATE
