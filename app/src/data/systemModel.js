@@ -58,7 +58,7 @@ export const TreeData = [
       },
     ],
 
-  }, {
+  },/* {
     'id': 'serviceMonitor',
     'name': 'sysOperation.service.monitoring',
     'toggled': false,
@@ -150,7 +150,7 @@ export const TreeData = [
         'link': '/systemOperation/deviceMaintenance/deviceUpdate',
       },
     ],
-  }, {
+  },*/ {
     'id': 'faultManagement',
     'name': 'sysOperation.fault.manage',
     'toggled': false,

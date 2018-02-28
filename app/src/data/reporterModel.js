@@ -2,7 +2,7 @@
  * Created by Azrael on 2017/10/16
  */
 export const TreeData = [
-    {
+    /*{
         "id": "device",
         "name": "设备",
         "toggled": true,
@@ -25,7 +25,7 @@ export const TreeData = [
                 "link": "/reporterManage/device/gateway"
             }
         ]
-    },
+    },*/
     {
         "id": "stat",
         "name": "统计",
