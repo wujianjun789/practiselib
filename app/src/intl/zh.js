@@ -145,7 +145,7 @@ export default {
     'login.alert': '用户名或密码错误',
 
     //首页
-    'app.title': '智慧路灯管理系统',
+    'app.title': '智能照明管理系统',
     'app.copyright': 'Copyright © 2018 上海三思电子工程有限公司',
     'app.asset.manage': '资产管理',
     'app.permission.manage': '权限管理',
