@@ -81,7 +81,6 @@ function onMove(state, data) {
 
 function onRemove(state, data) {
     let list = remove(state.datalist, data);
-    console.log("list:",list);
     return Object.assign({}, state, {datalist:list});
 }
 
@@ -109,7 +108,6 @@ function move(list, data) {
     let curIndex = lodash.findIndex(list, node=>{return node.level == data.node.level && node.id == data.node.id});
     if(curIndex>-1){
         list.splice(curIndex, 1);
-        console.log(curIndex+1);
         list.splice(data.key=="down"?curIndex+1:curIndex-1, 0, data.node);
         return list;
     }else{
@@ -127,7 +125,6 @@ function remove(list, data) {
     let curIndex = lodash.findIndex(list, node=>{return node.level == data.level && node.id == data.id});
     if(curIndex>-1){
         list.splice(curIndex, 1);
-        console.log(curIndex, list);
         return list;
     }else{
         return list.map(node=>{
@@ -141,7 +138,6 @@ function remove(list, data) {
 }
 
 function update(list, index, parentId, data) {
-    console.log('update tree:',index);
     let curIndex = index;
     let nextIndex = index + 1;
     return list.map(node=>{
