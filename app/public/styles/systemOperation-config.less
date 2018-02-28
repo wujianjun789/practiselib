@@ -563,6 +563,17 @@
     .ant-radio-group{
       margin-left:15px;
       margin-bottom: 7px;
+      .ant-radio-wrapper{
+        margin-right: 10px;
+        span{
+          .ant-radio-input{
+            margin-right: 5px;
+            top: 1px;
+            position: relative;
+          }
+          font-size: 14px;
+        }
+      }
     }
     .searchText {
       min-width: 450px;
@@ -636,6 +647,11 @@
           }
         }
       }
+    }
+    .disabled{ //在全选状态下，单元块不可操作
+      pointer-events: none;
+      cursor: default;
+      opacity: 0.6;
     }
     .table-container{
       margin: 15px;
