@@ -629,6 +629,11 @@
           float: left;
         }
         &.right{
+          &.disabled{ //在立即升级情况下，单元块不可操作
+            pointer-events: none;
+            cursor: default;
+            opacity: 0.6;
+          }
           width: 202px;
           .ant-calendar-picker{
             float: left;
@@ -662,6 +667,14 @@
       &.updatebox{
         margin-top:5px;
         margin-bottom: 20px;
+        .package{
+          .list{
+            cursor: pointer;
+          }
+          .bd{
+            color: #00c0ff;
+          }
+        }
         .import-select{
           color: #aaa;
           padding-left: 0px;

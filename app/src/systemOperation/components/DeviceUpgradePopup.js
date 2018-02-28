@@ -37,7 +37,7 @@ export default class DeviceUpgradePopup extends Component {
                 placeholder: 'sysOperation.input.device',
                 value: '',
             }),
-            selectAll: false,//标志是否全选
+            updateOntime: false,//标志是否定时升级
             stateData: this.props.tableData,
             data: [],
             page: {
@@ -76,6 +76,10 @@ export default class DeviceUpgradePopup extends Component {
         this.onTimeConfirm = this.onTimeConfirm.bind(this);
         this.searchChange = this.searchChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.liLick = this.liLick.bind(this);
+        this.mouseOver = this.mouseOver.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     onChange(e) {
@@ -154,6 +158,35 @@ export default class DeviceUpgradePopup extends Component {
         this.setState({ displayStep1: !displayStep1 });
     }
 
+    liLick(item) {
+        console.log("item:", item)
+
+    }
+
+    mouseOver() {
+
+    }
+    onClick(e) {
+        // let item = document.getElementById(e.target.id)
+        let item = e.target
+        let itemAll = item.parentNode.childNodes
+        for (var key in itemAll) {
+            console.log(key)
+            console.log("333:", itemAll[key].className)
+            if (itemAll[key].className) {
+                itemAll[key].className = 'list'
+            }
+        }
+
+        item.className = "bd list"
+        console.log("item:", item)
+        console.log("item2222:", item.parentNode.childNodes)
+
+        // e.target
+        // e.target.
+
+    }
+
     onLastStep() { //上一步
         let { displayStep1 } = this.state;
         this.setState({ displayStep1: !displayStep1 });
@@ -168,7 +201,14 @@ export default class DeviceUpgradePopup extends Component {
         console.log('选中的时间为: ', value);
         //将选中的时间传给api
     }
-    selectChange() { }
+    selectChange(e) {
+        let { updateOntime } = this.state;
+        if (e.target.value == '稍后升级') {
+            this.setState({ updateOntime: true })
+        } else {
+            this.setState({ updateOntime: false })
+        }
+    }
 
     searchChange(value) { //搜索内容
         // let { search } = this.state;
@@ -243,16 +283,17 @@ export default class DeviceUpgradePopup extends Component {
             {!displayStep1 && <Panel title={<FormattedMessage id='sysOperation.deviceUpgrade' />}
                 footer={footer2} closeBtn={true} closeClick={this.onCancel}>
                 <div className="table-container updatebox" >
-                    <ul>
+                    <ul className='package'>
                         {
                             packageData.map((item, index) => {
-                                return <li key={index} className="list">{item}</li>
+                                return <li key={index} className="list" id={`${index}`} onClick={this.onClick} onMouseOver={() => this.mouseOver(item)}>{item}</li>
+                                // return <div key={index} className="list">{item}</div>
                             })
                         }
                     </ul>
                     {/* <span>选择升级包</span> */}
                     <div className="import-select">
-                        <label htmlFor="select-file" className="glyphicon">选择升级包</label>
+                        <label htmlFor="select-file" className="glyphicon">添加升级包</label>
                         <input type='file' id="select-file" accept=".xls,.xlsx,.csv" placeholder=''
                             onChange={this.onPackageChange}></input>
                     </div>
@@ -261,14 +302,14 @@ export default class DeviceUpgradePopup extends Component {
                     <div className='form-group left'>
                         <label>升级时间</label>
 
-                        <select type="select" className="form-control select" placeholder={"选择升级时间"} value={"选择升级时间"}
+                        <select type="select" className="form-control select" placeholder={"选择升级时间"}
                             onChange={this.selectChange} >
-                            <option value="">选择升级时间</option>
+                            <option hidden value="选择升级时间">选择升级时间</option>
                             <option value="现在升级">现在升级</option>
                             <option value="稍后升级">稍后升级</option>
                         </select>
                     </div>
-                    <div className='form-group right'>
+                    <div className={`form-group right ${this.state.updateOntime ? '' : "disabled"}`}>
                         <label>开始时间</label>
                         <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" placeholder="请选择开始时间"
                             onChange={this.onTimeSelect} onTimeConfirm={this.onTimeConfirm} />
