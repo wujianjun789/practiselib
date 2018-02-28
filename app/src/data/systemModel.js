@@ -41,7 +41,7 @@ export const TreeData = [
         'class': 'icon_calendar',
         'active': false,
         'link': '/systemOperation/strategy/timeTable',
-      }, 
+      },
       // {
       //   'id': 'sensor',
       //   'name': 'app.sensor',
@@ -127,30 +127,33 @@ export const TreeData = [
         'link': '/systemOperation/deviceMonitor/deviceTopology',
       },
     ],
-  }, {
-    'id': 'deviceMaintenance',
-    'name': 'sysOperation.device.maintenance',
-    'toggled': false,
-    'active': true,
-    'link': '/systemOperation/deviceMaintenance/deviceReplace',
-    'level': 1,
-    'children': [
-      {
-        'id': 'deviceReplace',
-        'name': '设备更换',
-        'class': 'icon_update',
-        'active': false,
-        'link': '/systemOperation/deviceMaintenance/deviceReplace',
-      },
-      {
-        'id': 'deviceUpdate',
-        'name': '设备升级',
-        'class': 'icon_upgrade',
-        'active': false,
-        'link': '/systemOperation/deviceMaintenance/deviceUpdate',
-      },
-    ],
-  }, {
+  }
+  // ,
+  // {
+  //   'id': 'deviceMaintenance',
+  //   'name': 'sysOperation.device.maintenance',
+  //   'toggled': false,
+  //   'active': true,
+  //   'link': '/systemOperation/deviceMaintenance/deviceReplace',
+  //   'level': 1,
+  //   'children': [
+  //     {
+  //       'id': 'deviceReplace',
+  //       'name': '设备更换',
+  //       'class': 'icon_update',
+  //       'active': false,
+  //       'link': '/systemOperation/deviceMaintenance/deviceReplace',
+  //     },
+  //     {
+  //       'id': 'deviceUpdate',
+  //       'name': '设备升级',
+  //       'class': 'icon_upgrade',
+  //       'active': false,
+  //       'link': '/systemOperation/deviceMaintenance/deviceUpdate',
+  //     },
+  //   ],
+  // }
+  , {
     'id': 'faultManagement',
     'name': 'sysOperation.fault.manage',
     'toggled': false,
@@ -185,8 +188,8 @@ export function getModelData(model, cb) {
         response.map((data, index) => {
           const child = {
             id: transformKey(data.name), name: data.description,
-            class: getClassByModel(data.name), active:false,
-            link:getLinkByModel(item.id, data.name),
+            class: getClassByModel(data.name), active: false,
+            link: getLinkByModel(item.id, data.name),
           };
           if (index === 0) {
             item.link = getLinkByModel(item.id, data.name);
@@ -252,27 +255,27 @@ export function getModelTypesNameById(modelId, typeId) {
 
 function getLinkByModel(parentId, key) {
   switch (key) {
-  case 'gateway':
-  case 'ssgw':
-    return '/systemOperation/config/gateway';
-  case 'lc':
-  case 'ssslc':
-    return '/systemOperation/config/lc';
-  case 'sensor':
-  case 'sses':
-    return '/systemOperation/config/sensor';
-  case 'plc':
-    return 'icon_control';
-  case 'ammeter':
-    return 'icon_ammeter';
-  case 'pole':
-    return '/systemOperation/config/pole';
-  case 'screen':
-  case 'ssads':
-    return '/systemOperation/config/screen';
-  case 'xes':
-    return '/systemOperation/config/xes';
-  default:
-    return 'icon_lc';
+    case 'gateway':
+    case 'ssgw':
+      return '/systemOperation/config/gateway';
+    case 'lc':
+    case 'ssslc':
+      return '/systemOperation/config/lc';
+    case 'sensor':
+    case 'sses':
+      return '/systemOperation/config/sensor';
+    case 'plc':
+      return 'icon_control';
+    case 'ammeter':
+      return 'icon_ammeter';
+    case 'pole':
+      return '/systemOperation/config/pole';
+    case 'screen':
+    case 'ssads':
+      return '/systemOperation/config/screen';
+    case 'xes':
+      return '/systemOperation/config/xes';
+    default:
+      return 'icon_lc';
   }
 }

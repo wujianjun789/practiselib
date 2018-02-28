@@ -198,7 +198,7 @@ export default (
             }, 'starriverpro.deviceMonitor.deviceStateChart');
           }} />
         </Route>
-        <Route path="deviceMaintenance">
+        {/* <Route path="deviceMaintenance">
           <Route path="deviceReplace" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../deviceMaintenance/container/DeviceReplace').default);
@@ -209,7 +209,7 @@ export default (
               cb(null, require('../deviceMaintenance/container/DeviceUpdate').default);
             }, 'starriverpro.deviceMaintenance.deviceUpdate');
           }} />
-        </Route>
+        </Route> */}
         <Route path="faultManagement">
           <Route path="alarm" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
@@ -271,7 +271,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../smartLightControl/container/Strategy').default);
             }, 'starriverpro.smartLightControl.strategy');
-          }} /> 
+          }} />
         </Route>
       </Route>
       <Route path="/light" component={LightManage}>
@@ -317,7 +317,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../lightControl/container/LatlngStrategy').default);
             }, 'starriverpro.lightControl.latlngStrategy');
-          }} />  
+          }} />
         </Route>
       </Route>
       <Route path="/reporterManage" component={ReporterManage}>
@@ -342,28 +342,28 @@ export default (
         </Route>
       </Route>
       <Route path="/mediaPublish" component={MediaPublish}>
-        <Route path="statistics" getComponent={(nextState, cb)=>{
-            require.ensure([], require=>{
-              cb(null, require('../mediaPublishStatistics/container/index').default);
-            }, 'starriverpro.mediaPublishStatistics.container.statistics')
-        }}/>
+        <Route path="statistics" getComponent={(nextState, cb) => {
+          require.ensure([], require => {
+            cb(null, require('../mediaPublishStatistics/container/index').default);
+          }, 'starriverpro.mediaPublishStatistics.container.statistics')
+        }} />
         <Route path="map" getComponent={(nextState, cb) => {
-            require.ensure([], require => {
-              cb(null, require('../mediaPublishMap/container/index').default);
-            }, 'starriverpro.mediaPublishMap.container.map');
-          }}>
+          require.ensure([], require => {
+            cb(null, require('../mediaPublishMap/container/index').default);
+          }, 'starriverpro.mediaPublishMap.container.map');
+        }}>
         </Route>
         <Route path="screen" getComponent={(nextState, cb) => {
-            require.ensure([], require => {
-              cb(null, require('../mediaPublishScreen/container/index').default);
-            }, 'starriverpro.mediaPublishScreen.container.screen');
-          }}>
+          require.ensure([], require => {
+            cb(null, require('../mediaPublishScreen/container/index').default);
+          }, 'starriverpro.mediaPublishScreen.container.screen');
+        }}>
         </Route>
         <Route path="playProject" getComponent={(nextState, cb) => {
-            require.ensure([], require => {
-              cb(null, require('../mediaPublish/container/PlayerList').default);
-            }, 'starriverpro.mediaPublish.container.PlayerList');
-          }}>
+          require.ensure([], require => {
+            cb(null, require('../mediaPublish/container/PlayerList').default);
+          }, 'starriverpro.mediaPublish.container.PlayerList');
+        }}>
         </Route>
       </Route>
       <Route path="/mediaPublish/playerArea">
