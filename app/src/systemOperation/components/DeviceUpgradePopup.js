@@ -37,6 +37,7 @@ export default class DeviceUpgradePopup extends Component {
                 placeholder: 'sysOperation.input.device',
                 value: '',
             }),
+            selectAll: false,//标志是否全选
             stateData: this.props.tableData,
             data: [],
             page: {
@@ -229,7 +230,7 @@ export default class DeviceUpgradePopup extends Component {
                 <SearchText placeholder={this.props.intl.formatMessage({ id: search.get('placeholder') })}
                     value={search.get('value')} onChange={this.searchChange} submit={this.searchSubmit} />
                 {
-                    stateData.length !== 0 && <div className="table-container">
+                    stateData.length !== 0 && <div className={`table-container ${this.state.checkedValue == 1 ? "disabled" : ''}`}>
                         <Table columns={this.columns} data={result} checked={checked} allChecked={true}
                             titleCheck={false} rowCheckChange={this.rowCheckChange} />
                         <Page className={'page ' + (page.total == 0 ? 'hidden' : '')} showSizeChanger
