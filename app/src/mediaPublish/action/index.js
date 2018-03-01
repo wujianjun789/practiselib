@@ -37,15 +37,17 @@ import {
 
 import {getProgramList, getSceneList, getZoneList, getItemList, getAssetById,
     updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
-    addProgram, addScene, addZone, removeProgramsById, removeSceneById, removeZoneById,removeItemById,
+    addProgram, addScene, addZone, addItem, removeProgramsById, removeSceneById, removeZoneById,removeItemById,
     updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders} from '../../api/mediaPublish';
 import {addTreeNode, moveTree, removeTree, getPropertyTypeByNodeType, getTreeParentNode, getInitData, IsSystemFile, tranformAssetType,
-    parsePlanData,removeArea} from '../util/index';
+    parsePlanData,removeArea, formatTransformType, getAssetData} from '../util/index';
 import {addNotify} from '../../common/actions/notifyPopup';
 import {getListObjectByKey, getIndexByKey} from '../../util/algorithm';
 import lodash from 'lodash';
 import Immutable from 'immutable';
 
+import systemFile from '../data/systemFile.json';
+import systemInitFile from '../data/systemInitFile.json';
 export function sideBarToggled(data) {
     return dispatch=>{
         dispatch({type:SIDEBAR_TOGGLE, data:data})
@@ -94,6 +96,8 @@ export function updateOnToggle(node) {
                 break;
             case 'playerArea':
                 dispatch(requestItemList(parentParentNode.id, parentNode.id, node.id));
+                break;
+            default:
                 break;
         }
     }
@@ -149,7 +153,6 @@ export function requestItemList(programId, sceneId, zoneId){
     }
 }
 
-import systemFile from '../data/systemFile.json';
 function requestItemName(data) {
     return dispatch=>{
         console.log('requestItemName:', data);
@@ -175,12 +178,13 @@ function updateItemName(itemObject, sysfile) {
     }
 }
 
-export function playerAssetSelect(item) {
+export function playerAssetSelect(item, cb) {
     return dispatch=>{
         const type = item.get('type');
         const curType = tranformAssetType(type);
         dispatch(updateCurType(curType, true));
         dispatch({type: UPDATE_ITEM_SELECT, data: item});
+        setTimeout(()=>{cb && cb()}, 66);
     }
 }
 
@@ -234,6 +238,8 @@ export function addPlayerSceneArea() {
             case 'playerScene':
                 dispatch(addPlayerArea(curNode, parentNode));
                 break;
+            default:
+                break;
         }
     }
 }
@@ -255,15 +261,15 @@ function addPlayerScene(curNode){
 function addPlayerArea(curNode, parentNode){
     return dispatch=>{
         const parentParentNode = parentNode;
-        const parentNode = curNode;
-        if (typeof parentNode.id === 'string' && parentNode.id.indexOf('scene') > -1) {
+        const sParentNode = curNode;
+        if (typeof sParentNode.id === 'string' && sParentNode.id.indexOf('scene') > -1) {
             return dispatch(addNotify(0, '请提交播放场景'));
         }
         const node = getInitData('area', '区域新建');
 
         dispatch(updateCurType('playerArea', false));
-        dispatch(updateCurNode(node, parentNode, parentParentNode));
-        dispatch(updateTreeData(node, parentNode, parentParentNode));
+        dispatch(updateCurNode(node, sParentNode, parentParentNode));
+        dispatch(updateTreeData(node, sParentNode, parentParentNode));
     }
 }
 
@@ -321,6 +327,34 @@ export function applyClick(id, data) {
             default:
                 dispatch(addUpdateItem(data, project, parentParentNode, parentNode, curNode));
         }
+    }
+}
+
+export function addItemToArea(item, formatIntl) {
+    return (dispatch, getState)=>{
+        const project = getState().mediaPublish.project;
+        const parentParentNode = getState().mediaPublish.parentParentNode;
+        const parentNode = getState().mediaPublish.parentNode;
+        const curNode = getState().mediaPublish.curNode;
+
+        if (!curNode || curNode.type !== 'area') {
+            return dispatch(addNotify(0, formatIntl('mediaPublish.area.alert')));
+        }
+
+        if (typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
+            return dispatch(addNotify(0, '请提交区域'));
+        }
+
+        const data = item.toJS();
+        const index = lodash.findIndex(systemInitFile, file => { return file.baseInfo.type == data.type; });
+        if (index < 0 && !data.type) {
+            return dispatch(addNotify(0, 'asset unknow type'));
+        }
+        const itemType = index > -1 ? data.type : formatTransformType(data.type);
+        const itemData = index > -1 ? systemInitFile[index] : getAssetData(data);
+        addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, itemType, itemData, data => {
+            dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
+        });
     }
 }
 
@@ -415,7 +449,7 @@ function updatePlayerAreaData(response, parentParentNode, parentNode, playerData
     return dispatch=>{
         let planIndex = lodash.findIndex(playerData, plan => { return plan.id == parentParentNode.id; });
         let sceneIndex = lodash.findIndex(playerData[planIndex].children, scene => { return scene.id == parentNode.id; });
-        this.state.playerData[planIndex].children[sceneIndex].children = playerData[planIndex].children[sceneIndex].children.map(area => {
+        playerData[planIndex].children[sceneIndex].children = playerData[planIndex].children[sceneIndex].children.map(area => {
             if ((typeof area.id === 'string' && area.id.indexOf('area&&') > -1) || area.id == response.id) {
                 return Object.assign({}, area, response);
             }
@@ -459,10 +493,8 @@ export function treeOnRemove(node){
                 });
                 break;
             case 'plan2':
-                type = 'cyclePlan';
                 break;
             case 'plan3':
-                type = 'timingPlan';
                 break;
             case 'area':
                 removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
@@ -470,6 +502,8 @@ export function treeOnRemove(node){
                     dispatch(updateTreeList(removeTree(playerData, node)));
                     dispatch(updateCurSceneItem(curSceneItem));
                 });
+                break;
+            default:
                 break;
         }
     }
@@ -491,6 +525,8 @@ export function treeOnMove(key, node){
                 break;
             case 'area':
                 dispatch(updateAreaOrders({ key: key, node: node }, playerData, project));
+                break;
+            default:
                 break;
         }
     }

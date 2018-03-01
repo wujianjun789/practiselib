@@ -38,9 +38,9 @@ import { getIndexByKey } from '../../util/algorithm';
 import {formatTransformType, getAssetData, getTitleByType, getPropertyTypeByNodeType, getTipByType, getActiveItem, getItemOfScene} from '../util/index';
 
 import {
-  uploadMaterialFile, addItem, searchAssetList, getAssetListByTypeWithName, removeAssetById, previewPlayItem, projectPublish} from '../../api/mediaPublish';
+  uploadMaterialFile, searchAssetList, getAssetListByTypeWithName, removeAssetById, previewPlayItem, projectPublish} from '../../api/mediaPublish';
 
-import { initProject, updateOnToggle, updateCurType, updateCurNode, initItemList, playerAssetSelect, playerAssetCancel, updateItemEdit,
+import { initProject, updateOnToggle, updateCurType, updateCurNode, initItemList, addItemToArea, playerAssetSelect, playerAssetCancel, updateItemEdit,
     addPlayerPlan, addPlayerSceneArea, applyClick, updateTreeJudge, treeOnMove, treeOnRemove, playerAssetMove, playerAssetRemove } from '../action/index';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -284,7 +284,6 @@ export class PlayerArea extends Component {
 
   updatePlayerTree(){
     const { actions, playerData, IsUpdateTree } = this.props;
-    console.log('IsUpdateTree:', IsUpdateTree, playerData);
     if(IsUpdateTree){
       actions.updateTreeJudge(false);
       actions.treeViewInit(playerData);
@@ -298,8 +297,9 @@ export class PlayerArea extends Component {
   }
 
   playerAssetSelect = (item) => {
-    this.props.actions.playerAssetSelect(item);
-    this.setPlayItemArray();
+    this.props.actions.playerAssetSelect(item, ()=>{
+      this.setPlayItemArray();
+    });
   }
 
   // 设定预览区域列表 Start
@@ -495,27 +495,7 @@ export class PlayerArea extends Component {
   }
 
   addClick = (item) => {
-    const { project, parentParentNode, parentNode, curNode } = this.props;
-    if (!curNode || curNode.type !== 'area') {
-      this.props.actions.addNotify(0, this.formatIntl('mediaPublish.area.alert'));
-      return false;
-    }
-
-    if (typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
-      this.props.actions.addNotify(0, '请提交区域');
-      return false;
-    }
-
-    const data = item.toJS();
-    const index = lodash.findIndex(this.systemInitFile, file => { return file.baseInfo.type == data.type; });
-    if (index < 0 && !data.type) {
-      return this.props.actions.addNotify(0, 'asset unknow type');
-    }
-    const itemType = index > -1 ? data.type : formatTransformType(data.type);
-    const itemData = index > -1 ? this.systemInitFile[index] : getAssetData(data);
-    addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, itemType, itemData, data => {
-      this.requestItemList(parentParentNode.id, parentNode.id, curNode.id);
-    });
+    this.props.actions.addItemToArea(item, this.formatIntl);
   }
 
   assetLibRemove = (item) => {
@@ -603,7 +583,7 @@ export class PlayerArea extends Component {
   }
 
   savePlanHandler = () => {
-    projectPublish(this.state.project.id, () => {
+    projectPublish(this.props.project.id, () => {
 
     });
   }
@@ -934,7 +914,7 @@ const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators({
       overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
       treeViewInit: treeViewInit, initProject: initProject, updateCurType: updateCurType, updateCurNode: updateCurNode,
-      updateOnToggle: updateOnToggle, initItemList: initItemList, playerAssetSelect: playerAssetSelect, playerAssetCancel: playerAssetCancel,
+      updateOnToggle: updateOnToggle, initItemList: initItemList, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect, playerAssetCancel: playerAssetCancel,
       updateItemEdit: updateItemEdit, addPlayerPlan: addPlayerPlan, addPlayerSceneArea: addPlayerSceneArea, applyClick: applyClick,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetMove: playerAssetMove, playerAssetRemove: playerAssetRemove,updateTreeJudge:updateTreeJudge
     }, dispatch),
