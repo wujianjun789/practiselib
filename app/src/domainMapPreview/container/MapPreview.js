@@ -94,7 +94,7 @@ export class MapPreview extends Component{
 
         let newValue = Object.assign({}, search, {value:value});
         this.setState({search:newValue}, ()=>{
-            this.updatePlaceholder();
+            setTimeout(()=>{this.updatePlaceholder()}, 33);
         });
     }
 
@@ -187,7 +187,7 @@ export class MapPreview extends Component{
     }
 
     render(){
-
+console.log('render render............................................');
         const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
         return <Content className="map-preview">
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
