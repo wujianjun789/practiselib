@@ -5,10 +5,11 @@ const path = require('path');
 const dest_app = path.join(__dirname, './dist/app/public');
 const config_app = require('./webpack.app.config');
 const clean = require('gulp-clean');
-const uglifyes=require('uglify-es');
+const uglifyes = require('uglify-es');
 const composer = require('gulp-uglify/composer');
-const minify=composer(uglifyes,console);
+const minify = composer(uglifyes, console);
 const pump = require('pump');
+// const vendors = require('./ddl.config').entry.lib;
 const options = {
     compress: {
         properties: false,  // optimize property access: a["foo"] → a.foo
@@ -33,13 +34,21 @@ gulp.task('app.public', function () {
         .pipe(gulp.dest(dest_app));
 });
 
-// gulp.task('app.config',function(){
+// gulp.task('app.lib', function () {
 //     return gulp.src('./app/src/root/index.js')
-//         .pipe(webpack(require('./webpack.app.config.js')))
-//         .pipe(gulp.dest('./dist/app/public/src'))
+//         .pipe(webpack({
+//             config: require('./ddl.config.js')
+//         }))
+//         .pipe(gulp.dest(path.join(dest_app, 'lib')))
 // })
 
-gulp.task('app', ['app.public']);
+gulp.task('app.config', function () {
+    return gulp.src('./app/src/root/index.js')
+        .pipe(webpack(require('./webpack.app.config.js')))
+        .pipe(gulp.dest('./dist/app/public'))
+})
+
+gulp.task('app', ['app.public', 'app.config']);
 
 //服务端
 const dest_server = path.join(__dirname, './dist/server');
