@@ -36,12 +36,11 @@ export function getStatDeviceCount(cb) {
 //根据playerId获取projects
 export function getProjectsByPlayerId(id, cb) {
   let headers = getHttpHeader();
-  let url = HOST_IP + `/players/${id}/projects`;
+  let url = HOST_IP + `/players/${id}/projects?detail=true`;
   httpRequest(url, {
     headers: headers,
     method: 'GET',
   }, response => {
-
     cb && cb(response);
   });
 }

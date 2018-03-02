@@ -15,9 +15,7 @@ import ProjectPopup from '../component/ProjectPopup';
 import PreViewPopup from '../component/PreViewPopup';
 import { getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
-
 import { getProjectsByPlayerId, getProjectPreviewById, applyProjectOnPlayer } from '../../api/mediaPublish'
-
 import '../../../public/styles/media-publish-screen.less';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
@@ -40,9 +38,6 @@ export class MediaPublishScreen extends Component {
             { name: '方案管理...', id: 'manage' }
         ],
         currentPlan: null,
-
-        currentPlayerId: null
-
     }
     componentWillMount() {
         this._isMounted = true;
@@ -87,20 +82,21 @@ export class MediaPublishScreen extends Component {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     updateDeviceData = (data) => {
-
+        console.log('device', data)
         this._isMounted && this.setState({
             deviceList: data,
             currentDevice: data.length ? data[0] : null,
-            currentPlayerId: data.extend.player
         }, this.getCurrentProjects);
     }
     getCurrentProjects = () => {
-        console.log('run here?')
-        const id = this.state.currentPlayerId;
-        console.log('here')
-        getProjectPreviewById(id, (res) => {
-            console.log(res)
-
+        const id = this.state.currentDevice && this.state.currentDevice.extend.player;
+        getProjectsByPlayerId(id, (res) => {
+            const newPlayScheme = [
+                { name: '无', id: 'empty' },
+                ...res,
+                { name: '方案管理...', id: 'manage' }
+            ]
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] })
         })
     }
     handleCollapse = (id) => {
