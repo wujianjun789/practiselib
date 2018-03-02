@@ -160,8 +160,7 @@ export default function mediaPublish(state=initialState, action) {
             clearTreeListState(state.playerData);
             return Object.assign({}, state, {playerData: state.playerData, IsUpdateTree: true});
         case ADD_ITEM_TO_SCENE:
-            const sceneItem = addItemToScene(state.curSceneItem, state.project.id, action.programId, action.sceneId, action.zoneId, action.data);
-            return Object.assign({}, state, {sceneItem:sceneItem});
+            return Object.assign({}, state, {sceneItem:addItemToScene(state.curSceneItem, state.project.id, action.programId, action.sceneId, action.zoneId, action.data)});
         default:
             return state;
     }

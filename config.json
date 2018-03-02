@@ -12,13 +12,12 @@
       {"key": "permission", "title": "权限管理", "link": "/permissionManage"},
       {"key": "maintenance", "title": "系统运维", "link": "/systemOperation"},
       {"key": "light", "title": "智能照明", "link": "/light"},
-      {"key": "publish", "title": "媒体发布", "link": "/"},
       {"key": "report", "title": "报表管理", "link": "/"},
       {"key": "domain", "title": "域管理", "link": "/domainManage/domainEdit"}
     ],
     "old":[
       {"key": "control", "title": "智慧路灯", "link": "/"},
-
+      {"key": "publish", "title": "媒体发布", "link": "/"},
       {"key": "visual", "title": "可视化", "link": "/"}
     ],
     "map":{
