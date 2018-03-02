@@ -420,13 +420,14 @@ function getVideoData(data, type) {
 }
 
 export function tranformAssetType(type) {
+    console.log('type',type)
     switch (type) {
         case 0:
             return "playerText";
         case 1:
             return "";
         case 2:
-            return "";
+            return "textFile";
         case 3:
             return "playerPicAsset";
         case 4:

@@ -11,6 +11,7 @@ import TimingPlan from '../component/TimingPlan';
 import PlayerPicAsset from '../component/PlayerPicAsset';
 import PlayerVideoAsset from '../component/PlayerVideoAsset';
 import PlayerText from '../component/PlayerText';
+import TextFile from '../component/TextFile';
 import DigitalClock from '../component/digitalClock';
 import VirtualClock from '../component/VirtualClock';
 import PlayerTimeAsset from '../component/PlayerTimeAsset';
@@ -53,6 +54,11 @@ const RenderPropertyPanel = (props)=>{
                                areaId={curNode?curNode.id:null}
                                data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
                                applyClick={data=>{applyClick('playerText', data)}}/>
+        case 'textFile':
+            return <TextFile projectId={project?project.id:null} sceneId={parentNode?parentNode.id:null} planId={parentParentNode?parentParentNode.id:null}
+                               areaId={curNode?curNode.id:null}
+                               data={{id:playerListAsset.get("id"),name:playerListAsset.get('name')}}
+                               applyClick={data=>{applyClick('textFile', data)}}/>
         case 'digitalClock':
             return <DigitalClock projectId={project?project.id:null} sceneId={parentNode?parentNode.id:null} planId={parentParentNode?parentParentNode.id:null}
                                  areaId={curNode?curNode.id:null}
