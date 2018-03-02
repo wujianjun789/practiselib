@@ -15,7 +15,11 @@ import ProjectPopup from '../component/ProjectPopup';
 import PreViewPopup from '../component/PreViewPopup';
 import { getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
+<<<<<<< Updated upstream
 import { getProjectsByPlayerId, getProjectPreviewById, applyProjectOnPlayer } from '../../api/mediaPublish'
+=======
+import { getProjectsByPlayerId, getProjectPreviewById } from '../../api/mediaPublish'
+>>>>>>> Stashed changes
 import '../../../public/styles/media-publish-screen.less';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
@@ -38,6 +42,10 @@ export class MediaPublishScreen extends Component {
             { name: '方案管理...', id: 'manage' }
         ],
         currentPlan: null,
+<<<<<<< Updated upstream
+=======
+        currentPlayerId: null
+>>>>>>> Stashed changes
     }
     componentWillMount() {
         this._isMounted = true;
@@ -82,6 +90,7 @@ export class MediaPublishScreen extends Component {
         this._isMounted && this.setState({ page: { ...this.state.page, total: data.count } });
     }
     updateDeviceData = (data) => {
+<<<<<<< Updated upstream
         console.log('device', data)
         this._isMounted && this.setState({
             deviceList: data,
@@ -97,6 +106,20 @@ export class MediaPublishScreen extends Component {
                 { name: '方案管理...', id: 'manage' }
             ]
             this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] })
+=======
+        this._isMounted && this.setState({
+            deviceList: data,
+            currentDevice: data.length ? data[0] : null,
+            currentPlayerId: data.extend.player
+        }, this.getCurrentProjects);
+    }
+    getCurrentProjects = () => {
+        console.log('run here?')
+        const id = this.state.currentPlayerId;
+        console.log('here')
+        getProjectPreviewById(id, (res) => {
+            console.log(res)
+>>>>>>> Stashed changes
         })
     }
     handleCollapse = (id) => {

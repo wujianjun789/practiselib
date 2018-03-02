@@ -52,7 +52,7 @@ module.exports = {
     entry: {
         'lib': vendors,
     },
-    plugins:[
+    plugins: [
         new webpack.DllPlugin({
             path: 'manifest.json',
             name: '[name]',
