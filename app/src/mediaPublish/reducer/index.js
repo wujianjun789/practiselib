@@ -13,6 +13,7 @@ import {
     UPDATE_ITEM_SELECT,
     UPDATE_ITEM_CANCEL,
     UPDATE_ITEM_EDIT,
+    UPDATE_ITEM_PREVIEW,
     UPDATE_CUR_SCENE_ITEM,
 
     INIT_CUR_TYPE,
@@ -108,6 +109,7 @@ const initialState = {
          },*/
     ],
     IsUpdateTree: true,
+    IsPreview: false,
     playerListAsset: Immutable.fromJS({
         list: [/*{ id: 1, name: '素材1', assetType: "system", type: "text" }, { id: 2, name: '素材2', assetType: "source", type: "video" }, { id: 3, name: '素材3', assetType: "source", type: "picture" },
          { id: 4, name: '素材4', assetType: "source", type: "timing" }, { id: 5, name: '素材5', assetType: "source", type: "video" }, { id: 6, name: '素材6', assetType: "source", type: "picture" }*/],
@@ -152,6 +154,8 @@ export default function mediaPublish(state=initialState, action) {
             return Object.assign({}, state, {parentParentNode: action.parentParentNode, parentNode: action.parentNode, curNode: action.curNode});
         case UPDATE_TREE_JUDGE:
             return Object.assign({}, state, {IsUpdateTree: action.data});
+        case UPDATE_ITEM_PREVIEW:
+            return Object.assign({}, state, {IsPreview: action.data});
         case UPDATE_TREE_DATA:
             return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
         case UPDATE_TREE_LIST:
@@ -266,5 +270,5 @@ function updateItemCancel(state) {
 function updateItemSelect(state, item) {
     state.playerListAsset = state.playerListAsset.update('id', v => item.get('id'));
 
-    return Object.assign({}, state, {playerListAsset: state.playerListAsset.update('name', v=>item.get('name'))});
+    return Object.assign({}, state, {IsPreview: true, playerListAsset: state.playerListAsset.update('name', v=>item.get('name'))});
 }

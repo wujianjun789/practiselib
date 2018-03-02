@@ -576,7 +576,7 @@ export function projectPublish(projectId, cb) {
   })
 }
 
-export function updateScreenProject(playerId, projectId, data) {
+export function updateScreenProject(playerId, projectId, data, cb) {
   const headers = getHttpHeader();
   httpRequest(HOST_IP + '/players/' + playerId + '/projects/rel/' + projectId, {
     headers: headers,
@@ -587,7 +587,7 @@ export function updateScreenProject(playerId, projectId, data) {
   })
 }
 
-export function removeScreenProject(playerId, projectId) {
+export function removeScreenProject(playerId, projectId, cb) {
   const headers = getHttpHeader();
   httpRequest(HOST_IP + '/players/' + playerId + '/projects/rel/' + projectId, {
     headers: headers,

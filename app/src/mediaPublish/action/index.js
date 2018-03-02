@@ -18,6 +18,7 @@ import {
     UPDATE_ITEM_SELECT,
     UPDATE_ITEM_CANCEL,
     UPDATE_ITEM_EDIT,
+    UPDATE_ITEM_PREVIEW,
     UPDATE_CUR_SCENE_ITEM,
 
     UPDATE_TREE_JUDGE,
@@ -178,13 +179,20 @@ function updateItemName(itemObject, sysfile) {
     }
 }
 
-export function playerAssetSelect(item, cb) {
+export function updateItemPreView(IsPreView){
+    return {
+        type: UPDATE_ITEM_PREVIEW,
+        data: IsPreView
+    }
+}
+
+export function playerAssetSelect(item) {
     return dispatch=>{
         const type = item.get('type');
         const curType = tranformAssetType(type);
         dispatch(updateCurType(curType, true));
         dispatch({type: UPDATE_ITEM_SELECT, data: item});
-        setTimeout(()=>{cb && cb()}, 66);
+        // setTimeout(()=>{cb && cb()}, 66);
     }
 }
 

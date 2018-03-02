@@ -41,7 +41,7 @@ import {
   uploadMaterialFile, searchAssetList, getAssetListByTypeWithName, removeAssetById, previewPlayItem, projectPublish} from '../../api/mediaPublish';
 
 import { initProject, updateOnToggle, updateCurType, updateCurNode, initItemList, addItemToArea, playerAssetSelect, playerAssetCancel, updateItemEdit,
-    addPlayerPlan, addPlayerSceneArea, applyClick, updateTreeJudge, treeOnMove, treeOnRemove, playerAssetMove, playerAssetRemove } from '../action/index';
+    addPlayerPlan, addPlayerSceneArea, applyClick, updateTreeJudge, treeOnMove, treeOnRemove, playerAssetMove, playerAssetRemove, updateItemPreView } from '../action/index';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import lodash from 'lodash';
@@ -156,6 +156,11 @@ export class PlayerArea extends Component {
     this.updatePlayerTree();
     this.updateSidebarInfoStyle();
     // this.setParentInfo();
+    if(this.props.playerListAsset.get('id') !== -1 && this.props.IsPreview){
+      this.props.actions.updateItemPreView(false);
+      this.setPlayItemArray();
+    }
+
   }
 
   componentWillUnmount() {
@@ -297,9 +302,7 @@ export class PlayerArea extends Component {
   }
 
   playerAssetSelect = (item) => {
-    this.props.actions.playerAssetSelect(item, ()=>{
-      this.setPlayItemArray();
-    });
+    this.props.actions.playerAssetSelect(item);
   }
 
   // 设定预览区域列表 Start
@@ -905,7 +908,8 @@ const mapStateToProps = state => {
     playerData: state.mediaPublish.playerData,
     playerListAsset: state.mediaPublish.playerListAsset,
     curSceneItem: state.mediaPublish.curSceneItem,
-    IsUpdateTree: state.mediaPublish.IsUpdateTree
+    IsUpdateTree: state.mediaPublish.IsUpdateTree,
+    IsPreview: state.mediaPublish.IsPreview
   };
 };
 
@@ -916,7 +920,8 @@ const mapDispatchToProps = (dispatch) => {
       treeViewInit: treeViewInit, initProject: initProject, updateCurType: updateCurType, updateCurNode: updateCurNode,
       updateOnToggle: updateOnToggle, initItemList: initItemList, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect, playerAssetCancel: playerAssetCancel,
       updateItemEdit: updateItemEdit, addPlayerPlan: addPlayerPlan, addPlayerSceneArea: addPlayerSceneArea, applyClick: applyClick,
-      treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetMove: playerAssetMove, playerAssetRemove: playerAssetRemove,updateTreeJudge:updateTreeJudge
+      treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetMove: playerAssetMove, playerAssetRemove: playerAssetRemove,updateTreeJudge:updateTreeJudge,
+      updateItemPreView: updateItemPreView
     }, dispatch),
   };
 };
