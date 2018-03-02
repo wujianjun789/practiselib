@@ -36,16 +36,12 @@ export function getStatDeviceCount(cb) {
 //根据playerId获取projects
 export function getProjectsByPlayerId(id, cb) {
   let headers = getHttpHeader();
-<<<<<<< Updated upstream
-  let url = HOST_IP + `/players/${id}/projects?detail=true`;
-=======
   let url = HOST_IP + `/players/${id}/projects`;
->>>>>>> Stashed changes
   httpRequest(url, {
     headers: headers,
     method: 'GET',
   }, response => {
-<<<<<<< Updated upstream
+
     cb && cb(response);
   });
 }
@@ -61,12 +57,6 @@ export function applyProjectOnPlayer(playerId, projectId, cb) {
   })
 }
 
-=======
-    console.log(response)
-    cb && cb(response);
-  });
-}
->>>>>>> Stashed changes
 //播放方案
 export function searchProjectList(type, projectName, offset, limit, cb) {
   let headers = getHttpHeader();
