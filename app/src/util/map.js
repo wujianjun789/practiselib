@@ -143,8 +143,6 @@ export default class Map{
                     zoomControl: false
                 });
             }
-        }else{
-
         }
 
         this.map.on('dragend', this.mapMoveEnd, this);
@@ -162,6 +160,8 @@ export default class Map{
                     break;
                 case 2:
                     this.staticPicture(data.map);
+                    break;
+                default:
                     break;
             }
 
@@ -793,7 +793,7 @@ export default class Map{
         if(type == 'DIGITAL'){
             L.AwesomeMarkers.icon({icon: '' + digital, color:Map.getColorByStatus(status)});
         }
-console.log('type:',type);
+
         return L.AwesomeMarkers.icon({icon: Map.markerIcon[type]?Map.markerIcon[type]:'lightbulb', color:Map.getColorByStatus(status)});
     }
 

@@ -27,7 +27,7 @@ export  class MediaPublishMap extends Component{
     constructor(props){
         super(props);
         this.state = {
-            model: 'screen',
+            model: 'ssads',
             IsSearch: true,
             IsSearchResult: false,
 
@@ -224,7 +224,7 @@ export  class MediaPublishMap extends Component{
     onChange(key, event){
         const { search } = this.state;
         if(key == "search"){
-            this.setState({search:this.state.search.update('value', v=>event.target.value)}, ()=>{
+            this.setState({search: search.update('value', v=>event.target.value)}, ()=>{
             });
         }else if(key == "screenSwitch"){
             this.setState({screenSwitch: Object.assign({}, this.state.screenSwitch, {id:event.target.id})});
@@ -273,7 +273,7 @@ export  class MediaPublishMap extends Component{
 
     itemClick(pole){
         this.map.center = pole.get('geoPoint').toJS();
-        let state = {IsSearch: false, IsSearchResult:false, curDevice: pole}
+        let state = {IsSearch: false, curDevice: pole}
         const extend = pole.get('extend');
         if(extend.has('resWidth')){
             state = Object.assign({}, state, {screen:this.state.screen.update('width', v=>extend.get('resWidth'))});
@@ -298,9 +298,9 @@ export  class MediaPublishMap extends Component{
     }
 
     searchClick(e){
-        // this.setState({IsSearchResult: true}, ()=>{
+        this.setState({IsSearchResult: true}, ()=>{
             this.requestSearch();
-        // });
+        });
     }
 
     onkeydown(event){
@@ -370,25 +370,12 @@ export  class MediaPublishMap extends Component{
         }
     }
 
-    updatePlaceholder = ()=>{
-
-    }
-
-    onChange = (value)=>{
-        const { search } = this.state;
-
-        let newValue = Object.assign({}, search, {value:value});
-        this.setState({search:newValue}, ()=>{
-            this.updatePlaceholder();
-        });
-    }
-
     render(){
         const {mapId, panLatlng, search, page, IsSearch, IsSearchResult, positionList, searchList, curDevice, screen, screenSwitch, playerList,
             IsOpenPoleInfo, IsOpenPoleControl, IsOpenPreview, IsOpenFault, listStyle, infoStyle, controlStyle,faultStyle} = this.state;
 
         const faultList = screen.get('faultList').toJS();
-
+console.log('search:', search.toJS(), searchList.toJS(), positionList);
         return <Content>
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:searchList.toJS()}}
                      mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend,markerClickHandler:this.markerClickHandler}}
