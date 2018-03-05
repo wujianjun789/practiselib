@@ -60,10 +60,11 @@ export class PlayerArea extends Component {
         assetLibCollapsed: false,
       },
 
-      assetType: Immutable.fromJS({ list: [{ id: 1, value: '系统' }, { id: 2, value: '自定义' }], index: 0, value: '系统' }),
+      assetType: Immutable.fromJS({ list: [{ id: 1, value: this.formatIntl('app.system') }, { id: 2, value: this.formatIntl('app.custom') }], index: 0, value: this.formatIntl('app.system') }),
       assetSort: Immutable.fromJS({
-        list: [{ id: 1, type: 'text', value: '素材文字' }, { id: 2, type: 'image', value: '素材图片' }, { id: 3, type: 'video', value: '素材视频' }],
-        index: 0, value: '素材文字',
+        list: [{ id: 1, type: 'text', value: this.formatIntl('mediaPublish.material.text') },
+          { id: 2, type: 'image', value: this.formatIntl('mediaPublish.material.picture') }, { id: 3, type: 'video', value: this.formatIntl('mediaPublish.material.video') }],
+        index: 0, value: this.formatIntl('mediaPublish.material.text'),
       }),
       assetSearch: Immutable.fromJS({ placeholder: this.formatIntl('sysOperation.input.asset'), value: '' }),
       assetList: Immutable.fromJS({
@@ -466,13 +467,13 @@ export class PlayerArea extends Component {
       let addList = getActiveItem(this.state.assetList);
 
       if (addList.length == 0) {
-        this.props.actions.addNotify(0, '请选中右边素材库素材');
+        this.props.actions.addNotify(0, this.formatIntl('mediaPublish.select.material'));
       }
     } else if (id == 'edit') {
       this.props.actions.updateItemEdit(false);
     } else if (id == 'remove') {
       const { actions } = this.props;
-      actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="是否删除选中素材？"
+      actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl("mediaPublish.delete.material")}
         cancel={() => { actions.overlayerHide(); }} confirm={() => {
 
         }} />);
@@ -488,7 +489,7 @@ export class PlayerArea extends Component {
       this.setState({ assetList: this.state.assetList.update('isEdit', v => false) });
     } else if (id == 'remove') {
       const { actions } = this.props;
-      actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="是否删除选中素材？"
+      actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl("mediaPublish.delete.material")}
         cancel={() => { actions.overlayerHide(); }} confirm={() => {
 
         }} />);
@@ -504,7 +505,7 @@ export class PlayerArea extends Component {
   assetLibRemove = (item) => {
     console.log('assetLibRemove:', item.toJS());
     const { actions } = this.props;
-    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={'是否删除选中素材？'}
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.delete.material')}
       cancel={() => { actions.overlayerHide(); }} confirm={() => {
         const itemId = item.get('id');
         const list = this.state.assetList.get('list');
@@ -520,7 +521,12 @@ export class PlayerArea extends Component {
   }
 
   playerAssetRemove = (item) => {
-    this.props.actions.playerAssetRemove(item);
+    const {actions} = this.props;
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.delete.material')}
+                                        cancel={() => { actions.overlayerHide(); }} confirm={() =>{
+                                          this.props.actions.playerAssetRemove(item);
+                                        } }/>)
+
   }
 
   playerAssetMove = (id, item) => {
@@ -541,7 +547,7 @@ export class PlayerArea extends Component {
         this.props.actions.initItemList();
       });
     } else if (id == 'remove') {
-      let tips = getTipByType(this.state.curType);
+      const tips = getTipByType(this.state.curType, this.formatIntl);
 
       actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
         cancel={() => { actions.overlayerHide(); }} confirm={() => {
@@ -551,7 +557,7 @@ export class PlayerArea extends Component {
     } else if (id == 'complete') {
 
     } else {
-      this.setState({ isAddClick: false }, ()=>{this.props.actions.addPlayerPlan(id)})
+      this.setState({ isAddClick: false }, ()=>{this.props.actions.addPlayerPlan(id, this.formatIntl)})
     }
   }
   
@@ -593,7 +599,7 @@ export class PlayerArea extends Component {
 
   quitHandler = () => {
     const { actions } = this.props;
-    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips="未保存内容将会丢失，是否退出？"
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl("The unsaved content will be lost, do you quit?")}
 
       cancel={() => { actions.overlayerHide(); }} confirm={() => {
         actions.overlayerHide();
@@ -773,7 +779,13 @@ export class PlayerArea extends Component {
   }
 
   onRemove = node => {
-    this.props.actions.treeOnRemove(node);
+    const { actions } = this.props;
+    const tips = getTipByType(this.props.curType, this.formatIntl);
+
+    // actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={tips}
+    //                                     cancel={() => { actions.overlayerHide(); }} confirm={() => {
+                                        this.props.actions.treeOnRemove(node);
+        // }} />);
   }
 
   onMove = (key, node) => {

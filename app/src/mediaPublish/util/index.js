@@ -52,7 +52,7 @@ export function arrayTranformWeek(array) {
     return week;
 }
 
-export function addTreeNode(id) {
+export function addTreeNode(id, formatIntl) {
     let type = "plan";
     let proType = "playerPlan";
     let name = "";
@@ -60,17 +60,19 @@ export function addTreeNode(id) {
         case "general":
             type = "plan";
             proType = "playerPlan";
-            name = '播放计划新建';
+            name = formatIntl('mediaPublish.addPlayPlan');
             break;
         case "cycle":
             type = "plan2";
             proType = "cyclePlan";
-            name = '周期插播计划'
+            name = formatIntl('mediaPublish.cyclePlayPlan')
             break;
         case "regular":
             type = "plan3";
             proType = "timingPlan";
-            name = '定时插播计划';
+            name = formatIntl('mediaPublish.timingPlayPlan');
+            break;
+        default:
             break;
     }
 
@@ -143,12 +145,12 @@ export function removeTree(treeList, node) {
         treeList.splice(curIndex, 1);
         return treeList;
     }else{
-        return treeList.map(node=>{
-            if(node.children && node.children.length){
-                removeTree(node.children,  data);
+        return treeList.map(cnode=>{
+            if(cnode.children && cnode.children.length){
+                removeTree(cnode.children,  node);
             }
 
-            return node;
+            return cnode;
         })
     }
 }
@@ -295,6 +297,8 @@ export function getAssetData(data) {
             return getImageData(data, itemType);
         case 4:
             return getVideoData(data, itemType);
+        default:
+            break;
     }
     return obj;
 }
@@ -457,6 +461,8 @@ export function getTitleByType(curType, formatIntl) {
             return ` (${formatIntl('mediaPublish.cyclePlayPlan')})`;
         case "timingPlan":
             return ` (${formatIntl('mediaPublish.timingPlayPlan')})`;
+        default:
+            break;
     }
 
     return "";
@@ -480,22 +486,27 @@ export function getPropertyTypeByNodeType(node) {
         case 'area':
             type = 'playerArea';
             break;
+        default:
+            break;
     }
 
     return type;
 }
 
-export function getTipByType(curType) {
-    let tips = "是否删除选中场景与场景中所有内容";
-    switch (this.state.curType) {
+export function getTipByType(curType, formatIntl) {
+    let tips = "";
+    switch (curType) {
         case "playerPlan":
-            tips = "是否删除选中计划与计划中所有内容";
+            tips = formatIntl("mediaPublish.delete.plan.alert");
             break;
         case "playerScene":
-            tips = "是否删除选中场景与场景中所有内容";
+            tips = formatIntl("mediaPublish.delete.scene.alert");
             break;
         case "playerArea":
-            tips = "是否删除选中区域与区域中所有内容";
+            tips = formatIntl("mediaPublish.delete.area.alert");
+            break;
+        default:
+            tips = ""
             break;
     }
 

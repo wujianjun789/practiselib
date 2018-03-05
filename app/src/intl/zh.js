@@ -8,6 +8,8 @@ export default {
     'app.year': '年',
     'app.month': '月',
     'app.day': '日',
+    'app.system': '系统',
+    'app.custom': '自定义',
 
     'app.map': '地图',
     'app.list': '列表',
@@ -478,6 +480,17 @@ export default {
 
     'mediaPublish.area.alert': '请选择区域',
     'mediaPublish.publish': '发布',
+
+    'mediaPublish.material.text': '素材文字',
+    'mediaPublish.material.picture': '素材图片',
+    'mediaPublish.material.video': '素材视频',
+
+    'mediaPublish.delete.scene.alert': '是否删除选中场景与场景中所有内容？',
+    'mediaPublish.delete.plan.alert': '是否删除选中计划与计划中所有内容？',
+    'mediaPublish.delete.area.alert': '是否删除选中区域与区域中所有内容？',
+    'mediaPublish.quit.alert': '未保存内容将会丢失，是否退出？',
+    'mediaPublish.delete.material':'是否刪除选中素材？',
+    'mediaPublish.select.material':'请选中右边素材库素材',
 
     //以前的
     'app.link.index': '首页',

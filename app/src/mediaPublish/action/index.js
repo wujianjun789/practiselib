@@ -220,11 +220,11 @@ export function playerAssetCancel() {
     }
 }
 
-export function addPlayerPlan(id) {
+export function addPlayerPlan(id, formatIntl) {
     return (dispatch, getState)=>{
         const isClick = getState().mediaPublish.isClick;
         dispatch(clearTreeState());
-        const node = addTreeNode(id);
+        const node = addTreeNode(id, formatIntl);
         dispatch(updateCurType(node.proType, isClick));
         dispatch(updateCurNode(node.node));
         dispatch(updateTreeData(node.node));

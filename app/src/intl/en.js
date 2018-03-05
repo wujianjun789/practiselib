@@ -7,7 +7,8 @@ export default {
 
     'app.year': 'year',
     'app.month': 'month',
-    'app.day': 'day',
+    'app.system': 'system',
+    'app.custom': 'custom',
 
     'app.map': 'map',
     'app.list': 'list',
@@ -476,7 +477,7 @@ export default {
     'mediaPublish.timingPlay': 'timing play',
     'mediaPublish.timingPlayPlan': 'timing play plan',
     'mediaPublish.cyclePlayPlan': 'cycle play plan',
-    'mediaPublish.addPlayPlan': 'add plan plan',
+    'mediaPublish.addPlayPlan': 'add play plan',
     'mediaPublish.pauseSign': 'pause sign',
     'mediaPublish.addOrModifyPlan': 'Add or modify timing play',
     'mediaPublish.timeInterval': 'TimeInterval',
@@ -485,6 +486,17 @@ export default {
 
     'mediaPublish.area.alert': 'Please select area',
     'mediaPublish.publish': 'Publish',
+
+    'mediaPublish.material.text': 'material text',
+    'mediaPublish.material.picture': 'material picture',
+    'mediaPublish.material.video': 'material video',
+
+    'mediaPublish.delete.scene.alert': 'Do you delete all the contents of the selected scene and the scene?',
+    'mediaPublish.delete.plan.alert': 'Do you delete all the contents of the selected plan and plan?',
+    'mediaPublish.delete.area.alert': 'Do you delete all the contents in the selected area and area?',
+    'mediaPublish.quit.alert': 'The unsaved content will be lost, do you quit?',
+    'mediaPublish.delete.material': 'Do you delete the selected material?',
+    'mediaPublish.select.material': 'Please select the material library material on the right',
 
     //last
     'app.link.index': 'home',
