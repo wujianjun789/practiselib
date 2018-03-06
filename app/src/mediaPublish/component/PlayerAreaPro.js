@@ -54,7 +54,7 @@ class PlayerAreaPro extends PureComponent {
                 playEnd: {
                     key: "play_end",
                     title: this.props.intl.formatMessage({id: 'mediaPublish.playEnd'}),
-                    list: [{id: 1, name: "最后一帧", type: 0}, {id: 1, name: "循环播放", type:1}],
+                    list: [{id: 1, name: "最后一帧", type: 0}, {id: 2, name: "循环播放", type: 1}],
                     defaultIndex: 0,
                     index: 0,
                     name: "最后一帧"
@@ -111,7 +111,7 @@ class PlayerAreaPro extends PureComponent {
 
         const playEndList = this.state.property.playEnd.list;
         const playEndIndex = lodash.findIndex(playEndList, item=> {
-            return item.type = data.lastFrame;
+            return item.type == data.lastFrame;
         })
 
         const {x, y, w, h} = data.position;
@@ -149,6 +149,7 @@ class PlayerAreaPro extends PureComponent {
     applyHandler = ()=>{
         const {property} = this.state;
         let areaId = this.props.data.id;
+        console.log('index:',property.playEnd.index);
         let data = {
             name: property.areaName.value,
             userDefine: '',
@@ -195,6 +196,8 @@ class PlayerAreaPro extends PureComponent {
                 break;
             case "reset":
                 this.resetHandler();
+                break;
+            default:
                 break;
         }
     }
