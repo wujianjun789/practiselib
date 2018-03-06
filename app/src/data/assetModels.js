@@ -116,28 +116,28 @@ export function getModelData(cb) {
 
 function getLinkByModel(parentId, key) {
   switch (key) {
-    case 'gateway':
-    case 'ssgw':
-      return '/assetManage/' + parentId + '/gateway';
-    case 'lc':
-    case 'ssslc':
-      return '/assetManage/' + parentId + '/lc';
-    case 'sensor':
-    case 'sses':
-      return '/assetManage/' + parentId + '/sensor';
-    case 'ammeter':
-      return 'icon_ammeter';
-    case 'pole':
-      return '/assetManage/' + parentId + '/pole';
-    case 'screen':
-    case 'ssads':
-      return '/assetManage/' + parentId + '/screen';
-    case 'xes':
-      return '/assetManage/' + parentId + '/xes';
-    case 'smartlight':
-      return '/assetManage/' + parentId + '/smartlight';
-    default:
-      return 'icon_led_light';
+      case 'gateway':
+      case 'ssgw':
+        return '/assetManage/' + parentId + '/gateway';
+      case 'lc':
+      case 'ssslc':
+        return '/assetManage/' + parentId + '/lc';
+      case 'sensor':
+      case 'sses':
+        return '/assetManage/' + parentId + '/sensor';
+      case 'ammeter':
+        return 'icon_ammeter';
+      case 'pole':
+        return '/assetManage/' + parentId + '/pole';
+      case 'screen':
+      case 'ssads':
+        return '/assetManage/' + parentId + '/screen';
+      case 'xes':
+        return '/assetManage/' + parentId + '/xes';
+      case 'smartlight':
+        return '/assetManage/' + parentId + '/smartlight';
+      default:
+        return 'icon_led_light';
   }
 }
 

@@ -9,14 +9,13 @@ import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
 import '../../../public/styles/mediaPublish-playList.less';
 
-import HeadBar from '../../components/HeadBar'
-import SideBar from '../../components/SideBar'
-import Overlayer from '../../common/containers/Overlayer'
+import HeadBar from '../../components/HeadBar';
+import SideBar from '../../components/SideBar';
+import Overlayer from '../../common/containers/Overlayer';
 
-import {TreeData} from '.././../data/mediaPublishModel'
-import {treeViewInit} from '../../common/actions/treeView'
+import {TreeData} from '.././../data/mediaPublishModel';
+import {treeViewInit} from '../../common/actions/treeView';
 import {sideBarToggled} from '../action/index'
-
 
 class MediaPublishIndex extends Component{
     constructor(props){
