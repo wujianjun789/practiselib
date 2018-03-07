@@ -41,6 +41,8 @@ export default class MapView extends Component {
     }
 
     componentWillUnmount() {
+        this.timeout && clearTimeout(this.timeout);
+        this.mapTimeOut && clearTimeout(this.mapTimeOut);
         for (let key in this.state.map) {
             this.state.map[key].destroy();
         }
