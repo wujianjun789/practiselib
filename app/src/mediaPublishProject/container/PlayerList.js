@@ -147,7 +147,7 @@ export class PlayerList extends Component {
                 addProject(data, (response)=>{
                 actions.overlayerHide();
                     this.props.router.push({
-                        pathname: "/mediaPublish/playerProject/",
+                        pathname: "/mediaPublish/playerArea",
                         state: {
                             item: response
                         }
@@ -178,7 +178,7 @@ export class PlayerList extends Component {
         }
 
         this.props.router.push({
-            pathname: "/mediaPublish/playerProject/"+obj.id,
+            pathname: "/mediaPublish/playProject/"+obj.id,
             state: { item: data }
         });
     }

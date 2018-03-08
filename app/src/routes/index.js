@@ -361,18 +361,33 @@ export default (
         </Route>
         <Route path="playProject" getComponent={(nextState, cb) => {
           require.ensure([], require => {
-            cb(null, require('../mediaPublish/container/PlayerList').default);
-          }, 'starriverpro.mediaPublish.container.PlayerList');
+              cb(null, require('../mediaPublish/container/PlayerList').default);
+              },'starriverpro.mediaPublishProject.container.PlayerList');
         }}>
         </Route>
       </Route>
-      <Route path="/mediaPublish/playerArea">
+      <Route path="/mediaPublish/playerProject/:project">
         <IndexRoute getComponent={(nextState, cb) => {
           require.ensure([], require => {
             cb(null, require('../mediaPublish/container/PlayerArea').default);
-          }, 'starriverpro.mediaPublish.container.PlayerArea');
+          }, 'starriverpro.mediaPublish.container.PlayArea');
         }} />
       </Route>
+      <Route path="/mediaPublish/playProject/:project">
+        <IndexRoute getComponent={(nextState, cb) => {
+          require.ensure([], require => {
+            cb(null, require('../mediaPublishProject/container/PlayProject').default);
+          }, 'starriverpro.mediaPublishProject.container.PlayProject');
+        }} />
+      </Route>
+      <Route path="/mediaPublish/playProject/:project/:plan">
+        <IndexRoute getComponent={(nextState, cb) => {
+          require.ensure([], require => {
+            cb(null, require('../mediaPublishProject/container/PlayPlan').default);
+          }, 'starriverpro.mediaPublishProject.container.PlayPlan');
+        }} />
+      </Route>
+
     </Route>
     <Route path="*" getComponent={(nextState, cb) => {
       require.ensure([], (require) => {
@@ -381,6 +396,9 @@ export default (
     }} />
   </Route>
 );
+
+/*   cb(null, require('../mediaPublish/container/PlayerList').default);
+ }, 'starriverpro.mediaPublish.container.PlayerList');*/
 
 /*<Route path="/home" getComponent={(nextState, cb) => {
  require.ensure([], (require) => {

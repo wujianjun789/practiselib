@@ -1,0 +1,802 @@
+[
+  {
+  "baseInfo": {
+    "type": 11,
+    "file": "倒计时",
+    "playDuration": 0,
+    "logFlag": 0,
+    "materialId": "countDown"
+  },
+  "type": 0,
+  "background": {
+    "transparent": 0,
+    "picture": "string",
+    "picAlignment": 0,
+    "color": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "colorKey": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "materialId": "string"
+  },
+  "title": {
+    "baseInfo": {
+      "type": 0,
+      "file": "string",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "string"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "font": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  "text": {
+    "baseInfo": {
+      "type": 0,
+      "file": "string",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "string"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "font": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  "timingDate": {
+    "year": 0,
+    "month": 0,
+    "day": 0
+  },
+  "timingTime": {
+    "hour": 0,
+    "minute": 0,
+    "second": 0,
+    "milliseconds": 0
+  }
+},
+  {
+  "baseInfo": {
+    "type": 10,
+    "file": "数字时钟",
+    "playDuration": 0,
+    "logFlag": 0,
+    "materialId": "digitalClock"
+  },
+  "background": {
+    "transparent": 0,
+    "picture": "string",
+    "picAlignment": 0,
+    "color": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "colorKey": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "materialId": "string"
+  },
+  "timeZone": 0,
+  "title": {
+    "baseInfo": {
+      "type": 0,
+      "file": "string",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "string"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "font": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  "date": {
+    "baseInfo": {
+      "type": 0,
+      "file": "string",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "string"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "font": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  "lunarCalendar": {
+    "baseInfo": {
+      "type": 0,
+      "file": "string",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "string"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "font": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  "week": {
+    "baseInfo": {
+      "type": 0,
+      "file": "string",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "string"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "font": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  "autoPosition": 0
+},
+  {
+    "baseInfo": {
+      "type": 1,
+      "file": "格式文本",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "formatText"
+    },
+    "textsList": [
+      {
+        "text": "string",
+        "fontColor": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "fontBgColor": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "fontShadowColor": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "charSpace": 0,
+        "font": {
+          "name": "string",
+          "size": 0,
+          "bold": true,
+          "italic": true,
+          "underline": true,
+          "strikeout": true
+        },
+        "offset": {
+          "x": 0,
+          "y": 0,
+          "id": 0
+        }
+      }
+    ],
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  {
+    "baseInfo": {
+      "type": 0,
+      "file": "简单文本",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "simpleText"
+    },
+    "text": "string",
+    "background": {
+      "transparent": 0,
+      "picture": "",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 255
+      },
+      "colorKey": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "amber": 0,
+        "alpha": 255
+      },
+      "materialId": ""
+    },
+    "alignment": 0,
+    "charSpace": 0,
+    "rowSpace": 0,
+    "fontColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "amber": 0,
+      "alpha": 255
+    },
+    "font": {
+      "name": "宋体",
+      "size": 20,
+      "bold": false,
+      "italic": false,
+      "underline": false,
+      "strikeout": false
+    },
+    "inTransition": {
+      "transition": 0,
+      "speed": 0
+    }
+  },
+  {
+    "baseInfo": {
+      "type": 9,
+      "file": "虚拟时钟",
+      "playDuration": 0,
+      "logFlag": 0,
+      "materialId": "virtualClock"
+    },
+    "background": {
+      "transparent": 0,
+      "picture": "string",
+      "picAlignment": 0,
+      "color": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "colorKey": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "materialId": "string"
+    },
+    "timeZone": 0,
+    "hDialColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "hDialSZ": {
+      "w": 0,
+      "h": 0
+    },
+    "hDialSharp": 0,
+    "hDialFont": {
+      "name": "string",
+      "size": 0,
+      "bold": true,
+      "italic": true,
+      "underline": true,
+      "strikeout": true
+    },
+    "mDialColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "mDialSZ": {
+      "w": 0,
+      "h": 0
+    },
+    "mDialSharp": 0,
+    "hHandleColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "mHandleColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "sHandleColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "amber": 0,
+      "alpha": 0
+    },
+    "title": {
+      "baseInfo": {
+        "type": 0,
+        "file": "string",
+        "playDuration": 0,
+        "logFlag": 0,
+        "materialId": "string"
+      },
+      "text": "string",
+      "background": {
+        "transparent": 0,
+        "picture": "string",
+        "picAlignment": 0,
+        "color": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "colorKey": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "materialId": "string"
+      },
+      "alignment": 0,
+      "charSpace": 0,
+      "rowSpace": 0,
+      "fontColor": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "font": {
+        "name": "string",
+        "size": 0,
+        "bold": true,
+        "italic": true,
+        "underline": true,
+        "strikeout": true
+      },
+      "inTransition": {
+        "transition": 0,
+        "speed": 0
+      }
+    },
+    "date": {
+      "baseInfo": {
+        "type": 0,
+        "file": "string",
+        "playDuration": 0,
+        "logFlag": 0,
+        "materialId": "string"
+      },
+      "text": "string",
+      "background": {
+        "transparent": 0,
+        "picture": "string",
+        "picAlignment": 0,
+        "color": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "colorKey": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "materialId": "string"
+      },
+      "alignment": 0,
+      "charSpace": 0,
+      "rowSpace": 0,
+      "fontColor": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "font": {
+        "name": "string",
+        "size": 0,
+        "bold": true,
+        "italic": true,
+        "underline": true,
+        "strikeout": true
+      },
+      "inTransition": {
+        "transition": 0,
+        "speed": 0
+      }
+    },
+    "lunarCalendar": {
+      "baseInfo": {
+        "type": 0,
+        "file": "string",
+        "playDuration": 0,
+        "logFlag": 0,
+        "materialId": "string"
+      },
+      "text": "string",
+      "background": {
+        "transparent": 0,
+        "picture": "string",
+        "picAlignment": 0,
+        "color": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "colorKey": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "materialId": "string"
+      },
+      "alignment": 0,
+      "charSpace": 0,
+      "rowSpace": 0,
+      "fontColor": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "font": {
+        "name": "string",
+        "size": 0,
+        "bold": true,
+        "italic": true,
+        "underline": true,
+        "strikeout": true
+      },
+      "inTransition": {
+        "transition": 0,
+        "speed": 0
+      }
+    },
+    "week": {
+      "baseInfo": {
+        "type": 0,
+        "file": "string",
+        "playDuration": 0,
+        "logFlag": 0,
+        "materialId": "string"
+      },
+      "text": "string",
+      "background": {
+        "transparent": 0,
+        "picture": "string",
+        "picAlignment": 0,
+        "color": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "colorKey": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "amber": 0,
+          "alpha": 0
+        },
+        "materialId": "string"
+      },
+      "alignment": 0,
+      "charSpace": 0,
+      "rowSpace": 0,
+      "fontColor": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "amber": 0,
+        "alpha": 0
+      },
+      "font": {
+        "name": "string",
+        "size": 0,
+        "bold": true,
+        "italic": true,
+        "underline": true,
+        "strikeout": true
+      },
+      "inTransition": {
+        "transition": 0,
+        "speed": 0
+      }
+    }
+  }
+]

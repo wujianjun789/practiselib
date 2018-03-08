@@ -1,0 +1,62 @@
+.mediaPublish-playProject, .mediaPublish-playPlan{
+  .edit-container{
+    padding: 5px;
+    .glyphicon{
+      padding: 5px;
+
+      cursor: pointer;
+    }
+  }
+  .sidebar-info{
+    .collapse-container{
+      margin: 0;
+
+      background: #b6bac1;
+      height: 30px;
+
+      cursor: pointer;
+
+      .icon_vertical {
+        margin-right: auto;
+        margin-left: auto;
+        width: 15px;
+        height: 15px;
+        display: block;
+
+        margin-top: 7.5px;
+      }
+    }
+  }
+  &.sidebar-collapse{
+    .content{
+      .left{
+        right: 60px;
+      }
+    }
+
+    .sidebar-info {
+      right: -240px;
+      background: #e6e6e6;
+      .addAnimation();
+      .collapse-container {
+        background:#404555;
+        .icon_horizontal {
+          margin: 7.5px 22.5px;
+          width: 15px;
+          height: 15px;
+          display: block;
+        }
+      }
+    }
+  }
+
+}
+
+.addAnimation {
+  @time: .4s;
+  -webkit-transition: all @time;
+  -moz-transition: all @time;
+  -ms-transition: all @time;
+  -o-transition: all @time;
+  transition: all @time;
+}

@@ -15,7 +15,8 @@ import permissionManage from '../../permissionManage/reducer/index'
 import sysOperation from '../../systemOperation/reducer/index';
 import gateway from '../../systemOperation/reducer/gateway';
 
-import mediaPublish from '../../mediaPublish/reducer/index'
+import mediaPublish from '../../mediaPublish/reducer/index';
+import mediaPublishProject from '../../mediaPublishProject/reducer/index';
 
 import notifyPopup from './notifyPopup';
 import auth from '../../authentication/reducer';
@@ -37,6 +38,7 @@ const reducer = combineReducers({
     sysOperation,
     gateway,
 
-    mediaPublish
+    mediaPublish,
+    mediaPublishProject
 });
 export default reducer;
