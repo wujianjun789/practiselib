@@ -29,11 +29,11 @@ function requestProgrameList(project) {
 export function initPlan(plan) {
   return dispatch=>{
     dispatch({type: INIT_PLAN, data:plan});
-    dispatch(requestSceneList(plan.id))
+    // dispatch(requestSceneList(plan.id))
   }
 }
 
-function requestSceneList(programId){
+export function requestSceneList(programId){
   return (dispatch, getState)=>{
     const project = getState().mediaPublish.project;
     getSceneList(project.id, programId, data=>{

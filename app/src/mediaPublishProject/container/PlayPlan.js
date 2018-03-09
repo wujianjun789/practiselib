@@ -18,7 +18,7 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
-import {updateTreeJudge} from '../action/index';
+import {requestSceneList, updateTreeJudge} from '../action/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import lodash from 'lodash';
@@ -37,7 +37,9 @@ export class PlayPlan extends Component {
     }
 
     componentWillMount(){
-        this.updateSceneTree();
+        const {plan, actions} = this.props;
+        // this.updateSceneTree();
+        actions.requestSceneList(plan.id);
     }
 
     componentDidUpdate(){
@@ -116,7 +118,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators({
             overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
-            treeViewInit: treeViewInit, updateTreeJudge: updateTreeJudge
+            treeViewInit: treeViewInit, requestSceneList: requestSceneList, updateTreeJudge: updateTreeJudge
         }, dispatch),
     };
 };
