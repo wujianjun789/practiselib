@@ -19,7 +19,7 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
-import { initProject, initPlan } from '../action/index'
+import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove } from '../action/index'
 export class PlayProject extends Component {
     constructor(props) {
         super(props);
@@ -33,10 +33,21 @@ export class PlayProject extends Component {
 
         this.sidebarClick = this.sidebarClick.bind(this);
         this.headbarClick = this.headbarClick.bind(this);
+
+        this.formatIntl = this.formatIntl.bind(this);
     }
 
     componentWillMount(){
         this.initProject();
+    }
+
+    componentDidUpdate(){
+    }
+
+    formatIntl(formatId){
+        const { intl } = this.props;
+        return intl ? intl.formatMessage({ id: formatId }) : "";
+        // return formatId;
     }
 
     initProject(){
@@ -53,19 +64,42 @@ export class PlayProject extends Component {
         actions.initPlan(plan);
     }
 
-    onMove(){
-    }
-
-    onRemove(){
-
-    }
-
     headbarClick(key){
-        const {project, plan, actions} = this.props;
-        console.log(plan);
-        if(!plan){
-            return actions.addNotify(0, '请选择播放计划。');
+        switch (key){
+            case "edit":
+                this.editAlert() && this.navigatorScreen();
+                break;
+            case "up":
+            case "down":
+                this.editAlert() && this.props.plan && this.props.actions.treeOnMove(key, this.props.plan);
+                break;
+            case "remove":
+                this.props.plan && this.props.actions.treeOnRemove(this.props.plan);
+                break;
+            default:
+                this.props.actions.addPlayerPlan(key, this.formatIntl);
+                break;
         }
+
+    }
+
+    editAlert(){
+        const {plan, actions} = this.props;
+        if(!plan){
+            actions.addNotify(0, '请选择播放计划。');
+            return false;
+        }
+
+        if(typeof plan.id === "string" && plan.id.indexOf("plan")>-1){
+            actions.addNotify(0, '请提交播放计划。');
+            return false;
+        }
+
+        return true;
+    }
+    navigatorScreen(){
+        const {project, plan, actions} = this.props;
+
 
         this.props.router.push({
             pathname: "/mediaPublish/playProject/"+project.id+"/"+plan.id
@@ -80,9 +114,10 @@ export class PlayProject extends Component {
     render(){
         const {sidebarInfo} = this.state;
         const {router, data} = this.props;
+        console.log('planList:', data);
         return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName="app.mediaPublish" router={router} url={"/mediaPublish/playerProject"}/>
-            <SideBar isEdit={true} onClick={this.headbarClick} onMove={this.onMove} onRemove={this.onRemove}>
+            <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
                 <ul className="plan-list">
                     {
                       data.map(plan=>{
@@ -119,7 +154,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators({
             overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
-            initProject: initProject, initPlan: initPlan
+            initProject: initProject, initPlan: initPlan, addPlayerPlan: addPlayerPlan, treeOnMove: treeOnMove, treeOnRemove: treeOnRemove
         }, dispatch),
     };
 };

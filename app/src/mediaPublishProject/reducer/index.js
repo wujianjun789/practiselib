@@ -1,13 +1,18 @@
 /**
  * Created by a on 2018/3/8.
  */
+
 import {
   INIT_PROJECT,
   INIT_PROGRAM_LIST,
   INIT_PLAN,
   INIT_SCENE_LIST,
 
-  UPDATE_TREE_JUDGE
+  UPDATE_TREE_DATA,
+  UPDATE_TREE_LIST,
+  UPDATE_TREE_JUDGE,
+
+  CLEAR_TREE_STATE
 } from '../actionType/index';
 
 import Immutable from 'immutable';
@@ -35,8 +40,16 @@ export default function mediaPublishProject(state=initialState, action) {
             return Object.assign({}, state, {plan: action.data});
         case INIT_SCENE_LIST:
             return updateSceneList(state, action.programId, action.data);
+        case UPDATE_TREE_DATA:
+            return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
+        case UPDATE_TREE_LIST:
+          console.log('tree-list:', action.data);
+            return Object.assign({}, state, {data: action.data, IsUpdateTree: true});
         case UPDATE_TREE_JUDGE:
             return Object.assign({}, state, {IsUpdateTree:action.data});
+        case CLEAR_TREE_STATE:
+            clearTreeListState(state.data);
+            return Object.assign({}, state, {data: state.data, IsUpdateTree: true});
         default:
             return state;
     }
@@ -67,4 +80,10 @@ function updateSceneList(state, programId, data){
     playerData[index].children = newData;
 
     return Object.assign({}, state, {data: playerData, IsUpdateTree: true});
+}
+
+function updateTreeData(state, node, parentNode, parentParentNode){
+    const treeList = updateTree(state.data, node, parentNode, parentParentNode);
+
+    return Object.assign({}, state, {data: treeList, IsUpdateTree: true});
 }

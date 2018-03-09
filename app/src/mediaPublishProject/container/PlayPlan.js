@@ -39,7 +39,7 @@ export class PlayPlan extends Component {
     componentWillMount(){
         const {plan, actions} = this.props;
         // this.updateSceneTree();
-        actions.requestSceneList(plan.id);
+        plan && actions.requestSceneList(plan.id);
     }
 
     componentDidUpdate(){
