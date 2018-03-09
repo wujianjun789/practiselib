@@ -12,11 +12,16 @@ import SideBar from '../component/SideBar';
 import Content from '../../components/Content';
 
 import SidebarInfo from '../component/SidebarInfo'
+import TreeView from '../../components/TreeView';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
+import {treeViewInit} from '../../common/actions/treeView';
+
+import {updateTreeJudge} from '../action/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
+import lodash from 'lodash';
 export class PlayPlan extends Component {
     constructor(props) {
         super(props);
@@ -29,6 +34,33 @@ export class PlayPlan extends Component {
         }
 
         this.sidebarClick = this.sidebarClick.bind(this);
+    }
+
+    componentWillMount(){
+        this.updateSceneTree();
+    }
+
+    componentDidUpdate(){
+        const {IsUpdateTree, actions} = this.props;
+        if(IsUpdateTree){
+            this.updateSceneTree();
+        }
+    }
+
+    updateSceneTree(){
+        const {data, plan, actions} = this.props;
+        console.log(data);
+        actions.updateTreeJudge(false);
+        if(!data || data.length===0){
+            return actions.treeViewInit([]);
+        }
+
+        const treeData = lodash.find(data, planItem=>{ return planItem.id == plan.id}).children;
+        actions.treeViewInit(treeData);
+    }
+
+    onToggle(node){
+        console.log('treeNode:', node);
     }
 
     areaClick(){
@@ -48,10 +80,14 @@ export class PlayPlan extends Component {
 
     render(){
         const {sidebarInfo} = this.state;
-        const {router} = this.props;
+        const {router, project} = this.props;
         return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
-            <HeadBar moduleName="app.mediaPublish" router={router} />
+            <HeadBar moduleName="app.mediaPublish" router={router} url={{
+            pathname: "/mediaPublish/playProject/"+(project?project.id:""),
+            state: { item: project }
+        }}/>
             <SideBar isEdit={false} onClick={this.areaClick} onMove={this.onMove} onRemove={this.onRemove}>
+                <TreeView className="mediaPublish-plan" onToggle={ (node) => this.onToggle(node) }/>
             </SideBar>
 
             <Content className="play-project">
@@ -71,7 +107,8 @@ const mapStateToProps = state => {
         plan: state.mediaPublishProject.plan,
         screen: state.mediaPublishProject.screen,
         zone: state.mediaPublishProject.zone,
-        item: state.mediaPublishProject.item
+        item: state.mediaPublishProject.item,
+        IsUpdateTree: state.mediaPublishProject.IsUpdateTree
     };
 };
 
@@ -79,6 +116,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         actions: bindActionCreators({
             overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
+            treeViewInit: treeViewInit, updateTreeJudge: updateTreeJudge
         }, dispatch),
     };
 };

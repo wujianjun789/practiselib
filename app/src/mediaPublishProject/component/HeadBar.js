@@ -17,8 +17,8 @@ export class HeadBar extends Component{
     }
 
     onClick(event){
-        const {router} = this.props;
-        router && router.push('/');
+        const {router, url} = this.props;
+        router && router.push(url);
     }
 
     componentDidMount() {
@@ -28,7 +28,7 @@ export class HeadBar extends Component{
         const {moduleName} = this.props
         return <div className="head">
             <div className="home" onClick={this.onClick}>
-                <span className="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             </div>
             <span className="title">{<FormattedMessage id={moduleName}/>}</span>
             <UserCenter />

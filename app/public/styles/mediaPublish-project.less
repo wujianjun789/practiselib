@@ -1,4 +1,11 @@
 .mediaPublish-playProject, .mediaPublish-playPlan{
+  .head{
+    .home{
+      .glyphicon{
+        font-weight: 100;
+      }
+    }
+  }
   .sidebar{
     .edit-container{
       padding: 5px;
@@ -6,6 +13,36 @@
         padding: 5px;
 
         cursor: pointer;
+
+        font-size: 14px;
+        font-weight: 100;
+      }
+      :first-child{
+        padding-left: 15px;
+      }
+
+      :nth-child(2){
+        padding-right: 15px;
+      }
+    }
+
+    .plan-list{
+      li{
+        height: 40px;
+
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 28px;
+
+        background: #d3d8dd;
+
+        cursor: pointer;
+
+        &.active{
+          background: linear-gradient(to right, #00bcff, #00d8ff);
+
+          color: #fff;
+        }
       }
     }
   }

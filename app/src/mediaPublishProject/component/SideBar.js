@@ -17,10 +17,10 @@ export default class HeadBar extends Component{
         return <div className="sidebar">
                 <div className="edit-container">
                     <div className="glyphicon glyphicon-plus"></div>
-                    <div className={"glyphicon glyphicon-edit "+(isEdit?"":"hidden")} onClick={()=>this.onClick('edit')}></div>
-                    <div className="glyphicon glyphicon-arrow-up"></div>
-                    <div className="glyphicon glyphicon-arrow-down"></div>
-                    <div className="glyphicon glyphicon-remove"></div>
+                    <div className="glyphicon glyphicon-remove pull-right"></div>
+                    <div className="glyphicon glyphicon-arrow-down pull-right"></div>
+                    <div className="glyphicon glyphicon-arrow-up pull-right"></div>
+                    <div className={"glyphicon glyphicon-edit pull-right "+(isEdit?"":"hidden")} onClick={()=>this.onClick('edit')}></div>
                 </div>
             {this.props.children}
             </div>
