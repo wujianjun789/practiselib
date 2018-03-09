@@ -147,7 +147,7 @@ export class PlayerList extends Component {
                 addProject(data, (response)=>{
                 actions.overlayerHide();
                     this.props.router.push({
-                        pathname: "/mediaPublish/playerArea",
+                        pathname: "/mediaPublish/playerProject",
                         state: {
                             item: response
                         }

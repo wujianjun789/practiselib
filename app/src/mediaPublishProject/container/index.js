@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 
 import 'antd/lib/date-picker/style';
 import 'antd/lib/checkbox/style';
+import '../../../public/styles/mediaPublish-playList.less';
 
 import HeadBar from '../../components/HeadBar';
 import SideBar from '../../components/SideBar';

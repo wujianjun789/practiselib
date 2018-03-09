@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import '../../../public/styles/media-publish-project.less';
+import '../../../public/styles/mediaPublish-project.less';
 
 import HeadBar from '../component/HeadBar';
 import SideBar from '../component/SideBar';

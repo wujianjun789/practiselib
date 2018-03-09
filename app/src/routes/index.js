@@ -365,6 +365,12 @@ export default (
               },'starriverpro.mediaPublishProject.container.PlayerList');
         }}>
         </Route>
+        <Route path="playerProject" getComponent={(nextState, cb) => {
+          require.ensure([], require => {
+              cb(null, require('../mediaPublishProject/container/PlayerList').default);
+              },'starriverpro.mediaPublishProject.container.PlayerList');
+        }}>
+        </Route>
       </Route>
       <Route path="/mediaPublish/playerProject/:project">
         <IndexRoute getComponent={(nextState, cb) => {
