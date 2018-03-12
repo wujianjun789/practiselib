@@ -94,6 +94,7 @@ export class PlayProject extends Component {
     const {project, plan, actions} = this.props;
     this.props.router.push({
       pathname: '/mediaPublish/playProject/' + project.id + '/' + plan.id,
+        state: { project:project, item: plan }
     });
 
   }

@@ -4,6 +4,7 @@
 export const INIT_PROJECT = 'INIT_PROJECT';
 export const INIT_PROGRAM_LIST = 'INIT_PROGRAM_LIST';
 export const INIT_SCENE_LIST = 'INIT_SCENE_LIST';
+export const INIT_ZONE_LIST = 'INIT_ZONE_LIST';
 
 export const INIT_PLAN = 'INIT_PLAN';
 export const INIT_SCENE = 'INIT_SCENE';

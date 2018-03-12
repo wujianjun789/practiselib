@@ -7,6 +7,7 @@ import {
   INIT_PLAN,
   INIT_SCENE_LIST,
   INIT_SCENE,
+  INIT_ZONE_LIST,
   INIT_ZONE,
   INIT_ITEM,
 
@@ -19,11 +20,13 @@ import {
   CLEAR_TREE_STATE
 } from '../actionType/index';
 
-import {getProgramList, getSceneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders,
+import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders,
   removeProgramsById, removeSceneById, removeZoneById, updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
   addProgram, addScene, addZone, getAssetById} from '../../api/mediaPublish';
 
-import {addTreeNode, moveTree, getTreeParentNode, removeTree, parsePlanData, IsSystemFile} from '../util/index';
+import { addNotify } from '../../common/actions/notifyPopup';
+
+import {addTreeNode, moveTree, getTreeParentNode, removeTree, parsePlanData, IsSystemFile, getInitData} from '../util/index';
 import {getListObjectByKey, DeepCopy} from '../../util/algorithm';
 import lodash from 'lodash';
 import Immutable from 'immutable';
@@ -48,13 +51,13 @@ function requestProgrameList(project) {
 export function initPlan(plan) {
   return dispatch=>{
     dispatch({type: INIT_PLAN, data:plan});
-    // dispatch(requestSceneList(plan.id))
+    dispatch(requestSceneList(plan.id))
   }
 }
 
 export function requestSceneList(programId){
   return (dispatch, getState)=>{
-    const project = getState().mediaPublish.project;
+    const project = getState().mediaPublishProject.project;
     getSceneList(project.id, programId, data=>{
       dispatch({type: INIT_SCENE_LIST, programId: programId, data: data});
     })
@@ -67,9 +70,20 @@ export function initScene(scene) {
   }
 }
 
+export function requestZoneList(programId, sceneId){
+  return (dispatch, getState)=>{
+    const project = getState().mediaPublishProject.project;
+    getZoneList(project.id, programId, sceneId, data=>{
+      console.log('zone:', data);
+      // dispatch(getItemListOfCurScene(data));
+      dispatch({type: INIT_ZONE_LIST, programId: programId, sceneId: sceneId, data: data});
+    })
+  }
+}
+
 export function initZone(zone) {
   return dispatch=>{
-    dispatch({type: INIT_SCENE, data:zone});
+    dispatch({type: INIT_ZONE, data:zone});
   }
 }
 
@@ -92,6 +106,66 @@ export function addPlayerPlan(id, formatIntl) {
     const node = addTreeNode(id, formatIntl);
     dispatch(initPlan(node.node));
     dispatch(updateTreeData(node.node))
+  }
+}
+
+export function addPlayerSceneArea(curNode) {
+  console.log(curNode);
+  return (dispatch, getState)=>{
+    // const curType = curNode.type;
+    const plan = getState().mediaPublishProject.plan;
+    const scene = getState().mediaPublishProject.scene;
+    dispatch(clearTreeState());
+    if(!curNode){
+      dispatch(addPlayerScene(plan));
+    }else{
+      switch(curNode.type){
+        case 'scene':
+          dispatch(addPlayerArea(scene, plan));
+          break;
+        default:
+          break;
+      }
+    }
+    // switch (curType) {
+    //   case 'playerPlan':
+    //   case 'playerPlan2':
+    //   case 'playerPlan3':
+    //     dispatch(addPlayerScene(curNode));
+    //     break;
+    //   case 'playerScene':
+    //     dispatch(addPlayerArea(curNode, parentNode));
+    //     break;
+    //   default:
+    //     break;
+    // }
+  }
+}
+
+function addPlayerScene(curNode){
+  return dispatch=>{
+    const parentNode = curNode;
+    if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
+      return dispatch(addNotify(0, '请提交播放列表'));
+    }
+    const node = getInitData('scene', '场景新建');
+
+    dispatch(initScene(node));
+    dispatch(updateTreeData(node, parentNode));
+  }
+}
+
+function addPlayerArea(curNode, parentNode){
+  return dispatch=>{
+    const parentParentNode = parentNode;
+    const sParentNode = curNode;
+    if (typeof sParentNode.id === 'string' && sParentNode.id.indexOf('scene') > -1) {
+      return dispatch(addNotify(0, '请提交播放场景'));
+    }
+    const node = getInitData('area', '区域新建');
+
+    dispatch(initZone(node, sParentNode, parentParentNode));
+    dispatch(updateTreeData(node, sParentNode, parentParentNode));
   }
 }
 

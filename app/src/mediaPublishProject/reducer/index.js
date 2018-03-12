@@ -8,6 +8,7 @@ import {
   INIT_PLAN,
   INIT_SCENE_LIST,
   INIT_SCENE,
+  INIT_ZONE_LIST,
   INIT_ZONE,
   INIT_ITEM,
 
@@ -50,9 +51,11 @@ export default function mediaPublishProject(state=initialState, action) {
         case INIT_ITEM:
             return Object.assign({}, state, {item: action.data});
         case UPDATE_ITEM_NAME:
-            return updateItemName(state, item, file);
+            return updateItemName(state, action.item, action.file);
         case INIT_SCENE_LIST:
             return updateSceneList(state, action.programId, action.data);
+        case INIT_ZONE_LIST:
+            return updateZoneList(state, action.programId, action.sceneId, action.data);
         case UPDATE_TREE_DATA:
             return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
         case UPDATE_TREE_LIST:
@@ -91,6 +94,28 @@ function updateSceneList(state, programId, data){
     // playerData[index].active = true;
     // playerData[index].toggled = true;
     playerData[index].children = newData;
+
+    return Object.assign({}, state, {data: playerData, IsUpdateTree: true});
+}
+
+function updateZoneList(state, programId, sceneId, data){
+    let playerData = state.data;
+    let programItem = lodash.find(playerData, program => { return program.id == programId; });
+    let programIndex = lodash.findIndex(playerData, program => { return program.id == programId; });
+
+    let sceneIndex = lodash.findIndex(programItem.children, scene => { return scene.id == sceneId; });
+    let newData = [];
+    for(let i=0;i<data.length;i++){
+        const area = data[i];
+        newData.push(Object.assign({}, area, { type: 'area', active: false }));
+    }
+
+    clearTreeListState(state.data);
+
+    playerData[programIndex].toggled = true;
+    playerData[programIndex].children[sceneIndex].toggled = true;
+    playerData[programIndex].children[sceneIndex].active = true;
+    playerData[programIndex].children[sceneIndex].children = newData;
 
     return Object.assign({}, state, {data: playerData, IsUpdateTree: true});
 }
