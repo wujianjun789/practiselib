@@ -95,7 +95,6 @@ export class PlayPlan extends Component {
             <Content className="play-project">
                 播放场景列表
                 <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={this.sidebarClick}>
-
                 </SidebarInfo>
             </Content>
         </div>
@@ -107,7 +106,7 @@ const mapStateToProps = state => {
         data: state.mediaPublishProject.data,
         project: state.mediaPublishProject.project,
         plan: state.mediaPublishProject.plan,
-        screen: state.mediaPublishProject.screen,
+        scene: state.mediaPublishProject.scene,
         zone: state.mediaPublishProject.zone,
         item: state.mediaPublishProject.item,
         IsUpdateTree: state.mediaPublishProject.IsUpdateTree

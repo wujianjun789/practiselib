@@ -7,10 +7,15 @@ import {
   INIT_PROGRAM_LIST,
   INIT_PLAN,
   INIT_SCENE_LIST,
+  INIT_SCENE,
+  INIT_ZONE,
+  INIT_ITEM,
 
   UPDATE_TREE_DATA,
   UPDATE_TREE_LIST,
   UPDATE_TREE_JUDGE,
+
+  UPDATE_ITEM_NAME,
 
   CLEAR_TREE_STATE
 } from '../actionType/index';
@@ -23,7 +28,7 @@ const initialState = {
     data: [],
     project: null,  //播放方案
     plan: null,     //播放计划
-    screen: null,   //播放场景
+    scene: null,   //播放场景
     zone: null,      //播放区域
     item: null,      //播放项
     IsUpdateTree: false
@@ -38,6 +43,14 @@ export default function mediaPublishProject(state=initialState, action) {
             return updateProgramList(state, action.data);
         case INIT_PLAN:
             return Object.assign({}, state, {plan: action.data});
+        case INIT_SCENE:
+            return Object.assign({}, state, {scene: action.data});
+        case INIT_ZONE:
+            return Object.assign({}, state, {zone: action.data});
+        case INIT_ITEM:
+            return Object.assign({}, state, {item: action.data});
+        case UPDATE_ITEM_NAME:
+            return updateItemName(state, item, file);
         case INIT_SCENE_LIST:
             return updateSceneList(state, action.programId, action.data);
         case UPDATE_TREE_DATA:
@@ -86,4 +99,8 @@ function updateTreeData(state, node, parentNode, parentParentNode){
     const treeList = updateTree(state.data, node, parentNode, parentParentNode);
 
     return Object.assign({}, state, {data: treeList, IsUpdateTree: true});
+}
+
+function updateItemName(state, item, file){
+    return state;
 }

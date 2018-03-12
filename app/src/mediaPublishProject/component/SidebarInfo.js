@@ -18,6 +18,9 @@ export default class SidebarInfo extends Component{
             <div className="row collapse-container" onClick={() => this.sidebarClick()}>
                 <span className={collapsed ? 'icon_horizontal' : 'icon_vertical'}></span>
             </div>
+            {
+              this.props.children
+            }
         </div>
     }
 }

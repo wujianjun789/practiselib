@@ -96,6 +96,89 @@
         margin-top: 7.5px;
       }
     }
+
+    .asset-property{
+      .panel-heading{
+        &.property-collapsed {
+          .icon_collapse {
+            transform: rotate(90deg);
+          }
+        }
+      }
+      .panel-body{
+        &.property-collapsed{
+         display: none;
+        }
+      }
+    }
+    .pro-container{
+      width: 270px;
+
+      //margin: 15px;
+      //margin-right: 15px;
+      //margin-left: 15px;
+
+      .row{
+        margin: 0;
+        .form-group{
+          .control-label{
+            width: 60px;
+          }
+
+          .input-container{
+            display: inline-block;
+
+            width: 210px;
+            .form-control{
+              height: 28px;
+            }
+          }
+
+          &.startDate, &.endDate, &.startTime, &.endTime{
+            display: inline-block;
+            width: 135px;
+            .input-container{
+              width: 75px;
+              .ant-calendar-picker{
+                .ant-calendar-picker-icon, .ant-calendar-picker-clear{
+                  display: none;
+                }
+              }
+
+              .ant-time-picker{
+                .ant-time-picker-icon{
+                  display: none;
+                }
+              }
+            }
+          }
+
+          &.week{
+            height: 90px;
+            .control-label{
+              vertical-align: top;
+            }
+          }
+        }
+
+        .margin-right-1{
+          margin-right: 10px;
+        }
+        .margin-right-2{
+          margin-right: 20px;
+        }
+        .margin-right-3{
+          margin-right: 40px;
+        }
+
+
+        &.line{
+          margin-bottom: 20px;
+
+          border-top: solid 1px #e6e6e6;
+        }
+      }
+    }
   }
   &.sidebar-collapse{
     .content{
@@ -115,6 +198,19 @@
           width: 15px;
           height: 15px;
           display: block;
+        }
+      }
+
+      .asset-property{
+        background: #e6e6e6;
+        .panel-heading{
+          span{
+            margin: 2.5px 27.5px 7.5px 8px;
+          }
+        }
+
+        .panel-body{
+          opacity: 0;
         }
       }
     }

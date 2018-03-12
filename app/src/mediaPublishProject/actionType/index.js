@@ -6,9 +6,14 @@ export const INIT_PROGRAM_LIST = 'INIT_PROGRAM_LIST';
 export const INIT_SCENE_LIST = 'INIT_SCENE_LIST';
 
 export const INIT_PLAN = 'INIT_PLAN';
+export const INIT_SCENE = 'INIT_SCENE';
+export const INIT_ZONE = 'INIT_ZONE';
+export const INIT_ITEM = 'INIT_ITEM';
 
 export const UPDATE_TREE_JUDGE = 'UPDATE_TREE_JUDGE';
 
 export const UPDATE_TREE_DATA = 'UPDATE_TREE_DATA';
 export const UPDATE_TREE_LIST = 'UPDATE_TREE_LIST';
 export const CLEAR_TREE_STATE = 'CLEAR_TREE_STATE';
+
+export const UPDATE_ITEM_NAME = 'UPDATE_ITEM_NAME';
