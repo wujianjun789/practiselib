@@ -34,7 +34,7 @@ export const TreeData = [
     'name':'mediaPublish.playPlan',
     'toggled': false,
     'active': true,
-    'link': '/mediaPublish/playProject',
+    'link': '/mediaPublish/playerProject',
     'level': 1,
     'children':[],
   }

@@ -203,6 +203,7 @@ export function treeOnRemove(node){
         break;
       case 'plan':
         removeProgramsById(project.id, node.id, () => {
+          dispatch(initPlan(null));
           dispatch(updateTreeList(removeTree(playerData, node)));
         });
         break;

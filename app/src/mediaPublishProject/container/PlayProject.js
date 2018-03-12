@@ -12,7 +12,7 @@ import SideBar from '../component/SideBar';
 import Content from '../../components/Content';
 
 import SidebarInfo from '../component/SidebarInfo';
-import NotifyPopup from '../../common/containers/NotifyPopup'
+import NotifyPopup from '../../common/containers/NotifyPopup';
 
 import PlanerPlanPro from '../component/PlayerPlanPro';
 
@@ -22,95 +22,90 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyClick } from '../action/index';
+
 export class PlayProject extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            sidebarInfo: {
-                collapsed: false,
-                propertyCollapsed: false,
-                assetLibCollapsed: false,
-            }
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      sidebarInfo: {
+        collapsed: false,
+        propertyCollapsed: false,
+        assetLibCollapsed: false,
+      },
+    };
 
-        this.sidebarClick = this.sidebarClick.bind(this);
-        this.headbarClick = this.headbarClick.bind(this);
+    this.sidebarClick = this.sidebarClick.bind(this);
+    this.headbarClick = this.headbarClick.bind(this);
+    this.editAlert = this.editAlert.bind(this);
+    this.navigatorScene = this.navigatorScene.bind(this);
 
-        this.formatIntl = this.formatIntl.bind(this);
+    this.formatIntl = this.formatIntl.bind(this);
+  }
+
+  componentWillMount() {
+    this.initProject();
+  }
+
+
+
+  formatIntl(formatId) {
+    const { intl } = this.props;
+    return intl ? intl.formatMessage({ id: formatId }) : '';
+    // return formatId;
+  }
+
+  initProject() {
+    const { router, actions } = this.props;
+    if (router && router.location) {
+      const routerState = router.location.state;
+      const project = routerState ? routerState.item : null;
+      project && actions.initProject(project);
     }
+  }
 
-    componentWillMount(){
-        this.initProject();
+  applyClick(id, data){
+    this.props.actions.applyClick(id, data);
+  }
+
+  activePlan(plan) {
+    const {actions} = this.props;
+    actions.initPlan(plan);
+  }
+
+  headbarClick(key) {
+    switch (key) {
+      case 'edit':
+        this.editAlert() && this.navigatorScene();
+        break;
+      case 'up':
+      case 'down':
+        this.editAlert() && this.props.plan && this.props.actions.treeOnMove(key, this.props.plan);
+        break;
+      case 'remove':
+        this.props.plan && this.props.actions.treeOnRemove(this.props.plan);
+        break;
+      default:
+        this.props.actions.addPlayerPlan(key, this.formatIntl);
+        break;
     }
+  }
 
-    componentDidUpdate(){
+  navigatorScene(){
+    const {project, plan, actions} = this.props;
+    this.props.router.push({
+      pathname: '/mediaPublish/playProject/' + project.id + '/' + plan.id,
+    });
+
+  }
+
+  editAlert() {
+    const {plan, actions} = this.props;
+    if (!plan) {
+        actions.addNotify(0, '请选择播放计划。');
+        return false;
     }
-
-    formatIntl(formatId){
-        const { intl } = this.props;
-        return intl ? intl.formatMessage({ id: formatId }) : "";
-        // return formatId;
-    }
-
-    initProject(){
-        const { router, actions } = this.props;
-        if (router && router.location) {
-            const routerState = router.location.state;
-            const project = routerState ? routerState.item : null;
-            project && actions.initProject(project);
-        }
-    }
-
-    applyClick(id, data){
-        this.props.actions.applyClick(id, data);
-    }
-
-    activePlan(plan){
-        const {actions} = this.props;
-        actions.initPlan(plan);
-    }
-
-    headbarClick(key){
-        switch (key){
-            case "edit":
-                this.editAlert() && this.navigatorScene();
-                break;
-            case "up":
-            case "down":
-                this.editAlert() && this.props.plan && this.props.actions.treeOnMove(key, this.props.plan);
-                break;
-            case "remove":
-                this.props.plan && this.props.actions.treeOnRemove(this.props.plan);
-                break;
-            default:
-                this.props.actions.addPlayerPlan(key, this.formatIntl);
-                break;
-        }
-
-    }
-
-    editAlert(){
-        const {plan, actions} = this.props;
-        if(!plan){
-            actions.addNotify(0, '请选择播放计划。');
-            return false;
-        }
-
-        if(typeof plan.id === "string" && plan.id.indexOf("plan")>-1){
-            actions.addNotify(0, '请提交播放计划。');
-            return false;
-        }
-
-        return true;
-    }
-    navigatorScene(){
-        const {project, plan, actions} = this.props;
-
-
-        this.props.router.push({
-            pathname: "/mediaPublish/playProject/"+project.id+"/"+plan.id
-        });
-    }
+    return true;
+  }
 
     sidebarClick(key){
         const {sidebarInfo} = this.state;
@@ -120,7 +115,6 @@ export class PlayProject extends Component {
     render(){
         const {sidebarInfo} = this.state;
         const {router, data, project, plan} = this.props;
-        console.log('planList:', data);
         return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
             <HeadBar moduleName="app.mediaPublish" router={router} url={"/mediaPublish/playerProject"}/>
             <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
@@ -147,12 +141,11 @@ export class PlayProject extends Component {
                             {plan && <PlanerPlanPro projectId={project.id} data={plan} applyClick={data=>{this.applyClick("playerPlan", data)}}/>}
                         </div>
                     </div>
-
                 </SidebarInfo>
-                <NotifyPopup/>
-            </Content>
-        </div>
-    }
+        <NotifyPopup/>
+      </Content>
+    </div>;
+  }
 }
 
 const mapStateToProps = state => {
@@ -176,6 +169,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(injectIntl(PlayProject));

@@ -8,7 +8,7 @@ install package: npm install
 test: npm run test
 
 develop:
-pre: npm run bulid:lib
+pre: npm run build:lib
 start app: npm run dev
 
 product:
