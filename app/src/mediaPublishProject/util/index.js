@@ -118,6 +118,22 @@ export function updateTree(treeList, node, parentNode, parentParentNode) {
   }
 }
 
+export function updateTreeProperty(treeList, item, file) {
+  return treeList.map(curNode=>{
+
+    if(curNode.type !== "scene" && curNode.type !== "area" && curNode.id === item.id){
+      curNode.name = file.name;
+      curNode.thumbnail = file.thumbnail;
+    }else{
+      if(curNode.children && curNode.children.length){
+        updateTreeProperty(curNode.children, item, file);
+      }
+    }
+
+    return curNode;
+  })
+}
+
 export function moveTree(treeList, data) {
   let curIndex = lodash.findIndex(treeList, node=>{return node.type == data.node.type && node.id == data.node.id});
   if(curIndex>-1){

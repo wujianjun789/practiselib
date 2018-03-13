@@ -10,6 +10,7 @@ import {
   INIT_SCENE,
   INIT_ZONE_LIST,
   INIT_ZONE,
+  INIT_ITEM_LIST,
   INIT_ITEM,
 
   UPDATE_TREE_DATA,
@@ -24,7 +25,7 @@ import {
 import Immutable from 'immutable';
 import lodash from 'lodash';
 import {getIndexByKey} from '../../util/algorithm';
-import {updateTree, clearTreeListState, IsSystemFile, addItemToScene} from '../util/index'
+import {updateTree, clearTreeListState, IsSystemFile, addItemToScene, updateTreeProperty} from '../util/index'
 const initialState = {
     data: [],
     project: null,  //播放方案
@@ -56,6 +57,8 @@ export default function mediaPublishProject(state=initialState, action) {
             return updateSceneList(state, action.programId, action.data);
         case INIT_ZONE_LIST:
             return updateZoneList(state, action.programId, action.sceneId, action.data);
+        case INIT_ITEM_LIST:
+            return updateItemList(state, action.programId, action.sceneId, action.zoneId, action.data);
         case UPDATE_TREE_DATA:
             return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
         case UPDATE_TREE_LIST:
@@ -107,17 +110,47 @@ function updateZoneList(state, programId, sceneId, data){
     let newData = [];
     for(let i=0;i<data.length;i++){
         const area = data[i];
-        newData.push(Object.assign({}, area, { type: 'area', active: false }));
+        newData.push(Object.assign({}, area, { type: 'area', active: false, IsEndNode: true }));
     }
 
     clearTreeListState(state.data);
 
-    playerData[programIndex].toggled = true;
+    // playerData[programIndex].toggled = true;
     playerData[programIndex].children[sceneIndex].toggled = true;
     playerData[programIndex].children[sceneIndex].active = true;
     playerData[programIndex].children[sceneIndex].children = newData;
 
     return Object.assign({}, state, {data: playerData, IsUpdateTree: true});
+}
+
+function updateItemList(state, programId, sceneId, zoneId, data){
+    if(!programId || !sceneId || !zoneId || !data){
+        return state;
+    }
+
+    let playerData = state.data;
+    let programItem = lodash.find(playerData, program => { return program.id == programId; });
+    let programIndex = lodash.findIndex(playerData, program => { return program.id == programId; });
+
+    const sceneIndex = lodash.findIndex(programItem.children, scene => { return scene.id == sceneId; });
+    const sceneItem = lodash.find(programItem.children, scene => { return scene.id == sceneId; });
+
+    const zoneIndex = lodash.findIndex(sceneItem.children, zone => { return zone.id == zoneId; });
+    let newData = [];
+    for(let i=0;i<data.length;i++){
+        const area = data[i];
+        newData.push(Object.assign({}, area, { type: 'item', active: false }));
+    }
+
+    clearTreeListState(state.data);
+
+    // playerData[programIndex].toggled = true;
+    console.log('updateItemList:',zoneIndex, playerData[programIndex].children[sceneIndex].children[zoneIndex]);
+    playerData[programIndex].children[sceneIndex].toggled = true;
+    playerData[programIndex].children[sceneIndex].children[zoneIndex].active = true;
+    playerData[programIndex].children[sceneIndex].children[zoneIndex].children = newData;
+
+    return Object.assign({}, state, {data: playerData});
 }
 
 function updateTreeData(state, node, parentNode, parentParentNode){
@@ -127,5 +160,17 @@ function updateTreeData(state, node, parentNode, parentParentNode){
 }
 
 function updateItemName(state, item, file){
-    return state;
+    // return state;
+    const playerData = updateTreeProperty(state.data, item, file);
+
+    const {plan} = state;
+    const programIndex = lodash.findIndex(playerData, program => { return program.id == plan.id; });
+    const programItem = lodash.find(playerData, program => { return program.id == plan.id; });
+
+    const sceneIndex = lodash.findIndex(programItem.children, scene => { return scene.id == state.scene.id; });
+    const sceneItem = lodash.find(programItem.children, scene => { return scene.id == state.scene.id; });
+
+    const zoneIndex = lodash.findIndex(sceneItem.children, zone => { return zone.id == state.zone.id; });
+    const zone = playerData[programIndex].children[sceneIndex].children[zoneIndex];
+    return Object.assign({}, state, {data: playerData, zone:zone});
 }

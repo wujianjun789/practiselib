@@ -50,7 +50,7 @@ export class TreeView extends Component{
     onToggle(node){
         console.log('onToggle:', node.toggled);
         const {actions,className} = this.props
-        if(className == "mediaPublish"){node.defaultSelect = true;}
+        if(className === "mediaPublish"){node.defaultSelect = true;}
         setTimeout(()=>{ actions && actions.onToggle(node)}, 33);
         this.props.onToggle && this.props.onToggle(node);
     }
@@ -58,7 +58,7 @@ export class TreeView extends Component{
     getHeight(datalist){
         for (let i=0;i<datalist.length;i++){
             const node = datalist[i];
-            if(node.toggled && node.children){
+            if(node.toggled && !node.IsEndNode && node.children){
                 return datalist.length+this.getHeight(node.children);
             }
         }
@@ -89,8 +89,8 @@ export class TreeView extends Component{
                     let count = this.state.language=='zh'?6:12;
                     let intlMessage = intl?intl.messages[node.name]:null;
                     let name = intlMessage?intlMessage:node.name;
-                    let value = name.slice(0, count)+(name.length>count?'...':'');
-                    if(!(node.children)){
+                    let value = name?name.slice(0, count)+(name.length>count?'...':''):'';
+                    if(node.IsEndNode || !(node.children)){
                         return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                         <div onClick={()=>this.onToggle(node)} title={name}>
@@ -101,7 +101,7 @@ export class TreeView extends Component{
                                             {index>0 && this.renderMove(node, "glyphicon-triangle-top")}
                                         </div>
                                     </Link>
-                                    {node.children && this.renderTree(node.children, nextIndex, node.toggled)}
+                                    {!node.IsEndNode && node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
                     }else{
                         return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>

@@ -151,7 +151,7 @@ function update(list, index, parentId, data) {
         //     return node;
         // }
 
-        if(node.level == data.level && node.id == data.id && node.children && node.children.length){
+        if(node.level == data.level && node.id == data.id && !node.IsEndNode && node.children && node.children.length){
             node.toggled = !node.toggled;
             if(!node.defaultSelect){
                 if(node.toggled && node.children && node.children.length){//默认选中第一个子节点

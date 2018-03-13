@@ -9,6 +9,7 @@ import {
   INIT_SCENE,
   INIT_ZONE_LIST,
   INIT_ZONE,
+  INIT_ITEM_LIST,
   INIT_ITEM,
 
   UPDATE_TREE_DATA,
@@ -433,18 +434,18 @@ function updatePlayerAreaData(response, parentParentNode, parentNode, playerData
 
     dispatch(initZone(response, playerData[planIndex].children[sceneIndex], playerData[planIndex]));
     dispatch(updateTreeList(playerData));
-    dispatch(requestItemList(parentParentNode.id, parentNode.id, response.id));
+    // dispatch(requestItemList(parentParentNode.id, parentNode.id, response.id));
   };
 
 }
 
 export function requestItemList(programId, sceneId, zoneId) {
   return (dispatch, getState) => {
-    const project = getState().mediaPublish.project;
-    // getItemList(project.id, programId, sceneId, zoneId, data=>{
-    // dispatch({type: UPDATE_ITEM_LIST, programId: programId, sceneId: sceneId, zoneId: zoneId, data: data});
-    // dispatch(requestItemName(Immutable.fromJS(data)));
-    // })
+    const project = getState().mediaPublishProject.project;
+    getItemList(project.id, programId, sceneId, zoneId, data=>{
+    dispatch({type: INIT_ITEM_LIST, programId: programId, sceneId: sceneId, zoneId: zoneId, data: data});
+    dispatch(requestItemName(Immutable.fromJS(data)));
+    })
   };
 }
 

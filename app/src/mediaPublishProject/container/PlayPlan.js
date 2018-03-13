@@ -14,12 +14,14 @@ import Content from '../../components/Content';
 import SidebarInfo from '../component/SidebarInfo';
 import TreeView from '../../components/TreeView';
 
+import RenderPlayerAsset from '../component/RenderPlayerAsset';
+
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
-import {initProject, initPlan, initScene, initZone, requestSceneList, requestZoneList, updateTreeJudge,
-  addPlayerSceneArea, treeOnMove, treeOnRemove} from '../action/index';
+import {initProject, initPlan, initScene, initZone, initItem, requestSceneList, requestZoneList, requestItemList,
+  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove} from '../action/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import lodash from 'lodash';
@@ -37,6 +39,8 @@ export class PlayPlan extends Component {
 
         this.sidebarClick = this.sidebarClick.bind(this);
         this.headbarClick = this.headbarClick.bind(this);
+
+        this.playerAssetSelect = this.playerAssetSelect.bind(this);
     }
 
     componentWillMount(){
@@ -58,7 +62,6 @@ export class PlayPlan extends Component {
 
     componentDidUpdate(){
         const {IsUpdateTree, actions} = this.props;
-        console.log('IsUpdateTree:', IsUpdateTree);
         if(IsUpdateTree){
             this.updateSceneTree();
         }
@@ -75,21 +78,24 @@ export class PlayPlan extends Component {
         actions.treeViewInit(treeData);
     }
 
+    playerAssetSelect(item){
+        this.props.actions.initItem(item);
+    }
+
     onToggle(node){
-        console.log('treeNode:', node);
-        const {plan, actions} = this.props;
+        const {plan, scene, actions} = this.props;
         if(node.type === "scene"){
             actions.initScene(node);
-            !node.toggled && this.props.actions.requestZoneList(plan.id, node.id);
+            !node.toggled && actions.requestZoneList(plan.id, node.id);
         }else if(node.type === 'area'){
             actions.initZone(node);
+            actions.requestItemList(plan.id, scene.id, node.id);
         }
 
         this.setState({curNode: node});
     }
 
     headbarClick(key) {
-        console.log(key);
         switch (key) {
             case 'edit':
                 this.editAlert() && this.navigatorScene();
@@ -123,19 +129,25 @@ export class PlayPlan extends Component {
   }
 
   render() {
-    const {sidebarInfo} = this.state;
-    const {router, project} = this.props;
+    const {curNode, sidebarInfo} = this.state;
+    const {data, project, plan, scene, zone, item, router} = this.props;
+
+    const playerListAsset = zone && zone.children ? zone.children:[];
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
         state: { item: project },
       }} />
       <SideBar isEdit={false} onClick={this.headbarClick}>
-        <TreeView className="mediaPublish-plan" onToggle={ (node) => this.onToggle(node) }/>
+        <TreeView className="mediaPublish" IsCancelSelect={false} onToggle={ (node) => this.onToggle(node) }/>
       </SideBar>
 
       <Content className="play-project">
                 播放场景列表
+        <div className="mediaPublish-footer">
+              {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
+          <RenderPlayerAsset curNode={curNode} playerListAsset={playerListAsset} curItem={item} playerAssetSelect={this.playerAssetSelect} playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} />
+        </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={this.sidebarClick}>
         </SidebarInfo>
       </Content>
@@ -160,8 +172,9 @@ const mapDispatchToProps = (dispatch) => {
         actions: bindActionCreators({
             overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
             treeViewInit: treeViewInit, initProject: initProject, initPlan: initPlan, initScene: initScene, initZone: initZone,
-            requestSceneList: requestSceneList, requestZoneList: requestZoneList, updateTreeJudge: updateTreeJudge,
-            addPlayerSceneArea: addPlayerSceneArea, treeOnMove: treeOnMove, treeOnRemove: treeOnRemove
+            initItem: initItem, requestSceneList: requestSceneList, requestZoneList: requestZoneList, requestItemList: requestItemList,
+            updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
+            treeOnMove: treeOnMove, treeOnRemove: treeOnRemove
         }, dispatch),
     };
 };
