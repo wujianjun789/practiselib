@@ -19,7 +19,7 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, requestSceneList, requestZoneList, updateTreeJudge,
-  addPlayerSceneArea} from '../action/index';
+  addPlayerSceneArea, treeOnMove, treeOnRemove} from '../action/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import lodash from 'lodash';
@@ -27,8 +27,6 @@ export class PlayPlan extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            project: null,
-            plan: null,
             curNode: null,
             sidebarInfo: {
                 collapsed: false,
@@ -108,15 +106,25 @@ export class PlayPlan extends Component {
                 break;
             case 'up':
             case 'down':
-                this.editAlert() && this.props.plan && this.props.actions.treeOnMove(key, this.props.plan);
+                this.editAlert() && this.props.actions.treeOnMove(key, this.state.curNode.type==="scene"?this.props.scene:this.props.zone);
                 break;
             case 'remove':
-                this.props.plan && this.props.actions.treeOnRemove(this.props.plan);
+                this.editAlert() && this.props.actions.treeOnRemove(this.state.curNode.type==="scene"?this.props.scene:this.props.zone);
                 break;
             default:
                 this.props.actions.addPlayerSceneArea(this.state.curNode);
                 break;
         }
+    }
+
+    editAlert() {
+        const {scene, zone, actions} = this.props;
+        const {curNode} = this.state;
+        if (!curNode || curNode.type==="scene" && !scene || curNode.type==="area" && !zone) {
+            actions.addNotify(0, '请选择播放场景或播放区域。');
+            return false;
+        }
+        return true;
     }
 
     sidebarClick(){
@@ -163,7 +171,7 @@ const mapDispatchToProps = (dispatch) => {
             overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
             treeViewInit: treeViewInit, initProject: initProject, initPlan: initPlan, initScene: initScene, initZone: initZone,
             requestSceneList: requestSceneList, requestZoneList: requestZoneList, updateTreeJudge: updateTreeJudge,
-            addPlayerSceneArea: addPlayerSceneArea
+            addPlayerSceneArea: addPlayerSceneArea, treeOnMove: treeOnMove, treeOnRemove: treeOnRemove
         }, dispatch),
     };
 };
