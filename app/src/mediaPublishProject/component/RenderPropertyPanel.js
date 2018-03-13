@@ -10,7 +10,6 @@ const RenderPropertyPanel = (props)=>{
     // if(!curType || !project || !parentParentNode || !parentNode || !curNode){
     //     return <div>server no data</div>;
     // }
-    console.log(curType);
     switch(curType) {
         case 'scene':
             return <PlayerScene projectId={project?project.id:null} parentId={plan?plan.id:null} data={scene}

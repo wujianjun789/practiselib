@@ -91,13 +91,14 @@ export class PlayPlan extends Component {
             return actions.treeViewInit([]);
         }
         const treeData = lodash.find(data, planItem=>{ return planItem.id == plan.id}).children;
+      console.log('updateSceneTree:',treeData);
         actions.treeViewInit(treeData, false);
     }
 
     playerAssetSelect(item){
-        this.setState({curNode: Object.assign({}, item, {type:tranformAssetType(item.type)}, ()=>{
-          this.props.actions.initItem(item);
-        })})
+        this.props.actions.initCurnode(item);
+        this.props.actions.initItem(item);
+
     }
 
     playerAssetRemove(item){
@@ -130,10 +131,10 @@ export class PlayPlan extends Component {
                 this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type==="scene"?this.props.scene:this.props.zone);
                 break;
             case 'remove':
-                this.editAlert() && this.props.actions.treeOnRemove(this.state.curNode.type==="scene"?this.props.scene:this.props.zone);
+                this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type==="scene"?this.props.scene:this.props.zone);
                 break;
             default:
-                this.props.actions.addPlayerSceneArea(this.state.curNode);
+                this.props.actions.addPlayerSceneArea(this.props.curNode);
                 break;
         }
     }
@@ -166,15 +167,15 @@ export class PlayPlan extends Component {
       case "area":
         return "区域";
       default:
-        return ""
+        return "素材"
     }
   }
 
   render() {
     const {sidebarInfo} = this.state;
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
-console.log('curNode:', curNode);
     const playerListAsset = zone && zone.children ? zone.children:[];
+
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),

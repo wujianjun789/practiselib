@@ -29,8 +29,9 @@ export default function treeView(state=initialState, action) {
 }
 
 function treeViewInit(state, data, refresh) {
+    let list = addTreeLevel(data, 1);
     if(!refresh){
-      return Object.assign({}, state, {datalist: data});
+      return Object.assign({}, state, {datalist: list});
     }
 
     let path = location.pathname;
@@ -43,7 +44,7 @@ function treeViewInit(state, data, refresh) {
     let sear2Node = searchNode(data, url);
     let curNode = sear2Node? Object.assign({}, sear2Node, {level:curParentNode?2:1}):sear2Node;
 
-    let list = addTreeLevel(data, 1);
+
     if(curNode && curNode.children){
         curNode.children = addTreeLevel(curNode.children, curNode.level+1);
     }

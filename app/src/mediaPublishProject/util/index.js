@@ -121,7 +121,7 @@ export function updateTree(treeList, node, parentNode, parentParentNode) {
 export function updateTreeProperty(treeList, item, file) {
   return treeList.map(curNode=>{
 
-    if(curNode.type !== "scene" && curNode.type !== "area" && curNode.id === item.id){
+    if(curNode.type !== "plan" && curNode.type !== "scene" && curNode.type !== "area" && curNode.id === item.id){
       curNode.name = file.name;
       curNode.thumbnail = file.thumbnail;
     }else{

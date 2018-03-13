@@ -131,9 +131,9 @@ function updateItemList(state, programId, sceneId, zoneId, data){
         return state;
     }
 
-    let playerData = state.data;
-    let programItem = lodash.find(playerData, program => { return program.id == programId; });
-    let programIndex = lodash.findIndex(playerData, program => { return program.id == programId; });
+    const playerData = state.data;
+    const programItem = lodash.find(playerData, program => { return program.id == programId; });
+    const programIndex = lodash.findIndex(playerData, program => { return program.id == programId; });
 
     const sceneIndex = lodash.findIndex(programItem.children, scene => { return scene.id == sceneId; });
     const sceneItem = lodash.find(programItem.children, scene => { return scene.id == sceneId; });
@@ -148,7 +148,6 @@ function updateItemList(state, programId, sceneId, zoneId, data){
     clearTreeListState(state.data);
 
     // playerData[programIndex].toggled = true;
-    console.log('updateItemList:',zoneIndex, playerData[programIndex].children[sceneIndex].children[zoneIndex]);
     playerData[programIndex].children[sceneIndex].toggled = true;
     playerData[programIndex].children[sceneIndex].children[zoneIndex].active = true;
     playerData[programIndex].children[sceneIndex].children[zoneIndex].children = newData;
