@@ -8,10 +8,11 @@ import {
     TREEVIEW_REMOVE
 } from '../actionTypes/treeView'
 
-export function treeViewInit(data) {
+export function treeViewInit(data, refresh=true) {
     return {
         type:TREEVIEW_INIT,
         data: data,
+        refresh: refresh
     }
 }
 

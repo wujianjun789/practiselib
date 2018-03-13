@@ -21,7 +21,7 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, initItem, requestSceneList, requestZoneList, requestItemList,
-  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove} from '../action/index';
+  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, clearTreeState} from '../action/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import lodash from 'lodash';
@@ -41,6 +41,7 @@ export class PlayPlan extends Component {
         this.headbarClick = this.headbarClick.bind(this);
 
         this.playerAssetSelect = this.playerAssetSelect.bind(this);
+        this.playerAssetRemove = this.playerAssetRemove.bind(this);
     }
 
     componentWillMount(){
@@ -75,18 +76,25 @@ export class PlayPlan extends Component {
             return actions.treeViewInit([]);
         }
         const treeData = lodash.find(data, planItem=>{ return planItem.id == plan.id}).children;
-        actions.treeViewInit(treeData);
+        actions.treeViewInit(treeData, false);
     }
 
     playerAssetSelect(item){
         this.props.actions.initItem(item);
     }
 
+    playerAssetRemove(item){
+      this.props.actions.playerAssetRemove(item);
+    }
+
     onToggle(node){
         const {plan, scene, actions} = this.props;
         if(node.type === "scene"){
             actions.initScene(node);
-            !node.toggled && actions.requestZoneList(plan.id, node.id);
+            if(!node.toggled){
+              actions.clearTreeState();
+              actions.requestZoneList(plan.id, node.id);
+            }
         }else if(node.type === 'area'){
             actions.initZone(node);
             actions.requestItemList(plan.id, scene.id, node.id);
@@ -174,7 +182,7 @@ const mapDispatchToProps = (dispatch) => {
             treeViewInit: treeViewInit, initProject: initProject, initPlan: initPlan, initScene: initScene, initZone: initZone,
             initItem: initItem, requestSceneList: requestSceneList, requestZoneList: requestZoneList, requestItemList: requestItemList,
             updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
-            treeOnMove: treeOnMove, treeOnRemove: treeOnRemove
+            treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, clearTreeState: clearTreeState
         }, dispatch),
     };
 };

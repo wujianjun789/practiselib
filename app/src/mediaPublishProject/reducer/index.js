@@ -67,8 +67,7 @@ export default function mediaPublishProject(state=initialState, action) {
         case UPDATE_TREE_JUDGE:
             return Object.assign({}, state, {IsUpdateTree:action.data});
         case CLEAR_TREE_STATE:
-            clearTreeListState(state.data);
-            return Object.assign({}, state, {data: state.data, IsUpdateTree: true});
+            return Object.assign({}, state, {data: clearTreeListState(state.data), IsUpdateTree: true});
         default:
             return state;
     }
@@ -139,7 +138,7 @@ function updateItemList(state, programId, sceneId, zoneId, data){
     let newData = [];
     for(let i=0;i<data.length;i++){
         const area = data[i];
-        newData.push(Object.assign({}, area, { type: 'item', active: false }));
+        newData.push(Object.assign({}, area, { assetType: 'item', active: false }));
     }
 
     clearTreeListState(state.data);

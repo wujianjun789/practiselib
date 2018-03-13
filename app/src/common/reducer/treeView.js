@@ -16,7 +16,7 @@ import lodash from 'lodash';
 export default function treeView(state=initialState, action) {
     switch(action.type) {
         case TREEVIEW_INIT:
-            return treeViewInit(state, action.data);
+            return treeViewInit(state, action.data, action.refresh);
         case TREEVIEW_TOGGLE:
             return onToggle(state, action.data);
         case TREEVIEW_MOVE:
@@ -28,7 +28,11 @@ export default function treeView(state=initialState, action) {
     }
 }
 
-function treeViewInit(state, data, router) {
+function treeViewInit(state, data, refresh) {
+    if(!refresh){
+      return Object.assign({}, state, {datalist: data});
+    }
+
     let path = location.pathname;
     let paths = path.split("/");
     let url = paths.pop();

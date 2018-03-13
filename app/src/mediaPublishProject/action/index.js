@@ -22,7 +22,8 @@ import {
 } from '../actionType/index';
 
 import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders,
-  removeProgramsById, removeSceneById, removeZoneById, updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
+  removeProgramsById, removeSceneById, removeZoneById, removeItemById,
+  updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
   addProgram, addScene, addZone, getAssetById} from '../../api/mediaPublish';
 
 import { addNotify } from '../../common/actions/notifyPopup';
@@ -464,6 +465,20 @@ function requestItemName(data) {
       }
     });
   };
+}
+
+export function playerAssetRemove(item){
+  return (dispatch, getState)=>{
+    const project = getState().mediaPublishProject.project;
+    const parentParentNode = getState().mediaPublishProject.plan;
+    const parentNode = getState().mediaPublishProject.scene;
+    const curNode = getState().mediaPublishProject.zone;
+
+    const itemId = item.id;
+    removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, item.type, data => {
+      dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
+    });
+  }
 }
 
 function updateItemName(itemObject, sysfile) {
