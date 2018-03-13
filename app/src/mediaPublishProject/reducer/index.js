@@ -12,6 +12,7 @@ import {
   INIT_ZONE,
   INIT_ITEM_LIST,
   INIT_ITEM,
+  INIT_CURNODE,
 
   UPDATE_TREE_DATA,
   UPDATE_TREE_LIST,
@@ -33,7 +34,8 @@ const initialState = {
     scene: null,   //播放场景
     zone: null,      //播放区域
     item: null,      //播放项
-    IsUpdateTree: false
+    IsUpdateTree: false,
+    curNode: null //当前要操作对象
 };
 
 
@@ -51,6 +53,8 @@ export default function mediaPublishProject(state=initialState, action) {
             return Object.assign({}, state, {zone: action.data});
         case INIT_ITEM:
             return Object.assign({}, state, {item: action.data});
+        case INIT_CURNODE:
+            return Object.assign({}, state, {curNode: action.data});
         case UPDATE_ITEM_NAME:
             return updateItemName(state, action.item, action.file);
         case INIT_SCENE_LIST:

@@ -19,6 +19,7 @@ export default class RenderPlayerAsset extends Component {
     
   render() {
     const { curNode, playerListAsset, curItem, isEdit, playerAssetSelect, playerAssetRemove } = this.props;
+    console.log(curNode);
     return (<ul className={curNode && curNode.type==="area" && typeof curNode.id === 'number'?"":"hidden"}>
       {
         playerListAsset.map((item, index) => {

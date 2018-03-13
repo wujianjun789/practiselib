@@ -11,6 +11,7 @@ import {
   INIT_ZONE,
   INIT_ITEM_LIST,
   INIT_ITEM,
+  INIT_CURNODE,
 
   UPDATE_TREE_DATA,
   UPDATE_TREE_LIST,
@@ -92,9 +93,15 @@ export function initZone(zone) {
 export function initItem(item) {
   return dispatch => {
     dispatch({type: INIT_ITEM, data:item});
+    dispatch(initCurnode(item));
   };
 }
 
+export function initCurnode(item) {
+  return dispatch => {
+    dispatch({type: INIT_CURNODE, data:item});
+  }
+}
 export function updateTreeJudge(IsUpdateTree) {
   return {
     type: UPDATE_TREE_JUDGE,
@@ -151,8 +158,9 @@ function addPlayerScene(curNode) {
       return dispatch(addNotify(0, '请提交播放列表'));
     }
     const node = getInitData('scene', '场景新建');
-
+console.log('addPlayerScene:', node);
     dispatch(initScene(node));
+    dispatch(initCurnode(node));
     dispatch(updateTreeData(node, parentNode));
   };
 }
@@ -167,6 +175,7 @@ function addPlayerArea(curNode, parentNode) {
     const node = getInitData('area', '区域新建');
 
     dispatch(initZone(node, sParentNode, parentParentNode));
+    dispatch(initCurnode(node));
     dispatch(updateTreeData(node, sParentNode, parentParentNode));
   };
 }
@@ -323,7 +332,7 @@ export function applyClick(id, data) {
       dispatch(addUpdatePlan(data, project, playerData));
       break;
     case 'playerScene':
-      dispatch(addUpdateScene(data, project, parentNode, playerData));
+      dispatch(addUpdateScene(data, project, parentParentNode, playerData));
       break;
     case 'playerAreaPro':
       dispatch(addUpdateArea(data, project, parentParentNode, parentNode, playerData));

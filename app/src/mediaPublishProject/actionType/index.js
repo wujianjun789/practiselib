@@ -11,6 +11,7 @@ export const INIT_PLAN = 'INIT_PLAN';
 export const INIT_SCENE = 'INIT_SCENE';
 export const INIT_ZONE = 'INIT_ZONE';
 export const INIT_ITEM = 'INIT_ITEM';
+export const INIT_CURNODE = 'INIT_CURNODE';
 
 export const UPDATE_TREE_JUDGE = 'UPDATE_TREE_JUDGE';
 
