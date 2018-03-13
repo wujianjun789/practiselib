@@ -17,7 +17,7 @@ import {
 
   UPDATE_ITEM_NAME,
 
-  CLEAR_TREE_STATE
+  CLEAR_TREE_STATE,
 } from '../actionType/index';
 
 import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders,
@@ -33,98 +33,98 @@ import Immutable from 'immutable';
 
 import systemFile from '../data/systemFile.json';
 import systemInitFile from '../data/systemInitFile.json';
-export function initProject(project){
-  return dispatch=>{
+export function initProject(project) {
+  return dispatch => {
     dispatch({type: INIT_PROJECT, data:project});
     dispatch(requestProgrameList(project));
-  }
+  };
 }
 
 function requestProgrameList(project) {
-  return (dispatch)=>{
-    getProgramList(project.id, data=>{
+  return (dispatch) => {
+    getProgramList(project.id, data => {
       dispatch({type: INIT_PROGRAM_LIST, data:data});
-    })
-  }
+    });
+  };
 }
 
 export function initPlan(plan) {
-  return dispatch=>{
+  return dispatch => {
     dispatch({type: INIT_PLAN, data:plan});
-    dispatch(requestSceneList(plan.id))
-  }
+    dispatch(requestSceneList(plan.id));
+  };
 }
 
-export function requestSceneList(programId){
-  return (dispatch, getState)=>{
+export function requestSceneList(programId) {
+  return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
-    getSceneList(project.id, programId, data=>{
+    getSceneList(project.id, programId, data => {
       dispatch({type: INIT_SCENE_LIST, programId: programId, data: data});
-    })
-  }
+    });
+  };
 }
 
 export function initScene(scene) {
-  return dispatch=>{
+  return dispatch => {
     dispatch({type: INIT_SCENE, data:scene});
-  }
+  };
 }
 
-export function requestZoneList(programId, sceneId){
-  return (dispatch, getState)=>{
+export function requestZoneList(programId, sceneId) {
+  return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
-    getZoneList(project.id, programId, sceneId, data=>{
+    getZoneList(project.id, programId, sceneId, data => {
       console.log('zone:', data);
       // dispatch(getItemListOfCurScene(data));
       dispatch({type: INIT_ZONE_LIST, programId: programId, sceneId: sceneId, data: data});
-    })
-  }
+    });
+  };
 }
 
 export function initZone(zone) {
-  return dispatch=>{
+  return dispatch => {
     dispatch({type: INIT_ZONE, data:zone});
-  }
+  };
 }
 
 export function initItem(item) {
-  return dispatch=>{
+  return dispatch => {
     dispatch({type: INIT_ITEM, data:item});
-  }
+  };
 }
 
 export function updateTreeJudge(IsUpdateTree) {
   return {
     type: UPDATE_TREE_JUDGE,
-    data: IsUpdateTree
-  }
+    data: IsUpdateTree,
+  };
 }
 
 export function addPlayerPlan(id, formatIntl) {
-  return (dispatch, getState)=>{
+  return (dispatch, getState) => {
     dispatch(clearTreeState());
     const node = addTreeNode(id, formatIntl);
     dispatch(initPlan(node.node));
-    dispatch(updateTreeData(node.node))
-  }
+    dispatch(updateTreeData(node.node));
+  };
 }
 
 export function addPlayerSceneArea(curNode) {
   console.log(curNode);
-  return (dispatch, getState)=>{
+  return (dispatch, getState) => {
     // const curType = curNode.type;
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
     dispatch(clearTreeState());
-    if(!curNode){
+    if (!curNode) {
       dispatch(addPlayerScene(plan));
-    }else{
-      switch(curNode.type){
-        case 'scene':
-          dispatch(addPlayerArea(scene, plan));
-          break;
-        default:
-          break;
+    } else {
+      switch (curNode.type) {
+      case 'scene':
+        dispatch(addPlayerArea(scene, plan));
+        break;
+      default:
+        break;
       }
     }
     // switch (curType) {
@@ -139,11 +139,11 @@ export function addPlayerSceneArea(curNode) {
     //   default:
     //     break;
     // }
-  }
+  };
 }
 
-function addPlayerScene(curNode){
-  return dispatch=>{
+function addPlayerScene(curNode) {
+  return dispatch => {
     const parentNode = curNode;
     if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
       return dispatch(addNotify(0, '请提交播放列表'));
@@ -152,11 +152,11 @@ function addPlayerScene(curNode){
 
     dispatch(initScene(node));
     dispatch(updateTreeData(node, parentNode));
-  }
+  };
 }
 
-function addPlayerArea(curNode, parentNode){
-  return dispatch=>{
+function addPlayerArea(curNode, parentNode) {
+  return dispatch => {
     const parentParentNode = parentNode;
     const sParentNode = curNode;
     if (typeof sParentNode.id === 'string' && sParentNode.id.indexOf('scene') > -1) {
@@ -166,7 +166,7 @@ function addPlayerArea(curNode, parentNode){
 
     dispatch(initZone(node, sParentNode, parentParentNode));
     dispatch(updateTreeData(node, sParentNode, parentParentNode));
-  }
+  };
 }
 
 export function updateTreeData(node, parentNode, parentParentNode) {
@@ -174,53 +174,53 @@ export function updateTreeData(node, parentNode, parentParentNode) {
     type: UPDATE_TREE_DATA,
     node: node,
     parentNode: parentNode,
-    parentParentNode: parentParentNode
-  }
+    parentParentNode: parentParentNode,
+  };
 }
 
 export function clearTreeState() {
   return {
-    type: CLEAR_TREE_STATE
-  }
+    type: CLEAR_TREE_STATE,
+  };
 }
 
-export function treeOnMove(key, node){
-  return (dispatch, getState)=>{
+export function treeOnMove(key, node) {
+  return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
     const playerData = getState().mediaPublishProject.data;
-console.log('treeOnMove:',node.type);
+    console.log('treeOnMove:', node.type);
     switch (node.type) {
-      case 'plan':
-      case 'plan2':
-      case 'plan3':
-        dispatch(updatePlanOrders({ key: key, node: node }, playerData, project));
-        break;
-      case 'scene':
-        dispatch(updateScenesOrders({ key: key, node: node }, playerData, project));
-        break;
-      case 'area':
-        dispatch(updateAreaOrders({ key: key, node: node }, playerData, project));
-        break;
-      default:
-        break;
+    case 'plan':
+    case 'plan2':
+    case 'plan3':
+      dispatch(updatePlanOrders({ key: key, node: node }, playerData, project));
+      break;
+    case 'scene':
+      dispatch(updateScenesOrders({ key: key, node: node }, playerData, project));
+      break;
+    case 'area':
+      dispatch(updateAreaOrders({ key: key, node: node }, playerData, project));
+      break;
+    default:
+      break;
     }
-  }
+  };
 }
 
-function updatePlanOrders(data, playerData, project){
-  return dispatch=>{
+function updatePlanOrders(data, playerData, project) {
+  return dispatch => {
     const newTreeList = moveTree(playerData, data);
     const ids = getListObjectByKey(newTreeList, 'id');
     dispatch(updateTreeList(newTreeList));
     updateProgramOrders(project.id, ids, response => {
       console.log('plan orders:', ids);
     });
-  }
+  };
 
 }
 
-function updateScenesOrders(data, playerData, project){
-  return dispatch=>{
+function updateScenesOrders(data, playerData, project) {
+  return dispatch => {
     let parentNode = getTreeParentNode(playerData, data.node);
     let index = lodash.findIndex(playerData, plan => { return plan.type == parentNode.type && plan.id == parentNode.id; });
 
@@ -230,11 +230,11 @@ function updateScenesOrders(data, playerData, project){
     updateSceneOrders(project.id, parentNode.id, ids, response => {
       console.log('scene orders:', ids);
     });
-  }
+  };
 }
 
-function updateAreaOrders(data, playerData, project){
-  return dispatch=>{
+function updateAreaOrders(data, playerData, project) {
+  return dispatch => {
     let parentNode = getTreeParentNode(playerData, data.node);
     let parentParentNode = getTreeParentNode(playerData, parentNode);
 
@@ -247,11 +247,11 @@ function updateAreaOrders(data, playerData, project){
     updateZoneOrders(project.id, parentParentNode.id, parentNode.id, ids, response => {
       console.log('area orders:', ids);
     });
-  }
+  };
 }
 
-export function treeOnRemove(node){
-  return (dispatch, getState)=>{
+export function treeOnRemove(node) {
+  return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
     const sCurNode = getState().mediaPublishProject.zone;
     const sParentNode = getState().mediaPublishProject.scene;
@@ -265,75 +265,75 @@ export function treeOnRemove(node){
       || sParentParentNode && parentParentNode && parentParentNode.type === sParentParentNode.type && parentParentNode.id === sParentParentNode.id) {
     }
 
-    if(typeof node.id === "string" && (node.id.indexOf("plan")>-1 || node.id.indexOf("scene")>-1 || node.id.indexOf("area")>-1)){
+    if (typeof node.id === 'string' && (node.id.indexOf('plan') > -1 || node.id.indexOf('scene') > -1 || node.id.indexOf('area') > -1)) {
       return dispatch(updateTreeList(removeTree(playerData, node)));
     }
 
     switch (node.type) {
-      case 'scene':
-        removeSceneById(project.id, parentNode.id, node.id, () => {
-          dispatch(updateTreeList(removeTree(playerData, node)))
-        });
-        break;
-      case 'plan':
-        removeProgramsById(project.id, node.id, () => {
-          dispatch(initPlan(null));
-          dispatch(updateTreeList(removeTree(playerData, node)));
-        });
-        break;
-      case 'plan2':
-        break;
-      case 'plan3':
-        break;
-      case 'area':
-        removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
-          dispatch(updateTreeList(removeTree(playerData, node)));
-        });
-        break;
-      default:
-        break;
+    case 'scene':
+      removeSceneById(project.id, parentNode.id, node.id, () => {
+        dispatch(updateTreeList(removeTree(playerData, node)));
+      });
+      break;
+    case 'plan':
+      removeProgramsById(project.id, node.id, () => {
+        dispatch(initPlan(null));
+        dispatch(updateTreeList(removeTree(playerData, node)));
+      });
+      break;
+    case 'plan2':
+      break;
+    case 'plan3':
+      break;
+    case 'area':
+      removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
+        dispatch(updateTreeList(removeTree(playerData, node)));
+      });
+      break;
+    default:
+      break;
     }
-  }
+  };
 }
 
 
 function updateTreeList(treeList) {
   return {
     type: UPDATE_TREE_LIST,
-    data: DeepCopy(treeList)
-  }
+    data: DeepCopy(treeList),
+  };
 }
 
 export function applyClick(id, data) {
-  return (dispatch, getState)=>{
+  return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
     const parentParentNode = getState().mediaPublishProject.plan;
     const parentNode = getState().mediaPublishProject.scene;
     const curNode = getState().mediaPublishProject.zone;
     const playerData = getState().mediaPublishProject.data;
     switch (id) {
-      case 'playerProject':
-        updateProjectById(data, response => {
-          dispatch({type: INIT_PROJECT, data: Object.assign({}, project, response)})
-        });
-        break;
-      case 'playerPlan':
-        dispatch(addUpdatePlan(data, project, playerData));
-        break;
-      case 'playerScene':
-        dispatch(addUpdateScene(data, project, parentNode, playerData));
-        break;
-      case 'playerAreaPro':
-        dispatch(addUpdateArea(data, project, parentParentNode, parentNode, playerData));
-        break;
-      default:
-        dispatch(addUpdateItem(data, project, parentParentNode, parentNode, curNode));
+    case 'playerProject':
+      updateProjectById(data, response => {
+        dispatch({type: INIT_PROJECT, data: Object.assign({}, project, response)});
+      });
+      break;
+    case 'playerPlan':
+      dispatch(addUpdatePlan(data, project, playerData));
+      break;
+    case 'playerScene':
+      dispatch(addUpdateScene(data, project, parentNode, playerData));
+      break;
+    case 'playerAreaPro':
+      dispatch(addUpdateArea(data, project, parentParentNode, parentNode, playerData));
+      break;
+    default:
+      dispatch(addUpdateItem(data, project, parentParentNode, parentNode, curNode));
     }
-  }
+  };
 }
 
-function addUpdatePlan(data, project, playerData){
-  return dispatch=>{
+function addUpdatePlan(data, project, playerData) {
+  return dispatch => {
     let planData = parsePlanData(data);
     if (data.id) {
       planData = Object.assign({}, planData, { id: data.id });
@@ -345,11 +345,11 @@ function addUpdatePlan(data, project, playerData){
         dispatch(updatePlayerPlanData(Object.assign({}, planData, { id: response.playlistId }, {type:'plan'}), playerData));
       });
     }
-  }
+  };
 }
 
-function addUpdateScene(data, project, parentNode, playerData){
-  return dispatch=>{
+function addUpdateScene(data, project, parentNode, playerData) {
+  return dispatch => {
     let sceneData = data;
     if (data.id) {
       sceneData = Object.assign({}, sceneData, { id: data.id });
@@ -361,11 +361,11 @@ function addUpdateScene(data, project, parentNode, playerData){
         dispatch(updatePlayerSceneData(Object.assign({}, sceneData, { id: response.sceneId }, {type: 'scene'}), parentNode, playerData));
       });
     }
-  }
+  };
 }
 
-function addUpdateArea(data, project, parentParentNode, parentNode, playerData){
-  return dispatch=>{
+function addUpdateArea(data, project, parentParentNode, parentNode, playerData) {
+  return dispatch => {
     let areaData = data;
     if (data.id) {
       areaData = Object.assign({}, areaData, { id: data.id });
@@ -377,19 +377,19 @@ function addUpdateArea(data, project, parentParentNode, parentNode, playerData){
         dispatch(updatePlayerAreaData(Object.assign({}, areaData, { id: response.regionId }, {type:'area'}), parentParentNode, parentNode, playerData));
       });
     }
-  }
+  };
 }
 
-function addUpdateItem(data, project, parentParentNode, parentNode, curNode){
-  return dispatch=>{
+function addUpdateItem(data, project, parentParentNode, parentNode, curNode) {
+  return dispatch => {
     updateItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, data, response => {
       dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
     });
-  }
+  };
 }
 
-function updatePlayerPlanData(response, playerData){
-  return dispatch=>{
+function updatePlayerPlanData(response, playerData) {
+  return dispatch => {
     const newPlayerData = playerData.map(plan => {
       if ((typeof plan.id === 'string' && plan.id.indexOf('plan&&') > -1) || plan.id == response.id) {
         return Object.assign({}, plan, response);
@@ -400,11 +400,11 @@ function updatePlayerPlanData(response, playerData){
 
     dispatch(initPlan(response));
     dispatch(updateTreeList(newPlayerData));
-  }
+  };
 }
 
-function updatePlayerSceneData(response, parentNode, playerData){
-  return dispatch=>{
+function updatePlayerSceneData(response, parentNode, playerData) {
+  return dispatch => {
     let index = lodash.findIndex(playerData, plan => { return plan.id == parentNode.id; });
     playerData[index].children = playerData[index].children.map(scene => {
       if ((typeof scene.id === 'string' && scene.id.indexOf('scene&&') > -1) || scene.id == response.id) {
@@ -416,11 +416,11 @@ function updatePlayerSceneData(response, parentNode, playerData){
 
     dispatch(initScene(response, playerData[index]));
     dispatch(updateTreeList(playerData));
-  }
+  };
 }
 
-function updatePlayerAreaData(response, parentParentNode, parentNode, playerData){
-  return dispatch=>{
+function updatePlayerAreaData(response, parentParentNode, parentNode, playerData) {
+  return dispatch => {
     let planIndex = lodash.findIndex(playerData, plan => { return plan.id == parentParentNode.id; });
     let sceneIndex = lodash.findIndex(playerData[planIndex].children, scene => { return scene.id == parentNode.id; });
     playerData[planIndex].children[sceneIndex].children = playerData[planIndex].children[sceneIndex].children.map(area => {
@@ -434,22 +434,22 @@ function updatePlayerAreaData(response, parentParentNode, parentNode, playerData
     dispatch(initZone(response, playerData[planIndex].children[sceneIndex], playerData[planIndex]));
     dispatch(updateTreeList(playerData));
     dispatch(requestItemList(parentParentNode.id, parentNode.id, response.id));
-  }
+  };
 
 }
 
-export function requestItemList(programId, sceneId, zoneId){
-  return (dispatch, getState)=>{
+export function requestItemList(programId, sceneId, zoneId) {
+  return (dispatch, getState) => {
     const project = getState().mediaPublish.project;
     // getItemList(project.id, programId, sceneId, zoneId, data=>{
-      // dispatch({type: UPDATE_ITEM_LIST, programId: programId, sceneId: sceneId, zoneId: zoneId, data: data});
-      // dispatch(requestItemName(Immutable.fromJS(data)));
+    // dispatch({type: UPDATE_ITEM_LIST, programId: programId, sceneId: sceneId, zoneId: zoneId, data: data});
+    // dispatch(requestItemName(Immutable.fromJS(data)));
     // })
-  }
+  };
 }
 
 function requestItemName(data) {
-  return dispatch=>{
+  return dispatch => {
     console.log('requestItemName:', data);
     data.map(item => {
       const itemObject = item.toJS();
@@ -462,13 +462,13 @@ function requestItemName(data) {
         });
       }
     });
-  }
+  };
 }
 
 function updateItemName(itemObject, sysfile) {
   return {
     type: UPDATE_ITEM_NAME,
     item: itemObject,
-    file: sysfile
-  }
+    file: sysfile,
+  };
 }
