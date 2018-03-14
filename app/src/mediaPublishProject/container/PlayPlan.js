@@ -22,7 +22,7 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
-  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, applyClick, clearTreeState} from '../action/index';
+  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState} from '../action/index';
 import {tranformAssetType} from '../util/index'
 
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -45,6 +45,7 @@ export class PlayPlan extends Component {
 
         this.playerAssetSelect = this.playerAssetSelect.bind(this);
         this.playerAssetRemove = this.playerAssetRemove.bind(this);
+        this.playerAssetMove = this.playerAssetMove.bind(this);
         this.applyClick = this.applyClick.bind(this);
         this.getPropertyName = this.getPropertyName.bind(this);
     }
@@ -103,6 +104,10 @@ export class PlayPlan extends Component {
 
     playerAssetRemove(item){
       this.props.actions.playerAssetRemove(item);
+    }
+
+    playerAssetMove(index){
+      this.props.actions.playerAssetMove(index);
     }
 
     onToggle(node){
@@ -228,7 +233,7 @@ const mapDispatchToProps = (dispatch) => {
             treeViewInit: treeViewInit, initProject: initProject, initPlan: initPlan, initScene: initScene, initZone: initZone,
             initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
             requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
-            treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, applyClick: applyClick,
+            treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
             clearTreeState: clearTreeState
         }, dispatch),
     };

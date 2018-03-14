@@ -22,7 +22,7 @@ import {
   CLEAR_TREE_STATE,
 } from '../actionType/index';
 
-import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders,
+import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
   removeProgramsById, removeSceneById, removeZoneById, removeItemById,
   updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
   addProgram, addScene, addZone, getAssetById} from '../../api/mediaPublish';
@@ -487,6 +487,39 @@ export function playerAssetRemove(item){
     removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, item.type, data => {
       dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
     });
+  }
+}
+
+export function playerAssetMove(index) {
+  console.log("index", index);
+  return (dispatch, getState)=>{
+    let data = getState().mediaPublishProject.data;
+    const project = getState().mediaPublishProject.project;
+    const plan = getState().mediaPublishProject.plan;
+    const scene = getState().mediaPublishProject.scene;
+    const zone = getState().mediaPublishProject.zone;
+    const item = getState().mediaPublishProject.item;
+    console.log('move:',item, index);
+    if(!item){
+      return dispatch(updateTreeList(data));
+    }
+
+    const programIndex = lodash.findIndex(data, pro=>{return pro.id === plan.id});
+    const sceneIndex = lodash.findIndex(plan.children, sce=>{return sce.id === scene.id});
+    const zoneIndex = lodash.findIndex(scene.children, zo=>{return zo.id === zone.id});
+    const itemIndex = lodash.findIndex(zone.children, it=>{return it.id === item.id });
+
+    zone.children.splice(itemIndex, 1);
+    zone.children.splice(index, 0, item);
+
+    const result = data[programIndex].children[sceneIndex].children[zoneIndex].children;
+    console.log('splice1', result);
+    data[programIndex].children[sceneIndex].children[zoneIndex].children = zone.children;
+    console.log('splice2',data[programIndex].children[sceneIndex].children[zoneIndex].children);
+    dispatch(initZone(zone));
+    dispatch(updateTreeList(data));
+    updateItemOrders(project.id, plan.id, scene.id, zone.id,
+      getListObjectByKey(data[programIndex].children[sceneIndex].children[zoneIndex].children, 'id'));
   }
 }
 
