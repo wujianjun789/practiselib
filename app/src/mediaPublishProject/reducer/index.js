@@ -123,7 +123,7 @@ function updateZoneList(state, programId, sceneId, data){
     playerData[programIndex].children[sceneIndex].active = true;
     playerData[programIndex].children[sceneIndex].children = newData;
 
-    return Object.assign({}, state, {data: playerData, IsUpdateTree: true});
+    return Object.assign({}, state, {data: playerData, scene: playerData[programIndex].children[sceneIndex], IsUpdateTree: true});
 }
 
 function updateItemList(state, programId, sceneId, zoneId, data){
