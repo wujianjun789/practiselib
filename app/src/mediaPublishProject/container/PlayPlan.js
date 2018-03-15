@@ -17,6 +17,8 @@ import TreeView from '../../components/TreeView';
 import RenderPlayerAsset from '../component/RenderPlayerAsset';
 import RenderPropertyPanel from '../component/RenderPropertyPanel';
 
+import NotifyPopup from '../../common/containers/NotifyPopup';
+
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
@@ -127,6 +129,7 @@ export class PlayPlan extends Component {
     }
 
     headbarClick(key) {
+      console.log('headbarClick:', key);
         switch (key) {
             case 'edit':
                 this.editAlert() && this.navigatorScene();
@@ -139,7 +142,7 @@ export class PlayPlan extends Component {
                 this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type==="scene"?this.props.scene:this.props.zone);
                 break;
             default:
-                this.props.actions.addPlayerSceneArea(this.props.curNode);
+                this.addAlert() && this.props.actions.addPlayerSceneArea(this.props.curNode);
                 break;
         }
     }
@@ -151,6 +154,17 @@ export class PlayPlan extends Component {
             return false;
         }
         return true;
+    }
+
+    addAlert(){
+      const {curNode, actions} = this.props;
+      console.log('addAlert:',curNode);
+      if(curNode && typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1){
+        actions.addNotify(0, '请提交新建区域。');
+        return false;
+      }
+
+      return true;
     }
 
   sidebarClick(key) {
@@ -208,6 +222,7 @@ export class PlayPlan extends Component {
             </div>
           </div>
         </SidebarInfo>
+        <NotifyPopup/>
       </Content>
     </div>;
   }

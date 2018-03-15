@@ -129,9 +129,9 @@ export function addPlayerSceneArea(curNode) {
       dispatch(addPlayerScene(plan));
     } else {
       switch (curNode.type) {
-      case 'scene':
-        dispatch(addPlayerArea(scene, plan));
-        break;
+        case 'scene':
+          dispatch(addPlayerArea(scene, plan));
+          break;
       default:
         break;
       }
@@ -155,7 +155,7 @@ function addPlayerScene(curNode) {
   return dispatch => {
     const parentNode = curNode;
     if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
-      return dispatch(addNotify(0, '请提交播放列表'));
+      return dispatch(addNotify(0, '请提交播放场景'));
     }
     const node = getInitData('scene', '场景新建');
 console.log('addPlayerScene:', node);
@@ -170,9 +170,9 @@ function addPlayerArea(curNode, parentNode) {
     const parentParentNode = parentNode;
     const sParentNode = curNode;
     if (typeof sParentNode.id === 'string' && sParentNode.id.indexOf('scene') > -1) {
-      return dispatch(addNotify(0, '请提交播放场景'));
+      return dispatch(addNotify(0, '请提交播放区域'));
     }
-    const node = getInitData('area', '区域新建');
+    const node = Object.assign({}, getInitData('area', '区域新建'), {IsEndNode: true});
 
     dispatch(initZone(node, sParentNode, parentParentNode));
     dispatch(initCurnode(node));
