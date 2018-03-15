@@ -25,32 +25,20 @@ import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
   updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState} from '../action/index';
-import {tranformAssetType} from '../util/index'
+import {tranformAssetType} from '../util/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import lodash from 'lodash';
 export class PlayPlan extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            sidebarInfo: {
-                collapsed: false,
-                propertyCollapsed: false,
-                assetLibCollapsed: false,
-            }
-        }
-
-        this.formatIntl = this.formatIntl.bind(this);
-
-        this.sidebarClick = this.sidebarClick.bind(this);
-        this.headbarClick = this.headbarClick.bind(this);
-
-        this.playerAssetSelect = this.playerAssetSelect.bind(this);
-        this.playerAssetRemove = this.playerAssetRemove.bind(this);
-        this.playerAssetMove = this.playerAssetMove.bind(this);
-        this.applyClick = this.applyClick.bind(this);
-        this.getPropertyName = this.getPropertyName.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      sidebarInfo: {
+        collapsed: false,
+        propertyCollapsed: false,
+        assetLibCollapsed: false,
+      },
+    };
 
     this.formatIntl = this.formatIntl.bind(this);
 
@@ -59,6 +47,7 @@ export class PlayPlan extends Component {
 
     this.playerAssetSelect = this.playerAssetSelect.bind(this);
     this.playerAssetRemove = this.playerAssetRemove.bind(this);
+    this.playerAssetMove = this.playerAssetMove.bind(this);
     this.applyClick = this.applyClick.bind(this);
     this.getPropertyName = this.getPropertyName.bind(this);
   }
@@ -68,7 +57,7 @@ export class PlayPlan extends Component {
     this.updateSceneTree();
     if (this.props.plan) {
       actions.requestSceneList(this.props.plan.id);
-    } else{
+    } else {
       if (router && router.location) {
         const routerState = router.location.state;
         const project = routerState ? routerState.project : null;
@@ -109,43 +98,42 @@ export class PlayPlan extends Component {
     actions.treeViewInit(treeData, false);
   }
 
-    playerAssetMove(index){
-      this.props.actions.playerAssetMove(index);
+  playerAssetMove(index) {
+    this.props.actions.playerAssetMove(index);
+  }
+
+  onToggle(node) {
+    const {plan, scene, actions} = this.props;
+    if (node.type === 'scene') {
+      actions.initScene(node);
+      if (!node.toggled) {
+        actions.clearTreeState();
+        actions.requestZoneList(plan.id, node.id);
+      }
+    } else if (node.type === 'area') {
+      actions.initZone(node);
+      actions.requestItemList(plan.id, scene.id, node.id);
     }
 
-    onToggle(node){
-        const {plan, scene, actions} = this.props;
-        if(node.type === "scene"){
-            actions.initScene(node);
-            if(!node.toggled){
-              actions.clearTreeState();
-              actions.requestZoneList(plan.id, node.id);
-            }
-        }else if(node.type === 'area'){
-            actions.initZone(node);
-            actions.requestItemList(plan.id, scene.id, node.id);
-        }
+    actions.initCurnode(node);
+  }
 
-        actions.initCurnode(node);
-    }
-
-    headbarClick(key) {
-      console.log('headbarClick:', key);
-        switch (key) {
-            case 'edit':
-                this.editAlert() && this.navigatorScene();
-                break;
-            case 'up':
-            case 'down':
-                this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type==="scene"?this.props.scene:this.props.zone);
-                break;
-            case 'remove':
-                this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type==="scene"?this.props.scene:this.props.zone);
-                break;
-            default:
-                this.addAlert() && this.props.actions.addPlayerSceneArea(this.props.curNode);
-                break;
-        }
+  headbarClick(key) {
+    console.log('headbarClick:', key);
+    switch (key) {
+    case 'edit':
+      this.editAlert() && this.navigatorScene();
+      break;
+    case 'up':
+    case 'down':
+      this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
+      break;
+    case 'remove':
+      this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
+      break;
+    default:
+      this.addAlert() && this.props.actions.addPlayerSceneArea(this.props.curNode);
+      break;
     }
   }
 
@@ -158,16 +146,16 @@ export class PlayPlan extends Component {
     return true;
   }
 
-    addAlert(){
-      const {curNode, actions} = this.props;
-      console.log('addAlert:',curNode);
-      if(curNode && typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1){
-        actions.addNotify(0, '请提交新建区域。');
-        return false;
-      }
-
-      return true;
+  addAlert() {
+    const {curNode, actions} = this.props;
+    console.log('addAlert:', curNode);
+    if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
+      actions.addNotify(0, '请提交新建区域。');
+      return false;
     }
+
+    return true;
+  }
 
   sidebarClick(key) {
     const {sidebarInfo} = this.state;
@@ -214,7 +202,7 @@ export class PlayPlan extends Component {
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}}>
           <div ref="assetProperty" className="panel panel-default asset-property">
-            <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed':'')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
+            <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
               <span className={'icon_info'}></span>
               {this.getPropertyName(curNode) + this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
@@ -244,16 +232,16 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators({
-            overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
-            treeViewInit: treeViewInit, initProject: initProject, initPlan: initPlan, initScene: initScene, initZone: initZone,
-            initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
-            requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
-            treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-            clearTreeState: clearTreeState
-        }, dispatch),
-    };
+  return {
+    actions: bindActionCreators({
+      overlayerShow: overlayerShow, overlayerHide: overlayerHide, addNotify: addNotify, removeAllNotify: removeAllNotify,
+      treeViewInit: treeViewInit, initProject: initProject, initPlan: initPlan, initScene: initScene, initZone: initZone,
+      initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
+      requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
+      treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
+      clearTreeState: clearTreeState,
+    }, dispatch),
+  };
 };
 
 export default connect(
