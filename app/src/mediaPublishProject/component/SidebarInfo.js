@@ -12,15 +12,15 @@ export default class SidebarInfo extends Component {
     this.props.sidebarClick && this.props.sidebarClick();
   }
 
-  render(){
-      const {collapsed} = this.props;
-      return <div ref="sidebarInfo" className={'sidebar-info '}>
-          <div className="row collapse-container" onClick={() => this.sidebarClick()}>
-              <span className={collapsed ? 'icon_horizontal' : 'icon_vertical'}></span>
-          </div>
-          {
-            this.props.children
-          }
+  render() {
+    const {collapsed} = this.props;
+    return <div ref="sidebarInfo" className={'sidebar-info '}>
+      <div className="row collapse-container" onClick={() => this.sidebarClick()}>
+        <span className={collapsed ? 'icon_horizontal' : 'icon_vertical'}></span>
       </div>
+      {
+        this.props.children
+      }
+    </div>;
   }
 }
