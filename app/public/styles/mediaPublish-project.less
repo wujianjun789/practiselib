@@ -567,6 +567,134 @@
 
   .playerAsset-lib{
     width: 560px;
+    .modal-body{
+      .top {
+        select {
+          width: 145px;
+          height: 35px;
+          margin-right: 20px;
+        }
+        .searchText {
+          width: 150px;
+          height: 35px;
+
+          margin-right: 20px;
+        }
+
+        .btn-group{
+          margin-top: -5px;
+          .btn{
+            border-radius: 4px;
+          }
+          &:nth-child(3) {
+            button:first-child {
+              margin-right: 20px;
+            }
+          }
+
+          &:nth-child(4){
+            button:first-child{
+              visibility: hidden;
+
+              margin-right: 20px;
+              background-color: #ff5c68;
+              border: 0;
+            }
+
+          }
+        }
+
+
+        padding-bottom: 10px;
+        border-bottom: 1px solid #d6dbdf
+      }
+
+      .bottom {
+        //position: relative;
+        //height: 309px;
+        padding-top: 10px;
+        ul.asset-list {
+          padding-bottom: 10px;
+          li {
+            position: relative;
+
+            display: inline-block;
+
+            padding-top: 10px;
+            padding-right: 10px;
+            padding-left: 10px;
+
+            margin-right: 20px;
+            margin-bottom: 20px;
+
+            cursor: pointer;
+            &.margin-right {
+              margin-right: 0px;
+            }
+
+            .background {
+              position: absolute;
+              top: 0;
+              left: 0;
+
+              width: 112px;
+              height: 115px;
+
+              background-color: #00d8ff;
+              opacity: .1;
+            }
+            .icon {
+              display: block;
+              width: 92px;
+              height: 65px;
+
+              background-color: #fff;
+              img{
+                width: 100%;
+                height: 100%;
+              }
+            }
+
+            .name {
+              display: block;
+
+              width: 92px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+
+              padding-top: 10px;
+              text-align: center;
+
+              user-select: none;
+            }
+
+            .add,.remove{
+              position: absolute;
+              top: 1px;
+              right: 1px;
+
+              font-size: 18px;
+            }
+          }
+        }
+
+        .page-container {
+          //position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          margin-right: 20px;
+          margin-left: 20px;
+
+          padding-top: 10px;
+          //padding-bottom: 10px;
+          //border-top: 1px solid #d6dbdf;
+
+          text-align: center;
+        }
+      }
+    }
   }
 }
 
