@@ -16,8 +16,10 @@ import TreeView from '../../components/TreeView';
 
 import RenderPlayerAsset from '../component/RenderPlayerAsset';
 import RenderPropertyPanel from '../component/RenderPropertyPanel';
+import PlayerAssetLibPopup from '../component/PlayerAssetLibPopup';
 
 import NotifyPopup from '../../common/containers/NotifyPopup';
+import Overlayer from '../../common/containers/Overlayer';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
@@ -114,7 +116,11 @@ export class PlayPlan extends Component {
   }
 
   playerAssetAdd(type){
-
+    console.log('playerAssetAdd:');
+    const {actions} = this.props;
+    actions.overlayerShow(<PlayerAssetLibPopup title="素材库" actions={actions} onCancel={()=>{
+      actions.overlayerHide();
+    }}/>);
   }
 
   onToggle(node) {
@@ -230,6 +236,7 @@ export class PlayPlan extends Component {
         </SidebarInfo>
         <NotifyPopup/>
       </Content>
+      <Overlayer />
     </div>;
   }
 }
