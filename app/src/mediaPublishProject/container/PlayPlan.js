@@ -57,7 +57,7 @@ export class PlayPlan extends Component {
     this.updateSceneTree();
     if (this.props.plan) {
       actions.requestSceneList(this.props.plan.id);
-    } else {
+    }else {
       if (router && router.location) {
         const routerState = router.location.state;
         const project = routerState ? routerState.project : null;
@@ -98,6 +98,16 @@ export class PlayPlan extends Component {
     actions.treeViewInit(treeData, false);
   }
 
+  playerAssetSelect(item) {
+    this.props.actions.initCurnode(item);
+    this.props.actions.initItem(item);
+
+  }
+
+  playerAssetRemove(item) {
+    this.props.actions.playerAssetRemove(item);
+  }
+
   playerAssetMove(index) {
     this.props.actions.playerAssetMove(index);
   }
@@ -126,10 +136,10 @@ export class PlayPlan extends Component {
       break;
     case 'up':
     case 'down':
-      this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
+      this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type === 'scene' ? this.props.scene:this.props.zone);
       break;
     case 'remove':
-      this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
+      this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene:this.props.zone);
       break;
     default:
       this.addAlert() && this.props.actions.addPlayerSceneArea(this.props.curNode);
@@ -202,7 +212,7 @@ export class PlayPlan extends Component {
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}}>
           <div ref="assetProperty" className="panel panel-default asset-property">
-            <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
+            <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed':'')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
               <span className={'icon_info'}></span>
               {this.getPropertyName(curNode) + this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
