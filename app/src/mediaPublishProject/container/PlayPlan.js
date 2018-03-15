@@ -48,6 +48,7 @@ export class PlayPlan extends Component {
     this.playerAssetSelect = this.playerAssetSelect.bind(this);
     this.playerAssetRemove = this.playerAssetRemove.bind(this);
     this.playerAssetMove = this.playerAssetMove.bind(this);
+    this.playerAssetAdd = this.playerAssetAdd.bind(this);
     this.applyClick = this.applyClick.bind(this);
     this.getPropertyName = this.getPropertyName.bind(this);
   }
@@ -110,6 +111,10 @@ export class PlayPlan extends Component {
 
   playerAssetMove(index) {
     this.props.actions.playerAssetMove(index);
+  }
+
+  playerAssetAdd(type){
+
   }
 
   onToggle(node) {
@@ -208,7 +213,8 @@ export class PlayPlan extends Component {
                 播放场景列表
         <div className="mediaPublish-footer">
           {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
-          <RenderPlayerAsset curNode={curNode} playerListAsset={playerListAsset} curItem={item} playerAssetSelect={this.playerAssetSelect} playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} />
+          <RenderPlayerAsset curNode={curNode} playerListAsset={playerListAsset} curItem={item} playerAssetSelect={this.playerAssetSelect}
+                             playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} playerAssetAdd={this.playerAssetAdd}/>
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}}>
           <div ref="assetProperty" className="panel panel-default asset-property">

@@ -25,11 +25,12 @@ import {
 import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
   removeProgramsById, removeSceneById, removeZoneById, removeItemById,
   updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
-  addProgram, addScene, addZone, getAssetById} from '../../api/mediaPublish';
+  addProgram, addScene, addZone, addItem, getAssetById} from '../../api/mediaPublish';
 
 import { addNotify } from '../../common/actions/notifyPopup';
 
-import {addTreeNode, moveTree, getTreeParentNode, removeTree, parsePlanData, IsSystemFile, getInitData} from '../util/index';
+import {addTreeNode, moveTree, getTreeParentNode, removeTree, parsePlanData, IsSystemFile, getInitData,
+  formatTransformType,getAssetData} from '../util/index';
 import {getListObjectByKey, DeepCopy} from '../../util/algorithm';
 import lodash from 'lodash';
 import Immutable from 'immutable';
@@ -529,4 +530,32 @@ function updateItemName(itemObject, sysfile) {
     item: itemObject,
     file: sysfile,
   };
+}
+
+export function addItemToArea(item, formatIntl) {
+  return (dispatch, getState)=>{
+    const project = getState().mediaPublishProject.project;
+    const parentParentNode = getState().mediaPublishProject.plan;
+    const parentNode = getState().mediaPublishProject.scene;
+    const curNode = getState().mediaPublishProject.zone;
+
+    // if (!curNode || curNode.type !== 'area') {
+    //   return dispatch(addNotify(0, formatIntl('mediaPublish.area.alert')));
+    // }
+
+    if (typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
+      return dispatch(addNotify(0, '请提交区域'));
+    }
+
+    const data = item;
+    const index = lodash.findIndex(systemInitFile, file => { return file.baseInfo.type == data.type; });
+    if (index < 0 && !data.type) {
+      return dispatch(addNotify(0, 'asset unknow type'));
+    }
+    const itemType = index > -1 ? data.type : formatTransformType(data.type);
+    const itemData = index > -1 ? systemInitFile[index] : getAssetData(data);
+    addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, itemType, itemData, data => {
+      dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
+    });
+  }
 }

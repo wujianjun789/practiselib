@@ -13,10 +13,14 @@ import {HOST_IP_FILE} from '../../util/network';
 export default class RenderPlayerAsset extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      IsPopup: false
+    }
     this.mouseDown = this.mouseDown.bind(this);
     this.itemClick = this.itemClick.bind(this);
 
     this.onStop = this.onStop.bind(this);
+    this.addClick = this.addClick.bind(this);
   }
 
   onStart(event){
@@ -37,8 +41,18 @@ export default class RenderPlayerAsset extends Component {
     this.props.playerAssetSelect(item);
   }
 
-  render() {
+  addClick(){
+    this.setState({IsPopup: true});
+  }
 
+  playerAssetAdd(type){
+    this.setState({IsPopup: false}, ()=>{
+      this.props.playerAssetAdd(type);
+    });
+  }
+
+  render() {
+    const {IsPopup} = this.state;
     const { curNode, playerListAsset, curItem, playerAssetRemove } = this.props;
     console.log('playerAsset:render', playerListAsset);
     return (<ul className={curNode && curNode.type==="area" && typeof curNode.id === 'number' || curNode && curNode.assetType?"":"hidden"}>
@@ -68,6 +82,17 @@ export default class RenderPlayerAsset extends Component {
           </li>
           </Draggable>
         })}
+        <li key={199} className="player-list-asset" role="presentation" onClick={this.addClick}>
+          <span className="icon glyphicon glyphicon-plus">
+          </span>
+          <span className="name" title={name}>添加</span>
+        </li>
+        <div className={"add-popup "+(IsPopup?"":"hidden")}>
+          <span className="icon icon-img" role="button" onClick={()=>this.playerAssetAdd("img")}></span>
+          <span className="icon icon-text" role="button" onClick={()=>this.playerAssetAdd("text")}></span>
+          <span className="icon icon-video" role="button" onClick={()=>this.playerAssetAdd("video")}></span>
+          <span className="glyphicon glyphicon-triangle-bottom"></span>
+        </div>
     </ul>);
   }
 }
