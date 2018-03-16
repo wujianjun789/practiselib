@@ -5,6 +5,7 @@ import React from 'React';
 
 import PlayerScene from '../component/PlayerScene';
 import PlayerAreaPro from '../component/PlayerAreaPro';
+// import PlayerItemText from '../component/PlayerItemText/component';
 
 const RenderPropertyPanel = (props) => {
   const {curType, project, plan, scene, zone, actions, applyClick} = props;
@@ -19,7 +20,7 @@ const RenderPropertyPanel = (props) => {
       applyClick={data => {applyClick('playerScene', data);}}/>;
   case 'area':
     return <PlayerAreaPro projectId={project ? project.id : null} parentParentId={plan ? plan.id : null} parentId={scene  ? scene.id : null}
-      data={zone} applyClick={data => {applyClick('playerAreaPro', data);}}/>;
+      data={zone} applyClick={data => { applyClick('playerAreaPro', data); }} />; 
   default:
     return <div></div>;
   }
