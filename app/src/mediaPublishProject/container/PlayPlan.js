@@ -26,7 +26,7 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
-  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState} from '../action/index';
+  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState, addItemToArea} from '../action/index';
 import {tranformAssetType} from '../util/index';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
@@ -119,6 +119,9 @@ export class PlayPlan extends Component {
     console.log('playerAssetAdd:');
     const {actions} = this.props;
     actions.overlayerShow(<PlayerAssetLibPopup title="素材库" assetType={type} actions={actions} onCancel={()=>{
+      actions.overlayerHide();
+    }} onConfirm={(data)=>{
+      this.props.actions.addItemToArea(data, this.formatIntl);
       actions.overlayerHide();
     }}/>);
   }
@@ -262,7 +265,7 @@ const mapDispatchToProps = (dispatch) => {
       initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
       requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-      clearTreeState: clearTreeState,
+      clearTreeState: clearTreeState, addItemToArea: addItemToArea
     }, dispatch),
   };
 };

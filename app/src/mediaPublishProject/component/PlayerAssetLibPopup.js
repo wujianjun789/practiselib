@@ -18,6 +18,7 @@ import {
 
 import Immutable from 'immutable';
 import {Name2Valid} from '../../util/index';
+import {getObjectByKey} from '../../util/algorithm';
 
 import systemFile from '../data/systemFile.json';
 import systemInitFile from '../data/systemInitFile.json';
@@ -126,7 +127,7 @@ export class PlayerAssetLibPopup extends Component{
   }
 
   onConfirm() {
-    this.props.onConfirm && this.props.onConfirm(this.state);
+    this.props.onConfirm && this.props.onConfirm(getObjectByKey(this.state.assetList.get("list"),"id", this.state.assetList.get("id")).toJS());
   }
 
   onCancel() {

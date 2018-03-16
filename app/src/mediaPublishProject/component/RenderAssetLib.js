@@ -17,6 +17,7 @@ const RenderAssetLib = props=>{
                 let x, y;
                 const id = item.get('id');
                 const assetType = item.get('assetType');
+                console.log('RenderAssetLib:',assetType);
                 const thumbnail = item.get('thumbnail');
                 const curId = assetList.get('id');
                 if (id == lastPress && isPressed) {

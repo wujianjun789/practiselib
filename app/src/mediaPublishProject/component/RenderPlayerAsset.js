@@ -60,6 +60,7 @@ export default class RenderPlayerAsset extends Component {
         playerListAsset.map((item, index) => {
           const itemId = item.id;
           const assetType = item.assetType;
+          console.log('RenderPlayerAsset:', assetType);
           const name = item.name;
           const thumbnail = item.thumbnail;
           const curId = curItem?curItem.id:undefined;
