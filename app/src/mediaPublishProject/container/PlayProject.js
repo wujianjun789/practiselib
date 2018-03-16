@@ -23,6 +23,8 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyClick } from '../action/index';
 
+import PlayerProgram from '../component/PlayerProgram/component';
+
 export class PlayProject extends Component {
   constructor(props) {
     super(props);
@@ -130,7 +132,6 @@ export class PlayProject extends Component {
       </SideBar>
 
       <Content className="play-project">
-                播放计划列表
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}} >
           <div ref="assetProperty" className="panel panel-default asset-property">
             <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
