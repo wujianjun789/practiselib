@@ -384,17 +384,17 @@ export class PlayPlan extends Component {
   }
 
   addAlert() {
-    const {curNode, actions} = this.props;
+    const {zone, curNode, actions} = this.props;
     console.log('addAlert:', curNode);
     if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('scene') > -1) {
       actions.addNotify(0, '请提交新建场景。');
       return false;
     }
 
-    if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
-      actions.addNotify(0, '请提交新建区域。');
-      return false;
-    }
+    // if (curNode && zone && typeof zone.id === 'string' && zone.id.indexOf('area') > -1) {
+    //   actions.addNotify(0, '请提交新建区域。');
+    //   return false;
+    // }
 
     return true;
   }

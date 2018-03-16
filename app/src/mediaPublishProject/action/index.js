@@ -120,7 +120,6 @@ export function addPlayerPlan(id, formatIntl) {
 }
 
 export function addPlayerSceneArea(key) {
-  console.log('addPlayerSceneArea:',key);
   return (dispatch, getState) => {
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
