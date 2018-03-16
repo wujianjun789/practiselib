@@ -18,6 +18,9 @@ import TreeView from '../../components/TreeView';
 import RenderPlayerAsset from '../component/RenderPlayerAsset';
 import RenderPropertyPanel from '../component/RenderPropertyPanel';
 import PlayerAssetLibPopup from '../component/PlayerAssetLibPopup';
+
+import UploadFile from '../component/uploadFile'
+import UploadNotify from '../component/uploadNotify'
 import PreviewFile from '../component/previewFile';
 
 import NotifyPopup from '../../common/containers/NotifyPopup';
@@ -135,8 +138,8 @@ export class PlayPlan extends Component {
     const list = this.state.uploadFileList;
     if (status === 200) {
       list[key].progress = this.formatIntl('mediaPublish.completed');
-      this.requestAssetList();
-      this.requestSearchAssetList();
+      // this.requestAssetList();
+      // this.requestSearchAssetList();
     } else {
       list[key].progress = this.formatIntl('mediaPublish.failed');
     }
@@ -301,7 +304,7 @@ export class PlayPlan extends Component {
       this.props.actions.addItemToArea(data, this.formatIntl);
       actions.overlayerHide();
     }} assetAdd={()=>{
-      actions.overlayerHide();
+      // actions.overlayerHide();
       this.showModal()
     }}/>);
   }
@@ -420,6 +423,8 @@ export class PlayPlan extends Component {
         <NotifyPopup/>
       </Content>
       <Overlayer />
+      <UploadNotify showUploadNotify={this.state.showUploadNotify} hideUploadNotify={this.hideUploadNotify} showUploadFile={this.showUploadFile} />
+      {this.state.showUploadFile ? <UploadFile showUploadFile={this.state.showUploadFile} hideUploadFile={this.hideUploadFile} uploadFileList={this.state.uploadFileList} cancelUploadFile={this.cancelUploadFile} /> : null}
       <PreviewFile showModal={this.state.showModal} hideModal={this.hideModal} addUploadFile={this.addUploadFile} />
     </div>;
   }
