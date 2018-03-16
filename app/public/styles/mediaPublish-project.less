@@ -322,6 +322,8 @@
       .left, .mediaPublish-footer{
         right: 60px;
       }
+
+
     }
 
     .sidebar-info {
@@ -352,7 +354,55 @@
       }
     }
   }
+  .left{
+    position: absolute;
+    top: 0;
+    right: 300px;
+    bottom: 96px;
+    left: 0;
 
+    .addAnimation();
+    .control-container-top {
+      height: 50px;
+      > div {
+        display: inline-block;
+        margin-left: 20px;
+
+        margin-top: 15px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        .icon, .word{
+          vertical-align: middle;
+        }
+
+        .icon {
+          margin-right: 10px;
+
+          font-size: 14px;
+          font-weight: bold;
+          &.glyphicon{
+            position: static;
+            line-height: inherit;
+          }
+        }
+      }
+    }
+    .img-container {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      bottom: 0px;
+      left: 20px;
+
+      background-image: url('../images/mediaPublish-area-background.png');
+
+      min-height: 200px;
+      overflow: scroll;
+    }
+  }
   .mediaPublish-footer {
     position: absolute;
     //top: 671px;

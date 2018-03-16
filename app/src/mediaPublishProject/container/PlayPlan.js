@@ -309,6 +309,36 @@ export class PlayPlan extends Component {
     }}/>);
   }
 
+  addZone(){
+    this.addAlert() && this.props.actions.addPlayerSceneArea('area');
+  }
+
+  playHandler = () => {
+
+  }
+
+  zoomOutHandler = () => {
+    const { scaling: curScaling } = this.state;
+    const scaling = curScaling + 0.3;
+    if (scaling > 2) {
+      return false;
+    }
+    this.setState({
+      scaling: scaling,
+    });
+  }
+
+  zoomInHandler = () => {
+    const { scaling: curScaling } = this.state;
+    const scaling = curScaling - 0.3;
+    if (scaling < 0) {
+      return false;
+    }
+    this.setState({
+      scaling: scaling,
+    });
+  }
+
   onToggle(node) {
     const {plan, scene, actions} = this.props;
     if (node.type === 'scene') {
@@ -339,7 +369,7 @@ export class PlayPlan extends Component {
       this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene:this.props.zone);
       break;
     default:
-      this.addAlert() && this.props.actions.addPlayerSceneArea(this.props.curNode);
+      this.addAlert() && this.props.actions.addPlayerSceneArea('scene');
       break;
     }
   }
@@ -356,6 +386,11 @@ export class PlayPlan extends Component {
   addAlert() {
     const {curNode, actions} = this.props;
     console.log('addAlert:', curNode);
+    if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('scene') > -1) {
+      actions.addNotify(0, '请提交新建场景。');
+      return false;
+    }
+
     if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
       actions.addNotify(0, '请提交新建区域。');
       return false;
@@ -401,8 +436,22 @@ export class PlayPlan extends Component {
         <TreeView className="mediaPublish" IsCancelSelect={false} onToggle={ (node) => this.onToggle(node) }/>
       </SideBar>
 
-      <Content className="play-project">
-                播放场景列表
+      <Content className="play-plan">
+        <div className="left preview-container">
+          <div className="form-group control-container-top">
+            <div className={"form-group add-zone "+(curNode && curNode.type === "scene"?"":"hidden")} onClick={()=>this.addZone()}>
+              <span className="icon glyphicon glyphicon-plus"></span><span className="word">添加区域</span></div>
+            <div className={"form-group play-container "+(curNode && curNode.type === "scene"?"":"hidden")} onClick={() => this.playHandler()}>
+              <span className="icon icon_play"></span><span className="word"><FormattedMessage id="mediaPublish.play" /></span></div>
+            <div className="form-group zoom-out-container" onClick={() => this.zoomOutHandler()}>
+              <span className="icon icon_enlarge"></span><span className="word"><FormattedMessage id="mediaPublish.enlarge" /></span></div>
+            <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
+              <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
+          </div>
+          <div className="img-container" ref={_previewImg => this._previewImg = _previewImg}>
+            {/*<PreviewImg imgInfo={imgInfo} scaling={scaling} parentInfo={parentInfo}/>*/}
+          </div>
+        </div>
         <div className="mediaPublish-footer">
           {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
           <RenderPlayerAsset curNode={curNode} playerListAsset={playerListAsset} curItem={item} playerAssetSelect={this.playerAssetSelect}
