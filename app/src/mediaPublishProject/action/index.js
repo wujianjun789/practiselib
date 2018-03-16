@@ -119,24 +119,17 @@ export function addPlayerPlan(id, formatIntl) {
   };
 }
 
-export function addPlayerSceneArea(curNode) {
-  console.log(curNode);
+export function addPlayerSceneArea(key) {
   return (dispatch, getState) => {
-    // const curType = curNode.type;
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
     dispatch(clearTreeState());
-    if (!curNode) {
+    if(key === "scene"){
       dispatch(addPlayerScene(plan));
-    } else {
-      switch (curNode.type) {
-        case 'scene':
-          dispatch(addPlayerArea(scene, plan));
-          break;
-      default:
-        break;
-      }
+    }else{
+      dispatch(addPlayerArea(scene, plan));
     }
+
     // switch (curType) {
     //   case 'playerPlan':
     //   case 'playerPlan2':
