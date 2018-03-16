@@ -132,7 +132,9 @@ export class PlayProject extends Component {
       </SideBar>
 
       <Content className="play-project">
-        <div className="left"></div>
+        <div className="left" ref={(left) => this._left = left}>
+          <PlayerProgram />
+        </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}} >
           <div ref="assetProperty" className="panel panel-default asset-property">
             <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>

@@ -1,7 +1,7 @@
 #player-programmer{
   position: absolute;
   left: 20px;
-  right:320px;
+  right:20px;
  
   transition: .4s;
   #header{
@@ -9,10 +9,10 @@
     justify-content: space-between;
     margin: 5px 0;
     font-size: 16px;
-    border-bottom:1px solid red;
   }
   #program-shaft{
-    display: flex;
+    // position: relative;
+    // display: flex;
     // justify-content: space-between;
     margin-top: 15px;
     .base-block{
@@ -22,6 +22,20 @@
     }
     .active{
       background: pink;
+    }
+    .program-wrapper{
+      position: relative;
+    }
+    .single-program{
+      position: absolute;
+      height: 40px;
+      background-color: gold;
+      position: absolute;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 16px;
+      color: black;
     }
   }
 

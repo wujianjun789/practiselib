@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import ProgramHeader from './header';
-
+import ProgramShaft from './programShaft';
 import { countShaft, getTimeShaft  } from './utils';
 
 import '../../../../public/styles/playerProgram.less';
 
 const schedules = [{ start: 0, end: 12 }, {start:20, end: 24}];
+
+const timeShaft = [0, 24];
 
 export default class PlayerProgram extends Component {
   constructor(props) {
@@ -13,17 +15,19 @@ export default class PlayerProgram extends Component {
     this.state = {};
   }
 
-  programShaft(schedules, numberShaft) {
-    const programShaft = numberShaft.map((item) => {
-      let extraClassName = '';
-      schedules.forEach(schedule => {
-        const condition1 = item > schedule.start && item < schedule.end;
-        const condition2 = item === schedule.start || item === schedule.end;
-        if (condition1 || condition2) {
-          return extraClassName = 'active';
-        }
-      });
-      return <div className={`base-block ${extraClassName}`} key={item}></div>;
+  programShaft(schedules, timeShaft, index) {
+    const totalMin = (timeShaft[1] - timeShaft[0]) * 60;
+    const programShaft = schedules.map((schedule, _index) => {
+      const { start, end } = schedule;
+      // const duration = end - start;
+      const startPer = (start * 60) / totalMin;
+      const endPer = (end * 60) / totalMin;
+      return <div
+        className="single-program"
+        key={_index}
+        style={{ width: `${(endPer - startPer) * 100}%`, left: `${startPer * 100}%`}}>
+      我已经天下无敌了!!!
+      </div>;
     });
     return programShaft;
   }
@@ -36,7 +40,11 @@ export default class PlayerProgram extends Component {
     return (
       <div id="player-programmer">
         <ProgramHeader timeShaft={mockTime} />
-        <ul id="program-shaft">{this.programShaft(schedules, numberShaft)}</ul>
+        <ul id="program-shaft">
+          <ProgramShaft schedules={schedules} timeShaft={[0, 24]} index={0} />  
+          <ProgramShaft schedules={schedules} timeShaft={[0, 24]} index={1} />
+          <ProgramShaft schedules={schedules} timeShaft={[0, 24]} index={2} />    
+        </ul>
       </div>
     );
   }
