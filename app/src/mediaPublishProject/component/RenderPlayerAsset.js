@@ -88,7 +88,7 @@ export default class RenderPlayerAsset extends Component {
           <span className="name" title={name}>添加</span>
         </li>
         <div className={"add-popup "+(IsPopup?"":"hidden")}>
-          <span className="icon icon-img" role="button" onClick={()=>this.playerAssetAdd("img")}></span>
+          <span className="icon icon-img" role="button" onClick={()=>this.playerAssetAdd("image")}></span>
           <span className="icon icon-text" role="button" onClick={()=>this.playerAssetAdd("text")}></span>
           <span className="icon icon-video" role="button" onClick={()=>this.playerAssetAdd("video")}></span>
           <span className="glyphicon glyphicon-triangle-bottom"></span>

@@ -118,7 +118,7 @@ export class PlayPlan extends Component {
   playerAssetAdd(type){
     console.log('playerAssetAdd:');
     const {actions} = this.props;
-    actions.overlayerShow(<PlayerAssetLibPopup title="素材库" actions={actions} onCancel={()=>{
+    actions.overlayerShow(<PlayerAssetLibPopup title="素材库" assetType={type} actions={actions} onCancel={()=>{
       actions.overlayerHide();
     }}/>);
   }

@@ -566,7 +566,7 @@
   }
 
   .playerAsset-lib{
-    width: 560px;
+    width: 570px;
     .modal-body{
       .top {
         select {
@@ -582,24 +582,28 @@
         }
 
         .btn-group{
-          margin-top: -5px;
+          //margin-top: -5px;
           .btn{
             border-radius: 4px;
           }
           &:nth-child(3) {
-            button:first-child {
+            /*button:first-child {
               margin-right: 20px;
             }
+
+            button:last-child{
+              display: none;
+            }*/
           }
 
           &:nth-child(4){
-            button:first-child{
-              visibility: hidden;
+            /*button:first-child{
+              display: none;
 
               margin-right: 20px;
               background-color: #ff5c68;
               border: 0;
-            }
+            }*/
 
           }
         }
@@ -624,8 +628,8 @@
             padding-right: 10px;
             padding-left: 10px;
 
-            margin-right: 20px;
-            margin-bottom: 20px;
+            //margin-right: 10px;
+            margin-bottom: 10px;
 
             cursor: pointer;
             &.margin-right {
@@ -637,7 +641,7 @@
               top: 0;
               left: 0;
 
-              width: 112px;
+              width: 108px;
               height: 115px;
 
               background-color: #00d8ff;
@@ -645,10 +649,23 @@
             }
             .icon {
               display: block;
-              width: 92px;
+              width: 88px;
               height: 65px;
 
-              background-color: #fff;
+              background-color: #e6e6e6;
+              border: solid 1px #e6e6e6;
+
+              &.glyphicon{
+                padding-top: 20px;
+                font-size: 26px;
+
+                color: #d9d9d9;
+                font-weight: 100;
+
+                text-align: center;
+                vertical-align: middle;
+              }
+
               img{
                 width: 100%;
                 height: 100%;
@@ -658,12 +675,12 @@
             .name {
               display: block;
 
-              width: 92px;
+              width: 88px;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
 
-              padding-top: 10px;
+              padding-top: 5px;
               text-align: center;
 
               user-select: none;
