@@ -18,6 +18,7 @@ import {
 
 import Immutable from 'immutable';
 import {Name2Valid} from '../../util/index';
+import {getObjectByKey} from '../../util/algorithm';
 
 import systemFile from '../data/systemFile.json';
 import systemInitFile from '../data/systemInitFile.json';
@@ -25,7 +26,7 @@ export class PlayerAssetLibPopup extends Component{
   constructor(props){
     super(props);
     this.state = {
-      assetType:0,
+      assetType: 'text',//素材类型(text,image,video)
       assetSort: Immutable.fromJS({
         list: [{ id: 1, type: 'text', value: this.formatIntl('mediaPublish.material.text') },
           { id: 2, type: 'image', value: this.formatIntl('mediaPublish.material.picture') }, { id: 3, type: 'video', value: this.formatIntl('mediaPublish.material.video') }],
@@ -37,9 +38,9 @@ export class PlayerAssetLibPopup extends Component{
          { id: 3, name: '素材3', assetType: "source", type: "picture" }, { id: 4, name: '素材4', assetType: "source", type: "video" }*/], id: 1, name: '素材1', isEdit: true,
       }),
       page: Immutable.fromJS({
-        pageSize: 10,
+        pageSize: 9,
         current: 1,
-        total: 2,
+        total: 0,
       }),
 
       //拖拽
@@ -64,15 +65,23 @@ export class PlayerAssetLibPopup extends Component{
 
     this.onConfirm = this.onConfirm.bind(this);
     this.onCancel = this.onCancel.bind(this);
+
+    this.assetSelect = this.assetSelect.bind(this);
+    this.assetLibRemove = this.assetLibRemove.bind(this);
   }
 
   componentWillMount(){
+    this.mounted = true;
     this.systemFile = systemFile.map(file => {
       return Object.assign({}, file, { assetType: 'system' });
     });
 
     this.requestAssetList();
     this.requestSearchAssetList();
+  }
+
+  componentWillUnmount(){
+    this.mounted = false;
   }
 
   formatIntl = (formatId) => {
@@ -82,32 +91,26 @@ export class PlayerAssetLibPopup extends Component{
   }
 
   requestAssetList = () => {
-    const { assetType, assetSort, assetSearch } = this.state;
-    const type = assetType;
-    const aType = assetSort.getIn(['list', assetSort.get('index'), 'type']);
+    const { assetType } = this.props;
+    const { assetSort, assetSearch } = this.state;
+    const aType = assetType;
     const name = assetSearch.get('value');
-    if (type === 0) {
-      this.updatePageTotal(this.systemFile);
-    } else {
-      getAssetListByTypeWithName(aType, name, data => { this.mounted && this.updatePageTotal(data); });
-    }
+
+      getAssetListByTypeWithName(aType, name, data => { this.mounted && this.updatePageTotal(assetType==="text"?this.systemFile.concat(data):data); });
   }
 
   requestSearchAssetList = () => {
-    const { assetType, assetSort, assetSearch, page } = this.state;
-    const type = assetType;
-    const aType = assetSort.getIn(['list', assetSort.get('index'), 'type']);
+    const { assetType } = this.props;
+    const { assetSort, assetSearch, page } = this.state;
+    const aType = assetType;
     const name = assetSearch.get('value');
-    if (type === 0) {
-      this.setState({ assetList: this.state.assetList.update('list', v => Immutable.fromJS(this.systemFile)) });
-    } else {
 
-      const current = page.get('current');
-      const pageSize = page.get('pageSize');
-      const limit = pageSize;
-      const offset = (current - 1) * limit;
-      searchAssetList(aType, name, offset, limit, data => { this.mounted && this.updateAssetList(data); });
-    }
+    const current = page.get('current');
+    const pageSize = page.get('pageSize');
+    const limit = pageSize;
+    const offset = (current - 1) * limit;
+    searchAssetList(aType, name, offset, limit, data => { this.mounted && this.updateAssetList(data); });
+
   }
 
   updatePageTotal = (data) => {
@@ -120,11 +123,11 @@ export class PlayerAssetLibPopup extends Component{
     const newData = data.map(item => {
       return Object.assign({}, item, { assetType: 'source' });
     });
-    this.setState({ assetList: this.state.assetList.update('list', v => Immutable.fromJS(newData)) });
+    this.setState({ assetList: this.state.assetList.update('list', v => Immutable.fromJS(this.props.assetType==="text"?this.systemFile.concat(newData):newData)) });
   }
 
   onConfirm() {
-    this.props.onConfirm && this.props.onConfirm(this.state);
+    this.props.onConfirm && this.props.onConfirm(getObjectByKey(this.state.assetList.get("list"),"id", this.state.assetList.get("id")).toJS());
   }
 
   onCancel() {
@@ -340,12 +343,24 @@ export class PlayerAssetLibPopup extends Component{
     }
   }
 
-  assetSelect(){
-
+  assetSelect(item){
+    this.state.assetList = this.state.assetList.update('id', v => item.get('id'));
+    this.setState({ assetList: this.state.assetList.update('name', v => item.get('name')) });
   }
 
-  assetLibRemove(){
+  assetLibRemove(item){
+    const { actions } = this.props;
+    actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('mediaPublish.delete.material')}
+                                        cancel={() => { actions.overlayerHide(); }} confirm={() => {
+        const itemId = item.get('id');
+        const list = this.state.assetList.get('list');
 
+        removeAssetById(itemId, data => {
+          actions.overlayerHide();
+          this.requestAssetList();
+          this.requestSearchAssetList();
+        });
+      }} />);
   }
 
   pageChange = (current, pageSize) => {

@@ -548,6 +548,7 @@ export function addItemToArea(item, formatIntl) {
     }
 
     const data = item;
+    console.log('addItemToArea:',data);
     const index = lodash.findIndex(systemInitFile, file => { return file.baseInfo.type == data.type; });
     if (index < 0 && !data.type) {
       return dispatch(addNotify(0, 'asset unknow type'));

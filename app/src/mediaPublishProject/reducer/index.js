@@ -141,8 +141,8 @@ function updateItemList(state, programId, sceneId, zoneId, data){
     const zoneIndex = lodash.findIndex(sceneItem.children, zone => { return zone.id == zoneId; });
     let newData = [];
     for(let i=0;i<data.length;i++){
-        const area = data[i];
-        newData.push(Object.assign({}, area, { assetType: 'item', active: false }));
+        const item = data[i];
+        newData.push(Object.assign({}, item, { itemType: 'item', active: false }, { assetType: IsSystemFile(item.type) ? 'system' : 'source' }));
     }
 
     clearTreeListState(state.data);
