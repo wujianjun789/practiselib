@@ -4,7 +4,6 @@
 import React from 'react';
 import Select from '../../components/Select';
 import SearchText from '../../components/SearchText';
-import PreviewFile from '../component/previewFile';
 
 import {FormattedMessage} from 'react-intl';
 const RenderAssetLibTop = props=>{
@@ -23,7 +22,6 @@ const RenderAssetLibTop = props=>{
             <button className="btn btn-primary" onClick={() => assetList('complete')}><FormattedMessage id='button.finish'/>
             </button>
         </div>
-        <PreviewFile showModal={showModalPro} hideModal={hideModal} addUploadFile={addUploadFile} />
     </div>
 }
 
