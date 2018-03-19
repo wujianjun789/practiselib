@@ -278,7 +278,6 @@ export class PlayPlan extends Component {
       return actions.treeViewInit([]);
     }
     const treeData = lodash.find(data, planItem => { return planItem.id == plan.id;}).children;
-    console.log('updateSceneTree:', treeData);
     actions.treeViewInit(treeData, false);
   }
 
@@ -428,6 +427,16 @@ export class PlayPlan extends Component {
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
+    let curType = ""
+    if(curNode){
+      if(curNode.type === "scene" || curNode.type === "area"){
+        curType = curType.type;
+      }
+      else{
+        curType = tranformAssetType(curNode.type);
+      }
+    }
+
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
@@ -466,7 +475,7 @@ export class PlayPlan extends Component {
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-              <RenderPropertyPanel curType={curNode && curNode.type} project={project} plan={plan} scene={scene} zone={zone} actions={actions} applyClick={this.applyClick}/>
+              <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} actions={actions} applyClick={this.applyClick}/>
             </div>
           </div>
         </SidebarInfo>

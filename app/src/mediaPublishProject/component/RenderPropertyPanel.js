@@ -14,6 +14,7 @@ const RenderPropertyPanel = (props) => {
   // }
   // area
   // case 'area'
+  console.log('renderPropertyPanel:',curType);
   switch (curType) {
   case 'scene':
     return <PlayerScene projectId={project ? project.id : null} parentId={plan ? plan.id : null} data={scene}
