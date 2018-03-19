@@ -35,7 +35,7 @@ class PlayerPicAsset extends PureComponent {
       { value: 24, title: '矩形自中心向四周展开' }, { value: 25, title: '向左拉幕' }, { value: 26, title: '向右拉幕' },
       { value: 27, title: '向上拉幕' }, { value: 28, title: '向下拉幕' }, { value: 29, title: '矩形自左下向右上展现' },
       { value: 30, title: '矩形自左上向右下展现' }, { value: 31, title: '矩形自右下向左上展现' }, { value: 32, title: '矩形自右上向左下展现' },
-      { value: 33, title: '斜线自左上向右下展现' }, { value: 34, title: '斜线自右下向左上展现' }, { value: 255, title: '随机' },
+      { value: 33, title: '斜线自左上向右下展现' }, { value: 34, title: '斜线自右下向左上展现' }, { value: 35, title: '随机' },
     ];
     this.displayModeList = [{ value: 0, title: '平铺' }, { value: 1, title: '拉伸' }, { value: 2, title: '缩放' }];
   }

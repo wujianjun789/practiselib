@@ -66,7 +66,6 @@ export default function mediaPublishProject(state=initialState, action) {
         case UPDATE_TREE_DATA:
             return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
         case UPDATE_TREE_LIST:
-          console.log('tree-list:', action.data);
             return Object.assign({}, state, {data: action.data, IsUpdateTree: true});
         case UPDATE_TREE_JUDGE:
             return Object.assign({}, state, {IsUpdateTree:action.data});
