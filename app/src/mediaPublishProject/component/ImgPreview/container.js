@@ -22,7 +22,7 @@ function renderAreaList(areaList, selectedId) {
     const className = id === selectedId ? 'active' : '';
     return (
       <div className={`areaEle ${className}`} key={id} style={style}>
-        <img src={area.src} alt="" />
+        <img src={area.src} alt="" style={{width:style.width, height: style.height}}/>
       </div>);
   });
   return renderList;
