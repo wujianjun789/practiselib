@@ -19,6 +19,7 @@ import RenderPlayerAsset from '../component/RenderPlayerAsset';
 import RenderPropertyPanel from '../component/RenderPropertyPanel';
 import PlayerAssetLibPopup from '../component/PlayerAssetLibPopup';
 import ImgPreview from '../component/ImgPreview/index';
+import ProjectPreview from '../component/ProjectPreview/index';
 
 import UploadFile from '../component/uploadFile';
 import UploadNotify from '../component/uploadNotify';
@@ -315,7 +316,8 @@ export class PlayPlan extends Component {
   }
 
   playHandler = () => {
-
+    const { actions } = this.props;
+    actions.overlayerShow(<ProjectPreview closeClick={() => { actions.overlayerHide(); }}/>);
   }
 
   zoomOutHandler = () => {
