@@ -34,7 +34,7 @@ const ProgramShaft = (props) => {
     const { start, end } = schedule;
     const startPer = start / totalSec;
     const endPer = end / totalSec;
-    const style = { width: `${(endPer - startPer) * 100}%`, left: `${startPer * 100}%`, backgroundColor:color };
+    const style = { width: `${(endPer - startPer) * 100}%`, left: `${startPer * 100}%`, backgroundColor:color, border:`1px solid ${color}` };
     return (<div className="single-program" key={index} style={style}>{name}</div>);
   });
   return <li className="program-wrapper">{programShaft}</li>;
