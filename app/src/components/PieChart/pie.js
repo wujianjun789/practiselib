@@ -88,11 +88,11 @@ export default class PieChart {
         function findNeighborArc(i, data0, data1, key) {
             var d;
             if (d = findPreceding(i, data0, data1, key)) {
-                var obj = cloneObj(d)
+                const obj = cloneObj(d)
                 obj.startAngle = d.endAngle;
                 return obj;
             } else if (d = findFollowing(i, data0, data1, key)) {
-                var obj = cloneObj(d)
+                const obj = cloneObj(d)
                 obj.endAngle = d.startAngle;
                 return obj;
             }
@@ -101,7 +101,7 @@ export default class PieChart {
 
         // Find the element in data0 that joins the highest preceding element in data1.
         function findPreceding(i, data0, data1, key) {
-            var m = data0.length;
+            const m = data0.length;
             while (--i >= 0) {
                 var k = key(data1[i]);
                 for (var j = 0; j < m; ++j) {
@@ -112,9 +112,9 @@ export default class PieChart {
 
         // Find the element in data0 that joins the lowest following element in data1.
         function findFollowing(i, data0, data1, key) {
-            var n = data1.length, m = data0.length;
+            const n = data1.length, m = data0.length;
             while (++i < n) {
-                var k = key(data1[i]);
+                const k = key(data1[i]);
                 for (var j = 0; j < m; ++j) {
                     if (key(data0[j]) === k) return data0[j];
                 }
@@ -122,7 +122,7 @@ export default class PieChart {
         }
 
         function arcTween(d) {
-            var i = d3.interpolate(this._current, d);
+            const i = d3.interpolate(this._current, d);
             this._current = i(0);
             return function (t) {
                 return arc(i(t))
@@ -130,7 +130,7 @@ export default class PieChart {
         }
 
         function cloneObj(obj) {
-            var o = {};
+            const o = {};
             for (var i in obj) {
                 o[i] = obj[i];
             }
