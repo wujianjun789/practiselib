@@ -419,15 +419,16 @@ function updatePlayerSceneData(response, parentNode, playerData) {
       return scene;
     });
 
-    dispatch(initScene(response, playerData[index]));
+    dispatch(initScene(Object.assign({}, response, playerData[index])));
     dispatch(updateTreeList(playerData));
   };
 }
 
 function updatePlayerAreaData(response, parentParentNode, parentNode, playerData) {
   return dispatch => {
-    let planIndex = lodash.findIndex(playerData, plan => { return plan.id == parentParentNode.id; });
-    let sceneIndex = lodash.findIndex(playerData[planIndex].children, scene => { return scene.id == parentNode.id; });
+    const planIndex = lodash.findIndex(playerData, plan => { return plan.id == parentParentNode.id; });
+    const sceneIndex = lodash.findIndex(playerData[planIndex].children, scene => { return scene.id == parentNode.id; });
+    const zoneIndex = lodash.findIndex(playerData[planIndex].children[sceneIndex].children, zone => {return zone.id == response.id});
     playerData[planIndex].children[sceneIndex].children = playerData[planIndex].children[sceneIndex].children.map(area => {
       if ((typeof area.id === 'string' && area.id.indexOf('area&&') > -1) || area.id == response.id) {
         return Object.assign({}, area, response);
@@ -436,7 +437,8 @@ function updatePlayerAreaData(response, parentParentNode, parentNode, playerData
       return area;
     });
 
-    dispatch(initZone(response, playerData[planIndex].children[sceneIndex], playerData[planIndex]));
+    dispatch(initScene(playerData[planIndex].children[sceneIndex]))
+    dispatch(initZone(Object.assign({}, response, playerData[planIndex].children[sceneIndex].children[zoneIndex])));
     dispatch(updateTreeList(playerData));
     // dispatch(requestItemList(parentParentNode.id, parentNode.id, response.id));
   };
