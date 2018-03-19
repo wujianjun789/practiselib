@@ -55,7 +55,7 @@ function requestProgrameList(project) {
 export function initPlan(plan) {
   return dispatch => {
     dispatch({type: INIT_PLAN, data:plan});
-    dispatch(requestSceneList(plan.id));
+    plan.id && (typeof plan.id == 'number' || plan.id.indexOf('plan&&') < 0) && dispatch(requestSceneList(plan.id));
   };
 }
 

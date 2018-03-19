@@ -134,3 +134,18 @@ export function getYesterday() {
 export function getNextSeconds() {
     return moment().add(1, 's');
 }
+
+/**
+ *
+ * @param date(必须参数)
+ * @param time
+ * @returns {*}
+ */
+
+export function getMomentByDateObject(date, time) {
+    if(date && time){
+        return moment(date.year + '-' + date.month + '-' + date.day + ' ' +time.hour + ':' + time.minute + ':' + time.second + ':' + time.milliseconds)
+    }
+
+    return moment(date.year + '-' + date.month + '-' + date.day);
+}

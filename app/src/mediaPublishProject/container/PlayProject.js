@@ -25,10 +25,13 @@ import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyCl
 
 import PlayerProgram from '../component/PlayerProgram/index';
 
+import moment from 'moment';
+import {getMomentByDateObject} from '../../util/time';
 export class PlayProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      curDate: null,
       sidebarInfo: {
         collapsed: false,
         propertyCollapsed: false,
@@ -118,6 +121,21 @@ export class PlayProject extends Component {
   render() {
     const {sidebarInfo} = this.state;
     const {router, data, project, plan} = this.props;
+
+    const programList = data.map(plan=>{
+      if(typeof plan.id === "string" && plan.id.indexOf("plan")>-1){
+        const mon = moment();
+        plan.dateRange = {dateBegin:{year:mon.year(), month:mon.month(), day:mon.date()}, dateEnd:{year:mon.year(), month:mon.month(), day:mon.date()}}
+        plan.timeRange = {timeBegin:{hour:mon.hour(), minute:mon.minute(), second:mon.second(), milliseconds:mon.millisecond()}, timeEnd:{hour:mon.hour(), minute:mon.minute(), second:mon.second()+1, milliseconds:mon.millisecond()}}
+      }
+      const {dateBegin, dateEnd} = plan.dateRange;
+      const {timeBegin, timeEnd} = plan.timeRange;
+      const momBegin = getMomentByDateObject(dateBegin, timeBegin);
+      const momEnd = getMomentByDateObject(dateEnd, timeEnd)
+      return {name:plan.name,totalSec:24*3600, schedules:[{start:(momBegin.hour()*3600+momBegin.minute()*60+momBegin.seconds()+momBegin.millisecond()/60),
+        end:(momEnd.hour()*3600+momEnd.minute()*60+momEnd.seconds()+momEnd.millisecond()/60)}]}
+    });
+console.log(programList);
     return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={'/mediaPublish/playerProject'}/>
       <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
@@ -133,7 +151,7 @@ export class PlayProject extends Component {
 
       <Content className="play-project">
         <div className="left" ref={(left) => this._left = left}>
-          <PlayerProgram />
+          <PlayerProgram programList={programList}/>
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}} >
           <div ref="assetProperty" className="panel panel-default asset-property">
