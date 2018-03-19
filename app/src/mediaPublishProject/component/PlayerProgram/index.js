@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import ProgramHeader from './header';
 import ProgramShaft from './programShaft';
 import { getNumberShaft, getTimeShaft } from './utils';
 
 import '../../../../public/styles/playerProgram.less';
 
-export default class PlayerProgram extends Component {
+class PlayerProgram extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -40,3 +41,8 @@ export default class PlayerProgram extends Component {
     );
   }
 }
+
+function mapStateToProps(state) { }
+function mapDispatchToProps(dispatch, ownProps) { }
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerProgram);

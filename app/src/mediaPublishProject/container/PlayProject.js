@@ -23,7 +23,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyClick } from '../action/index';
 
-import PlayerProgram from '../component/PlayerProgram/component';
+import PlayerProgram from '../component/PlayerProgram/index';
 
 export class PlayProject extends Component {
   constructor(props) {
