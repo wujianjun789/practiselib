@@ -40,6 +40,7 @@ import {uploadMaterialFile} from '../../api/mediaPublish';
 import {tranformAssetType} from '../util/index';
 
 import lodash from 'lodash';
+import {HOST_IP_FILE} from '../../util/network';
 export class PlayPlan extends Component {
   constructor(props) {
     super(props);
@@ -279,7 +280,6 @@ export class PlayPlan extends Component {
       return actions.treeViewInit([]);
     }
     const treeData = lodash.find(data, planItem => { return planItem.id == plan.id;}).children;
-    console.log('updateSceneTree:', treeData);
     actions.treeViewInit(treeData, false);
   }
 
@@ -430,6 +430,32 @@ export class PlayPlan extends Component {
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
+    let curType = ""
+    if(curNode){
+      if(curNode.type === "scene" || curNode.type === "area"){
+        curType = curNode.type;
+      }
+      else{
+        curType = tranformAssetType(curNode.type);
+      }
+    }
+
+    let areaList=[];
+    if(scene){
+      areaList = scene.children.map(zon=>{
+        const {position} = zon;
+        let index = -1;
+        if(item){
+          index = lodash.findIndex(zon.children, it=>{return it.id == item.id});
+        }else{
+          index = -1;
+        }
+
+        return {id: zon.id, style:{width:position.w, height:position.h, left:position.x, top:position.y},
+          src:index>-1?(item.assetType==='system'?item.thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+item.thumbnail):""}
+      })
+    }
+console.log(areaList);
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
@@ -466,7 +492,7 @@ export class PlayPlan extends Component {
             * 2. selectedId:Number --- actived area's id
             * 3. projectSize:{width,height} --- project width && height
             */}  
-            <ImgPreview previewProps={''}/>
+            <ImgPreview previewProps={{areaList:areaList, selectedId:zone && zone.id, projectSize:{width:project && project.width, height:project && project.height}}}/>
           </div>
         </div>
         <div className="mediaPublish-footer">
@@ -482,7 +508,7 @@ export class PlayPlan extends Component {
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-              <RenderPropertyPanel curType={curNode && curNode.type} project={project} plan={plan} scene={scene} zone={zone} actions={actions} applyClick={this.applyClick}/>
+              <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} actions={actions} applyClick={this.applyClick}/>
             </div>
           </div>
         </SidebarInfo>

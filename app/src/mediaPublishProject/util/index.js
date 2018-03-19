@@ -440,7 +440,6 @@ function getVideoData(data, type) {
 }
 
 export function tranformAssetType(type) {
-  console.log('type',type)
   switch (type) {
     case 0:
       return "playerText";

@@ -26,7 +26,7 @@ export default class HeadBar extends Component {
     return <div className="sidebar">
       <div className="edit-container">
         <div className="glyphicon glyphicon-plus"
-          onClick={() => this.onClick('add')} role="presentation"></div>
+          onClick={(event) => {event.stopPropagation();event.preventDefault();this.onClick('add')}} role="presentation"></div>
         <div className="glyphicon glyphicon-remove pull-right"
           onClick={() => this.onClick('remove')} role="presentation"></div>
         <div className="glyphicon glyphicon-arrow-down pull-right"

@@ -90,7 +90,7 @@ export class PlayProject extends Component {
       this.props.plan && this.props.actions.treeOnRemove(this.props.plan);
       break;
     default:
-      this.props.actions.addPlayerPlan(key, this.formatIntl);
+      this.addAlert() && this.props.actions.addPlayerPlan(key, this.formatIntl);
       break;
     }
   }
@@ -110,6 +110,17 @@ export class PlayProject extends Component {
       actions.addNotify(0, '请选择播放计划。');
       return false;
     }
+    return true;
+  }
+
+  addAlert(){
+    const {plan, actions} = this.props;
+    console.log('addAlert:', plan);
+    if (plan && typeof plan.id === 'string' && plan.id.indexOf('plan') > -1) {
+      actions.addNotify(0, '请提交新建计划。');
+      return false;
+    }
+
     return true;
   }
 
