@@ -4,7 +4,7 @@
  */
 import React from 'react';
 
-function countShaft(start, end, interval) {
+function getNumberShaft(start, end, interval) {
   const countShaft = [];
   for (let i = start; i < end || i === end; i += interval) {
     countShaft.push(i);
@@ -32,4 +32,4 @@ function getProgramShaft(countShaft) {
   return programShaft;
 }
 
-export {countShaft, getTimeShaft, getProgramShaft};
+export {getNumberShaft, getTimeShaft, getProgramShaft};

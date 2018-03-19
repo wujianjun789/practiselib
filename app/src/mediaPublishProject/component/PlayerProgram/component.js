@@ -1,49 +1,40 @@
 import React, { Component } from 'react';
 import ProgramHeader from './header';
 import ProgramShaft from './programShaft';
-import { countShaft, getTimeShaft  } from './utils';
+import { getNumberShaft, getTimeShaft } from './utils';
 
 import '../../../../public/styles/playerProgram.less';
-
-const schedules = [{ start: 0, end: 12 }, {start:20, end: 24}];
-
-const timeShaft = [0, 24];
 
 export default class PlayerProgram extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.onClick = this.onClick.bind(this);
   }
 
-  programShaft(schedules, timeShaft, index) {
-    const totalMin = (timeShaft[1] - timeShaft[0]) * 60;
-    const programShaft = schedules.map((schedule, _index) => {
-      const { start, end } = schedule;
-      // const duration = end - start;
-      const startPer = (start * 60) / totalMin;
-      const endPer = (end * 60) / totalMin;
-      return <div
-        className="single-program"
-        key={_index}
-        style={{ width: `${(endPer - startPer) * 100}%`, left: `${startPer * 100}%`}}>
-      我已经天下无敌了!!!
-      </div>;
-    });
-    return programShaft;
-  }
-
-
+  onClick() {}
 
   render() {
-    const numberShaft = countShaft(0, 24, 2);
-    const mockTime = getTimeShaft(numberShaft);
+    // countShaft(startTime,endTime,Interval)
+    // getTimeShaft(countShaft)
+    const numberShaft = getNumberShaft(0, 24, 2);
+    const timeShaft = getTimeShaft(numberShaft);
+    const { programList = [{}] } = this.props;
+    /** ProgramShaft -- props
+      *  1. schedules: [{start:Number,end:Number}] --- Nothing to get a notice ~,just remember to keep order
+      *  2. timeShaft: [startTime:Number,endTime:Number] --- TimeShaft should keep the same number for header
+      *  3. color: String <Default 'gold'> --- ProgramShaft color
+      *  4. name: String <Default '我已经天下无敌了！！！'> --- ProgramName
+      *  5. scale: Not support yet!
+    */
+    const programShaftList = programList.map((program, index) => {
+      return <ProgramShaft {...program} key={index} onClick={this.onClick}/>;
+    });
     return (
       <div id="player-programmer">
-        <ProgramHeader timeShaft={mockTime} />
+        <ProgramHeader timeShaft={timeShaft} />
         <ul id="program-shaft">
-          <ProgramShaft schedules={schedules} timeShaft={[0, 24]} index={0} />  
-          <ProgramShaft schedules={schedules} timeShaft={[0, 24]} index={1} />
-          <ProgramShaft schedules={schedules} timeShaft={[0, 24]} index={2} />    
+          {programShaftList}
         </ul>
       </div>
     );
