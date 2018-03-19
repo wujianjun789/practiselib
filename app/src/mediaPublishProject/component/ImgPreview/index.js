@@ -6,13 +6,13 @@ const mockProps = {
   areaList: [{
     id: 1,
     style: {
-      width: 300, height: 1300, top: 0, left: 0,
+      width: 300, height: 300, top: 0, left: 0,
     },
     src: '',
   }, {
     id: 2,
     style: {
-      width: 300, height: 300, top: 0, left: 100,
+      width: 300, height: 300, top: 0, left: 300,
     },
     src: '',
   }, {
