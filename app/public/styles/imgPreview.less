@@ -1,12 +1,16 @@
 .container-wapper{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 #preview-container{
-  position: relative;
+  position: absolute;
+  top:50%;
+  left: 50%;
   overflow: hidden;
+  box-sizing: content-box;
+  border: 2px solid gray;
 
   .areaEle{
     box-sizing: border-box;
@@ -19,3 +23,5 @@
   }
 
 }
+
+
