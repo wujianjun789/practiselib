@@ -101,7 +101,7 @@ function updateSceneList(state, programId, data){
     // playerData[index].toggled = true;
     playerData[index].children = newData;
 
-    return Object.assign({}, state, {data: playerData, IsUpdateTree: true});
+    return Object.assign({}, state, {data: playerData, plan:playerData[index], IsUpdateTree: true});
 }
 
 function updateZoneList(state, programId, sceneId, data){

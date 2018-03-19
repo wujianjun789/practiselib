@@ -132,10 +132,10 @@ export class PlayProject extends Component {
       const {timeBegin, timeEnd} = plan.timeRange;
       const momBegin = getMomentByDateObject(dateBegin, timeBegin);
       const momEnd = getMomentByDateObject(dateEnd, timeEnd)
-      return {name:plan.name, timeShaft:{startTime:(momBegin.hour()*3600+momBegin.minute()*60+momBegin.seconds()+momBegin.millisecond()/60),
-        endTime:(momEnd.hour()*3600+momEnd.minute()*60+momEnd.seconds()+momEnd.millisecond()/60)}}
+      return {name:plan.name,totalSec:24*3600, schedules:[{start:(momBegin.hour()*3600+momBegin.minute()*60+momBegin.seconds()+momBegin.millisecond()/60),
+        end:(momEnd.hour()*3600+momEnd.minute()*60+momEnd.seconds()+momEnd.millisecond()/60)}]}
     });
-
+console.log(programList);
     return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={'/mediaPublish/playerProject'}/>
       <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
