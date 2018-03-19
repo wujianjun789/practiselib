@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PreviewContainer from './container';
-// import connect from 'react-redux';
 
 const mockProps = {
   areaList: [{
@@ -33,11 +32,8 @@ export default class ImgPreview extends Component {
   }
   
   render() {
-    return (<PreviewContainer {...mockProps}/>);
+    const { previewProps = mockProps } = this.props;
+    return (<PreviewContainer {...previewProps}/>);
   }
 }
 
-// function mapStateToProps(state) { }
-// function mapDisptachToProps(dispatch, ownProps) {}
-
-// export default connect(mapStateToProps, mapDisptachToProps)(ImgPreview);
