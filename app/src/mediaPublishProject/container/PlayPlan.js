@@ -18,9 +18,10 @@ import TreeView from '../../components/TreeView';
 import RenderPlayerAsset from '../component/RenderPlayerAsset';
 import RenderPropertyPanel from '../component/RenderPropertyPanel';
 import PlayerAssetLibPopup from '../component/PlayerAssetLibPopup';
+import ImgPreview from '../component/ImgPreview/index';
 
-import UploadFile from '../component/uploadFile'
-import UploadNotify from '../component/uploadNotify'
+import UploadFile from '../component/uploadFile';
+import UploadNotify from '../component/uploadNotify';
 import PreviewFile from '../component/previewFile';
 
 import NotifyPopup from '../../common/containers/NotifyPopup';
@@ -77,7 +78,7 @@ export class PlayPlan extends Component {
     this.updateSceneTree();
     if (this.props.plan) {
       actions.requestSceneList(this.props.plan.id);
-    }else {
+    } else {
       if (router && router.location) {
         const routerState = router.location.state;
         const project = routerState ? routerState.project : null;
@@ -98,7 +99,7 @@ export class PlayPlan extends Component {
   }
 
   componentWillUnmount() {
-    this.mounted =false;
+    this.mounted = false;
   }
 
   formatIntl(formatId) {
@@ -295,21 +296,21 @@ export class PlayPlan extends Component {
     this.props.actions.playerAssetMove(index);
   }
 
-  playerAssetAdd(type){
+  playerAssetAdd(type) {
     console.log('playerAssetAdd:');
     const {actions} = this.props;
-    actions.overlayerShow(<PlayerAssetLibPopup title="素材库" assetType={type} actions={actions} onCancel={()=>{
+    actions.overlayerShow(<PlayerAssetLibPopup title="素材库" assetType={type} actions={actions} onCancel={() => {
       actions.overlayerHide();
-    }} onConfirm={(data)=>{
+    }} onConfirm={(data) => {
       this.props.actions.addItemToArea(data, this.formatIntl);
       actions.overlayerHide();
-    }} assetAdd={()=>{
+    }} assetAdd={() => {
       // actions.overlayerHide();
-      this.showModal()
+      this.showModal();
     }}/>);
   }
 
-  addZone(){
+  addZone() {
     this.addAlert() && this.props.actions.addPlayerSceneArea('area');
   }
 
@@ -363,10 +364,10 @@ export class PlayPlan extends Component {
       break;
     case 'up':
     case 'down':
-      this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type === 'scene' ? this.props.scene:this.props.zone);
+      this.editAlert() && this.props.actions.treeOnMove(key, this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
       break;
     case 'remove':
-      this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene:this.props.zone);
+      this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
       break;
     default:
       this.addAlert() && this.props.actions.addPlayerSceneArea('scene');
@@ -439,27 +440,27 @@ export class PlayPlan extends Component {
       <Content className="play-plan">
         <div className="left preview-container">
           <div className="form-group control-container-top">
-            <div className={"form-group add-zone "+(curNode && curNode.type === "scene"?"":"hidden")} onClick={()=>this.addZone()}>
+            <div className={'form-group add-zone ' + (curNode && curNode.type === 'scene' ? '' : 'hidden')} onClick={() => this.addZone()}>
               <span className="icon glyphicon glyphicon-plus"></span><span className="word">添加区域</span></div>
-            <div className={"form-group play-container "+(curNode && curNode.type === "scene"?"":"hidden")} onClick={() => this.playHandler()}>
+            <div className={'form-group play-container ' + (curNode && curNode.type === 'scene' ? '' : 'hidden')} onClick={() => this.playHandler()}>
               <span className="icon icon_play"></span><span className="word"><FormattedMessage id="mediaPublish.play" /></span></div>
             <div className="form-group zoom-out-container" onClick={() => this.zoomOutHandler()}>
               <span className="icon icon_enlarge"></span><span className="word"><FormattedMessage id="mediaPublish.enlarge" /></span></div>
             <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
               <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
           </div>
-          <div className="img-container" ref={_previewImg => this._previewImg = _previewImg}>
-            {/*<PreviewImg imgInfo={imgInfo} scaling={scaling} parentInfo={parentInfo}/>*/}
+          <div className="img-container" >
+            <ImgPreview />
           </div>
         </div>
         <div className="mediaPublish-footer">
           {/*<span className="asset-title"><FormattedMessage id='mediaPublish.playList'/></span>*/}
           <RenderPlayerAsset curNode={curNode} playerListAsset={playerListAsset} curItem={item} playerAssetSelect={this.playerAssetSelect}
-                             playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} playerAssetAdd={this.playerAssetAdd}/>
+            playerAssetMove={this.playerAssetMove} playerAssetRemove={this.playerAssetRemove} playerAssetAdd={this.playerAssetAdd}/>
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}}>
           <div ref="assetProperty" className="panel panel-default asset-property">
-            <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed':'')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
+            <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
               <span className={'icon_info'}></span>
               {this.getPropertyName(curNode) + this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
@@ -500,7 +501,7 @@ const mapDispatchToProps = (dispatch) => {
       initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
       requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-      clearTreeState: clearTreeState, addItemToArea: addItemToArea
+      clearTreeState: clearTreeState, addItemToArea: addItemToArea,
     }, dispatch),
   };
 };
