@@ -450,7 +450,21 @@ export class PlayPlan extends Component {
               <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
           </div>
           <div className="img-container" >
-            <ImgPreview />
+            {/* ImgPreview --- props
+            * 1. areaList:[{
+            * id:Number --- areaId,
+            * style: {
+            *         width,
+            *         height,
+            *         top(offsetY),
+            *         left(offsetX)
+            *       },
+            * src:String --- actived playItem pic img 
+            * }]
+            * 2. selectedId:Number --- actived area's id
+            * 3. projectSize:{width,height} --- project width && height
+            */}  
+            <ImgPreview previewProps={''}/>
           </div>
         </div>
         <div className="mediaPublish-footer">
