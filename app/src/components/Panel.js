@@ -15,37 +15,37 @@ import PropTypes from 'prop-types';
  * 
  */
 const Panel = (props) => {
-    let {className='', closeClick=null, title='', text, body, footer=null, closeBtn, children} = props;
-    body = body ? body : <div className="row pull-center">{text ? text : '无相关数据'}</div>;
-    closeBtn =  closeBtn ? true : false;
-    return (
-        <div className={`modal-content ${className}`}>
-            <div className="modal-header">
-                {closeBtn ? <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeClick}><span aria-hidden="true">&times;</span></button> : null}
-                <h4 className="modal-title">{title}</h4>
-            </div>
-            <div className="modal-body">
-                {children ? children : body }
-            </div>
-            { footer }
-        </div>
-    )
-}
+  let {className = '', closeClick = null, title = '', text, body, footer = null, closeBtn, children} = props;
+  body = body ? body : <div className="row pull-center">{text ? text : '无相关数据'}</div>;
+  closeBtn =  !!closeBtn;
+  return (
+    <div className={`modal-content ${className}`}>
+      <div className="modal-header">
+        {closeBtn ? <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeClick}><span aria-hidden="true">&times;</span></button> : null}
+        <h4 className="modal-title">{title}</h4>
+      </div>
+      <div className="modal-body">
+        {children ? children : body }
+      </div>
+      { footer }
+    </div>
+  );
+};
 
 Panel.propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
-    body: PropTypes.any,
-    footer: PropTypes.any,
-    text: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
-    closeBtn: PropTypes.bool,
-    closeClick: PropTypes.func
-}
+  className: PropTypes.string,
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node,
+  ]),
+  body: PropTypes.any,
+  footer: PropTypes.any,
+  text: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node,
+  ]),
+  closeBtn: PropTypes.bool,
+  closeClick: PropTypes.func,
+};
 
 export default Panel;
