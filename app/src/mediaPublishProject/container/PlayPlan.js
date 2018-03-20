@@ -317,7 +317,27 @@ export class PlayPlan extends Component {
 
   playHandler = () => {
     const { actions } = this.props;
-    actions.overlayerShow(<ProjectPreview closeClick={() => { actions.overlayerHide(); }}/>);
+    // chriswenflag
+    /** ProjectPreview Props
+     *  1. totalTime --- project total play time (second)
+     *  2. imgArray:[{src:String,time:Number}] --- project preview imgArray
+     *  3. example below
+     */
+    const mockArray = [
+      {
+        src: 'https://i.loli.net/2018/01/03/5a4c93e92b0e1.png',
+        time: 100,
+      },
+      {
+        src: 'https://i.loli.net/2018/01/03/5a4c93e931f93.png',
+        time:1200,
+      }, {
+        src: 'https://i.loli.net/2018/01/03/5a4c93e938b6b.png',
+        time: 2500,
+      }];
+    const mockTime = 3000;  
+
+    actions.overlayerShow(<ProjectPreview totalTime={mockTime} imgArray={mockArray} closeClick={() => { actions.overlayerHide(); }}/>);
   }
 
   zoomOutHandler = () => {
@@ -430,34 +450,33 @@ export class PlayPlan extends Component {
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
-    let curType = ""
-    if(curNode){
-      if(curNode.type === "scene" || curNode.type === "area"){
+    let curType = '';
+    if (curNode) {
+      if (curNode.type === 'scene' || curNode.type === 'area') {
         curType = curNode.type;
-      }
-      else{
+      } else {
         curType = tranformAssetType(curNode.type);
       }
     }
 
-    let areaList=[];
-    if(scene && scene.children){
-      areaList = scene.children.map(zon=>{
-        if(typeof zon.id === "string" && zon.id.indexOf("area")>-1){
-          zon.position = {w: 0, h: 0, x: 0, y: 0}
+    let areaList = [];
+    if (scene && scene.children) {
+      areaList = scene.children.map(zon => {
+        if (typeof zon.id === 'string' && zon.id.indexOf('area') > -1) {
+          zon.position = {w: 0, h: 0, x: 0, y: 0};
         }
 
         const {position} = zon;
         let index = -1;
-        if(item){
-          index = lodash.findIndex(zon.children, it=>{return it.id == item.id});
-        }else{
+        if (item) {
+          index = lodash.findIndex(zon.children, it => {return it.id == item.id;});
+        } else {
           index = -1;
         }
 
         return {id: zon.id, style:{width:position.w, height:position.h, left:position.x, top:position.y},
-          src:index>-1?(item.assetType==='system'?item.thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+item.thumbnail):""}
-      })
+          src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : HOST_IP_FILE + '/api/file/thumbnail/' + item.thumbnail) : ''};
+      });
     }
 
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>

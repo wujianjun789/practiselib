@@ -3,17 +3,14 @@ import Panel from '../../../components/Panel';
 import PreviewBody from './body';
 import Footer from './footer';
 
-// const PreviewContainerBody = (props) => {
-//   return (<div id="preview-body">Body</div>);
-// };
 
 const PreviewContainer = (props) => {
   return (
     <Panel title="预览"
       className="preview-containers"
-      footer={<Footer />}
+      footer={<Footer onClick={props.closeClick}/>}
       closeBtn={true}
-      body={<PreviewBody />}
+      body={<PreviewBody imgArray={props.imgArray} totalTime={props.totalTime}/>}
       closeClick={props.closeClick} />
   );
 };
