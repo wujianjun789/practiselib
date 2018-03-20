@@ -441,8 +441,12 @@ export class PlayPlan extends Component {
     }
 
     let areaList=[];
-    if(scene){
+    if(scene && scene.children){
       areaList = scene.children.map(zon=>{
+        if(typeof zon.id === "string" && zon.id.indexOf("area")>-1){
+          zon.position = {w: 0, h: 0, x: 0, y: 0}
+        }
+
         const {position} = zon;
         let index = -1;
         if(item){
@@ -455,7 +459,7 @@ export class PlayPlan extends Component {
           src:index>-1?(item.assetType==='system'?item.thumbnail:HOST_IP_FILE+"/api/file/thumbnail/"+item.thumbnail):""}
       })
     }
-console.log(areaList);
+
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),

@@ -41,6 +41,13 @@ export const TreeData = [
                 "active": true,
                 "link": "/reporterManage/stat"
             },
+            {
+                "id": "lighting",
+                "name": "照明",
+                "class": "icon_lc",
+                "active": false,
+                "link": "/reporterManage/stat/lighting"
+            }
         ]
     },
 ]

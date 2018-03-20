@@ -1,10 +1,6 @@
 import _ from 'lodash';
 import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
-/**
- * @param {{
- *
- * }}
- */
+
 // export function getHistoriesDataByAssetId(options) {
 // 	let _url = `${HOST_IP}/histories`;
 // 	_url += `?filter=${encodeURIComponent(JSON.stringify(options))}`;
@@ -14,6 +10,44 @@ import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
 // 	})
 // 		.then(res => res.json());
 // }
+
+//统计-照明
+export function getStatDeviceCount(domain,cb) {
+	if(domain.id===6){
+		if(!domain){
+			return;
+		}
+		//模拟实现
+		console.log('发起请求')
+		setTimeout(() => {
+		  const res = {
+			count: 500,
+			inline: 380,
+			outline: 120,
+			normal: 410,
+			fault: 90
+		  };
+		  cb && cb(res)
+		}, 300)
+  }else{
+	if(!domain){
+		return;
+	}
+	//模拟实现
+	console.log('发起请求')
+	setTimeout(() => {
+	  const res = {
+		count: 1000,
+		inline: 680,
+		outline: 320,
+		normal: 590,
+		fault: 410
+	  };
+	  cb && cb(res)
+	}, 300)
+  }
+}
+
 
 export function getHistoriesDataInDevice(mode, currentId, queryList, start, end, type, list, name, cb) {
 	const _querystring = JSON.stringify({
