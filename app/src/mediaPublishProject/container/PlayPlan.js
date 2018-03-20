@@ -102,6 +102,11 @@ export class PlayPlan extends Component {
 
   componentWillUnmount() {
     this.mounted = false;
+    const {actions} = this.props;
+    actions.initScene(null);
+    actions.initZone(null);
+    actions.initItem(null);
+    actions.initCurnode(null);
   }
 
   formatIntl(formatId) {
