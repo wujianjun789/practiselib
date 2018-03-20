@@ -28,7 +28,10 @@ import React from 'react';
 //   </ol>;
 // };
 const CarouselContainer = (props) => {
-  return <div className="img-container"><img src={props.src}/></div>;
+  const { style = {} } = props;
+  return <div className="img-container">
+    <img src={props.src} style={style}/>
+  </div>;
 
 };
 

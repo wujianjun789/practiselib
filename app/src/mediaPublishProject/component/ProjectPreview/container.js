@@ -1,6 +1,6 @@
 import React from 'react';
 import Panel from '../../../components/Panel';
-import Carousel from './Carousel/index';
+import PreviewBody from './body';
 import Footer from './footer';
 
 // const PreviewContainerBody = (props) => {
@@ -8,13 +8,12 @@ import Footer from './footer';
 // };
 
 const PreviewContainer = (props) => {
- 
   return (
     <Panel title="预览"
       className="preview-containers"
       footer={<Footer />}
       closeBtn={true}
-      body={<Carousel />}
+      body={<PreviewBody />}
       closeClick={props.closeClick} />
   );
 };

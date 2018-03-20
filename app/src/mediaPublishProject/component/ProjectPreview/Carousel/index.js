@@ -2,32 +2,18 @@ import React, { Component } from 'react';
 import CarouselContainer from './container';
 
 export default class Carousel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: 1,
-      sourceArray: [],
-      virtualArray:[],
-    };
-    this.magicClick = this.magicClick.bind(this);
-  }
 
-  magicClick(opsCode) {
-    const statusCoude = this.state;
-
-    console.log(opsCode);
-  }
-
-  renderArray() {
-    
-  }
-
+  // index srcList onChange
   render() {
+    const { index } = this.props;
+    const src = this.props.srcList[index];
     return (
       <div id="project-preview-carousel" className="clearfix" >
-        <div className="img-container" onClick={() => { this.magicClick(1); }}>-</div>  
-        <CarouselContainer />
-        <div className="img-container" onClick={() => { this.magicClick(-1); }}>+</div> 
+        <div className="ops-container" onClick={() => { this.props.onChange(index - 1); }} role="presentation">
+          <div className="ops-icon" /></div>  
+        <CarouselContainer src={src}/>
+        <div className="ops-container" onClick={() => { this.props.onChange(index + 1); }} role="presentation">
+          <div className="ops-icon" /></div>
       </div>
     );
   }
