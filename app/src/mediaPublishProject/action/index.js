@@ -263,7 +263,7 @@ export function treeOnRemove(node) {
     const sCurNode = getState().mediaPublishProject.zone;
     const sParentNode = getState().mediaPublishProject.scene;
     const sParentParentNode = getState().mediaPublishProject.plan;
-    const playerData = getState().mediaPublishProject.data;
+    const playerData = DeepCopy(getState().mediaPublishProject.data);
 
     let parentNode = getTreeParentNode(playerData, node);
     let parentParentNode = getTreeParentNode(playerData, parentNode);
@@ -286,6 +286,8 @@ export function treeOnRemove(node) {
       }
 
       const treeList = removeTree(playerData, node);
+      const planIndex = lodash.findIndex(treeList, plan=>{ return plan.id === sParentParentNode.id });
+      dispatch(initPlan(treeList[planIndex]));
       console.log('removeTree:', treeList);
       return dispatch(updateTreeList(treeList));
     }
@@ -295,7 +297,8 @@ export function treeOnRemove(node) {
       removeSceneById(project.id, parentNode.id, node.id, () => {
         dispatch(initCurnode(null));
         dispatch(initScene(null));
-        dispatch(updateTreeList(removeTree(playerData, node)));
+        const treeList1 = removeTree(playerData, node);
+        dispatch(updateTreeList(treeList1));
       });
       break;
     case 'plan':

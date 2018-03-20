@@ -46,10 +46,8 @@ export default function mediaPublishProject(state=initialState, action) {
     case INIT_PROGRAM_LIST:
       return updateProgramList(state, action.data);
     case INIT_PLAN:
-      console.log('INIT_PLAN:', action.data);
       return Object.assign({}, state, {plan: action.data});
     case INIT_SCENE:
-      console.log('INIT_SCENE:', action.data);
       return Object.assign({}, state, {scene: action.data});
     case INIT_ZONE:
       return Object.assign({}, state, {zone: action.data});
@@ -66,10 +64,8 @@ export default function mediaPublishProject(state=initialState, action) {
     case INIT_ITEM_LIST:
       return updateItemList(state, action.programId, action.sceneId, action.zoneId, action.data);
     case UPDATE_TREE_DATA:
-      console.log('UPDATE_TREE_DATA:',state.data);
       return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
-      case UPDATE_TREE_LIST:
-      console.log('UPDATE_TREE_LIST:', state.data);
+    case UPDATE_TREE_LIST:
       return Object.assign({}, state, {data: action.data, IsUpdateTree: true});
     case UPDATE_TREE_JUDGE:
       return Object.assign({}, state, {IsUpdateTree:action.data});
