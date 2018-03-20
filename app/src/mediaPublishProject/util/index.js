@@ -106,7 +106,9 @@ export function updateTree(treeList, node, parentNode, parentParentNode) {
           curNode.children = [];
         }
 
-        curNode.children.push(node);
+        if(curNode.children.indexOf(node) < 0){
+          curNode.children.push(node);
+         }
       }else{
         if(curNode.children && curNode.children.length){
           updateTree(curNode.children, node, parentNode, parentParentNode);

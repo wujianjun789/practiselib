@@ -55,7 +55,7 @@ function requestProgrameList(project) {
 export function initPlan(plan) {
   return dispatch => {
     dispatch({type: INIT_PLAN, data:plan});
-    plan.id && (typeof plan.id == 'number' || plan.id.indexOf('plan&&') < 0) && dispatch(requestSceneList(plan.id));
+    plan && plan.id && (typeof plan.id == 'number' || plan.id.indexOf('plan&&') < 0) && dispatch(requestSceneList(plan.id));
   };
 }
 
@@ -120,6 +120,7 @@ export function addPlayerPlan(id, formatIntl) {
 }
 
 export function addPlayerSceneArea(key) {
+  console.log('addPlayerSceneArea:',key)
   return (dispatch, getState) => {
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
@@ -146,13 +147,15 @@ export function addPlayerSceneArea(key) {
 }
 
 function addPlayerScene(curNode) {
+  console.log('addPlayerScene:', curNode);
   return dispatch => {
     const parentNode = curNode;
     if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
       return dispatch(addNotify(0, '请提交播放场景'));
     }
-    const node = getInitData('scene', '场景新建');
-console.log('addPlayerScene:', node);
+
+    const node = Object.assign({}, getInitData('scene', '场景新建'));
+
     dispatch(initScene(node));
     dispatch(initCurnode(node));
     dispatch(updateTreeData(node, parentNode));
@@ -193,7 +196,6 @@ export function treeOnMove(key, node) {
   return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
     const playerData = getState().mediaPublishProject.data;
-    console.log('treeOnMove:', node.type);
     switch (node.type) {
     case 'plan':
     case 'plan2':
@@ -271,18 +273,34 @@ export function treeOnRemove(node) {
     }
 
     if (typeof node.id === 'string' && (node.id.indexOf('plan') > -1 || node.id.indexOf('scene') > -1 || node.id.indexOf('area') > -1)) {
-      return dispatch(updateTreeList(removeTree(playerData, node)));
+      if(node.id.indexOf('plan')>-1){
+        dispatch(initPlan(null));
+      }
+      if(node.id.indexOf('scene')>-1){
+        dispatch(initScene(null));
+        dispatch(initCurnode(null));
+      }
+      if(node.id.indexOf('area')>-1){
+        dispatch(initZone(null));
+        dispatch(initCurnode(null));
+      }
+
+      const treeList = removeTree(playerData, node);
+      console.log('removeTree:', treeList);
+      return dispatch(updateTreeList(treeList));
     }
 
     switch (node.type) {
     case 'scene':
       removeSceneById(project.id, parentNode.id, node.id, () => {
+        dispatch(initCurnode(null));
+        dispatch(initScene(null));
         dispatch(updateTreeList(removeTree(playerData, node)));
       });
       break;
     case 'plan':
       removeProgramsById(project.id, node.id, () => {
-        dispatch(initPlan(null));
+        initPlan(null);
         dispatch(updateTreeList(removeTree(playerData, node)));
       });
       break;
@@ -292,7 +310,10 @@ export function treeOnRemove(node) {
       break;
     case 'area':
       removeZoneById(project.id, parentParentNode.id, parentNode.id, node.id, () => {
-        dispatch(updateTreeList(removeTree(playerData, node)));
+        dispatch(initCurnode(null));
+        dispatch(initZone(null));
+        const treeList = removeTree(playerData, node);
+        dispatch(updateTreeList(treeList));
       });
       break;
     default:
@@ -303,10 +324,12 @@ export function treeOnRemove(node) {
 
 
 function updateTreeList(treeList) {
-  return {
-    type: UPDATE_TREE_LIST,
-    data: DeepCopy(treeList),
-  };
+  return dispatch=>{
+    dispatch({
+      type: UPDATE_TREE_LIST,
+      data: DeepCopy(treeList)
+    });
+  }
 }
 
 export function applyClick(id, data) {
@@ -326,7 +349,7 @@ export function applyClick(id, data) {
       dispatch(addUpdatePlan(data, project, playerData));
       break;
     case 'playerScene':
-      dispatch(addUpdateScene(data, project, parentParentNode, playerData));
+      dispatch(addUpdateScene(data, project, parentParentNode, parentNode, playerData));
       break;
     case 'playerAreaPro':
       dispatch(addUpdateArea(data, project, parentParentNode, parentNode, playerData));
@@ -353,17 +376,17 @@ function addUpdatePlan(data, project, playerData) {
   };
 }
 
-function addUpdateScene(data, project, parentNode, playerData) {
+function addUpdateScene(data, project, parentParentNode, parentNode, playerData) {
   return dispatch => {
     let sceneData = data;
     if (data.id) {
       sceneData = Object.assign({}, sceneData, { id: data.id });
-      updateSceneById(project.id, parentNode.id, sceneData, (response) => {
-        dispatch(updatePlayerSceneData(Object.assign({}, sceneData, {type:'scene'}), parentNode, playerData));
+      updateSceneById(project.id, parentParentNode.id, sceneData, (response) => {
+        dispatch(updatePlayerSceneData(Object.assign({}, sceneData, {type:'scene'}), parentParentNode, parentNode, playerData));
       });
     } else {
-      addScene(project.id, parentNode.id, sceneData, response => {
-        dispatch(updatePlayerSceneData(Object.assign({}, sceneData, { id: response.sceneId }, {type: 'scene'}), parentNode, playerData));
+      addScene(project.id, parentParentNode.id, sceneData, response => {
+        dispatch(updatePlayerSceneData(Object.assign({}, sceneData, { id: response.sceneId }, {type: 'scene'}), parentParentNode, parentNode, playerData));
       });
     }
   };
@@ -408,10 +431,11 @@ function updatePlayerPlanData(response, playerData) {
   };
 }
 
-function updatePlayerSceneData(response, parentNode, playerData) {
+function updatePlayerSceneData(response, parentParentNode, parentNode, playerData) {
   return dispatch => {
-    let index = lodash.findIndex(playerData, plan => { return plan.id == parentNode.id; });
-    playerData[index].children = playerData[index].children.map(scene => {
+    const planIndex = lodash.findIndex(playerData, plan => { return plan.id == parentParentNode.id; });
+    const sceneIndex = lodash.findIndex(playerData[planIndex].children, scene => { return scene.id == parentNode.id})
+    playerData[planIndex].children = playerData[planIndex].children.map(scene => {
       if ((typeof scene.id === 'string' && scene.id.indexOf('scene&&') > -1) || scene.id == response.id) {
         return Object.assign({}, scene, response);
       }
@@ -419,7 +443,7 @@ function updatePlayerSceneData(response, parentNode, playerData) {
       return scene;
     });
 
-    dispatch(initScene(Object.assign({}, response, playerData[index])));
+    dispatch(initScene(Object.assign({}, response, playerData[planIndex].children[sceneIndex])));
     dispatch(updateTreeList(playerData));
   };
 }
@@ -457,7 +481,6 @@ export function requestItemList(programId, sceneId, zoneId) {
 
 function requestItemName(data) {
   return dispatch => {
-    console.log('requestItemName:', data);
     data.map(item => {
       const itemObject = item.toJS();
       if (IsSystemFile(item.get('type'))) {
@@ -487,7 +510,6 @@ export function playerAssetRemove(item){
 }
 
 export function playerAssetMove(index) {
-  console.log("index", index);
   return (dispatch, getState)=>{
     let data = getState().mediaPublishProject.data;
     const project = getState().mediaPublishProject.project;
@@ -495,7 +517,6 @@ export function playerAssetMove(index) {
     const scene = getState().mediaPublishProject.scene;
     const zone = getState().mediaPublishProject.zone;
     const item = getState().mediaPublishProject.item;
-    console.log('move:',item, index);
     if(!item){
       return dispatch(updateTreeList(data));
     }
@@ -509,9 +530,7 @@ export function playerAssetMove(index) {
     zone.children.splice(index, 0, item);
 
     const result = data[programIndex].children[sceneIndex].children[zoneIndex].children;
-    console.log('splice1', result);
     data[programIndex].children[sceneIndex].children[zoneIndex].children = zone.children;
-    console.log('splice2',data[programIndex].children[sceneIndex].children[zoneIndex].children);
     dispatch(initZone(zone));
     dispatch(updateTreeList(data));
     updateItemOrders(project.id, plan.id, scene.id, zone.id,
@@ -543,7 +562,6 @@ export function addItemToArea(item, formatIntl) {
     }
 
     const data = item;
-    console.log('addItemToArea:',data);
     const index = lodash.findIndex(systemInitFile, file => { return file.baseInfo.type == data.type; });
     if (index < 0 && !data.type) {
       return dispatch(addNotify(0, 'asset unknow type'));

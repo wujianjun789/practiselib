@@ -40,40 +40,44 @@ const initialState = {
 
 
 export default function mediaPublishProject(state=initialState, action) {
-    switch(action.type) {
-        case INIT_PROJECT:
-            return Object.assign({}, state, {project: action.data});
-        case INIT_PROGRAM_LIST:
-            return updateProgramList(state, action.data);
-        case INIT_PLAN:
-            return Object.assign({}, state, {plan: action.data});
-        case INIT_SCENE:
-            return Object.assign({}, state, {scene: action.data});
-        case INIT_ZONE:
-            return Object.assign({}, state, {zone: action.data});
-        case INIT_ITEM:
-            return Object.assign({}, state, {item: action.data});
-        case INIT_CURNODE:
-            return Object.assign({}, state, {curNode: action.data});
-        case UPDATE_ITEM_NAME:
-            return updateItemName(state, action.item, action.file);
-        case INIT_SCENE_LIST:
-            return updateSceneList(state, action.programId, action.data);
-        case INIT_ZONE_LIST:
-            return updateZoneList(state, action.programId, action.sceneId, action.data);
-        case INIT_ITEM_LIST:
-            return updateItemList(state, action.programId, action.sceneId, action.zoneId, action.data);
-        case UPDATE_TREE_DATA:
-            return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
-        case UPDATE_TREE_LIST:
-            return Object.assign({}, state, {data: action.data, IsUpdateTree: true});
-        case UPDATE_TREE_JUDGE:
-            return Object.assign({}, state, {IsUpdateTree:action.data});
-        case CLEAR_TREE_STATE:
-            return Object.assign({}, state, {data: clearTreeListState(state.data), IsUpdateTree: true});
-        default:
-            return state;
-    }
+  switch(action.type) {
+    case INIT_PROJECT:
+      return Object.assign({}, state, {project: action.data});
+    case INIT_PROGRAM_LIST:
+      return updateProgramList(state, action.data);
+    case INIT_PLAN:
+      console.log('INIT_PLAN:', action.data);
+      return Object.assign({}, state, {plan: action.data});
+    case INIT_SCENE:
+      console.log('INIT_SCENE:', action.data);
+      return Object.assign({}, state, {scene: action.data});
+    case INIT_ZONE:
+      return Object.assign({}, state, {zone: action.data});
+    case INIT_ITEM:
+      return Object.assign({}, state, {item: action.data});
+    case INIT_CURNODE:
+      return Object.assign({}, state, {curNode: action.data});
+    case UPDATE_ITEM_NAME:
+      return updateItemName(state, action.item, action.file);
+    case INIT_SCENE_LIST:
+      return updateSceneList(state, action.programId, action.data);
+    case INIT_ZONE_LIST:
+      return updateZoneList(state, action.programId, action.sceneId, action.data);
+    case INIT_ITEM_LIST:
+      return updateItemList(state, action.programId, action.sceneId, action.zoneId, action.data);
+    case UPDATE_TREE_DATA:
+      console.log('UPDATE_TREE_DATA:',state.data);
+      return updateTreeData(state, action.node, action.parentNode, action.parentParentNode);
+      case UPDATE_TREE_LIST:
+      console.log('UPDATE_TREE_LIST:', state.data);
+      return Object.assign({}, state, {data: action.data, IsUpdateTree: true});
+    case UPDATE_TREE_JUDGE:
+      return Object.assign({}, state, {IsUpdateTree:action.data});
+    case CLEAR_TREE_STATE:
+      return Object.assign({}, state, {data: clearTreeListState(state.data), IsUpdateTree: true});
+    default:
+      return state;
+  }
 }
 
 function updateProgramList(state, data) {
@@ -156,7 +160,6 @@ function updateItemList(state, programId, sceneId, zoneId, data){
 
 function updateTreeData(state, node, parentNode, parentParentNode){
     const treeList = updateTree(state.data, node, parentNode, parentParentNode);
-
     return Object.assign({}, state, {data: treeList, IsUpdateTree: true});
 }
 
