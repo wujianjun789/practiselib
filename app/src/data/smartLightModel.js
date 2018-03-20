@@ -9,7 +9,7 @@ export const TreeData = [
     'active': true,
     'link': '/smartLight/map',
     'level': 1,
-    'children':[],
+    'children': [],
   },
   {
     'id': 'list',

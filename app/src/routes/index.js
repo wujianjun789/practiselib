@@ -339,6 +339,12 @@ export default (
               cb(null, require('../reporterManage/container/stat/energy').default);
             }, 'starriverpro.reporterManage.stat.energy');
           }} />
+          <Route path='lighting' getComponent={(nextState, cb) => {
+            require.ensure([], require => {
+              cb(null, require('../reporterManage/container/stat/lighting').default);
+            }, 'starriverpro.reporterManage.stat.lighting');
+          }}>
+          </Route>
         </Route>
       </Route>
       <Route path="/mediaPublish" component={MediaPublish}>
@@ -361,14 +367,14 @@ export default (
         </Route>
         <Route path="playProject" getComponent={(nextState, cb) => {
           require.ensure([], require => {
-              cb(null, require('../mediaPublish/container/PlayerList').default);
-              },'starriverpro.mediaPublishProject.container.PlayerList');
+            cb(null, require('../mediaPublish/container/PlayerList').default);
+          }, 'starriverpro.mediaPublishProject.container.PlayerList');
         }}>
         </Route>
         <Route path="playerProject" getComponent={(nextState, cb) => {
           require.ensure([], require => {
-              cb(null, require('../mediaPublishProject/container/PlayerList').default);
-              },'starriverpro.mediaPublishProject.container.PlayerList');
+            cb(null, require('../mediaPublishProject/container/PlayerList').default);
+          }, 'starriverpro.mediaPublishProject.container.PlayerList');
         }}>
         </Route>
       </Route>
