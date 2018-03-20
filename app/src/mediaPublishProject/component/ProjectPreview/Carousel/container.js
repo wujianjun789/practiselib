@@ -30,7 +30,7 @@ import React from 'react';
 const CarouselContainer = (props) => {
   const { style = {} } = props;
   return <div className="img-container">
-    <img src={props.src} style={style}/>
+    <img className="img-preview" src={props.src} style={style}/>
   </div>;
 
 };
