@@ -2,24 +2,58 @@
   position: absolute;
   left: 20px;
   right:20px;
- 
   transition: .4s;
   #header{
     display: flex;
     justify-content: space-between;
     margin: 5px 0;
     font-size: 16px;
+    
   }
+  .time-picker-wapper{
+    height: 70px;
+    margin: 0 -20px;
+    background: white;
+    // background: #808080;
+  }
+  .time-picker{
+    margin: 20px 0 20px 20px;
+    width: 160px;
+    height: 70px;
+    .ant-input-lg{
+      height: 30px;
+    }
+    .ant-calendar-picker-icon,.ant-calendar-picker-clear{
+      display: none;
+    }
+  }
+  .timeShaft-li{
+    font-size: 14px;
+    color: #808080;
+    cursor: default;
+    // margin-left: 30px;
+    // width: 100%;
+    // border: 1px solid red;
+  }
+  // .timeShaft-li:first-child{
+  //   border: 1px solid red;
+  //   margin-left: 0px;
+  // }
   #program-shaft{
     // position: relative;
     // display: flex;
     // justify-content: space-between;
     margin-top: 15px;
-    .base-block{
-      // display: inline-block;
-      height: 40px;
-      width: 100%;
-    }
+    // .base-block{
+    //   // display: inline-block;
+    //   height: 40px;
+    //   width: 100%;
+    //   margin-left: 30px;
+    // }
+    // .base-block:first-child{
+    //   margin-left: 0px;
+    // }
+
     .program-wrapper{
       position: relative;
       height: 40px;

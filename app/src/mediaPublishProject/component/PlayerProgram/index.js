@@ -9,11 +9,20 @@ import '../../../../public/styles/playerProgram.less';
 class PlayerProgram extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      date: {},
+    };
     this.onClick = this.onClick.bind(this);
+    this.selectDate = this.selectDate.bind(this);
   }
 
-  onClick() {}
+  onClick() { }
+
+  selectDate(date, dateString) {
+    this.setState({
+      date: date,
+    });
+  }
 
   render() {
     // countShaft(startTime,endTime,Interval)
@@ -33,7 +42,7 @@ class PlayerProgram extends Component {
     });
     return (
       <div id="player-programmer">
-        <ProgramHeader timeShaft={timeShaft} />
+        <ProgramHeader timeShaft={timeShaft} selectDate={this.selectDate}/>
         <ul id="program-shaft">
           {programShaftList}
         </ul>
