@@ -292,6 +292,8 @@ class TextFile extends Component {
                     })
                     break;
                 }
+            default:
+            break;
         }
     }
 
@@ -339,7 +341,7 @@ class TextFile extends Component {
             <div class='pro-container playerText'>
                 <div class='row'>
                     <div class='form-group'>
-                        <label>{name.title}</label>
+                        <label className="control-label">{name.title}</label>
                         <div class='input-container input-w-1'>
                             <input type='text' class='form-control' disabled value={name.value} onChange={f => f} />
                         </div>
@@ -347,15 +349,15 @@ class TextFile extends Component {
                 </div>
                 <div class='row hide'>
                     <div class='form-group'>
-                        <label>{text.title}</label>
+                        <label className="control-label" style={{verticalAlign:'top'}}>{text.title}</label>
                         <div class='input-container input-w-1'>
                             <textarea class='text-content' disabled value={text.value} onChange={e => this.onChange('text', e)} />
                         </div>
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='form-group margin-right-2'>
-                        <label>{fontType.title}</label>
+                    <div class='form-group '>
+                        <label className="control-label">{fontType.title}</label>
                         <div class='input-container input-w-2'>
                             <select class='form-control' value={fontType.index}
                                 onChange={e => this.onChange('fontType', e)}>
@@ -367,22 +369,10 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
-                    <div class='form-group' style={{verticalAlign:'top',height:'40px'}}>
-                        <label>{fontColor.title}</label>
-                        <div class='input-container'>
-                            <div style={styles.swatch} >
-                                <div id='showFontColor' style={styles.fontColor} onClick={this.handleColorClick} />
-                            </div>
-                            {showFontColor ? <div style={styles.popover}>
-                                <div id='showFontColor' style={styles.cover} onClick={this.handleColorHide} />
-                                <SketchPicker color={fontColor.value} onChange={e => this.onChange('fontColor', e)} />
-                            </div> : null}
-                        </div>
                     </div>
-                </div>
                 <div class='row'>
-                    <div class='form-group margin-right-2'>
-                        <label>{fontSize.title}</label>
+                    <div class='form-group '>
+                        <label className="control-label">{fontSize.title}</label>
                         <div class='input-container input-w-2'>
                             <select class='form-control' value={fontSize.index}
                                 onChange={e => this.onChange('fontSize', e)}>
@@ -394,8 +384,22 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
-                    <div class='form-group' style={{verticalAlign:'top',height:'40px'}}>
-                        <label>{bgColor.title}</label>
+                    </div>
+                <div class="row">
+                    <div class='form-group font-color' style={{verticalAlign:'top',height:'40px'}}>
+                        <label className="control-label" style={{verticalAlign:'top'}}>{fontColor.title}</label>
+                        <div class='input-container'>
+                            <div style={styles.swatch} >
+                                <div id='showFontColor' style={styles.fontColor} onClick={this.handleColorClick} />
+                            </div>
+                            {showFontColor ? <div style={styles.popover}>
+                                <div id='showFontColor' style={styles.cover} onClick={this.handleColorHide} />
+                                <SketchPicker color={fontColor.value} onChange={e => this.onChange('fontColor', e)} />
+                            </div> : null}
+                        </div>
+                    </div>
+                    <div class='form-group bg-color' style={{verticalAlign:'top',height:'40px'}}>
+                        <label className="control-label" style={{verticalAlign:'top'}}>{bgColor.title}</label>
                         <div class='input-container'>
                             <div style={styles.swatch} >
                                 <div id='showBgColor' style={styles.bgColor} onClick={this.handleColorClick} />
@@ -406,16 +410,16 @@ class TextFile extends Component {
                             </div> : null}
                         </div>
                     </div>
-                    <div class='form-group'>
-                        <label>{bgTransparent.title}</label>
+                    <div class='form-group checkbox-container'>
+                        <label className="control-label">{bgTransparent.title}</label>
                         <div class='input-container'>
                             <input type='checkbox' onClick={this.handleBgTransparent} checked={bgTransparent.value} />
                         </div>
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='form-group margin-right-2'>
-                        <label>{alignment.title}</label>
+                    <div class='form-group '>
+                        <label className="control-label">{alignment.title}</label>
                         <div class='input-container input-w-2'>
                             <select class='form-control' value={alignment.index}
                                 onChange={e => this.onChange('alignment', e)}>
@@ -427,8 +431,10 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
+                    </div>
+                <div class="row">
                     <div class="form-group">
-                        <label>{playDuration.title}</label>
+                        <label className="control-label">{playDuration.title}</label>
                         <div class="input-container input-w-2">
                             <input type="text" class="form-control"
                                 placeholder={playDuration.placeholder} maxLength="8"
@@ -439,8 +445,8 @@ class TextFile extends Component {
                     </div>
                 </div>
                 <div class='row'>
-                    <div class="form-group margin-right-2">
-                        <label>{animation.title}</label>
+                    <div class="form-group">
+                        <label className="control-label">{animation.title}</label>
                         <div class="input-container input-w-2">
                             <select class="form-control" value={animation.index}
                                 onChange={e => this.onChange("animation", e)}>
@@ -451,8 +457,10 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
+                    </div>
+                <div className="row">
                     <div class="form-group">
-                        <label>{playSpeed.title}</label>
+                        <label className="control-label">{playSpeed.title}</label>
                         <div class="input-container input-w-2">
                             <input type="text" class="form-control"
                                 placeholder={playSpeed.placeholder} maxLength="8"
@@ -463,8 +471,8 @@ class TextFile extends Component {
                     </div>
                 </div>
                 <div class='row'>
-                    <div class="form-group margin-right-2">
-                        <label>{rowSpace.title}</label>
+                    <div class="form-group ">
+                        <label className="control-label">{rowSpace.title}</label>
                         <div class="input-container input-w-2">
                             <input type="text" class="form-control"
                                 placeholder={rowSpace.placeholder} maxLength="8"
@@ -473,8 +481,10 @@ class TextFile extends Component {
                             <span class={prompt.rowSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                         </div>
                     </div>
+                    </div>
+                <div class="row">
                     <div class="form-group">
-                        <label title={charSpace.title}>{charSpace.title}</label>
+                        <label className="control-label" title={charSpace.title}>{charSpace.title}</label>
                         <div class="input-container input-w-2">
                             <input type="text" class="form-control"
                                 placeholder={charSpace.placeholder} maxLength="8"
