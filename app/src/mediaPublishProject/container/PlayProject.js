@@ -170,7 +170,7 @@ export class PlayProject extends Component {
 
       <Content className="play-project">
         <div className="left" ref={(left) => this._left = left}>
-          <PlayerProgram programList={programList} selectDate={this.selectDate} />
+          <PlayerProgram programList={programList} defaultValue={curDate} selectDate={this.selectDate} />
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}} >
           <div ref="assetProperty" className="panel panel-default asset-property">
