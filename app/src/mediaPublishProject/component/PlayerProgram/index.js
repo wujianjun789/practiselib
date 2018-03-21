@@ -42,7 +42,7 @@ class PlayerProgram extends Component {
     });
     return (
       <div id="player-programmer">
-        <ProgramHeader timeShaft={timeShaft} selectDate={this.props.selectDate}/>
+        <ProgramHeader timeShaft={timeShaft} selectDate={this.props.selectDate} defaultValue={this.props.defaultValue}/>
         <ul id="program-shaft">
           {programShaftList}
         </ul>

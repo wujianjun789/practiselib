@@ -2,11 +2,11 @@ import React from 'react';
 import { DatePicker } from 'antd';
 
 const ProgramHeader = (props) => {
-  const { timeShaft, selectDate } = props;
+  const { timeShaft, selectDate, defaultValue } = props;
   return (
     <div id="header-wapper">
       <div className="time-picker-wapper">
-        <DatePicker className="time-picker" size="large" onChange={(date, dateString) => { selectDate(date, dateString); }}/>
+        <DatePicker className="time-picker" size="large" onChange={(date, dateString) => { selectDate(date, dateString); }} defaultValue={defaultValue}/>
       </div>  
       <ul id="header">  
         {timeShaft.map((item, index) => {

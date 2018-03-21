@@ -22,7 +22,7 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyClick } from '../action/index';
-import {initPlanDate} from '../util/index'
+import {initPlanDate} from '../util/index';
 
 import PlayerProgram from '../component/PlayerProgram/index';
 
@@ -116,7 +116,7 @@ export class PlayProject extends Component {
     return true;
   }
 
-  addAlert(){
+  addAlert() {
     const {plan, actions} = this.props;
     console.log('addAlert:', plan);
     if (plan && typeof plan.id === 'string' && plan.id.indexOf('plan') > -1) {
@@ -132,27 +132,27 @@ export class PlayProject extends Component {
     this.setState({sidebarInfo:Object.assign({}, sidebarInfo, {[key]: !sidebarInfo[key]})});
   }
 
-  selectDate(date){
+  selectDate(date) {
     this.setState({curDate: date});
   }
 
   render() {
     const {sidebarInfo, curDate} = this.state;
     const {router, data, project, plan} = this.props;
-    const datalist = curDate?lodash.filter(data, newPlan=>{
+    const datalist = curDate ? lodash.filter(data, newPlan => {
       const plan = initPlanDate(newPlan);
       const {dateBegin, dateEnd} = plan.dateRange;
-      return dateBegin.day <= curDate.date() && dateEnd.day >= curDate.date()
+      return dateBegin.day <= curDate.date() && dateEnd.day >= curDate.date();
     }):data;
 
-    const programList = datalist.map(newPlan=>{
-    const plan = initPlanDate(newPlan);
-    const {dateBegin, dateEnd} = plan.dateRange;
-    const {timeBegin, timeEnd} = plan.timeRange;
-    const momBegin = getMomentByDateObject(dateBegin, timeBegin);
-    const momEnd = getMomentByDateObject(dateEnd, timeEnd)
-    return {name:plan.name,totalSec:24*3600, schedules:[{start:(momBegin.hour()*3600+momBegin.minute()*60+momBegin.seconds()+momBegin.millisecond()/60),
-      end:(momEnd.hour()*3600+momEnd.minute()*60+momEnd.seconds()+momEnd.millisecond()/60)}]}
+    const programList = datalist.map(newPlan => {
+      const plan = initPlanDate(newPlan);
+      const {dateBegin, dateEnd} = plan.dateRange;
+      const {timeBegin, timeEnd} = plan.timeRange;
+      const momBegin = getMomentByDateObject(dateBegin, timeBegin);
+      const momEnd = getMomentByDateObject(dateEnd, timeEnd);
+      return {name:plan.name, totalSec:24 * 3600, schedules:[{start:(momBegin.hour() * 3600 + momBegin.minute() * 60 + momBegin.seconds() + momBegin.millisecond() / 60),
+        end:(momEnd.hour() * 3600 + momEnd.minute() * 60 + momEnd.seconds() + momEnd.millisecond() / 60)}]};
     });
 
     return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
@@ -170,7 +170,7 @@ export class PlayProject extends Component {
 
       <Content className="play-project">
         <div className="left" ref={(left) => this._left = left}>
-          <PlayerProgram programList={programList} selectDate={this.selectDate}/>
+          <PlayerProgram programList={programList} selectDate={this.selectDate} />
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}} >
           <div ref="assetProperty" className="panel panel-default asset-property">
