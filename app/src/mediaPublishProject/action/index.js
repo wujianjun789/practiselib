@@ -94,7 +94,7 @@ export function initZone(zone) {
 export function initItem(item) {
   return dispatch => {
     dispatch({type: INIT_ITEM, data:item});
-    dispatch(initCurnode(item));
+    // dispatch(initCurnode(item));
   };
 }
 

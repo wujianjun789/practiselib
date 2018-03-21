@@ -61,7 +61,8 @@ export class PlayPlan extends Component {
       isUpload: false,
       afterFirstUpload: false,
 
-      sideInfoHeight:{'height': 'auto'}
+      sideInfoHeight:{'height': 'auto'},
+      IsCancelSelect: false
     };
 
     this.formatIntl = this.formatIntl.bind(this);
@@ -312,6 +313,7 @@ export class PlayPlan extends Component {
     this.props.actions.initCurnode(item);
     this.props.actions.initItem(item);
 
+    this.setState({IsCancelSelect: true});
   }
 
   playerAssetRemove(item) {
@@ -401,6 +403,8 @@ export class PlayPlan extends Component {
     }
 
     actions.initCurnode(node);
+    actions.initItem(null);
+    this.setState({IsCancelSelect: false});
   }
 
   headbarClick(key) {
@@ -471,7 +475,7 @@ export class PlayPlan extends Component {
   }
 
   render() {
-    const {sidebarInfo, sideInfoHeight} = this.state;
+    const {sidebarInfo, sideInfoHeight, IsCancelSelect} = this.state;
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
@@ -493,7 +497,7 @@ export class PlayPlan extends Component {
 
         const {position} = zon;
         let index = -1;
-        if (item) {
+        if (item && curNode.type !== "area"  && curNode.type !== "scene") {
           index = lodash.findIndex(zon.children, it => {return it.id == item.id;});
         } else {
           index = -1;
@@ -503,14 +507,14 @@ export class PlayPlan extends Component {
           src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : HOST_IP_FILE + '/api/file/thumbnail/' + item.thumbnail) : ''};
       });
     }
-
+console.log(areaList);
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
         state: { item: project },
       }} />
       <SideBar isEdit={false} onClick={this.headbarClick}>
-        <TreeView className="mediaPublish" IsCancelSelect={false} onToggle={ (node) => this.onToggle(node) }/>
+        <TreeView className="mediaPublish" IsCancelSelect={IsCancelSelect} onToggle={ (node) => this.onToggle(node) }/>
       </SideBar>
 
       <Content className="play-plan">

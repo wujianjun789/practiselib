@@ -54,6 +54,7 @@ export default class RenderPlayerAsset extends Component {
   render() {
     const {IsPopup} = this.state;
     const { curNode, playerListAsset, curItem, playerAssetRemove } = this.props;
+    
     return (<ul className={curNode && curNode.type==="area" && typeof curNode.id === 'number' || curNode && curNode.assetType?"":"hidden"}>
       {
         playerListAsset.map((item, index) => {
