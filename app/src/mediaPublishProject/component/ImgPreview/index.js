@@ -42,7 +42,8 @@ export default class ImgPreview extends Component {
   }
   
   render() {
-    const { previewProps = mockProps, projectSize, wrapperSize } = this.props;
+    const { previewProps = mockProps, wrapperSize } = this.props;
+    const { projectSize } = previewProps;
     const status = this.getStyleStatus(projectSize, wrapperSize);
     return (<PreviewContainer status={status} {...previewProps}/>);
   }

@@ -53,7 +53,7 @@ const PreviewContainer = (props) => {
    * 65535 means null;
    */
   const { projectSize = initProjectSize, areaList = initAreaList, selectedId = initSelectedId, status = 0, ...otherProps } = props;
-  const style = this.getCorrectStyle(status, projectSize);
+  const style = getCorrectStyle(status, projectSize);
   const areaListEle = renderAreaList(areaList, selectedId);
   return (
     <div className="container-wapper">
