@@ -2,6 +2,7 @@
  * Created by a on 2018/3/8.
  */
 import lodash from 'lodash';
+import moment from 'moment';
 
 const week = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"日"};
 export function weekReplace(list) {
@@ -639,4 +640,14 @@ export function getItemOfScene(sceneItem, projectId, programId, sceneId) {
   }
 
   return sceneItem[projectId][programId][sceneId];
+}
+
+export function initPlanDate(plan) {
+  if(typeof plan.id === "string" && plan.id.indexOf("plan")>-1){
+    const mon = moment();
+    plan.dateRange = {dateBegin:{year:mon.year(), month:mon.month(), day:mon.date()}, dateEnd:{year:mon.year(), month:mon.month(), day:mon.date()}}
+    plan.timeRange = {timeBegin:{hour:mon.hour(), minute:mon.minute(), second:mon.second(), milliseconds:mon.millisecond()}, timeEnd:{hour:mon.hour(), minute:mon.minute(), second:mon.second()+1, milliseconds:mon.millisecond()}}
+  }
+
+  return plan;
 }

@@ -22,16 +22,18 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyClick } from '../action/index';
+import {initPlanDate} from '../util/index'
 
 import PlayerProgram from '../component/PlayerProgram/index';
 
 import moment from 'moment';
+import lodash from 'lodash';
 import {getMomentByDateObject} from '../../util/time';
 export class PlayProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      curDate: null,
+      curDate: moment(),
       sidebarInfo: {
         collapsed: false,
         propertyCollapsed: false,
@@ -45,6 +47,7 @@ export class PlayProject extends Component {
     this.navigatorScene = this.navigatorScene.bind(this);
 
     this.formatIntl = this.formatIntl.bind(this);
+    this.selectDate = this.selectDate.bind(this);
   }
 
   componentWillMount() {
@@ -129,24 +132,29 @@ export class PlayProject extends Component {
     this.setState({sidebarInfo:Object.assign({}, sidebarInfo, {[key]: !sidebarInfo[key]})});
   }
 
-  render() {
-    const {sidebarInfo} = this.state;
-    const {router, data, project, plan} = this.props;
+  selectDate(date){
+    this.setState({curDate: date});
+  }
 
-    const programList = data.map(plan=>{
-      if(typeof plan.id === "string" && plan.id.indexOf("plan")>-1){
-        const mon = moment();
-        plan.dateRange = {dateBegin:{year:mon.year(), month:mon.month(), day:mon.date()}, dateEnd:{year:mon.year(), month:mon.month(), day:mon.date()}}
-        plan.timeRange = {timeBegin:{hour:mon.hour(), minute:mon.minute(), second:mon.second(), milliseconds:mon.millisecond()}, timeEnd:{hour:mon.hour(), minute:mon.minute(), second:mon.second()+1, milliseconds:mon.millisecond()}}
-      }
+  render() {
+    const {sidebarInfo, curDate} = this.state;
+    const {router, data, project, plan} = this.props;
+    const datalist = curDate?lodash.filter(data, newPlan=>{
+      const plan = initPlanDate(newPlan);
       const {dateBegin, dateEnd} = plan.dateRange;
-      const {timeBegin, timeEnd} = plan.timeRange;
-      const momBegin = getMomentByDateObject(dateBegin, timeBegin);
-      const momEnd = getMomentByDateObject(dateEnd, timeEnd)
-      return {name:plan.name,totalSec:24*3600, schedules:[{start:(momBegin.hour()*3600+momBegin.minute()*60+momBegin.seconds()+momBegin.millisecond()/60),
-        end:(momEnd.hour()*3600+momEnd.minute()*60+momEnd.seconds()+momEnd.millisecond()/60)}]}
+      return dateBegin.day <= curDate.date() && dateEnd.day >= curDate.date()
+    }):data;
+
+    const programList = datalist.map(newPlan=>{
+    const plan = initPlanDate(newPlan);
+    const {dateBegin, dateEnd} = plan.dateRange;
+    const {timeBegin, timeEnd} = plan.timeRange;
+    const momBegin = getMomentByDateObject(dateBegin, timeBegin);
+    const momEnd = getMomentByDateObject(dateEnd, timeEnd)
+    return {name:plan.name,totalSec:24*3600, schedules:[{start:(momBegin.hour()*3600+momBegin.minute()*60+momBegin.seconds()+momBegin.millisecond()/60),
+      end:(momEnd.hour()*3600+momEnd.minute()*60+momEnd.seconds()+momEnd.millisecond()/60)}]}
     });
-console.log(programList);
+
     return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={'/mediaPublish/playerProject'}/>
       <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
@@ -162,7 +170,7 @@ console.log(programList);
 
       <Content className="play-project">
         <div className="left" ref={(left) => this._left = left}>
-          <PlayerProgram programList={programList}/>
+          <PlayerProgram programList={programList} selectDate={this.selectDate}/>
         </div>
         <SidebarInfo collapsed={sidebarInfo.collapsed} sidebarClick={() => {this.sidebarClick('collapsed');}} >
           <div ref="assetProperty" className="panel panel-default asset-property">
