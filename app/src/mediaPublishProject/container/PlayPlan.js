@@ -536,7 +536,7 @@ export class PlayPlan extends Component {
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-              <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} actions={actions} applyClick={this.applyClick}/>
+              <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} item={item} actions={actions} applyClick={this.applyClick}/>
             </div>
           </div>
         </SidebarInfo>
