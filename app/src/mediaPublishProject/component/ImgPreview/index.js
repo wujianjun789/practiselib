@@ -35,9 +35,9 @@ export default class ImgPreview extends Component {
     let status = 0;
     const { width: projectWidth, height: projectHeight } = projectSize;
     const { width: wrapperWidth, height: wrapperHeight } = wrapperSize;
-    if (wrapperWidth > projectWidth) { status = 1; }
-    if (wrapperHeight > projectHeight) { status = 2; }
-    if (wrapperWidth > projectWidth && wrapperHeight > projectHeight) { status = 3; }
+    if (wrapperWidth < projectWidth) { status = 1; }
+    if (wrapperHeight < projectHeight) { status = 2; }
+    if (wrapperWidth < projectWidth && wrapperHeight < projectHeight) { status = 3; }
     return status;
   }
   
