@@ -60,6 +60,8 @@ export class PlayPlan extends Component {
       currentXhr: null,
       isUpload: false,
       afterFirstUpload: false,
+
+      sideInfoHeight:{'height': 'auto'}
     };
 
     this.formatIntl = this.formatIntl.bind(this);
@@ -73,10 +75,19 @@ export class PlayPlan extends Component {
     this.playerAssetAdd = this.playerAssetAdd.bind(this);
     this.applyClick = this.applyClick.bind(this);
     this.getPropertyName = this.getPropertyName.bind(this);
+
+    this.setSize = this.setSize.bind(this);
   }
 
   componentWillMount() {
+    this.mounted = true;
     const {router, actions} = this.props;
+
+    this.mounted && this.setSize();
+    window.onresize = event => {
+      this.mounted && this.setSize();
+    };
+
     this.updateSceneTree();
     if (this.props.plan) {
       actions.requestSceneList(this.props.plan.id);
@@ -93,7 +104,6 @@ export class PlayPlan extends Component {
   }
 
   componentDidUpdate() {
-    this.mounted = true;
     const {IsUpdateTree, actions} = this.props;
     if (IsUpdateTree) {
       this.updateSceneTree();
@@ -107,12 +117,22 @@ export class PlayPlan extends Component {
     actions.initZone(null);
     actions.initItem(null);
     actions.initCurnode(null);
+
+    window.onresize = event => {
+
+    };
   }
 
   formatIntl(formatId) {
     const { intl } = this.props;
     return intl ? intl.formatMessage({ id: formatId }) : '';
     // return formatId;
+  }
+
+  setSize(){
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    this.setState({sideInfoHeight:{height:(height-133)+'px'}});
   }
 
   showModal = () => {
@@ -451,7 +471,7 @@ export class PlayPlan extends Component {
   }
 
   render() {
-    const {sidebarInfo} = this.state;
+    const {sidebarInfo, sideInfoHeight} = this.state;
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
@@ -535,7 +555,7 @@ export class PlayPlan extends Component {
               {this.getPropertyName(curNode) + this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
             </div>
-            <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
+            <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} style={sideInfoHeight}>
               <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} item={item} actions={actions} applyClick={this.applyClick}/>
             </div>
           </div>
