@@ -63,6 +63,9 @@ export class PlayPlan extends Component {
       currentXhr: null,
       isUpload: false,
       afterFirstUpload: false,
+
+      sideInfoHeight:{'height': 'auto'},
+      IsCancelSelect: false
     };
 
     this.formatIntl = this.formatIntl.bind(this);
@@ -76,10 +79,19 @@ export class PlayPlan extends Component {
     this.playerAssetAdd = this.playerAssetAdd.bind(this);
     this.applyClick = this.applyClick.bind(this);
     this.getPropertyName = this.getPropertyName.bind(this);
+
+    this.setSize = this.setSize.bind(this);
   }
 
   componentWillMount() {
+    this.mounted = true;
     const {router, actions} = this.props;
+
+    this.mounted && this.setSize();
+    window.onresize = event => {
+      this.mounted && this.setSize();
+    };
+
     this.updateSceneTree();
     if (this.props.plan) {
       actions.requestSceneList(this.props.plan.id);
@@ -96,7 +108,6 @@ export class PlayPlan extends Component {
   }
 
   componentDidUpdate() {
-    this.mounted = true;
     const {IsUpdateTree, actions} = this.props;
     if (IsUpdateTree) {
       this.updateSceneTree();
@@ -114,12 +125,22 @@ export class PlayPlan extends Component {
     actions.initZone(null);
     actions.initItem(null);
     actions.initCurnode(null);
+
+    window.onresize = event => {
+
+    };
   }
 
   formatIntl(formatId) {
     const { intl } = this.props;
     return intl ? intl.formatMessage({ id: formatId }) : '';
     // return formatId;
+  }
+
+  setSize(){
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    this.setState({sideInfoHeight:{height:(height-133)+'px'}});
   }
 
   showModal = () => {
@@ -299,6 +320,7 @@ export class PlayPlan extends Component {
     this.props.actions.initCurnode(item);
     this.props.actions.initItem(item);
 
+    this.setState({IsCancelSelect: true});
   }
 
   playerAssetRemove(item) {
@@ -388,6 +410,8 @@ export class PlayPlan extends Component {
     }
 
     actions.initCurnode(node);
+    actions.initItem(null);
+    this.setState({IsCancelSelect: false});
   }
 
   headbarClick(key) {
@@ -475,7 +499,7 @@ export class PlayPlan extends Component {
   }
 
   render() {
-    const {sidebarInfo} = this.state;
+    const {sidebarInfo, sideInfoHeight, IsCancelSelect} = this.state;
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
@@ -497,7 +521,7 @@ export class PlayPlan extends Component {
 
         const {position} = zon;
         let index = -1;
-        if (item) {
+        if (item && curNode.type !== "area"  && curNode.type !== "scene") {
           index = lodash.findIndex(zon.children, it => {return it.id == item.id;});
         } else {
           index = -1;
@@ -507,14 +531,14 @@ export class PlayPlan extends Component {
           src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : HOST_IP_FILE + '/api/file/thumbnail/' + item.thumbnail) : ''};
       });
     }
-
+console.log(areaList);
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
         state: { item: project },
       }} />
       <SideBar isEdit={false} onClick={this.headbarClick}>
-        <TreeView className="mediaPublish" IsCancelSelect={false} onToggle={ (node) => this.onToggle(node) }/>
+        <TreeView className="mediaPublish" IsCancelSelect={IsCancelSelect} onToggle={ (node) => this.onToggle(node) }/>
       </SideBar>
 
       <Content className="play-plan">
@@ -559,8 +583,8 @@ export class PlayPlan extends Component {
               {this.getPropertyName(curNode) + this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
             </div>
-            <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-              <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} actions={actions} applyClick={this.applyClick}/>
+            <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} style={sideInfoHeight}>
+              <RenderPropertyPanel curType={curType} project={project} plan={plan} scene={scene} zone={zone} item={item} actions={actions} applyClick={this.applyClick}/>
             </div>
           </div>
         </SidebarInfo>

@@ -171,6 +171,7 @@ function updateItemName(state, item, file){
     const sceneItem = lodash.find(programItem.children, scene => { return scene.id == state.scene.id; });
 
     const zoneIndex = lodash.findIndex(sceneItem.children, zone => { return zone.id == state.zone.id; });
+    const scene = playerData[programIndex].children[sceneIndex];
     const zone = playerData[programIndex].children[sceneIndex].children[zoneIndex];
-    return Object.assign({}, state, {data: playerData, zone:zone});
+    return Object.assign({}, state, {data: playerData, scene:scene, zone:zone});
 }
