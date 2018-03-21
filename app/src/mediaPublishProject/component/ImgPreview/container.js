@@ -28,12 +28,32 @@ function renderAreaList(areaList, selectedId) {
   return renderList;
 }
 
+function getCorrectStyle(status, projectSize) {
+  let style = {};
+  switch (status) {
+  case 0:
+    style = { marginLeft: -0.5 * projectSize.width, marginTop: -0.5 * projectSize.height, ...projectSize };
+    return style;
+  case 1:
+    style = { top: 0, marginLeft: -0.5 * projectSize.width, ...projectSize };
+    return style;
+  case 2:
+    style = { left: 0, marginTop: -0.5 * projectSize.height, ...projectSize };
+    return style;
+  case 3:
+    style = { left: 0, top: 0, ...projectSize };
+    return style;  
+  default:
+    return style;
+  }
+}
+
 const PreviewContainer = (props) => {
   /* We have reached an agreement that 65535 is the number can not be touched.
    * 65535 means null;
    */
-  const { projectSize = initProjectSize, areaList = initAreaList, selectedId = initSelectedId, ...otherProps } = props;
-  const style = {marginLeft: -0.5 * projectSize.width, marginTop:-0.5 * projectSize.height, ...projectSize};
+  const { projectSize = initProjectSize, areaList = initAreaList, selectedId = initSelectedId, status = 0, ...otherProps } = props;
+  const style = this.getCorrectStyle(status, projectSize);
   const areaListEle = renderAreaList(areaList, selectedId);
   return (
     <div className="container-wapper">

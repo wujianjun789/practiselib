@@ -50,6 +50,9 @@ export class PlayPlan extends Component {
         propertyCollapsed: false,
         assetLibCollapsed: false,
       },
+      imgPreviewWrapperSize: {
+        
+      },
 
       //上传文件模块字段
       showModal: false,
@@ -98,6 +101,10 @@ export class PlayPlan extends Component {
     if (IsUpdateTree) {
       this.updateSceneTree();
     }
+  }
+
+  componentDidMount() {
+    this.getImgPreviewWrapperSize();
   }
 
   componentWillUnmount() {
@@ -429,7 +436,24 @@ export class PlayPlan extends Component {
 
   sidebarClick(key) {
     const {sidebarInfo} = this.state;
-    this.setState({sidebarInfo:Object.assign({}, sidebarInfo, {[key]: !sidebarInfo[key]})});
+    this.setState({
+      sidebarInfo: Object.assign({}, sidebarInfo, { [key]: !sidebarInfo[key] }),
+    }, () => {
+      setTimeout(() => {
+        this.getImgPreviewWrapperSize();
+      }, 500);
+    });
+  }
+
+  getImgPreviewWrapperSize() {
+    const { _imgPreview } = this;
+    this.setState({
+      imgPreviewWrapperSize: {
+        width: _imgPreview.clientWidth,
+        height: _imgPreview.clientHeight,
+      },
+    });
+    
   }
 
   applyClick(id, data) {
@@ -505,7 +529,7 @@ export class PlayPlan extends Component {
             <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
               <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
           </div>
-          <div className="img-container" >
+          <div className="img-container" ref={(preview) => this._imgPreview = preview}>
             {/* ImgPreview --- props
             * 1. areaList:[{
             * id:Number --- areaId,
@@ -520,7 +544,7 @@ export class PlayPlan extends Component {
             * 2. selectedId:Number --- actived area's id
             * 3. projectSize:{width,height} --- project width && height
             */}  
-            <ImgPreview previewProps={{areaList:areaList, selectedId:zone && zone.id, projectSize:{width:project && project.width, height:project && project.height}}}/>
+            <ImgPreview wrapperSize={this.state.imgPreviewWrapperSize} previewProps={{areaList:areaList, selectedId:zone && zone.id, projectSize:{width:project && project.width, height:project && project.height}}}/>
           </div>
         </div>
         <div className="mediaPublish-footer">

@@ -30,10 +30,21 @@ export default class ImgPreview extends Component {
     super(props);
     this.state = {};
   }
+
+  getStyleStatus(projectSize, wrapperSize) {
+    let status = 0;
+    const { width: projectWidth, height: projectHeight } = projectSize;
+    const { width: wrapperWidth, height: wrapperHeight } = wrapperSize;
+    if (wrapperWidth > projectWidth) { status = 1; }
+    if (wrapperHeight > projectHeight) { status = 2; }
+    if (wrapperWidth > projectWidth && wrapperHeight > projectHeight) { status = 3; }
+    return status;
+  }
   
   render() {
-    const { previewProps = mockProps } = this.props;
-    return (<PreviewContainer {...previewProps}/>);
+    const { previewProps = mockProps, projectSize, wrapperSize } = this.props;
+    const status = this.getStyleStatus(projectSize, wrapperSize);
+    return (<PreviewContainer status={status} {...previewProps}/>);
   }
 }
 

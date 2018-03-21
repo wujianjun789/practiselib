@@ -13,16 +13,16 @@ class PlayerProgram extends Component {
       date: {},
     };
     this.onClick = this.onClick.bind(this);
-    this.selectDate = this.selectDate.bind(this);
+    // this.selectDate = this.selectDate.bind(this);
   }
 
   onClick() { }
 
-  selectDate(date, dateString) {
-    this.setState({
-      date: date,
-    });
-  }
+  // selectDate(date, dateString) {
+  //   this.setState({
+  //     date: date,
+  //   });
+  // }
 
   render() {
     // countShaft(startTime,endTime,Interval)
@@ -42,7 +42,7 @@ class PlayerProgram extends Component {
     });
     return (
       <div id="player-programmer">
-        <ProgramHeader timeShaft={timeShaft} selectDate={this.selectDate}/>
+        <ProgramHeader timeShaft={timeShaft} selectDate={this.props.selectDate}/>
         <ul id="program-shaft">
           {programShaftList}
         </ul>
