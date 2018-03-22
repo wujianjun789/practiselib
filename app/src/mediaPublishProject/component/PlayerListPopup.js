@@ -72,10 +72,11 @@ export default class PlayerListPopup extends PureComponent {
   }
 
   render() {
-    let {id, name, width, height, prompt} = this.state;
+    const {id, name, width, height, prompt} = this.state;
+    const {IsModify} = this.props;
 
-    let valid = prompt.name || prompt.width || prompt.height;
-    let footer = <PanelFooter funcNames={['onCancel', 'onConfirm']} btnTitles={['button.cancel', 'button.confirm']}
+    const valid = prompt.name || prompt.width || prompt.height;
+    const footer = <PanelFooter funcNames={['onCancel', 'onConfirm']} btnTitles={['button.cancel', 'button.confirm']}
       btnClassName={['btn-default', 'btn-primary']}
       btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
 
@@ -95,7 +96,7 @@ export default class PlayerListPopup extends PureComponent {
               </span>
             </div>
           </div>
-          <div className="form-group row">
+          <div className={"form-group row "+(IsModify?"hidden":"")}>
             <label className="col-sm-3 control-label" htmlFor="screen-size">
               <FormattedMessage id="mediaPublish.screenSize" />
             </label>

@@ -28,14 +28,16 @@ import lodash from 'lodash';
 import {getIndexByKey} from '../../util/algorithm';
 import {updateTree, clearTreeListState, IsSystemFile, addItemToScene, updateTreeProperty} from '../util/index'
 const initialState = {
-    data: [],
-    project: null,  //播放方案
-    plan: null,     //播放计划
-    scene: null,   //播放场景
-    zone: null,      //播放区域
-    item: null,      //播放项
-    IsUpdateTree: false,
-    curNode: null //当前要操作对象
+  sidebarNode: null,
+
+  data: [],
+  project: null,  //播放方案
+  plan: null,     //播放计划
+  scene: null,   //播放场景
+  zone: null,      //播放区域
+  item: null,      //播放项
+  IsUpdateTree: false,
+  curNode: null //当前要操作对象
 };
 
 

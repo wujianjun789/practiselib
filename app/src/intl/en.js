@@ -103,6 +103,8 @@ export default {
     'button.to.fault': 'To fault',
     'button.acceptable': 'Acceptable',
     'button.hangUp': 'Hang up',
+    'button.rename': 'Rename',
+    'button.publish': 'Publish',
 
     //用户中心
     'update.password': 'Update password',
@@ -365,7 +367,8 @@ export default {
     'mediaPublish.playList': 'Play List',
     'mediaPublish.manage': 'Publish Manage',
     'mediaPublish.playType': 'play type',
-    'mediaPublish.addPlan': 'Add plan',
+    'mediaPublish.addPlan': 'Add project',
+    'mediaPublish.modify': 'Modify project',
     'mediaPublish.schemeName': 'plan name',
     'mediaPublish.inputSchemeName': 'please input plan name',
     'mediaPublish.resolution': 'resolution',

@@ -19,6 +19,8 @@ export default class Table extends Component {
         super(props);
         this.allCheckChange = this.allCheckChange.bind(this);
         this.rowCheckChange = this.rowCheckChange.bind(this);
+        this.rowRename = this.rowRename.bind(this);
+        this.rowPublish = this.rowPublish.bind(this);
         this.rowEdit = this.rowEdit.bind(this);
         this.rowDelete = this.rowDelete.bind(this);
         this.rowClick = this.rowClick.bind(this);
@@ -30,6 +32,14 @@ export default class Table extends Component {
 
     rowCheckChange(rowId, value) {
         this.props.rowCheckChange && this.props.rowCheckChange(rowId, value);
+    }
+
+    rowRename(rowId){
+        this.props.rowRename && this.props.rowRename(rowId);
+    }
+
+    rowPublish(rowId){
+        this.props.rowPublish && this.props.rowPublish(rowId);
     }
 
     rowEdit(rowId) {
@@ -45,7 +55,7 @@ export default class Table extends Component {
     }
 
     render() {
-        let { columns = [], data = [], allChecked, titleCheck = true, checked = [], keyField = 'id', isEdit, className = '', activeId } = this.props;
+        let { columns = [], data = [], allChecked, titleCheck = true, checked = [], keyField = 'id', isProject, isEdit, className = '', activeId } = this.props;
         return (
             <div className={`table-responsive ${className}`}>
                 <table className="table table-hover">
@@ -62,6 +72,9 @@ export default class Table extends Component {
                                 columns.map((item, index) => {
                                     return <th key={index}>{item.title}</th>
                                 })
+                            }
+                            {
+                                isProject && <th></th>
                             }
                             {
                                 isEdit && <th></th>
@@ -85,10 +98,29 @@ export default class Table extends Component {
                                         })
                                     }
                                     {
+                                        isProject &&
+                                        <td className="edit project">
+                                            <a className="btn" onClick={() => keyField && this.rowRename(row.get(keyField))}>
+                                                <span className="icon_rename"></span>
+                                                <span className="rename"><FormattedMessage id='button.rename' /></span>
+                                            </a>
+                                            <a className="btn" onClick={() => keyField && this.rowPublish(row.get(keyField))}>
+                                                <span className="icon_upgrade"></span>
+                                                <span className="publish"><FormattedMessage id='button.publish' /></span>
+                                            </a>
+                                        </td>
+                                    }
+                                    {
                                         isEdit &&
                                         <td className="edit">
-                                            <a className="btn" onClick={() => keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.modify' /></span></a>
-                                            <a className="btn" onClick={() => keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete' /></span></a>
+                                            <a className="btn" onClick={() => keyField && this.rowEdit(row.get(keyField))}>
+                                                <span className="icon_edit"></span>
+                                                <span className="update"><FormattedMessage id='button.modify' /></span>
+                                            </a>
+                                            <a className="btn" onClick={() => keyField && this.rowDelete(row.get(keyField))}>
+                                                <span className="icon_delete"></span>
+                                                <span className="del"><FormattedMessage id='button.delete' /></span>
+                                            </a>
                                         </td>
                                     }
 

@@ -51,6 +51,26 @@
 
       background-color: #fff;
       border: solid 1px #e6e6e6;
+
+      table{
+        tbody{
+          tr{
+            td{
+              &.edit{
+                width: 180px;
+                padding-left: 0px;
+              }
+
+              &.project{
+                padding-right: 0px;
+                :last-child{
+                  padding-right: 0;
+                }
+              }
+            }
+          }
+        }
+      }
     }
 
     .page {

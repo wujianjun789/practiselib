@@ -103,6 +103,8 @@ export default {
     'button.to.fault': '转故障',
     'button.acceptable': '可接受',
     'button.hangUp': '挂起',
+    'button.rename': '重命名',
+    'button.publish': '发布',
 
     //用户中心
     'update.password': '修改密码',
@@ -361,6 +363,7 @@ export default {
     'mediaPublish.manage': '发布管理',
     'mediaPublish.playType': '播放类型',
     'mediaPublish.addPlan': '添加方案',
+    'mediaPublish.modify': '修改方案',
     'mediaPublish.schemeName': '方案名称',
     'mediaPublish.inputSchemeName': '输入方案名称',
     'mediaPublish.resolution': '分辨率',
