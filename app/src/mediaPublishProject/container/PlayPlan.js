@@ -435,7 +435,7 @@ export class PlayPlan extends Component {
 
   editAlert() {
     const {scene, zone, curNode, actions} = this.props;
-    if (!curNode || curNode.type === 'scene' && !scene || curNode.type === 'area' && !zone) {
+    if (!curNode || curNode && curNode.type !== 'scene'  && curNode.type !== 'area') {
       actions.addNotify(0, '请选择播放场景或播放区域。');
       return false;
     }

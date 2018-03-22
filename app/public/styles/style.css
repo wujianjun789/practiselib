@@ -1559,6 +1559,10 @@ width:24px;
     /*cursor: pointer;*/
 /*}*/
 
+.icon_delete:before{
+    color:#fa6262;
+}
+
 .icon.icon-delete{
     display: inline-block;
     width: 15px;

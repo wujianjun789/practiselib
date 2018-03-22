@@ -27,13 +27,13 @@ export default class HeadBar extends Component {
       <div className="edit-container">
         <div className="glyphicon glyphicon-plus"
           onClick={(event) => {event.stopPropagation();event.preventDefault();this.onClick('add')}} role="presentation"></div>
-        <div className="glyphicon glyphicon-remove pull-right"
+        <div className="glyphicon icon_delete pull-right"
           onClick={() => this.onClick('remove')} role="presentation"></div>
         <div className="glyphicon glyphicon-arrow-down pull-right"
           onClick={() => this.onClick('down')} role="presentation"></div>
         <div className="glyphicon glyphicon-arrow-up pull-right"
           onClick={() => this.onClick('up')} role="presentation"></div>
-        <div className={'glyphicon glyphicon-edit pull-right ' + (isEdit ? '' : 'hidden')}
+        <div className={'glyphicon icon_edit pull-right ' + (isEdit ? '' : 'hidden')}
           onClick={() => this.onClick('edit')} role="presentation"></div>
       </div>
       <div className={'add-poppup ' + (IsPopup && isPopup ? 'active' : '')}>
