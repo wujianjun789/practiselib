@@ -18,8 +18,8 @@ class PlayerAreaPro extends PureComponent {
         //区域
         areaName: {
           key: 'areaName',
-          title: this.props.intl.formatMessage({id: 'mediaPublish.areaName'}),
-          placeholder: this.props.intl.formatMessage({id: 'mediaPublish.areaName'}),
+          title: this.props.intl.formatMessage({id: 'name'}),
+          placeholder: this.props.intl.formatMessage({id: 'name'}),
           defaultValue: '',
           value: '',
         },
