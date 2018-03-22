@@ -36,7 +36,7 @@ export class PlayerList extends Component {
       page: Immutable.fromJS({
         pageSize: 10,
         current: 1,
-        total: 2,
+        total: 0,
       }),
       data: Immutable.fromJS([
         /* { id: 1, icon: "", name: `${this.formatIntl('mediaPublish.playPlan')} 1`, resolution: "800X600", width: 800, height: 600 },
