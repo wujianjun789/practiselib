@@ -10,6 +10,9 @@ export default {
     'app.day': '日',
     'app.system': '系统',
     'app.custom': '自定义',
+    'app.date': '日期',
+    'app.time': '时间',
+    'app.second':'秒',
 
     'app.map': '地图',
     'app.list': '列表',
@@ -397,7 +400,7 @@ export default {
     'mediaPublish.reset': '重置',
     'mediaPublish.apply': '应用',
     'mediaPublish.check': '请输入正确参数',
-    'mediaPublish.repeatTimes': '播放次数',
+    'mediaPublish.repeatTimes': '次数',
     'mediaPublish.scalingRatio': '缩放比例',
     'mediaPublish.fragmentRange': '片段范围',
     'mediaPublish.to': '至',
@@ -413,7 +416,7 @@ export default {
     'mediaPublish.timeZone': '时区',
     'mediaPublish.dateFormat': '日期格式',
     'mediaPublish.timeFormat': '时间格式',
-    'mediaPublish.playingMode': '播放方式',
+    'mediaPublish.playingMode': '模式',
     'mediaPublish.areaName': '区域名称',
     'mediaPublish.areaWidth': '区域宽度',
     'mediaPublish.areaHeight': '区域高度',
@@ -495,6 +498,12 @@ export default {
     'mediaPublish.delete.material':'是否刪除选中素材？',
     'mediaPublish.select.material':'请选中右边素材库素材',
 
+    'mediaPublish.times.play':'按次播放',
+    'mediaPublish.time.play':'按时长播放',
+    'mediaPublish.loop.play':'循环播放',
+
+    'mediaPublish.time':'时长',
+
     //以前的
     'app.link.index': '首页',
     'app.link.config': '配置',
@@ -573,8 +582,6 @@ export default {
     'app.confirm': '确定',
 
     'app.alarm': '警报',
-    'app.name': '名称',
-    'app.date': '时间',
 
     'manage.title': 'StarRiver 管理',
 

@@ -17,8 +17,11 @@ class PlayerScene extends PureComponent {
       id:'',
       property: {
         //场景名称
-        sceneName: { key: 'assetName', title: this.props.intl.formatMessage({id:'mediaPublish.screen'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:name ? name : '', value: '' },
-        playMode: { key: 'playMode', title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}), list: [{ id: 1, name: '按次播放', type:0 }, { id: 2, name: '按时长播放', type:1 }, { id: 3, name: '循环播放', type:2 }], defaultIndex: 2, index: 2, name: '循环播放' },
+        sceneName: { key: 'assetName', title: this.props.intl.formatMessage({id:'name'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.materialName'}), defaultValue:name ? name : '', value: '' },
+        playMode: { key: 'playMode', title: this.props.intl.formatMessage({id:'mediaPublish.playingMode'}),
+          list: [{ id: 1, name: this.props.intl.formatMessage({id:'mediaPublish.times.play'}), type:0 },
+            { id: 2, name: this.props.intl.formatMessage({id:'mediaPublish.time.play'}), type:1 },
+            { id: 3, name: this.props.intl.formatMessage({id:'mediaPublish.loop.play'}), type:2 }], defaultIndex: 2, index: 2, name: this.props.intl.formatMessage({id:'mediaPublish.loop.play'}) },
         playModeCount: { key: 'playModeCount', title: this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.number'}), active: false,
           defaultValue: 1, value: 1,
           defaultValue2: 0, value2: 0},
@@ -149,22 +152,22 @@ class PlayerScene extends PureComponent {
     if ( id == 'playMode') {
       const curIndex = value.target.selectedIndex;
       console.log('correct', curIndex);
-      let title = '播放次数';
-      let placeholder = '次';
+      let title = this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'});
+      let placeholder = this.props.intl.formatMessage({id:'mediaPublish.number'});
       let active = true;
       let updateId = 'playModeCount';
       let prompt = false;
       switch (curIndex) {
       case 0:
-        title = '播放次数';
-        placeholder = '次';
+        title = this.props.intl.formatMessage({id:'mediaPublish.repeatTimes'});
+        placeholder = this.props.intl.formatMessage({id:'mediaPublish.number'});
         if (!numbersValid(this.state.property.playModeCount.value)) {
           prompt = true;
         }
         break;
       case 1:
-        title = '播放时长';
-        placeholder = '秒';
+        title = this.props.intl.formatMessage({id:'mediaPublish.time'});
+        placeholder = this.props.intl.formatMessage({id:'app.second'});
         if (!numbersValid(this.state.property.playModeCount.value2)) {
           prompt = true;
         }

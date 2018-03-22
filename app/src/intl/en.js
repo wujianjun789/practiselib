@@ -9,6 +9,9 @@ export default {
     'app.month': 'month',
     'app.system': 'system',
     'app.custom': 'custom',
+    'app.date': 'Date',
+    'app.time': 'Time',
+    'app.second':'Second',
 
     'app.map': 'map',
     'app.list': 'list',
@@ -403,7 +406,7 @@ export default {
     'mediaPublish.reset': 'Reset',
     'mediaPublish.apply': 'Apply',
     'mediaPublish.check': 'Please enter the correct parameters',
-    'mediaPublish.repeatTimes': 'repeat',
+    'mediaPublish.repeatTimes': 'Times',
     'mediaPublish.scalingRatio': 'scaling',
     'mediaPublish.fragmentRange': 'range',
     'mediaPublish.to': 'to',
@@ -419,7 +422,7 @@ export default {
     'mediaPublish.timeZone': 'timeZone',
     'mediaPublish.dateFormat': 'dateFormat',
     'mediaPublish.timeFormat': 'timeFormat',
-    'mediaPublish.playingMode': 'mode',
+    'mediaPublish.playingMode': 'Mode',
     'mediaPublish.areaName': 'area',
     'mediaPublish.areaWidth': 'width',
     'mediaPublish.areaHeight': 'height',
@@ -501,6 +504,12 @@ export default {
     'mediaPublish.delete.material': 'Do you delete the selected material?',
     'mediaPublish.select.material': 'Please select the material library material on the right',
 
+    'mediaPublish.times.play':'Times play',
+    'mediaPublish.time.play':'Time play',
+    'mediaPublish.loop.play':'loop play',
+
+    'mediaPublish.time':'time',
+
     //last
     'app.link.index': 'home',
     'app.link.config': 'config',
@@ -580,8 +589,6 @@ export default {
     'app.confirm': 'OK',
 
     'app.alarm': 'Alarm',
-    'app.name': 'name',
-    'app.date': 'time',
 
     'manage.title': 'StarRiver Manage',
 
