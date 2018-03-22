@@ -400,6 +400,7 @@ export default {
     'mediaPublish.playDuration': 'duration',
     'mediaPublish.playSpeed': 'speed',
     'mediaPublish.animation': 'animation',
+    'mediaPublish.animation2': 'animation',
     'mediaPublish.wordSpacing': 'wordSpacing',
     'mediaPublish.lineSpacing': 'lineSpacing',
 
@@ -409,6 +410,7 @@ export default {
     'mediaPublish.repeatTimes': 'Times',
     'mediaPublish.scalingRatio': 'scaling',
     'mediaPublish.fragmentRange': 'range',
+    'mediaPublish.playType2':'Type',
     'mediaPublish.to': 'to',
     'mediaPublish.volume': 'volume',
     'mediaPublish.number': 'number',

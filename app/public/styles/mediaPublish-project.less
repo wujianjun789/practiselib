@@ -323,6 +323,14 @@
               width: 100%;
             }
           }
+
+          &.font-type, &.font-size, &.alignment, &.playDuration, &.animation, &.playSpeed{
+            display: inline-block;
+            .input-container{
+              width: 70px;
+            }
+          }
+
           &.font-color, &.bg-color{
             display: inline-block;
             .input-container{
@@ -330,12 +338,21 @@
             }
           }
 
+          &.font-type,&.alignment,&.animation{
+            margin-right: 10px;
+          }
+
           &.font-color{
-            margin-right: 68px;
+            //margin-right: 68px;
           }
 
           &.checkbox-container{
-            padding-left: 168px;
+            //padding-left: 168px;
+            display: inline-block;
+            .control-label{
+              width: 55px;
+              padding-right: 10px;
+            }
             .input-container{
               width: 13px;
             }

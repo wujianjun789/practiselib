@@ -109,7 +109,7 @@ class PlayerPicAsset extends PureComponent {
     return <div className="pro-container playerPicAsset">
       <div className="row">
         <div className="form-group">
-          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.materialName'})}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'name'})}</label>
           <div className="input-container input-w-1">
             <input type="text" className="form-control" disabled="disabled"
               value={property.assetName} />
@@ -132,7 +132,7 @@ class PlayerPicAsset extends PureComponent {
           </div>
         </div>
         <div className="form-group pull-right">
-          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.animation'})}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.animation2'})}</label>
           <div className="input-container">
             <select className="form-control input-w-2" value={property.animation}
               onChange={event => this.onChange('animation', event)}>
@@ -167,6 +167,7 @@ class PlayerPicAsset extends PureComponent {
           </div>
         </div>
       </div>
+      <div className="row line"/>
       <div className="row">
         <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>

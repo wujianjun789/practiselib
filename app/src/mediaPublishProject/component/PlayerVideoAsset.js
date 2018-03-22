@@ -122,7 +122,7 @@ class PlayerPicAsset extends PureComponent {
     return <div className="pro-container playerVideoAsset">
       <div className="row">
         <div className="form-group">
-          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.materialName'})}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'name'})}</label>
           <div className="input-container input-w-1">
             <input type="text" className="form-control" disabled="disabled"
               value={property.assetName} />
@@ -154,7 +154,7 @@ class PlayerPicAsset extends PureComponent {
           </div>
         </div>
         <div className="form-group pull-right">
-          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.playType'})}</label>
+          <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.playType2'})}</label>
           <div className="input-container input-w-2">
             <select className="form-control" value={property.playType}
               onChange={event => this.onChange('playType', event)}>

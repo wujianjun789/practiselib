@@ -23,7 +23,7 @@ function getValueById(list, id) {
 }
 class TextFile extends Component {
     state = {
-        name: { title: this.props.intl.formatMessage({ id: 'mediaPublish.materialName' }), value: '' },
+        name: { title: this.props.intl.formatMessage({ id: 'mediaPublish.name' }), value: '' },
         text: { title: this.props.intl.formatMessage({ id: 'mediaPublish.textContent' }), value: '' },
         fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '宋体' }, { id: 1, name: '黑体' }], index: 0 },//index代表当前选中项的id，非下标
         fontColor: {
@@ -356,7 +356,7 @@ class TextFile extends Component {
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='form-group '>
+                    <div class='form-group font-type'>
                         <label className="control-label">{fontType.title}</label>
                         <div class='input-container input-w-2'>
                             <select class='form-control' value={fontType.index}
@@ -369,9 +369,7 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
-                    </div>
-                <div class='row'>
-                    <div class='form-group '>
+                    <div class='form-group font-size'>
                         <label className="control-label">{fontSize.title}</label>
                         <div class='input-container input-w-2'>
                             <select class='form-control' value={fontSize.index}
@@ -384,7 +382,31 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label className="control-label" title={charSpace.title}>{charSpace.title}</label>
+                        <div class="input-container input-w-2">
+                            <input type="text" class="form-control"
+                                   placeholder={charSpace.placeholder} maxLength="8"
+                                   value={charSpace.value}
+                                   onChange={e => this.onChange("charSpace", e)} />
+                            <span class={prompt.charSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
+                        </div>
                     </div>
+                </div>
+                <div class='row'>
+                    <div class="form-group ">
+                        <label className="control-label">{rowSpace.title}</label>
+                        <div class="input-container input-w-2">
+                            <input type="text" class="form-control"
+                                   placeholder={rowSpace.placeholder} maxLength="8"
+                                   value={rowSpace.value}
+                                   onChange={e => this.onChange("rowSpace", e)} />
+                            <span class={prompt.rowSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class='form-group font-color' style={{verticalAlign:'top',height:'40px'}}>
                         <label className="control-label" style={{verticalAlign:'top'}}>{fontColor.title}</label>
@@ -418,7 +440,7 @@ class TextFile extends Component {
                     </div>
                 </div>
                 <div class='row'>
-                    <div class='form-group '>
+                    <div class='form-group alignment'>
                         <label className="control-label">{alignment.title}</label>
                         <div class='input-container input-w-2'>
                             <select class='form-control' value={alignment.index}
@@ -431,9 +453,7 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
-                    </div>
-                <div class="row">
-                    <div class="form-group">
+                    <div class="form-group playDuration">
                         <label className="control-label">{playDuration.title}</label>
                         <div class="input-container input-w-2">
                             <input type="text" class="form-control"
@@ -445,7 +465,7 @@ class TextFile extends Component {
                     </div>
                 </div>
                 <div class='row'>
-                    <div class="form-group">
+                    <div class="form-group animation">
                         <label className="control-label">{animation.title}</label>
                         <div class="input-container input-w-2">
                             <select class="form-control" value={animation.index}
@@ -457,9 +477,7 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
-                    </div>
-                <div className="row">
-                    <div class="form-group">
+                    <div class="form-group playSpeed">
                         <label className="control-label">{playSpeed.title}</label>
                         <div class="input-container input-w-2">
                             <input type="text" class="form-control"
@@ -470,30 +488,7 @@ class TextFile extends Component {
                         </div>
                     </div>
                 </div>
-                <div class='row'>
-                    <div class="form-group ">
-                        <label className="control-label">{rowSpace.title}</label>
-                        <div class="input-container input-w-2">
-                            <input type="text" class="form-control"
-                                placeholder={rowSpace.placeholder} maxLength="8"
-                                value={rowSpace.value}
-                                onChange={e => this.onChange("rowSpace", e)} />
-                            <span class={prompt.rowSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
-                        </div>
-                    </div>
-                    </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label className="control-label" title={charSpace.title}>{charSpace.title}</label>
-                        <div class="input-container input-w-2">
-                            <input type="text" class="form-control"
-                                placeholder={charSpace.placeholder} maxLength="8"
-                                value={charSpace.value}
-                                onChange={e => this.onChange("charSpace", e)} />
-                            <span class={prompt.charSpace ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
-                        </div>
-                    </div>
-                </div>
+                <div className="row line"/>
                 <div class="row">
                     <button class="btn btn-primary pull-right" onClick={() => { this.handleSubmit('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
                     <button class="btn btn-gray pull-right margin-right-1" onClick={() => { this.handleSubmit('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
