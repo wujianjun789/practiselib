@@ -44,6 +44,16 @@ export function getProjectsByPlayerId(id, cb) {
     cb && cb(response);
   });
 }
+export function getCurrentIdActive(id, cb) {
+  let headers = getHttpHeader();
+  let url = HOST_IP + `/players/${id}/active`;
+  httpRequest(url, {
+    headers: headers,
+    method: 'GET'
+  }, response => {
+    cb && cb(response)
+  })
+}
 //播放器应用选中方案
 export function applyProjectOnPlayer(playerId, projectId, cb) {
   let headers = getHttpHeader();
@@ -115,7 +125,7 @@ export function getProjectList(cb) {
 
 export function getPublishProjectList(cb) {
   let headers = getHttpHeader();
-  const param = JSON.stringify({"where":{"binKey":{"neq":""}}});
+  const param = JSON.stringify({ "where": { "binKey": { "neq": "" } } });
   let url = HOST_IP + '/projects?filter=' + encodeURIComponent(param);
   httpRequest(url, {
     headers: headers,

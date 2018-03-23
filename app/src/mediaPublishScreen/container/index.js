@@ -15,7 +15,7 @@ import ProjectPopup from '../component/ProjectPopup';
 import PreViewPopup from '../component/PreViewPopup';
 import { getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount } from '../../api/asset'
-import { getProjectsByPlayerId, getProjectPreviewById, applyProjectOnPlayer } from '../../api/mediaPublish'
+import { getProjectsByPlayerId, getProjectPreviewById, getCurrentIdActive, applyProjectOnPlayer } from '../../api/mediaPublish'
 import '../../../public/styles/media-publish-screen.less';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
@@ -96,7 +96,21 @@ export class MediaPublishScreen extends Component {
                 ...res,
                 { name: '方案管理...', id: 'manage' }
             ]
-            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] })
+            this.setState({ playScheme: newPlayScheme, currentPlan: newPlayScheme[0] }, () => {
+                const { playScheme } = this.state;
+                if (playScheme.length < 3) {
+                    return;
+                }
+                getCurrentIdActive(id, res => {
+                    for (let item of playScheme) {
+                        if (res === item.id) {
+                            this._isMounted && this.setState({ currentPlan: item })
+                            return;
+                        }
+                    }
+
+                })
+            })
         })
     }
     handleCollapse = (id) => {
@@ -133,7 +147,7 @@ export class MediaPublishScreen extends Component {
     handlePagination = (current) => {
         this.setState({ page: { ...this.state.page, current, } }, this.initDeviceData)
     }
-    //预览待时实现
+    //预览待实现
     handleViewDevice = (e) => {
         e.stopPropagation();
         const { currentDevice, currentPlan } = this.state;
