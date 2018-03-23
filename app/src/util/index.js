@@ -1,12 +1,12 @@
 /**
  * Created by a on 2017/7/13.
  */
-import { getLocalStorage, setLocalStorage} from './cache'
+import { getLocalStorage, setLocalStorage } from './cache'
 const _ = require('lodash');
 let language = "";
 export function getLanguage() {
     language = getLocalStorage("appLanguage");
-    if(!language) {
+    if (!language) {
         language = navigator.language;
 
         if (!language) {
@@ -84,7 +84,7 @@ export function getClassByModel(key) {
         case 'sensor':
         case 'sses':
             return 'icon_control';
-            //智慧路灯 icon
+        //智慧路灯 icon
         case 'smartlight':
             return 'icon_smart_light';
         case 'smartLightPole':
@@ -168,31 +168,31 @@ export function getNotifyStateClass(state) {
     }
 }
 
-export function IsMapCircleMarker(domainLevel, map){
-    if(!domainLevel || !map){
+export function IsMapCircleMarker(domainLevel, map) {
+    if (!domainLevel || !map) {
         return false;
     }
-    return map.zoom < map.maxZoom-(map.maxZoom-map.minZoom)/domainLevel;
+    return map.zoom < map.maxZoom - (map.maxZoom - map.minZoom) / domainLevel;
 }
 
 export function getDomainLevelByMapLevel(domainLevel, map) {
-    if(map.zoom == map.minZoom){
+    if (map.zoom == map.minZoom) {
         return Math.min(1, domainLevel);
     }
-    if(map.zoom == map.maxZoom){
+    if (map.zoom == map.maxZoom) {
         return Math.max(1, domainLevel);
     }
-    return Math.round((map.zoom-map.minZoom+1)*domainLevel/(map.maxZoom-map.minZoom));
+    return Math.round((map.zoom - map.minZoom + 1) * domainLevel / (map.maxZoom - map.minZoom));
 }
 
 export function getZoomByMapLevel(curLevel, domainLevel, map) {
-    if(map.zoom == map.minZoom){
+    if (map.zoom == map.minZoom) {
         return Math.min(5, 18);
     }
-    if(map.zoom == map.maxZoom){
+    if (map.zoom == map.maxZoom) {
         return Math.max(5, 18);
     }
-    return Math.round(curLevel*(map.maxZoom-map.minZoom)/domainLevel+map.minZoom-1);
+    return Math.round(curLevel * (map.maxZoom - map.minZoom) / domainLevel + map.minZoom - 1);
 }
 
 
@@ -203,7 +203,7 @@ export const STRATEGY_NAME_LENGTH = 16;
 
 export function numbersValid(number) {
     // return /^([1-9]\d*)|0$/.test(number)
-    if(number == null){
+    if (number == null) {
         return false;
     }
     return /^[+-]?\d*\.?\d*$/.test(number);
@@ -215,6 +215,11 @@ export function NameValid(name) {
 
 export function Name2Valid(name) {
     return /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(name);
+}
+
+export function Name3Valid(name) {
+    // return /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(name);
+    return true;
 }
 export function IPValid(ip) {
     return /^(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/.test(ip)
@@ -247,28 +252,28 @@ export function PassWordValid(password) {
     return /^[_0-9a-zA-Z]+$/.test(password);
 }
 
-export function makeTree(pre){
-    const data = pre.map((v)=>{
-      if(!v.parentId) v.parentId='';
-      return v;
+export function makeTree(pre) {
+    const data = pre.map((v) => {
+        if (!v.parentId) v.parentId = '';
+        return v;
     })
     let groupedByParents = _.groupBy(data, 'parentId');
     let keysById = _.keyBy(data, 'id');
-    _.each(_.omit(groupedByParents, ''), function(children, parentId) {
+    _.each(_.omit(groupedByParents, ''), function (children, parentId) {
         keysById[parentId].children = children;
     });
     return groupedByParents[''];
 }
 
 export function transformKey(name) {
-    switch(name){
-      case 'ssgw':
+    switch (name) {
+        case 'ssgw':
             return 'gateway';
-      case 'ssslc':
+        case 'ssslc':
             return 'lc';
-      case 'sses':
+        case 'sses':
             return 'sensor';
-      case 'ssads':
+        case 'ssads':
             return 'screen';
     }
-  }
+}
