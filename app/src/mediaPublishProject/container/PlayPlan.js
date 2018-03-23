@@ -65,7 +65,7 @@ export class PlayPlan extends Component {
       afterFirstUpload: false,
 
       sideInfoHeight:{'height': 'auto'},
-      IsCancelSelect: false
+      IsCancelSelect: false,
     };
 
     this.formatIntl = this.formatIntl.bind(this);
@@ -137,10 +137,12 @@ export class PlayPlan extends Component {
     // return formatId;
   }
 
-  setSize(){
+  setSize() {
     let width = window.innerWidth;
     let height = window.innerHeight;
-    this.setState({sideInfoHeight:{height:(height-133)+'px'}});
+    this.setState({ sideInfoHeight: { height: (height - 133) + 'px' } }, () => {
+      this.getImgPreviewWrapperSize();
+    });
   }
 
   showModal = () => {
@@ -521,7 +523,7 @@ export class PlayPlan extends Component {
 
         const {position} = zon;
         let index = -1;
-        if (item && curNode.type !== "area"  && curNode.type !== "scene") {
+        if (item && curNode.type !== 'area'  && curNode.type !== 'scene') {
           index = lodash.findIndex(zon.children, it => {return it.id == item.id;});
         } else {
           index = -1;
@@ -531,7 +533,7 @@ export class PlayPlan extends Component {
           src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : HOST_IP_FILE + '/api/file/thumbnail/' + item.thumbnail) : ''};
       });
     }
-console.log(areaList);
+    console.log(areaList);
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
         pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
