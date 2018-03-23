@@ -186,10 +186,10 @@ class PlayerPicAsset extends PureComponent {
         <div className="form-group pull-right clipsRage">
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.fragmentRange'})}</label>
           <div className="input-container input-w-2">
-            <TimePicker disabled={property.playType == '0'} size="large" style={{ width: '98px' }}
+            <TimePicker disabled={property.playType == '0'} size="large" style={{ width: '88px' }}
               onChange={value => this.timeChange('playTimeBegin', value)} value={property.playTimeBegin} />
-            <span className="text"><FormattedMessage id="mediaPublish.to"/></span>
-            <TimePicker disabled={property.playType == '0'} size="large" style={{ width: '98px' }}
+            <span className="text" style={{display: "inline-block", width: '34px', "textAlign": "center"}}><FormattedMessage id="mediaPublish.to"/></span>
+            <TimePicker disabled={property.playType == '0'} size="large" style={{ width: '88px' }}
               onChange={value => this.timeChange('playTimeEnd', value)} value={property.playTimeEnd} />
             <span className={prompt.clipsRage ? 'prompt ' : 'prompt hidden'}>
               <FormattedMessage id="mediaPublish.check"/></span>
@@ -212,6 +212,7 @@ class PlayerPicAsset extends PureComponent {
           </div>
         </div>
       </div> */}
+      <div className="row line"/>
       <div className="row">
         <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>
