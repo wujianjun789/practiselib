@@ -11,7 +11,7 @@ export const moduleInfo = {
 	permission: {key: 'permission', title: 'app.permission.manage', link: '/permissionManage'},
 	maintenance: {key: 'maintenance', title: 'app.system.operation', link: '/systemOperation/config'},
 	control: {key: 'control', title: 'app.smart.light', link: '/smartLight/map'},
-	light: {key: 'light', title: 'app.light', link: '/light/map'},
+	light: {key: 'light', title: 'app.light', link: '/light/statistics'},
 	report: {key: 'report', title: 'app.report.manage', link: '/reporterManage/device'},
 	publish: {key: 'publish', title: 'app.mediaPublish', link: '/mediaPublish/statistics'},
 	visual: {key: 'visual', title: 'app.visualization', link: '/'},
