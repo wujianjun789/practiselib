@@ -20,7 +20,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { intlFormat } from '../../util/index';
 
 
-import { Name2Valid, latdetailValid, latValid } from '../../util/index';
+import { Name2Valid, Name3Valid, latdetailValid, latValid } from '../../util/index';
 import { detailValid } from '../../util/index';
 export default class TypeEditPopup extends Component {
   constructor(props) {
@@ -64,7 +64,7 @@ export default class TypeEditPopup extends Component {
     let prompt = false;
     if (id == 'name') {
       newValue = value;
-      prompt = !Name2Valid(newValue);
+      prompt = !Name3Valid(newValue); //暂时不限制字符类型
     } else if (id == 'power') {
       newValue = value;
       prompt = !Name2Valid(newValue);
