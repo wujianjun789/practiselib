@@ -23,7 +23,7 @@ function getValueById(list, id) {
 }
 class TextFile extends Component {
     state = {
-        name: { title: this.props.intl.formatMessage({ id: 'mediaPublish.name' }), value: '' },
+        name: { title: this.props.intl.formatMessage({ id: 'name' }), value: '' },
         text: { title: this.props.intl.formatMessage({ id: 'mediaPublish.textContent' }), value: '' },
         fontType: { title: this.props.intl.formatMessage({ id: 'mediaPublish.selectFont' }), list: [{ id: 0, name: '宋体' }, { id: 1, name: '黑体' }], index: 0 },//index代表当前选中项的id，非下标
         fontColor: {

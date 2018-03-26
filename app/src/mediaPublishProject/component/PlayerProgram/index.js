@@ -51,7 +51,7 @@ class PlayerProgram extends Component {
   }
 }
 
-function mapStateToProps(state) { }
-function mapDispatchToProps(dispatch, ownProps) { }
+function mapStateToProps(state) { return {}}
+function mapDispatchToProps(dispatch, ownProps) { return {}}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerProgram);
