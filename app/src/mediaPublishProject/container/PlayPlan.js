@@ -375,7 +375,7 @@ export class PlayPlan extends Component {
         response.pic.map(preview=>{
           const mo = moment(preview.time, "HH:mm:ss");
           imgArray.push({
-            src: HOST_IP+'/'+url+'/'+preview.name,
+            src: location.host+'/'+url+'/'+preview.name,
             time: mo.hours()*3600+mo.minutes()*60+mo.seconds()
           });
         })
