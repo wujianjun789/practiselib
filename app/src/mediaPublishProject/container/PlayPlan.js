@@ -35,7 +35,7 @@ import {treeViewInit} from '../../common/actions/treeView';
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
   updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState, addItemToArea} from '../action/index';
 
-import {getMediaPublishPreview} from '../../util/network';
+import {getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
 import {uploadMaterialFile} from '../../api/mediaPublish';
 
 import {tranformAssetType} from '../util/index';
@@ -370,19 +370,22 @@ export class PlayPlan extends Component {
     const imgArray = [];
     let imgArray2 = [];
     try {
-      const config = require(this.previewUrl);
-      config.pic.map(preview=>{
-        const mo = moment(preview.time, "HH:mm:ss");
-        imgArray.push({
-          src: this.previewUrl+'/'+project.id+'/'+plan.id+'/'+scene.id+'/'+preview.name,
-          time: mo.hours()*3600+mo.minutes()*60+mo.seconds()
-        });
+      const url = '/'+project.id+'/'+plan.id+'/'+scene.id;
+      getMediaPublishPreviewJson(url+'/pre.json', response=>{
+        response.pic.map(preview=>{
+          const mo = moment(preview.time, "HH:mm:ss");
+          imgArray.push({
+            src: this.previewUrl+url+'/'+preview.name,
+            time: mo.hours()*3600+mo.minutes()*60+mo.seconds()
+          });
+        })
+
+        imgArray2 = lodash.sortBy(imgArray, arr=>{return arr.time});
+        if(imgArray2.length){
+          totalTime = imgArray2[imgArray2.length-1].time;
+        }
       })
 
-      imgArray2 = lodash.sortBy(imgArray, arr=>{return arr.time});
-      if(imgArray2.length){
-        totalTime = imgArray2[imgArray2.length-1].time;
-      }
     }catch(error){
       // console.log(error);
     }

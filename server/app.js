@@ -41,6 +41,7 @@ app.use(function (req, res, next) {
 })
 
 app.use('/', routes);
+app.use(express.static(config.preview));
 
 const mode = app.get('mode');
 if(mode === 'dev'){
@@ -48,7 +49,7 @@ if(mode === 'dev'){
   app.use(proxy('http://localhost:18080'));
 }else{
   app.use(express.static(path.resolve(__dirname, '../app/public')));
-  app.use(express.static(config.preview));
+
   //error handler
   app.use(function (req, res, next) {
     next(new Error("404"));

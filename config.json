@@ -1,7 +1,7 @@
 {
   "server":{
     "PORT": 8080,
-    "preview":"c:/starriverpro/data/preview scheduce"
+    "preview":"c:/starriverpro/data/preview schedule"
   },
 
   "client":{
