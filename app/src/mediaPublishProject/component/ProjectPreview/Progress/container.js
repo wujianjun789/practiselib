@@ -33,8 +33,10 @@ export default class Progress extends React.PureComponent {
   // }
 
   render() {
-    const { index = 0, onChange, pointList = initList, totalTime = initTime } = this.props;
-
+    const { index = 0, onChange, totalTime = initTime } = this.props;
+    let { pointList = initList } = this.props;
+    if (pointList.length <= 0) {pointList = initList;}
+    
     const checkPointList = pointList.map((point, _index) => {
       const style = { left: `${(point.time / totalTime) * 100}%` };
       const active = _index === index ? 'active' : '';
