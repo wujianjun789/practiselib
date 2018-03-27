@@ -35,12 +35,15 @@ import {treeViewInit} from '../../common/actions/treeView';
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
   updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState, addItemToArea} from '../action/index';
 
+import {getMediaPublishPreview} from '../../util/network';
 import {uploadMaterialFile} from '../../api/mediaPublish';
 
 import {tranformAssetType} from '../util/index';
 
+import moment from 'moment';
 import lodash from 'lodash';
 import {HOST_IP_FILE} from '../../util/network';
+
 export class PlayPlan extends Component {
   constructor(props) {
     super(props);
@@ -67,7 +70,7 @@ export class PlayPlan extends Component {
       sideInfoHeight:{'height': 'auto'},
       IsCancelSelect: false,
     };
-
+    this.previewUrl = "";
     this.formatIntl = this.formatIntl.bind(this);
 
     this.sidebarClick = this.sidebarClick.bind(this);
@@ -91,6 +94,9 @@ export class PlayPlan extends Component {
     window.onresize = event => {
       this.mounted && this.setSize();
     };
+    getMediaPublishPreview(response=>{
+      this.previewUrl = response;
+    });
 
     this.updateSceneTree();
     if (this.props.plan) {
@@ -349,31 +355,39 @@ export class PlayPlan extends Component {
 
   addZone() {
     this.addAlert() && this.props.actions.addPlayerSceneArea('area');
+
   }
 
   playHandler = () => {
-    const { actions } = this.props;
+    const { project, plan, scene, actions } = this.props;
     // chriswenflag
     /** ProjectPreview Props
      *  1. totalTime --- project total play time (second)
      *  2. imgArray:[{src:String,time:Number}] --- project preview imgArray
      *  3. example below
      */
-    const mockArray = [
-      {
-        src: 'https://i.loli.net/2018/01/03/5a4c93e92b0e1.png',
-        time: 100,
-      },
-      {
-        src: 'https://i.loli.net/2018/01/03/5a4c93e931f93.png',
-        time:1200,
-      }, {
-        src: 'https://i.loli.net/2018/01/03/5a4c93e938b6b.png',
-        time: 2500,
-      }];
-    const mockTime = 3000;  
+    let totalTime = 0;
+    const imgArray = [];
+    let imgArray2 = [];
+    try {
+      const config = require(this.previewUrl);
+      config.pic.map(preview=>{
+        const mo = moment(preview.time, "HH:mm:ss");
+        imgArray.push({
+          src: this.previewUrl+'/'+project.id+'/'+plan.id+'/'+scene.id+'/'+preview.name,
+          time: mo.hours()*3600+mo.minutes()*60+mo.seconds()
+        });
+      })
 
-    actions.overlayerShow(<ProjectPreview totalTime={mockTime} imgArray={mockArray} closeClick={() => { actions.overlayerHide(); }}/>);
+      imgArray2 = lodash.sortBy(imgArray, arr=>{return arr.time});
+      if(imgArray2.length){
+        totalTime = imgArray2[imgArray2.length-1].time;
+      }
+    }catch(error){
+      // console.log(error);
+    }
+
+    actions.overlayerShow(<ProjectPreview totalTime={totalTime} imgArray={imgArray2} closeClick={() => { actions.overlayerHide(); }}/>);
   }
 
   zoomOutHandler = () => {

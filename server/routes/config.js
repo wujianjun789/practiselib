@@ -9,6 +9,7 @@ const lodash = require('lodash');
 
 // const host_ip = require('../util/index').host_ip;
 const client =  require('../config').client;
+const server = require('../config').server;
 
 /* GET config listing. */
 router.get('/', function (req, res, next) {
@@ -85,4 +86,7 @@ router.get('/lightLevel', function (req, res, next) {
     res.json(client.lightLevel);
 })
 
+router.get('/mediaPublish/preview', function (req, res, next) {
+    res.json(server.preview);
+})
 module.exports = router;

@@ -238,6 +238,17 @@ export function getStrategyDeviceConfig(responseFun, errFun) {
     })
 }
 
+export function getMediaPublishPreview(responseFun, errFun) {
+    httpRequest('/config/mediaPublish/preview', {
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
 export function getLightLevelConfig(responseFun, errFun) {
     httpRequest('/config/lightLevel',{
         method: 'GET',
