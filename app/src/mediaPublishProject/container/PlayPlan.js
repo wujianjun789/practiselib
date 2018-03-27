@@ -35,7 +35,7 @@ import {treeViewInit} from '../../common/actions/treeView';
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
   updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState, addItemToArea} from '../action/index';
 
-import {getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
+import {HOST_IP, getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
 import {uploadMaterialFile} from '../../api/mediaPublish';
 
 import {tranformAssetType} from '../util/index';
@@ -375,7 +375,7 @@ export class PlayPlan extends Component {
         response.pic.map(preview=>{
           const mo = moment(preview.time, "HH:mm:ss");
           imgArray.push({
-            src: this.previewUrl+url+'/'+preview.name,
+            src: HOST_IP+'/'+url+'/'+preview.name,
             time: mo.hours()*3600+mo.minutes()*60+mo.seconds()
           });
         })
