@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 
 const routes = require('./routes/index');
+const config = require('./config').server;
 
 const app = express();
 app.set('mode', 'prod');
@@ -46,7 +47,8 @@ if(mode === 'dev'){
   const  proxy = require('express-http-proxy');
   app.use(proxy('http://localhost:18080'));
 }else{
-  app.use(express.static(path.resolve(__dirname, '../app/public')))
+  app.use(express.static(path.resolve(__dirname, '../app/public')));
+  app.use(express.static(config.preview));
   //error handler
   app.use(function (req, res, next) {
     next(new Error("404"));

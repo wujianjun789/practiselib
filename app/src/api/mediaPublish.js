@@ -431,6 +431,16 @@ export function getItemPreviewbyId(id, cb) {
   });
 }
 
+export function getScenePreview(projectId, programId, sceneId, cb) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP + '/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/preview',{
+    headers: headers,
+    method: 'GET'
+  }, response=>{
+    cb && cb(response);
+  })
+}
+
 export function addItem(projectId, programId, sceneId, zoneId, itemType, data, cb) {
   let headers = getHttpHeader();
   httpRequest(HOST_IP + '/projects/' + projectId + '/programs/' + programId + '/scenes/' + sceneId + '/zones/' + zoneId + '/items?itemType=' + itemType, {

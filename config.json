@@ -1,6 +1,7 @@
 {
   "server":{
-    "PORT": 8080
+    "PORT": 8080,
+    "preview":"c:/starriverpro/data/preview scheduce"
   },
 
   "client":{

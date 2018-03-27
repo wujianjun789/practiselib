@@ -275,5 +275,7 @@ export function transformKey(name) {
             return 'sensor';
         case 'ssads':
             return 'screen';
+        default:
+            return "";
     }
 }
