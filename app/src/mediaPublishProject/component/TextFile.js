@@ -453,28 +453,31 @@ class TextFile extends Component {
                             </select>
                         </div>
                     </div>
-                    <div class="form-group playDuration">
-                        <label className="control-label">{playDuration.title}</label>
-                        <div class="input-container input-w-2">
-                            <input type="text" class="form-control"
-                                placeholder={playDuration.placeholder} maxLength="8"
-                                value={playDuration.value}
-                                onChange={e => this.onChange("playDuration", e)} />
-                            <span class={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
-                        </div>
-                    </div>
                 </div>
-                <div class='row'>
+                <div class="row">
                     <div class="form-group animation">
                         <label className="control-label">{animation.title}</label>
                         <div class="input-container input-w-2">
                             <select class="form-control" value={animation.index}
-                                onChange={e => this.onChange("animation", e)}>
+                                    onChange={e => this.onChange("animation", e)}>
                                 {
                                     animation.list.map((item, i) => {
                                         return <option key={i} value={item.id}>{item.name}</option>
                                     })}
                             </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class='row'>
+                    <div class="form-group playDuration">
+                        <label className="control-label">{playDuration.title}</label>
+                        <div class="input-container input-w-2">
+                            <input type="text" class="form-control"
+                                   placeholder={playDuration.placeholder} maxLength="8"
+                                   value={playDuration.value}
+                                   onChange={e => this.onChange("playDuration", e)} />
+                            <span class={prompt.playDuration ? "prompt " : "prompt hidden"}><FormattedMessage id='mediaPublish.check' /></span>
                         </div>
                     </div>
                     <div class="form-group playSpeed">

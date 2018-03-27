@@ -16,11 +16,14 @@ export default class RenderPlayerAsset extends Component {
     this.state = {
       IsPopup: false
     }
+    this.addTime = null;
+
     this.mouseDown = this.mouseDown.bind(this);
     this.itemClick = this.itemClick.bind(this);
 
     this.onStop = this.onStop.bind(this);
     this.addClick = this.addClick.bind(this);
+    this.addMouseOut = this.addMouseOut.bind(this);
   }
 
   onStart(event){
@@ -41,8 +44,16 @@ export default class RenderPlayerAsset extends Component {
     this.props.playerAssetSelect(item);
   }
 
+  addMouseOut(){
+    // this.setState({IsPopup: false});
+  }
+
   addClick(){
-    this.setState({IsPopup: true});
+    this.addTime && clearTimeout(this.addTime);
+
+    this.setState({IsPopup: true}, ()=>{
+      this.addTime = setTimeout(()=>{this.setState({IsPopup: false})}, 3000);
+    });
   }
 
   playerAssetAdd(type){
@@ -82,8 +93,8 @@ export default class RenderPlayerAsset extends Component {
           </li>
           </Draggable>
         })}
-        <li key={199} className="player-list-asset" role="presentation" onClick={this.addClick}>
-          <span className="icon glyphicon glyphicon-plus">
+        <li key={199} className="player-list-asset" role="presentation" onClick={this.addClick} onMouseOut={this.addMouseOut}>
+          <span id="add-asset" className="icon glyphicon glyphicon-plus">
           </span>
           <span className="name" title={name}>添加</span>
         </li>
