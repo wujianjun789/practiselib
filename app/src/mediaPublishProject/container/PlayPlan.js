@@ -384,13 +384,14 @@ export class PlayPlan extends Component {
         if(imgArray2.length){
           totalTime = imgArray2[imgArray2.length-1].time;
         }
+
+        actions.overlayerShow(<ProjectPreview totalTime={totalTime} imgArray={imgArray2} closeClick={() => { actions.overlayerHide(); }}/>);
+
       })
 
     }catch(error){
       // console.log(error);
     }
-
-    actions.overlayerShow(<ProjectPreview totalTime={totalTime} imgArray={imgArray2} closeClick={() => { actions.overlayerHide(); }}/>);
   }
 
   zoomOutHandler = () => {
