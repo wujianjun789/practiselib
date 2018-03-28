@@ -30,18 +30,15 @@
 }
 .icon_alarm:before {
   content: "\e901";
-  color: #4d4d4d;
 }
 .icon_bottom:before {
   content: "\e902";
 }
 .icon_branch:before {
   content: "\e903";
-  color: #4a5064;
 }
 .icon_calendar:before {
   content: "\e904";
-  color: #4a5064;
 }
 .icon_camera:before {
   content: "\e905";
@@ -75,7 +72,6 @@
 }
 .icon_control:before {
   content: "\e90d";
-  color: #4a5064;
 }
 .icon_control_c1:before {
   content: "\e90e";
@@ -103,7 +99,6 @@
 }
 .icon_domain_list:before {
   content: "\e914";
-  color: #4a5064;
 }
 .icon_edit:before {
   content: "\e915";
@@ -122,14 +117,12 @@
 }
 .icon_fault:before {
   content: "\e919";
-  color: #4d4d4d;
 }
 .icon_file:before {
   content: "\e91a";
 }
 .icon_gateway:before {
   content: "\e91b";
-  color: #4a5064;
 }
 .icon_gateway_c1:before {
   content: "\e91c";
@@ -141,7 +134,6 @@
 }
 .icon_latlng:before {
   content: "\e91e";
-  color: #4a5064;
 }
 .icon_lc:before {
   content: "\e91f";
@@ -211,7 +203,6 @@
 }
 .icon_screen:before {
   content: "\e932";
-  color: #4a5064;
 }
 .icon_screen_c1:before {
   content: "\e933";
