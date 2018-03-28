@@ -36,7 +36,7 @@ import {initProject, initPlan, initScene, initZone, initItem, initCurnode, reque
   updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState, addItemToArea} from '../action/index';
 
 import {HOST_IP, getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
-import {uploadMaterialFile} from '../../api/mediaPublish';
+import {uploadMaterialFile, getScenePreview} from '../../api/mediaPublish';
 
 import {tranformAssetType} from '../util/index';
 
@@ -366,6 +366,10 @@ export class PlayPlan extends Component {
      *  2. imgArray:[{src:String,time:Number}] --- project preview imgArray
      *  3. example below
      */
+    getScenePreview(project.id, plan.id, scene.id, response=>{
+      console.log('preview success');
+    })
+
     let totalTime = 0;
     const imgArray = [];
     let imgArray2 = [];
