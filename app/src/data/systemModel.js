@@ -165,13 +165,13 @@ export const TreeData = [
         'active': false,
         'link': '/systemOperation/faultManagement/alarm',
       },
-      {
-        'id': 'fault',
-        'name': '故障',
-        'class': 'icon_fault',
-        'active': false,
-        'link': '/systemOperation/faultManagement/fault',
-      },
+      // {
+      //   'id': 'fault',
+      //   'name': '故障',
+      //   'class': 'icon_fault',
+      //   'active': false,
+      //   'link': '/systemOperation/faultManagement/fault',
+      // },
     ],
   },
 ];
