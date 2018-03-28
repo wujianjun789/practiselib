@@ -24,6 +24,7 @@ import ExcelPopup from '../components/ExcelPopup';
 import {addNotify,removeAllNotify} from '../../common/actions/notifyPopup';
 import {bacthImport} from '../../api/import';
 import {injectIntl} from 'react-intl';
+import {getObjectByKeyObj} from '../../util/algorithm';
 
 export class Gateway extends Component {
   constructor(props) {
@@ -297,7 +298,7 @@ export class Gateway extends Component {
       const dataInit2 = {
         id: data ? data.id : null,
         name: data ? data.name : null,
-        model: data ?  data.type : '',
+        model: data && getObjectByKeyObj(modelList.options,'title',data.type)? data.type : (curType ? curType.title : ''),
         domain: selectDevice.domainName,
         domainId: selectDevice.domainId,
         lng: latlng.lng,
