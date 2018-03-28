@@ -25,8 +25,6 @@ export class Alarm extends Component {
     this.state = {
       collapse: false,
       infoCollapse:false,
-      allChecked:false,
-      checked:[],
       page: Immutable.fromJS({
         pageSize: 10,
         current: 1,
@@ -134,21 +132,6 @@ export class Alarm extends Component {
         field: 'time',
         title: this.props.intl.formatMessage({id:'sysOperation.alarm.time'}),
       },
-      {
-        id: 7,
-        field: 'status',
-        title: this.props.intl.formatMessage({id:'sysOperation.alarm.status'}),
-      },
-      {
-        id: 8,
-        field: 'person',
-        title: this.props.intl.formatMessage({id:'sysOperation.alarm.person'}),
-      },
-      {
-        id: 9,
-        field: 'handleTime',
-        title: this.props.intl.formatMessage({id:'sysOperation.alarm.handle.time'}),
-      },
     ];
   }
 
@@ -240,30 +223,6 @@ export class Alarm extends Component {
     }
   }
 
-  allCheckChange=(value) => {
-    const {data} = this.state;
-    let checked = [];
-    value && data.map(item => {
-      checked.push(item.get('id'));
-    });
-    this.setState({allChecked:value, checked:checked});
-  }
-
-  rowCheckChange=(id, value) => {
-    let {data, checked} = this.state;
-    value ? checked.push(id) : spliceInArray(checked, id);
-    let allChecked = data.size == checked.length;
-    this.setState({allChecked:allChecked, checked:checked});        
-  }
-
-  handlePopup=(key) => {
-    const {actions} = this.props;
-    actions.overlayerShow(<ConfirmPopup iconClass="icon_fault" tips={`是否${this.props.intl.formatMessage({id:'button.' + key})}选中告警`}
-      cancel={() => {actions.overlayerHide();}} confirm={() => {
-        actions.overlayerHide();
-      }}/>);
-  }
-
   render() {
     const {collapse, infoCollapse, page, data, domainList, typeList, levelList, start, end, statisticalInfo, allChecked, checked}
      = this.state;
@@ -283,15 +242,9 @@ export class Alarm extends Component {
           <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="结束日期" style={{ width: '106px' }}
             defaultValue={end} value={end} onChange={value => this.dateChange('end', value)} />
         </div>
-        <div className="button-group">
-          <button className="btn btn-primary" onClick={() => {this.handlePopup('ignore');}}>{this.props.intl.formatMessage({id:'button.ignore'})}</button>
-          <button className="btn btn-primary" onClick={() => {this.handlePopup('solve');}}>{this.props.intl.formatMessage({id:'button.solve'})}</button>
-          <button className="btn btn-primary" onClick={() => {this.handlePopup('to.fault');}}>{this.props.intl.formatMessage({id:'button.to.fault'})}</button>
-        </div>
       </div>
       <div className="table-container">
-        <Table columns={this.columns} data={data} allChecked={allChecked} checked={checked}
-          allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
+        <Table columns={this.columns} data={data} />
         <Page className={'page ' + (page.get('total') == 0 ? 'hidden' : '')} pageSize={page.get('pageSize')}
           current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
       </div>

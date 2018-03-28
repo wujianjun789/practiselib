@@ -25,6 +25,7 @@ import {getObjectByKey, getDeviceTypeByModel} from '../../util/index';
 
 import {treeViewInit} from '../../common/actions/treeView';
 import {injectIntl} from 'react-intl';
+import {getObjectByKeyObj} from '../../util/algorithm';
 
 export class Sensor extends Component {
   constructor(props) {
@@ -360,7 +361,7 @@ export class Sensor extends Component {
       const dataInit2 = {
         id: data ? data.id : null,
         name: data ? data.name : null,
-        model: data ? data.type : '',
+        model: data && getObjectByKeyObj(modelList.options,'title',data.type)? data.type : (curType ? curType.title : ''),
         domain: selectDevice.domainName,
         domainId: selectDevice.domainId,
         lng: latlng.lng,

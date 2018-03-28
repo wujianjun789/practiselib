@@ -32,6 +32,8 @@ import { injectIntl } from 'react-intl';
 import DeviceReplacePopup from '../components/DeviceReplacePopup';
 import DeviceUpgradePopup from '../components/DeviceUpgradePopup';
 import { replaceDevice } from '../../api/import';
+import {getObjectByKeyObj} from '../../util/algorithm';
+
 export class SingleLampCon extends Component {
   constructor(props) {
     super(props);
@@ -281,7 +283,7 @@ export class SingleLampCon extends Component {
         const dataInit2 = {
           id: data ? data.id : null,
           name: data ? data.name : null,
-          model: data ? data.type : '',
+          model: data && getObjectByKeyObj(modelList.options,'title',data.type)? data.type : (curType ? curType.title : ''),          
           domain: selectDevice.domainName,
           domainId: selectDevice.domainId,
           lng: latlng.lng,
