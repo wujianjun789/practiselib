@@ -373,10 +373,10 @@ export class PlayPlan extends Component {
       const url = '/'+project.id+'/'+plan.id+'/'+scene.id;
       getMediaPublishPreviewJson(url+'/pre.json', response=>{
         response.pic.map(preview=>{
-          const mo = moment(preview.time, "HH:mm:ss:ms");
+          const mo = moment(preview.time, "HH:mm:ss:SSS");
           imgArray.push({
             src: 'http://'+location.host+'/'+url+'/'+preview.name,
-            time: mo.hours()*3600+mo.minutes()*60+mo.seconds()+mo.milliseconds()/60
+            time: mo.hours()*3600+mo.minutes()*60+mo.seconds()+mo.milliseconds()/1000
           });
         })
 
