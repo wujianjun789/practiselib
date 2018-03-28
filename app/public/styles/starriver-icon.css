@@ -60,7 +60,6 @@
 }
 .icon_chinese:before {
   content: "\e909";
-  color: #4a5064;
 }
 .icon_collapse:before {
   content: "\e90a";
