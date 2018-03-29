@@ -322,11 +322,17 @@ class PlayerText extends Component {
                     // display: 'inline-block',
                     cursor: 'pointer',
                 },
-                popover: {
+                popover1: {
                     position: 'absolute',
                     zIndex: '2',
-                    top: '40px',
-                    left: '-204px'
+                    top: '42px',
+                    left: '-70px'
+                },
+                popover2: {
+                    position: 'absolute',
+                    zIndex: '2',
+                    top: '42px',
+                    left: '-120px'
                 },
                 cover: {
                     position: 'fixed',
@@ -414,7 +420,7 @@ class PlayerText extends Component {
                             <div style={styles.swatch} >
                                 <div id='showFontColor' style={styles.fontColor} onClick={this.handleColorClick} />
                             </div>
-                            {showFontColor ? <div style={styles.popover}>
+                            {showFontColor ? <div style={styles.popover1}>
                                 <div id='showFontColor' style={styles.cover} onClick={this.handleColorHide} />
                                 <SketchPicker color={fontColor.value} onChange={e => this.onChange('fontColor', e)} />
                             </div> : null}
@@ -426,7 +432,7 @@ class PlayerText extends Component {
                             <div style={styles.swatch} >
                                 <div id='showBgColor' style={styles.bgColor} onClick={this.handleColorClick} />
                             </div>
-                            {showBgColor ? <div style={styles.popover}>
+                            {showBgColor ? <div style={styles.popover2}>
                                 <div id='showBgColor' style={styles.cover} onClick={this.handleColorHide} />
                                 <SketchPicker color={bgColor.value} onChange={e => this.onChange('bgColor', e)} />
                             </div> : null}
