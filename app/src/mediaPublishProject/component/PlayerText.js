@@ -137,7 +137,7 @@ class PlayerText extends Component {
                 },
                 bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },//返回值为0或1，或者bool值
                 alignment: { ...this.state.alignment, index: alignment },//这里返回的即对齐方式的id
-                playDuration: { ...this.state.playDuration, value: playDuration },
+                playDuration: { ...this.state.playDuration, value: playDuration/1000 },
                 animation: { ...this.state.animation, index: transition },//这里返回的即过渡效果的id
                 playSpeed: { ...this.state.playSpeed, value: speed },
                 rowSpace: { ...this.state.rowSpace, value: rowSpace },
@@ -220,7 +220,7 @@ class PlayerText extends Component {
                 const data = Object.assign({}, this._data, {
                     baseInfo: {
                         ...baseInfo,
-                        playDuration: playDuration.value
+                        playDuration: playDuration.value*1000
                     },
                     text: text.value,
                     background: {
@@ -322,11 +322,17 @@ class PlayerText extends Component {
                     // display: 'inline-block',
                     cursor: 'pointer',
                 },
-                popover: {
+                popover1: {
                     position: 'absolute',
                     zIndex: '2',
-                    top: '40px',
-                    left: '-204px'
+                    top: '42px',
+                    left: '-70px'
+                },
+                popover2: {
+                    position: 'absolute',
+                    zIndex: '2',
+                    top: '42px',
+                    left: '-120px'
                 },
                 cover: {
                     position: 'fixed',
@@ -414,7 +420,7 @@ class PlayerText extends Component {
                             <div style={styles.swatch} >
                                 <div id='showFontColor' style={styles.fontColor} onClick={this.handleColorClick} />
                             </div>
-                            {showFontColor ? <div style={styles.popover}>
+                            {showFontColor ? <div style={styles.popover1}>
                                 <div id='showFontColor' style={styles.cover} onClick={this.handleColorHide} />
                                 <SketchPicker color={fontColor.value} onChange={e => this.onChange('fontColor', e)} />
                             </div> : null}
@@ -426,7 +432,7 @@ class PlayerText extends Component {
                             <div style={styles.swatch} >
                                 <div id='showBgColor' style={styles.bgColor} onClick={this.handleColorClick} />
                             </div>
-                            {showBgColor ? <div style={styles.popover}>
+                            {showBgColor ? <div style={styles.popover2}>
                                 <div id='showBgColor' style={styles.cover} onClick={this.handleColorHide} />
                                 <SketchPicker color={bgColor.value} onChange={e => this.onChange('bgColor', e)} />
                             </div> : null}

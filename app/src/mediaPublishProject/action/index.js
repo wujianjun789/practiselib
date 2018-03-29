@@ -446,6 +446,7 @@ function updatePlayerSceneData(response, parentParentNode, parentNode, playerDat
       return scene;
     });
 
+    dispatch(initCurnode(Object.assign({}, response, playerData[planIndex].children[sceneIndex])));
     dispatch(initScene(Object.assign({}, response, playerData[planIndex].children[sceneIndex])));
     dispatch(updateTreeList(playerData));
   };
@@ -466,6 +467,7 @@ function updatePlayerAreaData(response, parentParentNode, parentNode, playerData
 
     dispatch(initScene(playerData[planIndex].children[sceneIndex]))
     dispatch(initZone(Object.assign({}, response, playerData[planIndex].children[sceneIndex].children[zoneIndex])));
+    dispatch(initCurnode(Object.assign({}, response, playerData[planIndex].children[sceneIndex].children[zoneIndex])));
     dispatch(updateTreeList(playerData));
     // dispatch(requestItemList(parentParentNode.id, parentNode.id, response.id));
   };
