@@ -77,8 +77,8 @@ class PlayerPicAsset extends PureComponent {
     if (id == 'playDuration' || id == 'playSpeed') {
       if (!numbersValid(val)) {
         prompt = true;
-        this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});
       }
+      this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});      
     }
     this.setState({property: Object.assign({}, this.state.property, {[id]: val})});
   }
