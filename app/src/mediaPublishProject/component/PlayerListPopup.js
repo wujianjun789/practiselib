@@ -90,7 +90,7 @@ export default class PlayerListPopup extends PureComponent {
             <div className="col-sm-9">
               <input type="text" className={'form-control '} id="name"
                 placeholder={this.formatIntl('mediaPublish.inputSchemeName')}
-                maxLength="16" value={name} onChange={this.onChange}/>
+                 value={name} onChange={this.onChange}/>
               <span className={prompt.name ? 'prompt ' : 'prompt hidden'}>
                 <FormattedMessage id="mediaPublish.prompt" />
               </span>
