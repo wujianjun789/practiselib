@@ -137,7 +137,7 @@ class PlayerText extends Component {
                 },
                 bgTransparent: { ...this.state.bgTransparent, value: Boolean(transparent) },//返回值为0或1，或者bool值
                 alignment: { ...this.state.alignment, index: alignment },//这里返回的即对齐方式的id
-                playDuration: { ...this.state.playDuration, value: playDuration },
+                playDuration: { ...this.state.playDuration, value: playDuration/1000 },
                 animation: { ...this.state.animation, index: transition },//这里返回的即过渡效果的id
                 playSpeed: { ...this.state.playSpeed, value: speed },
                 rowSpace: { ...this.state.rowSpace, value: rowSpace },
@@ -220,7 +220,7 @@ class PlayerText extends Component {
                 const data = Object.assign({}, this._data, {
                     baseInfo: {
                         ...baseInfo,
-                        playDuration: playDuration.value
+                        playDuration: playDuration.value*1000
                     },
                     text: text.value,
                     background: {

@@ -65,7 +65,7 @@ class PlayerPicAsset extends PureComponent {
       this.data = res;
       property.displayMode = res.scale ? res.scale : this.displayModeList[0].value;
       property.animation = res.inTransition ? res.inTransition.transition : this.animationList[0].value;
-      property.playDuration = res.baseInfo ? res.baseInfo.playDuration : null;
+      property.playDuration = res.baseInfo ? res.baseInfo.playDuration/1000 : null;
       property.playSpeed = res.inTransition ? res.inTransition.speed : null;
       this.mounted && this.setState({property:Object.assign({}, property)});
     });
@@ -87,7 +87,7 @@ class PlayerPicAsset extends PureComponent {
     const { displayMode, animation, playDuration, playSpeed } = this.state.property;
     switch (id) {
     case 'apply': {
-      this.data.baseInfo.playDuration = playDuration;
+      this.data.baseInfo.playDuration = playDuration*1000;
       this.data.scale = displayMode;
       this.data.inTransition = {
         transition: animation,
