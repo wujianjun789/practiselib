@@ -6,6 +6,7 @@
     "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
+    "echarts": "^4.0.4",
     "es6-promise": "^4.1.1",
     "express": "~4.13.4",
     "express-http-proxy": "^1.0.4",
