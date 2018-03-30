@@ -40,49 +40,59 @@ export class Alarm extends Component {
         options: [],
       },
       typeList: {
-        titleField: 'name',
+        titleField: 'title',
         valueField: 'name',
         index: 0,
-        value: '通用',
+        value: 'common',
         options: [
           {
-            name:'通用',
+            title:'通用',
+            name:'common'
           },
           {
-            name:'传感器',
+            title:'传感器',
+            name:'sensor'            
           },
           {
-            name:'能量',
+            title:'能量',
+            name:'energy'            
           },
           {
-            name:'照明',
+            title:'照明',
+            name:'lighting'            
           },
           {
-            name:'显示',
+            title:'显示',
+            name:'display'            
           },
           {
-            name:'资源',
+            title:'资源',
+            name:'resource'            
           },
           
         ],
       },
       levelList: {
-        titleField: 'name',
+        titleField: 'title',
         valueField: 'name',
         index: 0,
-        value: '致命',
+        value: 'deadly',
         options: [
           {
-            name:'致命',
+            title:'致命',
+            name:'deadly'            
           },
           {
-            name:'严重',
+            title:'严重',
+            name:'seriousness'            
           },
           {
-            name:'一般',
+            title:'一般',
+            name:'ordinary'            
           },
           {
-            name:'提示',
+            title:'提示',
+            name:'energy'            
           },
         ],
       },
@@ -187,6 +197,7 @@ export class Alarm extends Component {
   }
 
   selectChange=(event, key) => {
+    debugger
     let index = event.target.selectedIndex;
     let list = this.state[key];
     list.index = index;
@@ -228,12 +239,12 @@ export class Alarm extends Component {
      = this.state;
     return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
       <div className="heading">
-        <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField} 
+        <Select id="domain" titleField={domainList.titleField} valueField={domainList.valueField} 
           options={domainList.options} value={domainList.value}
           onChange={(e) => {this.selectChange(e, 'domainList');}}/>
-        <Select id="type" titleField={typeList.valueField} valueField={typeList.valueField}
+        <Select id="type" titleField={typeList.titleField} valueField={typeList.valueField}
           options={typeList.options} value={typeList.value} onChange={(e) => {this.selectChange(e, 'typeList');}}/>
-        <Select id="level" titleField={levelList.valueField} valueField={levelList.valueField}
+        <Select id="level" titleField={levelList.titleField} valueField={levelList.valueField}
           options={levelList.options} value={levelList.value} onChange={(e) => {this.selectChange(e, 'levelList');}}/>
         <div className="datePicker">
           <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="开始日期" style={{ width: '106px' }}
