@@ -372,10 +372,10 @@ export default {
     'mediaPublish.playType': 'play type',
     'mediaPublish.addPlan': 'Add project',
     'mediaPublish.modify': 'Modify project',
-    'mediaPublish.schemeName': 'plan name',
+    'mediaPublish.schemeName': 'project name',
     'mediaPublish.inputSchemeName': 'please input plan name',
     'mediaPublish.resolution': 'resolution',
-    'mediaPublish.playPlan': 'play plan',
+    'mediaPublish.playPlan': 'play project',
 
     'mediaPublish.screenSize': 'screen size',
     'mediaPublish.prompt': 'Only letters, numbers, and underscores',
@@ -486,6 +486,8 @@ export default {
     'mediaPublish.timingPlayPlan': 'timing play plan',
     'mediaPublish.cyclePlayPlan': 'cycle play plan',
     'mediaPublish.addPlayPlan': 'add play plan',
+    'mediaPublish.addPlayScene': 'add play scene',
+    'mediaPublish.addPlayArea': 'add play zone',
     'mediaPublish.pauseSign': 'pause sign',
     'mediaPublish.addOrModifyPlan': 'Add or modify timing play',
     'mediaPublish.timeInterval': 'TimeInterval',
@@ -512,6 +514,8 @@ export default {
 
     'mediaPublish.time':'time',
     'mediaPublish.date.alert':'date error',
+    'mediaPublish.scene.submit.alert':'Please submit scene',
+    'mediaPublish.area.submit.alert':'Please submit zone',
 
     //last
     'app.link.index': 'home',
