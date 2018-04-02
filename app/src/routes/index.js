@@ -321,7 +321,7 @@ export default (
         </Route>
       </Route>
       <Route path="/reporterManage" component={ReporterManage}>
-        <Route path="device">
+        {/* <Route path="device">
           <IndexRoute getComponent={(nextState, cb) => {
             require.ensure([], require => {
               cb(null, require('../reporterManage/container/device/lc').default);
@@ -332,7 +332,7 @@ export default (
               cb(null, require('../reporterManage/container/device/gateway').default);
             }, 'starriverpro.reporterManage.device.gateway');
           }} />
-        </Route>
+        </Route> */}
         <Route path="stat">
           <IndexRoute getComponent={(nextState, cb) => {
             require.ensure([], require => {

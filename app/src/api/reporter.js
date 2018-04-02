@@ -12,40 +12,34 @@ import { HOST_IP, getHttpHeader, httpRequest } from '../util/network';
 // }
 
 //统计-照明
-export function getStatDeviceCount(domain,cb) {
-	if(domain.id===6){
-		if(!domain){
-			return;
-		}
-		//模拟实现
-		console.log('发起请求')
-		setTimeout(() => {
-		  const res = {
-			count: 500,
-			inline: 380,
-			outline: 120,
-			normal: 410,
-			fault: 90
-		  };
-		  cb && cb(res)
-		}, 300)
-  }else{
-	if(!domain){
+export function getStatDeviceCount(domain, cb) {
+	if (!domain) {
 		return;
 	}
-	//模拟实现
-	console.log('发起请求')
-	setTimeout(() => {
-	  const res = {
-		count: 1000,
-		inline: 680,
-		outline: 320,
-		normal: 590,
-		fault: 410
-	  };
-	  cb && cb(res)
-	}, 300)
-  }
+	if (domain.id === 4) {
+		//模拟实现
+		setTimeout(() => {
+			const res = {
+				count: 500,
+				inline: 380,
+				outline: 120,
+				normal: 410,
+				fault: 90
+			};
+			cb && cb(res)
+		}, 300)
+	} else {
+		setTimeout(() => {
+			const res = {
+				count: 1000,
+				inline: 680,
+				outline: 320,
+				normal: 590,
+				fault: 410
+			};
+			cb && cb(res)
+		}, 300)
+	}
 }
 
 
@@ -64,8 +58,8 @@ export function getHistoriesDataInDevice(mode, currentId, queryList, start, end,
 		headers: getHttpHeader(),
 		method: 'GET'
 	}, response => {
-		if(!response.length){
-			cb&&cb('请求的数据为空');
+		if (!response.length) {
+			cb && cb('返回的数据为空');
 			return;
 		}
 		const _obj = _.groupBy(response, (item) => {
@@ -100,8 +94,8 @@ export function getHistoriesDataInStat(mode, id, start, end, name, cb) {
 		headers: getHttpHeader(),
 		method: 'GET'
 	}, response => {
-		if(!response.length){
-			cb&&cb('请求的数据为空');
+		if (!response.length) {
+			cb && cb('返回的数据为空');
 			return;
 		}
 		const _data = [];
