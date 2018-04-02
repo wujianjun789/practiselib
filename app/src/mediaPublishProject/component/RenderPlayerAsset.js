@@ -37,10 +37,14 @@ export default class RenderPlayerAsset extends Component {
   }
 
   mouseDown(event, item){
+    event.stopPropagation();
+    event.preventDefault();
     this.props.playerAssetSelect(item);
   }
 
   itemClick(event, item){
+    event.stopPropagation();
+    event.preventDefault();
     this.props.playerAssetSelect(item);
   }
 

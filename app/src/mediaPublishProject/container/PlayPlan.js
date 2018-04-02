@@ -37,7 +37,7 @@ import {initProject, initPlan, initScene, initZone, initItem, initCurnode, reque
   addItemToArea, playerAssetSelect} from '../action/index';
 
 import {HOST_IP, getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
-import {uploadMaterialFile, getScenePreview} from '../../api/mediaPublish';
+import {uploadMaterialFile, getScenePreview, getSceneById} from '../../api/mediaPublish';
 
 import {tranformAssetType} from '../util/index';
 
@@ -72,6 +72,8 @@ export class PlayPlan extends Component {
       IsCancelSelect: false,
     };
     this.previewUrl = '';
+    this.previewTimeout = null;
+
     this.formatIntl = this.formatIntl.bind(this);
 
     this.sidebarClick = this.sidebarClick.bind(this);
@@ -85,6 +87,7 @@ export class PlayPlan extends Component {
     this.getPropertyName = this.getPropertyName.bind(this);
 
     this.setSize = this.setSize.bind(this);
+    this.previewHandler = this.previewHandler.bind(this);
   }
 
   componentWillMount() {
@@ -133,6 +136,7 @@ export class PlayPlan extends Component {
     actions.initItem(null);
     actions.initCurnode(null);
 
+    this.previewTimeout && clearTimeout(this.previewTimeout);
     window.onresize = event => {
 
     };
@@ -326,11 +330,11 @@ export class PlayPlan extends Component {
   }
 
   playerAssetSelect(item) {
-    // this.props.actions.initCurnode(item);
-    // this.props.actions.initItem(item);
-
+    this.props.actions.initCurnode(item);
+    this.props.actions.initItem(item);
+    this.props.actions.playerAssetSelect(item);
     this.setState({IsCancelSelect: true}, ()=>{
-      this.props.actions.playerAssetSelect(item);
+
     });
   }
 
@@ -339,6 +343,7 @@ export class PlayPlan extends Component {
   }
 
   playerAssetMove(index) {
+    console.log('order:', index);
     this.props.actions.playerAssetMove(index);
   }
 
@@ -371,38 +376,48 @@ export class PlayPlan extends Component {
      */
     getScenePreview(project.id, plan.id, scene.id, response => {
       console.log('preview success');
+      this.previewHandler();
     });
 
-    let totalTime = 0;
-    const imgArray = [];
-    let imgArray2 = [];
-    try {
-      const url = '/' + project.id + '/' + plan.id + '/' + scene.id;
-      getMediaPublishPreviewJson(url + '/pre.json', response => {
-        response.pic.map(preview => {
-          const mo = moment(preview.time, 'HH:mm:ss:SSS');
-          imgArray.push({
-            src: 'http://' + location.host + '/' + url + '/' + preview.name,
-            time: mo.hours() * 3600 + mo.minutes() * 60 + mo.seconds() + mo.milliseconds() / 1000,
-          });
-        });
-
-        imgArray2 = lodash.sortBy(imgArray, arr => {return arr.time;});
-        if (imgArray2.length) {
-          totalTime = imgArray2[imgArray2.length - 1].time;
-        }
-
-        actions.overlayerShow(<ProjectPreview totalTime={totalTime} imgArray={imgArray2} closeClick={() => { actions.overlayerHide(); }}/>);
-
-      });
-
-    } catch (error) {
-      // console.log(error);
-    }
-    //  actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => { actions.overlayerHide(); }}/>);
-
+     actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => { actions.overlayerHide(); }}/>);
   }
 
+  previewHandler(){
+    const {project, plan, scene, actions} = this.props;
+    getSceneById(project.id, plan.id, scene.id, response=>{
+      if(response.md5 === response.md5Preview){
+        let totalTime = 0;
+        const imgArray = [];
+        let imgArray2 = [];
+        try {
+          const url = '/' + project.id + '/' + plan.id + '/' + scene.id;
+          getMediaPublishPreviewJson(url + '/pre.json', response => {
+            response.pic.map(preview => {
+              const mo = moment(preview.time, 'HH:mm:ss:SSS');
+              imgArray.push({
+                src: 'http://' + location.host + '/' + url + '/' + preview.name,
+                time: mo.hours() * 3600 + mo.minutes() * 60 + mo.seconds() + mo.milliseconds() / 1000,
+              });
+            });
+
+            imgArray2 = lodash.sortBy(imgArray, arr => {return arr.time;});
+            if (imgArray2.length) {
+              totalTime = imgArray2[imgArray2.length - 1].time;
+            }
+
+            actions.overlayerShow(<ProjectPreview totalTime={totalTime} imgArray={imgArray2} closeClick={() => { actions.overlayerHide(); }}/>);
+
+          });
+
+        } catch (error) {
+          // console.log(error);
+        }
+      }else{
+        this.previewTimeout = setTimeout(()=>{this.previewHandler()}, 1000);
+      }
+    })
+  }
+  
   zoomOutHandler = () => {
     const { scaling: curScaling } = this.state;
     const scaling = curScaling + 0.3;
@@ -557,7 +572,7 @@ export class PlayPlan extends Component {
         }
 
         return {id: zon.id, style:{width:position.w, height:position.h, left:position.x, top:position.y},
-          src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : item.image) : ''};
+          src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : "data:image/png;base64,"+item.image) : ''};
       });
     }
 
