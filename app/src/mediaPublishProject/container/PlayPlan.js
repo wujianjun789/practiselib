@@ -354,7 +354,7 @@ export class PlayPlan extends Component {
   }
 
   addZone() {
-    this.addAlert() && this.props.actions.addPlayerSceneArea('area');
+    this.addAlert() && this.props.actions.addPlayerSceneArea('area', this.formatIntl);
 
   }
 
@@ -452,7 +452,7 @@ export class PlayPlan extends Component {
       this.editAlert() && this.props.actions.treeOnRemove(this.props.curNode.type === 'scene' ? this.props.scene : this.props.zone);
       break;
     default:
-      this.addAlert() && this.props.actions.addPlayerSceneArea('scene');
+      this.addAlert() && this.props.actions.addPlayerSceneArea('scene', this.formatIntl);
       break;
     }
   }
@@ -470,7 +470,7 @@ export class PlayPlan extends Component {
     const {zone, curNode, actions} = this.props;
     console.log('addAlert:', curNode);
     if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('scene') > -1) {
-      actions.addNotify(0, '请提交新建场景。');
+      actions.addNotify(0, this.formatIntl('mediaPublish.scene.submit.alert'));
       return false;
     }
 

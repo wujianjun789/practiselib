@@ -480,6 +480,8 @@ export default {
     'mediaPublish.timingPlayPlan': '定时插播计划',
     'mediaPublish.cyclePlayPlan': '周期插播计划',
     'mediaPublish.addPlayPlan': '播放计划新建',
+    'mediaPublish.addPlayScene': '场景新建',
+    'mediaPublish.addPlayArea': '区域新建',
     'mediaPublish.pauseSign': '暂停标志',
     'mediaPublish.addOrEditPlan': '添加/修改插播计划',
     'mediaPublish.timeInterval': '时间间隔',
@@ -505,6 +507,9 @@ export default {
     'mediaPublish.loop.play':'循环播放',
 
     'mediaPublish.time':'时长',
+    'mediaPublish.date.alert':'请输入正确日期',
+    'mediaPublish.scene.submit.alert':'请提交播放场景',
+    'mediaPublish.area.submit.alert':'请提交播放区域',
 
     //以前的
     'app.link.index': '首页',

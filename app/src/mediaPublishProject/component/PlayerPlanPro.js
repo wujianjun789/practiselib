@@ -23,17 +23,17 @@ class PlayerPlanPro extends PureComponent {
       //计划
       id: '',
       property:{
-        plan: { key: 'plan', title: this.props.intl.formatMessage({id:'name'}), placeholder: this.props.intl.formatMessage({id:'mediaPublish.inputPlanName'}), defaultValue:'', value: '' },
-        startDate: { key: 'startDate', title: this.props.intl.formatMessage({id:'app.date'}), placeholder: '', defaultValue: moment(), value: moment() },
-        endDate: { key: 'endDate', title: this.props.intl.formatMessage({id:'mediaPublish.to'}), placeholder: '', defaultValue: moment(), value: moment() },
-        startTime: { key: 'startTime', title: this.props.intl.formatMessage({id:'app.time'}), placeholder: '', defaultValue: moment(), value: moment() },
-        endTime: { key: 'endTime', title: this.props.intl.formatMessage({id:'mediaPublish.to'}), placeholder: '', defaultValue: getNextSeconds(), value: getNextSeconds() },
+        plan: { key: 'plan', title: this.formatIntl('name'), placeholder: this.formatIntl('mediaPublish.inputPlanName'), defaultValue:'', value: '' },
+        startDate: { key: 'startDate', title: this.formatIntl('app.date'), placeholder: '', defaultValue: moment(), value: moment() },
+        endDate: { key: 'endDate', title: this.formatIntl('mediaPublish.to'), placeholder: '', defaultValue: moment(), value: moment() },
+        startTime: { key: 'startTime', title: this.formatIntl('app.time'), placeholder: '', defaultValue: moment(), value: moment() },
+        endTime: { key: 'endTime', title: this.formatIntl('mediaPublish.to'), placeholder: '', defaultValue: getNextSeconds(), value: getNextSeconds() },
         week: {
-          key: 'week', title:this.props.intl.formatMessage({id:'mediaPublish.weekday'}),
-          list: [{ label: this.props.intl.formatMessage({id:'mediaPublish.monday'}), value: 1 }, { label:this.props.intl.formatMessage({id:'mediaPublish.tuesday'}), value: 2 },
-            { label:this.props.intl.formatMessage({id:'mediaPublish.wednesday'}), value: 3 }, { label: this.props.intl.formatMessage({id:'mediaPublish.thursday'}), value: 4 },
-            { label: this.props.intl.formatMessage({id:'mediaPublish.friday'}), value: 5 }, { label:this.props.intl.formatMessage({id:'mediaPublish.saturday'}), value: 6 },
-            { label: this.props.intl.formatMessage({id:'mediaPublish.sunday'}), value: 7 }],
+          key: 'week', title:this.formatIntl('mediaPublish.weekday'),
+          list: [{ label: this.formatIntl('mediaPublish.monday'), value: 1 }, { label:this.formatIntl('mediaPublish.tuesday'), value: 2 },
+            { label:this.formatIntl('mediaPublish.wednesday'), value: 3 }, { label: this.formatIntl('mediaPublish.thursday'), value: 4 },
+            { label: this.formatIntl('mediaPublish.friday'), value: 5 }, { label:this.formatIntl('mediaPublish.saturday'), value: 6 },
+            { label: this.formatIntl('mediaPublish.sunday'), value: 7 }],
           defaultValue: [],
           value: [],
         },
@@ -44,6 +44,8 @@ class PlayerPlanPro extends PureComponent {
         /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
       },
     };
+
+    this.formatIntl = this.formatIntl.bind(this);
 
     this.onChange = this.onChange.bind(this);
     this.dateChange = this.dateChange.bind(this);
@@ -64,12 +66,18 @@ class PlayerPlanPro extends PureComponent {
     this.mounted = false;
   }
 
+  formatIntl(formatId) {
+    const { intl } = this.props;
+    return intl ? intl.formatMessage({ id: formatId }) : '';
+    // return formatId;
+  }
+
   init() {
     const {projectId, data} = this.props;
     if (!data || !data.id || data.id == this.state.id) {
       return false;
     }
-    console.log('playerPlanPro', projectId, data);
+
     if (projectId && (typeof data.id == 'number' || data.id.indexOf('plan&&') < 0)) {
       getProgramById(projectId, data.id, response => {this.mounted && this.initProperty(response);});
     } else if (typeof data.id == 'string' && data.id.indexOf('plan&&') > -1) {
@@ -121,11 +129,11 @@ class PlayerPlanPro extends PureComponent {
       const endTimeMinute = property.endTime.value.format('mm');
       const endTimeSecond = property.endTime.value.format('ss');
       if ( endDateYear < startDateYear
-            || endDateMonth < startDateMonth
-            || endDateDay < startDateDay
+            || endDateYear == startDateYear && endDateMonth < startDateMonth
+            || endDateYear == startDateYear && endDateMonth == startDateMonth && endDateDay < startDateDay
         || endTimeHour < startTimeHour
-        || endTimeMinute < startTimeMinute
-        || endTimeSecond <= startTimeSecond) {
+        || endTimeHour == startTimeHour && endTimeMinute < startTimeMinute
+        || endTimeHour == startTimeHour && endTimeMinute == startTimeMinute && endTimeSecond <= startTimeSecond) {
         this.props.actions.addNotify(0, '请输入正确日期');
         return false;
       }

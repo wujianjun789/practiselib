@@ -5,7 +5,6 @@ import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Select from '../../component/select';
-import Chart from '../../component/chart';
 import { DatePicker, message } from 'antd';
 import Modal from 'antd/lib/modal';
 import '../../../../public/styles/antd-modal.less';
@@ -16,6 +15,9 @@ import { getHistoriesDataInStat } from '../../../api/reporter';
 import '../../../../public/styles/reporterManage-device.less';
 import { HOST_IP, getHttpHeader, httpRequest } from '../../../util/network';
 import { momentDateFormat } from '../../../util/time';
+
+// import Chart from '../../component/chart';
+import CustomChart from '../../component/CustomChart';
 
 export default class Lc extends Component {
     state = {
@@ -228,7 +230,8 @@ export default class Lc extends Component {
         return (
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                 <div class='content-left'>
-                    <Chart start={startDate} end={endDate} data={data} unit='KWh' />
+                    {/* <Chart start={startDate} end={endDate} data={data} unit='KWh' /> */}
+                    <CustomChart start={startDate} end={endDate} data={data} unit='kwh'/>
                 </div>
                 <div class={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
                     <div class='row collapse-container fix-width' onClick={this.collapseHandler}>

@@ -21,22 +21,22 @@ const RenderPropertyPanel = (props) => {
   switch (curType) {
   case 'scene':
     return <PlayerScene projectId={project ? project.id : null} parentId={plan ? plan.id : null} data={scene}
-      applyClick={data => {applyClick('playerScene', data);}}/>;
+                        actions={actions} applyClick={data => {applyClick('playerScene', data);}}/>;
   case 'area':
     return <PlayerAreaPro projectId={project ? project.id : null} parentParentId={plan ? plan.id : null} parentId={scene  ? scene.id : null}
-      data={zone} applyClick={data => { applyClick('playerAreaPro', data); }} />;
+      data={zone} actions={actions} applyClick={data => { applyClick('playerAreaPro', data); }} />;
   case "playerPicAsset":
     return <PlayerPicAsset projectId={project?project.id:null} planId={plan?plan.id:null} sceneId={scene?scene.id:null}
-                           areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} applyClick={data=>{applyClick('playerPicAsset', data)}}/>
+                           areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} actions={actions} applyClick={data=>{applyClick('playerPicAsset', data)}}/>
   case "playerVideoAsset":
     return <PlayerVideoAsset projectId={project?project.id:null} planId={plan?plan.id:null} sceneId={scene?scene.id:null}
-                             areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} applyClick={data=>{applyClick('playerPicAsset', data)}}/>
+                             areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} actions={actions} applyClick={data=>{applyClick('playerPicAsset', data)}}/>
     case "playerText":
       return <PlayerText projectId={project?project.id:null} planId={plan?plan.id:null} sceneId={scene?scene.id:null}
-                         areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} applyClick={data=>{applyClick('playerText', data)}}/>
+                         areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} actions={actions} applyClick={data=>{applyClick('playerText', data)}}/>
     case "textFile":
       return <TextFile projectId={project?project.id:null} planId={plan?plan.id:null} sceneId={scene?scene.id:null}
-                       areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} applyClick={data=>{applyClick('textFile', data)}}/>
+                       areaId={zone?zone.id:null} data={{id:item?item.id:undefined,name:item?item.name:""}} actions={actions} applyClick={data=>{applyClick('textFile', data)}}/>
   default:
     return <div></div>;
   }

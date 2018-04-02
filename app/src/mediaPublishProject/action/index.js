@@ -119,16 +119,16 @@ export function addPlayerPlan(id, formatIntl) {
   };
 }
 
-export function addPlayerSceneArea(key) {
+export function addPlayerSceneArea(key, formatIntl) {
   console.log('addPlayerSceneArea:',key)
   return (dispatch, getState) => {
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
     dispatch(clearTreeState());
     if(key === "scene"){
-      dispatch(addPlayerScene(plan));
+      dispatch(addPlayerScene(plan, formatIntl));
     }else{
-      dispatch(addPlayerArea(scene, plan));
+      dispatch(addPlayerArea(scene, plan, formatIntl));
     }
 
     // switch (curType) {
@@ -146,15 +146,15 @@ export function addPlayerSceneArea(key) {
   };
 }
 
-function addPlayerScene(curNode) {
+function addPlayerScene(curNode, formatIntl) {
   console.log('addPlayerScene:', curNode);
   return dispatch => {
     const parentNode = curNode;
     if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
-      return dispatch(addNotify(0, '请提交播放场景'));
+      return dispatch(addNotify(0, formatIntl('mediaPublish.scene.submit.alert')));
     }
 
-    const node = Object.assign({}, getInitData('scene', '场景新建'));
+    const node = Object.assign({}, getInitData('scene', formatIntl('mediaPublish.addPlayScene')));
 
     dispatch(initScene(node));
     dispatch(initCurnode(node));
@@ -162,14 +162,14 @@ function addPlayerScene(curNode) {
   };
 }
 
-function addPlayerArea(curNode, parentNode) {
+function addPlayerArea(curNode, parentNode, formatIntl) {
   return dispatch => {
     const parentParentNode = parentNode;
     const sParentNode = curNode;
     if (typeof sParentNode.id === 'string' && sParentNode.id.indexOf('scene') > -1) {
-      return dispatch(addNotify(0, '请提交播放区域'));
+      return dispatch(addNotify(0, 'mediaPublish.area.submit.alert'));
     }
-    const node = Object.assign({}, getInitData('area', '区域新建'), {IsEndNode: true});
+    const node = Object.assign({}, getInitData('area', formatIntl('mediaPublish.addPlayArea')), {IsEndNode: true});
 
     dispatch(initZone(node, sParentNode, parentParentNode));
     dispatch(initCurnode(node));
