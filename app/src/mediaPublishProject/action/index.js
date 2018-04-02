@@ -25,7 +25,7 @@ import {
 import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
   removeProgramsById, removeSceneById, removeZoneById, removeItemById,
   updateProjectById, updateProgramById, updateSceneById, updateZoneById, updateItemById,
-  addProgram, addScene, addZone, addItem, getAssetById} from '../../api/mediaPublish';
+  addProgram, addScene, addZone, addItem, getAssetById, getSceneItemPreview} from '../../api/mediaPublish';
 
 import { addNotify } from '../../common/actions/notifyPopup';
 
@@ -549,6 +549,21 @@ function updateItemName(itemObject, sysfile) {
     item: itemObject,
     file: sysfile,
   };
+}
+
+export function playerAssetSelect(item) {
+  return (dispatch, getState)=>{
+    const project = getState().mediaPublishProject.project;
+    const plan = getState().mediaPublishProject.plan;
+    const scene = getState().mediaPublishProject.scene;
+    const zone = getState().mediaPublishProject.zone;
+    getSceneItemPreview(project.id, plan.id, scene.id, zone.id, item.id, response=>{
+      console.log('sceneItemPreview:', response);
+      const itemObject = Object.assign({}, item, response)
+      dispatch(initCurnode(itemObject));
+      dispatch(initItem(itemObject));
+    })
+  }
 }
 
 export function addItemToArea(item, formatIntl) {

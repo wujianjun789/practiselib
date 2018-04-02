@@ -441,6 +441,16 @@ export function getScenePreview(projectId, programId, sceneId, cb) {
   })
 }
 
+export function getSceneItemPreview(projectId, programId, sceneId, zoneId, itemId, cb) {
+  const headers = getHttpHeader();
+  httpRequest(HOST_IP+'/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/'+itemId+'/preview',{
+    headers: headers,
+    method: 'GET'
+  }, response=>{
+    cb && cb(response);
+  })
+}
+
 export function addItem(projectId, programId, sceneId, zoneId, itemType, data, cb) {
   let headers = getHttpHeader();
   httpRequest(HOST_IP + '/projects/' + projectId + '/programs/' + programId + '/scenes/' + sceneId + '/zones/' + zoneId + '/items?itemType=' + itemType, {

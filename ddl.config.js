@@ -40,7 +40,10 @@ const vendors = [
     'redux',
     'redux-auth-wrapper',
     'redux-mock-store',
-    'redux-thunk'
+    'redux-thunk',
+    'echarts',
+    'reactcss',
+    'debug'
 ];
 
 module.exports = {

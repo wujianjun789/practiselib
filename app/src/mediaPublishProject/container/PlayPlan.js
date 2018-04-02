@@ -33,7 +33,8 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
-  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState, addItemToArea} from '../action/index';
+  updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState,
+  addItemToArea, playerAssetSelect} from '../action/index';
 
 import {HOST_IP, getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
 import {uploadMaterialFile, getScenePreview} from '../../api/mediaPublish';
@@ -325,10 +326,12 @@ export class PlayPlan extends Component {
   }
 
   playerAssetSelect(item) {
-    this.props.actions.initCurnode(item);
-    this.props.actions.initItem(item);
+    // this.props.actions.initCurnode(item);
+    // this.props.actions.initItem(item);
 
-    this.setState({IsCancelSelect: true});
+    this.setState({IsCancelSelect: true}, ()=>{
+      this.props.actions.playerAssetSelect(item);
+    });
   }
 
   playerAssetRemove(item) {
@@ -552,7 +555,7 @@ export class PlayPlan extends Component {
         }
 
         return {id: zon.id, style:{width:position.w, height:position.h, left:position.x, top:position.y},
-          src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : HOST_IP_FILE + '/api/file/thumbnail/' + item.thumbnail) : ''};
+          src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : item.image) : ''};
       });
     }
 
@@ -643,7 +646,7 @@ const mapDispatchToProps = (dispatch) => {
       initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
       requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-      clearTreeState: clearTreeState, addItemToArea: addItemToArea,
+      clearTreeState: clearTreeState, addItemToArea: addItemToArea,playerAssetSelect: playerAssetSelect
     }, dispatch),
   };
 };
