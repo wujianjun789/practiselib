@@ -505,6 +505,7 @@ export default {
     'mediaPublish.loop.play':'循环播放',
 
     'mediaPublish.time':'时长',
+    'mediaPublish.date.alert':'请输入正确日期',
 
     //以前的
     'app.link.index': '首页',

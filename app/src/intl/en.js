@@ -511,6 +511,7 @@ export default {
     'mediaPublish.loop.play':'loop play',
 
     'mediaPublish.time':'time',
+    'mediaPublish.date.alert':'date error',
 
     //last
     'app.link.index': 'home',

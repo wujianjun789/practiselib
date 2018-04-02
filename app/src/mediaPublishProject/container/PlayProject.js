@@ -138,7 +138,7 @@ export class PlayProject extends Component {
 
   render() {
     const {sidebarInfo, curDate} = this.state;
-    const {router, data, project, plan} = this.props;
+    const {router, data, project, plan, actions} = this.props;
     const datalist = curDate ? lodash.filter(data, newPlan => {
       const plan = initPlanDate(newPlan);
       const {dateBegin, dateEnd} = plan.dateRange;
@@ -180,7 +180,7 @@ export class PlayProject extends Component {
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')}>
-              {plan && <PlanerPlanPro projectId={project.id} data={plan} applyClick={data => {this.applyClick('playerPlan', data);}}/>}
+              {plan && <PlanerPlanPro projectId={project.id} data={plan} actions={actions} applyClick={data => {this.applyClick('playerPlan', data);}}/>}
             </div>
           </div>
         </SidebarInfo>
