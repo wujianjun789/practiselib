@@ -70,7 +70,7 @@ export class PlayPlan extends Component {
       sideInfoHeight:{'height': 'auto'},
       IsCancelSelect: false,
     };
-    this.previewUrl = "";
+    this.previewUrl = '';
     this.formatIntl = this.formatIntl.bind(this);
 
     this.sidebarClick = this.sidebarClick.bind(this);
@@ -94,7 +94,7 @@ export class PlayPlan extends Component {
     window.onresize = event => {
       this.mounted && this.setSize();
     };
-    getMediaPublishPreview(response=>{
+    getMediaPublishPreview(response => {
       this.previewUrl = response;
     });
 
@@ -366,36 +366,38 @@ export class PlayPlan extends Component {
      *  2. imgArray:[{src:String,time:Number}] --- project preview imgArray
      *  3. example below
      */
-    getScenePreview(project.id, plan.id, scene.id, response=>{
+    getScenePreview(project.id, plan.id, scene.id, response => {
       console.log('preview success');
-    })
+    });
 
     let totalTime = 0;
     const imgArray = [];
     let imgArray2 = [];
     try {
-      const url = '/'+project.id+'/'+plan.id+'/'+scene.id;
-      getMediaPublishPreviewJson(url+'/pre.json', response=>{
-        response.pic.map(preview=>{
-          const mo = moment(preview.time, "HH:mm:ss:SSS");
+      const url = '/' + project.id + '/' + plan.id + '/' + scene.id;
+      getMediaPublishPreviewJson(url + '/pre.json', response => {
+        response.pic.map(preview => {
+          const mo = moment(preview.time, 'HH:mm:ss:SSS');
           imgArray.push({
-            src: 'http://'+location.host+'/'+url+'/'+preview.name,
-            time: mo.hours()*3600+mo.minutes()*60+mo.seconds()+mo.milliseconds()/1000
+            src: 'http://' + location.host + '/' + url + '/' + preview.name,
+            time: mo.hours() * 3600 + mo.minutes() * 60 + mo.seconds() + mo.milliseconds() / 1000,
           });
-        })
+        });
 
-        imgArray2 = lodash.sortBy(imgArray, arr=>{return arr.time});
-        if(imgArray2.length){
-          totalTime = imgArray2[imgArray2.length-1].time;
+        imgArray2 = lodash.sortBy(imgArray, arr => {return arr.time;});
+        if (imgArray2.length) {
+          totalTime = imgArray2[imgArray2.length - 1].time;
         }
 
         actions.overlayerShow(<ProjectPreview totalTime={totalTime} imgArray={imgArray2} closeClick={() => { actions.overlayerHide(); }}/>);
 
-      })
+      });
 
-    }catch(error){
+    } catch (error) {
       // console.log(error);
     }
+    //  actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => { actions.overlayerHide(); }}/>);
+
   }
 
   zoomOutHandler = () => {
