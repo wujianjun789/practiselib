@@ -60,7 +60,7 @@ export const TreeData = [
       },
     ],
   },
-  /*{
+  {
     'id': 'statistics',
     'name': 'asset.statistics',
     'toggled': false,
@@ -82,7 +82,7 @@ export const TreeData = [
       },
 
     ],
-  },*/
+  },
 ];
 
 export let first_child = {};
