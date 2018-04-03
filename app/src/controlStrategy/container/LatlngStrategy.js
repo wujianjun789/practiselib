@@ -12,7 +12,6 @@ import TimeGroupPopup from '../component/TimeGroupPopup';
 import AddGatewayPopup from '../component/AddGatewayPopup';
 
 import Immutable from 'immutable';
-import {dateStringFormat} from '../../util/string';
 import {getObjectByKeyObj, getIndexByKey, getProByKey, getIndexsByKey, spliceInArray, 
   getObjectByKey, getListKeyByKey, IsExitInArray3, getListByKey2} from '../../util/algorithm';
 import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup, 
@@ -111,7 +110,7 @@ class LatlngStrategy extends Component {
           if (parent.plans) {
             parent.plans.map(item => {
               item.hidden = parent.collapsed;
-              item.timeRange = dateStringFormat(item.start) + '-' + dateStringFormat(item.end);
+              item.timeRange = item.start.split('T')[0] +' '+ this.formatIntl('mediaPublish.to') +' '+ item.end.split('T')[0];
               result.push(item);
             });
           }
@@ -122,7 +121,7 @@ class LatlngStrategy extends Component {
               result.push(parent);
 
               item.hidden = parent.collapsed;
-              item.timeRange = dateStringFormat(item.start) + '-' + dateStringFormat(item.end);
+              item.timeRange = item.start.split('T')[0] +' '+ this.formatIntl('mediaPublish.to') +' '+ item.end.split('T')[0];
               result.push(item);
             }
           });
@@ -257,7 +256,7 @@ class LatlngStrategy extends Component {
       let row = getObjectByKey(this.state.strategyData, 'key', rowKey);
       if (row.get('plans')) {
         actions.overlayerShow(<TimeGroupPopup className="time-group-popup" 
-          intl={this.props.intl} title="修改组" name={row.get('name')}
+          intl={this.props.intl} title={this.formatIntl('app.edit.group')} name={row.get('name')}
           onConfirm={(data) => {
             updateGroup({id:row.get('id'), name:data}, () => {
               this.requestSearch();
@@ -269,7 +268,7 @@ class LatlngStrategy extends Component {
         return;
       }
         
-      actions.overlayerShow(<StrategyPopup isEdit intl={this.props.intl} title="修改策略" data={row.toJS()} type="1"
+      actions.overlayerShow(<StrategyPopup isEdit intl={this.props.intl} title={this.formatIntl('app.edit.strategy')} data={row.toJS()} type="1"
         onConfirm={(data) => {
           data.id = row.get('id');
           data.type = 1;
@@ -443,7 +442,7 @@ class LatlngStrategy extends Component {
     addGateway=() => {
       const {actions} = this.props;
       actions.overlayerShow(<AddGatewayPopup className="add-gateway-popup" intl={this.props.intl}
-        title="添加网关" allDevices={this.state.allDevicesData}
+        title={this.formatIntl("button.add.gateway")} allDevices={this.state.allDevicesData}
         onConfirm={(data) => {
           this.addGatewayToAll(data);
           actions.overlayerHide();
@@ -521,7 +520,7 @@ class LatlngStrategy extends Component {
                 </div>
                 <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
                   <div className="form-group">
-                    <label>{this.formatIntl('app.strategy.group.name')}</label>
+                    <label title={this.formatIntl('app.strategy.group.name')}>{this.formatIntl('app.strategy.group.name')}</label>
                     <div className="input-container">
                       <input type="text" className="form-control" value={selectItem.name ? selectItem.name
                         : ''} disabled="disabled"/>
@@ -539,20 +538,20 @@ class LatlngStrategy extends Component {
                   </div>
                   <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
                     <div className="form-group">
-                      <label>{this.formatIntl('app.strategy.name')}</label>
+                      <label title={this.formatIntl('app.strategy.name')}>{this.formatIntl('app.strategy.name')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.name} disabled="disabled"/>
                       </div>
                     </div>
                     <div className="form-group">
-                      <label>{this.formatIntl('app.strategy.level')}</label>
+                      <label title={this.formatIntl('app.strategy.level')}>{this.formatIntl('app.strategy.level')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.levelTitle} disabled="disabled"/>
                       </div>
                     </div>
 
                     <div className="form-group date-range">
-                      <label>{this.formatIntl('app.date.range')}</label>
+                      <label title={this.formatIntl('app.date.range')}>{this.formatIntl('app.date.range')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.start} disabled="disabled"/>
                         <span>{this.formatIntl('mediaPublish.to')}</span>
@@ -561,13 +560,13 @@ class LatlngStrategy extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label>{this.formatIntl('app.strategy.retryNumber')}</label>
+                      <label title={this.formatIntl('app.strategy.retryNumber')}>{this.formatIntl('app.strategy.retryNumber')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.retryNumber} disabled="disabled"/>
                       </div>
                     </div>
                     <div className="form-group">
-                      <label>{this.formatIntl('app.strategy.retryInterval')}</label>
+                      <label title={this.formatIntl('app.strategy.retryInterval')}>{this.formatIntl('app.strategy.retryInterval')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" 
                           value={selectItem.retryInterval} disabled="disabled"/>
@@ -583,7 +582,7 @@ class LatlngStrategy extends Component {
                   </div>
                   <div className={'panel-body ' + (sidebarInfo.parameterCollapsed ? 'collapsed' : '')}>
                     <div className="form-group">
-                      <label>{this.formatIntl('app.strategy.identifying')}</label>
+                      <label title={this.formatIntl('app.strategy.identifying')}>{this.formatIntl('app.strategy.identifying')}</label>
                       <div className="input-container">
                         <select className="form-control" value={selectItem.excuteTime}
                           onChange={e => this.onChange('excuteTime', e.target.value)}>
@@ -596,7 +595,7 @@ class LatlngStrategy extends Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label>{this.formatIntl('app.brightness')}</label>
+                      <label title={this.formatIntl('app.brightness')}>{this.formatIntl('app.brightness')}</label>
                       <div className="input-container">
                         <select className="form-control" value={selectItem.execution ? selectItem.execution.light 
                           : ''} onChange={e => this.onChange('light', e.target.value)}>
@@ -609,7 +608,7 @@ class LatlngStrategy extends Component {
                       </div>
                     </div>
                     <div className="form-group">
-                      <label>{this.formatIntl('app.time.difference')}</label>
+                      <label title={this.formatIntl('app.time.difference')}>{this.formatIntl('app.time.difference')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.excuteOffset ? 
                           selectItem.excuteOffset : ''} onChange={e => this.onChange('excuteOffset', e.target.value)}/>
