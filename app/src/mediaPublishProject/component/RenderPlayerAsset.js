@@ -14,13 +14,16 @@ export default class RenderPlayerAsset extends Component {
   constructor(props){
     super(props);
     this.state = {
-      IsPopup: false
+      IsPopup: false,
+      IsDrag: false
     }
     this.addTime = null;
 
     this.mouseDown = this.mouseDown.bind(this);
     this.itemClick = this.itemClick.bind(this);
 
+    this.onStart = this.onStart.bind(this);
+    this.onDrag = this.onDrag.bind(this);
     this.onStop = this.onStop.bind(this);
     this.addClick = this.addClick.bind(this);
     this.addMouseOut = this.addMouseOut.bind(this);
@@ -30,6 +33,9 @@ export default class RenderPlayerAsset extends Component {
     // console.log('start:',event, event.data);
   }
 
+  onDrag(event){
+    // this.setState({IsDrag: true});
+  }
   onStop(event){
     const index = parseInt((event.x-180)/86);
 
@@ -45,7 +51,7 @@ export default class RenderPlayerAsset extends Component {
   itemClick(event, item){
     event.stopPropagation();
     event.preventDefault();
-    this.props.playerAssetSelect(item);
+    // this.props.playerAssetSelect(item);
   }
 
   addMouseOut(){
@@ -79,7 +85,8 @@ export default class RenderPlayerAsset extends Component {
           const thumbnail = item.thumbnail;
           const curId = curItem?curItem.id:undefined;
 
-          return <Draggable key={index} axis="x" bounds="parent" position={{x:0, y:0}} onMouseDown={(event)=>{this.mouseDown(event, item)}} onStart={this.onStart} onStop={this.onStop}>
+          return <Draggable key={index} axis="x" bounds="parent" position={{x:0, y:0}} onMouseDown={(event)=>{this.mouseDown(event, item)}}
+                            onStart={this.onStart} onDrag={this.onDrag} onStop={this.onStop}>
             <li key={index} className={"player-list-asset "+(curId ===itemId?"active":"")} role="presentation"
                  onClick={(event)=>this.itemClick(event, item)}>
             <div className={'background ' + (curId === itemId ? '' : 'hidden')}></div>

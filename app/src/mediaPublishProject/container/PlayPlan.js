@@ -73,6 +73,7 @@ export class PlayPlan extends Component {
     };
     this.previewUrl = '';
     this.previewTimeout = null;
+    this.previewItemTimeout = null;
 
     this.formatIntl = this.formatIntl.bind(this);
 
@@ -137,6 +138,8 @@ export class PlayPlan extends Component {
     actions.initCurnode(null);
 
     this.previewTimeout && clearTimeout(this.previewTimeout);
+    this.previewItemTimeout && clearTimeout(this.previewItemTimeout);
+
     window.onresize = event => {
 
     };
@@ -330,12 +333,15 @@ export class PlayPlan extends Component {
   }
 
   playerAssetSelect(item) {
-    this.props.actions.initCurnode(item);
-    this.props.actions.initItem(item);
-    this.props.actions.playerAssetSelect(item);
-    this.setState({IsCancelSelect: true}, ()=>{
+    this.previewItemTimeout && clearTimeout(this.previewItemTimeout);
 
-    });
+    // this.previewItemTimeout = setTimeout(()=>{
+      this.props.actions.initItem(item);
+      this.props.actions.initCurnode(item);
+      this.props.actions.playerAssetSelect(item);
+      this.setState({IsCancelSelect: true}, ()=>{
+      });
+    // }, 66);
   }
 
   playerAssetRemove(item) {
@@ -663,7 +669,7 @@ const mapDispatchToProps = (dispatch) => {
       initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
       requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-      clearTreeState: clearTreeState, addItemToArea: addItemToArea,playerAssetSelect: playerAssetSelect
+      clearTreeState: clearTreeState, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect
     }, dispatch),
   };
 };
