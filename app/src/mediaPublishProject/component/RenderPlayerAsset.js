@@ -36,10 +36,10 @@ export default class RenderPlayerAsset extends Component {
   onDrag(event){
     // this.setState({IsDrag: true});
   }
-  onStop(event){
+  onStop(event, lastIndex){
     const index = parseInt((event.x-180)/86);
 
-    this.props.playerAssetMove(index);
+    index != lastIndex && this.props.playerAssetMove(index);
   }
 
   mouseDown(event, item){
@@ -86,7 +86,7 @@ export default class RenderPlayerAsset extends Component {
           const curId = curItem?curItem.id:undefined;
 
           return <Draggable key={index} axis="x" bounds="parent" position={{x:0, y:0}} onMouseDown={(event)=>{this.mouseDown(event, item)}}
-                            onStart={this.onStart} onDrag={this.onDrag} onStop={this.onStop}>
+                            onStart={this.onStart} onDrag={this.onDrag} onStop={(event)=>{this.onStop(event, index)}}>
             <li key={index} className={"player-list-asset "+(curId ===itemId?"active":"")} role="presentation"
                  onClick={(event)=>this.itemClick(event, item)}>
             <div className={'background ' + (curId === itemId ? '' : 'hidden')}></div>

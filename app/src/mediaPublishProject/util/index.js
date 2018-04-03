@@ -385,7 +385,7 @@ function getImageData(data, type) {
     "baseInfo": {
       "type": type,
       "file": data.filepath,
-      "playDuration": 5,
+      "playDuration": 5000,
       "logFlag": 0,
       "materialId": data.id
     },

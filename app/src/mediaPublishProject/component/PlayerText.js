@@ -145,7 +145,7 @@ class PlayerText extends Component {
                 showFontColor: false,
                 showBgColor: false,
                 prompt: {
-                    playDuration: false,
+                    playDuration: !numbersValid(playDuration) || playDuration === 0,
                     playSpeed: false,
                     rowSpace: false,
                     charSpace: false
@@ -182,6 +182,12 @@ class PlayerText extends Component {
             }
             case 'playDuration':
             case 'playSpeed':
+                if(!numbersValid(e.target.value) || parseInt(e.target.value) === 0){
+                    return this.setState({
+                        [type]: {...this.state[type], value:e.target.value},
+                        prompt: {...this.state.prompt, [type]: true}
+                    })
+                }
             case 'rowSpace':
             case 'charSpace': {
                 if (!numbersValid(e.target.value)) {
