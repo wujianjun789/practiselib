@@ -580,6 +580,7 @@ export function addItemToArea(item, formatIntl) {
     // if (!curNode || curNode.type !== 'area') {
     //   return dispatch(addNotify(0, formatIntl('mediaPublish.area.alert')));
     // }
+    console.log('addItemToArea:');
 
     if (typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
       return dispatch(addNotify(0, '请提交区域'));

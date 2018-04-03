@@ -385,82 +385,9 @@
 },
   {
     "baseInfo": {
-      "type": 1,
-      "file": "格式文本",
-      "playDuration": 0,
-      "logFlag": 0,
-      "materialId": "formatText"
-    },
-    "textsList": [
-      {
-        "text": "string",
-        "fontColor": {
-          "red": 0,
-          "green": 0,
-          "blue": 0,
-          "amber": 0,
-          "alpha": 0
-        },
-        "fontBgColor": {
-          "red": 0,
-          "green": 0,
-          "blue": 0,
-          "amber": 0,
-          "alpha": 0
-        },
-        "fontShadowColor": {
-          "red": 0,
-          "green": 0,
-          "blue": 0,
-          "amber": 0,
-          "alpha": 0
-        },
-        "charSpace": 0,
-        "font": {
-          "name": "string",
-          "size": 0,
-          "bold": true,
-          "italic": true,
-          "underline": true,
-          "strikeout": true
-        },
-        "offset": {
-          "x": 0,
-          "y": 0,
-          "id": 0
-        }
-      }
-    ],
-    "background": {
-      "transparent": 0,
-      "picture": "string",
-      "picAlignment": 0,
-      "color": {
-        "red": 0,
-        "green": 0,
-        "blue": 0,
-        "amber": 0,
-        "alpha": 0
-      },
-      "colorKey": {
-        "red": 0,
-        "green": 0,
-        "blue": 0,
-        "amber": 0,
-        "alpha": 0
-      },
-      "materialId": "string"
-    },
-    "inTransition": {
-      "transition": 0,
-      "speed": 0
-    }
-  },
-  {
-    "baseInfo": {
       "type": 0,
       "file": "简单文本",
-      "playDuration": 0,
+      "playDuration": 5000,
       "logFlag": 0,
       "materialId": "simpleText"
     },

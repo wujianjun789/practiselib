@@ -56,7 +56,7 @@ class TextFile extends Component {
             list: [{ id: 0, name: '左上' }, { id: 1, name: '左中' }, { id: 2, name: '左下' }, { id: 3, name: '中上' }, { id: 4, name: '上下居中' }, { id: 5, name: '中下' }, { id: 6, name: '右上' }, { id: 7, name: '右中' }, { id: 8, name: '右下' },],
             index: 0
         },
-        playDuration: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playDuration' }), placeholder: '毫秒', value: 0 },
+        playDuration: { title: this.props.intl.formatMessage({ id: 'mediaPublish.playDuration' }), placeholder: '毫秒', value: 5 },
         animation: {
             title: this.props.intl.formatMessage({ id: 'mediaPublish.animation' }),
             list: [
@@ -145,7 +145,7 @@ class TextFile extends Component {
                 showFontColor: false,
                 showBgColor: false,
                 prompt: {
-                    playDuration: false,
+                    playDuration: !numbersValid(playDuration) || playDuration === 0,
                     playSpeed: false,
                     rowSpace: false,
                     charSpace: false
@@ -182,6 +182,12 @@ class TextFile extends Component {
             }
             case 'playDuration':
             case 'playSpeed':
+                if(!numbersValid(e.target.value) || parseInt(e.target.value) === 0){
+                    return this.setState({
+                        [type]: {...this.state[type], value:e.target.value},
+                        prompt: {...this.state.prompt, [type]: true}
+                    })
+                }
             case 'rowSpace':
             case 'charSpace': {
                 if (!numbersValid(e.target.value)) {
@@ -189,7 +195,7 @@ class TextFile extends Component {
                         [type]: { ...this.state[type], value: e.target.value },
                         prompt: { ...this.state.prompt, [type]: true }
                     })
-                    return;
+                    return true;
                 }
                 this.setState({
                     [type]: { ...this.state[type], value: Number(e.target.value) },
@@ -300,6 +306,7 @@ class TextFile extends Component {
     render() {
         const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent, alignment, playDuration,
             animation, playSpeed, rowSpace, charSpace, showFontColor, showBgColor, prompt } = this.state;
+        console.log(prompt);
         const styles = reactCSS({
             'default': {
                 fontColor: {

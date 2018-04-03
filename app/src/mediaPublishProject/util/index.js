@@ -327,7 +327,7 @@ function getTxtFileData(data, type) {
     "baseInfo": {
       "type": type,
       "file": data.filepath,
-      "playDuration": 0,
+      "playDuration": 5000,
       "logFlag": 0,
       "materialId": data.id
     },
@@ -385,7 +385,7 @@ function getImageData(data, type) {
     "baseInfo": {
       "type": type,
       "file": data.filepath,
-      "playDuration": 0,
+      "playDuration": 5,
       "logFlag": 0,
       "materialId": data.id
     },
@@ -398,7 +398,6 @@ function getImageData(data, type) {
 }
 
 function getVideoData(data, type) {
-
   return {
     "baseInfo": {
       "type": type,
