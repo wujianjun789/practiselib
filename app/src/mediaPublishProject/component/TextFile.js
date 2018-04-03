@@ -306,7 +306,6 @@ class TextFile extends Component {
     render() {
         const { name, text, fontType, fontColor, fontSize, bgColor, bgTransparent, alignment, playDuration,
             animation, playSpeed, rowSpace, charSpace, showFontColor, showBgColor, prompt } = this.state;
-        console.log(prompt);
         const styles = reactCSS({
             'default': {
                 fontColor: {
