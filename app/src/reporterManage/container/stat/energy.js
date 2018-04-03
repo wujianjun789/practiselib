@@ -264,7 +264,8 @@ export default class Lc extends Component {
 	                       </div>
                         <div class='panel-body'>
                             <div class='state-select-mode'>
-                                <Select class='select-mode' id='mode' options={modeList} onChange={this.onChangeHandler} />
+                                {/* 隐藏 按域 按设备 下拉选择框 */}
+                                {/* <Select class='select-mode' id='mode' options={modeList} onChange={this.onChangeHandler} /> */}
                                 {modePanel}
                                 <div class='btn-group-right'>
                                     <button id='apply' class='btn btn-primary fix-margin' disabled={applyDisabled} onClick={this.onClickHandler}>应用</button>

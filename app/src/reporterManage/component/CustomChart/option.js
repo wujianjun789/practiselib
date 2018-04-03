@@ -82,7 +82,7 @@ export default {
             smooth: true,
             // symbol: 'none',
             sampling: 'average',
-            step: 'end',
+            // step: 'end',
             // itemStyle: {
             //     normal: {
             //         color: 'rgb(255, 70, 131)'

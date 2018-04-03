@@ -37,9 +37,9 @@ export default class CustomChart extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { name, unit, start, end, data } = this.props;
         /* 注意：此处后续需要修改 */
-        if (data !== this.props.data) {
-            this.setState({ name, unit, start, end, data }, this.draw)
-        }
+        // if (data !== this.props.data) {
+        this.setState({ name, unit, start, end, data }, this.draw)
+        // }
     }
     componentDidUpdate() {
         setTimeout(() => {
@@ -66,20 +66,20 @@ export default class CustomChart extends React.Component {
         if (data.length) {
             option.title.text = ''
         } else {
-            // option.title.text = '暂无数据，模拟测试'
+            option.title.text = '暂无数据，模拟测试'
             //测试所用数据
-            // data = [
-            //     { timestamp: '2018-03-22T00:33:06.834Z', value: 20 },
-            //     { timestamp: '2018-03-23T00:33:06.834Z', value: 30 },
-            //     { timestamp: '2018-03-24T00:33:06.834Z', value: 50 },
-            //     { timestamp: '2018-03-25T00:33:06.834Z', value: 60 },
-            //     { timestamp: '2018-03-26T00:33:06.834Z', value: 10 },
-            //     { timestamp: '2018-03-27T00:33:06.834Z', value: 80 },
-            //     { timestamp: '2018-03-28T00:33:06.834Z', value: 20 },
-            //     { timestamp: '2018-03-29T00:33:06.834Z', value: 90 },
-            //     { timestamp: '2018-03-30T00:33:06.834Z', value: 100 },
-            //     { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },
-            // ]
+            data = [
+                { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },
+                { timestamp: '2018-04-02T04:33:06.834Z', value: 30 },
+                { timestamp: '2018-04-02T05:33:06.834Z', value: 50 },
+                { timestamp: '2018-04-02T08:33:06.834Z', value: 60 },
+                { timestamp: '2018-04-02T10:33:06.834Z', value: 10 },
+                { timestamp: '2018-04-02T13:33:06.834Z', value: 80 },
+                { timestamp: '2018-04-02T15:33:06.834Z', value: 20 },
+                { timestamp: '2018-04-02T21:33:06.834Z', value: 90 },
+                { timestamp: '2018-04-02T22:33:06.834Z', value: 100 },
+                { timestamp: '2018-04-02T23:33:06.834Z', value: 20 },
+            ]
             option.yAxis.min = 0;
             option.yAxis.max = 100
         }
