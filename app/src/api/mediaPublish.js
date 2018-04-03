@@ -446,9 +446,9 @@ export function getSceneItemPreview(projectId, programId, sceneId, zoneId, itemI
   httpRequest(HOST_IP+'/projects/'+projectId+'/programs/'+programId+'/scenes/'+sceneId+'/zones/'+zoneId+'/items/'+itemId+'/preview',{
     headers: headers,
     method: 'GET'
-  }, response=>{
-    cb && cb(response);
-  })
+  }, (response, res, itemId)=>{
+    cb && cb(response, itemId);
+  }, itemId)
 }
 
 export function addItem(projectId, programId, sceneId, zoneId, itemType, data, cb) {

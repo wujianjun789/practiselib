@@ -551,18 +551,22 @@ function updateItemName(itemObject, sysfile) {
   };
 }
 
+let lastItemId = -1;
 export function playerAssetSelect(item) {
+  lastItemId = item.id;
   return (dispatch, getState)=>{
     const project = getState().mediaPublishProject.project;
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
     const zone = getState().mediaPublishProject.zone;
-    getSceneItemPreview(project.id, plan.id, scene.id, zone.id, item.id, response=>{
-      console.log('sceneItemPreview:', response);
-      const itemObject = Object.assign({}, item, response)
-      dispatch(initCurnode(itemObject));
-      dispatch(initItem(itemObject));
-    })
+    const item2 = getState().mediaPublishProject.item;
+    getSceneItemPreview(project.id, plan.id, scene.id, zone.id, item.id, (response, itemId)=>{
+      if(lastItemId<0 || itemId === lastItemId){
+        const itemObject = Object.assign({}, item, response);
+        dispatch(initItem(itemObject));
+        dispatch(initCurnode(itemObject));
+      }
+    });
   }
 }
 
