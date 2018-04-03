@@ -71,7 +71,8 @@ export default class PieChart {
 
         path.exit()
             .transition()
-            .duration(600)
+            .duration(300)
+            // .delay(2000)
             .attrTween("d", function (d, index) {
                 var currentIndex = this._previous.data.region;
                 var i = d3.interpolateObject(d, this._previous);

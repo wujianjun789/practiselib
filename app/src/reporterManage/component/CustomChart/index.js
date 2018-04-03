@@ -1,4 +1,5 @@
-import React from 'react' 
+import React from 'react'
+import PropTypes from 'prop-types'
 import echarts from 'echarts';
 
 import 'echarts/lib/chart/line'
@@ -7,55 +8,112 @@ import 'echarts/lib/component/title';
 
 import './style.less'
 import option from './option'
-export default class CustomChart extends React.Component{
-    constructor(props){
+export default class CustomChart extends React.Component {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        unit: PropTypes.string.isRequired,
+        start: PropTypes.object.isRequired,
+        end: PropTypes.object.isRequired,
+        data: PropTypes.array.isRequired
+    }
+    constructor(props) {
         super(props);
-        const {start,end,data,unit}=this.props;
-        this.state={
-            start,end,data,unit
+        const { name, unit, start, end, data, } = this.props;
+        this.state = {
+            name, unit, start, end, data
         }
     }
-    componentDidMount(){
-        this.myChart=echarts.init(document.getElementById('custom-chart'));
-        this.draw()
+    componentWillMount() {
+        this._isMounted = true;
     }
-    componentWillReceivePros(nextProps){
-        const {start,end,data,unit}=this.props;
-        if(start!==this.props.start||end!==this.props.end||data!==this.props.data||unit!==this.props.unit){
-            this.setState({start,end,data,unit},this.draw)
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+    componentDidMount() {
+        this.myChart = echarts.init(document.getElementById('custom-chart'));
+        window.onresize = this.myChart.resize    //添加图表响应式
+        this.draw();
+    }
+    componentWillReceiveProps(nextProps) {
+        const { name, unit, start, end, data } = this.props;
+        /* 注意：此处后续需要修改 */
+        // if (data !== this.props.data) {
+        this.setState({ name, unit, start, end, data }, this.draw)
+        // }
+    }
+    componentDidUpdate() {
+        setTimeout(() => {
+            if (this.customChart) {
+                if (this.customChart.clientWidth !== this.initialWidth || this.customChart.clientHeight !== this.initialHeight) {
+                    this.initialWidth = this.customChart.clientWidth
+                    this.initialHeight = this.customChart.clientHeight
+                    this.myChart.resize()
+                }
+            }
+        }, 300)
+    }
+    getChartContainer = ele => {
+        if (this._isMounted) {
+            this.customChart = ele
+            this.initialWidth = this.customChart.clientWidth;
+            this.initialHeight = this.customChart.clientHeight;
         }
     }
-    draw=()=>{
-        let {start,end,data,unit}=this.state;
+    draw = () => {
+        let { name, unit, start, end, data } = this.state;
 
+        // 是否显示标题
         if (data.length) {
             option.title.text = ''
         } else {
             option.title.text = '暂无数据，模拟测试'
-             //测试所用数据
-             data=[
-                {timestamp:'2018-03-01',value:30},
-                {timestamp:'2018-03-02',value:50},
-                {timestamp:'2018-03-05',value:60},
-                {timestamp:'2018-03-08',value:10},
-                {timestamp:'2018-03-09',value:80},
-                {timestamp:'2018-03-10',value:20},
-                {timestamp:'2018-03-15',value:90},
-                {timestamp:'2018-03-19',value:100},
-                {timestamp:'2018-03-20',value:20},
-                {timestamp:'2018-03-30',value:33},
-                {timestamp:'2018-03-31',value:65}
+            //测试所用数据
+            data = [
+                { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },
+                { timestamp: '2018-04-02T04:33:06.834Z', value: 30 },
+                { timestamp: '2018-04-02T05:33:06.834Z', value: 50 },
+                { timestamp: '2018-04-02T08:33:06.834Z', value: 60 },
+                { timestamp: '2018-04-02T10:33:06.834Z', value: 10 },
+                { timestamp: '2018-04-02T13:33:06.834Z', value: 80 },
+                { timestamp: '2018-04-02T15:33:06.834Z', value: 20 },
+                { timestamp: '2018-04-02T21:33:06.834Z', value: 90 },
+                { timestamp: '2018-04-02T22:33:06.834Z', value: 100 },
+                { timestamp: '2018-04-02T23:33:06.834Z', value: 20 },
             ]
+            option.yAxis.min = 0;
+            option.yAxis.max = 100
         }
-        const xData=data.map((item)=>item.timestamp);
-        const yData=data.map((item)=>item.value)
-        option.xAxis.data=xData;
-        option.series[0].data=yData;
+
+        //提示框
+        option.tooltip.formatter = (params) => {
+            return `${params[0].axisValueLabel.trim()}<br/>${name}：${params[0].value[1]} ${unit}`
+        }
+
+        //设置y轴标签文本
+        option.yAxis.axisLabel.formatter = (value) => {
+            if (value === 0) { return '' }
+            return `${value}${unit}`;
+        }
+
+        //设置x轴最小值、最大值
+        option.xAxis.min = () => (new Date(start._d).getTime())
+        option.xAxis.max = () => (new Date(end._d).getTime())
+
+        //待渲染数据
+        const yData = data.map((item) => ({
+            value: [
+                item.timestamp,
+                item.value
+            ]
+        }))
+
+        option.series[0].data = yData;
         this.myChart.setOption(option)
     }
-    render(){
-        return(
-            <div class='customchart-container'>
+
+    render() {
+        return (
+            <div id='custom-chart-container' class='customchart-container' ref={this.getChartContainer}>
                 <div id='custom-chart'>
                 </div>
             </div>

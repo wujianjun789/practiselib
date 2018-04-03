@@ -76,7 +76,7 @@ export default class Lighting extends React.Component {
                         <h4>亮灯率</h4>
                         <div class='normal-device clearfix'>
                             {count ? <PieChart id='normal-device' className='left' dataSource={dataSource1} color={['#fa919c', '#f83d59']} />
-                                : <div class='left'>暂无设备</div>
+                                : <div class='left'><span>暂无设备</span></div>
                             }
                             <div class='right'>
                                 <h5>设备数：{count}</h5>
@@ -89,7 +89,7 @@ export default class Lighting extends React.Component {
                         <h4>故障率</h4>
                         <div class='fault-device clearfix'>
                             {count ? <PieChart id='fault-device' className='left' dataSource={dataSource2} />
-                                : <div class='left'>暂无设备</div>
+                                : <div class='left'><span>暂无设备</span></div>
                             }
                             <div class='right'>
                                 <h5>设备数：{count}</h5>

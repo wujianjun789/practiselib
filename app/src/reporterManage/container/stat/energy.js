@@ -6,6 +6,7 @@ import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Select from '../../component/select';
 import { DatePicker, message } from 'antd';
+import 'antd/lib/message/style/index.css'
 import Modal from 'antd/lib/modal';
 import '../../../../public/styles/antd-modal.less';
 import { getYesterday, getToday } from '../../../util/time';
@@ -156,6 +157,11 @@ export default class Lc extends Component {
         const { startDate, endDate, currentMode, currentDeviceId, currentDomain, multiDeviceList, domainList } = this.state;
         const start = momentDateFormat(startDate, 'YYYY-MM-DD');
         const end = momentDateFormat(endDate, 'YYYY-MM-DD');
+
+        if (new Date(startDate._d).getTime() > new Date(endDate._d).getTime()) {
+            message.warning('请输入正确的起始日期')
+            return;
+        }
         // const timeRange = JSON.stringify([start, end]);
         if (currentMode === 'device') {
             const name = multiDeviceList.find(item => item.id === currentDeviceId)['name'];
@@ -171,7 +177,9 @@ export default class Lc extends Component {
             const { id, name } = currentDomain;
             getHistoriesDataInStat('domains', id, start, end, name, res => {
                 if (typeof res === 'string') {
+                    /* 注意 : 此处为测试代码，后续删除并修复问题*/
                     message.info(res);
+                    this.forceUpdate()
                     return;
                 }
                 this.setState({ data: res })
@@ -179,14 +187,15 @@ export default class Lc extends Component {
         }
     }
     //测试数据
-    componentDidUpdate() {
-        /* eslint-disable */
-        const { currentMode, currentDomain, currentDeviceId } = this.state;
-        console.log('currentMode', currentMode);
-        console.log('currentDomain', currentDomain);
-        console.log('currentDeviceId', currentDeviceId);
-        /* eslint-enable */
-    }
+    // componentDidUpdate() {
+    //     /* eslint-disable */
+    //     const { currentMode, currentDomain, currentDeviceId } = this.state;
+    //     console.log('currentMode', currentMode);
+    //     console.log('currentDomain', currentDomain);
+    //     console.log('currentDeviceId', currentDeviceId);
+    //     console.log('发生更新？')
+    //     /* eslint-enable */
+    // }
 
     render() {
         const { sidebarCollapse, startDate, endDate, currentMode, modeList, currentDomain, domainList, currentDeviceId, multiDeviceList,
@@ -231,7 +240,7 @@ export default class Lc extends Component {
             <Content class={`device-lc ${sidebarCollapse ? 'collapse' : ''}`}>
                 <div class='content-left'>
                     {/* <Chart start={startDate} end={endDate} data={data} unit='KWh' /> */}
-                    <CustomChart start={startDate} end={endDate} data={data} unit='kwh'/>
+                    <CustomChart name='能耗' unit='kwh' start={startDate} end={endDate} data={data} />
                 </div>
                 <div class={`container-fluid sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
                     <div class='row collapse-container fix-width' onClick={this.collapseHandler}>
@@ -255,7 +264,8 @@ export default class Lc extends Component {
 	                       </div>
                         <div class='panel-body'>
                             <div class='state-select-mode'>
-                                <Select class='select-mode' id='mode' options={modeList} onChange={this.onChangeHandler} />
+                                {/* 隐藏 按域 按设备 下拉选择框 */}
+                                {/* <Select class='select-mode' id='mode' options={modeList} onChange={this.onChangeHandler} /> */}
                                 {modePanel}
                                 <div class='btn-group-right'>
                                     <button id='apply' class='btn btn-primary fix-margin' disabled={applyDisabled} onClick={this.onClickHandler}>应用</button>
