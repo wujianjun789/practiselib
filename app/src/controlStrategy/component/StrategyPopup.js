@@ -161,7 +161,7 @@ export default class TimeStrategyPopup extends Component {
             <label className="control-label" htmlFor="retryNumber" title={this.formatIntl('app.strategy.retryNumber')}>
               {this.formatIntl('app.strategy.retryNumber')}:</label>
             <div className="input-container">
-              <input type="text" className="form-control" id="retryNumber" placeholder="次" value={retryNumber}
+              <input type="text" className="form-control" id="retryNumber" placeholder={this.formatIntl("mediaPublish.number")} value={retryNumber}
                 onChange={this.onChange}/>
             </div>
           </div>
@@ -169,7 +169,7 @@ export default class TimeStrategyPopup extends Component {
             <label className="control-label" htmlFor="retryInterval" title={this.formatIntl(
               'app.strategy.retryInterval')}>{this.formatIntl('app.strategy.retryInterval')}:</label>
             <div className="input-container">
-              <input type="text" className="form-control" id="retryInterval" placeholder="秒" value={retryInterval}
+              <input type="text" className="form-control" id="retryInterval" placeholder={this.formatIntl("app.second")} value={retryInterval}
                 onChange={this.onChange}/>
             </div>
           </div>
@@ -177,7 +177,7 @@ export default class TimeStrategyPopup extends Component {
             <label className="control-label" htmlFor="search" title={this.formatIntl('app.strategy.select.group')}>
               {this.formatIntl('app.strategy.select.group')}:</label>
             <div className="search-list">
-              <input type="text" id="search" className="form-control" placeholder="请搜索或创建组" value={search}
+              <input type="text" id="search" className="form-control" placeholder={this.formatIntl("search.or.create.group")} value={search}
                 onChange={this.onChange}/>
               <ul className="group-list">
                 {
@@ -190,7 +190,7 @@ export default class TimeStrategyPopup extends Component {
                 {
                   (search && !getObjectByKeyObj(groupList, 'name', search)) && <li role="presentation"
                     onClick={this.addGroup}><span className="glyphicon glyphicon-plus">
-                    </span>{`创建组“${search}”`}</li>                                
+                    </span>{`${this.formatIntl('app.add.group')}“${search}”`}</li>                                
                 }                           
               </ul>
             </div>

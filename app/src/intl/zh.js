@@ -251,7 +251,11 @@ export default {
     'app.strategy.select.devices': '选择设备',
     'app.strategy.identifying': '标识',
     'app.time.difference': '时间差',
-
+    'app.add.group': '创建组',
+    'app.edit.group':'修改组',
+    'app.edit.strategy':'修改策略',
+    'search.or.create.group':'请搜索或创建组',
+    
     //设备维护
     'sysOperation.deviceNum': '编号',
     'sysOperation.deviceName': '名称',
