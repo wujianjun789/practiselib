@@ -26,9 +26,10 @@ import {initPlanDate} from '../util/index';
 
 import PlayerProgram from '../component/PlayerProgram/index';
 
+import {projectFilterDate} from '../util/index';
+
 import moment from 'moment';
 import lodash from 'lodash';
-import {getMomentByDateObject} from '../../util/time';
 export class PlayProject extends Component {
   constructor(props) {
     super(props);
@@ -139,22 +140,8 @@ export class PlayProject extends Component {
   render() {
     const {sidebarInfo, curDate} = this.state;
     const {router, data, project, plan, actions} = this.props;
-    const datalist = curDate ? lodash.filter(data, newPlan => {
-      const plan = initPlanDate(newPlan);
-      const {dateBegin, dateEnd} = plan.dateRange;
-      return dateBegin.day <= curDate.date() && dateEnd.day >= curDate.date();
-    }):data;
 
-    const programList = datalist.map(newPlan => {
-      const plan = initPlanDate(newPlan);
-      const {dateBegin, dateEnd} = plan.dateRange;
-      const {timeBegin, timeEnd} = plan.timeRange;
-      const momBegin = getMomentByDateObject(dateBegin, timeBegin);
-      const momEnd = getMomentByDateObject(dateEnd, timeEnd);
-      return {name:plan.name, totalSec:24 * 3600, schedules:[{start:(momBegin.hour() * 3600 + momBegin.minute() * 60 + momBegin.seconds() + momBegin.millisecond() / 60),
-        end:(momEnd.hour() * 3600 + momEnd.minute() * 60 + momEnd.seconds() + momEnd.millisecond() / 60)}]};
-    });
-
+    const programList = projectFilterDate(data, curDate);
     return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={'/mediaPublish/playerProject'}/>
       <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
