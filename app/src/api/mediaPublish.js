@@ -10,6 +10,7 @@ import { HeadBar } from '../components/HeadBar';
 //上传文件
 
 export function uploadMaterialFile(list, index) {
+  console.log(list)
   const currentXhr = list[index].xhr;
   const data = list[index].form;
   currentXhr.open('POST', UPLOAD_IP, true);

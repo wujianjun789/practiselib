@@ -202,8 +202,7 @@ export class PlayPlan extends Component {
       if (list[i] !== undefined && (list[i].progress === '待上传' || list[i].progress === 'Waiting')) {
         const currentXhr = list[i].xhr;
         uploadMaterialFile(list, i);
-        this.setState({ currentXhr });
-        return;
+        return this.setState({ currentXhr });
       }
     }
     this.setState({ isUpload: false, currentXhr: null });//无待上传文件时
