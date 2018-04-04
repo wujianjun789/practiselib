@@ -83,6 +83,7 @@ export default {
         {
             type: 'line',
             smooth: true,
+            showSymbol: false,
             // symbol: 'none',
             sampling: 'average',
             // step: 'end',
