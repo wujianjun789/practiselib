@@ -9,17 +9,19 @@
             height: 30px;
             margin-left: 50px;
         }
-    } // #normal-device {
-    //     svg,
-    //     g,
-    //     path {
-    //         transition: all 3s;
-    //     }
-    // }
-    .left {
-        span {
-            display: inline-block;
-            padding-top: 15px; // padding-top: 10px!important;
+    }
+    .normal-device,
+    .fault-device {
+        position: relative;
+        .left {
+            width: 175px;
+            height: 135px;
+            transition: display .3s;
+        }
+        .device-null-tip {
+            position: absolute;
+            top: 20px;
+            left: 26px;
         }
     }
 }
