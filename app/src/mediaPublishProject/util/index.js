@@ -4,6 +4,8 @@
 import lodash from 'lodash';
 import moment from 'moment';
 
+import {getMomentByDateObject} from '../../util/time';
+
 const week = {1:"一",2:"二",3:"三",4:"四",5:"五",6:"六",7:"日"};
 export function weekReplace(list) {
   let weekStr = "";
@@ -649,4 +651,26 @@ export function initPlanDate(plan) {
   }
 
   return plan;
+}
+
+export function projectFilterDate(data, curDate) {
+  const datalist = curDate ? lodash.filter(data, newPlan => {
+    const plan = initPlanDate(newPlan);
+    const {dateBegin, dateEnd} = plan.dateRange;
+    const curMonth = curDate.month()+1;
+    const curDay = curDate.date();
+    return !(dateBegin.month > curMonth || dateEnd.month < curMonth || dateBegin.month == curMonth && dateBegin.day > curDay || dateEnd.month == curMonth && dateEnd.day < curDay);
+  }):data;
+  console.log('render:',datalist);
+  const programList = datalist.map(newPlan => {
+    const plan = initPlanDate(newPlan);
+    const {dateBegin, dateEnd} = plan.dateRange;
+    const {timeBegin, timeEnd} = plan.timeRange;
+    const momBegin = getMomentByDateObject(dateBegin, timeBegin);
+    const momEnd = getMomentByDateObject(dateEnd, timeEnd);
+    return {name:plan.name, totalSec:24 * 3600, schedules:[{start:(momBegin.hour() * 3600 + momBegin.minute() * 60 + momBegin.seconds() + momBegin.millisecond() / 60),
+      end:(momEnd.hour() * 3600 + momEnd.minute() * 60 + momEnd.seconds() + momEnd.millisecond() / 60)}]};
+  });
+
+  return programList;
 }
