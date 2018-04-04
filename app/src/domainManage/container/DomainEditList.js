@@ -321,7 +321,7 @@ export class DomainEditList extends Component {
                               current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler} style={sidebarInfoStyle}
+                <SideBarInfo mapDevice={selectDomain} collapseHandler={this.collpseHandler} style={sidebarInfoStyle}
                         className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>

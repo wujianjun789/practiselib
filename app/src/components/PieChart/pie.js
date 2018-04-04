@@ -48,7 +48,7 @@ export default class PieChart {
         path = path.data(data1, key);
 
         path.transition()
-            .duration(600)
+            .duration(800)
             .attrTween("d", arcTween);
 
         path.enter()

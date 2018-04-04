@@ -21,18 +21,36 @@ export default class LightStatistics extends Component {
         id: '',
         title: '',
         data: [
-          // { x: '2018-01-01T00:00:00.000Z', y: 160 },
-          // { x: '2018-01-02T00:00:00.000Z', y: 150 },
-          // { x: '2018-01-03T00:00:00.000Z', y: 130 },
-          // { x: '2018-01-04T00:00:00.000Z', y: 140 },
-          // { x: '2018-01-05T00:00:00.000Z', y: 160 },
-          // { x: '2018-01-06T00:00:00.000Z', y: 150 },
-          // { x: '2018-01-07T00:00:00.000Z', y: 130 },
-          // { x: '2018-01-08T00:00:00.000Z', y: 140 },
-          // { x: '2018-01-09T00:00:00.000Z', y: 160 },
-          // { x: '2018-01-10T00:00:00.000Z', y: 150 },
-          // { x: '2018-01-11T00:00:00.000Z', y: 130 },
-          // { x: '2018-01-12T00:00:00.000Z', y: 140 },
+          { x: '2018-04-01T00:00:00.000Z', y: 160 },
+          { x: '2018-04-02T00:00:00.000Z', y: 130 },
+          { x: '2018-04-03T00:00:00.000Z', y: 130 },
+          { x: '2018-04-04T00:00:00.000Z', y: 140 },
+          { x: '2018-04-05T00:00:00.000Z', y: 120 },
+          { x: '2018-04-06T00:00:00.000Z', y: 150 },
+          { x: '2018-04-07T00:00:00.000Z', y: 130 },
+          { x: '2018-04-08T00:00:00.000Z', y: 140 },
+          { x: '2018-04-09T00:00:00.000Z', y: 130 },
+          { x: '2018-04-10T00:00:00.000Z', y: 150 },
+          { x: '2018-04-11T00:00:00.000Z', y: 130 },
+          { x: '2018-04-12T00:00:00.000Z', y: 140 },
+          { x: '2018-04-13T00:00:00.000Z', y: 160 },
+          { x: '2018-04-14T00:00:00.000Z', y: 150 },
+          { x: '2018-04-15T00:00:00.000Z', y: 130 },
+          { x: '2018-04-16T00:00:00.000Z', y: 130 },
+          { x: '2018-04-17T00:00:00.000Z', y: 140 },
+          { x: '2018-04-18T00:00:00.000Z', y: 120 },
+          { x: '2018-04-19T00:00:00.000Z', y: 120 },
+          { x: '2018-04-20T00:00:00.000Z', y: 120 },
+          { x: '2018-04-21T00:00:00.000Z', y: 150 },
+          { x: '2018-04-22T00:00:00.000Z', y: 130 },
+          { x: '2018-04-23T00:00:00.000Z', y: 130 },
+          { x: '2018-04-24T00:00:00.000Z', y: 130 },
+          { x: '2018-04-25T00:00:00.000Z', y: 140 },
+          { x: '2018-04-26T00:00:00.000Z', y: 140 },
+          { x: '2018-04-27T00:00:00.000Z', y: 140 },
+          { x: '2018-04-28T00:00:00.000Z', y: 160 },
+          { x: '2018-04-29T00:00:00.000Z', y: 150 },
+          { x: '2018-04-30T00:00:00.000Z', y: 190 },
         ],
       },
       energyFilter: {
@@ -84,7 +102,6 @@ export default class LightStatistics extends Component {
                 },
       pieWIdth: 150,
       pieHeight: 170,
-
     };
 
     this.onClick = this.onClick.bind(this);
@@ -126,11 +143,13 @@ export default class LightStatistics extends Component {
 
   initData() {
     getDomainList(data => {
+      console.log("domainData:", data);
       this.mounted && this.updateDomainData(data);
     });
   }
 
   updateDomainData(data, selectedIndex) {
+    console.log("domainData:", data);
     let type = this.state.type;
     let { domainList } = this.state;
     let { id, options } = this.state.domainList;
@@ -183,17 +202,18 @@ export default class LightStatistics extends Component {
     // console.log("dateTime:", dateTime);
     //获取能耗数据并重新渲染
     getEnergy(id, type, dateTime, (response) => {
+      console.log("getEnergy:", response);
       let { data } = this.state.energyFilt;
       let { totalEnergy } = this.state;
       totalEnergy = 0;
-      if (response) { data = []; }
+      if (response.length!==0) { data = []; 
       for (var key in response) {
         totalEnergy += response[key].value;
         let dataItem = {};
         dataItem.x = response[key].dateTime;
         dataItem.y = response[key].value;
         data.push(dataItem);
-      }
+      }};
       this.setState({ energyFilt: Object.assign({}, this.state.energyFilt, { data }),
         totalEnergy: totalEnergy }, () => {
       });
@@ -334,6 +354,7 @@ export default class LightStatistics extends Component {
 
   drawChart(ref, data) {
     if (ref.id == 'energyStatistics') {
+      console.log("energyStatisticsData:", data);
       this.barchart = new BarChart({
         wrapper: ref,
         width:ref.parentNode.offsetWidth,

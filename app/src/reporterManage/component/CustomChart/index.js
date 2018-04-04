@@ -61,25 +61,24 @@ export default class CustomChart extends React.Component {
     }
     draw = () => {
         let { name, unit, start, end, data } = this.state;
-
         // 是否显示标题
         if (data.length) {
             option.title.text = ''
         } else {
             option.title.text = '暂无数据，模拟测试'
             //测试所用数据
-            data = [
-                { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },
-                { timestamp: '2018-04-02T04:33:06.834Z', value: 30 },
-                { timestamp: '2018-04-02T05:33:06.834Z', value: 50 },
-                { timestamp: '2018-04-02T08:33:06.834Z', value: 60 },
-                { timestamp: '2018-04-02T10:33:06.834Z', value: 10 },
-                { timestamp: '2018-04-02T13:33:06.834Z', value: 80 },
-                { timestamp: '2018-04-02T15:33:06.834Z', value: 20 },
-                { timestamp: '2018-04-02T21:33:06.834Z', value: 90 },
-                { timestamp: '2018-04-02T22:33:06.834Z', value: 100 },
-                { timestamp: '2018-04-02T23:33:06.834Z', value: 20 },
-            ]
+            // data = [
+            //     { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },
+            //     { timestamp: '2018-04-02T04:33:06.834Z', value: 30 },
+            //     { timestamp: '2018-04-02T05:33:06.834Z', value: 50 },
+            //     { timestamp: '2018-04-02T08:33:06.834Z', value: 60 },
+            //     { timestamp: '2018-04-02T10:33:06.834Z', value: 10 },
+            //     { timestamp: '2018-04-02T13:33:06.834Z', value: 80 },
+            //     { timestamp: '2018-04-02T15:33:06.834Z', value: 20 },
+            //     { timestamp: '2018-04-02T21:33:06.834Z', value: 90 },
+            //     { timestamp: '2018-04-02T22:33:06.834Z', value: 100 },
+            //     { timestamp: '2018-04-02T23:33:06.834Z', value: 20 },
+            // ]
             option.yAxis.min = 0;
             option.yAxis.max = 100
         }

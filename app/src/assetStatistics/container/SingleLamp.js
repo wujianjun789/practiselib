@@ -68,10 +68,6 @@ export class SingleLamp extends Component {
       },
     };
 
-    // this.columns = [{field:"domain", title:"域"}, {field:"name", title:"设备名称"},
-    //  {field:"software", title:"软件版本"}, {field:"system", title:"系统版本"},
-    //  {field:"core_v", title:"内核版本"}, {field:"hardware", title:"硬件版本"},
-    //  {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}]
 
     this.columns = [
       { field: 'domain', title: intlFormat({ en: 'domain', zh: '域' }) },
