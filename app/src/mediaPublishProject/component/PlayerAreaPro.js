@@ -237,6 +237,7 @@ class PlayerAreaPro extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
+    const Invalid = prompt.areaName || prompt.width || prompt.height || prompt.axisX_a || prompt.axisY_a
     return <div className={'pro-container playerArea '}>
       <div className="row">
         <div className="form-group  area-name">
@@ -325,7 +326,7 @@ class PlayerAreaPro extends PureComponent {
       </div>
       <div className="row line"/>
       <div className="row">
-        <button className="btn btn-primary pull-right" onClick={() => { this.playerAreaClick('apply'); }}>
+        <button className={"btn btn-primary pull-right "+(Invalid?"disabled":"")} onClick={() => { this.playerAreaClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>
         <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerAreaClick('reset'); }}>
           <FormattedMessage id="mediaPublish.reset"/></button>

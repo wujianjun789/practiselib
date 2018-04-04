@@ -64,7 +64,8 @@ class PlayerPicAsset extends PureComponent {
       property.playTimeEnd = res.playTimeEnd ? this.initTime(res.playTimeEnd) : moment('00:00:00', 'HH:mm:ss');
       property.scale = res.scale ? res.scale : this.scaleList[0].value;
       // property.volume = res.volume ? res.volume : this.volumeList[0];
-      this.mounted && this.setState({property:Object.assign({}, property)});
+      const prompt = !(property.playTimeBegin && property.playTimeEnd && property.playTimeEnd.isBefore(property.playTimeBegin));
+      this.mounted && this.setState({property:Object.assign({}, property), prompt:Object.assign({}, this.state.prompt, {clipsRage:prompt})});
     });
   }
 
@@ -90,8 +91,8 @@ class PlayerPicAsset extends PureComponent {
 
   timeChange=(id, value) => {
     this.setState({property: Object.assign({}, this.state.property, {[id]: value})}, () => {
-      const {playTimeBegin, playTimeEnd} = this.state.property;  
-      let prompt = (playTimeBegin && playTimeEnd) && playTimeEnd.isBefore(playTimeBegin);                  
+      const {playTimeBegin, playTimeEnd} = this.state.property;
+      let prompt = !(playTimeBegin && playTimeEnd && playTimeEnd.isBefore(playTimeBegin));
       this.setState({prompt:Object.assign({}, this.state.prompt, {clipsRage:prompt})});
     });
   }
@@ -119,6 +120,7 @@ class PlayerPicAsset extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
+    const Invalid = prompt.clipsRage;
     return <div className="pro-container playerVideoAsset">
       <div className="row">
         <div className="form-group">
@@ -214,7 +216,7 @@ class PlayerPicAsset extends PureComponent {
       </div> */}
       <div className="row line"/>
       <div className="row">
-        <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply'); }}>
+        <button className={"btn btn-primary pull-right "+(Invalid?"disabled":"")} onClick={() => { this.playerVideoAssetClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>
         <button className="btn btn-gray margin-right-1 pull-right" 
           onClick={() => { this.playerVideoAssetClick('reset'); }}>
