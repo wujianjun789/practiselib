@@ -46,9 +46,13 @@ d3.tip = function() {
       coords = direction_callbacks.get(dir).apply(this)      
       var top = coords.top +  poffset[0];
       var left = coords.left +  poffset[1] ;
+      var topValue = top+'px';
+      var leftValue = left+'px';
       nodel.classed(dir, true)
-      .style('top', `${top}px`)
-      .style('left', `${left}px`)
+      // .style('top', `${top}px`)
+      .style('top', topValue)
+      // .style('left', `${left}px`)
+      .style('left', leftValue);
       return tip
     }
   
