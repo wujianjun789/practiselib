@@ -156,7 +156,7 @@ class PlayerText extends Component {
     handleBgTransparent = (e) => {
         this.setState({
             bgTransparent: { ...this.state.bgTransparent, value: e.target.checked },
-            bgColor: {...this.state.bgColor, value:{...this.state.bgColor.value, a:e.target.checked}}
+            bgColor: {...this.state.bgColor, value:{...this.state.bgColor.value, a:e.target.checked?0:1}}
         })
     }
     handleColorClick = (e) => {
