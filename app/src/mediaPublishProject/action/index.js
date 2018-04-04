@@ -20,6 +20,8 @@ import {
   UPDATE_ITEM_NAME,
 
   CLEAR_TREE_STATE,
+
+  PLAYER_ASSET_LIB_UPDATE
 } from '../actionType/index';
 
 import {getProgramList, getSceneList, getZoneList, getItemList, updateProgramOrders, updateSceneOrders, updateZoneOrders, updateItemOrders,
@@ -596,5 +598,12 @@ export function addItemToArea(item, formatIntl) {
     addItem(project.id, parentParentNode.id, parentNode.id, curNode.id, itemType, itemData, data => {
       dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
     });
+  }
+}
+
+export function playerAssetLibUpdate(IsUpdate) {
+  return {
+    type: PLAYER_ASSET_LIB_UPDATE,
+    data: IsUpdate
   }
 }

@@ -34,7 +34,7 @@ import {treeViewInit} from '../../common/actions/treeView';
 
 import {initProject, initPlan, initScene, initZone, initItem, initCurnode, requestSceneList, requestZoneList, requestItemList,
   updateTreeJudge, addPlayerSceneArea, treeOnMove, treeOnRemove, playerAssetRemove, playerAssetMove, applyClick, clearTreeState,
-  addItemToArea, playerAssetSelect} from '../action/index';
+  addItemToArea, playerAssetSelect, playerAssetLibUpdate} from '../action/index';
 
 import {HOST_IP, getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
 import {uploadMaterialFile, getScenePreview, getSceneById} from '../../api/mediaPublish';
@@ -192,6 +192,7 @@ export class PlayPlan extends Component {
       list[key].progress = this.formatIntl('mediaPublish.completed');
       // this.requestAssetList();
       // this.requestSearchAssetList();
+      this.props.actions.playerAssetLibUpdate(true);
     } else {
       list[key].progress = this.formatIntl('mediaPublish.failed');
     }
@@ -355,7 +356,7 @@ export class PlayPlan extends Component {
 
   playerAssetAdd(type) {
     console.log('playerAssetAdd:');
-    const {actions} = this.props;
+    const {playerAssetLibUpdate, actions} = this.props;
     actions.overlayerShow(<PlayerAssetLibPopup title="素材库" assetType={type} actions={actions} onCancel={() => {
       actions.overlayerHide();
     }} onConfirm={(data) => {
@@ -658,6 +659,7 @@ const mapStateToProps = state => {
     item: state.mediaPublishProject.item,
     curNode: state.mediaPublishProject.curNode,
     IsUpdateTree: state.mediaPublishProject.IsUpdateTree,
+    playerAssetLibUpdate: state.mediaPublishProject.playerAssetLibUpdate
   };
 };
 
@@ -669,7 +671,7 @@ const mapDispatchToProps = (dispatch) => {
       initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
       requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-      clearTreeState: clearTreeState, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect
+      clearTreeState: clearTreeState, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect, playerAssetLibUpdate: playerAssetLibUpdate
     }, dispatch),
   };
 };

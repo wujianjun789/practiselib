@@ -2,6 +2,8 @@
  * Created by a on 2018/3/15.
  */
 import React,{Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Panel from '../../components/Panel';
@@ -15,6 +17,8 @@ import ConfirmPopup from '../../components/ConfirmPopup';
 
 import {
   uploadMaterialFile, searchAssetList, getAssetListByTypeWithName, removeAssetById, previewPlayItem, projectPublish} from '../../api/mediaPublish';
+
+import {playerAssetLibUpdate} from '../action/index';
 
 import Immutable from 'immutable';
 import {Name2Valid} from '../../util/index';
@@ -71,6 +75,15 @@ export class PlayerAssetLibPopup extends Component{
     this.requestSearchAssetList();
   }
 
+  componentDidUpdate(){
+    const {playerAssetLibUpdate, actions} = this.props;
+    console.log('componentDidUpdate:', playerAssetLibUpdate);
+    if(playerAssetLibUpdate){
+      actions.playerAssetLibUpdate(false);
+      this.requestAssetList();
+      this.requestSearchAssetList();
+    }
+  }
   componentWillUnmount(){
     this.mounted = false;
   }
@@ -228,4 +241,21 @@ export class PlayerAssetLibPopup extends Component{
   }
 }
 
-export default injectIntl(PlayerAssetLibPopup);
+const mapStateToProps = state => {
+  return {
+    playerAssetLibUpdate: state.mediaPublishProject.playerAssetLibUpdate
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators({
+      playerAssetLibUpdate: playerAssetLibUpdate
+    }, dispatch),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(injectIntl(PlayerAssetLibPopup));
