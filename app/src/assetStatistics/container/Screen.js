@@ -253,7 +253,7 @@ export class Screen extends Component {
             current={page.get('current')} total={page.get('total')} onChange={this.onChange} />
         </div>
 
-        <SideBarInfo mapDevice={selectDevice} collpseHandler={this.collpseHandler} className={(deviceCollapse ? 'deviceCollapse ' : '')}>
+        <SideBarInfo mapDevice={selectDevice} collapseHandler={this.collapseHandler} className={(deviceCollapse ? 'deviceCollapse ' : '')}>
           <div className="panel panel-default device-statics-info">
             <div className="panel-heading" role="presentation"
               onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>

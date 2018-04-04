@@ -405,7 +405,7 @@ class DomainEditTopology extends Component{
                         })
                     }
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collpseHandler={this.collpseHandler}
+                <SideBarInfo mapDevice={selectDomain} collapseHandler={this.collpseHandler}
                              className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>
