@@ -33,6 +33,7 @@ import DeviceReplacePopup from '../components/DeviceReplacePopup';
 import DeviceUpgradePopup from '../components/DeviceUpgradePopup';
 import { replaceDevice } from '../../api/import';
 import {getObjectByKeyObj} from '../../util/algorithm';
+import {trimString} from '../../util/string';
 
 export class SingleLampCon extends Component {
   constructor(props) {
@@ -190,7 +191,7 @@ export class SingleLampCon extends Component {
   requestSearch() {
     const { model, domainList, search, page } = this.state;
     let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-    let name = search.get('value');
+    let name = trimString(search.get('value'));;
     let cur = page.get('current');
     let size = page.get('pageSize');
     let offset = (cur - 1) * size;

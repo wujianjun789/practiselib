@@ -26,6 +26,7 @@ import {getObjectByKey, getDeviceTypeByModel} from '../../util/index';
 import {treeViewInit} from '../../common/actions/treeView';
 import {injectIntl} from 'react-intl';
 import {getObjectByKeyObj} from '../../util/algorithm';
+import {trimString} from '../../util/string';
 
 export class Sensor extends Component {
   constructor(props) {
@@ -251,7 +252,7 @@ export class Sensor extends Component {
   requestSearch() {
     const {model, domainList, search, page} = this.state;
     let domain = domainList.options.length ? domainList.options[domainList.index] : null;
-    let name = search.get('value');
+    let name = trimString(search.get('value'));;
     let cur = page.get('current');
     let size = page.get('pageSize');
     let offset = (cur - 1) * size;
