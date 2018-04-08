@@ -88,6 +88,7 @@ export default class Gateway extends Component {
     }
 
     initData() {
+    		console.log("111111")
         getChildDomainList((data) => {
             this.mounted && this.updateDomainData(data, this.initDeviceData);
         });
@@ -110,6 +111,7 @@ export default class Gateway extends Component {
         if (!this.mounted) {
             return;
         }
+
         if (this.state.currentDomain) {
             const { currentDomain, search: { value }, page: { current, limit } } = this.state;
             const offset = limit * (current - 1);
@@ -217,7 +219,7 @@ export default class Gateway extends Component {
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
                         <span className="icon_select"></span>选中设备
-                            </div>
+                    </div>
                     <div className="panel-body">
                         <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
                     </div>

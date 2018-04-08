@@ -55,7 +55,7 @@ export class ModelSearch extends Component{
             
             screen:Immutable.fromJS({width:192, height:576, online:1, brightness:100, "brightness_mode":"环境亮度", "switch_power":1, timeTable:"time1", faultList:["sys_fault"]}),
             camera:Immutable.fromJS({"online_people":"50", focus:60, "preset":1, faultList:["vram_fault"]}),
-            lamp:Immutable.fromJS({online:1, "switch_power":1, brightness:100, strategy:"strategy1", IsGroup:false, faultList:[]}),
+            lamp:Immutable.fromJS({online:1, "switch_power":1, brightness:101, strategy:"strategy1", IsGroup:false, faultList:[]}),
             charge:Immutable.fromJS({"charge_state":1, faultList:["vram_fault"]}),
             collect:Immutable.fromJS({"air-pressure":1000, "temperature":30, "humidity":50, "wind-speed":10, "wind-direction":"东南","pm25":80, "o2":19, "co":5}),
 
@@ -174,7 +174,6 @@ export class ModelSearch extends Component{
         }
 
         getMapConfig(data=>{
-                console.log(data)
                 if(this.mounted){
                     this.map = Object.assign({}, this.map, data, { zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel) });
                     this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
@@ -222,7 +221,7 @@ export class ModelSearch extends Component{
             })
             return;
         }
-        getSearchAssets("","lc",searchValue,offsetV,limitV,(data)=>{
+        getSearchAssets("","ssslc",searchValue,offsetV,limitV,(data)=>{
             let dat = data;
             if(!dat[0]){}else{
                 this.setState({searchOffset:offsetV},()=>{})
@@ -244,7 +243,7 @@ export class ModelSearch extends Component{
     updateSearch(data,tableIndex,type){
         let searchType = this.searchPromptList[tableIndex].id;
         let searchList = Immutable.fromJS(data);
-        this.setState({searchList:searchList,tableIndex:tableIndex,IsSearchResult:true},()=>{console.log(this.state.searchList)});
+        this.setState({searchList:searchList,tableIndex:tableIndex,IsSearchResult:true},()=>{});
     }
 
     isMouseEnterSet(){
@@ -272,7 +271,7 @@ export class ModelSearch extends Component{
     }
 
     onBlur(event){
-        this.timeOut = setTimeout(()=>{this.setState({interactive:false,IsSearchResult:false});}, 1000)
+        this.timeOut = setTimeout(()=>{this.setState({interactive:false,IsSearchResult:false})}, 1000)
     }
 
     stopProp(event){
@@ -327,7 +326,7 @@ export class ModelSearch extends Component{
         let curList = [];
         let positionList = [];
         let searchList = '';
-        let data  = item.toJS();
+        let data = item.toJS();
         let geoPoint = data.geoPoint ? data.geoPoint : {lat:"", lng:""};
         let position = Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":data.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
         curList.push(data);
@@ -541,12 +540,12 @@ export class ModelSearch extends Component{
                                 if(searchListLength === (key+1)){
                                     return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)} role="button">
                                         {item.get("name")}
-                                        {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                        {item.getIn(["extendType","ssslc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                     </li>
                                 }else{
                                     return <li key={item.get("id")} className="list-group-item" onClick={()=>this.itemClick(item)} role="button">
                                         {item.get("name")}
-                                        {item.getIn(["extendType","lc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
+                                        {item.getIn(["extendType","ssslc"]) && <span className=""><svg><use xlinkHref={"#icon_led_light"} transform="scale(0.08,0.08)" x="0" y="0" viewBox="0 0 20 20" width="200" height="200"/></svg></span>}
                                     </li>
                                 }
                             })

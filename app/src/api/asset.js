@@ -426,7 +426,6 @@ export const updateAssetsRpcById = (id, data, cb) => {
 //   // }, response => {
 //   //   cb && cb();
 //   // });
-//   console.log(id);
 //   cb && cb();
 // };
 

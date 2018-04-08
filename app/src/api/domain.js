@@ -61,6 +61,7 @@ export function getDomainById(id,cb){
 }
 
 export function getDomainListByName(domainName, offset, limit, cb) {
+	
     let headers = getHttpHeader();
     let obj = {include:["parent"], "offset":offset,"limit":limit}
     if(domainName){
@@ -75,27 +76,30 @@ export function getDomainListByName(domainName, offset, limit, cb) {
     }, response=>{
         cb && cb(response);
     })
+    
 }
 
 export function getDomainCountByName(domainName, cb) {
+	
     let headers = getHttpHeader();
-    let param = JSON.stringify({name:domainName})
+    let param = JSON.stringify({ name:domainName })
     let url = '';
     if(domainName){
         url = HOST_IP+'/domains/count?where='+encodeURIComponent(param);
     }else{
         url = HOST_IP+'/domains/count';
     }
-
     httpRequest(url, {
         headers: headers,
         method: 'GET'
     }, response=>{
         cb && cb(response);
     })
+    
 }
 
 export function addDomain(domain, cb, err) {
+	
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains',{
         headers: headers,
@@ -106,9 +110,11 @@ export function addDomain(domain, cb, err) {
     }, null, error=>{
         err && err(error);
     })
+    
 }
 
 export function updateDomainById(domain, cb, err) {
+	
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains/'+domain.id,{
         headers: headers,
@@ -119,9 +125,11 @@ export function updateDomainById(domain, cb, err) {
     }, null, error=>{
         err && err(error);
     })
+    
 }
 
 export function deleteDomainById(domainId, cb) {
+	
     let headers = getHttpHeader();
     httpRequest(HOST_IP+'/domains/'+domainId,{
         headers: headers,
@@ -131,9 +139,11 @@ export function deleteDomainById(domainId, cb) {
     },null, error=>{
 
     }, null, "unresolved")
+    
 }
 
 export function getDomainListByParentId(parentId, cb){
+	
     let headers = getHttpHeader();
     let param = JSON.stringify({where:{parentId:parentId}})
     httpRequest(HOST_IP+'/domains?filter='+encodeURIComponent(param), {
@@ -142,9 +152,11 @@ export function getDomainListByParentId(parentId, cb){
     }, response=>{
         cb && cb(parentId, response)
     })
+    
 }
 
 export function getRelatedDomainById(id,cb){
+	
     let headers = getHttpHeader();
     let param = JSON.stringify({include:['children']});
     httpRequest(`${HOST_IP}/domains/${id}?filter=${encodeURIComponent(param)}`, {
@@ -153,11 +165,13 @@ export function getRelatedDomainById(id,cb){
     }, response=>{
         cb && cb(response);
     })
+    
 }
 
 
 
 export function getWhiteListById(id, cb) {
+	
     let headers = getHttpHeader();
     httpRequest(`${HOST_IP}/ssgws/${id}/whiteList`, {
         headers: headers,
@@ -165,6 +179,7 @@ export function getWhiteListById(id, cb) {
     }, response=>{
         cb && cb(response);
     })
+    
 }
 
 /**

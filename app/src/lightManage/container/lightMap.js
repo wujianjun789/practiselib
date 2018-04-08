@@ -156,6 +156,7 @@ export class lightMap extends Component{
         this.requestSearch = this.requestSearch.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
+        
         //this.requestPoleAsset = this.requestPoleAsset.bind(this);
         //this.updatePoleAsset = this.updatePoleAsset.bind(this);
         this.domainList = [];
@@ -180,7 +181,6 @@ export class lightMap extends Component{
         }
 
         getMapConfig(data=>{
-                console.log(data)
                 if(this.mounted){
                     this.map = Object.assign({}, this.map, data, { zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel) });
                     this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
@@ -223,9 +223,8 @@ export class lightMap extends Component{
 
     /*  新增－t  */
     searchInputOnKeyUp(e){
-        if (e.keyCode === 13 || e==="toSearch"){}else{return}
+        if(e.keyCode===13||e==="toSearch"){}else{return}
     }
-
 
     /*  新增－t－20170915  */
     requestSearch(offset){
@@ -248,7 +247,7 @@ export class lightMap extends Component{
             })
             return;
         }
-        getSearchAssets("","lc",searchValue,offsetV,limitV,(data)=>{
+        getSearchAssets("","ssslc",searchValue,offsetV,limitV,(data)=>{
             let dat = data;
             if(!dat[0]){}else{
                 this.setState({searchOffset:offsetV},()=>{})
@@ -412,9 +411,6 @@ export class lightMap extends Component{
 
     handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
         this.setState({ curList:curList,positionList:positionList,searchList:Immutable.fromJS([item]) },()=>{
-            console.log(tableIndex)
-            console.log(IsSearchResult)
-            console.log(curList[0])
             if(tableIndex===0&&IsSearchResult){
                     //如果是根据设备名称搜索
                     if(this.domainCurLevel===5){
@@ -426,18 +422,15 @@ export class lightMap extends Component{
                     }
             }else if(tableIndex===1&&IsSearchResult){
                     //如果是根据域名称搜索
-                    console.log(this.domainCurLevel)
                     if(curList[0].level===this.domainCurLevel){
                         //如果域级别与搜索域级别相同，则移动到指定坐标
                         this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
                     }else{
                         //如果域级别与搜索域级别不相同，则计算出地图级别并跳转到此级别并移动到指定坐标
                         let zoom = getZoomByMapLevel(curList[0].level,this.domainLevel,this.map);
-                        console.log(zoom)
-                        console.log(this.map)
                         this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
                         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
-                        this.requestCurAssets("lc");
+                        this.requestCurAssets("ssslc");
                     }
             }else{
                     //如果是点击地图图标
@@ -460,7 +453,6 @@ export class lightMap extends Component{
         let curList = [];
         let positionList = [];
         let data  = item.toJS();
-        console.log(data)
         let geoPoint = data.geoPoint ? data.geoPoint : {lat:"", lng:""};
         let position = Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":data.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
         curList.push(data);
@@ -607,7 +599,7 @@ export class lightMap extends Component{
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         if(this.map.zoom>15&&this.map.zoom<=18){
-            this.requestCurAssets("lc");
+            this.requestCurAssets("ssslc");
         }else{
             this.requestCurDomain();
         }
@@ -678,23 +670,23 @@ export class lightMap extends Component{
                 const {lamp} = this.state;
                 faultList = lamp.get("faultList").toJS();
                 return <div className="row state-info lamp">
-                        <div className="col-sm-12 prop">
-                            {this.renderState(props, "online", "在线状态", true)}
-                            {this.renderState(props, "brightness", "当前亮度")}
-                            {
-                                <div className="fault-container"><span className="name">{this.formatIntl('工作状态')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}} role="button">{faultList.length>0?"故障":"运行正常"}</span></div>
-                            }
-                            {
-                                faultList.length>0 &&
-                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true} closeClick={this.closeClick}>
-                                    {
-                                        faultList.map(key=>{
-                                            return <div key={key}>{this.formatIntl(""+key)}</div>
-                                        })
-                                    }
-                                </Panel>
-                            }
-                        </div>
+	                        <div className="col-sm-12 prop">
+	                            {this.renderState(props, "online", "在线状态", true)}
+	                            {this.renderState(props, "brightness", "当前亮度")}
+	                            {
+	                                <div className="fault-container"><span className="name">{this.formatIntl('工作状态')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}} role="button">{faultList.length>0?"故障":"运行正常"}</span></div>
+	                            }
+	                            {
+	                                faultList.length>0 &&
+	                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true} closeClick={this.closeClick}>
+	                                    {
+	                                        faultList.map(key=>{
+	                                            return <div key={key}>{this.formatIntl(""+key)}</div>
+	                                        })
+	                                    }
+	                                </Panel>
+	                            }
+	                        </div>
                        </div>
         }
     }
@@ -749,7 +741,7 @@ export class lightMap extends Component{
     }
 
     render(){
-        
+        console.log("+++++++++")
         const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList,  IsOpenPoleInfo, IsOpenPoleControl} = this.state;
         let IsControl = false;
@@ -758,7 +750,6 @@ export class lightMap extends Component{
         if(curId==="screen" || curId==="lamp" || curId==="camera"){
             IsControl = true;
         }
-        console.log("+++++++++++++++++++++++++++++++++++++++")
         return (
             <Content>
                 <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={this.panLatlng} panCallFun={this.panCallFun}/>
