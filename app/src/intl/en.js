@@ -117,7 +117,7 @@ export default {
     'old.password': 'Old password',
 
     //地图
-    'map.location': 'Map Location',
+    'map.location': 'Location',
     'map.lng': 'Lng',
     'map.lat': 'Lat',
     'map.device.tip': 'piece device',
@@ -177,7 +177,7 @@ export default {
     'domain.map': 'domain map',
     'domain.list': 'domain list',
     'domain.topology': 'topology',
-    'domain.property': 'domain property',
+    'domain.property': 'Property',
     'domain.name': 'Name',
     'domain.lng': 'Lng',
     'domain.lat': 'Lat',

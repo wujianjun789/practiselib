@@ -117,7 +117,7 @@ export default {
     'old.password': '旧密码',
 
     //地图
-    'map.location': '地图位置',
+    'map.location': '位置',
     'map.lng': '经度',
     'map.lat': '纬度',
     'map.device.tip': '件设备',
@@ -177,7 +177,7 @@ export default {
     'domain.map': '地图预览',
     'domain.list': '列表模式',
     'domain.topology': '拓扑图',
-    'domain.property': '域属性',
+    'domain.property': '属性',
     'domain.name': '域名称',
     'domain.lng': '经度',
     'domain.lat': '纬度',
