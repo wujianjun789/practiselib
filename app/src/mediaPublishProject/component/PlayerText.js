@@ -155,7 +155,8 @@ class PlayerText extends Component {
     }
     handleBgTransparent = (e) => {
         this.setState({
-            bgTransparent: { ...this.state.bgTransparent, value: e.target.checked }
+            bgTransparent: { ...this.state.bgTransparent, value: e.target.checked },
+            bgColor: {...this.state.bgColor, value:{...this.state.bgColor.value, a:e.target.checked?0:1}}
         })
     }
     handleColorClick = (e) => {
@@ -181,13 +182,13 @@ class PlayerText extends Component {
                 break;
             }
             case 'playDuration':
-            case 'playSpeed':
                 if(!numbersValid(e.target.value) || parseInt(e.target.value) === 0){
                     return this.setState({
                         [type]: {...this.state[type], value:e.target.value},
                         prompt: {...this.state.prompt, [type]: true}
                     })
                 }
+            case 'playSpeed':
             case 'rowSpace':
             case 'charSpace': {
                 if (!numbersValid(e.target.value)) {
@@ -349,6 +350,8 @@ class PlayerText extends Component {
                 },
             },
         });
+
+        const Invalid = prompt.charSpace || prompt.rowSpace || prompt.playDuration || prompt.playSpeed;
         return (
             <div class='pro-container playerText'>
                 <div class='row'>
@@ -505,7 +508,7 @@ class PlayerText extends Component {
                 </div>
                 <div className="row line"/>
                 <div class="row">
-                    <button class="btn btn-primary pull-right" onClick={() => { this.handleSubmit('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
+                    <button class={"btn btn-primary pull-right "+(Invalid?"disabled":"")} onClick={() => { this.handleSubmit('apply') }}><FormattedMessage id='mediaPublish.apply' /></button>
                     <button class="btn btn-gray pull-right margin-right-1" onClick={() => { this.handleSubmit('reset') }}><FormattedMessage id='mediaPublish.reset' /></button>
                 </div>
             </div>

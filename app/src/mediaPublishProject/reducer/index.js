@@ -20,7 +20,9 @@ import {
 
   UPDATE_ITEM_NAME,
 
-  CLEAR_TREE_STATE
+  CLEAR_TREE_STATE,
+
+  PLAYER_ASSET_LIB_UPDATE
 } from '../actionType/index';
 
 import Immutable from 'immutable';
@@ -37,7 +39,9 @@ const initialState = {
   zone: null,      //播放区域
   item: null,      //播放项
   IsUpdateTree: false,
-  curNode: null //当前要操作对象
+  curNode: null, //当前要操作对象
+
+  playerAssetLibUpdate: false
 };
 
 
@@ -73,6 +77,8 @@ export default function mediaPublishProject(state=initialState, action) {
       return Object.assign({}, state, {IsUpdateTree:action.data});
     case CLEAR_TREE_STATE:
       return Object.assign({}, state, {data: clearTreeListState(state.data), IsUpdateTree: true});
+    case PLAYER_ASSET_LIB_UPDATE:
+      return Object.assign({}, state, {playerAssetLibUpdate: action.data})
     default:
       return state;
   }

@@ -20,6 +20,7 @@ class PreviewFile extends Component {
         this.setState({ name: e.target.value })
     }
     selectFile = (e) => {
+        this.selectDom=e.target;
         const file = e.target.files[0]
         if (!file) {
             return;
@@ -63,24 +64,41 @@ class PreviewFile extends Component {
         const { name, data, currentKey, type } = this.state;
         this.props.addUploadFile({ name, progress: this.props.intl.formatMessage({ id: 'mediaPublish.waiting' }), data, key: currentKey, type })
         this.props.hideModal();
-        this.setState({ currentKey: currentKey + 1 })
+        this.setState({ currentKey: currentKey + 1 });
+        this.onHide();
     }
     componentWillUnmount() {
         if (this.state.url) {
             URL.revokeObjectURL(this.state.url)
         }
     }
+    onHide=()=>{
+        this.setState({
+            name: '',
+            path: '',
+            url: null,
+            show: null,
+            // data: null,
+            // currentKey: 0,
+            // type: null
+        })
+
+        if(this.selectDom){
+            this.selectDom.value = "";
+        }
+        this.props.hideModal()
+    }
     render() {
         const { name, path, url, show } = this.state;
         const footer =
             <div>
-                <button type='button' className='btn ant-btn' onClick={this.props.hideModal}><FormattedMessage id='button.cancel' /></button>
+                <button type='button' className='btn ant-btn' onClick={this.onHide}><FormattedMessage id='button.cancel' /></button>
                 <button type='button' disabled={(name && path) ? false : true} className='btn ant-btn ant-btn-primary' onClick={this.handleOk}><FormattedMessage id='mediaPublish.uploadFile' /></button>
             </div>;
 
         return (
             <Modal title={this.props.intl.formatMessage({ id: 'mediaPublish.addMaterial' })} visible={this.props.showModal}
-                onCancel={this.props.hideModal} footer={footer} maskClosable={false}>
+                onCancel={this.onHide} footer={footer} maskClosable={false}>
                 <div className='material'>
                     <div className='import'>
                         <span className='title-name'><FormattedMessage id='mediaPublish.importMaterial' /></span>

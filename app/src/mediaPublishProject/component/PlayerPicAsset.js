@@ -67,15 +67,17 @@ class PlayerPicAsset extends PureComponent {
       property.animation = res.inTransition ? res.inTransition.transition : this.animationList[0].value;
       property.playDuration = res.baseInfo ? res.baseInfo.playDuration/1000 : null;
       property.playSpeed = res.inTransition ? res.inTransition.speed : null;
-      this.mounted && this.setState({property:Object.assign({}, property)});
+      this.mounted && this.setState({property:Object.assign({}, property),
+        prompt:{playDuration:!numbersValid(property.playDuration) || parseInt(property.playDuration)===0, playSpeed:!(numbersValid(property.playSpeed))}});
     });
   }
 
   onChange=(id, e) => {
+    console.log(id, e);
     let prompt = false;
     const val = e.target.value;
     if (id == 'playDuration' || id == 'playSpeed') {
-      if (!numbersValid(val)) {
+      if (!numbersValid(val) || id == 'playDuration' && parseInt(val) === 0) {
         prompt = true;
       }
       this.setState({prompt: Object.assign({}, this.state.prompt, { [id]: prompt })});      
@@ -106,6 +108,8 @@ class PlayerPicAsset extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
+    console.log(prompt);
+    const Invalid = prompt.playDuration || prompt.playSpeed;
     return <div className="pro-container playerPicAsset">
       <div className="row">
         <div className="form-group">
@@ -169,7 +173,7 @@ class PlayerPicAsset extends PureComponent {
       </div>
       <div className="row line"/>
       <div className="row">
-        <button className="btn btn-primary pull-right" onClick={() => { this.playerPicAssetClick('apply'); }}>
+        <button className={"btn btn-primary pull-right "+(Invalid?"disabled":"")} onClick={() => { this.playerPicAssetClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>
         <button className="btn btn-gray margin-right-1 pull-right" 
           onClick={() => { this.playerPicAssetClick('reset'); }}><FormattedMessage id="mediaPublish.reset"/></button>

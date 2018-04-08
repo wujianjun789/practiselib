@@ -110,14 +110,14 @@ export default {
     'button.publish': 'Publish',
 
     //用户中心
-    'update.password': 'Update password',
-    'exit': 'Exit',
+    'update.password': 'Password',
+    'exit': 'Sign out',
     'sure.exit': 'Are you sure to exit？',
     'new.password': 'New password',
     'old.password': 'Old password',
 
     //地图
-    'map.location': 'Map Location',
+    'map.location': 'Location',
     'map.lng': 'Lng',
     'map.lat': 'Lat',
     'map.device.tip': 'piece device',
@@ -174,10 +174,11 @@ export default {
 
     //域管理
     'domain.edit': 'domain edit',
-    'domain.map': 'domain map',
-    'domain.list': 'domain list',
-    'domain.topology': 'topology',
-    'domain.property': 'domain property',
+    'domain.configuration': 'Configuration',
+    'domain.map': 'Map',
+    'domain.list': 'List',
+    'domain.topology': 'Topology',
+    'domain.property': 'Property',
     'domain.name': 'Name',
     'domain.lng': 'Lng',
     'domain.lat': 'Lat',

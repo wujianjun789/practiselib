@@ -23,7 +23,9 @@ import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
+import {trimString} from '../../util/string';
 
+import lodash from 'lodash';
 export class DomainEditList extends Component {
     constructor(props) {
         super(props);
@@ -80,6 +82,10 @@ export class DomainEditList extends Component {
         this.initDomainList = this.initDomainList.bind(this);
 
         this.getDomainParentList = this.getDomainParentList.bind(this);
+
+        this.addDomain = this.addDomain.bind(this);
+        this.editDomain = this.editDomain.bind(this);
+        this.removeDomain = this.removeDomain.bind(this);
     }
 
     componentWillMount() {
@@ -128,7 +134,7 @@ export class DomainEditList extends Component {
 
     requestSearch(){
         const {search, page} = this.state
-        let name = search.get('value');
+        let name = trimString(search.get('value'));
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
@@ -147,13 +153,25 @@ export class DomainEditList extends Component {
         })
 
 
-        this.setState({data:Immutable.fromJS(list)},()=>{this.setSize();});
+        this.setState({data:Immutable.fromJS(list)},()=>{
+            this.setSize();
 
-        if(data.length){
-            this.updateSelectDomain(data[0])
-        }else{
-            this.initSelectDomain();
-        }
+            if(data.length){
+                if(this.state.selectDomain.data.length){
+                    const index = lodash.findIndex(list, domain=>{ return domain.id == this.state.selectDomain.data[0].id});
+                    if(index>-1){
+                        this.updateSelectDomain(list[index]);
+                    }else{
+                        this.updateSelectDomain(data[0]);
+                    }
+                }else{
+                    this.updateSelectDomain(data[0])
+                }
+
+            }else{
+                this.initSelectDomain();
+            }
+        });
     }
 
     initTreeData() {
@@ -175,15 +193,13 @@ export class DomainEditList extends Component {
         return domainList;
     }
 
-    domainHandler(id){
+    addDomain(){
         const {listMode, selectDomain} = this.state
         const {actions} = this.props;
-        switch(id){
-            case 'add':
-                actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+        actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
-                                                   domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
-                                                   onConfirm={(data)=>{
+                                           domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
+                                           onConfirm={(data)=>{
                                                         let domain = {};
                                                         domain.name = data.domainName;
                                                         domain.geoType = 0;
@@ -201,26 +217,29 @@ export class DomainEditList extends Component {
                                                             actions.addNotify(0, error);
                                                         });
                                                    }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify()}}/>);
-                break;
-            case 'update':
-                let lat="", lng="",updateId="",name="",parentId="";
+    }
 
-                if(selectDomain.position && selectDomain.position.length){
-                    let latlng = selectDomain.position[0];
-                    lat = latlng.lat?latlng.lat:"";
-                    lng = latlng.lng?latlng.lng:"";
-                }
+    editDomain(){
+        const {listMode, selectDomain} = this.state
+        const {actions} = this.props;
+        let lat="", lng="",updateId="",name="",parentId="";
 
-                if(selectDomain.data && selectDomain.data.length){
-                    let data = selectDomain.data[0];
-                    updateId = data.id;
-                    name = data.name;
-                }
+        if(selectDomain.position && selectDomain.position.length){
+            let latlng = selectDomain.position[0];
+            lat = latlng.lat?latlng.lat:"";
+            lng = latlng.lng?latlng.lng:"";
+        }
 
-                actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
+        if(selectDomain.data && selectDomain.data.length){
+            let data = selectDomain.data[0];
+            updateId = data.id;
+            name = data.name;
+        }
+
+        actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
-                                                              domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
-                                                              onConfirm={(data)=>{
+                                           domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
+                                           onConfirm={(data)=>{
                                                                     let domain = {};
                                                                     domain.id = data.domainId;
                                                                     domain.name = data.domainName;
@@ -236,23 +255,40 @@ export class DomainEditList extends Component {
                                                                         this.requestSearch();
                                                                     });
                                                               }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify();}}/>);
-                break;
-            case 'delete':
-                let curId="";
-                if(selectDomain.data && selectDomain.data.length){
-                    let data = selectDomain.data[0];
-                    curId = data.id;
-                }
-                actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
-                                                 cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
+    }
+
+    removeDomain(){
+        const {listMode, selectDomain} = this.state
+        const {actions} = this.props;
+        let curId="";
+        if(selectDomain.data && selectDomain.data.length){
+            let data = selectDomain.data[0];
+            curId = data.id;
+        }
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
+                                            cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
                                                  ()=>{
                                                     actions.overlayerHide();
                                                     this.initSelectDomain();
                                                     this.requestDomain();
                                                     this.requestSearch();
                                                 })}}/>);
-                break;
-        }
+    }
+
+    domainHandler(id){
+      switch(id){
+        case 'add':
+          this.addDomain();
+          break;
+        case 'update':
+          this.editDomain();
+          break;
+        case 'delete':
+          this.removeDomain();
+          break;
+      default:
+          break;
+      }
     }
 
     pageChange(current, pageSize) {

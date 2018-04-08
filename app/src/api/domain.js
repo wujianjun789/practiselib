@@ -65,7 +65,7 @@ export function getDomainListByName(domainName, offset, limit, cb) {
     let headers = getHttpHeader();
     let obj = {include:["parent"], "offset":offset,"limit":limit}
     if(domainName){
-        obj = Object.assign({"where":{name:{like:domainName}}}, obj);
+        obj = Object.assign({"where":{name:{like:`%${domainName}%`}}}, obj);
     }
     let param = JSON.stringify(obj);
     let url = HOST_IP+'/domains?filter='+encodeURIComponent(param);
@@ -82,7 +82,7 @@ export function getDomainListByName(domainName, offset, limit, cb) {
 export function getDomainCountByName(domainName, cb) {
 	
     let headers = getHttpHeader();
-    let param = JSON.stringify({ name:domainName })
+    let param = JSON.stringify({name:{like:`%${domainName}%`}});
     let url = '';
     if(domainName){
         url = HOST_IP+'/domains/count?where='+encodeURIComponent(param);

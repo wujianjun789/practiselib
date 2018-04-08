@@ -37,9 +37,9 @@ export default class CustomChart extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { name, unit, start, end, data } = this.props;
         /* 注意：此处后续需要修改 */
-        // if (data !== this.props.data) {
-        this.setState({ name, unit, start, end, data }, this.draw)
-        // }
+        if (data !== this.props.data) {
+            this.setState({ name, unit, start, end, data }, this.draw)
+        }
     }
     componentDidUpdate() {
         setTimeout(() => {
@@ -65,7 +65,7 @@ export default class CustomChart extends React.Component {
         if (data.length) {
             option.title.text = ''
         } else {
-            option.title.text = '暂无数据，模拟测试'
+            option.title.text = '暂无数据'
             //测试所用数据
             // data = [
             //     { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },

@@ -13,11 +13,13 @@ import Page from '../../components/Page';
 
 import PlayerListPopup from '../component/PlayerListPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
+import NotifyPopup from '../../common/containers/NotifyPopup';
 
 import {searchProjectList, getProjectByName, addProject, updateProjectById, removeProjectById, projectPublish} from '../../api/mediaPublish';
 import {applyClick} from '../action/index';
 
 import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 import Immutable from 'immutable';
 import { getObjectByKey } from '../../util/algorithm';
 
@@ -46,6 +48,8 @@ export class PlayerList extends Component {
 
     this.columns = [{ id: 1, field: 'name', title:this.formatIntl('mediaPublish.schemeName')},
       { id: 2, field: 'resolution', title: this.formatIntl('mediaPublish.resolution')}];
+    this.publishResponse = false;
+
     this.formatIntl = this.formatIntl.bind(this);
 
     this.typeChange = this.typeChange.bind(this);
@@ -72,6 +76,7 @@ export class PlayerList extends Component {
 
   componentWillUnmount() {
     this.mounted = false;
+    this.props.actions.removeAllNotify();
   }
 
   formatIntl(formatId) {
@@ -189,7 +194,15 @@ export class PlayerList extends Component {
 
   publishHandler(id){
     console.log(id);
-    projectPublish(id);
+    const {actions} =this.props;
+    if(this.publishResponse){
+      return actions.addNotify(0, "请等待发布完成。");
+    }
+    this.publishResponse = true;
+    projectPublish(id, ()=>{
+      this.publishResponse = false;
+      actions.addNotify(1, "发布成功。");
+    });
   }
 
   editHandler(id) {
@@ -237,7 +250,7 @@ export class PlayerList extends Component {
         <Page className={'page ' + (page.get('total') == 0 ? 'hidden' : '')} showSizeChanger pageSize={page.get('pageSize')}
           current={page.get('current')} total={page.get('total')} onChange={this.pageChange} />
       </div>
-
+      <NotifyPopup/>
     </Content>;
   }
 }
@@ -253,7 +266,9 @@ const mapDispatchToProps = (dispatch) => {
     actions: bindActionCreators({
       overlayerShow: overlayerShow,
       overlayerHide: overlayerHide,
-      applyClick: applyClick
+      applyClick: applyClick,
+      addNotify: addNotify,
+      removeAllNotify : removeAllNotify
     }, dispatch),
   };
 };

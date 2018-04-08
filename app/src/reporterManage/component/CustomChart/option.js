@@ -9,9 +9,12 @@ export default {
         padding: 5
     },
     title: {
-        left: 'center',
+        left: '49%',
         top: '40%',
         text: '暂无数据',
+        textStyle: {
+            align: 'center'
+        }
     },
     // toolbox: {
     //     feature: {
@@ -80,6 +83,7 @@ export default {
         {
             type: 'line',
             smooth: true,
+            showSymbol: false,
             // symbol: 'none',
             sampling: 'average',
             // step: 'end',

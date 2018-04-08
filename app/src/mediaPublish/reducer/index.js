@@ -254,7 +254,6 @@ function updateItemList(state, programId, sceneId, zoneId, data){
 }
 
 function updateItemName(state, item, file){
-    console.log('updateItemName:', file.name);
     const { playerListAsset } = state;
     const index = getIndexByKey(playerListAsset.get('list'), 'id', item.id);
     state.playerListAsset = state.playerListAsset.updateIn(['list', index, 'name'], v => file.name);

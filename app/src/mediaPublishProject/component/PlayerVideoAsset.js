@@ -15,8 +15,8 @@ class PlayerPicAsset extends PureComponent {
         assetName: '',
         // playTimes: '',
         playType: '',
-        playTimeBegin: moment('00:00:00', 'HH:mm:ss'),
-        playTimeEnd: moment('00:00:00', 'HH:mm:ss'),
+        playTimeBegin: moment.utc(moment(0)),
+        playTimeEnd: moment.utc(moment(0)),
         scale: '',
         // volume: '',
       },
@@ -60,11 +60,13 @@ class PlayerPicAsset extends PureComponent {
       this.data = res;
       // property.playTimes = res.playTimes ? res.playTimes : '';
       property.playType = res.playType ? res.playType : this.playTypeList[0].value;
-      property.playTimeBegin = res.playTimeBegin ? this.initTime(res.playTimeBegin) : moment('00:00:00', 'HH:mm:ss');
-      property.playTimeEnd = res.playTimeEnd ? this.initTime(res.playTimeEnd) : moment('00:00:00', 'HH:mm:ss');
+      property.playTimeBegin = res.playTimeBegin  ? this.initTime(res.playTimeBegin) : this.initTime(0);
+      property.playTimeEnd = res.playTimeEnd  ? this.initTime(res.playTimeEnd) : this.initTime(0);
       property.scale = res.scale ? res.scale : this.scaleList[0].value;
       // property.volume = res.volume ? res.volume : this.volumeList[0];
-      this.mounted && this.setState({property:Object.assign({}, property)});
+      const prompt = !(property.playTimeBegin && property.playTimeEnd && !property.playTimeEnd.isBefore(property.playTimeBegin));
+      console.log('init:',prompt);
+      this.mounted && this.setState({property:Object.assign({}, property), prompt:Object.assign({}, this.state.prompt, {clipsRage:prompt})});
     });
   }
 
@@ -90,8 +92,8 @@ class PlayerPicAsset extends PureComponent {
 
   timeChange=(id, value) => {
     this.setState({property: Object.assign({}, this.state.property, {[id]: value})}, () => {
-      const {playTimeBegin, playTimeEnd} = this.state.property;  
-      let prompt = (playTimeBegin && playTimeEnd) && playTimeEnd.isBefore(playTimeBegin);                  
+      const {playTimeBegin, playTimeEnd} = this.state.property;
+      let prompt = !(playTimeBegin && playTimeEnd && !playTimeEnd.isBefore(playTimeBegin));
       this.setState({prompt:Object.assign({}, this.state.prompt, {clipsRage:prompt})});
     });
   }
@@ -119,6 +121,7 @@ class PlayerPicAsset extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
+    const Invalid = prompt.clipsRage;
     return <div className="pro-container playerVideoAsset">
       <div className="row">
         <div className="form-group">
@@ -214,7 +217,7 @@ class PlayerPicAsset extends PureComponent {
       </div> */}
       <div className="row line"/>
       <div className="row">
-        <button className="btn btn-primary pull-right" onClick={() => { this.playerVideoAssetClick('apply'); }}>
+        <button className={"btn btn-primary pull-right "+(Invalid?"disabled":"")} onClick={() => { this.playerVideoAssetClick('apply'); }}>
           <FormattedMessage id="mediaPublish.apply"/></button>
         <button className="btn btn-gray margin-right-1 pull-right" 
           onClick={() => { this.playerVideoAssetClick('reset'); }}>
