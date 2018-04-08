@@ -180,7 +180,7 @@ export default {
     'equipment.name':'名称',
     'equipment.description':'描述',
     'equipment.power':'功率',
-    'equipment.life':'使用寿命',
+    'equipment.life':'寿命',
     'equipment.manufacturer':'厂商',
     'equipment.edit':'编辑',
 
