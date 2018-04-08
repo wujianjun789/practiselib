@@ -110,8 +110,8 @@ export default {
     'button.publish': '发布',
 
     //用户中心
-    'update.password': '修改密码',
-    'exit': '退出管理系统',
+    'update.password': '密码',
+    'exit': '注销',
     'sure.exit': '确认退出？',
     'new.password': '新密码',
     'old.password': '旧密码',
@@ -174,8 +174,9 @@ export default {
 
     //域管理
     'domain.edit': '域编辑',
-    'domain.map': '地图预览',
-    'domain.list': '列表模式',
+    'domain.configuration':'配置',
+    'domain.map': '地图',
+    'domain.list': '列表',
     'domain.topology': '拓扑图',
     'domain.property': '属性',
     'domain.name': '域名称',

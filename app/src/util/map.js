@@ -172,6 +172,7 @@ export default class Map{
     }
 
     onLineMap(type, options) {
+        console.log("options:",options.zoom);
         var option = {maxZoom: options.maxZoom, minZoom: options.minZoom}
 
         if(this.latlng && this.latlng.length && this.latlng[0] && this.latlng[1]){

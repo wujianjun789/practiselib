@@ -123,6 +123,7 @@ export default class SingleLampCon extends Component {
         if (!this.mounted) {
             return;
         }
+        
         if (this.state.currentDomain) {
             const { currentDomain, search: { value }, page: { current, limit } } = this.state;
             const offset = limit * (current - 1);

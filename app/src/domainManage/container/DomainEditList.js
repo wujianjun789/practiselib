@@ -23,7 +23,9 @@ import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
+import {trimString} from '../../util/string';
 
+import lodash from 'lodash';
 export class DomainEditList extends Component {
     constructor(props) {
         super(props);
@@ -132,7 +134,7 @@ export class DomainEditList extends Component {
 
     requestSearch(){
         const {search, page} = this.state
-        let name = search.get('value');
+        let name = trimString(search.get('value'));
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
@@ -151,13 +153,25 @@ export class DomainEditList extends Component {
         })
 
 
-        this.setState({data:Immutable.fromJS(list)},()=>{this.setSize();});
+        this.setState({data:Immutable.fromJS(list)},()=>{
+            this.setSize();
 
-        if(data.length){
-            this.updateSelectDomain(data[0])
-        }else{
-            this.initSelectDomain();
-        }
+            if(data.length){
+                if(this.state.selectDomain.data.length){
+                    const index = lodash.findIndex(list, domain=>{ return domain.id == this.state.selectDomain.data[0].id});
+                    if(index>-1){
+                        this.updateSelectDomain(list[index]);
+                    }else{
+                        this.updateSelectDomain(data[0]);
+                    }
+                }else{
+                    this.updateSelectDomain(data[0])
+                }
+
+            }else{
+                this.initSelectDomain();
+            }
+        });
     }
 
     initTreeData() {
