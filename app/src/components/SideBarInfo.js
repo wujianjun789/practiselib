@@ -42,7 +42,7 @@ export default class SideBarInfo extends Component {
       </div>
       { this.props.children }
       {IsHaveMap &&
-                 <div className="panel panel-default map-position">
+                 <div className={"panel panel-default map-position "+(mapCollapse ? 'collapsed':'')}>
                    <div className="panel-heading"  role="presentation" 
                      onClick={() => { !collapse && this.collapseHandler('mapCollapse'); }}>
                      <span className="icon_map"></span><FormattedMessage id="map.location"/>
