@@ -68,6 +68,10 @@ class DomainEditTopology extends Component{
         this.initDomain = this.initDomain.bind(this);
         this.updateDomain = this.updateDomain.bind(this);
         this.delDomain = this.delDomain.bind(this);
+
+        this.addDomain = this.addDomain.bind(this);
+        this.editDomain = this.editDomain.bind(this);
+        this.removeDomain = this.removeDomain.bind(this);
     }
 
     componentWillMount(){
@@ -223,15 +227,13 @@ class DomainEditTopology extends Component{
         return domainList;
     }
 
-    domainHandler(id){
+    addDomain(){
         const {selectDomain} = this.state
         const {actions} = this.props;
-        switch(id){
-            case 'add':
-                actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+        actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
-                                                   domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
-                                                   onConfirm={(data)=>{
+                                           domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
+                                           onConfirm={(data)=>{
                                                         let domain = {};
                                                         domain.name = data.domainName;
                                                         domain.geoType = 0;
@@ -246,34 +248,37 @@ class DomainEditTopology extends Component{
                                                             this.requestCurDomain(data.prevDomain);
                                                         })
                                                    }}
-                                                   onCancel={()=>{actions.overlayerHide()}}/>);
-                break;
-            case 'update':
-                let lat="", lng="",updateId="",name="",parentId="";
+                                           onCancel={()=>{actions.overlayerHide()}}/>);
+    }
 
-                if(selectDomain.position && selectDomain.position.length){
-                    let latlng = selectDomain.position[0];
-                    lat = latlng.lat?latlng.lat:"";
-                    lng = latlng.lng?latlng.lng:"";
-                }
+    editDomain(){
+        const {selectDomain} = this.state
+        const {actions} = this.props;
+        let lat="", lng="",updateId="",name="",parentId="";
 
-                if(selectDomain.data && selectDomain.data.length){
-                    let data = selectDomain.data[0];
-                    updateId = data.id;
-                    name = data.name;
-                }
-                actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
+        if(selectDomain.position && selectDomain.position.length){
+            let latlng = selectDomain.position[0];
+            lat = latlng.lat?latlng.lat:"";
+            lng = latlng.lng?latlng.lng:"";
+        }
+
+        if(selectDomain.data && selectDomain.data.length){
+            let data = selectDomain.data[0];
+            updateId = data.id;
+            name = data.name;
+        }
+        actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
-                                                   domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
-                                                   onConfirm={(data)=>{
+                                           domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
+                                           onConfirm={(data)=>{
                                                         let domain = {};
                                                         domain.id = data.domainId;
                                                         domain.name = data.domainName;
                                                         domain.geoType = 0;
                                                         domain.geoPoint = {lat:data.lat, lng:data.lng};
-                                                        if(data.prevDomain){
-                                                            domain.parentId = data.prevDomain;
-                                                        }
+                                                        // if(data.prevDomain){
+                                                        //     domain.parentId = data.prevDomain;
+                                                        // }
 
                                                         updateDomainById(domain, ()=>{
                                                             actions.overlayerHide();
@@ -283,17 +288,20 @@ class DomainEditTopology extends Component{
                                                             })
                                                         })
                                                     }}
-                                                   onCancel={()=>{actions.overlayerHide()}}/>);
-                break;
-            case 'delete':
-                let curId="";
-                if(selectDomain.data && selectDomain.data.length){
-                    let data = selectDomain.data[0];
-                    curId = data.id;
-                }
-                actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
-                                                    cancel={()=>{actions.overlayerHide()}}
-                                                    confirm={()=>{deleteDomainById(curId,()=>{
+                                           onCancel={()=>{actions.overlayerHide()}}/>);
+    }
+
+    removeDomain(){
+        const {selectDomain} = this.state
+        const {actions} = this.props;
+        let curId="";
+        if(selectDomain.data && selectDomain.data.length){
+            let data = selectDomain.data[0];
+            curId = data.id;
+        }
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
+                                            cancel={()=>{actions.overlayerHide()}}
+                                            confirm={()=>{deleteDomainById(curId,()=>{
                                                             actions.overlayerHide();
                                                             this.requestDomain();
                                                             this.requestCurDomain(selectDomain.parentId);
@@ -303,7 +311,23 @@ class DomainEditTopology extends Component{
                                                             // }
                                                         })
                                                    }}/>);
-                break;
+    }
+
+    domainHandler(id){
+        const {selectDomain} = this.state
+        const {actions} = this.props;
+        switch(id){
+            case 'add':
+              this.addDomain();
+              break;
+            case 'update':
+              this.editDomain();
+              break;
+            case 'delete':
+              this.removeDomain();
+              break;
+            default:
+            break;
         }
     }
 
