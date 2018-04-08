@@ -39,7 +39,8 @@ export class Xes extends Component {
       ]),
       domain:Immutable.fromJS({list:[/*{id:1, value:'域'},{id:2, value:'域2'}*/], index:0, value:'域'}),
       // device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
-      search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
+      search: Immutable.fromJS({ placeholder: intlFormat({ en: 'please input the name', zh: '输入设备名称' }), value: '' }),
+      // search:Immutable.fromJS({placeholder:'输入素材名称', value:''}),
       collapse:false,
       deviceCollapse:false,
       page: Immutable.fromJS({
