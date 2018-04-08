@@ -160,10 +160,10 @@ export class Xes extends Component {
       // latlng:item.geoPoint}, item.extend))
     });
     this.setState({data:Immutable.fromJS(list)}, () => {
-      if (this.state.data && this.state.data.size > 0) {
+      // if (this.state.data && this.state.data.size > 0) {
         let data = this.state.data.get(0);
         this.tableClick(data);
-      }
+      // }
     });
   }
 
@@ -204,6 +204,18 @@ export class Xes extends Component {
   }
 
   tableClick(data) {
+    if(!data){//当table列表是空行时候要对device重置
+      this.setState({
+        selectDevice: Object.assign({}, this.state.selectDevice, {
+          latlng: {},
+          position: [{
+            'device_id': '', 'device_type': '',
+            lng: '', lat:''
+          }],
+          data: [],
+        })
+      })
+    } else {
     const latlng = data.get('geoPoint').toJS();
     this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
       latlng: latlng,
@@ -212,6 +224,7 @@ export class Xes extends Component {
       data:[{id:data.get('id'), name:data.get('name')}],
     })});
   }
+}
 
   collapseHandler(id) {
     this.setState({

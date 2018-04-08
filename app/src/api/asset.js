@@ -81,6 +81,8 @@ export function getSearchAssets(domainId, model, name, offset, limit, cb) {
     headers: headers,
     method: 'GET',
   }, response => {
+    // console.log("getSearchAssets:")
+    // console.log("getSearchAssets:", response)
     cb && cb(response);
   });
 }
