@@ -23,6 +23,7 @@ import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
+import {trimString} from '../../util/string';
 
 export class DomainEditList extends Component {
     constructor(props) {
@@ -132,7 +133,7 @@ export class DomainEditList extends Component {
 
     requestSearch(){
         const {search, page} = this.state
-        let name = search.get('value');
+        let name = trimString(search.get('value'));
         let cur = page.get('current');
         let size = page.get('pageSize');
         let offset = (cur-1)*size;
