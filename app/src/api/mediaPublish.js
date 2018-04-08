@@ -541,7 +541,7 @@ function getAssetParam(type, name) {
   }
 
   if (name) {
-    param = Object.assign(param, { name: { like: `%{name}%` } });
+    param = Object.assign(param, { name: { like: `%${name}%` } });
   }
 
   return param;
