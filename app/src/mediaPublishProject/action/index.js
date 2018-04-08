@@ -414,10 +414,11 @@ function addUpdateArea(data, project, parentParentNode, parentNode, playerData) 
 }
 
 function addUpdateItem(data, project, parentParentNode, parentNode, curNode) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const item = getState().mediaPublishProject.item;
     updateItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, data, response => {
       dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
-      dispatch(playerAssetSelect(curNode));
+      dispatch(playerAssetSelect(item));
     });
   };
 }
@@ -556,6 +557,7 @@ function updateItemName(itemObject, sysfile) {
 
 let lastItemId = -1;
 export function playerAssetSelect(item) {
+  console.log('item:', item, item.id);
   lastItemId = item.id;
   return (dispatch, getState)=>{
     const project = getState().mediaPublishProject.project;
