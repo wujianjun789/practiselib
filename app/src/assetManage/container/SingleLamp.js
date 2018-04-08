@@ -40,13 +40,6 @@ export class SingleLamp extends Component {
       ],
     };
 
-    // this.assetPropertyColumns = [  //设备属性表头定义
-    //   { field: 'name', title: '名称' },
-    //   { field: 'detail', title: '描述' },
-    //   { field: 'unit', title: '单位' },
-    //   { field: 'accuracy', title: '精度' },
-    // ];
-
     this.assetPropertyColumns = [  //设备属性表头定义
       { field: 'name', title: this.formatIntl('asset.name') },
       { field: 'detail', title:this.formatIntl('asset.detail') },
@@ -54,13 +47,6 @@ export class SingleLamp extends Component {
       { field: 'accuracy', title: this.formatIntl('asset.accuracy') },
     ];
 
-    // this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
-    //   { field: 'name', title: '名称' },
-    //   { field: 'description', title: '描述' },
-    //   { field: 'power', title: '功率' },
-    //   { field: 'life', title: '使用寿命' },
-    //   { field: 'manufacture', title: '厂商' },
-    // ];
     this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
       { field: 'name', title: this.formatIntl('equipment.name')},
       { field: 'description', title: this.formatIntl('equipment.description') },

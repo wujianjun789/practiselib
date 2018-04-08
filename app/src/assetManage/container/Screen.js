@@ -41,14 +41,18 @@ export class Screen extends Component {
     };
 
     this.assetPropertyColumns = [  //设备属性表头定义
-      { field: 'name', title: '名称' },
-      { field: 'description', title: '描述' },
-      { field: 'unit', title: '单位' },
-      { field: 'accuracy', title: '精度' },
+      { field: 'name', title: this.formatIntl('asset.name') },
+      { field: 'detail', title:this.formatIntl('asset.detail') },
+      { field: 'unit', title: this.formatIntl('asset.unit') },
+      { field: 'accuracy', title: this.formatIntl('asset.accuracy') },
     ];
+
     this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
-      { field: 'name', title: '名称' },
-      { field: 'description', title: '描述' },
+      { field: 'name', title: this.formatIntl('equipment.name')},
+      { field: 'description', title: this.formatIntl('equipment.description') },
+      // { field: 'power', title: this.formatIntl('equipment.power') },
+      // { field: 'life', title: this.formatIntl('equipment.life') },
+      // { field: 'manufacture', title: this.formatIntl('equipment.manufacturer') },
     ];
     this.formatIntl = this.formatIntl.bind(this);
     this.rowDelete = this.rowDelete.bind(this);
@@ -108,7 +112,7 @@ export class Screen extends Component {
     const { actions } = this.props;
     let curId = id; //当前要删除的型号的Id
     actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete"
-      tips={'是否删除选该行？'} cancel={() => { actions.overlayerHide(); }}
+      tips={this.formatIntl('equipment.isDeleteDevice')} cancel={() => { actions.overlayerHide(); }}
       confirm={() => {
         this.deleteModalTypeById(curId);
         actions.overlayerHide();
@@ -126,7 +130,7 @@ export class Screen extends Component {
       }
     }
 
-    actions.overlayerShow(<TypeEditPopup id="updateType" title={'修改设备型号'}
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.modifyDevice')}
       data={data}
       idEdit={false}
       onCancel={() => {
@@ -160,7 +164,7 @@ export class Screen extends Component {
     let data = {};
     data.name = '';
     data.description = '';
-    actions.overlayerShow(<TypeEditPopup id="updateType" title={'添加设备型号'}
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.addDevice')}
       addNotify={actions.addNotify}
       data={data}
       onCancel={() => {
@@ -233,7 +237,7 @@ export class Screen extends Component {
                     return <th key={index}>{column.title}</th>;
                   })
                 }
-                {<th>编辑</th>}
+                {<th>{this.formatIntl('equipment.edit')}</th>}
               </tr>
             </thead>
             <tbody>
@@ -249,15 +253,15 @@ export class Screen extends Component {
                       <td className="edit">
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
-                            className="icon_edit">修改</span>
+                            className="icon_edit">{this.formatIntl('equipment.modify')}</span>
                         </a>
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
-                            className="icon_delete">删除</span></a>
+                            className="icon_delete">{this.formatIntl('equipment.delete')}</span></a>
                       </td>
                       :
                       <td><span role="presentation" className="btn"
-                        onClick={this.rowAdd}>+添加</span> </td>}
+                        onClick={this.rowAdd}>+{this.formatIntl('equipment.add')}</span> </td>}
                   </tr>;
                 })
               }
