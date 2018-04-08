@@ -173,7 +173,10 @@ export default {
     'asset.param': 'default params',
 
     //域管理
-    'domain.edit': 'domain edit',
+    'domain.input.placeholder':'please input the name',
+    'domain.parent':'Parent',
+    'domain.level':'Level',
+    'domain.edit': 'edit domain',
     'domain.configuration': 'Configuration',
     'domain.map': 'Map',
     'domain.list': 'List',
@@ -183,7 +186,8 @@ export default {
     'domain.lng': 'Lng',
     'domain.lat': 'Lat',
     'domain.superior': 'Superior',
-
+    'domain.add':'add domain',
+    'domain.delete.alert':'remove the domain?',
 
     //权限管理
     'permission.username': 'UserName',
@@ -256,7 +260,6 @@ export default {
     'app.time.difference': 'Time difference',
     'app.add.group': 'Add group',    
     'app.edit.group':'Edit Group',
-    'app.edit.strategy':'Edit Strategy',
     'search.or.create.group':'Please search or create group',    
 
     //设备维护

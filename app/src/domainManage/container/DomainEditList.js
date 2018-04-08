@@ -18,13 +18,15 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 
 import {getDomainList, getParentDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
+import {getDomainConfig} from '../../util/network';
 
-import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 import {trimString} from '../../util/string';
+import {getLocalStorage} from '../../util/cache';
 
+import Immutable from 'immutable';
 import lodash from 'lodash';
 export class DomainEditList extends Component {
     constructor(props) {
@@ -51,14 +53,17 @@ export class DomainEditList extends Component {
                 total: 0
             }),
 
-            search: Immutable.fromJS({placeholder:intlFormat({en:'please input the name',zh:'输入域名称'}), value: ''}),
+            search: Immutable.fromJS({placeholder:this.formatIntl('domain.input.placeholder'), value: ''}),
             data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
                 {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
             sidebarInfoStyle:{height:"100%"}
         }
 
-        this.columns = [{id: 1, field: "name", title:intlFormat({en:'domainName',zh:'域名称'})}, {id:2, field:"parentName", title: intlFormat({en:'parentName',zh:'上级域'})}]
+        this.domainLevelName = null;
+        this.columns = [{id: 1, field: "name", title:this.formatIntl('domain.name')},
+            {id:2, field:"parentName", title: this.formatIntl('domain.parent')},
+            {id:3, field:"levelName", title: this.formatIntl('domain.level')}]
         this.domainList = [];
 
         this.formatIntl = this.formatIntl.bind(this);
@@ -92,8 +97,12 @@ export class DomainEditList extends Component {
         this.mounted = true;
         this.requestDomain();
         this.initTreeData();
-        this.requestSearch();
+        // this.requestSearch();
 
+        getDomainConfig(response=>{
+            this.domainLevelName = response.levelName;
+            this.requestSearch();
+        })
         window.onresize = event=>{
             this.mounted && this.setSize();
         }
@@ -149,7 +158,7 @@ export class DomainEditList extends Component {
 
     initDomainList(data){
         let list = data.map(domain=>{
-            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'})})
+            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'}), levelName:this.domainLevelName[getLocalStorage("appLanguage")][domain.level-1]})
         })
 
 
@@ -196,7 +205,7 @@ export class DomainEditList extends Component {
     addDomain(){
         const {listMode, selectDomain} = this.state
         const {actions} = this.props;
-        actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+        actions.overlayerShow(<DomainPopup id="addDomain" title={this.formatIntl('domain.add')} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                            onConfirm={(data)=>{
@@ -236,7 +245,7 @@ export class DomainEditList extends Component {
             name = data.name;
         }
 
-        actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
+        actions.overlayerShow(<DomainPopup id="updateDomain" title={this.formatIntl('domain.edit')} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                            onConfirm={(data)=>{
@@ -265,7 +274,7 @@ export class DomainEditList extends Component {
             let data = selectDomain.data[0];
             curId = data.id;
         }
-        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('domain.delete.alert')}
                                             cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
                                                  ()=>{
                                                     actions.overlayerHide();

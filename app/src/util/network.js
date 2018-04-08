@@ -216,6 +216,17 @@ export function getMapConfig(responseFun, errorFun) {
     })
 }
 
+export function getDomainConfig(responseFun, errFun) {
+    httpRequest('/config/domain',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
 export function getModuleConfig(user, responseFun, errFun) {
     httpRequest('/config/module?user='+encodeURIComponent(JSON.stringify(user)),{
         method: 'GET',

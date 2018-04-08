@@ -25,6 +25,10 @@ router.get('/map', function (req, res, next) {
     res.json(client.map);
 });
 
+router.get('/domain', function (req, res, next) {
+    res.json(client.domain);
+})
+
 router.get('/module', function (req, res, next) {
     let user = JSON.parse(req.query.user);
     // console.log(user, user.id, user.role, user.userId, "%%%%%%%");

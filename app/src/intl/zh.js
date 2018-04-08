@@ -173,16 +173,22 @@ export default {
     'asset.param': '默认参数',
 
     //域管理
-    'domain.edit': '域编辑',
+    'domain.input.placeholder':'输入域名称',
+    'domain.parent':'上级',
+    'domain.level':'级别',
+    'domain.edit': '修改域属性',
     'domain.configuration':'配置',
     'domain.map': '地图',
     'domain.list': '列表',
     'domain.topology': '拓扑图',
     'domain.property': '属性',
-    'domain.name': '域名称',
+    'domain.name': '名称',
     'domain.lng': '经度',
     'domain.lat': '纬度',
     'domain.superior': '上级域',
+    'domain.add':'添加域',
+    'domain.delete.alert':'是否删除选中域？',
+
     //权限管理
     'permission.username': '用户名称',
     'permission.lastLoginDate': '最后登录时间',
@@ -254,7 +260,6 @@ export default {
     'app.time.difference': '时间差',
     'app.add.group': '创建组',
     'app.edit.group':'修改组',
-    'app.edit.strategy':'修改策略',
     'search.or.create.group':'请搜索或创建组',
     
     //设备维护
