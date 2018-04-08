@@ -171,7 +171,27 @@ export default {
     'asset.assetTypes': 'equipmentModal',
     'asset.type': 'asset types',
     'asset.param': 'default params',
+    //名称，描述，单位，精度
+    'asset.name':'name',
+    'asset.detail':'detail',
+    'asset.unit':'unit',
+    'asset.accuracy':'accuracy',
+    //名称	描述	功率	使用寿命	厂商	编辑
+    'equipment.name':'name',
+    'equipment.description':'description',
+    'equipment.power':'power',
+    'equipment.life':'life',
+    'equipment.manufacturer':'manufacturer',
+    'equipment.edit':'edit',
 
+    'equipment.modify':'modify',
+    'equipment.delete':'delete',
+    'equipment.add':'add',
+
+    'equipment.isDeleteDevice':'delete the device ?',
+    'equipment.modifyDevice':'modify device',
+    'equipment.addDevice':'add device',
+    
     //域管理
     'domain.input.placeholder':'please input the name',
     'domain.parent':'Parent',
