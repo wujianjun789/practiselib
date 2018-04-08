@@ -171,6 +171,30 @@ export default {
     'asset.assetTypes': '设备型号',
     'asset.type': '设备类别',
     'asset.param': '默认参数',
+    //名称，描述，单位，精度
+    'asset.name':'名称',
+    'asset.detail':'描述',
+    'asset.unit':'单位',
+    'asset.accuracy':'精度',
+    //名称	描述	功率	使用寿命	厂商	编辑
+    'equipment.name':'名称',
+    'equipment.description':'描述',
+    'equipment.power':'功率',
+    'equipment.life':'使用寿命',
+    'equipment.manufacturer':'厂商',
+    'equipment.edit':'编辑',
+
+    'equipment.modify':'修改',
+    'equipment.delete':'删除',
+    'equipment.add':'添加',
+
+    'equipment.isDeleteDevice':'是否删除此行？',
+    'equipment.modifyDevice':'修改设备型号',
+    'equipment.addDevice':'添加设备型号',
+
+
+    
+    
 
     //域管理
     'domain.input.placeholder':'输入域名称',
