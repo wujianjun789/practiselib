@@ -578,7 +578,7 @@ export class PlayPlan extends Component {
         }
 
         return {id: zon.id, style:{width:position.w, height:position.h, left:position.x, top:position.y},
-          src:index > -1 ? (item.assetType === 'system' ? item.thumbnail : "data:image/png;base64,"+item.image) : ''};
+          src:index > -1 ? ("data:image/png;base64,"+item.image) : ''};
       });
     }
 
