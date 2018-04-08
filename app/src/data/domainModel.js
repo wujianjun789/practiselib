@@ -4,7 +4,7 @@
 export const TreeData=[
     {
         "id": "domainEdit",
-        "name":"domain.edit",
+        "name":"domain.configuration",
         "toggled": false,
         "active": true,
         "link": "/domainManage/domainEdit/list",

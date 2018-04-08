@@ -174,9 +174,10 @@ export default {
 
     //域管理
     'domain.edit': 'domain edit',
-    'domain.map': 'domain map',
-    'domain.list': 'domain list',
-    'domain.topology': 'topology',
+    'domain.configuration': 'Configuration',
+    'domain.map': 'Map',
+    'domain.list': 'List',
+    'domain.topology': 'Topology',
     'domain.property': 'Property',
     'domain.name': 'Name',
     'domain.lng': 'Lng',
