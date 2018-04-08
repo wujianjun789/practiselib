@@ -21,36 +21,36 @@ export default class LightStatistics extends Component {
         id: '',
         title: '',
         data: [
-          { x: '2018-04-01T00:00:00.000Z', y: 160 },
-          { x: '2018-04-02T00:00:00.000Z', y: 130 },
-          { x: '2018-04-03T00:00:00.000Z', y: 130 },
-          { x: '2018-04-04T00:00:00.000Z', y: 140 },
-          { x: '2018-04-05T00:00:00.000Z', y: 120 },
-          { x: '2018-04-06T00:00:00.000Z', y: 150 },
-          { x: '2018-04-07T00:00:00.000Z', y: 130 },
-          { x: '2018-04-08T00:00:00.000Z', y: 140 },
-          { x: '2018-04-09T00:00:00.000Z', y: 130 },
-          { x: '2018-04-10T00:00:00.000Z', y: 150 },
-          { x: '2018-04-11T00:00:00.000Z', y: 130 },
-          { x: '2018-04-12T00:00:00.000Z', y: 140 },
-          { x: '2018-04-13T00:00:00.000Z', y: 160 },
-          { x: '2018-04-14T00:00:00.000Z', y: 150 },
-          { x: '2018-04-15T00:00:00.000Z', y: 130 },
-          { x: '2018-04-16T00:00:00.000Z', y: 130 },
-          { x: '2018-04-17T00:00:00.000Z', y: 140 },
-          { x: '2018-04-18T00:00:00.000Z', y: 120 },
-          { x: '2018-04-19T00:00:00.000Z', y: 120 },
-          { x: '2018-04-20T00:00:00.000Z', y: 120 },
-          { x: '2018-04-21T00:00:00.000Z', y: 150 },
-          { x: '2018-04-22T00:00:00.000Z', y: 130 },
-          { x: '2018-04-23T00:00:00.000Z', y: 130 },
-          { x: '2018-04-24T00:00:00.000Z', y: 130 },
-          { x: '2018-04-25T00:00:00.000Z', y: 140 },
-          { x: '2018-04-26T00:00:00.000Z', y: 140 },
-          { x: '2018-04-27T00:00:00.000Z', y: 140 },
-          { x: '2018-04-28T00:00:00.000Z', y: 160 },
-          { x: '2018-04-29T00:00:00.000Z', y: 150 },
-          { x: '2018-04-30T00:00:00.000Z', y: 190 },
+          // { x: '2018-04-01T00:00:00.000Z', y: 160 },
+          // { x: '2018-04-02T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-03T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-04T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-05T00:00:00.000Z', y: 120 },
+          // { x: '2018-04-06T00:00:00.000Z', y: 150 },
+          // { x: '2018-04-07T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-08T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-09T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-10T00:00:00.000Z', y: 150 },
+          // { x: '2018-04-11T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-12T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-13T00:00:00.000Z', y: 160 },
+          // { x: '2018-04-14T00:00:00.000Z', y: 150 },
+          // { x: '2018-04-15T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-16T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-17T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-18T00:00:00.000Z', y: 120 },
+          // { x: '2018-04-19T00:00:00.000Z', y: 120 },
+          // { x: '2018-04-20T00:00:00.000Z', y: 120 },
+          // { x: '2018-04-21T00:00:00.000Z', y: 150 },
+          // { x: '2018-04-22T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-23T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-24T00:00:00.000Z', y: 130 },
+          // { x: '2018-04-25T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-26T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-27T00:00:00.000Z', y: 140 },
+          // { x: '2018-04-28T00:00:00.000Z', y: 160 },
+          // { x: '2018-04-29T00:00:00.000Z', y: 150 },
+          // { x: '2018-04-30T00:00:00.000Z', y: 190 },
         ],
       },
       energyFilter: {
@@ -94,11 +94,11 @@ export default class LightStatistics extends Component {
       // lightState: {id:'1', domainId:'1', lightTotal:'180', lightOnPercent:'95',lighton:'195', lightOff:'10'},
       domainStatus:
                 {
-                  id: '',
-                  domainId: '1',
-                  deviceTotal: '100', deviceOnlineRunning: '90', deviceOnlineError: '3', deviceOffline: '7',
-                  planTotal: '25', palnSuccess: '23', planFail: '2',
-                  lightTotal: '180', lightOnPercent: '0.95', lighton: '195', lightOff: '10',
+                  // id: '',
+                  // domainId: '1',
+                  // deviceTotal: '100', deviceOnlineRunning: '90', deviceOnlineError: '3', deviceOffline: '7',
+                  // planTotal: '25', palnSuccess: '23', planFail: '2',
+                  // lightTotal: '180', lightOnPercent: '0.95', lighton: '195', lightOff: '10',
                 },
       pieWIdth: 150,
       pieHeight: 170,
@@ -143,13 +143,11 @@ export default class LightStatistics extends Component {
 
   initData() {
     getDomainList(data => {
-      console.log("domainData:", data);
       this.mounted && this.updateDomainData(data);
     });
   }
 
   updateDomainData(data, selectedIndex) {
-    console.log("domainData:", data);
     let type = this.state.type;
     let { domainList } = this.state;
     let { id, options } = this.state.domainList;
@@ -202,7 +200,6 @@ export default class LightStatistics extends Component {
     // console.log("dateTime:", dateTime);
     //获取能耗数据并重新渲染
     getEnergy(id, type, dateTime, (response) => {
-      console.log("getEnergy:", response);
       let { data } = this.state.energyFilt;
       let { totalEnergy } = this.state;
       totalEnergy = 0;
@@ -354,7 +351,6 @@ export default class LightStatistics extends Component {
 
   drawChart(ref, data) {
     if (ref.id == 'energyStatistics') {
-      console.log("energyStatisticsData:", data);
       this.barchart = new BarChart({
         wrapper: ref,
         width:ref.parentNode.offsetWidth,
@@ -424,13 +420,13 @@ export default class LightStatistics extends Component {
                     <div className="stateInfo">
                       <div className="fontbold font">域： <span>{`${this.state.domainList.value}`}</span></div>
                       <div className="fontbold font">设备数：<span>
-                        {`${domainStatus.deviceTotal ? domainStatus.deviceTotal : '未读取'}`}</span></div>
+                        {`${domainStatus.deviceTotal ? domainStatus.deviceTotal : ''}`}</span></div>
                       <div className="dot color1"></div><div className="font">在线正常数：<span>
-                        {`${domainStatus.deviceOnlineRunning ? domainStatus.deviceOnlineRunning : '未读取'}`}</span></div>
+                        {`${domainStatus.deviceOnlineRunning ? domainStatus.deviceOnlineRunning : ''}`}</span></div>
                       <div className="dot color2"></div><div className="font">在线故障数：<span>
-                        {`${domainStatus.deviceOnlineError ? domainStatus.deviceOnlineError : '未读取'}`}</span></div>
+                        {`${domainStatus.deviceOnlineError ? domainStatus.deviceOnlineError : ''}`}</span></div>
                       <div className="dot color3"></div><div className="font">离线数：<span>
-                        {`${domainStatus.deviceOffline ? domainStatus.deviceOffline : '未读取'}`}</span></div>
+                        {`${domainStatus.deviceOffline ? domainStatus.deviceOffline : ''}`}</span></div>
                     </div>
                   </div>
                 </div>
@@ -448,11 +444,11 @@ export default class LightStatistics extends Component {
                     <div className="stateInfo">
                       <div className="fontbold font">域： <span>{`${this.state.domainList.value}`}</span></div>
                       <div className="fontbold font">计划数：<span>
-                        {`${domainStatus.planTotal ? domainStatus.planTotal : '未读取'}`}</span></div>
+                        {`${domainStatus.planTotal ? domainStatus.planTotal : ''}`}</span></div>
                       <div className="dot color1"></div><div className="font">成功计划数：<span>
-                        {`${domainStatus.palnSuccess ? domainStatus.palnSuccess : '未读取'}`}</span></div>
+                        {`${domainStatus.palnSuccess ? domainStatus.palnSuccess : ''}`}</span></div>
                       <div className="dot color2"></div><div className="font">失败计划数：<span>
-                        {`${domainStatus.planFail ? domainStatus.planFail : '未读取'}`}</span></div>
+                        {`${domainStatus.planFail ? domainStatus.planFail : ''}`}</span></div>
                     </div>
                   </div>
                 </div>
@@ -469,7 +465,7 @@ export default class LightStatistics extends Component {
                     <div className="stateInfo">
                       <div className="fontbold font">域：<span>{`${this.state.domainList.value}`}</span></div>
                       <div className="fontbold font">亮灯率：<span>{domainStatus.lightOnPercent ? 
-                        domainStatus.lightOnPercent * 100 + '%' : '未读取'}</span></div>
+                        domainStatus.lightOnPercent * 100 + '%' : ''}</span></div>
                     </div>
                   </div>
                 </div>

@@ -20,10 +20,13 @@ export default function BarChart(data) {
   let padding = { left: 0, right: 30, top: 20, bottom: 40 };
 
   // dataset数据插值,如果没有，设置为零
-  if (dataset.length != 0) {
-    let yearNum = new Date(dataset[0].x).getFullYear();
-    let monthNum = new Date(dataset[0].x).getMonth() + 1;
-    let dayNum = new Date(dataset[0].x).getDate();
+  // if (dataset.length != 0) {
+    // let yearNum = new Date(dataset[0].x).getFullYear();
+    let yearNum = new Date().getFullYear();
+    // let monthNum = new Date(dataset[0].x).getMonth() + 1;
+    let monthNum = new Date().getMonth() + 1;
+    // let dayNum = new Date(dataset[0].x).getDate();
+    let dayNum = new Date().getDate();
     // let hoursNum = new Date(dataset[0].x).getHours() - 8;
     let dataFixed = [];
     if (type === '1') {//按年统计12
@@ -35,7 +38,7 @@ export default function BarChart(data) {
         item.y = 0;
         for (let j = 0; j < dataset.length; j++) {
           if (new Date(dataset[j].x).getMonth() === i) {
-            item.y = dataset[j].y;
+            item.y = dataset[j].y?dataset[j].y:0;
           }
         }
         dataFixed.push(item);
@@ -53,7 +56,7 @@ export default function BarChart(data) {
         item.y = 0;
         for (let j = 0; j < dataset.length; j++) {
           if (new Date(dataset[j].x).getDate() === i + 1) {
-            item.y = dataset[j].y;
+            item.y = dataset[j].y?dataset[j].y:0;
           }
         }	
         dataFixed.push(item);
@@ -70,14 +73,25 @@ export default function BarChart(data) {
         item.y = 0;
         for (let j = 0; j < dataset.length; j++) {
           if (new Date(dataset[j].x).getHours() - 8 === i) {
-            item.y = dataset[j].y;
+            item.y = dataset[j].y?dataset[j].y:0;
           }
         }	
         dataFixed.push(item);
       }
       dataset = dataFixed;
     }
-  }
+  // } 
+  
+  // else {
+  //   //数据为空
+  //   if(type=='1'){
+  //     // dataset=
+  //   } else if (type='2'){
+
+  //   } else if (type=='3'){
+
+  //   }
+  // }
 	
 
   //x轴的比例尺
