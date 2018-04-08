@@ -110,8 +110,8 @@ export default {
     'button.publish': '发布',
 
     //用户中心
-    'update.password': '修改密码',
-    'exit': '退出管理系统',
+    'update.password': '密码',
+    'exit': '注销',
     'sure.exit': '确认退出？',
     'new.password': '新密码',
     'old.password': '旧密码',

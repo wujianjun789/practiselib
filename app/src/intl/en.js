@@ -110,8 +110,8 @@ export default {
     'button.publish': 'Publish',
 
     //用户中心
-    'update.password': 'Update password',
-    'exit': 'Exit',
+    'update.password': 'Password',
+    'exit': 'Sign out',
     'sure.exit': 'Are you sure to exit？',
     'new.password': 'New password',
     'old.password': 'Old password',
