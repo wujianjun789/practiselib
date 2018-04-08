@@ -417,6 +417,7 @@ function addUpdateItem(data, project, parentParentNode, parentNode, curNode) {
   return dispatch => {
     updateItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, data, response => {
       dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
+      dispatch(playerAssetSelect(curNode));
     });
   };
 }
