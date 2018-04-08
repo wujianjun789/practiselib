@@ -5,7 +5,7 @@
  *  字符串是否为空
  */
 export function validateStr(str) {
-    if(str.replace(/(^s*)|(s*$)/g, "").length == 0){
+    if(str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '').length == 0){
         return false;
     }
 
@@ -18,7 +18,7 @@ export function validateStr(str) {
  * @returns {*|string|void|XML}
  */
 export function trimString(str) {
-    return str.replace(/(^\s*)|(\s*$)/g, "");
+    return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 }
 /**
  * 混合中英文处理
