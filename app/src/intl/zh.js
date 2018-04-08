@@ -266,7 +266,9 @@ export default {
     'sysOperation.deviceNum': '编号',
     'sysOperation.deviceName': '名称',
     'sysOperation.deviceDomain': '域',
+
     //故障管理
+    'sysOperation.alarm':'告警',
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
     'sysOperation.alarm.param': '告警参数',

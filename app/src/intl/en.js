@@ -38,9 +38,9 @@ export default {
     'app.input.minute': 'input minute',
     '': '',
 
-    'app.timetable': 'Timetable',
+    'app.timetable': 'Schedule',
     'app.sensor': 'Sensor',
-    'app.latlng': 'LatLng',
+    'app.latlng': 'Lat_Lon',
     'app.time.range': 'Time range',
     'app.date.range': 'Date range',
     'app.date.error': 'date error',
@@ -231,7 +231,7 @@ export default {
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
 
-    'sysOperation.control.strategy': 'Control Strategy',
+    'sysOperation.control.strategy': 'Strategy',
     'sysOperation.service.monitoring': 'Service Monitoring',
     'sysOperation.system.config': 'System Config',
     'sysOperation.device.monitoring': 'Device Monitoring',
@@ -269,7 +269,8 @@ export default {
 
 
     //故障管理
-    'sysOperation.fault.manage': 'Fault management',
+    'sysOperation.alarm':'Alarm',    
+    'sysOperation.fault.manage': 'Fault',
     'sysOperation.alarm.type': 'Alarm type',
     'sysOperation.alarm.param': 'Alarm param',
     'sysOperation.fault.param': 'Fault param',
