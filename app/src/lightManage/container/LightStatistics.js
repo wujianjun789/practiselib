@@ -338,7 +338,7 @@ export default class LightStatistics extends Component {
       } else if (refId == 'lightState') {
         // data = [9, 2];
         data = [domainStatus.lightOnPercent ? (domainStatus.lightOnPercent) * 100 : 0,
-          (1 - domainStatus.lightOnPercent) ? (1 - domainStatus.lightOnPercent) * 100 : 100,
+          (1 - domainStatus.lightOnPercent) ? (1 - domainStatus.lightOnPercent) * 100 : 0,
         ];
         // console.log("data:", data);
         this.drawChart(ref, data);
