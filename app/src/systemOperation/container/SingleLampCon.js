@@ -422,7 +422,7 @@ export class SingleLampCon extends Component {
           <button id="sys-import" className="btn btn-gray" onClick={this.importHandler}>
             {this.props.intl.formatMessage({ id: 'button.import' })}</button>
           <div className="btn-group">
-            <button id="sys-maintenance" className="btn btn-gray dropdown-toggle"
+            <button id="sys-maintenance" disabled={data.size == 0?true:false} className="btn btn-gray dropdown-toggle"
               data-toggle="dropdown">操作<span className="caret"></span>
             </button>
             <ul className="dropdown-menu" role="menu">
