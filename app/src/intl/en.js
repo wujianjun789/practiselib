@@ -332,6 +332,8 @@ export default {
     'app.report.normal': 'normal',
     'app.report.error': 'fault',
     'app.report.noDevice': 'No device',
+    'app.report.noData': 'No data',
+
     //智慧路灯
     'app.search.placeholder.name': 'Search name or domain',
     'app.search.list': 'Return',
