@@ -210,7 +210,7 @@ export default {
     'domain.delete.alert': '是否删除选中域？',
 
     //权限管理
-    'permission.username': '用户名称',
+    'permission.username': '用户名',
     'permission.lastLoginDate': '最后登录时间',
     'permission.admin': '系统管理员',
     'permission.deviceAdmin': '设备管理员',
@@ -219,7 +219,7 @@ export default {
     'permission.addUser': '添加用户',
     'permission.userData': '用户资料',
     'permission.domain': '域权限',
-    'permission.module': '模块权限',
+    'permission.module': '模块',
     'permission.input.username': '请输入用户名称',
     'permission.input.domain': '请输入域名称',
     'permission.added': '已添加',
