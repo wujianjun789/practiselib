@@ -514,16 +514,11 @@ class TimeStrategy extends Component {
                 <div className="panel panel-default">
                   <div className="panel-heading" role="presentation"
                     onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed'); }}>
-                    <span className="icon_select"></span>{this.formatIntl('app.select.strategy')}
+                    <span className="icon_select"></span>
+                    <p className="name" title={selectItem.name}>{selectItem.name}</p>
                     <span className="icon icon_collapse pull-right"></span>
                   </div>
                   <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
-                    <div className="form-group">
-                      <label title={this.formatIntl('app.strategy.name')}>{this.formatIntl('app.strategy.name')}</label>
-                      <div className="input-container">
-                        <input type="text" className="form-control" value={selectItem.name} disabled="disabled"/>
-                      </div>
-                    </div>
                     <div className="form-group">
                       <label title={this.formatIntl('app.strategy.level')}>{this.formatIntl('app.strategy.level')}</label>
                       <div className="input-container">
@@ -540,13 +535,13 @@ class TimeStrategy extends Component {
                       </div>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group retry">
                       <label title={this.formatIntl('app.strategy.retryNumber')}>{this.formatIntl('app.strategy.retryNumber')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.retryNumber} disabled="disabled"/>
                       </div>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group retry">
                       <label title={this.formatIntl('app.strategy.retryInterval')}>{this.formatIntl('app.strategy.retryInterval')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" 
