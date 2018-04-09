@@ -24,6 +24,8 @@ export default class Table extends Component {
         this.rowEdit = this.rowEdit.bind(this);
         this.rowDelete = this.rowDelete.bind(this);
         this.rowClick = this.rowClick.bind(this);
+        this.rowUpgrade = this.rowUpgrade.bind(this);
+        this.rowReplace = this.rowReplace.bind(this);
     }
 
     allCheckChange(value) {
@@ -42,6 +44,14 @@ export default class Table extends Component {
         this.props.rowPublish && this.props.rowPublish(rowId);
     }
 
+    rowUpgrade(rowId){
+        this.props.rowUpgrade && this.props.rowUpgrade(rowId);
+    }
+
+    rowReplace(rowId){
+        this.props.rowReplace && this.props.rowReplace(rowId);
+    }
+
     rowEdit(rowId) {
         this.props.rowEdit && this.props.rowEdit(rowId);
     }
@@ -55,7 +65,7 @@ export default class Table extends Component {
     }
 
     render() {
-        let { columns = [], data = [], allChecked, titleCheck = true, checked = [], keyField = 'id', isProject, isEdit, className = '', activeId } = this.props;
+        let { columns = [], data = [], allChecked, titleCheck = true, checked = [], keyField = 'id', isProject, isEdit, isDevice, className = '', activeId } = this.props;
         return (
             <div className={`table-responsive ${className}`}>
                 <table className="table table-hover">
@@ -75,6 +85,9 @@ export default class Table extends Component {
                             }
                             {
                                 isProject && <th></th>
+                            }
+                            {
+                                isDevice && <th></th>
                             }
                             {
                                 isEdit && <th></th>
@@ -107,6 +120,19 @@ export default class Table extends Component {
                                             <a className="btn" onClick={() => keyField && this.rowPublish(row.get(keyField))}>
                                                 <span className="icon_upgrade"></span>
                                                 <span className="publish"><FormattedMessage id='button.publish' /></span>
+                                            </a>
+                                        </td>
+                                    }
+                                    {
+                                        isDevice &&
+                                        <td className="edit device">
+                                            <a className="btn" onClick={() => keyField && this.rowUpgrade(row.get(keyField))}>
+                                                <span className="icon_upgrade2"></span>
+                                                <span className="upgrade"><FormattedMessage id='sysOperation.deviceUpgrade' /></span>
+                                            </a>
+                                            <a className="btn" onClick={() => keyField && this.rowReplace(row.get(keyField))}>
+                                                <span className="icon_replace"></span>
+                                                <span className="replace"><FormattedMessage id='sysOperation.deviceReplace' /></span>
                                             </a>
                                         </td>
                                     }
