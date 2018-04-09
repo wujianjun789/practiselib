@@ -81,6 +81,7 @@ export default class Table2 extends Component {
                     {
                         data.map((row, index)=> {
                             let curId = row.id;
+                            console.log(row)
                             return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
                                     {
@@ -99,7 +100,7 @@ export default class Table2 extends Component {
                                 {
                                     isEdit &&
                                         <td className = 'button-icon'>
-                                            <a className="btn" onClick={()=>keyField && this.rowModuleEdit(row[keyField])}><span className="icon_module"></span><span className="module"><FormattedMessage id="permission.module"/></span></a>                                            
+                                            {row.role.name!="admin" && <a className="btn" onClick={()=>keyField && this.rowModuleEdit(row[keyField])}><span className="icon_module"></span><span className="module"><FormattedMessage id="permission.module"/></span></a>}                         
                                             {/* <a className="btn" onClick={()=>keyField && this.rowDomainEdit(row[keyField])}><span className="icon_domain"></span><span className="domain"><FormattedMessage id="permission.domain"/></span></a> */}
                                             <a className="btn" onClick={()=>keyField && this.rowEdit(row[keyField])}><span className="icon_edit"></span><span className="update"><FormattedMessage id="button.edit"/></span></a>
                                             <a className="btn" onClick={()=>keyField && this.rowDelete(row[keyField])}><span className="icon_delete"></span><span className="del"><FormattedMessage id="button.delete"/></span></a>
