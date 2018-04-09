@@ -123,6 +123,7 @@ class DomainEditTopology extends Component{
     }
 
     updateDomain(parentId, data, list){
+        console.log('parentId:', parentId, 'list:', list);
         return list.map(domain=>{
             if(this.IsCurGroup(parentId, list)){
                 if(this.state.IsUpdate && data && data.length){
@@ -142,6 +143,7 @@ class DomainEditTopology extends Component{
 
                        })
 
+                        domain.endSelect = true;
                         domain.active = true;
                         domain.children = childrens;
                         return domain;
@@ -159,6 +161,7 @@ class DomainEditTopology extends Component{
                 if(domain.id == parentId){
                     // if(data.length){
                     domain.active = true;
+                    domain.endSelect = true;
                     domain.children = data;
                     return domain;
                 }else{
@@ -166,6 +169,8 @@ class DomainEditTopology extends Component{
                         domain.active = false;
                     // }
                 }
+            }else{
+                domain.endSelect = false;
             }
 
             if(domain.children && domain.children.length){
@@ -352,7 +357,7 @@ class DomainEditTopology extends Component{
                 list.map(item=>{
 
                     if(!item.name){
-                        return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
+                        return <li key={item.id} className={(item.active?'active ':' ')+(item.endSelect?'selected ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                                    onClick={()=>this.itemClick(item)}></li>
                     }
 
@@ -377,7 +382,7 @@ class DomainEditTopology extends Component{
 
                     let value = item.name.slice(0, curIndex);
 
-                        return <li key={item.id} className={(item.active?'active ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
+                        return <li key={item.id} className={(item.active?'active ':' ')+(item.endSelect?'selected ':' ')+(item.children && item.children.length?'children':'')} title={item.name}
                                    onClick={()=>this.itemClick(item)}><div>{value}</div></li>
 
                     /*let strs = getStringlistByLanguage(value);
