@@ -413,8 +413,8 @@ class DomainEditTopology extends Component{
         let disabled = selectDomain.data.length?false:true;
         return <Content className={'offset-right topology-mode '+(collapse?'collapsed':'')}>
                 <div className="heading">
-                    <SearchText placeholder={search.get('placeholder')} value={search.get('value')}
-                                onChange={this.searchChange} submit={this.searchSubmit}/>
+                    {/*<SearchText placeholder={search.get('placeholder')} value={search.get('value')}
+                                onChange={this.searchChange} submit={this.searchSubmit}/>*/}
                     <button className="btn btn-primary add-domain" onClick={()=>this.domainHandler('add')}>{this.props.intl.formatMessage({id:'button.add'})}</button>
                 </div>
                 <div className={"topology-mode "+language}>
