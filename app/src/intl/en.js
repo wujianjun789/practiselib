@@ -237,7 +237,7 @@ export default {
     'sysOperation.input.device': 'Input device name',
     'sysOperation.domain': 'Domain',
     'sysOperation.type': 'Type',
-    'sysOperation.id': 'Id',
+    'sysOperation.id': 'ID',
     'sysOperation.dataOrigin': 'Data origin',
     'sysOperation.dataOrigins': 'data origins',
     'sysOperation.addDevice': 'Add device',

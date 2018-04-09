@@ -236,7 +236,7 @@ export default {
     'sysOperation.devices': '个设备',
     'sysOperation.input.device': '输入设备名称',
     'sysOperation.domain': '域',
-    'sysOperation.type': '型号',
+    'sysOperation.type': '类型',
     'sysOperation.id': '设备编号',
     'sysOperation.dataOrigin': '数据源',
     'sysOperation.dataOrigins': '个数据源',
