@@ -165,8 +165,8 @@ export default {
     'app.domain.manage': 'Domain',
 
     //资产管理
-    'asset.model': 'Asset model',
-    'asset.statistics': 'Asset statistics',
+    'asset.model': 'Model',
+    'asset.statistics': 'Statistics',
     'asset.property': 'Asset properties',
     'asset.assetTypes': 'EquipmentModal',
     'asset.type': 'Asset types',

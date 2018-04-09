@@ -165,8 +165,8 @@ export default {
     'app.domain.manage': '域管理',
 
     //资产管理
-    'asset.model': '资产管理',
-    'asset.statistics': '资产统计',
+    'asset.model': '模型',
+    'asset.statistics': '统计',
     'asset.property': '设备属性',
     'asset.assetTypes': '设备型号',
     'asset.type': '设备类别',
