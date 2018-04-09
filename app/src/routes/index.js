@@ -27,15 +27,35 @@ export default (
         <Route path="model">
           <Route path="lc" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../assetManage/container/SingleLamp').default);
-            }, 'starriverpro.assetmanage.singleLamp');
+              cb(null, require('../assetManage/container/AssetDevice').default);
+            }, 'starriverpro.assetmanage.lc');
           }} />
           <Route path="gateway" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../assetManage/container/Gateway').default);
+              cb(null, require('../assetManage/container/AssetDevice').default);
             }, 'starriverpro.assetmanage.gateway');
           }} />
           <Route path="sensor" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../assetManage/container/AssetDevice').default);
+            }, 'starriverpro.assetmanage.sensor');
+          }} />
+          <Route path="screen" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../assetManage/container/AssetDevice').default);
+            }, 'starriverpro.assetmanage.screen');
+          }} />
+          {/* <Route path="lc" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../assetManage/container/SingleLamp').default);
+            }, 'starriverpro.assetmanage.singleLamp');
+          }} /> */}
+          {/* <Route path="gateway" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../assetManage/container/Gateway').default);
+            }, 'starriverpro.assetmanage.gateway');
+          }} /> */}
+          {/* <Route path="sensor" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/Sensor').default);
             }, 'starriverpro.assetmanage.sensor');
@@ -44,8 +64,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/Screen').default);
             }, 'starriverpro.assetmanage.screen');
-
-          }} />
+          }} /> */}
           <Route path="pole" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/Pole').default);
