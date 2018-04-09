@@ -40,12 +40,12 @@ export class SingleLamp extends Component {
       ],
     };
 
-    this.assetPropertyColumns = [  //设备属性表头定义
-      { field: 'name', title: this.formatIntl('asset.name') },
-      { field: 'detail', title:this.formatIntl('asset.detail') },
-      { field: 'unit', title: this.formatIntl('asset.unit') },
-      { field: 'accuracy', title: this.formatIntl('asset.accuracy') },
-    ];
+    // this.assetPropertyColumns = [  //设备属性表头定义
+    //   { field: 'name', title: this.formatIntl('asset.name') },
+    //   { field: 'detail', title:this.formatIntl('asset.detail') },
+    //   { field: 'unit', title: this.formatIntl('asset.unit') },
+    //   { field: 'accuracy', title: this.formatIntl('asset.accuracy') },
+    // ];
 
     this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
       { field: 'name', title: this.formatIntl('equipment.name')},
@@ -214,7 +214,7 @@ export class SingleLamp extends Component {
     let length = assetTypeList.length;
     return (
       <Content>
-        <div className="row heading">
+        {/* <div className="row heading">
           <div className="propertyTable"><span></span>{this.formatIntl('asset.property')}</div>
           <table className="equipment">
             <thead>
@@ -241,7 +241,7 @@ export class SingleLamp extends Component {
               }
             </tbody>
           </table>
-        </div>
+        </div> */}
         <div className="row heading">
           <div className="type"><span></span>{this.formatIntl('asset.assetTypes')}</div>
           <table className="equipment">
