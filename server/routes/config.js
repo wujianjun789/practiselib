@@ -82,6 +82,9 @@ router.get('/module', function (req, res, next) {
     httpReq.end();
 });
 
+router.get('/moduleDefault', function(req, res, next){
+    res.json(client.moduleDefault);
+})
 router.get('/strategyDevice', function (req, res, next) {
     res.json(client.strategyDevice);
 })
