@@ -18,9 +18,10 @@ import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain'
 import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
 
 import {DOMAIN_LEVEL} from '../../common/util/index';
+import {DOMAIN_NAME_LENGTH} from '../../common/util/constant';
+
 import {getDomainLevelByMapLevel, getDeviceTypeByModel} from '../../util/index';
 import lodash from 'lodash';
-
 export class MapPreview extends Component{
     constructor(props){
         super(props)
@@ -126,7 +127,9 @@ export class MapPreview extends Component{
 
             this.mounted && this.setState({curDomainList: data, positionList:positionList},()=>{
                 let deviceLen = [];
+                const locale = this.props.intl;
                 data.map(item=>{
+                    const itemLen = item.name.length;
                     getAssetsBaseByDomain(item.id, asset=>{
                         deviceLen.push(item.id);
                         let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
@@ -134,7 +137,9 @@ export class MapPreview extends Component{
                         })
 
                         if(curIndex>-1 && curIndex<this.state.curDomainList.length){
-                            this.state.curDomainList[curIndex].detail = item.name+' \n'+asset.length+this.props.intl.formatMessage({id:'map.device.tip'});
+                            this.state.curDomainList[curIndex].detail = item.name.slice(0, DOMAIN_NAME_LENGTH-6)+
+                              (itemLen>DOMAIN_NAME_LENGTH-6 ? "...":"")+
+                              ' \n'+asset.length/*+this.props.intl.formatMessage({id:'map.device.tip'})*/;
                         }
 
                         if (deviceLen.length == data.length){
@@ -200,7 +205,7 @@ console.log('render render............................................');
 
 function mapStateToProps(state) {
     return {
-
+        intl: state.intl
     }
 }
 

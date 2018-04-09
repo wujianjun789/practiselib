@@ -74,14 +74,12 @@ export class Screen extends Component {
     //  {field:"vendor_info", title:"厂商信息"}, {field:"typeName", title:"控制器类型"}]
 
     this.columns = [
-      { field: 'domain', title: intlFormat({ en: 'domain', zh: '域' }) },
-      { field: 'name', title: intlFormat({ en: 'name', zh: '设备名称' }) },
-      { field: 'software', title: intlFormat({ en: 'software', zh: '软件版本' }) },
-      { field: 'system', title: intlFormat({ en: 'system', zh: '系统版本' }) },
-      { field: 'core_v', title: intlFormat({ en: 'core_v', zh: '内核版本' }) },
-      { field: 'hardware', title: intlFormat({ en: 'hardware', zh: '硬件版本' }) },
-      { field: 'vendor_info', title: intlFormat({ en: 'vendor_info', zh: '厂商信息' }) },
-      { field: 'typeName', title: intlFormat({ en: 'typeName', zh: '控制器类型' }) },
+      { field: 'id', title: intlFormat({ en: 'ID', zh: '编号' }) },
+      { field: 'name', title: intlFormat({ en: 'Name', zh: '名称' }) },
+      { field: 'product', title: intlFormat({ en: 'Product Ver.', zh: '产品版本' }) },
+      { field: 'software', title: intlFormat({ en: 'Software Ver.', zh: '软件版本' }) },
+      { field: 'hardware', title: intlFormat({ en: 'Hardware Ver.', zh: '硬件版本' }) },
+      { field: 'type', title: intlFormat({ en: 'Type', zh: '型号' }) },
     ];
 
     this.collapseHandler = this.collapseHandler.bind(this);
@@ -270,7 +268,7 @@ export class Screen extends Component {
           <div className="panel panel-default device-statics-info">
             <div className="panel-heading" role="presentation"
               onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
-              <span className="icon_chart"></span>{intlFormat({ en: 'asset information', zh: '设备统计信息' })}
+              <span className="icon_chart"></span>{intlFormat({ en: 'Statistics', zh: '统计' })}
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className="panel-body view">

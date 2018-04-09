@@ -25,6 +25,9 @@ router.get('/map', function (req, res, next) {
     res.json(client.map);
 });
 
+router.get('/model', function (req, res, next) {
+   res.json(client.model);
+});
 router.get('/domain', function (req, res, next) {
     res.json(client.domain);
 })
@@ -82,6 +85,9 @@ router.get('/module', function (req, res, next) {
     httpReq.end();
 });
 
+router.get('/moduleDefault', function(req, res, next){
+    res.json(client.moduleDefault);
+})
 router.get('/strategyDevice', function (req, res, next) {
     res.json(client.strategyDevice);
 })

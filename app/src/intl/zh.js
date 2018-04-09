@@ -2,8 +2,8 @@ export default {
   locale: 'zh',
   messages: {
     //公共
-    'name': '名称',
-    'id': '编号',
+    name: '名称',
+    id: '编号',
 
     'app.year': '年',
     'app.month': '月',
@@ -12,7 +12,7 @@ export default {
     'app.custom': '自定义',
     'app.date': '日期',
     'app.time': '时间',
-    'app.second':'秒',
+    'app.second': '秒',
 
     'app.map': '地图',
     'app.list': '列表',
@@ -111,7 +111,7 @@ export default {
 
     //用户中心
     'update.password': '密码',
-    'exit': '注销',
+    exit: '注销',
     'sure.exit': '确认退出？',
     'new.password': '新密码',
     'old.password': '旧密码',
@@ -133,7 +133,7 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    'illegal': '不合法',
+    illegal: '不合法',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',
@@ -172,36 +172,32 @@ export default {
     'asset.type': '设备类别',
     'asset.param': '默认参数',
     //名称，描述，单位，精度
-    'asset.name':'名称',
-    'asset.detail':'描述',
-    'asset.unit':'单位',
-    'asset.accuracy':'精度',
+    'asset.name': '名称',
+    'asset.detail': '描述',
+    'asset.unit': '单位',
+    'asset.accuracy': '精度',
     //名称	描述	功率	使用寿命	厂商	编辑
-    'equipment.name':'名称',
-    'equipment.description':'描述',
-    'equipment.power':'功率',
-    'equipment.life':'使用寿命',
-    'equipment.manufacturer':'厂商',
-    'equipment.edit':'编辑',
+    'equipment.name': '名称',
+    'equipment.description': '描述',
+    'equipment.power': '功率',
+    'equipment.life': '寿命',
+    'equipment.manufacturer': '厂商',
+    'equipment.edit': '编辑',
 
-    'equipment.modify':'修改',
-    'equipment.delete':'删除',
-    'equipment.add':'添加',
+    'equipment.modify': '修改',
+    'equipment.delete': '删除',
+    'equipment.add': '添加',
 
-    'equipment.isDeleteDevice':'是否删除此行？',
-    'equipment.modifyDevice':'修改设备型号',
-    'equipment.addDevice':'添加设备型号',
-
-
-    
-    
+    'equipment.isDeleteDevice': '是否删除此行？',
+    'equipment.modifyDevice': '修改设备型号',
+    'equipment.addDevice': '添加设备型号',
 
     //域管理
-    'domain.input.placeholder':'输入域名称',
-    'domain.parent':'上级',
-    'domain.level':'级别',
+    'domain.input.placeholder': '输入域名称',
+    'domain.parent': '上级',
+    'domain.level': '级别',
     'domain.edit': '修改域属性',
-    'domain.configuration':'配置',
+    'domain.configuration': '配置',
     'domain.map': '地图',
     'domain.list': '列表',
     'domain.topology': '拓扑图',
@@ -210,8 +206,8 @@ export default {
     'domain.lng': '经度',
     'domain.lat': '纬度',
     'domain.superior': '上级域',
-    'domain.add':'添加域',
-    'domain.delete.alert':'是否删除选中域？',
+    'domain.add': '添加域',
+    'domain.delete.alert': '是否删除选中域？',
 
     //权限管理
     'permission.username': '用户名称',
@@ -287,16 +283,16 @@ export default {
     'app.strategy.identifying': '标识',
     'app.time.difference': '时间差',
     'app.add.group': '创建组',
-    'app.edit.group':'修改组',
-    'search.or.create.group':'请搜索或创建组',
-    
+    'app.edit.group': '修改组',
+    'search.or.create.group': '请搜索或创建组',
+
     //设备维护
     'sysOperation.deviceNum': '编号',
     'sysOperation.deviceName': '名称',
     'sysOperation.deviceDomain': '域',
 
     //故障管理
-    'sysOperation.alarm':'告警',
+    'sysOperation.alarm': '告警',
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
     'sysOperation.alarm.param': '告警参数',
@@ -322,6 +318,26 @@ export default {
     'sysOperation.count.general': '一般数',
     'sysOperation.count.hint': '提示数',
     'sysOperation.noCount': '未读取',
+
+    // 报表管理
+    'app.report.stat': '统计',
+    'app.report.energy': '能耗',
+    'app.report.lighting': '照明',
+    'app.report.selectTime': '选择时间',
+    'app.report.to': '至',
+    'app.report.prompt': '请选择正确的日期',
+    'app.report.statParams': '统计参数',
+    'app.report.apply': '应用',
+    'app.report.responsePrompt': '返回的数据为空',
+    'app.report.lightingRate': '亮灯率',
+    'app.report.failureRate': '故障率',
+    'app.report.deviceCount': '设备数',
+    'app.report.online': '在线',
+    'app.report.offline': '离线',
+    'app.report.normal': '正常',
+    'app.report.error': '故障',
+    'app.report.noDevice': '暂无设备',
+    'app.report.noData': '暂无数据',
 
     //智慧路灯
     'app.search.placeholder.name': '搜索名称或域',
@@ -434,7 +450,7 @@ export default {
     'mediaPublish.playDuration': '时长',
     'mediaPublish.playSpeed': '速度',
     'mediaPublish.animation': '动画',
-    'mediaPublish.animation2':'效果',
+    'mediaPublish.animation2': '效果',
     'mediaPublish.wordSpacing': '字间距',
     'mediaPublish.lineSpacing': '行间距',
 
@@ -539,17 +555,17 @@ export default {
     'mediaPublish.delete.plan.alert': '是否删除选中计划与计划中所有内容？',
     'mediaPublish.delete.area.alert': '是否删除选中区域与区域中所有内容？',
     'mediaPublish.quit.alert': '未保存内容将会丢失，是否退出？',
-    'mediaPublish.delete.material':'是否刪除选中素材？',
-    'mediaPublish.select.material':'请选中右边素材库素材',
+    'mediaPublish.delete.material': '是否刪除选中素材？',
+    'mediaPublish.select.material': '请选中右边素材库素材',
 
-    'mediaPublish.times.play':'按次播放',
-    'mediaPublish.time.play':'按时长播放',
-    'mediaPublish.loop.play':'循环播放',
+    'mediaPublish.times.play': '按次播放',
+    'mediaPublish.time.play': '按时长播放',
+    'mediaPublish.loop.play': '循环播放',
 
-    'mediaPublish.time':'时长',
-    'mediaPublish.date.alert':'请输入正确日期',
-    'mediaPublish.scene.submit.alert':'请提交播放场景',
-    'mediaPublish.area.submit.alert':'请提交播放区域',
+    'mediaPublish.time': '时长',
+    'mediaPublish.date.alert': '请输入正确日期',
+    'mediaPublish.scene.submit.alert': '请提交播放场景',
+    'mediaPublish.area.submit.alert': '请提交播放区域',
 
     //以前的
     'app.link.index': '首页',
@@ -685,6 +701,6 @@ export default {
     'manage.rfid.name': '名称',
     'manage.rfid.domain': '域',
     'manage.rfid.add': '新增RFID',
-    'manage.rfid.edit': '编辑RFID',
-  },
+    'manage.rfid.edit': '编辑RFID'
+  }
 };

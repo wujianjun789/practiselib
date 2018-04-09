@@ -114,7 +114,6 @@ export default class PlayerListPopup extends PureComponent {
           </div>
           {footer}
         </div>
-        <NotifyPopup />
       </Panel>
     </div>;
   }

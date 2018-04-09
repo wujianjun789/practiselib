@@ -22,7 +22,9 @@ import MapView from './../../components/MapView'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 
-import {Name2Valid, latlngValid, lngValid, latValid} from '../../util/index'
+import {Name2Valid, latlngValid, lngValid, latValid} from '../../util/index';
+import {DOMAIN_NAME_LENGTH} from '../../common/util/constant';
+
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
@@ -139,7 +141,7 @@ export default class DomainPopup extends PureComponent {
                         <div className="form-group row">
                             <label className="fixed-width-left control-label" htmlFor="domainName"><FormattedMessage id='domain.name'/>：</label>
                             <div className="fixed-width-right">
-                                <input type="text" className={ "form-control " } id="domainName" placeholder={intlFormat({en:'please input the name',zh:'输入域名称'})} maxLength="16" value={domainName}
+                                <input type="text" className={ "form-control " } id="domainName" placeholder={intlFormat({en:'please input the name',zh:'输入域名称'})} maxLength={DOMAIN_NAME_LENGTH} value={domainName}
                                        onChange={this.onChange}/>
                                 <span className={prompt.domainName?"prompt ":"prompt hidden"}>{intlFormat({en:'illegal',zh:'仅能使用字母、数字或下划线'})}</span>
                             </div>

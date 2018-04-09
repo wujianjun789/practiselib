@@ -2,9 +2,14 @@
  * Created by a on 2017/8/1.
  */
 import { getAssetModelList } from '../api/asset';
+import {getModelConfig} from '../util/network';
+
 import { intlFormat, getClassByModel, transformKey } from '../util/index';
 
+import lodash from 'lodash';
+
 let models = [];
+let modelConfig = [];
 
 export const TreeData = [
   {
@@ -177,26 +182,37 @@ export const TreeData = [
 ];
 
 export function getModelData(model, cb) {
-  getAssetModelList(response => {
-    models = response;
+  return new Promise((resolve, reject)=>{
+        getModelConfig(res=>{
+          modelConfig = res;
+          resolve(res);
+        })
+      }).then(modelConfig=>{
+        return new Promise((resolve, reject)=>{
+          getAssetModelList(response=>{
+            models = response;
+            resolve(response);
+          })
+    })
+  }).then(modelList=>{
     TreeData.map(item => {
       if (item.id === 'config') {
         item.children = [];
-        response.map((data, index) => {
-          const child = {
-            id: transformKey(data.name), name: data.description,
-            class: getClassByModel(data.name), active: false,
-            link: getLinkByModel(item.id, data.name),
-          };
-          if (index === 0) {
-            item.link = getLinkByModel(item.id, data.name);
+        modelConfig.map((key,index)=>{
+          const data = lodash.find(models, model=>{return model.name === key});
+          if(data){
+            const child = { id: transformKey(data.name), name: data.description, class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
+            if (index == 0) {
+              item.link = getLinkByModel(item.id, data.name);
+            }
+            item.children.push(child);
           }
-          item.children.push(child);
-        });
+        })
       }
     });
+
     cb && cb();
-  });
+  })
 }
 
 export function getModelList() {

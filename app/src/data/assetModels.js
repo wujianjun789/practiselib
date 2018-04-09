@@ -2,12 +2,16 @@
  * Created by a on 2017/7/3.
  */
 import { getAssetModelList } from '../api/asset';
+import {getModelConfig} from '../util/network';
+
 import { intlFormat, getClassByModel, transformKey } from '../util/index';
+import lodash from 'lodash';
 
 let models = [
 
 ];
 
+let modelConfig = [];
 export const TreeData = [
   {
     'id': 'model',
@@ -91,25 +95,37 @@ export function getModelData(cb) {
   //     cb && cb();
   //     return
   // }
-
-  getAssetModelList(response => {
-    models = response;
+  return new Promise((resolve, reject)=>{
+    getModelConfig(res=>{
+      modelConfig = res;
+      resolve(res);
+    })
+  }).then(modelConfig=>{
+    return new Promise((resolve, reject)=>{
+      getAssetModelList(response=>{
+        models = response;
+        resolve(response);
+      })
+    })
+  }).then(modelList=>{
     TreeData.map(item => {
       if (item.children) {
         item.children = [];
-        response.map((data, index) => {
-          // let child = {id:data.key, name:intlFormat(data.intl.name), class:getClassByModel(data.key), active:false, link:getLinkByModel(item.id, data.key)};
-          const child = { id: transformKey(data.name), name: data.description, class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
-          if (index == 0) {
-            item.link = getLinkByModel(item.id, data.name);
+        modelConfig.map((key,index)=>{
+          const data = lodash.find(models, model=>{return model.name === key});
+          if(data){
+            const child = { id: data.name, name: data.description, class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
+            if (index == 0) {
+              item.link = getLinkByModel(item.id, data.name);
+            }
+            item.children.push(child);
           }
-          item.children.push(child);
-        });
+        })
       }
     });
 
     cb && cb();
-  });
+  })
 }
 
 
@@ -139,6 +155,10 @@ function getLinkByModel(parentId, key) {
       default:
         return 'icon_led_light';
   }
+}
+
+export function getModelConfigList() {
+  return modelConfig;
 }
 
 export function getModelList() {

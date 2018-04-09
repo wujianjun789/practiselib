@@ -94,16 +94,24 @@ export default class TypeEditPopup extends Component {
       <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
         <div className="popup-left">
           <div className="form-group row">
-            <label className="fixed-width-left control-label" htmlFor="name">{intlFormat({ en: 'type', zh: '型号：' })}</label>
+            <label className="fixed-width-left control-label" htmlFor="name">{intlFormat({ en: 'Name', zh: '名称：' })}</label>
             <div className="fixed-width-right">
               <input type="text" className={'form-control '} id="name" placeholder={intlFormat({ en: 'please input the typename', zh: '输入型号' })} maxLength="16" value={name}
                 onChange={this.onChange} disabled={!idEdit} />
               <span className={prompt.name ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入设备型号' })}</span>
             </div>
           </div>
+          <div className="form-group row">
+            <label className="fixed-width-left control-label " htmlFor="description">{intlFormat({ en: 'Description', zh: '描述:' })}</label>
+            <div className="fixed-width-right">
+              <input type="email" className={'form-control '} id="description" placeholder={intlFormat({ en: 'please input the description', zh: '输入描述' })} value={description}
+                onChange={this.onChange} />
+              {/* <span className={prompt.detail ? 'prompt ' : 'prompt hidden'}>{intlFormat({en:'illegal', zh:'请输入描述'})}</span> */}
+            </div>
+          </div>
           {hasPower &&
             <div className="form-group row">
-              <label className="fixed-width-left control-label " htmlFor="power">{intlFormat({ en: 'power', zh: '功率：' })}</label>
+              <label className="fixed-width-left control-label " htmlFor="power">{intlFormat({ en: 'Power', zh: '功率：' })}</label>
               <div className="fixed-width-right">
                 <input type="email" className={'form-control '} id="power" placeholder={intlFormat({ en: 'please input the power', zh: '输入功率' })} value={power}
                   onChange={this.onChange} />
@@ -113,9 +121,9 @@ export default class TypeEditPopup extends Component {
           }
           {hasLife &&
             <div className="form-group row">
-              <label className="fixed-width-left control-label " htmlFor="life">{intlFormat({ en: 'life', zh: '使用寿命：' })}</label>
+              <label className="fixed-width-left control-label " htmlFor="life">{intlFormat({ en: 'Life-circle', zh: '寿命：' })}</label>
               <div className="fixed-width-right">
-                <input type="email" className={'form-control '} id="life" placeholder={intlFormat({ en: 'please input the serviceLife', zh: '输入使用寿命' })} value={life}
+                <input type="email" className={'form-control '} id="life" placeholder={intlFormat({ en: 'Please input the serviceLife', zh: '输入使用寿命' })} value={life}
                   onChange={this.onChange} />
                 <span className={prompt.life ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入使用寿命' })}</span>
               </div>
@@ -123,7 +131,7 @@ export default class TypeEditPopup extends Component {
           }
           {hasManufacture &&
             <div className="form-group row">
-              <label className="fixed-width-left control-label " htmlFor="manufacture">{intlFormat({ en: 'manufacture', zh: '厂商:' })}</label>
+              <label className="fixed-width-left control-label " htmlFor="manufacture">{intlFormat({ en: 'Manufacture', zh: '厂商:' })}</label>
               <div className="fixed-width-right">
                 <input type="email" className={'form-control '} id="manufacture" placeholder={intlFormat({ en: 'please input the manufacturer', zh: '输入厂商' })} value={manufacture}
                   onChange={this.onChange} />
@@ -131,14 +139,7 @@ export default class TypeEditPopup extends Component {
               </div>
             </div>
           }
-          <div className="form-group row">
-            <label className="fixed-width-left control-label " htmlFor="description">{intlFormat({ en: 'description', zh: '描述:' })}</label>
-            <div className="fixed-width-right">
-              <input type="email" className={'form-control '} id="description" placeholder={intlFormat({ en: 'please input the description', zh: '输入描述' })} value={description}
-                onChange={this.onChange} />
-              {/* <span className={prompt.detail ? 'prompt ' : 'prompt hidden'}>{intlFormat({en:'illegal', zh:'请输入描述'})}</span> */}
-            </div>
-          </div>
+
           {footer}
         </div>
         <NotifyPopup />
