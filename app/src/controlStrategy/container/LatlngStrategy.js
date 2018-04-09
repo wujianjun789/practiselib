@@ -630,7 +630,7 @@ class LatlngStrategy extends Component {
                         ? selectItem.devices.length : 0}${this.formatIntl('sysOperation.devices')}`}</span>
                       <button className="btn btn-primary pull-right" onClick={() => { 
                         !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded'); 
-                      }}>{this.formatIntl('button.modify')}</button>                                   
+                      }}>{this.formatIntl('button.edit')}</button>                                   
                     </div>
                     <Table className="selectedDevices" collapsed columns={this.deviceColumns}
                       data={selectedDevicesData} collapseClick={this.collapseClick}/>
@@ -650,7 +650,7 @@ class LatlngStrategy extends Component {
                 <button className="btn btn-gray" onClick={this.addGateway}>
                   {this.formatIntl('button.add.gateway')}</button>                                   
                 <button className="btn btn-primary pull-right" onClick={this.addDevice}>
-                  {this.formatIntl('button.modify')}</button>                   
+                  {this.formatIntl('button.edit')}</button>                   
               </div>
               <Table className="allDevices" collapsed columns={this.deviceColumns} data={allDevicesData}
                 allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick}
