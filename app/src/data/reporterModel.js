@@ -2,7 +2,7 @@
  * Created by Azrael on 2017/10/16
  */
 export const TreeData = [
-    /*{
+  /*{
         "id": "device",
         "name": "设备",
         "toggled": true,
@@ -26,28 +26,28 @@ export const TreeData = [
             }
         ]
     },*/
-    {
-        "id": "stat",
-        "name": "统计",
-        "toggled": false,
-        "active": false,
-        "link": "/reporterManage/stat",
-        "level": 1,
-        "children": [
-            {
-                "id": 'energy',
-                "name": "能耗",
-                "class": "icon_lc",
-                "active": true,
-                "link": "/reporterManage/stat"
-            },
-            {
-                "id": "lighting",
-                "name": "照明",
-                "class": "icon_lc",
-                "active": false,
-                "link": "/reporterManage/stat/lighting"
-            }
-        ]
-    },
-]
+  {
+    id: 'stat',
+    name: 'app.report.stat',
+    toggled: false,
+    active: false,
+    link: '/reporterManage/stat',
+    level: 1,
+    children: [
+      {
+        id: 'energy',
+        name: 'app.report.energy',
+        class: 'icon_lc',
+        active: true,
+        link: '/reporterManage/stat'
+      },
+      {
+        id: 'lighting',
+        name: 'app.report.lighting',
+        class: 'icon_lc',
+        active: false,
+        link: '/reporterManage/stat/lighting'
+      }
+    ]
+  }
+];
