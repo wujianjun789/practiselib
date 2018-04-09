@@ -63,7 +63,7 @@
       }
     }
 
-    .rename, .publish, .update, .del, .domain, .module{
+    .rename, .publish, .update, .del, .domain, .module, .upgrade, .replace{
       color: #808080;
       float:left;
     }
@@ -119,12 +119,16 @@
           .logo_del{
             fill:#fa6262;
           }
-          .icon_rename, .icon_domain,.icon_edit,.icon_module{
+          .icon_rename, .icon_domain,.icon_edit,.icon_module,.icon_upgrade2,.icon_replace{
             color:#8a8a8a;
             display:inline-block;
             float:right;
             padding:3px 4px 0px 4px;
             font-size:14px;
+          }
+
+          .icon_upgrade2::before,.icon_replace::before{
+            color: #4a5064;
           }
 
           .icon_upgrade{
