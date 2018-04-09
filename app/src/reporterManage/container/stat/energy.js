@@ -347,6 +347,7 @@ class Lc extends Component {
             start={startDate}
             end={endDate}
             data={data}
+            prompt={formatMessage({ id: 'app.report.noData' })}
           />
         </div>
         <div

@@ -333,6 +333,7 @@ export default {
     'app.report.normal': '正常',
     'app.report.error': '故障',
     'app.report.noDevice': '暂无设备',
+    'app.report.noData': '暂无数据',
 
     //智慧路灯
     'app.search.placeholder.name': '搜索名称或域',

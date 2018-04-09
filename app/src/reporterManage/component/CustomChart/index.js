@@ -14,17 +14,19 @@ export default class CustomChart extends React.Component {
     unit: PropTypes.string.isRequired,
     start: PropTypes.object.isRequired,
     end: PropTypes.object.isRequired,
-    data: PropTypes.array.isRequired
+    data: PropTypes.array.isRequired,
+    prompt: PropTypes.string
   };
   constructor(props) {
     super(props);
-    const { name, unit, start, end, data } = this.props;
+    const { name, unit, start, end, data, prompt } = this.props;
     this.state = {
       name,
       unit,
       start,
       end,
-      data
+      data,
+      prompt
     };
   }
   componentWillMount() {
@@ -39,10 +41,10 @@ export default class CustomChart extends React.Component {
     this.draw();
   }
   componentWillReceiveProps(nextProps) {
-    const { name, unit, start, end, data } = this.props;
+    const { name, unit, start, end, data, prompt } = this.props;
     /* 注意：此处后续需要修改 */
     if (data !== this.props.data) {
-      this.setState({ name, unit, start, end, data }, this.draw);
+      this.setState({ name, unit, start, end, data, prompt }, this.draw);
     }
   }
   componentDidUpdate() {
@@ -67,12 +69,12 @@ export default class CustomChart extends React.Component {
     }
   };
   draw = () => {
-    let { name, unit, start, end, data } = this.state;
+    let { name, unit, start, end, data, prompt } = this.state;
     // 是否显示标题
     if (data.length) {
       option.title.text = '';
     } else {
-      option.title.text = 'No data';
+      option.title.text = prompt;
       //测试所用数据
       // data = [
       //     { timestamp: '2018-04-02T00:33:06.834Z', value: 20 },
