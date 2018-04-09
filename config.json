@@ -29,6 +29,7 @@
       "deviceAdmin":["maintenance", "report"],
       "guest":["report"]
     },
+    "model":["ssads","sses", "ssgw"],
     "domain":{
       "levelName":{"zh":["一级域","二级域","三级域","四级域"],"en":["Primary domain","Second level domain","Three level domain","Four level domain"]}
     },

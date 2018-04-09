@@ -25,6 +25,9 @@ router.get('/map', function (req, res, next) {
     res.json(client.map);
 });
 
+router.get('/model', function (req, res, next) {
+   res.json(client.model);
+});
 router.get('/domain', function (req, res, next) {
     res.json(client.domain);
 })

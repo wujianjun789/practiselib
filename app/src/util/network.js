@@ -249,6 +249,17 @@ export function getModuleDefaultConfig(responseFun, errFun) {
     })
 }
 
+export function getModelConfig(responseFun, errFun) {
+    httpRequest('/config/model',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
 export function getStrategyDeviceConfig(responseFun, errFun) {
     httpRequest('/config/strategyDevice',{
         method: 'GET',
