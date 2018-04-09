@@ -2,8 +2,8 @@ export default {
   locale: 'en',
   messages: {
     //公共
-    'name': 'Name',
-    'id': 'Id',
+    name: 'Name',
+    id: 'Id',
 
     'app.year': 'year',
     'app.month': 'month',
@@ -11,7 +11,7 @@ export default {
     'app.custom': 'custom',
     'app.date': 'Date',
     'app.time': 'Time',
-    'app.second':'Second',
+    'app.second': 'Second',
 
     'app.map': 'map',
     'app.list': 'list',
@@ -111,7 +111,7 @@ export default {
 
     //用户中心
     'update.password': 'Password',
-    'exit': 'Sign out',
+    exit: 'Sign out',
     'sure.exit': 'Are you sure to exit？',
     'new.password': 'New password',
     'old.password': 'Old password',
@@ -133,7 +133,7 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    'illegal': 'Illegal',
+    illegal: 'Illegal',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',
@@ -154,15 +154,15 @@ export default {
     //首页
     'app.title': 'Smart Light Manage System',
     'app.copyright': 'Copyright © 2018 Shanghai Sansi Technology Co.,Ltd',
-    'app.asset.manage': 'Asset Manage',
+    'app.asset.manage': 'Asset',
     'app.permission.manage': 'Permission',
-    'app.system.operation': 'System Operate',
+    'app.system.operation': 'Maintenance',
     'app.smart.light': 'Smart Lamp',
     'app.light': 'Smart Light',
-    'app.report.manage': 'Report Manage',
-    'app.mediaPublish': 'MediaPublish',
+    'app.report.manage': 'Report',
+    'app.mediaPublish': 'Media Publish',
     'app.visualization': 'Visualization',
-    'app.domain.manage': 'Domain Manage',
+    'app.domain.manage': 'Domain',
 
     //资产管理
     'asset.model': 'Asset model',
@@ -172,30 +172,30 @@ export default {
     'asset.type': 'Asset types',
     'asset.param': 'Default params',
     //名称，描述，单位，精度
-    'asset.name':'Name',
-    'asset.detail':'Detail',
-    'asset.unit':'Unit',
-    'asset.accuracy':'Accuracy',
+    'asset.name': 'Name',
+    'asset.detail': 'Detail',
+    'asset.unit': 'Unit',
+    'asset.accuracy': 'Accuracy',
     //名称	描述	功率	使用寿命	厂商	编辑
-    'equipment.name':'Name',
-    'equipment.description':'Description',
-    'equipment.power':'Power',
-    'equipment.life':'Life-circle',
-    'equipment.manufacturer':'Manufacturer',
-    'equipment.edit':'Edit',
+    'equipment.name': 'Name',
+    'equipment.description': 'Description',
+    'equipment.power': 'Power',
+    'equipment.life': 'Life-circle',
+    'equipment.manufacturer': 'Manufacturer',
+    'equipment.edit': 'Edit',
 
-    'equipment.modify':'Modify',
-    'equipment.delete':'Delete',
-    'equipment.add':'Add',
+    'equipment.modify': 'Modify',
+    'equipment.delete': 'Delete',
+    'equipment.add': 'Add',
 
-    'equipment.isDeleteDevice':'Delete the device ?',
-    'equipment.modifyDevice':'Modify device',
-    'equipment.addDevice':'Add device',
-    
+    'equipment.isDeleteDevice': 'Delete the device ?',
+    'equipment.modifyDevice': 'Modify device',
+    'equipment.addDevice': 'Add device',
+
     //域管理
-    'domain.input.placeholder':'please input the name',
-    'domain.parent':'Parent',
-    'domain.level':'Level',
+    'domain.input.placeholder': 'please input the name',
+    'domain.parent': 'Parent',
+    'domain.level': 'Level',
     'domain.edit': 'edit domain',
     'domain.configuration': 'Configuration',
     'domain.map': 'Map',
@@ -206,8 +206,8 @@ export default {
     'domain.lng': 'Lng',
     'domain.lat': 'Lat',
     'domain.superior': 'Superior',
-    'domain.add':'add domain',
-    'domain.delete.alert':'remove the domain?',
+    'domain.add': 'add domain',
+    'domain.delete.alert': 'remove the domain?',
 
     //权限管理
     'permission.username': 'UserName',
@@ -278,18 +278,17 @@ export default {
     'app.strategy.select.devices': 'Select devices',
     'app.strategy.identifying': 'Identifying',
     'app.time.difference': 'Time difference',
-    'app.add.group': 'Add group',    
-    'app.edit.group':'Edit Group',
-    'search.or.create.group':'Please search or create group',    
+    'app.add.group': 'Add group',
+    'app.edit.group': 'Edit Group',
+    'search.or.create.group': 'Please search or create group',
 
     //设备维护
     'sysOperation.deviceNum': 'deviceNum',
     'sysOperation.dviceName': 'dviceName',
     'sysOperation.deviceDomain': 'domainName',
 
-
     //故障管理
-    'sysOperation.alarm':'Alarm',    
+    'sysOperation.alarm': 'Alarm',
     'sysOperation.fault.manage': 'Fault',
     'sysOperation.alarm.type': 'Alarm type',
     'sysOperation.alarm.param': 'Alarm param',
@@ -315,6 +314,24 @@ export default {
     'sysOperation.count.hint': 'Hint',
     'sysOperation.noCount': 'No count',
 
+    // 报表管理
+    'app.report.stat': 'Statistics',
+    'app.report.energy': 'Energy',
+    'app.report.lighting': 'Lighting',
+    'app.report.selectTime': 'select time',
+    'app.report.to': 'to',
+    'app.report.prompt': 'Please select the correct date',
+    'app.report.statParams': 'statistics params',
+    'app.report.apply': 'Apply',
+    'app.report.responsePrompt': 'The returned data is empty',
+    'app.report.lightingRate': 'lighting rate',
+    'app.report.failureRate': 'failure rate',
+    'app.report.deviceCount': 'device count',
+    'app.report.online': 'online',
+    'app.report.offline': 'offline',
+    'app.report.normal': 'normal',
+    'app.report.error': 'fault',
+    'app.report.noDevice': 'No device',
     //智慧路灯
     'app.search.placeholder.name': 'Search name or domain',
     'app.search.list': 'Return',
@@ -439,7 +456,7 @@ export default {
     'mediaPublish.repeatTimes': 'Times',
     'mediaPublish.scalingRatio': 'scaling',
     'mediaPublish.fragmentRange': 'range',
-    'mediaPublish.playType2':'Type',
+    'mediaPublish.playType2': 'Type',
     'mediaPublish.to': 'to',
     'mediaPublish.volume': 'volume',
     'mediaPublish.number': 'number',
@@ -530,21 +547,25 @@ export default {
     'mediaPublish.material.picture': 'material picture',
     'mediaPublish.material.video': 'material video',
 
-    'mediaPublish.delete.scene.alert': 'Do you delete all the contents of the selected scene and the scene?',
-    'mediaPublish.delete.plan.alert': 'Do you delete all the contents of the selected plan and plan?',
-    'mediaPublish.delete.area.alert': 'Do you delete all the contents in the selected area and area?',
+    'mediaPublish.delete.scene.alert':
+      'Do you delete all the contents of the selected scene and the scene?',
+    'mediaPublish.delete.plan.alert':
+      'Do you delete all the contents of the selected plan and plan?',
+    'mediaPublish.delete.area.alert':
+      'Do you delete all the contents in the selected area and area?',
     'mediaPublish.quit.alert': 'The unsaved content will be lost, do you quit?',
     'mediaPublish.delete.material': 'Do you delete the selected material?',
-    'mediaPublish.select.material': 'Please select the material library material on the right',
+    'mediaPublish.select.material':
+      'Please select the material library material on the right',
 
-    'mediaPublish.times.play':'Times play',
-    'mediaPublish.time.play':'Time play',
-    'mediaPublish.loop.play':'loop play',
+    'mediaPublish.times.play': 'Times play',
+    'mediaPublish.time.play': 'Time play',
+    'mediaPublish.loop.play': 'loop play',
 
-    'mediaPublish.time':'time',
-    'mediaPublish.date.alert':'date error',
-    'mediaPublish.scene.submit.alert':'Please submit scene',
-    'mediaPublish.area.submit.alert':'Please submit zone',
+    'mediaPublish.time': 'time',
+    'mediaPublish.date.alert': 'date error',
+    'mediaPublish.scene.submit.alert': 'Please submit scene',
+    'mediaPublish.area.submit.alert': 'Please submit zone',
 
     //last
     'app.link.index': 'home',
@@ -681,6 +702,6 @@ export default {
     'manage.rfid.name': 'Name',
     'manage.rfid.domain': 'Domain',
     'manage.rfid.add': 'Add RFID',
-    'manage.rfid.edit': 'Edit RFID',
-  },
+    'manage.rfid.edit': 'Edit RFID'
+  }
 };
