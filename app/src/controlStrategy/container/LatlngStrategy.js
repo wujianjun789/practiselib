@@ -42,7 +42,7 @@ class LatlngStrategy extends Component {
       selectItem: {},
       selectedDevicesData:[],
       allDevicesData:[],
-      lightList:[{id:1, name:'0'}, {id:2, name:'10'}, {id:3, name:'20'}, {id:4, name:'30'}],
+      lightList:[{id:1, name:'0'}, {id:2, name:'10'}, {id:3, name:'20'}, {id:4, name:'30'}, {id:5, name:'40'}, {id:6, name:'50'}, {id:7, name:'60'}, {id:8, name:'70'}, {id:9, name:'80'}, {id:10, name:'90'}, {id:11, name:'100'}],
       sunList:[{id:1, name:this.formatIntl('app.sunrise')}, {id:1, name:this.formatIntl('app.sunset')}],
       allDevices:{
         allChecked:false,
