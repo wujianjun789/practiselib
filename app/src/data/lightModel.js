@@ -4,7 +4,7 @@
 export const TreeData=[
     {
         "id": "statistics",
-        "name":"统计",
+        "name":"lightManage.Statistics",
         "toggled": false,
         "active": true,
         "link": "/light/statistics",
@@ -14,7 +14,7 @@ export const TreeData=[
     },
     {
         "id": "map",
-        "name":"地图",
+        "name":"lightManage.map",
         "toggled": false,
         "active": true,
         "link": "/light/map",
@@ -25,7 +25,7 @@ export const TreeData=[
     },
     {
         "id": "list",
-        "name": "列表",
+        "name": "lightManage.Statistics",
         "toggled": false,
         "active": true,
         "link": "/light/list",
@@ -49,7 +49,7 @@ export const TreeData=[
     },
     {
         "id": "control",
-        "name": "控制",
+        "name": "lightManage.control",
         "toggled": false,
         "active": true,
         "link": "/light/control/timeStrategy",

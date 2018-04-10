@@ -328,6 +328,29 @@ export default {
     'sysOperation.count.hint': 'Hint',
     'sysOperation.noCount': 'No count',
 
+
+    // 照明统计
+    'lightManage.Statistics': 'Statistics',
+    'lightManage.map': 'Map',
+    'lightManage.list': 'List',
+    'lightManage.control': 'Control',
+    'lightManage.Statistics.year': 'Year',
+    'lightManage.Statistics.month': 'Month',
+    'lightManage.Statistics.day': 'Day',
+    'lightManage.Statistics.energy': 'Energy consumption',
+    'lightManage.Statistics.totalEnergy': 'Total energy',
+    'lightManage.Statistics.deviceState': 'Device status',
+    'lightManage.Statistics.domain': 'Domain',
+    'lightManage.Statistics.deviceCount': 'Count',
+    'lightManage.Statistics.deviceOnlineRunning': 'Online',
+    'lightManage.Statistics.deviceOnlineError': 'Error',
+    'lightManage.Statistics.deviceOffline': 'Offline',
+    'lightManage.Statistics.planState': 'Planning action status',
+    'lightManage.Statistics.planCount': 'Count',
+    'lightManage.Statistics.palnSuccess': 'Success',
+    'lightManage.Statistics.planFail': 'Fail',
+    'lightManage.Statistics.lightOn': 'Lighting rate',
+
     // 报表管理
     'app.report.stat': 'Statistics',
     'app.report.energy': 'Energy',
