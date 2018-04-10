@@ -135,24 +135,24 @@ export default (
         <Route path="config">
           <Route path="gateway" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../systemOperation/container/gateway').default);
+              cb(null, require('../systemOperation/container/DeviceConfig').default);
             }, 'starriverpro.systemoperation.gateway');
-          }} />
+          }} model='ssgw'/>
           <Route path="lc" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../systemOperation/container/SingleLampCon').default);
+              cb(null, require('../systemOperation/container/DeviceConfig').default);
             }, 'starriverpro.systemoperation.singlelampcontroller');
-          }} />
+          }} model='ssslc'/>
           <Route path="sensor" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../systemOperation/container/Sensor').default);
+              cb(null, require('../systemOperation/container/DeviceConfig').default);
             }, 'starriverpro.systemoperation.sensor');
-          }} />
+          }} model='sses'/>
           <Route path="screen" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../systemOperation/container/Screen').default);
+              cb(null, require('../systemOperation/container/DeviceConfig').default);
             }, 'starriverpro.systemoperation.screen');
-          }} />
+          }} model='ssads'/>
           <Route path="xes" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../systemOperation/container/Xes').default);
