@@ -54,20 +54,20 @@ export default class Map{
 
         if (options.hasOwnProperty("mapOffline") && options.hasOwnProperty("mapType")) {
         }else {
-            getMapConfig(response=>{
+            return getMapConfig(response=>{
+
                 this.options = Object.assign({}, this.options, response);
                 this.updateMap(data, option, callFun)
             }, error=>{
                 throw error;
             })
-            return;
         }
 
         if(option && option.hasOwnProperty("markerDraggable")) {
             this.markerDraggable = option.markerDraggable;
         }
         if (!document.getElementById(data.id)) {
-            return;
+            return false;
         }
 
         if (!data || !data.latlng || !data.latlng.lat || !data.latlng.lng) {
@@ -92,7 +92,7 @@ export default class Map{
     updateMapDevice(data, deviceData, callFun) {
         if(!this.drawItems){
             setTimeout(()=>this.updateMapDevice(data, deviceData, callFun), 33);
-            return;
+            return false;
         }
 
         this.callFun = Object.assign({}, this.callFun, callFun);
@@ -103,7 +103,7 @@ export default class Map{
 
     mapPanTo(latlng) {
         if (!latlng || !latlng.lat || !latlng.lng) {
-            return;
+            return false;
         }
 
         this.map.panTo([latlng.lat, latlng.lng]);
@@ -172,7 +172,6 @@ export default class Map{
     }
 
     onLineMap(type, options) {
-        console.log("options:",options.zoom);
         var option = {maxZoom: options.maxZoom, minZoom: options.minZoom}
 
         if(this.latlng && this.latlng.length && this.latlng[0] && this.latlng[1]){
@@ -180,18 +179,15 @@ export default class Map{
         }
 
         if (type == 'google') {
-            L.tileLayer.chinaProvider('Google.Normal.Map', option).addTo(this.map);
-            return;
+            return L.tileLayer.chinaProvider('Google.Normal.Map', option).addTo(this.map);
         }
 
         if (type == 'gaoDe') {
-            L.tileLayer.chinaProvider('GaoDe.Normal.Map', option).addTo(this.map);
-            return;
+            return L.tileLayer.chinaProvider('GaoDe.Normal.Map', option).addTo(this.map);
         }
 
         if (type == 'baidu') {
-            L.tileLayer.baiduLayer('Normal.Map', option).addTo(this.map);
-            return;
+            return L.tileLayer.baiduLayer('Normal.Map', option).addTo(this.map);
         }
 
         if(type == 'bing'){
@@ -199,24 +195,22 @@ export default class Map{
             // let bing = new L.BingLayer("LfO3DMI9S6GnXD7d0WGs~bq2DRVkmIAzSOFdodzZLvw~Arx8dclDxmZA0Y38tHIJlJfnMbGq5GXeYmrGOUIbS2VLFzRKCK0Yv_bAl6oe-DOc", {type: imagerySet});
             // let bing = new L.BingLayer("Akd2MEZfAV6OL9yS-Ll85Lfu3hhIi6U2K_GKrI35dPch9iyMPmAao6ZryOATSkC5", Object.assign({}, option,{type: imagerySet}));
             // bing.addTo(this.map);
-            L.tileLayer.bing({
+            return L.tileLayer.bing({
                 bingMapsKey: "Akd2MEZfAV6OL9yS-Ll85Lfu3hhIi6U2K_GKrI35dPch9iyMPmAao6ZryOATSkC5",
                 imagerySet: imagerySet,
                 culture: 'zh-CN',
                 minZoom: option.minZoom
             }).addTo(this.map);
-            return;
         }
 
         if(type == 'arcGis'){
             L.esri.basemapLayer("Streets", Object.assign({}, option, {hideLogo:true})).addTo(this.map);
-            let parks = new L.esri.FeatureLayer({
+            return new L.esri.FeatureLayer({
                 url:"https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/stops/FeatureServer/0/",
                 style: function () {
                     return {color:"#70ca49", weight:2};
                 }
             }).addTo(this.map);
-            return;
         }
 
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', option).addTo(this.map);
@@ -258,7 +252,7 @@ export default class Map{
         let list = [0, 1, 2];
         let status = -1;
         if (!data || this.markerList.length <= 0) {
-            return;
+            return false;
         }
         
         data.lamp && data.lamp.map(function (item) {
@@ -653,7 +647,7 @@ export default class Map{
                 bounds: bounds,
                 distance: bounds._southWest.distanceTo(bounds._northEast)
             });
-        }, 66);
+        }, 300);
     }
 
     mapZoomEnd(event) {
