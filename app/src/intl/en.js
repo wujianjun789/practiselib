@@ -214,6 +214,11 @@ export default {
     'domain.add': 'add domain',
     'domain.delete.alert': 'remove the domain?',
 
+    'primary.domain': 'Primary domain',
+    'second.level.domain': 'Second level domain',
+    'three.level.domain': 'Three level domain',
+    'four.level.domain': 'Four level domain',
+
     //权限管理
     'permission.username': 'User name',
     'permission.lastLoginDate': 'Last login',
@@ -235,7 +240,6 @@ export default {
     'permission.grade': 'Grade',
 
     //系统运维
-    'sysOperation.alarm': 'Alarm',
     'sysOperation.device.config': 'Device config',
     'sysOperation.whiteList': 'WhiteList',
     'sysOperation.include': 'Include',

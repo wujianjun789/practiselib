@@ -60,7 +60,7 @@ export class DomainEditList extends Component {
             sidebarInfoStyle:{height:"100%"}
         }
 
-        this.domainLevelName = null;
+        this.domain = [];
         this.columns = [{id: 1, field: "name", title:this.formatIntl('domain.name')},
             {id:2, field:"parentName", title: this.formatIntl('domain.parent')},
             {id:3, field:"levelName", title: this.formatIntl('domain.level')}]
@@ -100,7 +100,8 @@ export class DomainEditList extends Component {
         // this.requestSearch();
 
         getDomainConfig(response=>{
-            this.domainLevelName = response.levelName;
+            console.log(response);
+            this.domain = response;
             this.requestSearch();
         })
         window.onresize = event=>{
@@ -158,23 +159,27 @@ export class DomainEditList extends Component {
 
     initDomainList(data){
         let list = data.map(domain=>{
-            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'}), levelName:this.domainLevelName[getLocalStorage("appLanguage")][domain.level-1]})
+            const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
+            const domainName = domainConfig.name;
+            const zoom = domainConfig.zoom;
+            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'}),
+                levelName:this.formatIntl(domainName), zoom:zoom})
         })
 
 
         this.setState({data:Immutable.fromJS(list)},()=>{
             this.setSize();
 
-            if(data.length){
+            if(list.length){
                 if(this.state.selectDomain.data.length){
                     const index = lodash.findIndex(list, domain=>{ return domain.id == this.state.selectDomain.data[0].id});
                     if(index>-1){
                         this.updateSelectDomain(list[index]);
                     }else{
-                        this.updateSelectDomain(data[0]);
+                        this.updateSelectDomain(list[0]);
                     }
                 }else{
-                    this.updateSelectDomain(data[0])
+                    this.updateSelectDomain(list[0])
                 }
 
             }else{
@@ -319,6 +324,7 @@ export class DomainEditList extends Component {
 
     updateSelectDomain(domain){
         let selectDomain = this.state.selectDomain;
+        selectDomain.zoom = domain.zoom;
         selectDomain.latlng = domain.geoPoint;
         selectDomain.position.splice(0)
         selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
@@ -350,7 +356,7 @@ export class DomainEditList extends Component {
     render() {
         const {collapse, propertyCollapse, selectDomain, page, search, data, sidebarInfoStyle} = this.state
         let disabled = (data.size==0?true:false);
-
+        
         return (
             <Content className={'offset-right list-mode '+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -366,7 +372,7 @@ export class DomainEditList extends Component {
                               current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collapseHandler={this.collpseHandler} style={sidebarInfoStyle}
+                <SideBarInfo mapOptions={{zoom:selectDomain.zoom}} mapDevice={selectDomain} collapseHandler={this.collpseHandler} style={sidebarInfoStyle}
                         className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>

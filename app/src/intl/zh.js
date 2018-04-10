@@ -214,6 +214,11 @@ export default {
     'domain.add': '添加域',
     'domain.delete.alert': '是否删除选中域？',
 
+    'primary.domain': '一级域',
+    'second.level.domain': '二级域',
+    'three.level.domain': '三级域',
+    'four.level.domain': '四级域',
+
     //权限管理
     'permission.username': '用户名',
     'permission.lastLoginDate': '最后登录时间',

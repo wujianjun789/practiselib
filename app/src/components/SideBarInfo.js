@@ -35,7 +35,7 @@ export default class SideBarInfo extends Component {
 
   render() {
     const {collapse, mapCollapse} = this.state;
-    const {IsHaveMap = true, mapDevice = {id: 'example'}, style, className} = this.props;
+    const {IsHaveMap = true, mapOptions={zoom:undefined}, mapDevice = {id: 'example'}, style, className} = this.props;
     return <div className={ 'container-fluid sidebar-info ' + (collapse ? 'sidebar-collapse ' : '') + className} style={ style }>
       <div className="row collapse-container" role="presentation" onClick={ () => this.collapseHandler('collapse') }>
         <span className={ collapse ? 'icon_horizontal' : 'icon_vertical' }></span>
@@ -49,7 +49,7 @@ export default class SideBarInfo extends Component {
                      <span className="icon icon_collapse pull-right"></span>              
                    </div>
                    <div className={'map-container panel-body ' + (mapCollapse ? 'collapsed' : '')}>
-                     <MapView option={ { mapZoom: false } } mapData={ mapDevice } />
+                     <MapView option={ { mapZoom: false, zoom: mapOptions.zoom } } mapData={ mapDevice } />
                    </div>
                  </div>}
     </div>;
