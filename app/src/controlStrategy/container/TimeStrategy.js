@@ -19,7 +19,8 @@ import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup,
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
-
+import {TimePicker} from 'antd';
+import moment from 'moment'
 class TimeStrategy extends Component {
   constructor(props) {
     super(props);
@@ -310,6 +311,9 @@ class TimeStrategy extends Component {
       if (!item.plans) {
         selectItem.start = item.start.split('T')[0];
         selectItem.end = item.end.split('T')[0];
+        if(selectItem.excuteTime){
+          selectItem.excuteTime = moment("2018-01-01").add(selectItem.excuteTime, 'seconds');
+        }
         switch (selectItem.level) {
         case 0:
           selectItem.levelTitle = this.formatIntl('app.strategy.platform');
@@ -367,7 +371,7 @@ class TimeStrategy extends Component {
         };
       }
       updateStrategy({id:selectItem.id, execution:selectItem.execution, 
-        excuteTime:selectItem.excuteTime}, this.requestSearch);
+        excuteTime:selectItem.excuteTime.hour()*3600 + selectItem.excuteTime.minute()*60 + selectItem.excuteTime.second()}, this.requestSearch);
     }
 
     collapseClick=(id, key, data) => {
@@ -560,8 +564,10 @@ class TimeStrategy extends Component {
                     <div className="form-group">
                       <label title={this.formatIntl('app.time')}>{this.formatIntl('app.time')}</label>
                       <div className="input-container">
-                        <input type="text" className="form-control" value={selectItem.excuteTime ? selectItem.excuteTime
-                          : ''} onChange={e => this.onChange('time', e.target.value)}/>
+                        {/* <input type="text" className="form-control" value={selectItem.excuteTime ? selectItem.excuteTime
+                          : ''} onChange={e => this.onChange('time', e.target.value)}/> */}
+                        <TimePicker size="large" style={{ width: "200px"}} onChange={value => this.onChange("time", value)} 
+                        defaultValue={moment('2018-01-01')} value={selectItem.excuteTime ? selectItem.excuteTime: moment('2018-01-01')}/>
                       </div>
                     </div>
                     <div className="form-group">
