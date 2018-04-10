@@ -102,6 +102,9 @@ class PlayerPicAsset extends PureComponent {
     const { playType, playTimeBegin, playTimeEnd, scale} = this.state.property;
     switch (id) {
     case 'apply': {
+      if(this.state.prompt.clipsRage){
+        return false;
+      }
       this.data.playType = playType;
       // this.data.playTimes = playTimes;
       this.data.playTimeBegin = this.getTime(playTimeBegin);

@@ -223,6 +223,9 @@ class TextFile extends Component {
             alignment, playDuration, animation, playSpeed, rowSpace, charSpace, prompt } = this.state;
         switch (type) {
             case 'apply': {
+                if(prompt.charSpace || prompt.rowSpace || prompt.playDuration || prompt.playSpeed){
+                    return false;
+                }
                 const { baseInfo, background, font } = this._data
                 const data = Object.assign({}, this._data, {
                     baseInfo: {

@@ -101,7 +101,11 @@ class PlayerScene extends PureComponent {
   }
 
   applyHandler() {
-    const {property} = this.state;
+    const {property,prompt} = this.state;
+    if(prompt.sceneName){
+      return false;
+    }
+
     let sceneId = this.props.data.id;
     let data = {
       name: property.sceneName.value,
@@ -212,6 +216,7 @@ class PlayerScene extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
+    const Invalid = prompt.sceneName;
     return <div className={'pro-container playerScene '}>
       <div className="row">
         <div className="form-group  scene-name">
@@ -254,7 +259,7 @@ class PlayerScene extends PureComponent {
       </div>
       <div className="row line"/>
       <div className="row">
-        <button className="btn btn-primary pull-right" onClick={() => { this.playerSceneClick('apply'); }}><FormattedMessage id="mediaPublish.apply"/></button>
+        <button className={"btn btn-primary pull-right "+(Invalid?'disabled':'')} onClick={() => { this.playerSceneClick('apply'); }}><FormattedMessage id="mediaPublish.apply"/></button>
         <button className="btn btn-gray margin-right-1 pull-right" onClick={() => { this.playerSceneClick('reset'); }}><FormattedMessage id="mediaPublish.reset"/></button>
       </div>
     </div>;

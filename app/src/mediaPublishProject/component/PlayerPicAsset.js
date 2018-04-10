@@ -89,6 +89,9 @@ class PlayerPicAsset extends PureComponent {
     const { displayMode, animation, playDuration, playSpeed } = this.state.property;
     switch (id) {
     case 'apply': {
+      if(this.state.prompt.playDuration || this.state.prompt.playSpeed){
+        return false;
+      }
       this.data.baseInfo.playDuration = playDuration*1000;
       this.data.scale = displayMode;
       this.data.inTransition = {

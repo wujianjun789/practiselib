@@ -164,7 +164,9 @@ export function getNotifyStateClass(state) {
         case 1:
             return 'success'
         case 2:
-            return 'warning'
+            return 'warning';
+        default:
+        break;
     }
 }
 
