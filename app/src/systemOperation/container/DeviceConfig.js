@@ -77,36 +77,21 @@ export class SingleLampCon extends Component {
     };
 
     this.columns = [
-      // {
-      //   id: 0,
-      //   field: 'domainName',
-      //   title: this.props.intl.formatMessage({ id: 'sysOperation.domain' }),
-      // },
       {
-        id: 1,
+        id: 0,
         field: 'name',
         title: this.props.intl.formatMessage({ id: 'name' }),
+      },
+      {
+        id: 1,
+        field: 'id',
+        title: this.props.intl.formatMessage({ id: 'sysOperation.id' }),
       },
       {
         id: 2,
         field: 'typeName',
         title: this.props.intl.formatMessage({ id: 'sysOperation.type' }),
       },
-      {
-        id: 3,
-        field: 'id',
-        title: this.props.intl.formatMessage({ id: 'sysOperation.id' }),
-      },
-      // {
-      //   id: 5,
-      //   field: 'lng',
-      //   title: this.props.intl.formatMessage({ id: 'map.lng' }),
-      // },
-      // {
-      //   id: 6,
-      //   field: 'lat',
-      //   title: this.props.intl.formatMessage({ id: 'map.lat' }),
-      // },
     ];
 
     this.collapseHandler = this.collapseHandler.bind(this);
@@ -471,8 +456,7 @@ export class SingleLampCon extends Component {
             <span className="icon icon_collapse pull-right"></span>              
           </div>
           <div className={'panel-body domain-property ' + (whiteListCollapse ? 'collapsed' : '')}>
-            <span className="domain-name">{ `${this.formatIntl('sysOperation.include')}:${selectDevice.whiteCount}
-             ${this.formatIntl('sysOperation.devices')}` }</span>
+            <span className="domain-name">{selectDevice.whiteCount}{this.formatIntl('sysOperation.devices')}</span>
             <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={()=> this.domainHandler('sys-whitelist') }
               disabled={ data.size == 0 }>{this.formatIntl('button.edit')}
             </button>
