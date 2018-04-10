@@ -70,6 +70,7 @@ export class PlayPlan extends Component {
 
       sideInfoHeight:{'height': 'auto'},
       IsCancelSelect: false,
+      IsPrompt: false
     };
     this.previewUrl = '';
     this.previewTimeout = null;
@@ -339,7 +340,7 @@ export class PlayPlan extends Component {
       this.props.actions.initItem(item);
       this.props.actions.initCurnode(item);
       this.props.actions.playerAssetSelect(item);
-      this.setState({IsCancelSelect: true}, ()=>{
+      this.setState({IsCancelSelect: true, IsPrompt: true}, ()=>{
       });
     // }, 66);
   }
@@ -461,7 +462,7 @@ export class PlayPlan extends Component {
 
     actions.initCurnode(node);
     actions.initItem(null);
-    this.setState({IsCancelSelect: false});
+    this.setState({IsCancelSelect: false, IsPrompt: false});
   }
 
   headbarClick(key) {
@@ -549,7 +550,7 @@ export class PlayPlan extends Component {
   }
 
   render() {
-    const {sidebarInfo, sideInfoHeight, IsCancelSelect} = this.state;
+    const {sidebarInfo, sideInfoHeight, IsCancelSelect, IsPrompt} = this.state;
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
@@ -588,7 +589,7 @@ export class PlayPlan extends Component {
         state: { item: project },
       }} />
       <SideBar isEdit={false} onClick={this.headbarClick}>
-        <TreeView className="mediaPublish" IsCancelSelect={IsCancelSelect} onToggle={ (node) => this.onToggle(node) }/>
+        <TreeView className="mediaPublish" IsPrompt={IsPrompt} IsCancelSelect={IsCancelSelect} onToggle={ (node) => this.onToggle(node) }/>
       </SideBar>
 
       <Content className="play-plan">

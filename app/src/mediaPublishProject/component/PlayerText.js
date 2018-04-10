@@ -358,7 +358,7 @@ class PlayerText extends Component {
                     <div class='form-group'>
                         <label className="control-label">{name.title}</label>
                         <div class='input-container input-w-1'>
-                            <input type='text' class='form-control' disabled value={name.value} onChange={f => f} />
+                            <input type='text' class='form-control' disabled value={name.value?name.value:""} onChange={f => f} />
                         </div>
                     </div>
                 </div>
