@@ -176,12 +176,12 @@ export default {
     'asset.assetTypes': '设备型号',
     'asset.type': '设备类别',
     'asset.param': '默认参数',
-    //名称，描述，单位，精度
+        //名称，描述，单位，精度
     'asset.name': '名称',
     'asset.detail': '描述',
     'asset.unit': '单位',
     'asset.accuracy': '精度',
-    //名称	描述	功率	使用寿命	厂商	编辑
+        //名称	描述	功率	使用寿命	厂商	编辑
     'equipment.name': '名称',
     'equipment.description': '描述',
     'equipment.power': '功率',
@@ -324,6 +324,28 @@ export default {
     'sysOperation.count.general': '一般数',
     'sysOperation.count.hint': '提示数',
     'sysOperation.noCount': '未读取',
+
+    // 照明统计
+    'lightManage.Statistics': '统计',
+    'lightManage.map': '地图',
+    'lightManage.list': '列表',
+    'lightManage.control': '控制',
+    'lightManage.Statistics.year': '年',
+    'lightManage.Statistics.month': '月',
+    'lightManage.Statistics.day': '日',
+    'lightManage.Statistics.energy': '能耗图',
+    'lightManage.Statistics.totalEnergy': '设备总能耗图',
+    'lightManage.Statistics.deviceState': '设备状态',
+    'lightManage.Statistics.domain': '域',
+    'lightManage.Statistics.deviceCount': '设备数',
+    'lightManage.Statistics.deviceOnlineRunning': '在线正常数',
+    'lightManage.Statistics.deviceOnlineError': '在线故障数',
+    'lightManage.Statistics.deviceOffline': '离线数',
+    'lightManage.Statistics.planState': '计划执行状态',
+    'lightManage.Statistics.planCount': '计划数',
+    'lightManage.Statistics.palnSuccess': '成功计划数',
+    'lightManage.Statistics.planFail': '失败计划数',
+    'lightManage.Statistics.lightOn': '亮灯率',
 
     // 报表管理
     'app.report.stat': '统计',
