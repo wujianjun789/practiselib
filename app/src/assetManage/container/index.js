@@ -40,6 +40,10 @@ class AssetManageIndex extends Component {
   }
 
   initTreeData() {
+    console.log(TreeData);
+    TreeData.map(tree=>{
+      return Object.assign({}, tree, {name:this.props.intl.formatMessage({id:tree.name})});
+    })
     this.props.actions.treeViewInit(TreeData);
     treeViewNavigator(TreeData, this.props.router);
   }

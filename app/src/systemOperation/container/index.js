@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {injectIntl} from 'react-intl';
 
 import '../../../public/styles/systemOperation-config.less';
 import '../../../public/styles/systemOperation-strategy.less';
@@ -42,6 +43,11 @@ class SystemOperationIndex extends Component {
   componentDidMount() {}
 
   initTreeData() {
+    console.log(TreeData);
+    TreeData.map(tree=>{
+
+      return Object.assign({}, tree, {name:this.props.intl.formatMessage({id:tree.name})});
+    })
     this.props.actions.treeViewInit(TreeData);
     treeViewNavigator(TreeData, this.props.router);
   }
@@ -85,4 +91,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch),
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SystemOperationIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SystemOperationIndex));

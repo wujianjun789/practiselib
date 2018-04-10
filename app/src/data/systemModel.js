@@ -165,7 +165,7 @@ export const TreeData = [
     'children': [
       {
         'id': 'alarm',
-        'name': '告警',
+        'name': 'sysOperation.alarm',
         'class': 'icon_alarm',
         'active': false,
         'link': '/systemOperation/faultManagement/alarm',
@@ -201,7 +201,7 @@ export function getModelData(model, cb) {
         modelConfig.map((key,index)=>{
           const data = lodash.find(models, model=>{return model.name === key});
           if(data){
-            const child = { id: transformKey(data.name), name: data.description, class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
+            const child = { id: transformKey(data.name), name: data.name+'.name', class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
             if (index == 0) {
               item.link = getLinkByModel(item.id, data.name);
             }

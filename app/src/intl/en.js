@@ -109,6 +109,11 @@ export default {
     'button.rename': 'Rename',
     'button.publish': 'Publish',
 
+    //模型名字翻译
+    'ssads.name':'LED display',
+    'ssslc.name':'Lamp control',
+    'ssgw.name':'Gateway',
+
     //用户中心
     'update.password': 'Password',
     exit: 'Sign out',
@@ -133,7 +138,7 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    illegal: 'Illegal',
+    'illegal': 'Illegal',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',
@@ -230,6 +235,7 @@ export default {
     'permission.grade': 'Grade',
 
     //系统运维
+    'sysOperation.alarm': 'Alarm',
     'sysOperation.device.config': 'Device config',
     'sysOperation.whiteList': 'WhiteList',
     'sysOperation.include': 'Include',

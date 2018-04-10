@@ -109,6 +109,11 @@ export default {
     'button.rename': '重命名',
     'button.publish': '发布',
 
+    //模型名字翻译
+    'ssads.name':'广告屏',
+    'ssslc.name':'单灯控制器',
+    'ssgw.name':'网关',
+
     //用户中心
     'update.password': '密码',
     exit: '注销',
@@ -133,7 +138,7 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    illegal: '不合法',
+    'illegal': '不合法',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',
@@ -230,6 +235,7 @@ export default {
     'permission.grade': '用户等级',
 
     //系统运维
+    'sysOperation.alarm': '告警',
     'sysOperation.device.config': '设备配置',
     'sysOperation.whiteList': '白名单',
     'sysOperation.include': '包含',
@@ -272,7 +278,7 @@ export default {
     'app.sunset': '日落',
     'app.sunset.time.difference': '日落时间差',
     'app.strategy.name.used': '策略名已使用',
-    '': '',
+
 
     'app.strategy.platform': '平台',
     'app.select.group': '选中组',
