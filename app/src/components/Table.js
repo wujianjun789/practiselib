@@ -141,7 +141,7 @@ export default class Table extends Component {
                                         <td className="edit">
                                             <a className="btn" onClick={() => keyField && this.rowEdit(row.get(keyField))}>
                                                 <span className="icon_edit"></span>
-                                                <span className="update"><FormattedMessage id='button.modify' /></span>
+                                                <span className="update"><FormattedMessage id='button.edit' /></span>
                                             </a>
                                             <a className="btn" onClick={() => keyField && this.rowDelete(row.get(keyField))}>
                                                 <span className="icon_delete"></span>
