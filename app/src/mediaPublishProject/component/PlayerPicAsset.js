@@ -108,7 +108,7 @@ class PlayerPicAsset extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
-    console.log(prompt);
+    
     const Invalid = prompt.playDuration || prompt.playSpeed;
     return <div className="pro-container playerPicAsset">
       <div className="row">
@@ -116,7 +116,7 @@ class PlayerPicAsset extends PureComponent {
           <label className="control-label">{this.props.intl.formatMessage({id:'name'})}</label>
           <div className="input-container input-w-1">
             <input type="text" className="form-control" disabled="disabled"
-              value={property.assetName} />
+              value={property.assetName?property.assetName:""} />
           </div>
         </div>
       </div>

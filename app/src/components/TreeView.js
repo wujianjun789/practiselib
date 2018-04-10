@@ -91,7 +91,7 @@ export class TreeView extends Component{
                     let name = intlMessage?intlMessage:node.name;
                     let value = name?name.slice(0, count)+(name.length>count?'...':''):'';
                     if(node.IsEndNode || !(node.children)){
-                        return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
+                        return <li key={index} className={'node '+(this.props.IsPrompt && node.active ? 'selected ':' ')+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                         <div onClick={()=>this.onToggle(node)} title={name}>
                                             <span className={"icon "+node.class}></span>
@@ -100,6 +100,7 @@ export class TreeView extends Component{
                                             {index<datalist.length-1 && this.renderMove(node, "glyphicon-triangle-bottom")}
                                             {index>0 && this.renderMove(node, "glyphicon-triangle-top")}
                                         </div>
+                                        {this.props.IsPrompt && node.active && <div className="selected-background"/>}
                                     </Link>
                                     {!node.IsEndNode && node.children && this.renderTree(node.children, nextIndex, node.toggled)}
                                 </li>
@@ -123,7 +124,10 @@ export class TreeView extends Component{
     }
 
     render(){
-        const { className, datalist, intl } = this.props;
+      /**
+       *
+       */
+        const { className, datalist, intl, IsCancelSelect,  IsPrompt} = this.props;
 
         return <div className={"tree-list "+className}>
             {
