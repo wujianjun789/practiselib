@@ -1,3 +1,7 @@
+
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { intlFormat } from '../../util/index';
+// intlFormat({ en: 'please input the device Id', zh: '输入设备编号' })
 /**
  * created by m on 2018/01/8
  */
@@ -110,18 +114,55 @@ export default function BarChart(data) {
   let xAxis = d3.axisBottom(xScale)
     .tickFormat(function(d, i) {
       let month = new Date(dataset[d].x).getMonth() + 1;
+      let monthintl = intlFormat({ en: 'th', zh: '月' });
       let day = new Date(dataset[d].x).getDate();
+      let dayintl = intlFormat({ en: 'th', zh: '日' });
       let hours = new Date(dataset[d].x).getHours();
+      let hoursintl = intlFormat({ en: ':00', zh: ':00' });
       let time = '';
       switch (type) {
       case '1':
-        time = `${month}月`;
+        switch(month){
+          case 1:time = intlFormat({ en: 'Jan', zh: '1月' });
+          break;
+          case 2:time = intlFormat({ en: 'Feb', zh: '2月' });
+          break;
+          case 3:time = intlFormat({ en: 'Mar', zh: '3月' });
+          break;
+          case 4:time = intlFormat({ en: 'Apr', zh: '1月' });
+          break;
+          case 5:time = intlFormat({ en: 'May', zh: '2月' });
+          break;
+          case 6:time = intlFormat({ en: 'June', zh: '3月' });
+          break;
+          case 7:time = intlFormat({ en: 'July', zh: '1月' });
+          break;
+          case 8:time = intlFormat({ en: 'Aug', zh: '2月' });
+          break;
+          case 9:time = intlFormat({ en: 'Sept', zh: '3月' });
+          break;
+          case 10:time = intlFormat({ en: 'Oct', zh: '1月' });
+          break;
+          case 11:time = intlFormat({ en: 'Nov', zh: '2月' });
+          break;
+          case 12:time = intlFormat({ en: 'Dec', zh: '3月' });
+          break;
+        }
         break;
       case '2':
-        time = `${day}日`;
+        switch(day){
+          case 1:time = intlFormat({ en: '1st', zh: '1月' });
+          break;
+          case 2:time = intlFormat({ en: '2nd', zh: '2月' });
+          break;
+          case 3:time = intlFormat({ en: '3rd', zh: '3月' });
+          break;
+          default:
+          time = `${day}${dayintl}`;
+      }
         break;
       case '3':
-        time = `${hours}时`;
+        time = `${hours}${hoursintl}`;
         break;
       default:
         break;
