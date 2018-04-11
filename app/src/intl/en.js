@@ -138,7 +138,8 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    illegal: 'Illegal',
+    'illegal': 'Illegal',
+    'deviceNumIllegal':'Device num illegal !',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',

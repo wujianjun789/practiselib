@@ -200,28 +200,46 @@ class TimeStrategy extends Component {
         item.key = (item.plans ? 'group' : 'plan') + item.id;
         !item.plans && len1++;
       });
-      const promise = new Promise((resolve, reject) => {
-        result.map(item => {
-          !item.plans &&
-            getPlanStatus(item.id, res => {
-              len2++;
-              item.status =
-                res.status && res.status == 1
-                  ? this.formatIntl('app.status.started')
-                  : this.formatIntl('app.status.paused');
-              if (len2 == len1) {
-                resolve(result);
-              }
-            });
-        });
-      });
+      // const promise = new Promise((resolve, reject) => {
+      //   result.map(item => {
+      //     !item.plans &&
+      //       getPlanStatus(item.id, res => {
+      //         len2++;
+      //         item.status =
+      //           res.status && res.status == 1
+      //             ? this.formatIntl('app.status.started')
+      //             : this.formatIntl('app.status.paused');
+      //         if (len2 == len1) {
+      //           resolve(result);
+      //         }
+      //       });
+      //   });
+      // });
 
-      promise.then(result => {
-        this.setState({ [key]: Immutable.fromJS(result) });
-        result.length > 0 &&
-          this.setState({ selectItem: result[0] }, () => {
-            this.getGroupTasks(this.state.selectItem.id);
+      // promise.then(result => {
+      //   this.setState({ [key]: Immutable.fromJS(result) });
+      //   result.length > 0 &&
+      //     this.setState({ selectItem: result[0] }, () => {
+      //       this.getGroupTasks(this.state.selectItem.id);
+      //     });
+      // });
+      this.setState({ [key]: Immutable.fromJS(result) });
+      result.map(item => {
+        if (item.plans.length) {
+          getPlanStatus(item.id, res => {
+            len2++;
+            item.status =
+              res.status && res.status == 1
+                ? this.formatIntl('app.status.started')
+                : this.formatIntl('app.status.paused');
+            if (len2 == len1) {
+              result.length > 0 &&
+                this.setState({ selectItem: result[0] }, () => {
+                  this.getGroupTasks(this.state.selectItem.id);
+                });
+            }
           });
+        }
       });
     }
   };

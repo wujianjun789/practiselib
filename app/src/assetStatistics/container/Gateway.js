@@ -20,6 +20,7 @@ import { getModelData, getModelList, getModelNameById } from '../../data/assetMo
 
 import { getSearchCount, getSearchAssets } from '../../api/asset';
 import { getDomainList } from '../../api/domain';
+import { getChildDomainList } from '../../api/domain';
 import { _ } from '../../util/index';
 import { getObjectByKey } from '../../util/algorithm';
 
@@ -97,8 +98,8 @@ export class Gateway extends Component {
     this.mounted = true;
     // const query = this.props.location.query;
     getModelData(() => { this.mounted && this.initTreeData(); });
-    getDomainList(data => { this.mounted && this.initDomain(data); });
-
+    // getDomainList(data => { this.mounted && this.initDomain(data); });
+    getChildDomainList(data => { this.mounted && this.initDomain(data); });
     // getAssetsCount(data=>{this.mounted && this.deviceTotal(data)})
   }
 

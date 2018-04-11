@@ -573,8 +573,36 @@
 }
 
 
+//单设备升级弹出框
+.singleDeviceReplace-popup{
+  .modal-body{
+      // margin-bottom: 10px;
+      // padding-top: 15px;
+      // margin-left: 15px;
+      // margin-right: 15px;
+      padding-top: 15px !important;
+      padding-bottom: 18px !important;
+      padding-left: 25px!important ;
+      padding-right: 30px!important;
+      .prompt{
+        position: absolute;
+        font-size: 12px;
+        top: 55px;
+        line-height: 12px;
+        color: #ff5c68;
+      }
+    .numInput{
+      // margin-bottom: 10px;
+      // padding-top: 15px;
+      // margin-left: 15px;
+      // margin-right: 15px;
+    }
+  }
+
+
+}
 //设备升级弹出框
-.deviceUpgrade-popup{
+.deviceUpgrade-popup,.singleDeviceReplace-popup{
 
   width: 510px;
   .modal-body{
@@ -597,6 +625,14 @@
       }
     }
     .searchText {
+      &.singleupdate{
+        width:450px;
+        min-width: 400px;
+        min-height: 26px;
+        margin-left: 15px;
+        margin-top: 5px;
+        margin-bottom: 20px
+      }
       min-width: 450px;
       min-height: 26px;
       margin-left: 15px;
