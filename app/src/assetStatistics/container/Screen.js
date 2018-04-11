@@ -118,6 +118,7 @@ export class Screen extends Component {
     let domainId = domain.getIn(['list', domain.get('index'), 'id']);
     let modelId = model;
     let name = search.get('value');
+    name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
     getSearchCount(domainId, modelId, name, (data) => this.mounted && this.initPageTotal(data));
     getSearchAssets(domainId, modelId, name, offset, size, data => {
       this.mounted && this.searchResult(data);
