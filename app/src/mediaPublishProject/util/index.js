@@ -287,7 +287,7 @@ const videoType = ['video'];
 export function formatTransformType(type) {
   // const urlArr = filepath.split('.')
   // const url = urlArr.length>1?urlArr[1]:undefined;
-  console.log('type:', type);
+  // console.log('type:', type);
   const url = type;
   if(url === undefined){
     return 3;

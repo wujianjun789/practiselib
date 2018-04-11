@@ -346,11 +346,11 @@ export class PlayPlan extends Component {
   }
 
   playerAssetRemove(item) {
+    this.setState({IsCancelSelect: false});
     this.props.actions.playerAssetRemove(item);
   }
 
   playerAssetMove(index) {
-    console.log('order:', index);
     this.props.actions.playerAssetMove(index);
   }
 
