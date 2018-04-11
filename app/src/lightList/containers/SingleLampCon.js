@@ -457,7 +457,7 @@ class SingleLampCon extends Component {
             >
               <div>
                 <span className="tit">
-                  {formatMessage({ id: 'lightManage.list.switch' })}
+                  {formatMessage({ id: 'lightManage.list.switch' })}：
                 </span>
                 <Select
                   id="deviceSwitch"
@@ -478,7 +478,7 @@ class SingleLampCon extends Component {
               </div>
               <div>
                 <span className="tit">
-                  {formatMessage({ id: 'lightManage.list.dimming' })}
+                  {formatMessage({ id: 'lightManage.list.dimming' })}：
                 </span>
                 <Select
                   id="dimming"

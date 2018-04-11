@@ -22,7 +22,7 @@ import { message } from 'antd';
 import 'antd/lib/message/style/css';
 import { getDeviceTypeByModel } from '../../util/index';
 import { injectIntl } from 'react-intl';
-export default class Gateway extends Component {
+class Gateway extends Component {
   constructor(props) {
     super(props);
     const { formatMessage } = this.props.intl;
@@ -314,6 +314,7 @@ export default class Gateway extends Component {
       currentControlMode,
       controlModeList
     } = this.state;
+    const { formatMessage } = this.props.intl;
     // const offset1 = deviceCollapse ? 60 : 0;
     const offset2 = operationCollapse ? 135 : 0;
     // const top = 349 - offset1 - offset2;
@@ -416,7 +417,7 @@ export default class Gateway extends Component {
                 <span className="tit">
                   {formatMessage({
                     id: 'lightManage.list.controlMode'
-                  })}
+                  })}：
                 </span>
                 <Select
                   id="controlMode"
@@ -441,16 +442,18 @@ export default class Gateway extends Component {
                 <span className="tit">
                   {formatMessage({
                     id: 'lightManage.list.timing'
-                  })}
+                  })}：
                 </span>
-                <span className="note">(点击以校准时间)</span>
+                <span className="note">
+                  {formatMessage({ id: 'lightManage.list.checkTime' })}
+                </span>
                 <button
                   className="btn btn-primary"
                   disabled={disabled}
                   onClick={this.checkTime}
                 >
                   {formatMessage({
-                    id: 'lightManage.list.timing'
+                    id: 'lightManage.list.apply'
                   })}
                 </button>
               </div>
@@ -484,7 +487,7 @@ export default class Gateway extends Component {
     );
   }
 }
-
+export default injectIntl(Gateway);
 /**
  *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>

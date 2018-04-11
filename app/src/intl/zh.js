@@ -370,7 +370,7 @@ export default {
     'lightManage.list.operation': '设备操作',
     'lightManage.list.switch': '设备开关',
     'lightManage.list.on': '开启',
-    'lightManage.list.Off': '关闭',
+    'lightManage.list.off': '关闭',
     'lightManage.list.dimming': '调光',
     'lightManage.list.apply': '应用',
     'lightManage.list.mapPosition': '地图位置',
@@ -381,6 +381,7 @@ export default {
     'lightManage.list.timing': '校时',
     'lightManage.list.remote': '远程',
     'lightManage.list.auto': '自动',
+    'lightManage.list.checkTime': '点击以校准时间',
 
     // 报表管理
     'app.report.stat': '统计',
