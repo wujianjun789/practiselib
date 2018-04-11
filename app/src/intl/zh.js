@@ -110,9 +110,9 @@ export default {
     'button.publish': '发布',
 
     //模型名字翻译
-    'ssads.name':'广告屏',
-    'ssslc.name':'单灯控制器',
-    'ssgw.name':'网关',
+    'ssads.name': '广告屏',
+    'ssslc.name': '单灯控制器',
+    'ssgw.name': '网关',
 
     //用户中心
     'update.password': '密码',
@@ -138,7 +138,7 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    'illegal': '不合法',
+    illegal: '不合法',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',
@@ -176,12 +176,12 @@ export default {
     'asset.assetTypes': '设备型号',
     'asset.type': '设备类别',
     'asset.param': '默认参数',
-        //名称，描述，单位，精度
+    //名称，描述，单位，精度
     'asset.name': '名称',
     'asset.detail': '描述',
     'asset.unit': '单位',
     'asset.accuracy': '精度',
-        //名称	描述	功率	使用寿命	厂商	编辑
+    //名称	描述	功率	使用寿命	厂商	编辑
     'equipment.name': '名称',
     'equipment.description': '描述',
     'equipment.power': '功率',
@@ -261,10 +261,10 @@ export default {
     'sysOperation.select.sensor': '选择传感器：',
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
-    'sysOperation.device.version': '设备版本', 
-    'sysOperation.product.version': '产品版本', 
-    'sysOperation.hardware.version': '硬件版本', 
-    'sysOperation.software.version': '软件版本', 
+    'sysOperation.device.version': '设备版本',
+    'sysOperation.product.version': '产品版本',
+    'sysOperation.hardware.version': '硬件版本',
+    'sysOperation.software.version': '软件版本',
 
     'sysOperation.control.strategy': '控制策略',
     'sysOperation.service.monitoring': '服务监控',
@@ -283,7 +283,6 @@ export default {
     'app.sunset': '日落',
     'app.sunset.time.difference': '日落时间差',
     'app.strategy.name.used': '策略名已使用',
-
 
     'app.strategy.platform': '平台',
     'app.select.group': '选中组',
@@ -351,6 +350,38 @@ export default {
     'lightManage.Statistics.palnSuccess': '成功计划数',
     'lightManage.Statistics.planFail': '失败计划数',
     'lightManage.Statistics.lightOn': '亮灯率',
+
+    //照明列表
+    'lightManage.list.singleLamp': '单灯控制器',
+    'lightManage.list.gateway': '网关',
+    'lightManage.list.devicePlaceholder': '请输入设备名称',
+    'lightManage.list.name': '设备名称',
+    'lightManage.list.onlineStatus': '在线状态',
+    'lightManage.list.deviceStatus': '灯状态',
+    'lightManage.list.switchStatus': '开关状态',
+    'lightManage.list.brightness': '亮度',
+    'lightManage.list.voltage': '电压',
+    'lightManage.list.current': '电流',
+    'lightManage.list.power': '功率',
+    'lightManage.list.energyConsumption': '总电能',
+    'lightManage.list.runningTime': '运行时间',
+    'lightManage.list.poweronTime': '亮灯时间',
+    'lightManage.list.lastUpdate': '更新时间',
+    'lightManage.list.operation': '设备操作',
+    'lightManage.list.switch': '设备开关',
+    'lightManage.list.on': '开启',
+    'lightManage.list.off': '关闭',
+    'lightManage.list.dimming': '调光',
+    'lightManage.list.apply': '应用',
+    'lightManage.list.mapPosition': '地图位置',
+    'lightManage.list.domain': '所属域',
+    'lightManage.list.communication': '通信状态',
+    'lightManage.list.gatewayDeviceStatus': '设备状态',
+    'lightManage.list.controlMode': '控制模式',
+    'lightManage.list.timing': '校时',
+    'lightManage.list.remote': '远程',
+    'lightManage.list.auto': '自动',
+    'lightManage.list.checkTime': '点击以校准时间',
 
     // 报表管理
     'app.report.stat': '统计',

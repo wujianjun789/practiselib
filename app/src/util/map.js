@@ -663,7 +663,7 @@ export default class Map{
                 bounds: bounds,
                 distance: bounds._southWest.distanceTo(bounds._northEast)
             })
-        }, 66)
+        }, 330)
     }
 
     markerClick(event) {
@@ -679,7 +679,7 @@ export default class Map{
                 y: event.originalEvent.clientY,
                 latlng: marker.getLatLng()
             });
-        }, 66)
+        }, 330)
     }
 
     markerOver(event) {
