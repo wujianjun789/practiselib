@@ -68,6 +68,9 @@ export default class SingleDeviceReplacePopup extends Component {
     }
     
     onConfirm() {
+        const{search} = this.state
+        let value = search.value;
+        let requestValue   =   value.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
 
         this.requestReplace(value);
 
