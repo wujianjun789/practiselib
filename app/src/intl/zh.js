@@ -138,7 +138,8 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    illegal: '不合法',
+    'illegal': '不合法',
+    'deviceNumIllegal':'输入的设备编号不合法！',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',

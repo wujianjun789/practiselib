@@ -32,6 +32,7 @@ import { injectIntl } from 'react-intl';
 
 import DeviceReplacePopup from '../components/DeviceReplacePopup';
 import DeviceUpgradePopup from '../components/DeviceUpgradePopup';
+import SingleDeviceReplacePopup from '../components/SingleDeviceReplacePopup';
 import { replaceDevice } from '../../api/import';
 import {getObjectByKeyObj,getObjectByKey} from '../../util/algorithm';
 import {trimString} from '../../util/string';
@@ -307,33 +308,48 @@ export class SingleLampCon extends Component {
   }
 
   deviceHandler(key,id) {
-    // let id = e.target.id;
-    if (key === 'sys-upgrade') {
-      //设备升级
-      console.log('this.state.data：', this.state.data);
-      //需要传入的数据：
-      const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
+     if (key === 'sys-upgrade') {
+        if (id){  //单设备升级
+          console.log('this.state.data：', this.state.data);
+          //需要传入的数据：
+          const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
+    
+          overlayerShow(<DeviceUpgradePopup id={id} className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
+            intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
 
-      overlayerShow(<DeviceUpgradePopup className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
-        intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
-          //升级
-
-        }} />);
-
+            }} />);
+        }else {
+          //多设备升级
+        const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
+        overlayerShow(<DeviceUpgradePopup className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
+          intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
+        
+          }} />);
+        }
+    } else if (key === 'sys-replace') {
+        if (id){  //单设备更换
+          const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
+          overlayerShow(<SingleDeviceReplacePopup className="singleDeviceReplace-popup" columns={this.columns}
+            model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
+            overlayerHide={overlayerHide}
+            onConfirm={(datas) => {
+              replaceDevice(`${this.state.model}s`, datas, () => {
+                this.requestSearch();
+              });
+            }} />);
+        } else {
+          //多设备更换
+        const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
+        overlayerShow(<DeviceReplacePopup className="deviceReplace-popup" columns={this.columns}
+          model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
+          overlayerHide={overlayerHide}
+          onConfirm={(datas) => {
+            replaceDevice(`${this.state.model}s`, datas, () => {
+              this.requestSearch();
+            });
+          }} />);
+        }
     }
-    if (id === 'sys-replace') {
-      //设备更换,一个弹出面板
-      const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
-      overlayerShow(<DeviceReplacePopup className="deviceReplace-popup" columns={this.columns}
-        model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
-        overlayerHide={overlayerHide}
-        onConfirm={(datas) => {
-          replaceDevice(`${this.state.model}s`, datas, () => {
-            this.requestSearch();
-          });
-        }} />);
-    }
-
   }
 
   pageChange(current, pageSize) {

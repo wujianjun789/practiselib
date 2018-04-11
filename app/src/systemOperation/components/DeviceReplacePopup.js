@@ -16,13 +16,15 @@ export default class DeviceReplacePopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            data: [
+            ],
             page: {
                 pageSize: 10,
                 current: 1,
                 total: 0
             },
-            filename: ''
+            filename: '',
+            buttonConfirmDisabled: true,//导入文件之后确认按钮才可以点击
         };
         this.onChange = this.onChange.bind(this);
         this.pageChange = this.pageChange.bind(this);
@@ -42,7 +44,7 @@ export default class DeviceReplacePopup extends Component {
 
             let page = this.state.page;
             page.total = data.length;
-            this.setState({ data: data, page: page, filename: filename });
+            this.setState({ data: data, page: page, filename: filename, buttonConfirmDisabled: false });
         });
     }
 
@@ -75,11 +77,11 @@ export default class DeviceReplacePopup extends Component {
 
     render() {
         const { className, columns, title } = this.props;
-        const { data, page, filename } = this.state;
+        const { data, page, filename,buttonConfirmDisabled } = this.state;
         //data为通过导入文件读取后的数据，result为根据表格尺寸需要显示的内容
         let result = Immutable.fromJS(data.slice((page.current - 1) * page.pageSize, page.current * page.pageSize));
         let footer = <PanelFooter funcNames={['onCancel', 'onConfirm']} btnTitles={['button.cancel', 'button.confirm']}
-            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
+            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, buttonConfirmDisabled]}
             onCancel={this.onCancel} onConfirm={this.onConfirm} />;
 
         return <div className={className}>
