@@ -45,12 +45,12 @@
         "id": 3,
         "name": "three.level.domain",
         "zoom": 12,
-        "zoomRange":[11, 14]
+        "zoomRange":[11, 13]
       },{
         "id": 4,
         "name": "four.level.domain",
         "zoom": 16,
-        "zoomRange":[15, 18]
+        "zoomRange":[14, 15]
       }
     ],
     "map":{
