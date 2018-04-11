@@ -125,7 +125,6 @@ export default class CentralizedControllerPopup extends Component {
     const {className, title, domainList, popId} = this.props;
     const {id, name, domain, zoom, lng, lat, prompt} = this.state;
     let valid = prompt.id || prompt.name || !domainList || !domainList.options.length || prompt.lng || prompt.lat || !id || !name || !lng || !lat;
-console.log("valid:", valid)
     const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={['button.cancel', 'button.confirm']} btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
       onConfirm={ this.onConfirm } />;
     return (
