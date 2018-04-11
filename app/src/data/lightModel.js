@@ -25,7 +25,7 @@ export const TreeData=[
     },
     {
         "id": "list",
-        "name": "lightManage.Statistics",
+        "name": "lightManage.list",
         "toggled": false,
         "active": true,
         "link": "/light/list",
