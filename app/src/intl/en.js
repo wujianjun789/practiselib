@@ -110,9 +110,9 @@ export default {
     'button.publish': 'Publish',
 
     //模型名字翻译
-    'ssads.name':'LED display',
-    'ssslc.name':'Lamp control',
-    'ssgw.name':'Gateway',
+    'ssads.name': 'LED display',
+    'ssslc.name': 'Lamp control',
+    'ssgw.name': 'Gateway',
 
     //用户中心
     'update.password': 'Password',
@@ -138,7 +138,7 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    'illegal': 'Illegal',
+    illegal: 'Illegal',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',
@@ -260,10 +260,10 @@ export default {
     'sysOperation.select.sensor': 'Select sensor：',
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
-    'sysOperation.device.version': 'Device version', 
-    'sysOperation.product.version': 'Product version', 
-    'sysOperation.hardware.version': 'Hardware version', 
-    'sysOperation.software.version': 'Software version', 
+    'sysOperation.device.version': 'Device version',
+    'sysOperation.product.version': 'Product version',
+    'sysOperation.hardware.version': 'Hardware version',
+    'sysOperation.software.version': 'Software version',
 
     'sysOperation.control.strategy': 'Strategy',
     'sysOperation.service.monitoring': 'Service Monitoring',
@@ -328,7 +328,6 @@ export default {
     'sysOperation.count.hint': 'Hint',
     'sysOperation.noCount': 'No count',
 
-
     // 照明统计
     'lightManage.Statistics': 'Statistics',
     'lightManage.map': 'Map',
@@ -350,6 +349,37 @@ export default {
     'lightManage.Statistics.palnSuccess': 'Success',
     'lightManage.Statistics.planFail': 'Fail',
     'lightManage.Statistics.lightOn': 'Lighting rate',
+
+    //照明列表
+    'lightManage.list.singleLamp': 'Lamp control',
+    'lightManage.list.gateway': 'Gateway',
+    'lightManage.list.devicePlaceholder': 'please input device name',
+    'lightManage.list.name': 'Name',
+    'lightManage.list.onlineStatus': 'Online status',
+    'lightManage.list.deviceStatus': 'Lamp status',
+    'lightManage.list.switchStatus': 'Switch status',
+    'lightManage.list.brightness': 'Brightness',
+    'lightManage.list.voltage': 'Voltage',
+    'lightManage.list.current': 'Current',
+    'lightManage.list.power': 'Power',
+    'lightManage.list.energyConsumption': 'Energy consumption',
+    'lightManage.list.runningTime': 'Running time',
+    'lightManage.list.poweronTime': 'Poweron time',
+    'lightManage.list.lastUpdate': 'Last update',
+    'lightManage.list.operation': 'Operation',
+    'lightManage.list.switch': 'Switch',
+    'lightManage.list.on': 'On',
+    'lightManage.list.Off': 'Off',
+    'lightManage.list.dimming': 'Dimming',
+    'lightManage.list.apply': 'Apply',
+    'lightManage.list.mapPosition': 'Map',
+    'lightManage.list.domain': 'Domain',
+    'lightManage.list.communication': 'Communication status',
+    'lightManage.list.gatewayDeviceStatus': 'Device status',
+    'lightManage.list.controlMode': 'Control mode',
+    'lightManage.list.timing': 'Timing',
+    'lightManage.list.remote': 'remote',
+    'lightManage.list.auto': 'auto',
 
     // 报表管理
     'app.report.stat': 'Statistics',

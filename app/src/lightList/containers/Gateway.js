@@ -21,9 +21,11 @@ import { getMomentDate, momentDateFormat } from '../../util/time';
 import { message } from 'antd';
 import 'antd/lib/message/style/css';
 import { getDeviceTypeByModel } from '../../util/index';
+import { injectIntl } from 'react-intl';
 export default class Gateway extends Component {
   constructor(props) {
     super(props);
+    const { formatMessage } = this.props.intl;
     this.state = {
       page: {
         total: 0,
@@ -32,7 +34,9 @@ export default class Gateway extends Component {
       },
       search: {
         value: '',
-        placeholder: '请输入设备名称'
+        placeholder: formatMessage({
+          id: 'lightManage.list.devicePlaceholder'
+        })
       },
       sidebarCollapse: false,
       deviceCollapse: false,
@@ -56,8 +60,14 @@ export default class Gateway extends Component {
         titleField: 'title',
         valueField: 'value',
         options: [
-          { title: '远程', value: 'remote' },
-          { title: '自动', value: 'auto' }
+          {
+            title: formatMessage({ id: 'lightManage.list.remote' }),
+            value: 'remote'
+          },
+          {
+            title: formatMessage({ id: 'lightManage.list.auto' }),
+            value: 'auto'
+          }
         ]
       }
     };
@@ -65,11 +75,36 @@ export default class Gateway extends Component {
     this.model = 'ssgw';
 
     this.columns = [
-      { accessor: 'name', title: '设备名称' },
-      { accessor: 'domain', title: '所属域' },
-      { accessor: 'online', title: '通信状态' },
-      { accessor: 'device', title: '设备状态' },
-      { accessor: 'runningTime', title: '运行时间' },
+      {
+        accessor: 'name',
+        title: formatMessage({
+          id: 'lightManage.list.name'
+        })
+      },
+      {
+        accessor: 'domain',
+        title: formatMessage({
+          id: 'lightManage.list.domain'
+        })
+      },
+      {
+        accessor: 'online',
+        title: formatMessage({
+          id: 'lightManage.list.communication'
+        })
+      },
+      {
+        accessor: 'device',
+        title: formatMessage({
+          id: 'lightManage.list.gatewayDeviceStatus'
+        })
+      },
+      {
+        accessor: 'runningTime',
+        title: formatMessage({
+          id: 'lightManage.list.runningTime'
+        })
+      },
       {
         accessor(data) {
           return data.updateTime
@@ -79,7 +114,9 @@ export default class Gateway extends Component {
               )
             : '';
         },
-        title: '更新时间'
+        title: formatMessage({
+          id: 'lightManage.list.lastUpdate'
+        })
       }
     ];
 
@@ -366,14 +403,21 @@ export default class Gateway extends Component {
               role="presentation"
               onClick={() => this.handleCollapse('operationCollapse')}
             >
-              <span className="icon_touch" />设备操作
+              <span className="icon_touch" />
+              {formatMessage({
+                id: 'lightManage.list.operation'
+              })}
               <span class="icon icon_collapse pull-right" />
             </div>
             <div
               class={`panel-body ${operationCollapse ? 'device-hidden' : ''}`}
             >
               <div>
-                <span className="tit">控制模式：</span>
+                <span className="tit">
+                  {formatMessage({
+                    id: 'lightManage.list.controlMode'
+                  })}
+                </span>
                 <Select
                   id="controlMode"
                   titleField={controlModeList.titleField}
@@ -388,18 +432,26 @@ export default class Gateway extends Component {
                   disabled={disabled}
                   onClick={this.apply}
                 >
-                  应用
+                  {formatMessage({
+                    id: 'lightManage.list.apply'
+                  })}
                 </button>
               </div>
               <div>
-                <span className="tit">校时：</span>
+                <span className="tit">
+                  {formatMessage({
+                    id: 'lightManage.list.timing'
+                  })}
+                </span>
                 <span className="note">(点击以校准时间)</span>
                 <button
                   className="btn btn-primary"
                   disabled={disabled}
                   onClick={this.checkTime}
                 >
-                  校时
+                  {formatMessage({
+                    id: 'lightManage.list.timing'
+                  })}
                 </button>
               </div>
             </div>
@@ -411,7 +463,11 @@ export default class Gateway extends Component {
               onClick={() => this.handleCollapse('mapCollapse')}
             >
               <span class="icon_map" />
-              <span>地图位置</span>
+              <span>
+                {formatMessage({
+                  id: 'lightManage.list.mapPosition'
+                })}
+              </span>
               <span class="icon icon_collapse pull-right" />
             </div>
             <div

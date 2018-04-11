@@ -22,9 +22,11 @@ import { getMomentDate, momentDateFormat } from '../../util/time';
 import { getDeviceTypeByModel } from '../../util/index';
 import { message } from 'antd';
 import 'antd/lib/message/style/css';
-export default class SingleLampCon extends Component {
+import { injectIntl } from 'react-intl';
+class SingleLampCon extends Component {
   constructor(props) {
     super(props);
+    const { formatMessage } = this.props.intl;
     this.state = {
       page: {
         total: 0,
@@ -33,7 +35,9 @@ export default class SingleLampCon extends Component {
       },
       search: {
         value: '',
-        placeholder: '请输入设备名称'
+        placeholder: formatMessage({
+          id: 'lightManage.list.devicePlaceholder'
+        })
       },
       sidebarCollapse: false,
       operationCollapse: false,
@@ -56,8 +60,8 @@ export default class SingleLampCon extends Component {
         titleField: 'title',
         valueField: 'value',
         options: [
-          { value: 'on', title: '开启' },
-          { value: 'off', title: '关闭' }
+          { value: 'on', title: formatMessage({ id: 'lightManage.list.on' }) },
+          { value: 'off', title: formatMessage({ id: 'lightManage.list.off' }) }
         ]
       },
       currentBrightness: 0,
@@ -71,17 +75,72 @@ export default class SingleLampCon extends Component {
     this.model = 'ssslc';
 
     this.columns = [
-      { accessor: 'name', title: '设备名称' },
-      { accessor: 'online', title: '在线状态' },
-      { accessor: 'device', title: '灯状态  ' },
-      { accessor: 'switch', title: '开关状态' },
-      { accessor: 'brightness', title: '亮度    ' },
-      { accessor: 'voltage', title: '电压    ' },
-      { accessor: 'current', title: '电流    ' },
-      { accessor: 'power', title: '功率    ' },
-      { accessor: 'totalPower', title: '总电能  ' },
-      { accessor: 'runningTime', title: '运行时间' },
-      { accessor: 'lightTime', title: '亮灯时间' },
+      {
+        accessor: 'name',
+        title: formatMessage({
+          id: 'lightManage.list.name'
+        })
+      },
+      {
+        accessor: 'online',
+        title: formatMessage({
+          id: 'lightManage.list.onlineStatus'
+        })
+      },
+      {
+        accessor: 'device',
+        title: formatMessage({
+          id: 'lightManage.list.deviceStatus'
+        })
+      },
+      {
+        accessor: 'switch',
+        title: formatMessage({
+          id: 'lightManage.list.switchStatus'
+        })
+      },
+      {
+        accessor: 'brightness',
+        title: formatMessage({
+          id: 'lightManage.list.brightness'
+        })
+      },
+      {
+        accessor: 'voltage',
+        title: formatMessage({
+          id: 'lightManage.list.voltage'
+        })
+      },
+      {
+        accessor: 'current',
+        title: formatMessage({
+          id: 'lightManage.list.current'
+        })
+      },
+      {
+        accessor: 'power',
+        title: formatMessage({
+          id: 'lightManage.list.power'
+        })
+      },
+      {
+        accessor: 'totalPower',
+        title: formatMessage({
+          id: 'lightManage.list.energyConsumption'
+        })
+      },
+      {
+        accessor: 'runningTime',
+        title: formatMessage({
+          id: 'lightManage.list.runningTime'
+        })
+      },
+      {
+        accessor: 'lightTime',
+        title: formatMessage({
+          id: 'lightManage.list.poweronTime'
+        })
+      },
       {
         accessor(data) {
           return data.updateTime
@@ -91,7 +150,9 @@ export default class SingleLampCon extends Component {
               )
             : '';
         },
-        title: '更新时间'
+        title: formatMessage({
+          id: 'lightManage.list.lastUpdate'
+        })
       }
     ];
 
@@ -209,7 +270,7 @@ export default class SingleLampCon extends Component {
     data.shift(); // 删除"关"
     data.forEach(value => {
       let val = value;
-      let title = `亮度${val}`;
+      let title = `${val}`;
       opt.push({ value: val, title });
     });
     this.setState({
@@ -308,7 +369,7 @@ export default class SingleLampCon extends Component {
       currentSwitchStatus,
       currentBrightness
     } = this.state;
-
+    const { formatMessage } = this.props.intl;
     const offset2 = operationCollapse ? 135 : 0;
     const top = 247 - offset2;
     const disabled = deviceList.length == 0 ? true : false;
@@ -387,14 +448,17 @@ export default class SingleLampCon extends Component {
               role="presentation"
               onClick={() => this.handleCollapse('operationCollapse')}
             >
-              <span className="icon_touch" />设备操作
+              <span className="icon_touch" />
+              {formatMessage({ id: 'lightManage.list.operation' })}
               <span class="icon icon_collapse pull-right" />
             </div>
             <div
               class={`panel-body ${operationCollapse ? 'device-hidden' : ''}`}
             >
               <div>
-                <span className="tit">设备开关：</span>
+                <span className="tit">
+                  {formatMessage({ id: 'lightManage.list.switch' })}
+                </span>
                 <Select
                   id="deviceSwitch"
                   titleField={deviceSwitchList.titleField}
@@ -409,11 +473,13 @@ export default class SingleLampCon extends Component {
                   disabled={disabled}
                   onClick={this.switchApply}
                 >
-                  应用
+                  {formatMessage({ id: 'lightManage.list.apply' })}
                 </button>
               </div>
               <div>
-                <span className="tit">调光：</span>
+                <span className="tit">
+                  {formatMessage({ id: 'lightManage.list.dimming' })}
+                </span>
                 <Select
                   id="dimming"
                   titleField={brightnessList.titleField}
@@ -428,7 +494,7 @@ export default class SingleLampCon extends Component {
                   disabled={disabled}
                   onClick={this.dimmingApply}
                 >
-                  应用
+                  {formatMessage({ id: 'lightManage.list.apply' })}
                 </button>
               </div>
             </div>
@@ -440,7 +506,9 @@ export default class SingleLampCon extends Component {
               onClick={() => this.handleCollapse('mapCollapse')}
             >
               <span class="icon_map" />
-              <span>地图位置</span>
+              <span>
+                {formatMessage({ id: 'lightManage.list.mapPosition' })}
+              </span>
               <span class="icon icon_collapse pull-right" />
             </div>
             <div
@@ -462,3 +530,5 @@ export default class SingleLampCon extends Component {
  *                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>
  */
+
+export default injectIntl(SingleLampCon);
