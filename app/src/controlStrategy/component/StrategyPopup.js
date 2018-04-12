@@ -86,7 +86,7 @@ export default class TimeStrategyPopup extends Component {
       };
       retryNumber && (data.retryNumber = retryNumber);
       retryInterval && (data.retryInterval = retryInterval);
-      groupId && (data.groupId = groupId);
+      data.groupId = groupId?groupId:null;
       this.props.onConfirm && this.props.onConfirm(data);
     }
 
