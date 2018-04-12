@@ -263,8 +263,8 @@ export class Fault extends Component {
         <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField} 
           options={domainList.options} value={domainList.value}
           onChange={(e) => {this.selectChange(e, 'domainList');}}/>
-        <Select id="type" titleField={typeList.valueField} valueField={typeList.valueField}
-          options={typeList.options} value={typeList.value} onChange={(e) => {this.selectChange(e, 'typeList');}}/>
+        {/* <Select id="type" titleField={typeList.valueField} valueField={typeList.valueField}
+          options={typeList.options} value={typeList.value} onChange={(e) => {this.selectChange(e, 'typeList');}}/> */}
         <Select id="level" titleField={levelList.valueField} valueField={levelList.valueField}
           options={levelList.options} value={levelList.value} onChange={(e) => {this.selectChange(e, 'levelList');}}/>
         <div className="datePicker">
@@ -274,11 +274,11 @@ export class Fault extends Component {
           <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="结束日期" style={{ width: '106px' }}
             defaultValue={end} value={end} onChange={value => this.dateChange('end', value)} />
         </div>
-        <div className="button-group">
+        {/* <div className="button-group">
           <button className="btn btn-primary" onClick={() => {this.handlePopup('acceptable');}}>{this.props.intl.formatMessage({id:'button.acceptable'})}</button>
           <button className="btn btn-primary" onClick={() => {this.handlePopup('hangUp');}}>{this.props.intl.formatMessage({id:'button.hangUp'})}</button>
           <button className="btn btn-primary" onClick={() => {this.handlePopup('solve');}}>{this.props.intl.formatMessage({id:'button.solve'})}</button>
-        </div>
+        </div> */}
       </div>
       <div className="table-container">
         <Table columns={this.columns} data={data} allChecked={allChecked} checked={checked}
