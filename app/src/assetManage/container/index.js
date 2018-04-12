@@ -25,6 +25,8 @@ class AssetManageIndex extends Component {
 
     this.initTreeData = this.initTreeData.bind(this);
     this.onToggle = this.onToggle.bind(this);
+
+    this.getMathNode = this.getMathNode.bind(this);
   }
 
   componentWillMount() {
@@ -45,6 +47,26 @@ class AssetManageIndex extends Component {
     })
     this.props.actions.treeViewInit(TreeData);
     treeViewNavigator(TreeData, this.props.router);
+
+    const node = this.getMathNode(TreeData, this.props.location.pathname);
+    if(node){
+      this.onToggle(node);
+    }
+  }
+
+  getMathNode(data, pathname){
+    for(let i=0;i<data.length;i++){
+      if(!data[i].children && data[i].link.indexOf(pathname) > -1){
+        return data[i];
+      }else{
+        if(data[i].children){
+          return this.getMathNode(data[i].children, pathname);
+        }
+
+      }
+    }
+
+    return null;
   }
 
   onToggle(node) {
