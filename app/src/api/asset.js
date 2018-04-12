@@ -172,6 +172,8 @@ export function getAssetsBaseById(id, cb) {
     method: 'GET',
   }, response => {
     cb && cb(response);
+  },null,(err)=>{
+    cb && cb({});
   });
 }
 /**
