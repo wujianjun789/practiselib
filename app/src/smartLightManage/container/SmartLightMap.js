@@ -376,6 +376,8 @@ export class SmartLightMap extends Component{
                 this.presetList.value = this.presetList.options[event.target.selectedIndex].value;
                 this.setState(this.presetList);
                 break;
+            default:
+                break;
         }
     }
 
@@ -471,6 +473,8 @@ export class SmartLightMap extends Component{
                     this.setState({interactive:false}, ()=>this.searchSubmit(tableIndex));
                 }
                 break;
+            default:
+            break;
         }
 
         this.setState({tableIndex:tableIndex});
@@ -573,16 +577,64 @@ export class SmartLightMap extends Component{
         let faultList = [];
         const {faultStyle, IsOpenFault} = this.state;
         switch(id){
-            case "screen":
-                const {screen} = this.state;
-                faultList = screen.get("faultList").toJS();
+        case "screen":{
+            const {screen} = this.state;
+            faultList = screen.get("faultList").toJS();
 
-                return <div className="row state-info screen">
-                    <div className="col-sm-8 prop">
-                        {this.renderState(props, "resolution", "width")}
+            return <div className="row state-info screen">
+                <div className="col-sm-8 prop">
+                    {this.renderState(props, "resolution", "width")}
+                    {this.renderState(props, "online", "online", true)}
+                    {this.renderState(props, "version", "version")}
+                    {this.renderState(props, "brightness_mode", "brightness_mode", true)}
+                    {this.renderState(props, "brightness", "brightness")}
+                    {
+                        <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                    }
+                    {
+                        faultList.length>0 &&
+                        <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                               closeClick={this.closeClick}>
+                            {
+                                faultList.map(key=>{
+                                    return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                })
+                            }
+                        </Panel>
+                    }
+                </div>
+                <div className="col-sm-4 img-container"><img src="http://localhost:8080/images/smartLight/screen_test.png"/></div>
+            </div>
+        }
+        case "camera":{
+            const {camera} = this.state;
+            faultList = camera.get("faultList").toJS();
+            return <div className="row state-info camera">
+                <div className="col-sm-12 prop">
+                    {this.renderState(props, "online_people", "online_people")}
+                    {
+                        <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                    }
+                    {
+                        faultList.length>0 &&
+                        <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
+                               closeClick={this.closeClick}>
+                            {
+                                faultList.map(key=>{
+                                    return <div key={key}>{this.formatIntl("app."+key)}</div>
+                                })
+                            }
+                        </Panel>
+                    }
+                </div>
+            </div>
+        }
+        case "lamp":{
+            const {lamp} = this.state;
+            faultList = lamp.get("faultList").toJS();
+            return <div className="row state-info lamp">
+                    <div className="col-sm-12 prop">
                         {this.renderState(props, "online", "online", true)}
-                        {this.renderState(props, "version", "version")}
-                        {this.renderState(props, "brightness_mode", "brightness_mode", true)}
                         {this.renderState(props, "brightness", "brightness")}
                         {
                             <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
@@ -599,43 +651,20 @@ export class SmartLightMap extends Component{
                             </Panel>
                         }
                     </div>
-                    <div className="col-sm-4 img-container"><img src="http://localhost:8080/images/smartLight/screen_test.png"/></div>
                 </div>
-            case "camera":
-                const {camera} = this.state;
-                faultList = camera.get("faultList").toJS();
-                return <div className="row state-info camera">
-                    <div className="col-sm-12 prop">
-                        {this.renderState(props, "online_people", "online_people")}
-                        {
-                            <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
-                        }
-                        {
-                            faultList.length>0 &&
-                            <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
-                                   closeClick={this.closeClick}>
-                                {
-                                    faultList.map(key=>{
-                                        return <div key={key}>{this.formatIntl("app."+key)}</div>
-                                    })
-                                }
-                            </Panel>
-                        }
-                    </div>
-                </div>
-            case "lamp":
-                const {lamp} = this.state;
-                faultList = lamp.get("faultList").toJS();
-                return <div className="row state-info lamp">
+        }
+        case "charge":{
+            const {charge} = this.state;
+            faultList = charge.get("faultList").toJS();
+            return <div className="row state-info charge">
                         <div className="col-sm-12 prop">
-                            {this.renderState(props, "online", "online", true)}
-                            {this.renderState(props, "brightness", "brightness")}
+                            {this.renderState(props, "charge_state", "charge_state", true)}
                             {
-                                <div className="fault-container"><span className="name">{this.formatIntl('app.fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
+                                <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
                             }
                             {
                                 faultList.length>0 &&
-                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('app.fault_info')} closeBtn={true}
+                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
                                        closeClick={this.closeClick}>
                                     {
                                         faultList.map(key=>{
@@ -645,74 +674,57 @@ export class SmartLightMap extends Component{
                                 </Panel>
                             }
                         </div>
-                    </div>
-            case "charge":
-                const {charge} = this.state;
-                faultList = charge.get("faultList").toJS();
-                return <div className="row state-info charge">
-                            <div className="col-sm-12 prop">
-                                {this.renderState(props, "charge_state", "charge_state", true)}
-                                {
-                                    <div className="fault-container"><span className="name">{this.formatIntl('fault')}:</span><span className={faultList.length>0?"fault":"pass"} onClick={(event)=>{faultList.length>0 && this.faultClick(event)}}></span></div>
-                                }
-                                {
-                                    faultList.length>0 &&
-                                    <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true}
-                                           closeClick={this.closeClick}>
-                                        {
-                                            faultList.map(key=>{
-                                                return <div key={key}>{this.formatIntl("app."+key)}</div>
-                                            })
-                                        }
-                                    </Panel>
-                                }
-                            </div>
-                    </div>
-            case "collect":
-                return <div className="row state-info collect">
-                        <div className="col-sm-12 prop">
-                            {this.renderState(props, "temperature", "temperature", false, '℃')}
-                            {this.renderState(props, "humidity", "humidity", false, 'rh%')}
-                            {this.renderState(props, "air-pressure", "air-pressure", false, 'hPa')}
-                            {this.renderState(props, "noise", "noise", false, 'dB')}
-                            {this.renderState(props, "wind-speed", "wind-speed", false, 'm/s')}
-                            {this.renderState(props, "wind-direction", "wind-direction", true)}
-                            {this.renderState(props, "pm25", "pm25", false, 'ug/m^3')}
-                            {this.renderState(props, "o2", "o2", false, 'VOL')}
-                            {this.renderState(props, "co", "co", false, 'ppm')}
-                        </div>
-                    </div>
+                </div>
+        }
+        case "collect":{
+            return <div className="row state-info collect">
+                <div className="col-sm-12 prop">
+                    {this.renderState(props, "temperature", "temperature", false, '℃')}
+                    {this.renderState(props, "humidity", "humidity", false, 'rh%')}
+                    {this.renderState(props, "air-pressure", "air-pressure", false, 'hPa')}
+                    {this.renderState(props, "noise", "noise", false, 'dB')}
+                    {this.renderState(props, "wind-speed", "wind-speed", false, 'm/s')}
+                    {this.renderState(props, "wind-direction", "wind-direction", true)}
+                    {this.renderState(props, "pm25", "pm25", false, 'ug/m^3')}
+                    {this.renderState(props, "o2", "o2", false, 'VOL')}
+                    {this.renderState(props, "co", "co", false, 'ppm')}
+                </div>
+            </div>
+        }
+        default:
+            return "";
         }
     }
     renderControl(id){
         switch(id){
-            case "screen":
+            case "screen":{
                 const {timeTableList} = this.state
                 return <div className="row state-control screen">
-                        <div className="col-sm-12 form-group switch">
-                            <label className="col-sm-4">{this.formatIntl('app.led.control')}</label>
-                            <select className="col-sm-4" value={this.screenSwitch.value} onChange={event=>this.onChange("screenSwitch", event)}>
-                                {
-                                    this.screenSwitch.options.map(sw=>{
-                                        return <option key={sw.id}>{sw.value}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>{this.formatIntl('button.apply')}</button>
-                        </div>
-                        <div className="col-sm-12 form-group time-table">
-                            <label className="col-sm-4">{this.formatIntl('app.schedule')}</label>
-                            <select className="col-sm-4" value={timeTableList.get("value")} onChange={event=>this.onChange("timeTable", event)}>
-                                {
-                                    timeTableList.get("options").map(time=>{
-                                        return <option key={time.get("id")}>{time.get("name")}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>{this.formatIntl('button.apply')}</button>
-                        </div>
+                    <div className="col-sm-12 form-group switch">
+                        <label className="col-sm-4">{this.formatIntl('app.led.control')}</label>
+                        <select className="col-sm-4" value={this.screenSwitch.value} onChange={event=>this.onChange("screenSwitch", event)}>
+                            {
+                                this.screenSwitch.options.map(sw=>{
+                                    return <option key={sw.id}>{sw.value}</option>
+                                })
+                            }
+                        </select>
+                        <button className="col-sm-3 btn btn-primary padding-left" onClick={event=>this.submit("screenSwitch")}>{this.formatIntl('button.apply')}</button>
                     </div>
-            case "camera":
+                    <div className="col-sm-12 form-group time-table">
+                        <label className="col-sm-4">{this.formatIntl('app.schedule')}</label>
+                        <select className="col-sm-4" value={timeTableList.get("value")} onChange={event=>this.onChange("timeTable", event)}>
+                            {
+                                timeTableList.get("options").map(time=>{
+                                    return <option key={time.get("id")}>{time.get("name")}</option>
+                                })
+                            }
+                        </select>
+                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("timeTable")}>{this.formatIntl('button.apply')}</button>
+                    </div>
+                </div>
+            }
+            case "camera":{
                 const {camera} = this.state;
                 const {min, max, step} = this.focusInput;
                 return <div className="row state-control camera">
@@ -740,40 +752,44 @@ export class SmartLightMap extends Component{
                         <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("preset")}>{this.formatIntl('app.switch')}</button>
                     </div>
                 </div>
-            case "lamp":
+            }
+            case "lamp":{
                 const {strategyList} = this.state;
                 return <div className="row state-control lamp">
-                        <div className="col-sm-12 form-group group">
-                            <label className="col-sm-4">{this.formatIntl('app.group.dimming')}</label>
-                            <label className="col-sm-8 checkbox-inline">
-                                <input type="checkbox"/>
-                                {"疏影路组"}
-                            </label>
-                        </div>
-
-                        <div className="col-sm-12 form-group strategy">
-                            <label className="col-sm-4">{this.formatIntl('app.strategy.dimming')}</label>
-                            <select className="col-sm-4" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
-                                {
-                                    strategyList.get("options").map(strategy=>{
-                                        return <option key={strategy.get("id")}>{strategy.get("name")}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>{this.formatIntl('button.apply')}</button>
-                        </div>
-                        <div className="col-sm-12 form-group handler">
-                            <label className="col-sm-4">{this.formatIntl('app.manual.dimming')}</label>
-                            <select className="col-sm-4" value={this.lightList.value} onChange={(event)=>{this.onChange("handler", event)}}>
-                                {
-                                    this.lightList.options.map(light=>{
-                                        return <option key={light.id}>{light.value}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>{this.formatIntl('button.apply')}</button>
-                        </div>
+                    <div className="col-sm-12 form-group group">
+                        <label className="col-sm-4">{this.formatIntl('app.group.dimming')}</label>
+                        <label className="col-sm-8 checkbox-inline">
+                            <input type="checkbox"/>
+                            {"疏影路组"}
+                        </label>
                     </div>
+
+                    <div className="col-sm-12 form-group strategy">
+                        <label className="col-sm-4">{this.formatIntl('app.strategy.dimming')}</label>
+                        <select className="col-sm-4" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
+                            {
+                                strategyList.get("options").map(strategy=>{
+                                    return <option key={strategy.get("id")}>{strategy.get("name")}</option>
+                                })
+                            }
+                        </select>
+                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("strategy")}>{this.formatIntl('button.apply')}</button>
+                    </div>
+                    <div className="col-sm-12 form-group handler">
+                        <label className="col-sm-4">{this.formatIntl('app.manual.dimming')}</label>
+                        <select className="col-sm-4" value={this.lightList.value} onChange={(event)=>{this.onChange("handler", event)}}>
+                            {
+                                this.lightList.options.map(light=>{
+                                    return <option key={light.id}>{light.value}</option>
+                                })
+                            }
+                        </select>
+                        <button className="col-sm-3 btn btn-primary" onClick={event=>this.submit("handler")}>{this.formatIntl('button.apply')}</button>
+                    </div>
+                </div>
+            }
+            default:
+                return "";
         }
     }
 
@@ -798,8 +814,7 @@ export class SmartLightMap extends Component{
             IsControl = true
         }
 console.log('render:', searchList.toJS());
-        /*panLatlng={panLatLng}*/
-        // console.log('render:', this.map.center);
+
         return (
             <Content>
                 <MapView option={{zoom:this.map.zoom}} mapData={{id:"smartLightMap", latlng:this.map.center, position:positionList, data:searchList.toJS()}}

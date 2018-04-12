@@ -120,6 +120,7 @@ export class Xes extends Component {
     let domainId = domain.getIn(['list', domain.get('index'), 'id']);
     let modelId = model;
     let name = search.get('value');
+    name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
     getSearchCount(domainId, modelId, name, (data) => this.mounted && this.initPageTotal(data));
     getSearchAssets(domainId, modelId, name, offset, size, data => this.mounted && this.searchResult(data));
   }
@@ -160,10 +161,10 @@ export class Xes extends Component {
       // latlng:item.geoPoint}, item.extend))
     });
     this.setState({data:Immutable.fromJS(list)}, () => {
-      if (this.state.data && this.state.data.size > 0) {
+      // if (this.state.data && this.state.data.size > 0) {
         let data = this.state.data.get(0);
         this.tableClick(data);
-      }
+      // }
     });
   }
 
@@ -204,6 +205,18 @@ export class Xes extends Component {
   }
 
   tableClick(data) {
+    if(!data){//当table列表是空行时候要对device重置
+      this.setState({
+        selectDevice: Object.assign({}, this.state.selectDevice, {
+          latlng: {},
+          position: [{
+            'device_id': '', 'device_type': '',
+            lng: '', lat:''
+          }],
+          data: [],
+        })
+      })
+    } else {
     const latlng = data.get('geoPoint').toJS();
     this.setState({selectDevice: Object.assign({}, this.state.selectDevice, {
       latlng: latlng,
@@ -212,6 +225,7 @@ export class Xes extends Component {
       data:[{id:data.get('id'), name:data.get('name')}],
     })});
   }
+}
 
   collapseHandler(id) {
     this.setState({
@@ -248,7 +262,7 @@ export class Xes extends Component {
           <div className="panel panel-default device-statics-info">
             <div className="panel-heading"  role="presentation"
               onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
-              <span className="icon_chart"></span>{intlFormat({en:'asset information', zh:'设备统计信息'})}
+              <span className="icon_chart"></span>{intlFormat({ en: 'Statistics', zh: '统计' })}
               <span className="icon icon_collapse pull-right"></span>              
             </div>
             <div className="panel-body view">

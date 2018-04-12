@@ -33,6 +33,23 @@
         background: linear-gradient(to right, #00bcff, #00d8ff);
       }
 
+      .tree-2 .selected > a{
+        position: relative;
+        .selected-background{
+          position: absolute;
+          top: -40px;
+          left: 0;
+
+          width: 4px;
+          height: 40px;
+
+          padding: 0;
+          background: #00bcff;
+
+          pointer-events: none;
+        }
+      }
+
       .tree-2 > li span {
         height: auto;
         line-height: 0px;
@@ -313,6 +330,11 @@
             }
           }
 
+          &.startDate,&.startTime{
+            .prompt{
+              width: 150px;
+            }
+          }
           &.endDate,&.endTime{
             .control-label{
               width: 50px;

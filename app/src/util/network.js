@@ -195,6 +195,11 @@ export function alertPopup(response) {
 }
 
 export function getConfig(cb) {
+    if(getCookie("host_ip")){
+        console.log('getConfig:', getCookie("host_ip"));
+        return cb && cb();
+    }
+
     httpRequest('/config',{
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
@@ -205,22 +210,82 @@ export function getConfig(cb) {
     })
 }
 
+let mapConfig = null;
 export function getMapConfig(responseFun, errorFun) {
+    console.log('getMapConfig:');
+    if(mapConfig){
+        return responseFun && responseFun.apply(null, [mapConfig]);
+    }
     httpRequest('/config/map',{
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {
+        mapConfig = response;
         responseFun && responseFun.apply(null, [response]);
     }, 'sucess', function (error) {
         errorFun && errorFun.apply(null, [error]);
     })
 }
 
+let domainConfig = null;
+export function getDomainConfig(responseFun, errFun) {
+    if(domainConfig){
+        return responseFun && responseFun.apply(null, [domainConfig]);
+    }
+    httpRequest('/config/domain',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        domainConfig = response;
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
+let moduleConfig = null;
 export function getModuleConfig(user, responseFun, errFun) {
+    if(moduleConfig){
+        return responseFun && responseFun.apply(null, [moduleConfig]);
+    }
+
     httpRequest('/config/module?user='+encodeURIComponent(JSON.stringify(user)),{
         method: 'GET',
         headers: HEADERS_CONTENT_TYPE_JSON
     }, function (response) {
+        moduleConfig = response;
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
+let moduleDefaultConfig = null;
+export function getModuleDefaultConfig(responseFun, errFun) {
+    if(moduleDefaultConfig){
+        return responseFun && responseFun.apply(null, [moduleDefaultConfig]);
+    }
+    httpRequest('/config/moduleDefault',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        moduleDefaultConfig = response;
+        responseFun && responseFun.apply(null, [response]);
+    }, 'sucess', function (error) {
+        errFun && errFun.apply(null, [error]);
+    })
+}
+
+let modelConfig = null;
+export function getModelConfig(responseFun, errFun) {
+    if(modelConfig){
+        return responseFun && responseFun.apply(null, [modelConfig]);
+    }
+    httpRequest('/config/model',{
+        method: 'GET',
+        headers: HEADERS_CONTENT_TYPE_JSON
+    }, function (response) {
+        modelConfig = response;
         responseFun && responseFun.apply(null, [response]);
     }, 'sucess', function (error) {
         errFun && errFun.apply(null, [error]);

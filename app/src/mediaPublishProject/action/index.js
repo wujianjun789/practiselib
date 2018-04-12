@@ -509,11 +509,13 @@ export function playerAssetRemove(item){
     const project = getState().mediaPublishProject.project;
     const parentParentNode = getState().mediaPublishProject.plan;
     const parentNode = getState().mediaPublishProject.scene;
-    const curNode = getState().mediaPublishProject.zone;
+    const zone = getState().mediaPublishProject.zone;
 
     const itemId = item.id;
-    removeItemById(project.id, parentParentNode.id, parentNode.id, curNode.id, itemId, item.type, data => {
-      dispatch(requestItemList(parentParentNode.id, parentNode.id, curNode.id));
+    removeItemById(project.id, parentParentNode.id, parentNode.id, zone.id, itemId, item.type, data => {
+      dispatch(initItem(null));
+      dispatch(initCurnode(zone));
+      dispatch(requestItemList(parentParentNode.id, parentNode.id, zone.id));
     });
   }
 }
@@ -557,7 +559,6 @@ function updateItemName(itemObject, sysfile) {
 
 let lastItemId = -1;
 export function playerAssetSelect(item) {
-  console.log('item:', item, item.id);
   lastItemId = item.id;
   return (dispatch, getState)=>{
     const project = getState().mediaPublishProject.project;

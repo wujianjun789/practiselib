@@ -51,7 +51,7 @@ class PlayerPicAsset extends PureComponent {
   
   componentDidUpdate() {
     const {data} = this.props;
-    if (data.id !== this.state.id) {
+    if (data.id && data.id !== this.state.id) {
       this.setState({id: data.id}, () => {this.requestItem();});
     }
         
@@ -89,6 +89,9 @@ class PlayerPicAsset extends PureComponent {
     const { displayMode, animation, playDuration, playSpeed } = this.state.property;
     switch (id) {
     case 'apply': {
+      if(this.state.prompt.playDuration || this.state.prompt.playSpeed){
+        return false;
+      }
       this.data.baseInfo.playDuration = playDuration*1000;
       this.data.scale = displayMode;
       this.data.inTransition = {
@@ -108,7 +111,7 @@ class PlayerPicAsset extends PureComponent {
 
   render() {
     const {property, prompt} = this.state;
-    console.log(prompt);
+    
     const Invalid = prompt.playDuration || prompt.playSpeed;
     return <div className="pro-container playerPicAsset">
       <div className="row">
@@ -116,7 +119,7 @@ class PlayerPicAsset extends PureComponent {
           <label className="control-label">{this.props.intl.formatMessage({id:'name'})}</label>
           <div className="input-container input-w-1">
             <input type="text" className="form-control" disabled="disabled"
-              value={property.assetName} />
+              value={property.assetName?property.assetName:""} />
           </div>
         </div>
       </div>

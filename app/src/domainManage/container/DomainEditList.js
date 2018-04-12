@@ -18,13 +18,15 @@ import {overlayerShow, overlayerHide} from '../../common/actions/overlayer'
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 
 import {getDomainList, getParentDomainList, getDomainCountByName, getDomainListByName, addDomain, updateDomainById, deleteDomainById} from '../../api/domain'
+import {getDomainConfig} from '../../util/network';
 
-import Immutable from 'immutable';
 import {getIndexByKey} from '../../util/index'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 import {trimString} from '../../util/string';
+import {getLocalStorage} from '../../util/cache';
 
+import Immutable from 'immutable';
 import lodash from 'lodash';
 export class DomainEditList extends Component {
     constructor(props) {
@@ -51,14 +53,17 @@ export class DomainEditList extends Component {
                 total: 0
             }),
 
-            search: Immutable.fromJS({placeholder:intlFormat({en:'please input the name',zh:'输入域名称'}), value: ''}),
+            search: Immutable.fromJS({placeholder:this.formatIntl('domain.input.placeholder'), value: ''}),
             data: Immutable.fromJS([/*{id:1,name: '上海市', parentId: null, parentName:'无'},
                 {id:2, name: '闵行区', parentId:1, parentName: '上海市'},
                 {id:3, name: '徐汇区', parentId:1, parentName: '上海市'}*/]),
             sidebarInfoStyle:{height:"100%"}
         }
 
-        this.columns = [{id: 1, field: "name", title:intlFormat({en:'domainName',zh:'域名称'})}, {id:2, field:"parentName", title: intlFormat({en:'parentName',zh:'上级域'})}]
+        this.domain = [];
+        this.columns = [{id: 1, field: "name", title:this.formatIntl('domain.name')},
+            {id:2, field:"parentName", title: this.formatIntl('domain.parent')},
+            {id:3, field:"levelName", title: this.formatIntl('domain.level')}]
         this.domainList = [];
 
         this.formatIntl = this.formatIntl.bind(this);
@@ -92,8 +97,13 @@ export class DomainEditList extends Component {
         this.mounted = true;
         this.requestDomain();
         this.initTreeData();
-        this.requestSearch();
+        // this.requestSearch();
 
+        getDomainConfig(response=>{
+            console.log(response);
+            this.domain = response;
+            this.requestSearch();
+        })
         window.onresize = event=>{
             this.mounted && this.setSize();
         }
@@ -149,23 +159,27 @@ export class DomainEditList extends Component {
 
     initDomainList(data){
         let list = data.map(domain=>{
-            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'})})
+            const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
+            const domainName = domainConfig.name;
+            const zoom = domainConfig.zoom;
+            return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'}),
+                levelName:this.formatIntl(domainName), zoom:zoom})
         })
 
 
         this.setState({data:Immutable.fromJS(list)},()=>{
             this.setSize();
 
-            if(data.length){
+            if(list.length){
                 if(this.state.selectDomain.data.length){
                     const index = lodash.findIndex(list, domain=>{ return domain.id == this.state.selectDomain.data[0].id});
                     if(index>-1){
                         this.updateSelectDomain(list[index]);
                     }else{
-                        this.updateSelectDomain(data[0]);
+                        this.updateSelectDomain(list[0]);
                     }
                 }else{
-                    this.updateSelectDomain(data[0])
+                    this.updateSelectDomain(list[0])
                 }
 
             }else{
@@ -196,7 +210,7 @@ export class DomainEditList extends Component {
     addDomain(){
         const {listMode, selectDomain} = this.state
         const {actions} = this.props;
-        actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+        actions.overlayerShow(<DomainPopup id="addDomain" title={this.formatIntl('domain.add')} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                            onConfirm={(data)=>{
@@ -236,7 +250,7 @@ export class DomainEditList extends Component {
             name = data.name;
         }
 
-        actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
+        actions.overlayerShow(<DomainPopup id="updateDomain" title={this.formatIntl('domain.edit')} data={{domainId:updateId, domainName:name,
                 lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                            onConfirm={(data)=>{
@@ -265,7 +279,7 @@ export class DomainEditList extends Component {
             let data = selectDomain.data[0];
             curId = data.id;
         }
-        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={intlFormat({en:'delete the domain?',zh:'是否删除选中域？'})}
+        actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete" tips={this.formatIntl('domain.delete.alert')}
                                             cancel={()=>{actions.overlayerHide()}} confirm={()=>{deleteDomainById(curId,
                                                  ()=>{
                                                     actions.overlayerHide();
@@ -310,6 +324,7 @@ export class DomainEditList extends Component {
 
     updateSelectDomain(domain){
         let selectDomain = this.state.selectDomain;
+        selectDomain.zoom = domain.zoom;
         selectDomain.latlng = domain.geoPoint;
         selectDomain.position.splice(0)
         selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
@@ -341,7 +356,7 @@ export class DomainEditList extends Component {
     render() {
         const {collapse, propertyCollapse, selectDomain, page, search, data, sidebarInfoStyle} = this.state
         let disabled = (data.size==0?true:false);
-
+        
         return (
             <Content className={'offset-right list-mode '+(collapse?'collapsed':'')}>
                 <div className="heading">
@@ -357,7 +372,7 @@ export class DomainEditList extends Component {
                               current={page.get('current')} total={page.get('total')} onChange={this.pageChange}/>
                     </div>
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collapseHandler={this.collpseHandler} style={sidebarInfoStyle}
+                <SideBarInfo mapOptions={{zoom:selectDomain.zoom}} mapDevice={selectDomain} collapseHandler={this.collpseHandler} style={sidebarInfoStyle}
                         className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>

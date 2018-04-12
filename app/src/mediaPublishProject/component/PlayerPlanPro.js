@@ -15,6 +15,7 @@ import {weekTranformArray, arrayTranformWeek} from '../util/index';
 import {getNextSeconds} from '../../util/time';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
+import {dateAddZero} from '../../util/string';
 
 class PlayerPlanPro extends PureComponent {
   constructor(props) {
@@ -40,7 +41,7 @@ class PlayerPlanPro extends PureComponent {
       },
       prompt:{
         //计划
-        plan:false, week:false,
+        plan:false, week:false, startDate:false, startTime:false
         /*action: false, axisX: true, axisY: true, speed: true, repeat: true, resTime: true, flicker: true,*/
       },
     };
@@ -93,10 +94,10 @@ class PlayerPlanPro extends PureComponent {
 
     const week = weekTranformArray(data.week);
     this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
-    this.state.property.startDate.defaultValue = this.state.property.startDate.value = moment(dateBegin.year + '-' + dateBegin.month + '-' + dateBegin.day);
-    this.state.property.endDate.defaultValue = this.state.property.endDate.value = moment(dateEnd.year + '-' + dateEnd.month + '-' + dateEnd.day);
-    this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(dateBegin.year + '-' + dateBegin.month + '-' + dateBegin.day + ' ' + timeBegin.hour + ':' + timeBegin.minute + ':' + timeBegin.second + ':' + timeBegin.milliseconds);
-    this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(dateEnd.year + '-' + dateEnd.month + '-' + dateEnd.day + ' ' + timeEnd.hour + ':' + timeEnd.minute + ':' + timeEnd.second + ':' + timeEnd.milliseconds);
+    this.state.property.startDate.defaultValue = this.state.property.startDate.value = moment(dateBegin.year + '-' + dateAddZero(dateBegin.month) + '-' + dateAddZero(dateBegin.day));
+    this.state.property.endDate.defaultValue = this.state.property.endDate.value = moment(dateEnd.year + '-' + dateAddZero(dateEnd.month) + '-' + dateAddZero(dateEnd.day));
+    this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(dateBegin.year + '-' + dateAddZero(dateBegin.month) + '-' + dateAddZero(dateBegin.day) + ' ' + dateAddZero(timeBegin.hour) + ':' + dateAddZero(timeBegin.minute) + ':' + dateAddZero(timeBegin.second) + ':' + dateAddZero(timeBegin.milliseconds));
+    this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(dateEnd.year + '-' + dateAddZero(dateEnd.month) + '-' + dateAddZero(dateEnd.day) + ' ' + dateAddZero(timeEnd.hour) + ':' + dateAddZero(timeEnd.minute) + ':' + dateAddZero(timeEnd.second) + ':' + dateAddZero(timeEnd.milliseconds));
     this.state.property.week.defaultValue = this.state.property.week.value = week;
 
     this.setState({id:data.id, property: Object.assign({}, this.state.property),
@@ -104,7 +105,7 @@ class PlayerPlanPro extends PureComponent {
   }
 
     applyHandler = () => {
-      const {property} = this.state;
+      const {property, prompt} = this.state;
       let planId = this.props.data.id;
 
       let data = {
@@ -116,25 +117,7 @@ class PlayerPlanPro extends PureComponent {
         week: arrayTranformWeek(property.week.value),
       };
 
-      const endDateYear = property.endDate.value.format('YYYY');
-      const endDateMonth = property.endDate.value.format('MM');
-      const endDateDay = property.endDate.value.format('DD');
-      const startDateYear = property.startDate.value.format('YYYY');
-      const startDateMonth = property.startDate.value.format('MM');
-      const startDateDay = property.startDate.value.format('DD');
-      const startTimeHour = property.startTime.value.format('HH');
-      const startTimeMinute = property.startTime.value.format('mm');
-      const startTimeSecond = property.startTime.value.format('ss');
-      const endTimeHour = property.endTime.value.format('HH');
-      const endTimeMinute = property.endTime.value.format('mm');
-      const endTimeSecond = property.endTime.value.format('ss');
-      if ( endDateYear < startDateYear
-            || endDateYear == startDateYear && endDateMonth < startDateMonth
-            || endDateYear == startDateYear && endDateMonth == startDateMonth && endDateDay < startDateDay
-        || endTimeHour < startTimeHour
-        || endTimeHour == startTimeHour && endTimeMinute < startTimeMinute
-        || endTimeHour == startTimeHour && endTimeMinute == startTimeMinute && endTimeSecond <= startTimeSecond) {
-        this.props.actions.addNotify(0, '请输入正确日期');
+      if(prompt.plan || prompt.week || prompt.startDate || prompt.startTime){
         return false;
       }
 
@@ -163,7 +146,6 @@ class PlayerPlanPro extends PureComponent {
     }
 
     planClick(id) {
-      console.log(id);
       switch (id) {
       case 'apply':
         this.applyHandler();
@@ -182,7 +164,30 @@ class PlayerPlanPro extends PureComponent {
         this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
           prompt:Object.assign({}, this.state.prompt, {[id]:!value.length})});
       } else {
-        this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }) });
+        const {startDate, endDate, startTime, endTime} = this.state.property;
+        let promptId =  'startTime';
+        let promptValue = false;
+        if(id == 'startTime' || id == 'endTime'){
+          promptId = 'startTime';
+          if(!value || id == 'endTime' && !startTime.value || id == 'startTime' && !endTime.value){
+            promptValue = true;
+          }else{
+            const valueSecond = value.hour()*3600+value.minute()*60+value.second();
+            const endTimeSecond = endTime.value && endTime.value.hour()*3600+endTime.value.minute()*60+endTime.value.second();
+            const startTimeSecond = startTime.value && startTime.value.hour()*3600+startTime.value.minute()*60+startTime.value.second();
+            promptValue = !(id == 'startTime'?(valueSecond)<(endTimeSecond) :(startTimeSecond)<(valueSecond));
+          }
+
+        }else{
+          promptId = 'startDate';
+          if(!value || id == 'endDate' && !startDate.value || id == 'startDate' && !endDate.value){
+            promptValue = true;
+          }else{
+            promptValue = !(id == 'startDate'?value.isBefore(endDate.value) || value.isSame(endDate.value):startDate.value.isBefore(value) || startDate.value.isSame(value));
+          }
+        }
+        this.setState({ property: Object.assign({}, this.state.property, { [id]: Object.assign({}, this.state.property[id], { value: value }) }),
+          prompt:Object.assign({}, this.state.prompt, {[promptId]:promptValue})});
       }
     }
 
@@ -207,7 +212,8 @@ class PlayerPlanPro extends PureComponent {
 
     render() {
       const {property, prompt} = this.state;
-      const Invalid = prompt.plan || prompt.week;
+      const Invalid = prompt.plan || prompt.week || prompt.startDate || prompt.startTime;
+
       return <div className={'pro-container playerPlan '}>
         <div className="row">
           <div className="form-group plan">
@@ -229,7 +235,7 @@ class PlayerPlanPro extends PureComponent {
             <div className="input-container input-w-2">
               <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="" style={{ width: '85px' }}
                 defaultValue={property.startDate.value} value={property.startDate.value} onChange={value => this.dateChange('startDate', value)} />
-              <div className={prompt.startDate ? 'prompt ' : 'prompt hidden'}>{'请选择开始日期'}</div>
+              <div className={prompt.startDate ? 'prompt ' : 'prompt hidden'}><FormattedMessage id="mediaPublish.check"/></div>
             </div>
           </div>
           <div className="form-group pull-right endDate">
@@ -249,7 +255,7 @@ class PlayerPlanPro extends PureComponent {
             <div className="input-container input-w-2">
               <TimePicker size="large" placeholder={property.startTime.placeholder}  style={{ width: '85px' }}
                 onChange={value => this.dateChange('startTime', value)} defaultValue={property.startTime.value} value={property.startTime.value} />
-              <div className={prompt.startTime ? 'prompt ' : 'prompt hidden'}>{'请选择开始时间'}</div>
+              <div className={prompt.startTime ? 'prompt ' : 'prompt hidden'}><FormattedMessage id="mediaPublish.check"/></div>
             </div>
           </div>
           <div className="form-group pull-right endTime">

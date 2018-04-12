@@ -81,6 +81,8 @@ export function getSearchAssets(domainId, model, name, offset, limit, cb) {
     headers: headers,
     method: 'GET',
   }, response => {
+    // console.log("getSearchAssets:")
+    // console.log("getSearchAssets:", response)
     cb && cb(response);
   });
 }
@@ -107,7 +109,7 @@ function getSearchParam(domainId, model, name) {
     Object.assign(param, { 'extendType': model });
   }
   if (name) {
-    Object.assign(param, { 'name': { 'like': name } });
+    Object.assign(param, { 'name': { 'like': `%${name}%` } });
   }
 
   return param;

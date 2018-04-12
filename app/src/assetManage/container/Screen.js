@@ -40,15 +40,12 @@ export class Screen extends Component {
       ],
     };
 
-    this.assetPropertyColumns = [  //设备属性表头定义
-      { field: 'name', title: '名称' },
-      { field: 'description', title: '描述' },
-      { field: 'unit', title: '单位' },
-      { field: 'accuracy', title: '精度' },
-    ];
     this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
-      { field: 'name', title: '名称' },
-      { field: 'description', title: '描述' },
+      { field: 'name', title: this.formatIntl('equipment.name')},
+      { field: 'description', title: this.formatIntl('equipment.description') },
+      { field: 'power', title: this.formatIntl('equipment.power') },
+      { field: 'life', title: this.formatIntl('equipment.life') },
+      { field: 'manufacture', title: this.formatIntl('equipment.manufacturer') },
     ];
     this.formatIntl = this.formatIntl.bind(this);
     this.rowDelete = this.rowDelete.bind(this);
@@ -58,7 +55,7 @@ export class Screen extends Component {
     this.updateModelType = this.updateModelType.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let { model, assetPropertyList } = this.state;
     this.mounted = true;
     getModelData(() => {
@@ -80,7 +77,6 @@ export class Screen extends Component {
     let { assetTypeList, model } = this.state;
     getModelTypeByModel(model, (data) => {
       let types = data[0].types;
-      console.log("types3333333:", types);
       this.mounted && this.updateModelType(types);
     });
   }
@@ -108,7 +104,7 @@ export class Screen extends Component {
     const { actions } = this.props;
     let curId = id; //当前要删除的型号的Id
     actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete"
-      tips={'是否删除选该行？'} cancel={() => { actions.overlayerHide(); }}
+      tips={this.formatIntl('equipment.isDeleteDevice')} cancel={() => { actions.overlayerHide(); }}
       confirm={() => {
         this.deleteModalTypeById(curId);
         actions.overlayerHide();
@@ -126,9 +122,12 @@ export class Screen extends Component {
       }
     }
 
-    actions.overlayerShow(<TypeEditPopup id="updateType" title={'修改设备型号'}
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.modifyDevice')}
       data={data}
       idEdit={false}
+      hasPower={true}
+      hasLife={true}
+      hasManufacture={true}
       onCancel={() => {
         actions.overlayerHide();
       }}
@@ -136,9 +135,13 @@ export class Screen extends Component {
         //data={type, power, serviceLife, manufacturer, detail,...others}
         //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
         let name = data.name;
+        let power = data.power;
         let description = data.description;
+        let life = data.life;
+        let manufacture = data.manufacture;
         let typeData = Object.assign({}, {
-          name: name, description: description
+          name: name, power: power, description: description,
+          life: life, manufacture: manufacture
         });
         //对更新后的数据做合并处理，名字是主键不能更改
         let list = assetTypeList;
@@ -160,9 +163,15 @@ export class Screen extends Component {
     let data = {};
     data.name = '';
     data.description = '';
-    actions.overlayerShow(<TypeEditPopup id="updateType" title={'添加设备型号'}
+    data.power = '';
+    data.life = '';
+    data.manufacture = '';
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.addDevice')}
       addNotify={actions.addNotify}
       data={data}
+      hasPower={true}
+      hasLife={true}
+      hasManufacture={true}
       onCancel={() => {
         actions.overlayerHide();
       }}
@@ -170,6 +179,9 @@ export class Screen extends Component {
         //data={type, power, serviceLife, manufacturer, detail, ...others}
         //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
         let name = data.name;
+        let power = data.power;
+        let life = data.life;
+        let manufacture = data.manufacture;
         let description = data.description;
         let typeData = Object.assign({}, {
           name: name, description: description
@@ -191,38 +203,9 @@ export class Screen extends Component {
 
   render() {
     const { data, assetPropertyList, assetTypeList, keyField } = this.state;
-    console.log("assetTypeList:", assetTypeList)
     let length = assetTypeList.length;
     return (
       <Content>
-        <div className="row heading">
-          <div className="propertyTable"><span></span>{this.formatIntl('asset.property')}</div>
-          <table className="equipment">
-            <thead>
-              <tr>
-                {
-                  this.assetPropertyColumns.map((column, index) => {
-                    return <th key={index}>{column.title}</th>;
-                  })
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {
-                assetPropertyList.map((row, index) => {
-                  return <tr key={index}>
-                    {
-                      this.assetPropertyColumns.map((column, index) => {
-                        // return <td key={index}>{row.get(column.field)}</td>;
-                        return <td key={index}>{row[column.field]}</td>;
-                      })
-                    }
-                  </tr>;
-                })
-              }
-            </tbody>
-          </table>
-        </div>
         <div className="row heading">
           <div className="type"><span></span>{this.formatIntl('asset.assetTypes')}</div>
           <table className="equipment">
@@ -233,7 +216,7 @@ export class Screen extends Component {
                     return <th key={index}>{column.title}</th>;
                   })
                 }
-                {<th>编辑</th>}
+                {<th>{this.formatIntl('equipment.edit')}</th>}
               </tr>
             </thead>
             <tbody>
@@ -249,15 +232,15 @@ export class Screen extends Component {
                       <td className="edit">
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
-                            className="icon_edit">修改</span>
+                            className="icon_edit">{this.formatIntl('equipment.modify')}</span>
                         </a>
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
-                            className="icon_delete">删除</span></a>
+                            className="icon_delete">{this.formatIntl('equipment.delete')}</span></a>
                       </td>
                       :
                       <td><span role="presentation" className="btn"
-                        onClick={this.rowAdd}>+添加</span> </td>}
+                        onClick={this.rowAdd}>+{this.formatIntl('equipment.add')}</span> </td>}
                   </tr>;
                 })
               }

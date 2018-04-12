@@ -19,7 +19,8 @@ import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup,
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
-
+import {TimePicker} from 'antd';
+import moment from 'moment'
 class TimeStrategy extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +43,7 @@ class TimeStrategy extends Component {
       selectItem: {},
       selectedDevicesData:[],
       allDevicesData:[],
-      lightList:[{id:1, name:'0'}, {id:2, name:'10'}, {id:3, name:'20'}, {id:4, name:'30'}],
+      lightList:[{id:1, name:'0'}, {id:2, name:'10'}, {id:3, name:'20'}, {id:4, name:'30'}, {id:5, name:'40'}, {id:6, name:'50'}, {id:7, name:'60'}, {id:8, name:'70'}, {id:9, name:'80'}, {id:10, name:'90'}, {id:11, name:'100'}],
       allDevices:{
         allChecked:false,
         checked:[],
@@ -310,6 +311,9 @@ class TimeStrategy extends Component {
       if (!item.plans) {
         selectItem.start = item.start.split('T')[0];
         selectItem.end = item.end.split('T')[0];
+        if(selectItem.excuteTime){
+          selectItem.excuteTime = moment("2018-01-01").add(selectItem.excuteTime, 'seconds');
+        }
         switch (selectItem.level) {
         case 0:
           selectItem.levelTitle = this.formatIntl('app.strategy.platform');
@@ -367,7 +371,7 @@ class TimeStrategy extends Component {
         };
       }
       updateStrategy({id:selectItem.id, execution:selectItem.execution, 
-        excuteTime:selectItem.excuteTime}, this.requestSearch);
+        excuteTime:selectItem.excuteTime.hour()*3600 + selectItem.excuteTime.minute()*60 + selectItem.excuteTime.second()}, this.requestSearch);
     }
 
     collapseClick=(id, key, data) => {
@@ -514,16 +518,11 @@ class TimeStrategy extends Component {
                 <div className="panel panel-default">
                   <div className="panel-heading" role="presentation"
                     onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed'); }}>
-                    <span className="icon_select"></span>{this.formatIntl('app.select.strategy')}
+                    <span className="icon_select"></span>
+                    <p className="name" title={selectItem.name}>{selectItem.name}</p>
                     <span className="icon icon_collapse pull-right"></span>
                   </div>
                   <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'collapsed' : '')}>
-                    <div className="form-group">
-                      <label title={this.formatIntl('app.strategy.name')}>{this.formatIntl('app.strategy.name')}</label>
-                      <div className="input-container">
-                        <input type="text" className="form-control" value={selectItem.name} disabled="disabled"/>
-                      </div>
-                    </div>
                     <div className="form-group">
                       <label title={this.formatIntl('app.strategy.level')}>{this.formatIntl('app.strategy.level')}</label>
                       <div className="input-container">
@@ -540,13 +539,13 @@ class TimeStrategy extends Component {
                       </div>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group retry">
                       <label title={this.formatIntl('app.strategy.retryNumber')}>{this.formatIntl('app.strategy.retryNumber')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" value={selectItem.retryNumber} disabled="disabled"/>
                       </div>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group retry">
                       <label title={this.formatIntl('app.strategy.retryInterval')}>{this.formatIntl('app.strategy.retryInterval')}</label>
                       <div className="input-container">
                         <input type="text" className="form-control" 
@@ -563,10 +562,12 @@ class TimeStrategy extends Component {
                   </div>
                   <div className={'panel-body ' + (sidebarInfo.parameterCollapsed ? 'collapsed' : '')}>
                     <div className="form-group">
-                      <label title={this.formatIntl('app.date')}>{this.formatIntl('app.date')}</label>
+                      <label title={this.formatIntl('app.time')}>{this.formatIntl('app.time')}</label>
                       <div className="input-container">
-                        <input type="text" className="form-control" value={selectItem.excuteTime ? selectItem.excuteTime
-                          : ''} onChange={e => this.onChange('time', e.target.value)}/>
+                        {/* <input type="text" className="form-control" value={selectItem.excuteTime ? selectItem.excuteTime
+                          : ''} onChange={e => this.onChange('time', e.target.value)}/> */}
+                        <TimePicker size="large" style={{ width: "200px"}} onChange={value => this.onChange("time", value)} 
+                        defaultValue={moment('2018-01-01')} value={selectItem.excuteTime ? selectItem.excuteTime: moment('2018-01-01')}/>
                       </div>
                     </div>
                     <div className="form-group">
@@ -598,7 +599,7 @@ class TimeStrategy extends Component {
                         ? selectItem.devices.length : 0}${this.formatIntl('sysOperation.devices')}`}</span>
                       <button className="btn btn-primary pull-right" onClick={() => { 
                         !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded'); 
-                      }}>{this.formatIntl('button.modify')}</button>                                   
+                      }}>{this.formatIntl('button.edit')}</button>                                   
                     </div>
                     <Table className="selectedDevices" collapsed columns={this.deviceColumns}
                       data={selectedDevicesData} collapseClick={this.collapseClick}/>
@@ -618,7 +619,7 @@ class TimeStrategy extends Component {
                 <button className="btn btn-gray" onClick={this.addGateway}>
                   {this.formatIntl('button.add.gateway')}</button>                                   
                 <button className="btn btn-primary pull-right" onClick={this.addDevice}>
-                  {this.formatIntl('button.modify')}</button>                   
+                  {this.formatIntl('button.edit')}</button>                   
               </div>
               <Table className="allDevices" collapsed columns={this.deviceColumns} data={allDevicesData}
                 allChecked={allDevices.allChecked} checked={allDevices.checked} collapseClick={this.collapseClick}

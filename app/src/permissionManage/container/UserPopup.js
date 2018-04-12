@@ -11,6 +11,7 @@ import {NameValid,PassWordValid} from '../../util/index';
 import {IsExitInArray,getObjectByKeyObj,getIndexByKey2} from '../../util/algorithm';
 import {FormattedMessage} from 'react-intl';
 import {requestRoles} from '../../api/permission';
+import {getModuleDefaultConfig} from '../../util/network';
 
 export default class UserPopup extends Component{
     constructor(props){
@@ -25,6 +26,8 @@ export default class UserPopup extends Component{
             rePassword:Immutable.fromJS({value:'',checked:'',reminder:''}),
             role:Immutable.fromJS({list:[], index:0, value:'',placeholder:'无'}),
         }
+
+        this.moduleDefault = null;
         this.onCancel = this.onCancel.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.roleChange = this.roleChange.bind(this);
@@ -38,12 +41,17 @@ export default class UserPopup extends Component{
             let list = data.map(item=>{
                 return {
                     id:item.id,
+                    name: item.name,
                     value:this.props.intl.formatMessage({id:"permission."+item.name})
                 }
             })
             let curRole = this.props.isEdit?getObjectByKeyObj(list,'id',this.props.data.roleId):list[0];
             let curIndex = this.props.isEdit?getIndexByKey2(list,'id',this.props.data.roleId):0;
             this.setState({role:this.state.role.update('list',v=>Immutable.fromJS(list)).update('index',v=>curIndex).update('value',v=>curRole.value)})
+        })
+
+        getModuleDefaultConfig(response=>{
+            this.moduleDefault = response;
         })
     }
 
@@ -63,7 +71,8 @@ export default class UserPopup extends Component{
             password:password.get('value'),
             lastName:lastName.get('value'),
             firstName:firstName.get('value'),
-            roleId:role.getIn(['list',role.get('index'),'id'])
+            roleId:role.getIn(['list',role.get('index'),'id']),
+            modules:this.moduleDefault[role.getIn(['list', role.get('index'),'name'])]
         }
         this.props.onConfirm(datas,this.props.isEdit);
         this.props.overlayerHide();
@@ -124,6 +133,8 @@ export default class UserPopup extends Component{
                     else{
                         this.setState({rePassword:this.state.rePassword.update('checked',v=>'success')})
                     }
+                default:
+                    break;
                     
             }
         } 
@@ -145,6 +156,7 @@ export default class UserPopup extends Component{
         let {username,lastName,firstName,password,rePassword,toggle,domainList} = this.state;
         let valid = !!username.get('reminder') || !!lastName.get('reminder') || !!firstName.get('reminder') || !!password.get('reminder') || !!rePassword.get('reminder');
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, valid]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
+
         return (
             <Panel className={className} title = {title} footer = {footer} closeBtn = {true} closeClick = {this.onCancel}>
                 <div className = 'form-group row basic-info'>

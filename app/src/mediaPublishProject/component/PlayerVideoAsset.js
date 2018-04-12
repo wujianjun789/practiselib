@@ -47,7 +47,7 @@ class PlayerPicAsset extends PureComponent {
 
   componentDidUpdate() {
     const {data} = this.props;
-    if (data.id !== this.state.id) {
+    if (data.id && data.id !== this.state.id) {
       this.setState({id: data.id}, () => {this.requestItem();});
     }
   }
@@ -102,6 +102,9 @@ class PlayerPicAsset extends PureComponent {
     const { playType, playTimeBegin, playTimeEnd, scale} = this.state.property;
     switch (id) {
     case 'apply': {
+      if(this.state.prompt.clipsRage){
+        return false;
+      }
       this.data.playType = playType;
       // this.data.playTimes = playTimes;
       this.data.playTimeBegin = this.getTime(playTimeBegin);
@@ -128,7 +131,7 @@ class PlayerPicAsset extends PureComponent {
           <label className="control-label">{this.props.intl.formatMessage({id:'name'})}</label>
           <div className="input-container input-w-1">
             <input type="text" className="form-control" disabled="disabled"
-              value={property.assetName} />
+              value={property.assetName?property.assetName:""} />
           </div>
         </div>
       </div>          

@@ -7,6 +7,7 @@ import Table from '../../components/Table';
 import Page from '../../components/Page';
 import SideBarInfo from '../../components/SideBarInfo';
 import Select from '../../components/Select.1';
+import WhiteListPopup from '../components/WhiteListPopup';
 import CentralizedControllerPopup from '../components/CentralizedControllerPopup';
 import ConfirmPopup from '../../components/ConfirmPopup';
 import Immutable from 'immutable';
@@ -31,17 +32,20 @@ import { injectIntl } from 'react-intl';
 
 import DeviceReplacePopup from '../components/DeviceReplacePopup';
 import DeviceUpgradePopup from '../components/DeviceUpgradePopup';
+import SingleDeviceReplacePopup from '../components/SingleDeviceReplacePopup';
 import { replaceDevice } from '../../api/import';
 import {getObjectByKeyObj,getObjectByKey} from '../../util/algorithm';
 import {trimString} from '../../util/string';
+import { requestWhiteListCountById } from '../../api/domain';
 
 export class SingleLampCon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'ssslc',
+      model: this.props.route.model,
       collapse: false,
       deviceCollapse: false,
+      whiteListCollapse:false,      
       page: Immutable.fromJS({
         pageSize: 5,
         current: 1,
@@ -53,80 +57,42 @@ export class SingleLampCon extends Component {
       }),
       selectDevice: {
         id: 'systemOperation',
-        // latlng:{lng: 121.49971691534425,
-        //     lat: 31.239658843127756}
         position: [],
         data: [],
+        whiteCount:0
       },
       domainList: {
         titleField: 'name',
         valueField: 'name',
         index: 0,
         value: '',
-        options: [
-          { id: 1, title: 'domain01', value: 'domain01' },
-          { id: 2, title: 'domain02', value: 'domain02' },
-          { id: 3, title: 'domain03', value: 'domain03' },
-          { id: 4, title: 'domain04', value: 'domain04' },
-          { id: 5, title: 'domain05', value: 'domain05' },
-          { id: 6, title: 'domain06', value: 'domain06' },
-          { id: 7, title: 'domain07', value: 'domain07' },
-        ],
+        options: [],
       },
       modelList: {
         titleField: 'title',
         valueField: 'value',
-        options: [
-          { id: 1, title: 'model01', value: 'model01' },
-          { id: 2, title: 'model02', value: 'model02' },
-          { id: 3, title: 'model03', value: 'model03' },
-          { id: 4, title: 'model04', value: 'model04' },
-          { id: 5, title: 'model05', value: 'model05' },
-          { id: 6, title: 'model06', value: 'model06' },
-          { id: 7, title: 'model07', value: 'model07' },
-        ],
+        options: [],
       },
-      data: Immutable.fromJS([/*{     //table中设备数据
-             id: 0,
-             name: '设备1',
-             model: 'model01',
-             domain: 'domain01',
-             lng: 121.49971691534425,
-             lat: 31.239658843127756
-             }*/]),
+      //table中设备数据
+      data: Immutable.fromJS([]),
     };
 
     this.columns = [
-      // {
-      //   id: 0,
-      //   field: 'domainName',
-      //   title: this.props.intl.formatMessage({ id: 'sysOperation.domain' }),
-      // },
       {
-        id: 1,
+        id: 0,
         field: 'name',
         title: this.props.intl.formatMessage({ id: 'name' }),
+      },
+      {
+        id: 1,
+        field: 'id',
+        title: this.props.intl.formatMessage({ id: 'sysOperation.id' }),
       },
       {
         id: 2,
         field: 'typeName',
         title: this.props.intl.formatMessage({ id: 'sysOperation.type' }),
       },
-      {
-        id: 3,
-        field: 'id',
-        title: this.props.intl.formatMessage({ id: 'sysOperation.id' }),
-      },
-      // {
-      //   id: 5,
-      //   field: 'lng',
-      //   title: this.props.intl.formatMessage({ id: 'map.lng' }),
-      // },
-      // {
-      //   id: 6,
-      //   field: 'lat',
-      //   title: this.props.intl.formatMessage({ id: 'map.lat' }),
-      // },
     ];
 
     this.collapseHandler = this.collapseHandler.bind(this);
@@ -147,19 +113,20 @@ export class SingleLampCon extends Component {
     this.initDomainList = this.initDomainList.bind(this);
     this.initAssetList = this.initAssetList.bind(this);
     this.importHandler = this.importHandler.bind(this);
+    this.initData = this.initData.bind(this);
+    this.requestWhiteListCount = this.requestWhiteListCount.bind(this);
   }
 
   componentWillMount() {
     this.mounted = true;
+    this.initData();
+  }
+  
+  initData(){
     let { model } = this.state;
     getModelData(model, () => {
       if (this.mounted) {
         this.props.actions.treeViewInit(TreeData);
-        // this.setState({
-        //   modelList: Object.assign({}, this.state.modelList, {options: getModelTypesById(model).map((type) => {
-        //     return  {id: type.id, title: type.title, value: type.title};
-        //   })}),
-        // });
         getModelTypeByModel(model, res => {
           let types = res.length == 0 ? [] : res[0].types;
           let list = types.length == 0 ? [] : types.map((type) => {
@@ -185,7 +152,13 @@ export class SingleLampCon extends Component {
     this.mounted = false;
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
+    this.state.model !== this.props.route.model && this.setState({model:this.props.route.model},this.initData)
+  }
+
+  formatIntl(formatId) {
+    const {intl} = this.props;
+    return intl ? intl.formatMessage({id:formatId}) : null;
   }
 
   requestSearch() {
@@ -201,6 +174,7 @@ export class SingleLampCon extends Component {
 
     getSearchAssets(domain ? domain.id : null, model, name, offset, size, data => {
       this.mounted && this.initAssetList(data);
+      model=='ssgw' && this.requestWhiteListCount();
     });
   }
 
@@ -236,6 +210,18 @@ export class SingleLampCon extends Component {
     }
   }
 
+  requestWhiteListCount() {
+    const {selectDevice} = this.state;
+    let gatewayId = selectDevice.data[0].id;
+    requestWhiteListCountById(gatewayId, (lcCount) => {
+      this.setState({
+        selectDevice: Object.assign({}, selectDevice, {
+          whiteCount: lcCount.count,
+        }),
+      });
+    });
+  }
+
   popupCancel() {
     this.props.actions.overlayerHide();
   }
@@ -251,7 +237,7 @@ export class SingleLampCon extends Component {
 
   domainHandler(key,id) {
     // let id = e.target.id;
-    const { model, selectDevice, domainList, modelList } = this.state;
+    const { model, selectDevice, domainList, modelList,whitelistData } = this.state;
     const { overlayerShow, overlayerHide } = this.props.actions;
     let curType = modelList.options.length ? modelList.options[0] : null;
     switch (key) {
@@ -308,39 +294,62 @@ export class SingleLampCon extends Component {
           iconClass="icon_popup_delete" cancel={this.popupCancel}
           confirm={()=>this.popupConfirm(id)} />);
         break;
+      case 'sys-whitelist': {
+        let data2 = selectDevice.data.length ? selectDevice.data[0] : null;
+        overlayerShow(<WhiteListPopup className="whitelist-popup" intl={this.props.intl} id={ data2.id }
+          domainId={ selectDevice.domainId } data={ whitelistData } overlayerHide={ overlayerHide } callFun={ () => {
+            this.requestWhiteListCount();
+          } } />);
+        break;
+      }
       default:
         break;
     }
   }
 
   deviceHandler(key,id) {
-    // let id = e.target.id;
-    if (key === 'sys-upgrade') {
-      //设备升级
-      console.log('this.state.data：', this.state.data);
-      //需要传入的数据：
-      const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
+     if (key === 'sys-upgrade') {
+        if (id){  //单设备升级
+          console.log('this.state.data：', this.state.data);
+          //需要传入的数据：
+          const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
+    
+          overlayerShow(<DeviceUpgradePopup id={id} className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
+            intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
 
-      overlayerShow(<DeviceUpgradePopup className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
-        intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
-          //升级
-
-        }} />);
-
+            }} />);
+        }else {
+          //多设备升级
+        const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
+        overlayerShow(<DeviceUpgradePopup className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
+          intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
+        
+          }} />);
+        }
+    } else if (key === 'sys-replace') {
+        if (id){  //单设备更换
+          const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
+          overlayerShow(<SingleDeviceReplacePopup className="singleDeviceReplace-popup" columns={this.columns}
+            model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
+            overlayerHide={overlayerHide}
+            onConfirm={(datas) => {
+              replaceDevice(`${this.state.model}s`, datas, () => {
+                this.requestSearch();
+              });
+            }} />);
+        } else {
+          //多设备更换
+        const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
+        overlayerShow(<DeviceReplacePopup className="deviceReplace-popup" columns={this.columns}
+          model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
+          overlayerHide={overlayerHide}
+          onConfirm={(datas) => {
+            replaceDevice(`${this.state.model}s`, datas, () => {
+              this.requestSearch();
+            });
+          }} />);
+        }
     }
-    if (id === 'sys-replace') {
-      //设备更换,一个弹出面板
-      const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
-      overlayerShow(<DeviceReplacePopup className="deviceReplace-popup" columns={this.columns}
-        model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
-        overlayerHide={overlayerHide}
-        onConfirm={(datas) => {
-          replaceDevice(`${this.state.model}s`, datas, () => {
-            this.requestSearch();
-          });
-        }} />);
-    }
-
   }
 
   pageChange(current, pageSize) {
@@ -398,18 +407,18 @@ export class SingleLampCon extends Component {
 
   importHandler() {
     const { overlayerShow, overlayerHide, addNotify, removeAllNotify } = this.props.actions;
-
+    let model = this.state.model == 'sses' || this.state.model == 'ssads'? this.state.model : `${this.state.model}s`
     overlayerShow(<ExcelPopup className="import-popup" columns={this.columns} model={this.state.model}
       domainList={this.state.domainList} addNotify={addNotify} removeAllNotify={removeAllNotify} overlayerHide={overlayerHide}
       onConfirm={(datas, isUpdate) => {
-        bacthImport(`${this.state.model}s`, datas, isUpdate, () => {
+        bacthImport(model, datas, isUpdate, () => {
           this.requestSearch();
         });
       }} />);
   }
 
   render() {
-    const { collapse, deviceCollapse, page, search, selectDevice, domainList, data } = this.state;
+    const { collapse, deviceCollapse,whiteListCollapse, page, search, selectDevice, domainList, data } = this.state;
     return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
       <div className="heading">
         <div className="flex-left">
@@ -422,15 +431,15 @@ export class SingleLampCon extends Component {
           <button id="sys-add" className="btn btn-primary add-domain" onClick={()=> this.domainHandler('sys-add') }>
             {this.props.intl.formatMessage({ id: 'button.add' })}</button>
           <div className="btn-group">
-            <button id="sys-maintenance" disabled={data.size == 0?true:false} className="btn btn-gray dropdown-toggle"
+            <button id="sys-maintenance" className="btn btn-gray dropdown-toggle"
               data-toggle="dropdown">操作<span className="caret"></span>
             </button>
             <div className="dropdown-menu" role="menu">
               <span className="glyphicon glyphicon-triangle-top" id="iconbox"></span>
               <div className="listBox">
-                <span className="icon_upgrade" title={this.props.intl.formatMessage({ id: 'button.import' })} onClick={this.importHandler}></span>
-                <span className="icon_upgrade" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })} onClick={()=>this.deviceHandler('sys-upgrade')}></span>
-                <span className="icon_upgrade" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })} onClick={()=>this.deviceHandler('sys-replace')}></span>
+                <span className="icon_import" title={this.props.intl.formatMessage({ id: 'button.import' })} onClick={this.importHandler}></span>
+                <span className="icon_upgrade2" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })} onClick={()=>this.deviceHandler('sys-upgrade')}></span>
+                <span className="icon_replace" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })} onClick={()=>this.deviceHandler('sys-replace')}></span>
               </div>
             </div>
           </div>
@@ -443,11 +452,11 @@ export class SingleLampCon extends Component {
           current={page.get('current')} total={page.get('total')} onChange={this.pageChange} />
       </div>
       <SideBarInfo mapDevice={selectDevice} collapseHandler={this.collapseHandler}
-        className={(deviceCollapse ? 'deviceCollapse ' : '')}>
+        className={(deviceCollapse ? 'deviceCollapse ' : '')+(whiteListCollapse ? 'whiteListCollapse' : '')}>
         <div className="panel panel-default device-statics-info">
           <div className="panel-heading" role="presentation"
             onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
-            <span className="icon_select"></span>{this.props.intl.formatMessage({ id: 'sysOperation.device.version' })}
+            <span className="icon_version"></span>{this.props.intl.formatMessage({ id: 'sysOperation.device.version' })}
             <span className="icon icon_collapse pull-right"></span>
           </div>
           <div className={'panel-body domain-property ' + (deviceCollapse ? 'collapsed' : '')}>
@@ -456,6 +465,19 @@ export class SingleLampCon extends Component {
               <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.software.version' })}：V1.2</span></div>
           </div>
         </div>
+        {this.state.model == 'ssgw' && <div className="panel panel-default device-statics-info whitelist">
+          <div className="panel-heading" role="presentation"
+            onClick={() => { !collapse && this.collapseHandler('whiteListCollapse'); }}>
+            <span className="icon_device_list"></span>{this.formatIntl('sysOperation.whiteList')}
+            <span className="icon icon_collapse pull-right"></span>              
+          </div>
+          <div className={'panel-body domain-property ' + (whiteListCollapse ? 'collapsed' : '')}>
+            <span className="domain-name">{selectDevice.whiteCount}{this.formatIntl('sysOperation.devices')}</span>
+            <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={()=> this.domainHandler('sys-whitelist') }
+              disabled={ data.size == 0 }>{this.formatIntl('button.edit')}
+            </button>
+          </div>
+        </div>}
       </SideBarInfo>
     </Content>;
   }

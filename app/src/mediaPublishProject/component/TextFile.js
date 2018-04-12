@@ -223,6 +223,9 @@ class TextFile extends Component {
             alignment, playDuration, animation, playSpeed, rowSpace, charSpace, prompt } = this.state;
         switch (type) {
             case 'apply': {
+                if(prompt.charSpace || prompt.rowSpace || prompt.playDuration || prompt.playSpeed){
+                    return false;
+                }
                 const { baseInfo, background, font } = this._data
                 const data = Object.assign({}, this._data, {
                     baseInfo: {
@@ -358,7 +361,7 @@ class TextFile extends Component {
                     <div class='form-group'>
                         <label className="control-label">{name.title}</label>
                         <div class='input-container input-w-1'>
-                            <input type='text' class='form-control' disabled value={name.value} onChange={f => f} />
+                            <input type='text' class='form-control' disabled value={name.value?name.value:""} onChange={f => f} />
                         </div>
                     </div>
                 </div>

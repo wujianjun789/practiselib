@@ -146,7 +146,10 @@ class PlayerAreaPro extends PureComponent {
   }
 
   applyHandler = () => {
-    const {property} = this.state;
+    const {property, prompt} = this.state;
+    if(prompt.areaName || prompt.width || prompt.height || prompt.axisX_a || prompt.axisY_a){
+      return false;
+    }
     let areaId = this.props.data.id;
     console.log('index:', property.playEnd.index);
     let data = {

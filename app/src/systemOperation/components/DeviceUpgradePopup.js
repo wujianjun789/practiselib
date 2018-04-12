@@ -25,14 +25,20 @@ export default class DeviceUpgradePopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            buttondisabled:false,
+            packageButtonDisabled:true,
             displayStep1: true, //初始状态，显示第一步的弹框
+            displayLastStep:true,
+            displayCancel:false,
             checkedValue: 1,  //1为全部升级，2为部分升级
             // page: Immutable.fromJS({
             //     pageSize: 10,
             //     current: 1,
             //     total: 0,
             // }),
-            checked: ['12', '13'],//定义多选框中被选中的选项的Id
+            allChecked:true,
+            // checked: ['1','2'],//定义多选框中被选中的选项的Id
+            checked: [],//定义多选框中被选中的选项的Id
             search: Immutable.fromJS({
                 placeholder: 'sysOperation.input.device',
                 value: '',
@@ -47,12 +53,12 @@ export default class DeviceUpgradePopup extends Component {
             },
             filename: '',
             packageData: [
-                "升级包1",
-                "升级包2",
-                "升级包3",
-                "升级包4",
-                "升级包5",
-            ]
+                {id:"01",name:"升级包1"},
+                {id:"02",name:"升级包2"},
+                {id:"03",name:"升级包3"},
+            ],
+            // selectedPackageData:{id:"01",name:"升级包1"},
+            selectedPackageData:{},
         };
         this.columns = [   //table中的colums数据
             // { id: '0', field: 'deviceNum', title:this.props.intl.formatMessage({id:'asset.type'}) },
@@ -66,7 +72,7 @@ export default class DeviceUpgradePopup extends Component {
         this.pageChange = this.pageChange.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
-        this.checkedChange = this.checkedChange.bind(this);
+        this.radioChange = this.radioChange.bind(this);
         this.onNextStep = this.onNextStep.bind(this);
         this.onLastStep = this.onLastStep.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
@@ -80,16 +86,54 @@ export default class DeviceUpgradePopup extends Component {
         this.liLick = this.liLick.bind(this);
         this.mouseOver = this.mouseOver.bind(this);
         this.onClick = this.onClick.bind(this);
+        this.handleButtonDisabled = this.handleButtonDisabled.bind(this);
+        this.handlepackageButton = this.handlepackageButton.bind(this);
+        this.singleUpdateCancel = this.singleUpdateCancel.bind(this);
     }
 
-    onChange(e) {
-        console.log("e:", e.target.value);
+    componentWillMount(){
+        const{id} = this.props;
+        if(id){
+            this.setState({displayStep1:false,displayLastStep:false,displayCancel:true},()=>{
+                //确认待升级对象
+            });
+        }
     }
 
-    checkedChange(e) {  //改变选中状态，当选中全选时，表格多选框不可选，反之可选，在这里对两种情况在state做设置
-        let { checkedValue } = this.state;
+    handlepackageButton(data){
+        let {packageButtonDisabled} = this.state;
+        console.log("data:", data.size);
+        if(data.size!==0){
+            packageButtonDisabled=false;
+        }else{
+            packageButtonDisabled = true;
+        }
+        this.setState({packageButtonDisabled:packageButtonDisabled});
+    }
+
+    handleButtonDisabled(){
+        let {buttondisabled, checked} = this.state;
+        if(checked.length==0){
+            console.log("checked为空");
+            buttondisabled=true;
+            }else{
+            console.log("checked不为空");
+            buttondisabled=false;
+            }
+            return buttondisabled
+    }
+
+    radioChange(e) {  //改变选中状态，当选中全选时，表格多选框不可选，反之可选，在这里对两种情况在state做设置
+        let { checkedValue, buttondisabled,checked } = this.state;
+        console.log("e.target.value", e.target.value);
+        if(e.target.value==1){
+            buttondisabled=false;
+        } else if(e.target.value==2){
+            buttondisabled = this.handleButtonDisabled();
+        }
         this.setState({
             checkedValue: e.target.value,
+            buttondisabled:buttondisabled,
         });
     }
 
@@ -115,6 +159,8 @@ export default class DeviceUpgradePopup extends Component {
                 }
             }
         }
+        let buttondisabled = this.handleButtonDisabled();
+        this.setState({buttondisabled:buttondisabled});
     }
 
     /**
@@ -166,30 +212,56 @@ export default class DeviceUpgradePopup extends Component {
     mouseOver() {
 
     }
-    onClick(e) {
-        // let item = document.getElementById(e.target.id)
+    onClick(e,dataitem) {   //点击升级包，选中该升级包,作为待升级对象
+        //为选中项添加背景色
         let item = e.target
         let itemAll = item.parentNode.childNodes
-        for (var key in itemAll) {
-            console.log(key)
-            console.log("333:", itemAll[key].className)
+        for (let key in itemAll) {
             if (itemAll[key].className) {
                 itemAll[key].className = 'list'
             }
         }
-
         item.className = "bd list"
-        console.log("item:", item)
-        console.log("item2222:", item.parentNode.childNodes)
+        
+        //传入需要的参数，待请求后台
+        const{selectedPackageData} = this.state;
+        console.log("dataitem:", dataitem);
+        this.setState({selectedPackageData:dataitem, packageButtonDisabled:false});
 
-        // e.target
-        // e.target.
+        // this.handlepackageButton(selectedPackageData);//貌似不应该在这里判断，应该放在即将渲染页面的时候，因为按钮相关的的还有其他
 
     }
+
+    onChange(e) {  //升级包弹出框各项验证，判定确认按钮是否可操作
+        let id = e.target.id;
+        let value = e.target.value;
+        let newValue = '';
+        let prompt = false;
+        if (id == 'name') {
+          newValue = value;
+          prompt = !Name3Valid(newValue); //暂时不限制字符类型
+        } else if (id == 'power') {
+          newValue = value;
+          prompt = !Name2Valid(newValue);
+        } else if (id == 'life') {
+          newValue = value;
+          prompt = !Name2Valid(newValue);
+        } else if (id == 'manufacture') {
+          newValue = value;
+          prompt = !Name2Valid(newValue);
+        } else { //描述
+          newValue = value;
+        }
+        //输入框值变化后直接改变state中的值以及确定是否合法
+        this.setState({ [id]: newValue, prompt: Object.assign({}, this.state.prompt, { [id]: prompt }) });
+      }
 
     onLastStep() { //上一步
         let { displayStep1 } = this.state;
         this.setState({ displayStep1: !displayStep1 });
+    }
+    singleUpdateCancel(){ //取消单设备升级
+        this.props.overlayerHide();
     }
 
     onTimeSelect(value, dateString) { //时间选择框状态发生变化
@@ -251,19 +323,20 @@ export default class DeviceUpgradePopup extends Component {
 
     render() {
         const { className, title, tableData } = this.props;
-        const { page, filename, displayStep1, search, packageData, checked, checkedValue, stateData } = this.state;
+        const { displayCancel, displayLastStep, page, filename, displayStep1, search, packageData, checked, checkedValue, stateData,buttondisabled,packageButtonDisabled } = this.state;
+        console.log("buttondisabled:", buttondisabled);
         //tableData为父级页面传入的设备数据，result为根据表格尺寸需要显示的部分tableData内容
         let result = Immutable.fromJS(stateData.slice((page.current - 1) * page.pageSize, page.current * page.pageSize));
         let footer1 = <PanelFooter funcNames={['onCancel', 'onNextStep']} btnTitles={['button.cancel', 'button.nextStep']}
-            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
+            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false,buttondisabled]}
             onCancel={this.onCancel} onNextStep={this.onNextStep} />;
-        let footer2 = <PanelFooter funcNames={['onLastStep', 'onConfirm']} btnTitles={['button.lastStep', 'button.confirm']}
-            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]}
-            onLastStep={this.onLastStep} onConfirm={this.onConfirm} />;
+        let footer2 = <PanelFooter funcNames={['onLastStep', 'onConfirm']} btnTitles={displayLastStep?['button.lastStep', 'button.confirm']:['button.cancel', 'button.confirm']}
+            btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, packageButtonDisabled]}
+            onLastStep={!displayCancel?this.onLastStep:this.singleUpdateCancel} onConfirm={this.onConfirm} />;
         return <div className={className}>
             {displayStep1 && <Panel title={<FormattedMessage id='sysOperation.deviceUpgrade' />} footer={footer1}
                 closeBtn={true} closeClick={this.onCancel}>
-                <RadioGroup onChange={this.checkedChange} value={checkedValue}>
+                <RadioGroup onChange={this.radioChange} value={checkedValue}>
                     <Radio value={1}>所有设备</Radio>
                     <Radio value={2}>指定设备</Radio>
                 </RadioGroup>
@@ -286,7 +359,7 @@ export default class DeviceUpgradePopup extends Component {
                     <ul className='package'>
                         {
                             packageData.map((item, index) => {
-                                return <li key={index} className="list" id={`${index}`} onClick={this.onClick} onMouseOver={() => this.mouseOver(item)}>{item}</li>
+                                return <li key={index} className="list" id={`${item.id}`} onClick={(e)=>{this.onClick(e,item)}} onMouseOver={() => this.mouseOver(item)}>{item.name}</li>
                                 // return <div key={index} className="list">{item}</div>
                             })
                         }

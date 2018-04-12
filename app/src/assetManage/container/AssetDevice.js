@@ -1,5 +1,5 @@
 /**
- * Created by m on 2018/2/9.
+ * Created by a on 2017/8/23.
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -21,20 +21,16 @@ import { getModelTypeByModel, updateModelTypeByModel } from '../../api/asset';
 import { addNotify } from '../../common/actions/notifyPopup';
 import NotifyPopup from '../../common/containers/NotifyPopup';
 import { message } from 'antd';
+import gateway from '../../systemOperation/container/gateway';
 
-export class Sensor extends Component {
+export class AssetDevice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'sses',
+      model: 'ssslc',
       keyField: 'name',   //主键在数据表的Id属性中，即设备类型的id
-
-      assetPropertyList: [   //设备属性列表
-        // { id: '111', name: '三思LC', description: '三思单灯控制器', unit: '0000', accuracy: '0000' },
-        // { id: '123', name: '华为LC_NBLot', description: '华为单灯控制器', unit: '0000', accuracy: '0000' },
-      ],
       assetTypeList: [     //设备型号列表
-        { name: '', description: '' }
+        { name: '', description: '', power: '', life: '', manufacture: '' },
         // { name: '华为单灯', description: '华为单灯控制器', power: '0000', life: '0000', manufacture: '0000' },
         // {name: '', detail: '', power: '', serviceLife: '', manufacture: '' },
       ],
@@ -55,14 +51,34 @@ export class Sensor extends Component {
     this.updateModelType = this.updateModelType.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     let { model, assetPropertyList } = this.state;
+    let mode = model;
+    switch(this.props.route.path){
+        case "lc":
+            mode='ssslc';
+            break;
+        case "gateway":
+            mode='ssgw';
+            break;
+        default:
+            mode = model;
+    }
     this.mounted = true;
-    getModelData(() => {
-      this.mounted && this.setState({ assetPropertyList: getModelProps(model) }, () => {
-      });
-    });
-    this.getModelType();
+    this.setState({model:mode},()=>{
+        this.getModelType();
+    })
+  }
+
+  componentDidUpdate(){
+    const{sidebarNode} = this.props;
+    if(this.props.sidebarNode!==null){
+        if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
+            this.setState({model:sidebarNode.id}, ()=>{
+                this.getModelType();
+            });
+        }
+    }
   }
 
   componentWillUnmount() {
@@ -83,7 +99,7 @@ export class Sensor extends Component {
   }
 
   updateModelType(data) {
-    let dataItem = { name: '', description: '' }
+    let dataItem = { name: '', description: '', power: '', life: '', manufacture: '' }
     data.push(dataItem);
     this.setState({ assetTypeList: data })
   }
@@ -123,7 +139,7 @@ export class Sensor extends Component {
       }
     }
 
-    actions.overlayerShow(<TypeEditPopup id="updateType"  title={this.formatIntl('equipment.modifyDevice')}
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.modifyDevice')}
       data={data}
       idEdit={false}
       hasPower={true}
@@ -185,7 +201,8 @@ export class Sensor extends Component {
         let manufacture = data.manufacture;
         let description = data.description;
         let typeData = Object.assign({}, {
-          name: name, description: description
+          name: name, power: power, life: life,
+          manufacture: manufacture, description: description
         });
         assetTypeList.pop()
         let dataAdd = assetTypeList;
@@ -217,7 +234,7 @@ export class Sensor extends Component {
                     return <th key={index}>{column.title}</th>;
                   })
                 }
-                {<th>{this.formatIntl('equipment.edit')}</th>}
+                {<th></th>}
               </tr>
             </thead>
             <tbody>
@@ -233,7 +250,7 @@ export class Sensor extends Component {
                       <td className="edit">
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
-                            className="icon_edit">{this.formatIntl('equipment.modify')}</span>
+                            className="icon_edit">{this.formatIntl('equipment.edit')}</span>
                         </a>
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
@@ -272,4 +289,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(Sensor));
+)(injectIntl(AssetDevice));

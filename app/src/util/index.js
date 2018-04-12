@@ -1,8 +1,16 @@
 /**
  * Created by a on 2017/7/13.
  */
-import { getLocalStorage, setLocalStorage } from './cache'
+import { getLocalStorage, setLocalStorage } from './cache';
+import {getDomainConfig} from './network';
 const _ = require('lodash');
+
+let domainConfig = null;
+getDomainConfig(response=>{
+    domainConfig = response;
+});
+
+
 let language = "";
 export function getLanguage() {
     language = getLocalStorage("appLanguage");
@@ -163,7 +171,9 @@ export function getNotifyStateClass(state) {
         case 1:
             return 'success'
         case 2:
-            return 'warning'
+            return 'warning';
+        default:
+        break;
     }
 }
 
@@ -171,17 +181,21 @@ export function IsMapCircleMarker(domainLevel, map) {
     if (!domainLevel || !map) {
         return false;
     }
-    return map.zoom < map.maxZoom - (map.maxZoom - map.minZoom) / domainLevel;
+    // return map.zoom < map.maxZoom - (map.maxZoom - map.minZoom) / domainLevel;
+    const domain = domainConfig[domainConfig.length-1];
+    return map.zoom < domain.zoomRange[0];
 }
 
 export function getDomainLevelByMapLevel(domainLevel, map) {
-    if (map.zoom == map.minZoom) {
-        return Math.min(1, domainLevel);
-    }
-    if (map.zoom == map.maxZoom) {
-        return Math.max(1, domainLevel);
-    }
-    return Math.round((map.zoom - map.minZoom + 1) * domainLevel / (map.maxZoom - map.minZoom));
+    // if (map.zoom == map.minZoom) {
+    //     return Math.min(1, domainLevel);
+    // }
+    // if (map.zoom == map.maxZoom) {
+    //     return Math.max(1, domainLevel);
+    // }
+    // return Math.round((map.zoom - map.minZoom + 1) * domainLevel / (map.maxZoom - map.minZoom));
+    const domain = _.find(domainConfig, domain=>{ return map.zoom >= domain.zoomRange[0] && map.zoom <= domain.zoomRange[1]});
+    return domain?domain.id:domainConfig.length+1;
 }
 
 export function getZoomByMapLevel(curLevel, domainLevel, map) {
