@@ -152,6 +152,11 @@ class TimeStrategy extends Component {
           let len = 0;
           devices.map(id => {
             getAssetsBaseById(id, (res) => {
+              if(!res.id){
+                res.id = id;
+                res.name = '失效设备'+id;
+                res.ssgwId = null;
+              }
               len++;
               selectedDevices.push(res);
               //所有网关Id          
@@ -168,6 +173,10 @@ class TimeStrategy extends Component {
             let len = 0;
             gatewayIds.map(id => {
               getAssetsBaseById(id, (res) => {
+                if(!res.id){
+                  res.id = 'nogateway';
+                  res.name = '无网关';
+                }
                 len++;
                 //所有网关
                 gateways.push(res);
@@ -179,31 +188,47 @@ class TimeStrategy extends Component {
           });
         }).then(gateways => {
           return new Promise((resolve, reject) => {
-            let len = 0;                    
+            let len = 0;
             gateways.forEach(item => {
               //网关白名单中的选中设备
-              selectedDevicesData.push(Object.assign({}, item, {
-                whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)}));
+              if(item.id == 'nogateway'){
+                let whiteList = [];
+                selectedDevices.map(device=>{
+                  if(!device.ssgwId){
+                    whiteList.push(device)
+                  }
+                })
+                selectedDevicesData.push(Object.assign({}, item, {
+                  whiteList:whiteList
+                }));
+              }
+              else{
+                selectedDevicesData.push(Object.assign({}, item, {
+                  whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)
+                }));
+              }
 
               //网关白名单中的所有设备
-              getWhiteListById(item.id, (res) => {
-                len++;
-                allDevicesData.push(Object.assign({}, item, {whiteList:res}));
-                if (len == gateways.length) {
-                  resolve({selectedDevicesData, allDevicesData});
-                }
-              });
+              // getWhiteListById(item.id, (res) => {
+              //   len++;
+              //   allDevicesData.push(Object.assign({}, item, {whiteList:res}));
+              //   if (len == gateways.length) {
+              //     resolve({selectedDevicesData, allDevicesData});
+              //   }
+              // });
+              this.setState({selectedDevices:selectedDevicesData})
+              this.initDeviceData('selectedDevicesData', selectedDevicesData);
             });
           });
-                
-        }).then(({selectedDevicesData, allDevicesData}) => {
-          this.setState({selectedDevices:selectedDevicesData})
-          this.initChecked(devices, selectedDevicesData, allDevicesData);
-          this.initDeviceData('selectedDevicesData', selectedDevicesData);
-          this.initDeviceData('allDevicesData', allDevicesData);
-        });
+        })
+        // .then(({selectedDevicesData, allDevicesData}) => {
+        //   this.setState({selectedDevices:selectedDevicesData})
+        //   this.initChecked(devices, selectedDevicesData, allDevicesData);
+        //   this.initDeviceData('selectedDevicesData', selectedDevicesData);
+        //   this.initDeviceData('allDevicesData', allDevicesData);
+        // });
       } else {
-        this.setState({selectedDevicesData:Immutable.fromJS([]), allDevicesData:Immutable.fromJS([]), allDevices:{
+        this.setState({selectedDevicesData:Immutable.fromJS([]), allDevices:{
           allChecked:false,
           checked:[],
         }});
@@ -378,12 +403,22 @@ class TimeStrategy extends Component {
     }
 
     collapseClick=(id, key, data) => {
-      let childs;
-      if (key == 'strategy') {
-        let parentId = getProByKey(data, 'key', id, 'id');
-        childs = getIndexsByKey(data, 'groupId', parentId);
-      } else {
-        childs = getIndexsByKey(data, 'ssgwId', id);
+      let childs=[];
+      if(id=='nogateway'){
+        let gateway = getIndexsByKey(data,'extendType','ssgw');
+        for(var i=0;i<data.size;i++){
+          if(data.getIn([i, 'ssgwId']) === null && gateway.indexOf(i)<0){
+            childs.push(i);
+          }
+        }
+      }
+      else{
+        if (key == 'strategy') {
+          let parentId = getProByKey(data, 'key', id, 'id');
+          childs = getIndexsByKey(data, 'groupId', parentId);
+        } else {
+          childs = getIndexsByKey(data, 'ssgwId', id);
+        }
       }
       childs.length !== 0 && childs.map(item => {
         data = data.setIn([item, 'hidden'], !data.getIn([item, 'hidden']));

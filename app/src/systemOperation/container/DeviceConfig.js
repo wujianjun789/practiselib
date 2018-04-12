@@ -422,7 +422,7 @@ export class SingleLampCon extends Component {
 
   render() {
     const { collapse, deviceCollapse,whiteListCollapse, page, search, selectDevice, domainList, data } = this.state;
-    return <Content className={'offset-right ' + (collapse ? 'collapsed' : '')}>
+    return <Content className={'offset-right ' + (collapse ? 'collapsed ' : '')+this.state.model}>
       <div className="heading">
         <div className="flex-left">
           <Select id="domain" titleField={domainList.valueField} valueField={domainList.valueField}

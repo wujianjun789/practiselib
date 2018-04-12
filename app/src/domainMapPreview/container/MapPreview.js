@@ -67,18 +67,14 @@ export class MapPreview extends Component{
                 this.mapConfig = data;
                 this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
-
                 getDomainConfig(data=>{
                     if(this.mounted){
                         this.domainConfig = data;
                         this.map.zoom = data[0].zoom;
                     }
-                });
-
+                })
             }
         });
-
-
         getDomainList(data=>{ this.mounted && this.initDomainList(data)})
     }
 
@@ -99,7 +95,6 @@ export class MapPreview extends Component{
                 datalist.push({id:item.id, value:item.name})
             }
         }
-
         this.setState({placeholderList:datalist});
     }
 
@@ -119,16 +114,15 @@ export class MapPreview extends Component{
     }
 
     requestCurDomain(){
+    	
         if(this.domainCurLevel==this.domainLevel){
             getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, null, data=>{
                 let devPositionList = data.map(item=>{
                     let gePoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                     return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
                 })
-
                 this.mounted && this.setState({curDomainList: data, positionList:devPositionList});
             })
-
             return false;
         }
 
@@ -163,6 +157,7 @@ export class MapPreview extends Component{
 
             });
         })
+        
     }
 
     searchSubmit(){
