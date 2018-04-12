@@ -27,6 +27,8 @@ import { getDeviceTypeByModel } from '../../util/index';
 import { treeViewInit } from '../../common/actions/treeView';
 import ExcelPopup from '../components/ExcelPopup';
 import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
+import {sideBarToggled} from '../action';
+import {treeViewNavigator} from '../../common/util/index'
 import { bacthImport } from '../../api/import';
 import { injectIntl } from 'react-intl';
 
@@ -42,7 +44,7 @@ export class SingleLampCon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: this.props.route.model,
+      model: 'ssgw',
       collapse: false,
       deviceCollapse: false,
       whiteListCollapse:false,      
@@ -118,8 +120,15 @@ export class SingleLampCon extends Component {
   }
 
   componentWillMount() {
+    console.log("sideBarNode:", this.props.route.sideBarNode);
+    
     this.mounted = true;
     this.initData();
+  }
+
+  componentDidMount(){
+    const {model} = this.state;
+    // this.requestToggle() //
   }
   
   initData(){
@@ -311,6 +320,8 @@ export class SingleLampCon extends Component {
   }
 
   deviceHandler(key,id) {
+    let {selectDevice} = this.state;
+    let selectedItem = selectDevice.data[0];
      if (key === 'sys-upgrade') {
         if (id){  //单设备升级
           console.log('this.state.data：', this.state.data);
@@ -318,8 +329,9 @@ export class SingleLampCon extends Component {
           const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
     
           overlayerShow(<DeviceUpgradePopup id={id} className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
-            intl={this.props.intl} tableData={this.state.data} onConfirm={(data) => {//升级设备，data为待升级的设备的Id
-
+            intl={this.props.intl} tableData={this.state.data}
+             onConfirm={(data) => {
+              // console.log("shengjishuju:",data);
             }} />);
         }else {
           //多设备升级
@@ -334,14 +346,10 @@ export class SingleLampCon extends Component {
           const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
           overlayerShow(<SingleDeviceReplacePopup className="singleDeviceReplace-popup" columns={this.columns}
             model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
-            overlayerHide={overlayerHide}
-            onConfirm={(datas) => {
-              replaceDevice(`${this.state.model}s`, datas, () => {
-                this.requestSearch();
-              });
-            }} />);
+            overlayerHide={overlayerHide} selectedItem = {selectedItem}
+            />);
         } else {
-          //多设备更换
+          //多设备更换,替换当前域下的全部该类设备,从组件返回文件
         const { overlayerShow, overlayerHide, addNotify } = this.props.actions;
         overlayerShow(<DeviceReplacePopup className="deviceReplace-popup" columns={this.columns}
           model={this.state.model} domainList={this.state.domainList} addNotify={addNotify}
@@ -367,7 +375,7 @@ export class SingleLampCon extends Component {
   }
 
   updateSelectDevice(item) {
-    let selectDevice = this.state.selectDevice;
+    let {selectDevice} = this.state;
     selectDevice.latlng = item.geoPoint;
     selectDevice.data.splice(0);
     selectDevice.data.push({ id: item.id, type: item.extend.type, name: item.name });
@@ -498,7 +506,8 @@ const mapDispatchToProps = (dispatch) => ({
     overlayerShow,
     overlayerHide,
     addNotify,
-    removeAllNotify
+    removeAllNotify,
+    sideBarToggled
   }, dispatch),
 });
 
