@@ -355,7 +355,6 @@ export class PlayPlan extends Component {
   }
 
   playerAssetAdd(type) {
-    console.log('playerAssetAdd:');
     const {playerAssetLibUpdate, actions} = this.props;
     actions.overlayerShow(<PlayerAssetLibPopup title="素材库" assetType={type} actions={actions} onCancel={() => {
       actions.overlayerHide();
@@ -382,7 +381,6 @@ export class PlayPlan extends Component {
      *  3. example below
      */
     getScenePreview(project.id, plan.id, scene.id, response => {
-      console.log('preview success');
       this.previewHandler();
     });
 
@@ -466,7 +464,6 @@ export class PlayPlan extends Component {
   }
 
   headbarClick(key) {
-    console.log('headbarClick:', key);
     switch (key) {
     case 'edit':
       this.editAlert() && this.navigatorScene();
@@ -495,7 +492,6 @@ export class PlayPlan extends Component {
 
   addAlert() {
     const {zone, curNode, actions} = this.props;
-    console.log('addAlert:', curNode);
     if (curNode && typeof curNode.id === 'string' && curNode.id.indexOf('scene') > -1) {
       actions.addNotify(0, this.formatIntl('mediaPublish.scene.submit.alert'));
       return false;

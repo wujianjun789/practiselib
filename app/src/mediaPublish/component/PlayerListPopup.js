@@ -10,7 +10,6 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 export default class PlayerListPopup extends PureComponent {
     constructor(props) {
         super(props);
-        console.log('player:', this.props.data);
         const {id, name, width, height} = this.props.data;
 
         this.state = {

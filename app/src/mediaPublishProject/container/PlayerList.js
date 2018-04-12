@@ -193,7 +193,6 @@ export class PlayerList extends Component {
   }
 
   publishHandler(id){
-    console.log(id);
     const {actions} =this.props;
     if(this.publishResponse){
       return actions.addNotify(0, "请等待发布完成。");
@@ -206,7 +205,6 @@ export class PlayerList extends Component {
   }
 
   editHandler(id) {
-    console.log('edit:', id);
     const { actions } = this.props;
     const row = getObjectByKey(this.state.data, 'id', id);
     const obj = row ? row.toJS() : {};
@@ -236,7 +234,6 @@ export class PlayerList extends Component {
 
   render() {
     const { type, search, page, data } = this.state;
-    console.log(page.get('total'));
     return <Content className="player-list">
       <div className="heading">
         <Select className="type" data={type}

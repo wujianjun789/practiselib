@@ -375,7 +375,6 @@ export  class MediaPublishMap extends Component{
             IsOpenPoleInfo, IsOpenPoleControl, IsOpenPreview, IsOpenFault, listStyle, infoStyle, controlStyle,faultStyle} = this.state;
 
         const faultList = screen.get('faultList').toJS();
-console.log('search:', search.toJS(), searchList.toJS(), positionList);
         return <Content>
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:searchList.toJS()}}
                      mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend,markerClickHandler:this.markerClickHandler}}
