@@ -40,7 +40,6 @@ export class TreeView extends Component{
     }
 
     onRemove(node){
-        console.log("remove:", node);
         const {actions} = this.props;
         setTimeout(()=>{actions && actions.onRemove(node)}, 33);
         this.setState({update: true});
@@ -48,7 +47,6 @@ export class TreeView extends Component{
     }
 
     onToggle(node){
-        console.log('onToggle:', node.toggled);
         const {actions,className} = this.props
         if(className === "mediaPublish"){node.defaultSelect = true;}
         setTimeout(()=>{ actions && actions.onToggle(node)}, 33);

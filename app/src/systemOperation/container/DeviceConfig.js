@@ -153,7 +153,10 @@ export class SingleLampCon extends Component {
   }
 
   componentDidUpdate() {
-    this.state.model !== this.props.route.model && this.setState({model:this.props.route.model},this.initData)
+    const {sidebarNode} = this.props;
+    if(sidebarNode && !sidebarNode.children && sidebarNode.id != this.state.model){
+      this.setState({model:sidebarNode.id},this.initData)
+    }
   }
 
   formatIntl(formatId) {
@@ -485,6 +488,7 @@ export class SingleLampCon extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    sidebarNode: state.systemOperation.get("sidebarNode")
   };
 };
 

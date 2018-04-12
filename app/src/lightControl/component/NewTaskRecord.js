@@ -54,7 +54,7 @@ export default class NewTaskRecord extends Component {
         id: 1,
         // create: moment(),
         time: moment(),
-        result: '成功'
+        result: this.formatIntl('lightManage.control.success')
       }
     ];
     this.initData(data);

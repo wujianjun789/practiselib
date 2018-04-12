@@ -13,7 +13,7 @@ import MapView from '../../components/MapView';
 import SearchText from '../../components/SearchText';
 
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
-import {getMapConfig} from '../../util/network';
+import {getMapConfig, getDomainConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
 import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
 
@@ -41,6 +41,9 @@ export class MapPreview extends Component{
         this.map = {
             center:{lng: 121.49971691534425, lat: 31.239658843127756}
         };
+
+        this.mapConfig = null;
+        this.domainConfig = null;
         this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
 
@@ -61,10 +64,20 @@ export class MapPreview extends Component{
         this.mounted = true;
         getMapConfig(data=>{
             if(this.mounted){
+                this.mapConfig = data;
                 this.map = Object.assign({}, this.map, data, {zoomStep:Math.ceil((data.maxZoom-data.minZoom)/this.domainLevel)});
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+
+                getDomainConfig(data=>{
+                    if(this.mounted){
+                        this.domainConfig = data;
+                        this.map.zoom = data[0].zoom;
+                    }
+                });
+
             }
-        })
+        });
+
 
         getDomainList(data=>{ this.mounted && this.initDomainList(data)})
     }
@@ -177,22 +190,32 @@ export class MapPreview extends Component{
     }
 
     mapZoomend(data){
-        console.log('zoom:', data.zoom);
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         this.requestCurDomain();
     }
 
     markerClick(data){
-        if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
-            this.map = Object.assign({}, this.map, {zoom:this.map.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-            this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+        if(this.domainCurLevel < this.domainLevel){
+            this.domainCurLevel += 1;
+            let nextDomain = lodash.find(this.domainConfig, doma=>{ return doma.id == this.domainCurLevel});
+            if(nextDomain){
+                this.map = Object.assign({}, this.map, {zoom:nextDomain.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+            }else{
+                this.map = Object.assign({}, this.map, {zoom:this.mapConfig.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+            }
+
             this.requestCurDomain();
         }
+
+        // if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
+        //     this.map = Object.assign({}, this.map, {zoom:data.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+        //     this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+        //     this.requestCurDomain();
+        // }
     }
 
     render(){
-console.log('render render............................................');
         const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
         return <Content className="map-preview">
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}

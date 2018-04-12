@@ -12,7 +12,7 @@ import assetStatistics from '../../assetStatistics/reducer/index'
 import domainManage from '../../domainManage/reducer/index'
 import treeView from './treeView';
 import permissionManage from '../../permissionManage/reducer/index'
-import sysOperation from '../../systemOperation/reducer/index';
+import systemOperation from '../../systemOperation/reducer/index';
 import gateway from '../../systemOperation/reducer/gateway';
 
 import mediaPublish from '../../mediaPublish/reducer/index';
@@ -35,7 +35,7 @@ const reducer = combineReducers({
     domainManage,
     permissionManage,
 
-    sysOperation,
+    systemOperation,
     gateway,
 
     mediaPublish,

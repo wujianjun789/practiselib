@@ -212,7 +212,6 @@ export function getConfig(cb) {
 
 let mapConfig = null;
 export function getMapConfig(responseFun, errorFun) {
-    console.log('getMapConfig:');
     if(mapConfig){
         return responseFun && responseFun.apply(null, [mapConfig]);
     }
