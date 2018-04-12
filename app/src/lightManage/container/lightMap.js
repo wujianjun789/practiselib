@@ -19,7 +19,7 @@ import {getDomainList,getDomainByDomainLevelWithCenter} from '../../api/domain'
 import {getObjectByKey} from '../../util/index'
 import {getMapConfig} from '../../util/network'
 import {getPoleListByModelWithName, getPoleListByModelDomainId, getPoleAssetById} from '../../api/pole'
-import {getDomainLevelByMapLevel, getZoomByMapLevel, IsMapCircleMarker} from '../../util/index'
+import {getDomainLevelByMapLevel, getZoomByMapLevel, IsMapCircleMarker, getDeviceTypeByModel} from '../../util/index'
 import {getDomainListByName} from '../../api/domain'
 import {getIndexByKey} from '../../util/algorithm'
 import { DOMAIN_LEVEL } from '../../common/util/index'
@@ -27,6 +27,8 @@ import {getAssetsBaseByDomain,getSearchAssets,getAssetsBaseById,getAssetsByDomai
 import ModelSearch from '../component/ModelSearch'
 import lodash from 'lodash'
 import Immutable from 'immutable'
+import {DOMAIN_NAME_LENGTH} from '../../common/util/constant';
+
 export class lightMap extends Component{
     constructor(props){
         super(props);
@@ -430,7 +432,7 @@ export class lightMap extends Component{
                         let zoom = getZoomByMapLevel(curList[0].level,this.domainLevel,this.map);
                         this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
                         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
-                        this.requestCurAssets("ssslc");
+                        this.requestCurDomain();
                     }
             }else{
                     //如果是点击地图图标
@@ -542,40 +544,83 @@ export class lightMap extends Component{
         this.setState({IsOpenFault: false});
     }
 
-    requestCurAssets(model){
-        getAssetsByDomainLevelWithCenter(4, this.map, model, (data)=>{
+    requestCurAssets(){
+        getAssetsByDomainLevelWithCenter(this.domainLevel, this.map, "ssslc", (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
-                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+                return Object.assign(geoPoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
             })
-            this.setState({curList:data, positionList:positionList},()=>{})
+            this.mounted && this.setState({curList:data, positionList:positionList})
         })
     }
 
     requestCurDomain(){
+    	
+//  	if(this.domainCurLevel==this.domainLevel){
+//          getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, "ssslc", (data)=>{
+//              let positionList = data.map(item=>{
+//                  let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+//                  return Object.assign(geoPoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
+//              })
+//              this.mounted && this.setState({curList:data, positionList:positionList})
+//          })
+//          return false;
+//      }
         getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+        	console.log(data)
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
-                return Object.assign(geoPoint, { "device_type":"DEVICE", "device_id":item.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
             })
-            this.setState({curList: data, positionList:positionList},()=>{
+            console.log(positionList)
+            this.mounted && this.setState({curList: data, positionList:positionList},()=>{
                 let deviceLen = [];
+                const locale = this.props.intl;
                 data.map(item=>{
+                    const itemLen = item.name.length;
                     getAssetsBaseByDomain(item.id, asset=>{
                         deviceLen.push(item.id);
                         let curIndex = lodash.findIndex(this.state.curList, domain=>{
-                            return domain.id === item.id
+                            return domain.id == item.id
                         })
                         if(curIndex>-1 && curIndex<this.state.curList.length){
-                            this.state.curList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+                            this.state.curList[curIndex].detail = item.name.slice(0, DOMAIN_NAME_LENGTH-6)+
+                              (itemLen>DOMAIN_NAME_LENGTH-6 ? "...":"")+
+                              ' \n'+asset.length/*+this.props.intl.formatMessage({id:'map.device.tip'})*/;
                         }
-                        if(deviceLen.length === data.length){
-                            // this.setState({curList: this.state.curList});
+                        if (deviceLen.length == data.length){
+                            this.mounted && this.setState({curList: this.state.curList});
                         }
                     })
                 })
-            })
+
+            });
         })
+        
+//      getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+//          let positionList = data.map(item=>{
+//              let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+//              return Object.assign(geoPoint, { "device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
+//          })
+//          this.setState({curList: data, positionList:positionList},()=>{
+//              let deviceLen = [];
+//              data.map(item=>{
+//                  getAssetsBaseByDomain(item.id, asset=>{
+//                      deviceLen.push(item.id);
+//                      let curIndex = lodash.findIndex(this.state.curList, domain=>{
+//                          return domain.id === item.id
+//                      })
+//                      if(curIndex>-1 && curIndex<this.state.curList.length){
+//                          this.state.curList[curIndex].detail = item.name+' \n'+asset.length+'件设备';
+//                      }
+//                      if(deviceLen.length === data.length){
+//                          // this.setState({curList: this.state.curList});
+//                      }
+//                  })
+//              })
+//          })
+//      })
+        
     }
 
     panCallFun(){
@@ -599,7 +644,7 @@ export class lightMap extends Component{
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         if(this.map.zoom>15&&this.map.zoom<=18){
-            this.requestCurAssets("ssslc");
+            this.requestCurAssets();
         }else{
             this.requestCurDomain();
         }
