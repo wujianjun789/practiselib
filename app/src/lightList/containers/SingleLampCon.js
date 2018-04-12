@@ -3,6 +3,7 @@
  */
 import '../../../public/styles/lightManage-list.less';
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
@@ -13,9 +14,10 @@ import { getDomainList, getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById } from '../../api/asset';
 import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
+import { injectIntl } from 'react-intl';
 import { message } from 'antd'
 import 'antd/lib/message/style/css';
-export default class SingleLampCon extends Component {
+export class SingleLampCon extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,7 +28,7 @@ export default class SingleLampCon extends Component {
             },
             search: {
                 value: '',
-                placeholder: '请输入设备名称',
+                placeholder: this.props.intl.formatMessage({id:'app.input.device.name'}),
             },
             sidebarCollapse: false,
             currentDevice: null,
@@ -42,8 +44,8 @@ export default class SingleLampCon extends Component {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    { value: 'on', title: '开启' },
-                    { value: 'off', title: '关闭' }
+                    { value: 'on', title: this.props.intl.formatMessage({id:'button.start'}) },
+                    { value: 'off', title: this.props.intl.formatMessage({id:'button.close'}) }
                 ]
             },
             currentBrightness: 0,
@@ -57,22 +59,22 @@ export default class SingleLampCon extends Component {
         this.model = 'ssslc';
 
         this.columns = [
-            { accessor: 'name', title: '设备名称' },
-            { accessor: 'online', title: '在线状态' },
-            { accessor: 'device', title: '灯状态  ' },
-            { accessor: 'switch', title: '开关状态' },
-            { accessor: 'brightness', title: '亮度    ' },
-            { accessor: 'voltage', title: '电压    ' },
-            { accessor: 'current', title: '电流    ' },
-            { accessor: 'power', title: '功率    ' },
-            { accessor: 'totalPower', title: '总电能  ' },
-            { accessor: 'runningTime', title: '运行时间' },
-            { accessor: 'lightTime', title: '亮灯时间' },
+            { accessor: 'name', title: this.props.intl.formatMessage({id:'app.device.name'}) },
+            { accessor: 'online', title: this.props.intl.formatMessage({id:'app.online.state'}) },
+            { accessor: 'device', title: this.props.intl.formatMessage({id:'app.light.state'}) },
+            { accessor: 'switch', title: this.props.intl.formatMessage({id:'app.switch.state'}) },
+            { accessor: 'brightness', title: this.props.intl.formatMessage({id:'app.brightness'}) },
+            { accessor: 'voltage', title: this.props.intl.formatMessage({id:'app.voltage'}) },
+            { accessor: 'current', title: this.props.intl.formatMessage({id:'app.electric.current'}) },
+            { accessor: 'power', title: this.props.intl.formatMessage({id:'app.power'}) },
+            { accessor: 'totalPower', title: this.props.intl.formatMessage({id:'app.totalPower'}) },
+            { accessor: 'runningTime', title: this.props.intl.formatMessage({id:'app.runningTime'}) },
+            { accessor: 'lightTime', title: this.props.intl.formatMessage({id:'app.lightTime'}) },
             {
                 accessor(data) {
                     return data.updateTime ? momentDateFormat(getMomentDate(data.updateTime, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm') : '';
                 },
-                title: '更新时间'
+                title: this.props.intl.formatMessage({id:'app.update.time'})
             }
         ];
 
@@ -147,7 +149,7 @@ export default class SingleLampCon extends Component {
         data.shift();   // 删除"关"
         data.forEach(value => {
             let val = value;
-            let title = `亮度${val}`;
+            let title = this.props.intl.formatMessage({id:'app.brightness'})+`${val}`;
             opt.push({ value: val, title });
         });
         this.setState({ brightnessList: Object.assign({}, this.state.brightnessList, { options: opt }) });
@@ -243,7 +245,7 @@ export default class SingleLampCon extends Component {
                 </div>
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
-                        <span className="icon_select"></span>选中设备
+                        <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
                             </div>
                     <div className="panel-body">
                         <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
@@ -251,20 +253,20 @@ export default class SingleLampCon extends Component {
                 </div>
                 <div className="panel panel-default panel-2">
                     <div className="panel-heading">
-                        <span className="icon_touch"></span>设备操作
+                        <span className="icon_touch"></span>{this.props.intl.formatMessage({id:'app.device.operation'})}
                             </div>
                     <div className="panel-body">
                         <div>
-                            <span className="tit">设备开关：</span>
+                            <span className="tit">{this.props.intl.formatMessage({id:'app.device.switch'})+"："}</span>
                             <Select id="deviceSwitch" titleField={deviceSwitchList.titleField} valueField={deviceSwitchList.valueField}
                                 options={deviceSwitchList.options} value={currentSwitchStatus} onChange={this.onChange} disabled={disabled} />
-                            <button className="btn btn-primary" disabled={disabled} onClick={this.switchApply}>应用</button>
+                            <button className="btn btn-primary" disabled={disabled} onClick={this.switchApply}>{this.props.intl.formatMessage({id:'button.apply'})}</button>
                         </div>
                         <div>
-                            <span className="tit">调光：</span>
+                            <span className="tit">{this.props.intl.formatMessage({id:'app.dimming'})+"："}</span>
                             <Select id="dimming" titleField={brightnessList.titleField} valueField={brightnessList.valueField}
                                 options={brightnessList.options} value={currentBrightness} onChange={this.onChange} disabled={disabled} />
-                            <button className="btn btn-primary" disabled={disabled} onClick={this.dimmingApply}>应用</button>
+                            <button className="btn btn-primary" disabled={disabled} onClick={this.dimmingApply}>{this.props.intl.formatMessage({id:'button.apply'})}</button>
                         </div>
                     </div>
                 </div>
@@ -272,6 +274,14 @@ export default class SingleLampCon extends Component {
         </Content>
     }
 }
+
+
+const mapStateToProps = (state, ownProps) => {return{}};
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SingleLampCon));
+
 
 /**
  *                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}

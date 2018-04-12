@@ -3,6 +3,7 @@
  */
 import '../../../public/styles/lightManage-list.less';
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import Content from '../../components/Content';
 import SearchText from '../../components/SearchText';
 import Select from '../../components/Select.1';
@@ -12,9 +13,10 @@ import Page from '../../components/Page';
 import { getDomainList, getChildDomainList } from '../../api/domain';
 import { getSearchAssets, getSearchCount, getDeviceStatusByModelAndId, updateAssetsRpcById } from '../../api/asset';
 import { getMomentDate, momentDateFormat } from '../../util/time';
-import { message } from 'antd'
+import { injectIntl } from 'react-intl';
+import { message } from 'antd';
 import 'antd/lib/message/style/css';
-export default class Gateway extends Component {
+export class Gateway extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,8 +27,7 @@ export default class Gateway extends Component {
             },
             search: {
                 value: '',
-                placeholder: '请输入设备名称',
-
+                placeholder: this.props.intl.formatMessage({id:'app.input.device.name'}),
             },
             sidebarCollapse: false,
             currentDevice: null,
@@ -42,8 +43,8 @@ export default class Gateway extends Component {
                 titleField: 'title',
                 valueField: 'value',
                 options: [
-                    { title: '远程', value: 'remote' },
-                    { title: '自动', value: 'auto' }
+                    { title: this.props.intl.formatMessage({id:'app.remote'}), value: 'remote' },
+                    { title: this.props.intl.formatMessage({id:'app.auto'}), value: 'auto' }
                 ]
             }
         };
@@ -51,16 +52,16 @@ export default class Gateway extends Component {
         this.model = 'ssgw';
 
         this.columns = [
-            { accessor: 'name', title: '设备名称' },
-            { accessor: 'domain', title: '所属域' },
-            { accessor: 'online', title: '通信状态' },
-            { accessor: 'device', title: '设备状态' },
-            { accessor: 'runningTime', title: '运行时间' },
+            { accessor: 'name', title: this.props.intl.formatMessage({id:'app.device.name'}) },
+            { accessor: 'domain', title: this.props.intl.formatMessage({id:'app.domain'}) },
+            { accessor: 'online', title: this.props.intl.formatMessage({id:'app.comm.state'}) },
+            { accessor: 'device', title: this.props.intl.formatMessage({id:'app.device.state'}) },
+            { accessor: 'runningTime', title: this.props.intl.formatMessage({id:'app.runningTime'}) },
             {
                 accessor(data) {
                     return data.updateTime ? momentDateFormat(getMomentDate(data.updateTime, 'YYYY-MM-DDTHH:mm:ss Z'), 'YYYY/MM/DD HH:mm') : '';
                 },
-                title: '更新时间'
+                title: this.props.intl.formatMessage({id:'app.update.time'})
             }
         ];
 
@@ -218,7 +219,7 @@ export default class Gateway extends Component {
                 </div>
                 <div className="panel panel-default panel-1">
                     <div className="panel-heading">
-                        <span className="icon_select"></span>选中设备
+                        <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
                     </div>
                     <div className="panel-body">
                         <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
@@ -226,19 +227,19 @@ export default class Gateway extends Component {
                 </div>
                 <div className="panel panel-default panel-2">
                     <div className="panel-heading">
-                        <span className="icon_touch"></span>设备操作
+                        <span className="icon_touch"></span>{this.props.intl.formatMessage({id:'app.device.operation'})}
                             </div>
                     <div className="panel-body">
                         <div>
-                            <span className="tit">控制模式：</span>
+                            <span className="tit">{this.props.intl.formatMessage({id:'app.control.mode'})+"："}</span>
                             <Select id="controlMode" titleField={controlModeList.titleField} valueField={controlModeList.valueField}
                                 options={controlModeList.options} value={currentControlMode} onChange={this.onChange} disabled={disabled} />
-                            <button className="btn btn-primary" disabled={disabled} onClick={this.apply}>应用</button>
+                            <button className="btn btn-primary" disabled={disabled} onClick={this.apply}>{this.props.intl.formatMessage({id:'button.apply'})}</button>
                         </div>
                         <div>
-                            <span className="tit">校时：</span>
-                            <span className="note">(点击以校准时间)</span>
-                            <button className="btn btn-primary" disabled={disabled} onClick={this.checkTime}>校时</button>
+                            <span className="tit">{this.props.intl.formatMessage({id:'app.automatic.time'})+"："}</span>
+                            <span className="note">{" ( "+this.props.intl.formatMessage({id:'app.click-to-calibration'})+" ) "}</span>
+                            <button className="btn btn-primary" disabled={disabled} onClick={this.checkTime}>{this.props.intl.formatMessage({id:'app.automatic.time'})}</button>
                         </div>
                     </div>
                 </div>
@@ -246,6 +247,12 @@ export default class Gateway extends Component {
         </Content>
     }
 }
+
+const mapStateToProps = (state, ownProps) => {return{}};
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Gateway));
 
 /**
  *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}

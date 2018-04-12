@@ -4,7 +4,7 @@
 export const TreeData=[
     {
         "id": "statistics",
-        "name":"统计",
+        "name":"app.statistics",
         "toggled": false,
         "active": true,
         "link": "/light/statistics",
@@ -14,7 +14,7 @@ export const TreeData=[
     },
     {
         "id": "map",
-        "name":"地图",
+        "name":"app.map",
         "toggled": false,
         "active": true,
         "link": "/light/map",
@@ -25,7 +25,7 @@ export const TreeData=[
     },
     {
         "id": "list",
-        "name": "列表",
+        "name": "app.list",
         "toggled": false,
         "active": true,
         "link": "/light/list",
@@ -33,14 +33,14 @@ export const TreeData=[
         "children": [
             {
                 "id": 'lc',
-                "name": "单灯控制器",
+                "name": "sysOperation.lamp.control",
                 "class": "icon_lc",
                 "active": false,
                 "link": "/light/list"
             },
             {
                 "id": 'gateway',
-                "name": "网关",
+                "name": "manage.link.gateway",
                 "class": "icon_gateway",
                 "active": false,
                 "link": "/light/list/gateway"
@@ -49,7 +49,7 @@ export const TreeData=[
     },
     {
         "id": "control",
-        "name": "控制",
+        "name": "app.control",
         "toggled": false,
         "active": true,
         "link": "/light/control/timeStrategy",

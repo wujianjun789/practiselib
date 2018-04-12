@@ -183,6 +183,7 @@ export default {
     'domain.lng': '经度',
     'domain.lat': '纬度',
     'domain.superior': '上级域',
+    
     //权限管理
     'permission.username': '用户名称',
     'permission.lastLoginDate': '最后登录时间',
@@ -301,6 +302,7 @@ export default {
     'app.switch': '切换',
     'app.preset': '预置',
     'app.zoom': '变焦',
+    'app.click-to-calibration': '点击以校准时间',
 
     'app.schedule': '时间表',
     'app.led.control': '显示屏控制',
@@ -353,6 +355,9 @@ export default {
     'app.voltage': '电压',
     'app.electric.current': '电流',
     'app.power': '功率',
+    'app.totalPower': '总电能',
+    'app.runningTime': '运行时间',
+    'app.lightTime': '亮灯时间',
 
     'app.device.switch': '设备开关',
     'app.dimming': '调光',
