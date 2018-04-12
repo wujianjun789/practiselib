@@ -384,6 +384,7 @@ export default {
     'lightManage.list.remote': '远程',
     'lightManage.list.auto': '自动',
     'lightManage.list.checkTime': '点击以校准时间',
+    'lightManage.control.success': '成功',
 
     // 报表管理
     'app.report.stat': '统计',
