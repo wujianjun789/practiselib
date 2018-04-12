@@ -739,12 +739,73 @@
 .device-edit-popup{
   width:730px;
     .modal-body{
-        padding:10px;
+      padding: 20px 30px 0 0;
+      overflow: hidden;
+      .device-per{
+        .control-label{
+          text-align: right;
+          line-height: 20px;
+          float: left;
+          width: 80px;
+        }
+        .device-content {
+          width: 605px;
+          margin-left: 15px;
+          float: left;
+          .all-device-list,.device-list {
+            float: left;
+            width: 50%;
+            height: 275px;
+            border: 1px solid #ccc;
+            >ul{
+              padding: 10px 20px; 
+              .glyphicon,.icon_delete{
+                width: 20px;
+                cursor: pointer;                
+              } 
+              .glyphicon-plus,.icon_delete{
+                float: right;
+              }
+              .icon_delete::before{
+                color: red;
+              }
+              >li>ul>li{
+                padding-left: 20px;
+                &:hover {
+                  background-color: #e5e5e5;
+                }
+              } 
+              li{
+                padding: 3px 0;
+              }
+            }  
+          }
+          .all-device-list{
+            .searchText{
+              padding: 15px;
+              width: 100%;
+              .glyphicon-search {
+                right: 30px;
+              }
+            }
+            >ul{
+              height: 212px;
+              overflow-y: scroll;
+              .list-node-add{
+                color: #00bcff;
+                float: right;                
+              }
+            }
+          }
+          .device-list{
+            overflow-y: scroll;   
+                   
+          }
+        }
+      }
     }
     .modal-footer{
-        border-top: none;
-        background-color: transparent;
-        padding:0;
-        text-align:right
+      border-top: none;
+      padding-right: 30px;
     }
 }
