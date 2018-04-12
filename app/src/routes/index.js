@@ -25,12 +25,12 @@ export default (
       <Route path="/" component={App}></Route>
       <Route path="/assetManage" component={AssetManage}>
         <Route path="model">
-          <Route path="lc" getComponent={(nextState, cb) => {
+          <Route path=":asset" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/AssetDevice').default);
-            }, 'starriverpro.assetmanage.lc');
+            }, 'starriverpro.assetmanage.asset');
           }} />
-          <Route path="gateway" getComponent={(nextState, cb) => {
+          {/*<Route path="gateway" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/AssetDevice').default);
             }, 'starriverpro.assetmanage.gateway');
@@ -44,7 +44,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/AssetDevice').default);
             }, 'starriverpro.assetmanage.screen');
-          }} />
+          }} />*/}
           {/* <Route path="lc" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetManage/container/SingleLamp').default);
@@ -77,12 +77,12 @@ export default (
           }} />
         </Route>
         <Route path="statistics">
-          <Route path="lc" getComponent={(nextState, cb) => {
+          <Route path=":asset" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/SingleLamp').default);
             }, 'starriverpro.assetmanage.singleLamp');
           }} />
-          <Route path="gateway" getComponent={(nextState, cb) => {
+          {/*<Route path="gateway" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/Gateway').default);
             }, 'starriverpro.assetmanage.gateway');
@@ -106,7 +106,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/Xes').default);
             }, 'starriverpro.assetmanage.xes');
-          }} />
+          }} />*/}
         </Route>
       </Route>
       <Route path="/domainManage" component={DomainManage}>
@@ -133,12 +133,12 @@ export default (
       </Route>
       <Route path="/systemOperation" component={SystemOperation}>
         <Route path="config">
-          <Route path="gateway" getComponent={(nextState, cb) => {
+          <Route path=":asset" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../systemOperation/container/DeviceConfig').default);
-            }, 'starriverpro.systemoperation.gateway');
-          }} model='ssgw'/>
-          <Route path="lc" getComponent={(nextState, cb) => {
+            }, 'starriverpro.systemoperation.asset');
+          }}/>
+          {/*<Route path="lc" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../systemOperation/container/DeviceConfig').default);
             }, 'starriverpro.systemoperation.singlelampcontroller');
@@ -162,7 +162,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../systemOperation/container/Pole').default);
             }, 'starriverpro.systemoperation.pole');
-          }} />
+          }} />*/}
         </Route>
         <Route path="strategy">
           <Route path="timeTable" getComponent={(nextState, cb) => {
@@ -249,12 +249,12 @@ export default (
           }, 'starriverpro.smartLightManage.smartLightMap');
         }} />
         <Route path="list">
-          <IndexRoute getComponent={(nextState, cb) => {
+          {<IndexRoute getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../smartLightList/containers/SingleLampCon').default);
             }, 'starriverpro.smartLightList.SingleLampCon');
-          }} />
-          <Route path="gateway" getComponent={(nextState, cb) => {
+          }} />}
+          <Route path=":gateway" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../smartLightList/containers/Gateway').default);
             }, 'starriverpro.smartLightList.Gateway');
@@ -305,12 +305,12 @@ export default (
           }, 'starriverpro.lightManage.lightMap');
         }} />
         <Route path="list">
-          <IndexRoute getComponent={(nextState, cb) => {
+          <Route path="ssslc" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../lightList/containers/SingleLampCon').default);
             }, 'starriverpro.lightList.SingleLampCon');
           }} />
-          <Route path="gateway" getComponent={(nextState, cb) => {
+          <Route path="ssgw" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../lightList/containers/Gateway').default);
             }, 'starriverpro.lightList.Gateway');

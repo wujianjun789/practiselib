@@ -201,7 +201,7 @@ export function getModelData(model, cb) {
         modelConfig.map((key,index)=>{
           const data = lodash.find(models, model=>{return model.name === key});
           if(data){
-            const child = { id: transformKey(data.name), name: data.name+'.name', class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
+            const child = { id: data.name, name: data.name+'.name', class: getClassByModel(data.name), active: false, link: getLinkByModel(item.id, data.name) }
             if (index == 0) {
               item.link = getLinkByModel(item.id, data.name);
             }
@@ -267,7 +267,8 @@ export function getModelTypesNameById(modelId, typeId) {
 }
 
 function getLinkByModel(parentId, key) {
-  switch (key) {
+  return '/systemOperation/config/'+key;
+  /*switch (key) {
     case 'gateway':
     case 'ssgw':
       return '/systemOperation/config/gateway';
@@ -290,5 +291,5 @@ function getLinkByModel(parentId, key) {
       return '/systemOperation/config/xes';
     default:
       return 'icon_lc';
-  }
+  }*/
 }

@@ -23,6 +23,7 @@ import NotifyPopup from '../../common/containers/NotifyPopup';
 import { message } from 'antd';
 import gateway from '../../systemOperation/container/gateway';
 
+import _ from 'lodash';
 export class AssetDevice extends Component {
   constructor(props) {
     super(props);
@@ -222,6 +223,7 @@ export class AssetDevice extends Component {
   render() {
     const { data, assetPropertyList, assetTypeList, keyField } = this.state;
     let length = assetTypeList.length;
+    console.log(this.state.model, keyField);
     return (
       <Content>
         <div className="row heading">

@@ -53,7 +53,8 @@ class SystemOperationIndex extends Component {
   }
 
   onToggle(node) {
-    // console.log(node); this.props.actions.sideBarToggled(node);
+    const {actions} = this.props;
+    actions.sideBarToggled(node);
   }
 
   render() {
