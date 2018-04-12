@@ -245,7 +245,8 @@ class LatlngStrategy extends Component {
             this.requestSearch();
             actions.overlayerHide();
           });
-        }} onCancel={() => {
+        }} onCancel={(update) => {
+          update && this.requestSearch();
           actions.overlayerHide();
         }}/>);
     }
@@ -262,7 +263,8 @@ class LatlngStrategy extends Component {
               this.requestSearch();
               actions.overlayerHide();                        
             });
-          }} onCancel={() => {
+          }} onCancel={(update) => {
+            update && this.requestSearch();
             actions.overlayerHide();
           }}/>);
         return;

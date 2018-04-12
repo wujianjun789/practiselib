@@ -275,7 +275,8 @@ class TimeStrategy extends Component {
             this.requestSearch();
             actions.overlayerHide();
           });
-        }} onCancel={() => {
+        }} onCancel={(update) => {
+          update && this.requestSearch();
           actions.overlayerHide();
         }}/>);
     }
@@ -292,7 +293,8 @@ class TimeStrategy extends Component {
               this.requestSearch();
               actions.overlayerHide();                        
             });
-          }} onCancel={() => {
+          }} onCancel={(update) => {
+            update && this.requestSearch();
             actions.overlayerHide();
           }}/>);
         return;

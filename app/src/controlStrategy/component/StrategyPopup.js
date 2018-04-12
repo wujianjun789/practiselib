@@ -29,6 +29,7 @@ export default class TimeStrategyPopup extends Component {
         name:false,
         date:false,
       },
+      update:false
     };
     this.levelList = {
       titleField: 'title',
@@ -91,7 +92,7 @@ export default class TimeStrategyPopup extends Component {
     }
 
     onCancel=() => {
-      this.props.onCancel && this.props.onCancel();
+      this.props.onCancel && this.props.onCancel(this.state.update);
     }
 
     searchSubmit=(group) => {
@@ -102,7 +103,7 @@ export default class TimeStrategyPopup extends Component {
       const {search} = this.state;
       addGroup({name:search, type:this.props.type}, () => {
         getGroupList(this.props.type, data => {
-          this.setState({groupList:data, search:''});
+          this.setState({groupList:data, search:'',update:true});
         });
       });
     }
