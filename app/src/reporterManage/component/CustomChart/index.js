@@ -9,14 +9,14 @@ import 'echarts/lib/component/title';
 import './style.less';
 import option from './option';
 export default class CustomChart extends React.Component {
-  static propTypes = {
+ /* static propTypes = {
     name: PropTypes.string.isRequired,
     unit: PropTypes.string.isRequired,
     start: PropTypes.object.isRequired,
     end: PropTypes.object.isRequired,
     data: PropTypes.array.isRequired,
     prompt: PropTypes.string
-  };
+  };*/
   constructor(props) {
     super(props);
     const { name, unit, start, end, data, prompt } = this.props;

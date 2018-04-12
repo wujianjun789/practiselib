@@ -159,6 +159,7 @@ export default class PlayerAreaPopup extends PureComponent {
     }
 }
 
+/*
 PlayerAreaPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
@@ -172,4 +173,4 @@ PlayerAreaPopup.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired
-}
+}*/

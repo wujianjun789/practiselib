@@ -38,10 +38,11 @@ export default class PreViewPopup extends PureComponent {
     }
 }
 
+/*
 PreViewPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
         url: PropTypes.string.isRequired,
     }).isRequired,
     onCancel: PropTypes.func.isRequired
-}
+}*/

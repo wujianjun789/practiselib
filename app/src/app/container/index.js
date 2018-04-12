@@ -80,7 +80,7 @@ export class App extends Component{
     }
 }
 
-App.propTypes = {
+/*App.propTypes = {
     title: PropTypes.string,
     name: PropTypes.string,
     items: PropTypes.arrayOf(
@@ -90,7 +90,7 @@ App.propTypes = {
             link: PropTypes.string.isRequired
         })
     ).isRequired
-}
+}*/
 
 const mapStateToProps = (state, ownProps) => {
     let app = state.app;

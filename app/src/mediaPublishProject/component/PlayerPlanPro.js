@@ -96,8 +96,8 @@ class PlayerPlanPro extends PureComponent {
     this.state.property.plan.defaultValue = this.state.property.plan.value = data.name;
     this.state.property.startDate.defaultValue = this.state.property.startDate.value = moment(dateBegin.year + '-' + dateAddZero(dateBegin.month) + '-' + dateAddZero(dateBegin.day));
     this.state.property.endDate.defaultValue = this.state.property.endDate.value = moment(dateEnd.year + '-' + dateAddZero(dateEnd.month) + '-' + dateAddZero(dateEnd.day));
-    this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(dateBegin.year + '-' + dateAddZero(dateBegin.month) + '-' + dateAddZero(dateBegin.day) + ' ' + dateAddZero(timeBegin.hour) + ':' + dateAddZero(timeBegin.minute) + ':' + dateAddZero(timeBegin.second) + ':' + dateAddZero(timeBegin.milliseconds));
-    this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(dateEnd.year + '-' + dateAddZero(dateEnd.month) + '-' + dateAddZero(dateEnd.day) + ' ' + dateAddZero(timeEnd.hour) + ':' + dateAddZero(timeEnd.minute) + ':' + dateAddZero(timeEnd.second) + ':' + dateAddZero(timeEnd.milliseconds));
+    this.state.property.startTime.defaultValue = this.state.property.startTime.value = moment(dateAddZero(timeBegin.hour) + ':' + dateAddZero(timeBegin.minute) + ':' + dateAddZero(timeBegin.second), "HH:mm:ss");
+    this.state.property.endTime.defaultValue = this.state.property.endTime.value = moment(dateAddZero(timeEnd.hour) + ':' + dateAddZero(timeEnd.minute) + ':' + dateAddZero(timeEnd.second), "HH:mm:ss");
     this.state.property.week.defaultValue = this.state.property.week.value = week;
 
     this.setState({id:data.id, property: Object.assign({}, this.state.property),

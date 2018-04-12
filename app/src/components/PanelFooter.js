@@ -8,11 +8,11 @@ import {FormattedMessage} from 'react-intl';
  * @prop btnTitles {array}  btn's title
  */
 export default class PanelFooter extends PureComponent {
-    static propTypes = {
-        funcNames: PropTypes.arrayOf(PropTypes.string).isRequired,
-        btnTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
-        btnDisabled: PropTypes.arrayOf(PropTypes.bool)
-    }
+    // static propTypes = {
+    //     funcNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+    //     btnTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
+    //     btnDisabled: PropTypes.arrayOf(PropTypes.bool)
+    // }
     
     render() {
         const {funcNames, btnTitles, btnDisabled=[false, false], btnClassName=['btn-default','btn-primary']} = this.props;

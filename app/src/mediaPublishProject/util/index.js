@@ -661,7 +661,7 @@ export function projectFilterDate(data, curDate) {
     const curDay = curDate.date();
     return !(dateBegin.month > curMonth || dateEnd.month < curMonth || dateBegin.month == curMonth && dateBegin.day > curDay || dateEnd.month == curMonth && dateEnd.day < curDay);
   }):data;
-  console.log('render:',datalist);
+
   const programList = datalist.map(newPlan => {
     const plan = initPlanDate(newPlan);
     const {dateBegin, dateEnd} = plan.dateRange;

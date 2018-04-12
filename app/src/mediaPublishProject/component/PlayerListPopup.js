@@ -119,6 +119,7 @@ export default class PlayerListPopup extends PureComponent {
   }
 }
 
+/*
 PlayerListPopup.propTypes = {
   title: PropTypes.string.isRequired,
   data: PropTypes.shape({
@@ -128,4 +129,4 @@ PlayerListPopup.propTypes = {
   }).isRequired,
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-};
+};*/

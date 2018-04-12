@@ -1,6 +1,7 @@
 /**
  * Created by a on 2017/3/13.
  */
+import {dateAddZero} from './string';
 import moment from 'moment';
 let oldTime;
 /**
@@ -144,8 +145,8 @@ export function getNextSeconds() {
 
 export function getMomentByDateObject(date, time) {
     if(date && time){
-        return moment(date.year + '-' + date.month + '-' + date.day + ' ' +time.hour + ':' + time.minute + ':' + time.second + ':' + time.milliseconds)
+        return moment(date.year + '-' + dateAddZero(date.month) + '-' + dateAddZero(date.day) + ' ' +dateAddZero(time.hour) + ':' + dateAddZero(time.minute) + ':' + dateAddZero(time.second));
     }
 
-    return moment(date.year + '-' + date.month + '-' + date.day);
+    return moment(date.year + '-' + dateAddZero(date.month) + '-' + dateAddZero(date.day));
 }

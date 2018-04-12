@@ -139,7 +139,7 @@ class TimingPlanPopup extends PureComponent {
     }
 }
 
-TimingPlanPopup.propTypes = {
+/*TimingPlanPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
         startTime: PropTypes.object.isRequired,
@@ -148,6 +148,6 @@ TimingPlanPopup.propTypes = {
     }).isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
-}
+}*/
 
 export default injectIntl(TimingPlanPopup)

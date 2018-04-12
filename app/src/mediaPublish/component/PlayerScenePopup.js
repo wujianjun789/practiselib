@@ -126,6 +126,7 @@ console.log(valid);
     }
 }
 
+/*
 PlayerScenePopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
@@ -135,4 +136,4 @@ PlayerScenePopup.propTypes = {
     onChange: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
-}
+}*/

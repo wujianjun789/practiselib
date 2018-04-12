@@ -7,14 +7,14 @@ import PropTypes from 'prop-types';
  * table container with thead
  */
 export default class TableWithHeader extends PureComponent {
-    static propTypes = {
+    /*static propTypes = {
         className: PropTypes.string,
         columns: PropTypes.arrayOf(PropTypes.shape({
             accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
             title: PropTypes.string.isRequired
         }) ),
         children: PropTypes.arrayOf(PropTypes.node)
-    }
+    }*/
 
     render() {
         const {className, columns, children} = this.props;

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
  * 这里是注释
  */
 export default class TableTr extends PureComponent {
-    static propTypes = {
+    /*static propTypes = {
         activeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         columns: PropTypes.arrayOf(PropTypes.shape({
             accessor: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
@@ -21,7 +21,7 @@ export default class TableTr extends PureComponent {
             PropTypes.func
         ]),
         rowClick: PropTypes.func
-    }
+    }*/
 
     constructor(props) {
         super(props);

@@ -186,6 +186,7 @@ export default class DomainPopup extends PureComponent {
     }
 }
 
+/*
 DomainPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
@@ -204,4 +205,4 @@ DomainPopup.propTypes = {
     }).isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
-}
+}*/
