@@ -77,12 +77,12 @@ export default (
           }} />
         </Route>
         <Route path="statistics">
-          <Route path="lc" getComponent={(nextState, cb) => {
+          <Route path=":statistics" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
-              cb(null, require('../assetStatistics/container/SingleLamp').default);
-            }, 'starriverpro.assetmanage.singleLamp');
+              cb(null, require('../assetStatistics/container/AssetStatistics').default);
+            }, 'starriverpro.assetmanage.assetStatistics');
           }} />
-          <Route path="gateway" getComponent={(nextState, cb) => {
+          {/* <Route path="gateway" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/Gateway').default);
             }, 'starriverpro.assetmanage.gateway');
@@ -91,8 +91,8 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/Sensor').default);
             }, 'starriverpro.assetmanage.sensor');
-          }} />
-          <Route path="screen" getComponent={(nextState, cb) => {
+          }} /> */}
+          {/* <Route path="screen" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/Screen').default);
             }, 'starriverpro.assetmanage.screen');
@@ -106,7 +106,7 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../assetStatistics/container/Xes').default);
             }, 'starriverpro.assetmanage.xes');
-          }} />
+          }} /> */}
         </Route>
       </Route>
       <Route path="/domainManage" component={DomainManage}>
