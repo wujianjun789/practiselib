@@ -415,6 +415,7 @@ export default {
     'app.switch': 'Switch',
     'app.preset': 'Preset',
     'app.zoom': 'Zoom',
+    'app.click-to-calibration': 'click to calibration',
 
     'app.schedule': 'Schedule',
     'app.led.control': 'led control',
@@ -468,6 +469,9 @@ export default {
     'app.voltage': 'voltage',
     'app.electric.current': 'electric current',
     'app.power': 'power',
+    'app.totalPower': 'total power',
+    'app.runningTime': 'running time',
+    'app.lightTime': 'light time',
 
     'app.device.switch': 'device switch',
     'app.dimming': 'dimming',

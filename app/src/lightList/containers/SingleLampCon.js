@@ -436,7 +436,7 @@ class SingleLampCon extends Component {
           </div>
           {/* <div className="panel panel-default panel-1">
                     <div className="panel-heading">
-                        <span className="icon_select"></span>选中设备
+                        <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
                             </div>
                     <div className="panel-body">
                         <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
@@ -525,6 +525,7 @@ class SingleLampCon extends Component {
     );
   }
 }
+
 
 /**
  *                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}

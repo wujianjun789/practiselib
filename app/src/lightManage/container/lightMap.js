@@ -741,7 +741,6 @@ export class lightMap extends Component{
     }
 
     render(){
-        console.log("+++++++++")
         const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList,  IsOpenPoleInfo, IsOpenPoleControl} = this.state;
         let IsControl = false;

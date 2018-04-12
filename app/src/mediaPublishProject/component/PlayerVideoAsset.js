@@ -47,7 +47,7 @@ class PlayerPicAsset extends PureComponent {
 
   componentDidUpdate() {
     const {data} = this.props;
-    if (data.id !== this.state.id) {
+    if (data.id && data.id !== this.state.id) {
       this.setState({id: data.id}, () => {this.requestItem();});
     }
   }

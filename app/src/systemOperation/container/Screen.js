@@ -147,6 +147,7 @@ export class Screen extends Component {
         });
       }
     });
+    console.log(this.props)
   }
 
   componentWillUnmount() {
@@ -368,15 +369,15 @@ export class Screen extends Component {
           <div className="panel-heading" role="presentation"
             onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
             <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
-            <span className="icon icon_collapse pull-right"></span>              
+            <span className="icon icon_collapse pull-right"></span>
           </div>
           <div className={'panel-body domain-property ' + (deviceCollapse ? 'collapsed' : '')}>
             <span className="domain-name" title={selectDevice.data.length ? selectDevice.data[0].name : ''}>
               {selectDevice.data.length ? selectDevice.data[0].name : ''}</span>
-            <button id="sys-update" className="btn btn-primary pull-right" onClick={this.domainHandler} 
+            <button id="sys-update" className="btn btn-primary pull-right" onClick={this.domainHandler}
               disabled={data.size == 0}>{this.props.intl.formatMessage({id:'button.edit'})}
             </button>
-            <button id="sys-delete" className="btn btn-danger pull-right" onClick={this.domainHandler} 
+            <button id="sys-delete" className="btn btn-danger pull-right" onClick={this.domainHandler}
               disabled={data.size == 0}>{this.props.intl.formatMessage({id:'button.delete'})}
             </button>
           </div>
