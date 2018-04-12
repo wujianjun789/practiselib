@@ -32,13 +32,12 @@ export function getLanguage() {
 }
 
 export function setLanguage(language) {
-    this.language = language
+    this.language = language;
     setLocalStorage("appLanguage", language);
 }
 
 export function intlFormat(data) {
     let lan = getLanguage();
-
     return data[lan] ? data[lan] : data['en'];
 }
 
@@ -199,13 +198,15 @@ export function getDomainLevelByMapLevel(domainLevel, map) {
 }
 
 export function getZoomByMapLevel(curLevel, domainLevel, map) {
-    if (map.zoom == map.minZoom) {
-        return Math.min(map.minZoom, map.maxZoom);
-    }
-    if (map.zoom == map.maxZoom) {
-        return Math.max(map.minZoom, map.maxZoom);
-    }
-    return Math.round(curLevel * (map.maxZoom - map.minZoom) / domainLevel + map.minZoom - 1);
+	//  if (map.zoom == map.minZoom) {
+	//      return Math.min(map.minZoom, map.maxZoom);
+	//  }
+	//  if (map.zoom == map.maxZoom) {
+	//      return Math.max(map.minZoom, map.maxZoom);
+	//  }
+	//  return Math.round(curLevel*(map.maxZoom-map.minZoom)/domainLevel+map.minZoom-1);
+	
+	return domainConfig[curLevel-1].zoomRange[1];
 }
 
 

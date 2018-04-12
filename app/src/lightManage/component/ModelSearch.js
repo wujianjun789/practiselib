@@ -324,10 +324,12 @@ export class ModelSearch extends Component{
     }
 
     itemClick(item){
+    	
         let curList = [];
         let positionList = [];
         let searchList = '';
         let data = item.toJS();
+        console.log(data)
         let geoPoint = data.geoPoint ? data.geoPoint : {lat:"", lng:""};
         let position = Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":data.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
         curList.push(data);
@@ -351,6 +353,7 @@ export class ModelSearch extends Component{
             }
             this.setSize();
         })
+        
     }
 
     backHandler(){
