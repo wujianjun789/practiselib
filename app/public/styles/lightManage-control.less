@@ -1,208 +1,224 @@
 @import url(./sideBarInfo.less);
-
 .light-control {
-  .content {
-    // overflow-x: hidden;
-    // min-width: auto;
-    .heading {
-      height: 70px;
-      margin-right: 300px;
-      background: #ffffff;
-      .searchText {
-        width: 200px;
-        height: 30px;
-        margin: 20px;
-      }
-    }
-
-    .table-container {
-      margin-top: 20px;
-      margin-right: 320px;
-      margin-bottom: 17px;
-      margin-left: 20px;
-      padding: 20px;
-      border: solid 1px #e6e6e6;
-      background: #fff;
-
-      -webkit-transition: margin-right .3s;
-      -moz-transition: margin-right .3s;
-      -ms-transition: margin-right .3s;
-      -o-transition: margin-right .3s;
-      transition: margin-right .3s;
-    }
-
-    &.collapse {
-      display: block;
-
-      .heading {
-        margin-right: 60px;
-      }
-      .table-container {
-        margin-right: 80px;
-      }
-      > .sidebar-info.sidebar-collapse {
-        width: 60px;
-        right: 0;
-        .panel.panel-default{
-          >.panel-heading> span {
-            margin: 2.5px 23px 7.5px 7.5px;
-          }
-          >.panel-body{
-            opacity: 0;
-          }
+    .content {
+        // overflow-x: hidden;
+        // min-width: auto;
+        .heading {
+            height: 70px;
+            margin-right: 300px;
+            background: #ffffff;
+            .searchText {
+                width: 200px;
+                height: 30px;
+                margin: 20px;
+            }
         }
-        .panel.panel-default:first-child,.group-tast-record{
-          position: absolute;
-          top:30px;
+        .table-container {
+            margin-top: 20px;
+            margin-right: 320px;
+            margin-bottom: 17px;
+            margin-left: 20px;
+            padding: 20px;
+            border: solid 1px #e6e6e6;
+            background: #fff;
+            -webkit-transition: margin-right 0.3s;
+            -moz-transition: margin-right 0.3s;
+            -ms-transition: margin-right 0.3s;
+            -o-transition: margin-right 0.3s;
+            transition: margin-right 0.3s;
         }
-        .strategy-info{
-          position: absolute;
-          top:73px;
-        }
-        .device-info{
-          position: absolute;
-          top:116px;
-        }
-        .switch-container{
-          opacity: 0;
-        }
-      }
-    }
-
-    > .sidebar-info {
-      width: 300px;
-      background-color: #eaeef2;;
-      transition: all .3s;
-      .switch-container{
-        width: 300px;
-        height: 70px;
-        line-height: 30px;
-        padding: 20px;
-        >span{
-          width: 100px;
-          display: inline-block;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        >button:last-child{
-          margin-right: 20px;
-        }
-      }
-      .panel.panel-default {
-        width: 300px;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        margin-bottom: 0;
-        background-color: #eaeef2;
-        overflow: hidden;
-        transition: all .3s ease;
-  
-        > .panel-heading {
-          background: #d3d8dd;
-          border-radius: 0;
-          background-color: #d3d8dd;
-          font-size: 14px;
-          color: #333744;
-          cursor: pointer;
-          > span {
-            float: left;
-            width: 15px;
-            height: 15px;
+        &.collapse {
             display: block;
-            transition: all .3s;
-            margin: 2.5px 7.5px 7.5px 0;
-          }
-        }
-        > .panel-body {
-          > .form-group {
-            padding-bottom: 20px;
-            line-height: 40px;
-            margin-bottom: 0;
-           
-            >label{
-              width: 60px;
-              margin-right: 10px;
-              margin-bottom: 0;
-              padding: 0;
-              font-size: 14px;
-              color: #4d4d4d;
-              text-align: right;
-              line-height: 40px;
-              float: left;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
+            .heading {
+                margin-right: 60px;
             }
-            > .input-container{
-              position: relative;
-              display: inline-block;
-              width: 200px;
+            .table-container {
+                margin-right: 80px;
             }
-          }
-          >.date-range{
-            >.input-container{
-              >input{
-                width:85px;
-                display: inline-block;
-                padding: 6px;
-              }
-              >span{
-                margin-right: 8px;
-                margin-left: 8px;              
-              }
+            >.sidebar-info.sidebar-collapse {
+                width: 60px;
+                right: 0;
+                .panel.panel-default {
+                    >.panel-heading>span {
+                        margin: 2.5px 23px 7.5px 7.5px;
+                    }
+                    >.panel-body {
+                        opacity: 0;
+                    }
+                }
+                .panel.panel-default:first-child,
+                .group-tast-record {
+                    position: absolute;
+                    top: 30px;
+                }
+                .strategy-info {
+                    position: absolute;
+                    top: 73px;
+                }
+                .device-info {
+                    position: absolute;
+                    top: 116px;
+                }
+                .switch-container {
+                    opacity: 0;
+                }
             }
-            
-          }
         }
-        > .panel-body.collapsed {
-          opacity: 0;
-          height: 0;
-          display: none;
+        >.sidebar-info {
+            width: 300px;
+            background-color: #eaeef2;
+            transition: all 0.3s;
+            .switch-container {
+                width: 300px;
+                height: 70px;
+                line-height: 30px;
+                padding: 20px;
+                >span {
+                    width: 100px;
+                    display: inline-block;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                >button:last-child {
+                    margin-right: 20px;
+                }
+            }
+            .custom-switch-container {
+                // width: 300px;
+                // height: 70px;
+                // line-height: 30px;
+                // padding: 20px;
+                >span {
+                    width: 100px;
+                    display: inline-block;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+                >button:last-child {
+                    margin-right: 20px;
+                }
+            }
+            .panel.panel-default {
+                width: 300px;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                margin-bottom: 0;
+                background-color: #eaeef2;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                >.panel-heading {
+                    background: #d3d8dd;
+                    border-radius: 0;
+                    background-color: #d3d8dd;
+                    font-size: 14px;
+                    color: #333744;
+                    cursor: pointer;
+                    >span {
+                        float: left;
+                        width: 15px;
+                        height: 15px;
+                        display: block;
+                        transition: all 0.3s;
+                        margin: 2.5px 7.5px 7.5px 0;
+                    }
+                }
+                >.panel-body {
+                    >.form-group {
+                        padding-bottom: 20px;
+                        line-height: 40px;
+                        margin-bottom: 0;
+                        >label {
+                            width: 60px;
+                            margin-right: 10px;
+                            margin-bottom: 0;
+                            padding: 0;
+                            font-size: 14px;
+                            color: #4d4d4d;
+                            text-align: right;
+                            line-height: 40px;
+                            float: left;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
+                        >.input-container {
+                            position: relative;
+                            display: inline-block;
+                            width: 200px;
+                        }
+                    }
+                    >.date-range {
+                        >.input-container {
+                            >input {
+                                width: 85px;
+                                display: inline-block;
+                                padding: 6px;
+                            }
+                            >span {
+                                margin-right: 8px;
+                                margin-left: 8px;
+                            }
+                        }
+                    }
+                }
+                >.panel-body.collapsed {
+                    opacity: 0;
+                    height: 0;
+                    display: none;
+                }
+            }
+            .strategy-info {
+                >.panel-body .form-group:last-of-type {
+                    // border-bottom: 1px solid #ccc;
+                    //   margin-bottom: 20px;
+                }
+            }
+            .table-selectedDevices,
+            .table-allDevices,
+            .table-task-records {
+                min-width: 270px;
+                >table {
+                    min-width: 270px;
+                    th {
+                        white-space: nowrap;
+                    }
+                }
+            }
+            .page {
+                text-align: center;
+            }
         }
-      }
-      .strategy-info{
-        >.panel-body .form-group:last-of-type{
-          border-bottom: 1px solid #ccc;
-          margin-bottom: 20px;
-        }
-      }
-      .table-selectedDevices,.table-allDevices,.table-task-records{
-        min-width: 270px;
-        >table{
-          min-width: 270px;    
-          th{
-            white-space: nowrap;
-          }      
-        }
-        
-      }
-      .page{
-        text-align: center;
-      }
     }
-  }
 }
 
-.task-record-popup{
-  width:600px;
-  .table-container{
-      min-width: 568px;
-    table{
-      min-width: 568px; 
+.task-record-popup {
+    width: 600px;
+    .table-container {
+        min-width: 568px;
+        table {
+            min-width: 568px;
+        }
+        .page {
+            text-align: center;
+        }
     }
-    .page{
-      text-align: center;
+}
+
+.task-record-custom-table {
+    .table-responsive,
+    .table {
+        min-width: 270px;
     }
-  }
 }
 
 .addAnimation {
-  @time: .3s;
-  -webkit-transition: all @time;
-  -moz-transition: all @time;
-  -ms-transition: all @time;
-  -o-transition: all @time;
-  transition: all @time;
+    @time: 0.3s;
+    -webkit-transition: all @time;
+    -moz-transition: all @time;
+    -ms-transition: all @time;
+    -o-transition: all @time;
+    transition: all @time;
 }

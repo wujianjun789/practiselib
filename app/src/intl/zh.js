@@ -138,8 +138,8 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    'illegal': '不合法',
-    'deviceNumIllegal':'输入的设备编号不合法！',
+    illegal: '不合法',
+    deviceNumIllegal: '输入的设备编号不合法！',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',
@@ -212,7 +212,7 @@ export default {
     'domain.lng': '经度',
     'domain.lat': '纬度',
     'domain.superior': '上级域',
-    
+
     'domain.add': '添加域',
     'domain.delete.alert': '是否删除选中域？',
 
@@ -288,7 +288,7 @@ export default {
 
     'app.strategy.platform': '平台',
     'app.select.group': '选中组',
-    'app.select.strategy': '选中策略',
+    'app.select.strategy': '选择策略',
     'app.strategy.property': '参数',
     'app.strategy.devices': '设备',
     'app.strategy.select.devices': '选择设备',

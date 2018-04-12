@@ -32,7 +32,7 @@ import {
 import { getAssetsBaseById } from '../../api/asset';
 import { Promise } from 'es6-promise';
 import TaskRecordPopup from '../component/TaskRecordPopup';
-
+import NewTaskRecord from '../component/NewTaskRecord';
 class TimeStrategy extends Component {
   constructor(props) {
     super(props);
@@ -60,7 +60,8 @@ class TimeStrategy extends Component {
         collapsed: false,
         propertyCollapsed: false,
         parameterCollapsed: false,
-        devicesCollapsed: false
+        devicesCollapsed: false,
+        recordCollapsed: false
       },
       selectItem: {},
       selectedDevicesData: [],
@@ -553,66 +554,85 @@ class TimeStrategy extends Component {
               }
             />
           </div>
-          <div className="switch-container">
-            <span className="domain-name" title={selectItem.name}>
-              {selectItem.name}
-            </span>
-            <button
-              className="btn btn-primary pull-right"
-              disabled={
-                selectItem.status == this.formatIntl('app.status.started')
-              }
-              onClick={() => this.switchStrategy('start')}
+          <div className="panel panel-default">
+            <div
+              className="panel-heading"
+              role="presentation"
+              onClick={() => {
+                !sidebarInfo.collapsed &&
+                  this.collapseHandler('propertyCollapsed');
+              }}
             >
-              {this.formatIntl('button.start')}
-            </button>
-            <button
-              className="btn btn-danger pull-right"
-              disabled={
-                selectItem.status == this.formatIntl('app.status.paused')
-              }
-              onClick={() => this.switchStrategy('pause')}
-            >
-              {this.formatIntl('button.pause')}
-            </button>
-          </div>
-          {!selectItem.id || selectItem.plans ? (
-            <div className="panel panel-default group-tast-record">
-              <div
-                className="panel-heading"
-                role="presentation"
-                onClick={() => {
-                  !sidebarInfo.collapsed &&
-                    this.collapseHandler('propertyCollapsed');
-                }}
-              >
-                <span className="icon_select" />
-                {this.formatIntl('app.task.record')}
-                <span className="icon icon_collapse pull-right" />
-              </div>
-              <div
-                className={
-                  'panel-body ' +
-                  (sidebarInfo.propertyCollapsed ? 'collapsed' : '')
-                }
-              >
-                <Table
-                  className="task-records"
-                  columns={this.taskColumns}
-                  data={taskData}
-                />
-                <Page
-                  className={'page ' + (page.get('total') == 0 ? 'hidden' : '')}
-                  pageSize={page.get('pageSize')}
-                  current={page.get('current')}
-                  total={page.get('total')}
-                  onChange={this.pageChange}
-                />
-              </div>
+              <span className="icon_select" />
+              {this.formatIntl('app.select.strategy')}
+              <span className="icon icon_collapse pull-right" />
             </div>
-          ) : (
+
+            <div
+              className={
+                'panel-body custom-switch-container ' +
+                (sidebarInfo.propertyCollapsed ? 'collapsed' : '')
+              }
+            >
+              <span className="domain-name" title={selectItem.name}>
+                {selectItem.name}
+              </span>
+              <button
+                className="btn btn-primary pull-right"
+                disabled={
+                  selectItem.status == this.formatIntl('app.status.started')
+                }
+                onClick={() => this.switchStrategy('start')}
+              >
+                {this.formatIntl('button.start')}
+              </button>
+              <button
+                className="btn btn-danger pull-right"
+                disabled={
+                  selectItem.status == this.formatIntl('app.status.paused')
+                }
+                onClick={() => this.switchStrategy('pause')}
+              >
+                {this.formatIntl('button.pause')}
+              </button>
+            </div>
+          </div>
+          {!selectItem.id || selectItem.plans ? null : (
+            // <div className="panel panel-default group-tast-record">
+            //   <div
+            //     className="panel-heading"
+            //     role="presentation"
+            //     onClick={() => {
+            //       !sidebarInfo.collapsed &&
+            //         this.collapseHandler('propertyCollapsed');
+            //     }}
+            //   >
+            //     <span className="icon_select" />
+            //     {this.formatIntl('app.task.record')}
+            //     <span className="icon icon_collapse pull-right" />
+            //   </div>
+            //   <div
+            //     className={
+            //       'panel-body ' +
+            //       (sidebarInfo.propertyCollapsed ? 'collapsed' : '')
+            //     }
+            //   >
+            //     <Table
+            //       className="task-records"
+            //       columns={this.taskColumns}
+            //       data={taskData}
+            //     />
+            //     <Page
+            //       className={'page ' + (page.get('total') == 0 ? 'hidden' : '')}
+            //       pageSize={page.get('pageSize')}
+            //       current={page.get('current')}
+            //       total={page.get('total')}
+            //       onChange={this.pageChange}
+            //     />
+            //   </div>
+            // </div>
             <div className="panel-strategy">
-              <div className="panel panel-default">
+              {/* <div className="panel panel-default">
                 <div
                   className="panel-heading"
                   role="presentation"
@@ -698,7 +718,7 @@ class TimeStrategy extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="panel panel-default strategy-info">
                 <div
                   className="panel-heading"
@@ -719,7 +739,7 @@ class TimeStrategy extends Component {
                   }
                 >
                   <div className="form-group">
-                    <label>{this.formatIntl('app.date')}</label>
+                    <label>{this.formatIntl('app.time')}</label>
                     <div className="input-container">
                       <input
                         type="text"
@@ -744,15 +764,37 @@ class TimeStrategy extends Component {
                       />
                     </div>
                   </div>
-                  <button
+                  {/* <button
                     className="btn btn-primary pull-right"
                     onClick={this.taskRecordPopup}
                   >
                     {this.formatIntl('app.task.record')}
-                  </button>
+                  </button> */}
                 </div>
               </div>
-              <div className="panel panel-default device-info">
+              <div className="panel panel-default group-tast-record">
+                <div
+                  className="panel-heading"
+                  role="presentation"
+                  onClick={() => {
+                    !sidebarInfo.collapsed &&
+                      this.collapseHandler('recordCollapsed');
+                  }}
+                >
+                  <span className="icon_select" />
+                  {this.formatIntl('app.task.record')}
+                  <span className="icon icon_collapse pull-right" />
+                </div>
+                <div
+                  className={
+                    'panel-body ' +
+                    (sidebarInfo.recordCollapsed ? 'collapsed' : '')
+                  }
+                >
+                  <NewTaskRecord intl={this.props.intl} />
+                </div>
+              </div>
+              {/* <div className="panel panel-default device-info">
                 <div
                   className="panel-heading"
                   role="presentation"
@@ -783,8 +825,8 @@ class TimeStrategy extends Component {
                     data={selectedDevicesData}
                     collapseClick={this.collapseClick}
                   />
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */}
             </div>
           )}
         </div>
