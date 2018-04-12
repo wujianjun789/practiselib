@@ -22,31 +22,20 @@ export default class SingleDeviceReplacePopup extends Component {
             data: [
             ],
             prompt:false,
-            // search: Immutable.fromJS({
-            //     placeholder: intlFormat({ en: 'please input the device Id', zh: '输入设备编号' }),
-            //     value: '',
-            //   }),
             search:{
                 placeholder: intlFormat({ en: 'please input the device Id', zh: '输入设备编号' }),
                 value: '',
             },
-            filename: '',
             buttonConfirmDisabled: true,
         };
-        this.data =[
-            {id:'000001',name:'更换对象1'},
-            {id:'000002',name:'更换对象2'},
-            {id:'000003',name:'更换对象3'},
-        ]
+
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onChange = this.onChange.bind(this);
         this.requestReplace = this.requestReplace.bind(this);
     }
 
-
     onChange(e){
-        console.log("v:", e.target.value)
         let {search} = this.state;
         let value = e.target.value;
         let prompt = false;
@@ -59,35 +48,21 @@ export default class SingleDeviceReplacePopup extends Component {
     onCancel() {
         this.props.overlayerHide();
     }
-
-
-    requestReplace(value){
-        //更换单一设备的编号
-        let data = this.data;
-
-    }
     
-    onConfirm() {
-        const{search} = this.state
+    onConfirm(e) { 
+        const{selectedItem} = this.props;
+        const{search} = this.state;
         let value = search.value;
         let requestValue   =   value.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
+        this.requestReplace(selectedItem,requestValue);
+    }
 
-        this.requestReplace(value);
-
-        //请求成功后的操作
-        this.props.overlayerHide();
-
-        let datas = this.state.data.map(item => {
-            item.type = item.typeName;
-            delete item.typeName;
-            if (item.domainName) {
-                item.domainId = getObjectByKeyObj(this.props.domainList.options, 'name', item.domainName).id;
-                delete item.domainName;
-            }
-            return item;
-        }
-        );
-        this.props.onConfirm && this.props.onConfirm(datas);
+    requestReplace(selectedItem, requestValue){
+        setTimeout(()=>{
+            //更新数据
+            console.log("实现更新",selectedItem.id,"为",requestValue);
+            this.props.overlayerHide();
+        },300)
     }
 
     render() {

@@ -27,6 +27,7 @@ class SystemOperationIndex extends Component {
     super(props);
     this.initTreeData = this.initTreeData.bind(this);
     this.onToggle = this.onToggle.bind(this);
+    this.getActiveNode = this.getActiveNode.bind(this);
   }
 
   componentWillMount() {
@@ -42,14 +43,31 @@ class SystemOperationIndex extends Component {
 
   componentDidMount() {}
 
-  initTreeData() {
-    console.log(TreeData);
-    TreeData.map(tree=>{
+  getActiveNode(TreeData){
+    let pathname = this.props.location.pathname;//当前页面路径
+    for(let i = 0;i<TreeData.length;i++){
+      let childNode = TreeData[i];
+      if(childNode.children){
+        return this.getActiveNode(childNode.children)
+      }else {
+        if(childNode.link==pathname){
+          return childNode;
+        }
+      }
+    }
+    return null;
+  }
 
+  initTreeData() {
+    const {actions} = this.props;
+    TreeData.map(tree=>{
       return Object.assign({}, tree, {name:this.props.intl.formatMessage({id:tree.name})});
     })
     this.props.actions.treeViewInit(TreeData);
     treeViewNavigator(TreeData, this.props.router);
+
+    let node = this.getActiveNode(TreeData);
+    node&&actions.sideBarToggled(node);  
   }
 
   onToggle(node) {

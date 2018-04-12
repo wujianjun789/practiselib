@@ -224,18 +224,16 @@ class TimeStrategy extends Component {
       //       this.getGroupTasks(this.state.selectItem.id);
       //     });
       // });
-      this.setState({ [key]: Immutable.fromJS(result) });
+      this.setState({ selectItem: result[0] ,[key]: Immutable.fromJS(result) });
       result.map(item => {
-        if (item.plans.length) {
+        if (!item.hasOwnProperty('plans')) {
           getPlanStatus(item.id, res => {
             len2++;
-            item.status =
-              res.status && res.status == 1
-                ? this.formatIntl('app.status.started')
-                : this.formatIntl('app.status.paused');
+            item.status = (res.status && res.status == 1)? this.formatIntl('app.status.started') : this.formatIntl('app.status.paused');
             if (len2 == len1) {
               result.length > 0 &&
-                this.setState({ selectItem: result[0] }, () => {
+                this.setState({ selectItem: result[0] ,[key]: Immutable.fromJS(result)}, () => {
+                  console.log(this.state.selectItem);
                   this.getGroupTasks(this.state.selectItem.id);
                 });
             }
@@ -296,77 +294,6 @@ class TimeStrategy extends Component {
     this.setState({ taskData: Immutable.fromJS(result) });
   };
 
-  getDeviceData = devices => {
-    let gatewayIds = [];
-    let gateways = [];
-    let selectedDevices = [];
-    let selectedDevicesData = [];
-
-    if (devices) {
-      const promise = new Promise((resolve, reject) => {
-        let len = 0;
-        devices.map(id => {
-          getAssetsBaseById(parseInt(id, 10), res => {
-            len++;
-            selectedDevices.push(res);
-            //所有网关Id
-            !gatewayIds.includes(res.ssgwId) && gatewayIds.push(res.ssgwId);
-            if (len == devices.length) {
-              resolve(gatewayIds);
-            }
-          });
-        });
-      });
-
-      promise
-        .then(gatewayIds => {
-          return new Promise((resolve, reject) => {
-            let len = 0;
-            gatewayIds.map(id => {
-              getAssetsBaseById(parseInt(id, 10), res => {
-                len++;
-                //所有网关
-                gateways.push(res);
-                if (len == gatewayIds.length) {
-                  resolve(gateways);
-                }
-              });
-            });
-          });
-        })
-        .then(gateways => {
-          return new Promise((resolve, reject) => {
-            gateways.forEach(item => {
-              //网关白名单中的选中设备
-              selectedDevicesData.push(
-                Object.assign({}, item, {
-                  whiteList: getListByKey2(selectedDevices, 'ssgwId', item.id)
-                })
-              );
-            });
-            this.initDeviceData('selectedDevicesData', selectedDevicesData);
-          });
-        });
-    } else {
-      this.setState({ selectedDevicesData: Immutable.fromJS([]) });
-    }
-  };
-
-  initDeviceData = (key, data) => {
-    let result = [];
-    data.map(parent => {
-      parent.collapsed = false;
-      result.push(parent);
-      if (parent.whiteList) {
-        parent.whiteList.map(item => {
-          item.hidden = parent.collapsed;
-          result.push(item);
-        });
-      }
-    });
-    this.setState({ [key]: Immutable.fromJS(result) });
-  };
-
   tableClick = row => {
     this.updateSelectItem(row.toJS());
   };
@@ -396,7 +323,7 @@ class TimeStrategy extends Component {
         selectItem: selectItem
       },
       () => {
-        !item.plans && this.getDeviceData(this.state.selectItem.devices);
+        // !item.plans && this.getDeviceData(this.state.selectItem.devices);
         // item.plans && this.getGroupTasks(this.state.selectItem.id);
         item.plans && this.getGroupTasks(this.state.selectItem.id);
       }

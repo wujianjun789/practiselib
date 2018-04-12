@@ -242,8 +242,8 @@ export class Alarm extends Component {
         <Select id="domain" titleField={domainList.titleField} valueField={domainList.valueField} 
           options={domainList.options} value={domainList.value}
           onChange={(e) => {this.selectChange(e, 'domainList');}}/>
-        <Select id="type" titleField={typeList.titleField} valueField={typeList.valueField}
-          options={typeList.options} value={typeList.value} onChange={(e) => {this.selectChange(e, 'typeList');}}/>
+        {/* <Select id="type" titleField={typeList.titleField} valueField={typeList.valueField}
+          options={typeList.options} value={typeList.value} onChange={(e) => {this.selectChange(e, 'typeList');}}/> */}
         <Select id="level" titleField={levelList.titleField} valueField={levelList.valueField}
           options={levelList.options} value={levelList.value} onChange={(e) => {this.selectChange(e, 'levelList');}}/>
         <div className="datePicker">
