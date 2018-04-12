@@ -87,6 +87,18 @@ export function getSearchAssets(domainId, model, name, offset, limit, cb) {
   });
 }
 
+
+export function getSearchAssets2(model, name, cb) {
+  let headers = getHttpHeader();
+  let paramStr = JSON.stringify({ 'include': ['extend'], 'where': getSearchParam(null, model, name)});
+  httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr), {
+    headers: headers,
+    method: 'GET',
+  }, response => {
+    cb && cb(response);
+  });
+}
+
 export function getSearchCount(domainId, model, name, cb) {
   let headers = getHttpHeader();
 

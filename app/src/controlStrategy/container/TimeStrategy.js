@@ -19,8 +19,10 @@ import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup,
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
+import AddDevicePopup from '../component/AddDevicePopup'
 import {TimePicker} from 'antd';
 import moment from 'moment'
+
 class TimeStrategy extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,7 @@ class TimeStrategy extends Component {
         allChecked:false,
         checked:[],
       },
+      selectedDevices:[]
     };
     this.columns =  [
       {id: 0, field:'name', title:this.formatIntl('app.strategy.name')},
@@ -148,7 +151,7 @@ class TimeStrategy extends Component {
         const promise = new Promise((resolve, reject) => {
           let len = 0;
           devices.map(id => {
-            getAssetsBaseById(parseInt(id, 10), (res) => {
+            getAssetsBaseById(id, (res) => {
               len++;
               selectedDevices.push(res);
               //所有网关Id          
@@ -156,7 +159,6 @@ class TimeStrategy extends Component {
               if (len == devices.length) {
                 resolve(gatewayIds);
               }
-                        
             });
           });
         });
@@ -165,7 +167,7 @@ class TimeStrategy extends Component {
           return new Promise((resolve, reject) => {
             let len = 0;
             gatewayIds.map(id => {
-              getAssetsBaseById(parseInt(id, 10), (res) => {
+              getAssetsBaseById(id, (res) => {
                 len++;
                 //所有网关
                 gateways.push(res);
@@ -195,6 +197,7 @@ class TimeStrategy extends Component {
           });
                 
         }).then(({selectedDevicesData, allDevicesData}) => {
+          this.setState({selectedDevices:selectedDevicesData})
           this.initChecked(devices, selectedDevicesData, allDevicesData);
           this.initDeviceData('selectedDevicesData', selectedDevicesData);
           this.initDeviceData('allDevicesData', allDevicesData);
@@ -598,7 +601,17 @@ class TimeStrategy extends Component {
                       <span>{`${this.formatIntl('sysOperation.include')}：${selectItem.devices 
                         ? selectItem.devices.length : 0}${this.formatIntl('sysOperation.devices')}`}</span>
                       <button className="btn btn-primary pull-right" onClick={() => { 
-                        !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded'); 
+                        // !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded'); 
+                        this.props.actions.overlayerShow(<AddDevicePopup className='device-edit-popup' 
+                          title={this.formatIntl('app.strategy.select.devices')} id={selectItem.id} devicesId={selectItem.devices?selectItem.devices:[]}
+                          selectedDevicesData={this.state.selectedDevices} overlayerHide={this.props.actions.overlayerHide} 
+                          onConfirm={(data)=>{
+                            updateStrategy({
+                              id:selectItem.id,
+                              devices:data,
+                            }, this.requestSearch);
+                            this.props.actions.overlayerHide();
+                          }}/>)
                       }}>{this.formatIntl('button.edit')}</button>                                   
                     </div>
                     <Table className="selectedDevices" collapsed columns={this.deviceColumns}
