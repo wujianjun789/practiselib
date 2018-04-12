@@ -19,7 +19,7 @@ const Select = (props, context) => {
     );
 };
 
-Select.propTypes = {
+/*Select.propTypes = {
     id: PropTypes.string.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
@@ -27,6 +27,6 @@ Select.propTypes = {
     options: PropTypes.arrayOf(PropTypes.object).isRequired,
     onChange: PropTypes.func.isRequired,
     current: PropTypes.any,
-};
+};*/
 
 export default Select;

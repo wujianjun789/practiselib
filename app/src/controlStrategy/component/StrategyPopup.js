@@ -200,6 +200,7 @@ export default class TimeStrategyPopup extends Component {
     }
 }
 
+/*
 TimeStrategyPopup.propTypes = {
   title: PropTypes.string.isRequired,
   // data: PropTypes.shape({
@@ -213,4 +214,4 @@ TimeStrategyPopup.propTypes = {
   // }).isRequired,
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-};
+};*/

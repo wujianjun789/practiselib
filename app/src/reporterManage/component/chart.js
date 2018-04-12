@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import DrawChart from '../util/multiLineChartWithZoomAndBrush';
 
 export default class Chart extends PureComponent {
-    static propTypes = {
+   /* static propTypes = {
         start: PropTypes.object,
         end: PropTypes.object,
         data: PropTypes.array
-    }
+    }*/
     componentWillMount() {
         this._isMounted = true;
         this.chart = null;

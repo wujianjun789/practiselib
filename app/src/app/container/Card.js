@@ -13,18 +13,26 @@ import PropTypes from 'prop-types';
  * 
  */
 const Card = ({_key, title, link}) => {
+    /*const propTypes = {
+        _key: PropTypes.string,
+        title: PropTypes.string,
+        link: PropTypes.string
+    }
+
+    const props = {
+        _key: _key,
+        title: title,
+        link: link
+    }
+
+    PropTypes.checkPropTypes(propTypes, props, 'prop', 'Card');*/
+
     return <Link to={link}>
         <div className={`card card-${_key}`}>
             <div className="ico"><span className={`icon icon-${_key}`}></span></div>
             <div className="title">{title}</div>
         </div>
     </Link>
-}
-
-Card.propTypes = {
-    _key: PropTypes.string,
-    title: PropTypes.string,
-    link: PropTypes.string
 }
 
 export default Card;

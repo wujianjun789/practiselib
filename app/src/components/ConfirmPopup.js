@@ -16,14 +16,14 @@ const ConfirmPopup = ({tips='', iconClass='', cancel, confirm}) => {
     </div>
 }
 
-ConfirmPopup.prototype = {
-    tips: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]).isRequired,
-    iconClass: PropTypes.string.isRequired,
-    cancel: PropTypes.func.isRequired,
-    confirm: PropTypes.func.isRequired
-}
+// ConfirmPopup.prototype = {
+//     tips: PropTypes.oneOfType([
+//         PropTypes.string,
+//         PropTypes.node
+//     ]).isRequired,
+//     iconClass: PropTypes.string.isRequired,
+//     cancel: PropTypes.func.isRequired,
+//     confirm: PropTypes.func.isRequired
+// }
 
 export default ConfirmPopup;

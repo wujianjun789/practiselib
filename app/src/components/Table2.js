@@ -81,7 +81,6 @@ export default class Table2 extends Component {
                     {
                         data.map((row, index)=> {
                             let curId = row.id;
-                            console.log(row)
                             return <tr key={index} className={activeId && curId && activeId==curId ? 'active':''} onClick={()=>this.rowClick(row)}>
                                 <td className={allChecked === undefined?'hidden':''}>
                                     {

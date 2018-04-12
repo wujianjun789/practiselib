@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import Chart from './pie.js'
 
 export default class PieChart extends React.PureComponent {
-    static propTypes = {
-        id: PropTypes.string.isRequired,
-        dataSource: PropTypes.object.isRequired,
-        color: PropTypes.array,
-        className: PropTypes.string,
-    }
+    // static propTypes = {
+    //     id: PropTypes.string.isRequired,
+    //     dataSource: PropTypes.object.isRequired,
+    //     color: PropTypes.array,
+    //     className: PropTypes.string,
+    // }
     componentWillMount() {
         this._isMounted = true;
         this.chart = null;

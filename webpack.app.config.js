@@ -8,7 +8,7 @@ const iconUrl = '/font/font_zck90zmlh7hf47vi';
 const theme = {'@icon-url':`"${iconUrl}"`};
 
 module.exports = {
-  entry: path.resolve(__dirname, 'app/src/root/index.js'),
+  entry: ['babel-polyfill',path.resolve(__dirname, 'app/src/root/index.js')],
   output: {
     path: path.resolve(__dirname, 'dist', 'app', 'public'),
     filename: '[name].bundle.js',
@@ -19,7 +19,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         include: __dirname,

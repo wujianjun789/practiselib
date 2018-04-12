@@ -180,6 +180,6 @@ export default class CentralizedControllerPopup extends Component {
   }
 }
 
-CentralizedControllerPopup.propTypes = {
+/*CentralizedControllerPopup.propTypes = {
   popId: PropTypes.string.isRequired,
-};
+};*/

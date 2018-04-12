@@ -71,9 +71,9 @@ export class UserCenter extends Component{
     }
 }
 
-UserCenter.propTypes = {
-    className: PropTypes.string,
-}
+// UserCenter.propTypes = {
+//     className: PropTypes.string,
+// }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {

@@ -196,7 +196,6 @@ export function alertPopup(response) {
 
 export function getConfig(cb) {
     if(getCookie("host_ip")){
-        console.log('getConfig:', getCookie("host_ip"));
         return cb && cb();
     }
 

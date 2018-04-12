@@ -119,7 +119,6 @@ export class PlayProject extends Component {
 
   addAlert() {
     const {plan, actions} = this.props;
-    console.log('addAlert:', plan);
     if (plan && typeof plan.id === 'string' && plan.id.indexOf('plan') > -1) {
       actions.addNotify(0, '请提交新建计划。');
       return false;

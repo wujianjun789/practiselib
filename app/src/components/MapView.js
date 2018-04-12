@@ -104,6 +104,7 @@ export default class MapView extends Component {
     }
 }
 
+/*
 MapView.propTypes = {
     mapData: PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -112,4 +113,4 @@ MapView.propTypes = {
         //     lng: PropTypes.number.isRequired,
         // })
     }).isRequired
-}
+}*/

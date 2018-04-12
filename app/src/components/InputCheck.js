@@ -37,8 +37,8 @@ export default class InputCheck extends PureComponent{
     }
 }
 
-InputCheck.PropTypes = {
+/*InputCheck.PropTypes = {
     id: PropTypes.arrayOf(PropTypes.string).isRequired,
     label: PropTypes.arrayOf(PropTypes.string).isRequired,
     disabled: PropTypes.arrayOf(PropTypes.bool),
-}
+}*/

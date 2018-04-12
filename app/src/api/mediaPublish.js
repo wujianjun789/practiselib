@@ -273,7 +273,6 @@ export function removeProgramsById(projectId, id, cb) {
 
 //场景
 export function getSceneList(projectId, programId, cb) {
-  console.log(programId);
   let headers = getHttpHeader();
   httpRequest(HOST_IP + '/projects/' + projectId + '/programs/' + programId + '/scenes', {
     headers: headers,

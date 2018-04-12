@@ -32,7 +32,7 @@ const Panel = (props) => {
   );
 };
 
-Panel.propTypes = {
+/*Panel.propTypes = {
   className: PropTypes.string,
   title: PropTypes.oneOfType([
     PropTypes.string,
@@ -46,6 +46,6 @@ Panel.propTypes = {
   ]),
   closeBtn: PropTypes.bool,
   closeClick: PropTypes.func,
-};
+};*/
 
 export default Panel;

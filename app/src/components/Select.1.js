@@ -11,23 +11,23 @@ import PropTypes from 'prop-types';
  */
 
 const Select = (props, context) => {
-  	const {className='', titleField='value', valueField='value', index, options=[], value="", onChange, ...otherProps} = props;
-  	return (
+	const {className='', titleField='value', valueField='value', index, options=[], value="", onChange, ...otherProps} = props;
+	return (
 		<select className={ `form-control select ${className}` } value={ value } onChange={ onChange } {...otherProps}>
            { options.map((option, index) => <option key={ index } value={ option[valueField] }>
                                               { option[titleField] }
                                             </option>) }
 		</select>
-	  )
+	)
 }
 
-Select.propTypes = {
+/*Select.propTypes = {
 	className: PropTypes.string,
 	titleField: PropTypes.string,
 	valueField: PropTypes.string,
 	options: PropTypes.arrayOf(PropTypes.object),
 	value: PropTypes.any,
 	onChange: PropTypes.func
-}
+}*/
 
 export default Select;

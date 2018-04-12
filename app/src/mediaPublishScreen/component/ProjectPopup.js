@@ -119,6 +119,7 @@ export default class ProjectPopup extends Component {
     }
 }
 
+/*
 ProjectPopup.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.shape({
@@ -127,4 +128,4 @@ ProjectPopup.propTypes = {
     }).isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
-}
+}*/

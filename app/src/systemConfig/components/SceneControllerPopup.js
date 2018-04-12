@@ -264,6 +264,8 @@ export default class SceneControllerPopup extends Component {
   }
 }
 
+/*
 SceneControllerPopup.propTypes = {
   popId: PropTypes.string.isRequired,
 };
+*/

@@ -80,7 +80,6 @@ export function requestZoneList(programId, sceneId) {
   return (dispatch, getState) => {
     const project = getState().mediaPublishProject.project;
     getZoneList(project.id, programId, sceneId, data => {
-      console.log('zone:', data);
       // dispatch(getItemListOfCurScene(data));
       dispatch({type: INIT_ZONE_LIST, programId: programId, sceneId: sceneId, data: data});
     });
@@ -122,7 +121,6 @@ export function addPlayerPlan(id, formatIntl) {
 }
 
 export function addPlayerSceneArea(key, formatIntl) {
-  console.log('addPlayerSceneArea:',key)
   return (dispatch, getState) => {
     const plan = getState().mediaPublishProject.plan;
     const scene = getState().mediaPublishProject.scene;
@@ -149,7 +147,6 @@ export function addPlayerSceneArea(key, formatIntl) {
 }
 
 function addPlayerScene(curNode, formatIntl) {
-  console.log('addPlayerScene:', curNode);
   return dispatch => {
     const parentNode = curNode;
     if (typeof parentNode.id === 'string' && parentNode.id.indexOf('plan') > -1) {
@@ -222,7 +219,6 @@ function updatePlanOrders(data, playerData, project) {
     const ids = getListObjectByKey(newTreeList, 'id');
     dispatch(updateTreeList(newTreeList));
     updateProgramOrders(project.id, ids, response => {
-      console.log('plan orders:', ids);
     });
   };
 
@@ -237,7 +233,6 @@ function updateScenesOrders(data, playerData, project) {
     let ids = getListObjectByKey(playerData[index].children, 'id');
     dispatch(updateTreeList(playerData));
     updateSceneOrders(project.id, parentNode.id, ids, response => {
-      console.log('scene orders:', ids);
     });
   };
 }
@@ -254,7 +249,6 @@ function updateAreaOrders(data, playerData, project) {
     let ids = getListObjectByKey(playerData[planIndex].children[sceneIndex].children, 'id');
     dispatch(updateTreeList(playerData));
     updateZoneOrders(project.id, parentParentNode.id, parentNode.id, ids, response => {
-      console.log('area orders:', ids);
     });
   };
 }
@@ -290,7 +284,6 @@ export function treeOnRemove(node) {
       const treeList = removeTree(playerData, node);
       const planIndex = lodash.findIndex(treeList, plan=>{ return plan.id === sParentParentNode.id });
       dispatch(initPlan(treeList[planIndex]));
-      console.log('removeTree:', treeList);
       return dispatch(updateTreeList(treeList));
     }
 
@@ -586,7 +579,6 @@ export function addItemToArea(item, formatIntl) {
     // if (!curNode || curNode.type !== 'area') {
     //   return dispatch(addNotify(0, formatIntl('mediaPublish.area.alert')));
     // }
-    console.log('addItemToArea:');
 
     if (typeof curNode.id === 'string' && curNode.id.indexOf('area') > -1) {
       return dispatch(addNotify(0, '请提交区域'));

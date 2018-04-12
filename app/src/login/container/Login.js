@@ -4,6 +4,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { findDOMNode } from 'react-dom';
 import {loginHandler} from '../action/index'
 
 import LanguageSwitch from '../../common/containers/LanguageSwitch'
@@ -47,7 +48,8 @@ export class Login extends Component{
     }
 
     componentDidMount() {
-
+        const usernameDom = findDOMNode(this.refs.username);
+        usernameDom && usernameDom.focus();
     }
 
     componentWillUnmount(){
@@ -123,7 +125,7 @@ export class Login extends Component{
                     <div className="login-right pull-right">
                         <p><FormattedMessage id="login.form.title"/></p>
                         <div className="form-group has-feedback">
-                            <input id = 'username' type="text" className="form-control" value={this.state.user.username} onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
+                            <input id = 'username' ref="username" type="text" className="form-control" value={this.state.user.username}  onFocus={this.onFocus} onChange={(event) => this.onChange('username', event.target.value)}/>
                             <span className = "login_user form-control-feedback"></span>
                         </div>
                         <div className="form-group has-feedback">
