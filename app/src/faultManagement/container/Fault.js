@@ -281,8 +281,7 @@ export class Fault extends Component {
         </div> */}
       </div>
       <div className="table-container">
-        <Table columns={this.columns} data={data} allChecked={allChecked} checked={checked}
-          allCheckChange={this.allCheckChange} rowCheckChange={this.rowCheckChange}/>
+        <Table columns={this.columns} data={data}/>
         <Page className={'page ' + (page.get('total') == 0 ? 'hidden' : '')} pageSize={page.get('pageSize')}
           current={page.get('current')} total={page.get('total')}  onChange={this.pageChange}/>
       </div>
