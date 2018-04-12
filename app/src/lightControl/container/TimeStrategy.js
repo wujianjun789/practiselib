@@ -226,7 +226,7 @@ class TimeStrategy extends Component {
       // });
       this.setState({ [key]: Immutable.fromJS(result) });
       result.map(item => {
-        if (item.plans.length) {
+        if (!item.plans) {
           getPlanStatus(item.id, res => {
             len2++;
             item.status =
