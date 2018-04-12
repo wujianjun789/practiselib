@@ -144,7 +144,6 @@ class Gateway extends Component {
   }
 
   initData() {
-    console.log('111111');
     getChildDomainList(data => {
       this.mounted && this.updateDomainData(data, this.initDeviceData);
     });
@@ -389,7 +388,7 @@ class Gateway extends Component {
             >
               <span className="icon_select" />选中设备
               <span class="icon icon_collapse pull-right" />
-            </div>
+            </div>=
             <div class={`panel-body ${deviceCollapse ? 'device-hidden' : ''}`}>
               <span
                 title={currentDevice === null ? '无设备' : currentDevice.name}
@@ -487,6 +486,7 @@ class Gateway extends Component {
     );
   }
 }
+
 export default injectIntl(Gateway);
 /**
  *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}

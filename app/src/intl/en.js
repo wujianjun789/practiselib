@@ -138,8 +138,8 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    'illegal': 'Illegal',
-    'deviceNumIllegal':'Device num illegal !',
+    illegal: 'Illegal',
+    deviceNumIllegal: 'Device num illegal !',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',
@@ -382,6 +382,7 @@ export default {
     'lightManage.list.remote': 'remote',
     'lightManage.list.auto': 'auto',
     'lightManage.list.checkTime': 'click to timing',
+    'lightManage.control.success': 'success',
 
     // 报表管理
     'app.report.stat': 'Statistics',
@@ -415,6 +416,7 @@ export default {
     'app.switch': 'Switch',
     'app.preset': 'Preset',
     'app.zoom': 'Zoom',
+    'app.click-to-calibration': 'click to calibration',
 
     'app.schedule': 'Schedule',
     'app.led.control': 'led control',
@@ -468,6 +470,9 @@ export default {
     'app.voltage': 'voltage',
     'app.electric.current': 'electric current',
     'app.power': 'power',
+    'app.totalPower': 'total power',
+    'app.runningTime': 'running time',
+    'app.lightTime': 'light time',
 
     'app.device.switch': 'device switch',
     'app.dimming': 'dimming',

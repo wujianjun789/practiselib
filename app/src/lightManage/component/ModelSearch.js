@@ -22,6 +22,7 @@ import {getPoleListByModelWithName, getPoleListByModelDomainId, getPoleAssetById
 import {getDomainLevelByMapLevel, getZoomByMapLevel, IsMapCircleMarker} from '../../util/index'
 import {getDomainListByName} from '../../api/domain'
 import {getIndexByKey} from '../../util/algorithm'
+import { injectIntl } from 'react-intl';
 import { DOMAIN_LEVEL } from '../../common/util/index'
 import {getAssetsBaseByDomain,getSearchAssets,getAssetsBaseById,getAssetsByDomainLevelWithCenter} from '../../api/asset'
 import lodash from 'lodash'
@@ -33,7 +34,7 @@ export class ModelSearch extends Component{
             searchOffset:0,
             modifyNow: 0,
             domainList: [],
-            domainSearch:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
+            domainSearch:{placeholder:this.props.intl.formatMessage({id:'app.input.device.name'}), value:'', curIndex:-1},
             panLatlng: null,
             placeholderList: [],
             curPositionList:[],
@@ -152,7 +153,7 @@ export class ModelSearch extends Component{
         this.searchInputOnKeyUp=this.searchInputOnKeyUp.bind(this);
 
         /*  新增－t－20170915  */
-        this.searchPromptList = [{id:"device", value:"设备"},{id:"domain", value:"域"}];
+        this.searchPromptList = [{id:"device", value:this.props.intl.formatMessage({id:'app.device'})},{id:"domain", value:this.props.intl.formatMessage({id:'app.domain'})}];
         this.requestSearch = this.requestSearch.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
@@ -523,7 +524,7 @@ export class ModelSearch extends Component{
         return (
                 <div className="search-container" onMouseLeave={()=>{}} onMouseEnter={()=>{}}>
                     <div className="input-group searchBlock">
-                        <input type="search" ref="searchInput" className="form-control" placeholder="搜索名称或域" value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
+                        <input type="search" ref="searchInput" className="form-control" placeholder={ this.state.domainSearch.placeholder } value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
                         <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
                         <span className={"cancel-control "+(interactive||IsSearchResult?'active':'')} onClick={()=>{this.searchCancel()}} role="cancel-control">cancel</span>
                     </div>
@@ -555,7 +556,7 @@ export class ModelSearch extends Component{
                     <div className={"margin-top margin-bottom search-back "+(IsSearch?"hidden":"")} style={{"marginBottom":(this.infoStyle.maxHeight>0?15:0)+"px"}}
                         onClick={this.backHandler} role="back-handler">
                         <span className="glyphicon glyphicon-menu-left padding-left padding-right"></span>
-                        <span className="name">{"返回搜索结果"}</span>
+                        <span className="name">{this.props.intl.formatMessage({id:'app.search.list'})}</span>
                     </div>
                     <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsOpenPoleInfo?"":"hidden")}
                          style={Object.assign({"marginBottom":(this.controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":this.infoStyle.maxHeight+"px"})}>
@@ -575,7 +576,7 @@ export class ModelSearch extends Component{
                     <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":this.controlStyle.maxHeight+"px"}}>
                         <div className={"panel-heading "+(this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}}>
-                            <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{"设备控制"}</h3>
+                            <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{this.props.intl.formatMessage({id:'app.device.control'})}</h3>
                             <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle} role="triangle-toggle"></span>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
@@ -603,4 +604,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(
     mapStateToProps, mapDispatchToProps
-)(ModelSearch);
+)(injectIntl(ModelSearch));

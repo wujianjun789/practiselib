@@ -138,8 +138,8 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    'illegal': '不合法',
-    'deviceNumIllegal':'输入的设备编号不合法！',
+    illegal: '不合法',
+    deviceNumIllegal: '输入的设备编号不合法！',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',
@@ -212,6 +212,7 @@ export default {
     'domain.lng': '经度',
     'domain.lat': '纬度',
     'domain.superior': '上级域',
+
     'domain.add': '添加域',
     'domain.delete.alert': '是否删除选中域？',
 
@@ -287,7 +288,7 @@ export default {
 
     'app.strategy.platform': '平台',
     'app.select.group': '选中组',
-    'app.select.strategy': '选中策略',
+    'app.select.strategy': '选择策略',
     'app.strategy.property': '参数',
     'app.strategy.devices': '设备',
     'app.strategy.select.devices': '选择设备',
@@ -383,6 +384,7 @@ export default {
     'lightManage.list.remote': '远程',
     'lightManage.list.auto': '自动',
     'lightManage.list.checkTime': '点击以校准时间',
+    'lightManage.control.success': '成功',
 
     // 报表管理
     'app.report.stat': '统计',
@@ -415,6 +417,7 @@ export default {
     'app.switch': '切换',
     'app.preset': '预置',
     'app.zoom': '变焦',
+    'app.click-to-calibration': '点击以校准时间',
 
     'app.schedule': '时间表',
     'app.led.control': '显示屏控制',
@@ -467,6 +470,9 @@ export default {
     'app.voltage': '电压',
     'app.electric.current': '电流',
     'app.power': '功率',
+    'app.totalPower': '总电能',
+    'app.runningTime': '运行时间',
+    'app.lightTime': '亮灯时间',
 
     'app.device.switch': '设备开关',
     'app.dimming': '调光',

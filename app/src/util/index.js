@@ -73,7 +73,6 @@ export function getElementOffwidth(str, fontSize = "14px") {
     document.body.appendChild(html);
     w = html.offsetWidth;
     document.body.removeChild(html);
-
     return w;
 }
 
@@ -201,10 +200,10 @@ export function getDomainLevelByMapLevel(domainLevel, map) {
 
 export function getZoomByMapLevel(curLevel, domainLevel, map) {
     if (map.zoom == map.minZoom) {
-        return Math.min(5, 18);
+        return Math.min(map.minZoom, map.maxZoom);
     }
     if (map.zoom == map.maxZoom) {
-        return Math.max(5, 18);
+        return Math.max(map.minZoom, map.maxZoom);
     }
     return Math.round(curLevel * (map.maxZoom - map.minZoom) / domainLevel + map.minZoom - 1);
 }
