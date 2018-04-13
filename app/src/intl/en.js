@@ -304,6 +304,7 @@ export default {
 
     //故障管理
     'sysOperation.alarm': 'Alarm',
+    'sysOperation.fault': 'Fault',
     'sysOperation.fault.manage': 'Fault',
     'sysOperation.alarm.type': 'Alarm type',
     'sysOperation.alarm.param': 'Alarm param',
@@ -313,7 +314,7 @@ export default {
     'sysOperation.fault.level': 'Fault level',
     'sysOperation.alarm.threshold': 'Threshold',
     'sysOperation.alarm.test.value': 'Test value',
-    'sysOperation.alarm.time': 'Alarm time',
+    'sysOperation.alarm.time': 'Report time',
     'sysOperation.fault.time': 'Fault time',
     'sysOperation.alarm.status': 'Alarm status',
     'sysOperation.fault.status': 'Fault status',
@@ -321,7 +322,7 @@ export default {
     'sysOperation.alarm.handle.time': 'Handle time',
     'sysOperation.fault.id': 'Fault id',
 
-    'sysOperation.alarm.statistical.info': 'Alarm statistical info',
+    'sysOperation.statistical.info': 'Statistical info',
     'sysOperation.fault.statistical.info': 'Fault statistical info',
     'sysOperation.count.deadly': 'Deadly',
     'sysOperation.count.serious': 'Serious',

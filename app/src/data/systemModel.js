@@ -172,7 +172,7 @@ export const TreeData = [
       },
       {
         'id': 'fault',
-        'name': '故障',
+        'name': 'sysOperation.fault',
         'class': 'icon_fault',
         'active': false,
         'link': '/systemOperation/faultManagement/fault',

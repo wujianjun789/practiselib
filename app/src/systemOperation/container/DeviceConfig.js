@@ -40,11 +40,11 @@ import {getObjectByKeyObj,getObjectByKey} from '../../util/algorithm';
 import {trimString} from '../../util/string';
 import { requestWhiteListCountById } from '../../api/domain';
 
-export class SingleLampCon extends Component {
+export class DeviceConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: 'ssgw',
+      model: '',
       collapse: false,
       deviceCollapse: false,
       whiteListCollapse:false,      
@@ -121,38 +121,31 @@ export class SingleLampCon extends Component {
 
   componentWillMount() {
     this.mounted = true;
-    this.initData();
+    this.setState({model:this.props.params.asset},this.initData)
   }
 
-  componentDidMount(){
-    const {model} = this.state;
-    // this.requestToggle() //
-  }
-  
   initData(){
     let { model } = this.state;
-    getModelData(model, () => {
-      if (this.mounted) {
-        this.props.actions.treeViewInit(TreeData);
-        getModelTypeByModel(model, res => {
-          let types = res.length == 0 ? [] : res[0].types;
-          let list = types.length == 0 ? [] : types.map((type) => {
-            return {
-              title: type.name,
-              value: type.name,
-            };
+    if (this.mounted) {
+      getChildDomainList(data => {
+        this.mounted && this.initDomainList(data);
+      });
+      getModelTypeByModel(model, res => {
+        let types = res.length == 0 ? [] : res[0].types;
+        let list = types.length == 0 ? [] : types.map((type) => {
+          return {
+            title: type.name,
+            value: type.name,
+          };
+        })
+        this.setState({
+          modelList: Object.assign({}, this.state.modelList, {
+            options: list
           })
-          this.setState({
-            modelList: Object.assign({}, this.state.modelList, {
-              options: list
-            })
-          });
         });
-        getChildDomainList(data => {
-          this.mounted && this.initDomainList(data);
-        });
-      }
-    });
+      });
+      
+    }
   }
 
   componentWillUnmount() {
@@ -196,8 +189,7 @@ export class SingleLampCon extends Component {
   initDomainList(data) {
     let domainList = Object.assign({}, this.state.domainList, { index: 0 },
       { value: data.length ? data[0].name : '' }, { options: data });
-    this.setState({ domainList: domainList });
-    this.requestSearch();
+    this.setState({ domainList: domainList },this.requestSearch);
   }
 
   initAssetList(data) {
@@ -505,4 +497,4 @@ const mapDispatchToProps = (dispatch) => ({
   }, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SingleLampCon));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(DeviceConfig));
