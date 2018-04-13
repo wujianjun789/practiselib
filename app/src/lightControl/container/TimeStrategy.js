@@ -170,7 +170,7 @@ class TimeStrategy extends Component {
             // dateStringFormat(item.start) + '-' + dateStringFormat(item.end);
             item.timeRange =
               this.timeFormatter(item.start) +
-              '-' +
+              ` - ` +
               this.timeFormatter(item.end);
             result.push(item);
           });
@@ -186,7 +186,7 @@ class TimeStrategy extends Component {
             //   dateStringFormat(item.start) + '-' + dateStringFormat(item.end);
             item.timeRange =
               this.timeFormatter(item.start) +
-              '-' +
+              ` - ` +
               this.timeFormatter(item.end);
             result.push(item);
           }
@@ -224,18 +224,24 @@ class TimeStrategy extends Component {
       //       this.getGroupTasks(this.state.selectItem.id);
       //     });
       // });
-      this.setState({ selectItem: result[0] ,[key]: Immutable.fromJS(result) });
+      this.setState({ selectItem: result[0], [key]: Immutable.fromJS(result) });
       result.map(item => {
         if (!item.hasOwnProperty('plans')) {
           getPlanStatus(item.id, res => {
             len2++;
-            item.status = (res.status && res.status == 1)? this.formatIntl('app.status.started') : this.formatIntl('app.status.paused');
+            item.status =
+              res.status && res.status == 1
+                ? this.formatIntl('app.status.started')
+                : this.formatIntl('app.status.paused');
             if (len2 == len1) {
               result.length > 0 &&
-                this.setState({ selectItem: result[0] ,[key]: Immutable.fromJS(result)}, () => {
-                  console.log(this.state.selectItem);
-                  this.getGroupTasks(this.state.selectItem.id);
-                });
+                this.setState(
+                  { selectItem: result[0], [key]: Immutable.fromJS(result) },
+                  () => {
+                    console.log(this.state.selectItem);
+                    this.getGroupTasks(this.state.selectItem.id);
+                  }
+                );
             }
           });
         }

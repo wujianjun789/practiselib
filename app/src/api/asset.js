@@ -572,6 +572,41 @@ export function getSearchAssetCountByDomainWithCenter(
     }
   );
 }
+
+//获取故障、告警列表
+export function getFaultOrAlertList(
+  model,
+  domainId,
+  level,
+  start,
+  end,
+  offset,
+  limit,
+  cb
+) {
+  const _querystring = JSON.stringify({
+    where: {
+      domainId,
+      level,
+      dateTime: {
+        between: [start, end]
+      }
+    },
+    offset,
+    limit
+  });
+  const querystring = `/${model}?filter=${_querystring}`;
+  httpRequest(
+    HOST_IP + querystring,
+    {
+      headers: getHttpHeader(),
+      method: 'GET'
+    },
+    response => {
+      cb && cb(response);
+    }
+  );
+}
 /**
  * 获取设备的状态
  * @param {String} model
