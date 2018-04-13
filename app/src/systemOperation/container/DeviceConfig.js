@@ -387,6 +387,7 @@ export class SingleLampCon extends Component {
         getDeviceTypeByModel(item.extendType)
     }, item.geoPoint));
     this.setState({ selectDevice: selectDevice });
+    this.state.model == 'ssgw' && this.requestWhiteListCount();
   }
 
   searchSubmit() {
