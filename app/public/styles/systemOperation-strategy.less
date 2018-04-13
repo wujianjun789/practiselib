@@ -32,9 +32,16 @@
     }
 
     .table-container{
-      //overflow-x: auto;
+      position: absolute;      
       transition: margin-right .3s;
-      margin: 20px 320px 20px 20px;
+      // margin: 20px 320px 20px 20px;
+      top: 70px;
+      left: 0;
+      bottom: 0;
+      right: 300px;
+      max-height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
       padding: 20px;
 
       background: #fff;
@@ -509,10 +516,16 @@
 }
 
 .time-strategy, .latlng-strategy{
+  overflow-y: hidden;
   > .sidebar-info {
     width: 300px;
     background-color: #eaeef2;;
     transition: all .3s;
+    .panel-strategy{
+      max-height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
     .panel.panel-default {
       width: 300px;
       border: none;
@@ -623,7 +636,8 @@
   &.collapse {
     display: block;
     > .table-container {
-      margin-right: 80px;
+      // margin-right: 80px;
+      right: 60px;
     }
     > .sidebar-info.sidebar-collapse {
       width: 60px;
