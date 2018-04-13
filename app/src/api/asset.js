@@ -586,9 +586,9 @@ export function getFaultOrAlertList(
 ) {
   const _querystring = JSON.stringify({
     where: {
-      domainId,
+      domain_id: domainId,
       level,
-      dateTime: {
+      update_time: {
         between: [start, end]
       }
     },
