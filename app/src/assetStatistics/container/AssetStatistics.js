@@ -259,7 +259,7 @@ export class SingleLamp extends Component {
             <div className="panel-heading" role="presentation"
               onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
               <span className="icon_chart"></span>{intlFormat({ en: 'Statistics', zh: '统计' })}
-              <span className="icon icon_collapse pull-right"></span>
+              <span className="icon icon_collapse statistics pull-right"></span>
             </div>
             <div className="panel-body view">
               <div className="circle1">

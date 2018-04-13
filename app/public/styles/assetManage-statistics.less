@@ -65,6 +65,13 @@
       &.deviceCollapse .map-position{
         top:73px;
       }
+      &.deviceCollapse{
+        .icon_collapse{
+          &.statistics{
+            transform: rotate(180deg);
+          }
+        }
+      }
     }
   }
 }
@@ -77,3 +84,5 @@
   -o-transition: all @time;
   transition: all @time;
 }
+
+

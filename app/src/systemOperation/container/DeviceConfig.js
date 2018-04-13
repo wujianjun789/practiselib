@@ -47,7 +47,7 @@ export class DeviceConfig extends Component {
       model: '',
       collapse: false,
       deviceCollapse: false,
-      whiteListCollapse:false,      
+      whiteListCollapse:false,     
       page: Immutable.fromJS({
         pageSize: 15,
         current: 1,
@@ -450,7 +450,7 @@ export class DeviceConfig extends Component {
       </div>
       <SideBarInfo mapDevice={selectDevice} collapseHandler={this.collapseHandler}
         className={(deviceCollapse ? 'deviceCollapse ' : '')+(whiteListCollapse ? 'whiteListCollapse' : '')}>
-        <div className="panel panel-default device-statics-info">
+        <div className={"panel panel-default device-statics-info "+(deviceCollapse?"deviceCollapse":"")}>
           <div className="panel-heading" role="presentation"
             onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
             <span className="icon_version"></span>{this.props.intl.formatMessage({ id: 'sysOperation.device.version' })}
@@ -462,11 +462,11 @@ export class DeviceConfig extends Component {
               <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.software.version' })}：{selectDevice.hardVersion}</span></div>
           </div>
         </div>
-        {this.state.model == 'ssgw' && <div className="panel panel-default device-statics-info whitelist">
+        {this.state.model == 'ssgw' && <div className={"panel panel-default device-statics-info whitelist "+(whiteListCollapse?"whiteListCollapse":"")}>
           <div className="panel-heading" role="presentation"
             onClick={() => { !collapse && this.collapseHandler('whiteListCollapse'); }}>
             <span className="icon_device_list"></span>{this.formatIntl('sysOperation.whiteList')}
-            <span className="icon icon_collapse pull-right"></span>              
+            <span className="icon icon_collapse  pull-right"></span>              
           </div>
           <div className={'panel-body domain-property ' + (whiteListCollapse ? 'collapsed' : '')}>
             <span className="domain-name">{selectDevice.whiteCount}{this.formatIntl('sysOperation.devices')}</span>
