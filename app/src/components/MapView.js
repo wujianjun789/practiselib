@@ -31,13 +31,12 @@ export default class MapView extends Component {
     }
 
     componentDidUpdate() {
-
-        const {mapData, panLatlng, panCallFun} = this.props;
-        this.initMap();
-        if (panLatlng) {
-            this.state.map[mapData.id].mapPanTo(panLatlng);
-            panCallFun && panCallFun();
-        }
+      const {mapData, panLatlng, panCallFun} = this.props;
+      this.initMap();
+      if (panLatlng) {
+        this.state.map[mapData.id].mapPanTo(panLatlng);
+        panCallFun && panCallFun();
+      }
     }
 
     componentWillUnmount() {
@@ -94,7 +93,7 @@ export default class MapView extends Component {
 
     renderMap(ref) {
         if (ref) {
-            // this.initMap();
+            this.initMap();
         }
     }
 
