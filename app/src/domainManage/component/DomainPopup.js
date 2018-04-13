@@ -25,16 +25,17 @@ import { intlFormat } from '../../util/index';
 import {Name2Valid, latlngValid, lngValid, latValid} from '../../util/index';
 import {DOMAIN_NAME_LENGTH} from '../../common/util/constant';
 
+import lodash from 'lodash';
 export default class DomainPopup extends PureComponent {
     constructor(props) {
         super(props);
-        const {domainId, domainName, lat, lng, prevDomain} = this.props.data;
+        const {domainId, domainName, lat, lng, prevDomain, zoom} = this.props.data;
         let {options} = this.props.domainList;
         let curDomain = options && options.length ? options[0]:null
         this.state = {
             domainId: domainId,
             domainName: domainName,
-            zoom: 16,
+            zoom: zoom,
             lng: lng,
             lat: lat,
             prevDomain: prevDomain?prevDomain:(curDomain?curDomain.id:""),
@@ -48,6 +49,9 @@ export default class DomainPopup extends PureComponent {
             },
             addFirstTime:this.props.idAdd//如果是add并且是第一次加载页面，不提示非法输入
         }
+
+        this.domain = this.props.domainConfig;
+
         this.onConfirm = this.onConfirm.bind(this);
         this.onCancel = this.onCancel.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -76,8 +80,18 @@ export default class DomainPopup extends PureComponent {
         if(id=="prevDomain"){
             const {options} = this.props.domainList;
             let curIndex = e.target.selectedIndex;
-            this.setState({[id]:options[curIndex].id});
-            return
+
+            const domain = options[curIndex];
+            const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
+            const zoom = domainConfig?domainConfig.zoom:null;
+
+            let data = {[id]:domain.id, zoom:zoom};
+            if(domain.geoPoint){
+                data = Object.assign({}, data, domain.geoPoint);
+            }
+
+            this.setState(data);
+            return true;
         }
         let value = e.target.value;
         let newValue='';
@@ -118,9 +132,8 @@ export default class DomainPopup extends PureComponent {
     }
 
     render() {
-         let {domainId, domainName, zoom, lng, lat, prevDomain, prompt} = this.state;
-         let {titleKey, valueKey, options} = this.props.domainList;
-
+        let {domainId, domainName, zoom, lng, lat, prevDomain, prompt} = this.state;
+        let {titleKey, valueKey, options} = this.props.domainList;
         let valid = prompt.domainName || prompt.lng || prompt.lat || !domainName || !lat || !lng;
 
          let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']}

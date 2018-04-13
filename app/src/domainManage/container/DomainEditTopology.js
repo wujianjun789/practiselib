@@ -256,7 +256,7 @@ class DomainEditTopology extends Component{
     addDomain(){
         const {selectDomain} = this.state
         const {actions} = this.props;
-        actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} data={{domainId:"", domainName:"",
+        actions.overlayerShow(<DomainPopup id="addDomain" title={intlFormat({en:'add domain',zh:'添加域'})} domainConfig={this.domain} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                            onConfirm={(data)=>{
@@ -280,7 +280,7 @@ class DomainEditTopology extends Component{
     editDomain(){
         const {selectDomain} = this.state
         const {actions} = this.props;
-        let lat="", lng="",updateId="",name="",parentId="";
+        let lat="", lng="",updateId="",name="",parentId="",zoom=null;
 
         if(selectDomain.position && selectDomain.position.length){
             let latlng = selectDomain.position[0];
@@ -293,8 +293,10 @@ class DomainEditTopology extends Component{
             updateId = data.id;
             name = data.name;
         }
-        actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} data={{domainId:updateId, domainName:name,
-                lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
+
+        zoom = selectDomain.zoom;
+        actions.overlayerShow(<DomainPopup id="updateDomain" title={intlFormat({en:'edit domain',zh:'修改域属性'})} domainConfig={this.domain} data={{domainId:updateId, domainName:name,
+                lat:lat, lng:lng, zoom:zoom,prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                            onConfirm={(data)=>{
                                                         let domain = {};
