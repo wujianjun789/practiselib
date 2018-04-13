@@ -398,6 +398,7 @@
         z-index:2;
         overflow-x: hidden;
         .state-control{
+            
           &.screen{
             .col-sm-12{
               padding-right: 0;
@@ -475,7 +476,7 @@
           &.lamp{
             background:#fff;
             width:300px;
-            padding-top:8px;
+            padding-top:20px;
             padding-bottom:10px;
             label{
               float:left;
@@ -489,6 +490,21 @@
             .group,.switch,.strategy,.handler{
               padding-left:15px; 
               padding-right:15px;
+              .form-control{
+                  width:110px;
+                  height:30px;
+                  display: inline-block;
+                  .ant-select-selection{
+                      height:16px;
+                      .ant-select-selection__rendered{
+                          height:16px;
+                          .ant-select-selection-selected-value{
+                              height:16px;
+                              line-height: 16px;
+                          }
+                      }
+                  }
+              }
             }
 
             select{

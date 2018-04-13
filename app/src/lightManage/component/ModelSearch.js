@@ -102,7 +102,7 @@ export class ModelSearch extends Component{
         this.panLatlng = null;
         this.listStyle = {"maxHeight":"200px"};
         this.infoStyle = {"maxHeight":"352"};
-        this.controlStyle= {"maxHeight":"180"};
+        this.controlStyle= {"maxHeight":"220"};
         this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
 
@@ -329,7 +329,6 @@ export class ModelSearch extends Component{
         let positionList = [];
         let searchList = '';
         let data = item.toJS();
-        console.log(data)
         let geoPoint = data.geoPoint ? data.geoPoint : {lat:"", lng:""};
         let position = Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":data.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
         curList.push(data);
@@ -469,23 +468,15 @@ export class ModelSearch extends Component{
             case "lamp":
                 const {strategyList} = this.state;
                 return <div className="row state-control lamp">
-                        <div className="form-group group">
-                            <label className="apply_label">整组调光:</label>
-                            <div className="checkbox">
-                                <label>
-                                  <input type="checkbox"/>{"疏影路组"}
-                                </label>
-                            </div>
-                        </div>
                         <div className="form-group switch">
                             <label className="apply_label">灯亮开关:</label>
                             <select className="form-control" value={this.lightSwitch.value} onChange={event=>this.onChange("lightSwitch", event)}>
-                                {
+						      	{
                                     this.lightSwitch.options.map(sw=>{
                                         return <option key={sw.id}>{sw.value}</option>
                                     })
                                 }
-                            </select>
+						    </select>
                             <button className="btn btn-primary apply_btn" onClick={event=>this.submit("lightSwitch")}>应用</button>
                         </div>
                         <div className="form-group strategy">
@@ -568,19 +559,14 @@ export class ModelSearch extends Component{
                             <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
                         </div>
                         <div className={"panel-body "+(this.infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(this.infoStyle.maxHeight>40?this.infoStyle.maxHeight-40:0)+"px"}}>
-                            <ul className="btn-group">
-                                {
-                                   searchListToJS[0] && <li className={(this.infoStyle.maxHeight<88?"hidden ":" ")+(curId==="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")} role="button"><span className={"this"+(curId==="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
-                                }
-                            </ul>
                             { this.renderInfo(curId,this.state[curId]) }
                         </div>
                     </div>
                     <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":this.controlStyle.maxHeight+"px"}}>
                         <div className={"panel-heading "+(this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
-                        "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}}>
+                        "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}} onClick={this.onToggle}>
                             <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{this.props.intl.formatMessage({id:'app.device.control'})}</h3>
-                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} onClick={this.onToggle} role="triangle-toggle"></span>
+                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} role="triangle-toggle"></span>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
                              style={{"maxHeight":(this.controlStyle.maxHeight>40?this.controlStyle.maxHeight-40:0)+"px",
@@ -592,6 +578,11 @@ export class ModelSearch extends Component{
         )
     }
 }
+//                          <ul className="btn-group">
+//                              {
+//                                 searchListToJS[0] && <li className={(this.infoStyle.maxHeight<88?"hidden ":" ")+(curId==="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")} role="button"><span className={"this"+(curId==="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
+//                              }
+//                          </ul>
 
 const mapStateToProps = (state) => {
     return {

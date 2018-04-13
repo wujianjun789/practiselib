@@ -412,11 +412,9 @@ export class lightMap extends Component{
     }
 
     handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
-        console.log("handleInfo")
-        console.log(item)
-        let aaa = item.toJS();
-        console.log(aaa)
+    	
             if(tableIndex===0&&IsSearchResult){
+            	
                     //如果是根据设备名称搜索
                     if(this.domainCurLevel===5){
                         //如果域级别是设备级别，则移动到指定坐标
@@ -462,7 +460,7 @@ export class lightMap extends Component{
 //          this.setState({IsSearch:false, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:false},()=>{
 //                  	console.log("点击设备")
 //                  	
-//	                });
+//	        });
             this.setState({ curList:curList,positionList:positionList,searchList:Immutable.fromJS([item]) });
             
     }
@@ -648,7 +646,6 @@ export class lightMap extends Component{
     }
 
     mapZoomend(data){
-    	console.log(data)
 		
         if(this.andNot===1){}else{this.andNot=this.andNot+1;return;}
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
@@ -734,8 +731,7 @@ export class lightMap extends Component{
 	                                <div className="fault-container"><span className="name">{this.formatIntl('工作状态')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}} role="button">{faultList.length>0?"故障":"运行正常"}</span></div>
 	                            }
 	                            {
-	                                faultList.length>0 &&
-	                                <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true} closeClick={this.closeClick}>
+	                                faultList.length>0 && <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true} closeClick={this.closeClick}>
 	                                    {
 	                                        faultList.map(key=>{
 	                                            return <div key={key}>{this.formatIntl(""+key)}</div>
@@ -752,17 +748,9 @@ export class lightMap extends Component{
             case "lamp":
                 const {strategyList} = this.state;
                 return <div className="row state-control lamp">
-                        <div className="form-group group">
-                            <label className="apply_label">整组调光:</label>
-                            <div className="checkbox">
-                                <label>
-                                  <input type="checkbox"/>{"疏影路组"}
-                                </label>
-                            </div>
-                        </div>
                         <div className="form-group switch">
                             <label className="apply_label">灯亮开关:</label>
-                            <select className="form-control" value={this.lightSwitch.value} onChange={event=>this.onChange("lightSwitch", event)}>
+                            <select className="form-control" value={ this.lightSwitch.value } onChange={event=>this.onChange("lightSwitch", event)}>
                                 {
                                     this.lightSwitch.options.map(sw=>{
                                         return <option key={sw.id}>{sw.value}</option>
@@ -773,10 +761,10 @@ export class lightMap extends Component{
                         </div>
                         <div className="form-group strategy">
                             <label className="apply_label">策略调光:</label>
-                            <select className="form-control" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
+                            <select className="form-control" value={ strategyList.get("value") } onChange={ event=>this.onChange("strategy", event) }>
                                 {
                                     strategyList.get("options").map(strategy=>{
-                                        return <option key={strategy.get("id")}>{strategy.get("name")}</option>
+                                        return <option key={ strategy.get("id") }>{ strategy.get("name") }</option>
                                     })
                                 }
                             </select>
@@ -796,7 +784,16 @@ export class lightMap extends Component{
                     </div>
         }
     }
-
+/*
+                         <div className="form-group group">
+                            <label className="apply_label">整组调光:</label>
+                            <div className="checkbox">
+                                <label>
+                                  <input type="checkbox"/>{"疏影路组"}
+                                </label>
+                            </div>
+                        </div>
+ * */
     render(){
         const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList,  IsOpenPoleInfo, IsOpenPoleControl} = this.state;
