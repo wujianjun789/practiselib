@@ -232,7 +232,7 @@ export default (
           }} />
         </Route> */}
         <Route path="faultManagement">
-          <Route path="alarm" getComponent={(nextState, cb) => {
+          {/* <Route path="alarm" getComponent={(nextState, cb) => {
             require.ensure([], (require) => {
               cb(null, require('../faultManagement/container/Alarm').default);
             }, 'starriverpro.faultManagement.alarm');
@@ -241,7 +241,12 @@ export default (
             require.ensure([], (require) => {
               cb(null, require('../faultManagement/container/Fault').default);
             }, 'starriverpro.faultManagement.fault');
-          }} />
+          }} /> */}
+          <Route path=":fault" getComponent={(nextState, cb) => {
+            require.ensure([], (require) => {
+              cb(null, require('../faultManagement/container/index').default);
+            }, 'starriverpro.faultManagement.fault');
+          }}/>
         </Route>
       </Route>
       <Route path="/smartLight" component={SmartLightManage}>

@@ -305,24 +305,25 @@ export default {
 
     //故障管理
     'sysOperation.alarm': '告警',
+    'sysOperation.fault': '故障',
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
     'sysOperation.alarm.param': '告警参数',
     'sysOperation.fault.param': '故障参数',
     'sysOperation.alarm.device.model': '设备模型',
-    'sysOperation.alarm.level': '告警级别',
+    'sysOperation.alarm.level': '级别',
     'sysOperation.fault.level': '故障级别',
     'sysOperation.alarm.threshold': '阈值',
     'sysOperation.alarm.test.value': '检测值',
     'sysOperation.alarm.time': '告警时间',
-    'sysOperation.fault.time': '故障时间',
+    'sysOperation.fault.time': '上报时间',
     'sysOperation.alarm.status': '告警状态',
     'sysOperation.fault.status': '故障状态',
     'sysOperation.alarm.person': '处理人',
     'sysOperation.alarm.handle.time': '处理时间',
     'sysOperation.fault.id': '故障编号',
 
-    'sysOperation.alarm.statistical.info': '告警统计信息',
+    'sysOperation.statistical.info': '统计信息',
     'sysOperation.fault.statistical.info': '故障统计信息',
 
     'sysOperation.count.deadly': '致命数',
