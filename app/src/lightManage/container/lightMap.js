@@ -412,13 +412,15 @@ export class lightMap extends Component{
     }
 
     handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
-    	
+    		
             if(tableIndex===0&&IsSearchResult){
             	
                     //如果是根据设备名称搜索
                     if(this.domainCurLevel===5){
                         //如果域级别是设备级别，则移动到指定坐标
                         this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
+                        this.requestCurAssets();
+                        this.setSize();
                     }else{
                         //如果域级别不是是设备级别，则地图跳转到设备级别并移动到指定坐标
                         this.map = Object.assign({}, this.map, {zoom:16,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
@@ -429,13 +431,15 @@ export class lightMap extends Component{
                     if(curList[0].level===this.domainCurLevel){
                         //如果域级别与搜索域级别相同，则移动到指定坐标
                         this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
+                        this.requestCurDomain();
+                        this.setSize();
                     }else{
                         //如果域级别与搜索域级别不相同，则计算出地图级别并跳转到此级别并移动到指定坐标
                         let zoom = getZoomByMapLevel(curList[0].level,this.domainLevel,this.map);
                         //this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
                         this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                        
                     }
+                    
             }else{
                     //如果是点击地图图标
                     if(this.domainCurLevel===5){
@@ -461,7 +465,7 @@ export class lightMap extends Component{
 //                  	console.log("点击设备")
 //                  	
 //	        });
-            this.setState({ curList:curList,positionList:positionList,searchList:Immutable.fromJS([item]) });
+            this.setState({ searchList:Immutable.fromJS([item]) });
             
     }
 
@@ -471,16 +475,18 @@ export class lightMap extends Component{
     itemClick(item){
     	console.log("itemclick")
         let curList = [];
-        let positionList = [];
+//      let positionList = [];
         let data = item.toJS();
-        let geoPoint = data.geoPoint ? data.geoPoint : {lat:"", lng:""};
-        let position = Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":data.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
+//      let geoPoint = data.geoPoint ? data.geoPoint : {lat:"", lng:""};
+//      let position = Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":data.id, IsCircleMarker:IsMapCircleMarker(this.domainLevel, this.map)});
         curList.push(data);
-        positionList.push(position);
+//      positionList.push(position);
 	    //如果是点击地图图标
         if(this.domainCurLevel===5){
             //如果地图级别是设备级别，则移动到指定坐标并显示状态信息
             this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
+            this.requestCurAssets();
+            this.setSize();
 //						this.setState({IsSearch:false, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:false},()=>{
 //	                    	console.log("点击设备")
 //	                    	requestCurAssets()
@@ -496,7 +502,8 @@ export class lightMap extends Component{
         }else{
 
         }
-        this.setState({searchList:Immutable.fromJS([item]),curList:curList, positionList:positionList},()=>{})
+        //this.setState({searchList:Immutable.fromJS([item]),curList:curList, positionList:positionList},()=>{})
+        this.setState({searchList:Immutable.fromJS([item])},()=>{})
     }
 
     backHandler(){
@@ -635,19 +642,18 @@ export class lightMap extends Component{
     }
 
     mapDragend(data){
-        return;
-        // this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-        // this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
-        // if(this.map.zoom>15&&this.map.zoom<=18){
-        //     this.requestCurAssets("lc");
-        // }else{
-        //     this.requestCurDomain();
-        // }
+//      this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+//      this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+//      if(this.map.zoom>15&&this.map.zoom<=18){
+//          this.requestCurAssets();
+//      }else{
+//          this.requestCurDomain();
+//      }
     }
 
     mapZoomend(data){
 		
-        if(this.andNot===1){}else{this.andNot=this.andNot+1;return;}
+        //if(this.andNot===1){}else{this.andNot=this.andNot+1;return;}
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         if(this.map.zoom>15&&this.map.zoom<=18){
@@ -667,8 +673,10 @@ export class lightMap extends Component{
         }else{
             let zoom = '';
             if(this.map.zoom===13){zoom = this.map.zoom+2;}else{zoom = this.map.zoom+3;};
-            this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-            this.isMouseEnterSet();
+            this.setState({positionList:[],curList:[]},()=>{
+            	this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+            	this.isMouseEnterSet();
+            })
         }
         
     }

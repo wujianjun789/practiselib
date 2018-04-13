@@ -283,7 +283,24 @@ export class ModelSearch extends Component{
         switch (key){
             case "search": //特殊处理
                 if (event.target.value){
-                    this.setState({search:this.state.search.update("value",v=>event.target.value), interactive:true,IsSearchResult:false});
+                	console.log(event.target.value)
+                	let val=' ';
+                	let str=event.target.value;
+                	for(let i=0;i<str.length;i++){
+                		if(str.charAt(i)==' '){}else{
+                			str=str.substr(i)
+                			for(let j=str.length-1;j>0;j--){
+		    					console.log(j)
+		        				if(str.charAt(j)==' '){}else{
+		        					console.log(j)
+		        					str=str.substr(0,j+1);
+		        					break;
+		        				}
+		        			}
+                			break;
+                		}
+                	}
+                    this.setState({search:this.state.search.update("value",v=>str), interactive:true,IsSearchResult:false});
                 }else{
                     this.setState({search:this.state.search.update("value",v=>event.target.value)});
                 }
@@ -518,7 +535,7 @@ export class ModelSearch extends Component{
         return (
                 <div className="search-container" onMouseLeave={()=>{}} onMouseEnter={()=>{}}>
                     <div className="input-group searchBlock">
-                        <input type="search" ref="searchInput" className="form-control" placeholder={ this.state.domainSearch.placeholder } value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search", event)}}/>
+                        <input type="search" ref="searchInput" className="form-control" placeholder={ this.state.domainSearch.placeholder } value={search.get("value")} onKeyUp={(event)=>{this.searchInputOnKeyUp(event)}} onChange={(event)=>{this.onChange("search",event)}}/>
                         <span className="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
                         <span className={"cancel-control "+(interactive||IsSearchResult?'active':'')} onClick={()=>{this.searchCancel()}} role="cancel-control">cancel</span>
                     </div>
