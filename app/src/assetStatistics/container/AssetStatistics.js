@@ -22,8 +22,7 @@ import { getDomainList } from '../../api/domain';
 import { getChildDomainList } from '../../api/domain';
 import { getDeviceTypeByModel } from '../../util/index';
 import { getObjectByKey } from '../../util/algorithm';
-// import {FormattedMessage, injectIntl} from 'react-intl';
-import { injectIntl } from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
 
 import Immutable from 'immutable';
@@ -45,7 +44,7 @@ export class SingleLamp extends Component {
       collapse: false,
       deviceCollapse: false,
       page: Immutable.fromJS({
-        pageSize: 10,
+        pageSize: 15,
         current: 1,
         total: 0,
       }),
@@ -96,11 +95,8 @@ export class SingleLamp extends Component {
 
   componentWillMount() {
     this.mounted = true;
-    // const query = this.props.location.query;
     getModelData(() => { this.mounted && this.initTreeData(); });
-    // getDomainList(data => { this.mounted && this.initDomain(data); });
     getChildDomainList(data => { this.mounted && this.initDomain(data); });
-    // getAssetsCount(data=>{this.mounted && this.deviceTotal(data)})
   }
 
   componentDidUpdate(){
@@ -136,7 +132,6 @@ export class SingleLamp extends Component {
     let list = modelList.map(model => {
       return Object.assign({}, model, { value: model.name });
     });
-    // this.setState({device:Immutable.fromJS({list:list, index:0, value:list.length>0?list[0].value:""})})
     this.requestSearch();
   }
 
@@ -160,15 +155,10 @@ export class SingleLamp extends Component {
       let curDomain = getObjectByKey(this.state.domain.get('list'), 'id', item.domainId);
       return Object.assign({}, { domain: curDomain ? curDomain.get('name') : '' },
         { typeName: getModelNameById(item.extendType) }, item, item.extend, item.geoPoint);
-      // list.push(Object.assign({id:item.id, extendType:item.extendType, deviceName:item.name, 
-      // latlng:item.geoPoint}, item.extend))
     });
     this.setState({ data: Immutable.fromJS(list) }, () => {
-    // if (this.state.data.toJS() && this.state.data.toJS().length > 0) {
-      // if (this.state.data && this.state.data.size > 0) {
         let item = this.state.data.get(0);
         this.tableClick(item);
-      // }
     });
   }
 
@@ -181,7 +171,6 @@ export class SingleLamp extends Component {
   }
 
   domainChange(selectIndex) {
-    // this.setState({domain:this.state.domain.update('index', v=>selectIndex)})
     this.state.domain = this.state.domain.update('index', v => selectIndex);
     this.setState({
       domain: this.state.domain.update('value', v => {
@@ -191,7 +180,6 @@ export class SingleLamp extends Component {
   }
 
   deviceChange(selectIndex) {
-    // this.props.actions.onChange('device', selectIndex);
     this.setState({ device: this.state.device.update('index', v => selectIndex) });
     this.setState({
       device: this.state.device.update('value', v => {
@@ -201,7 +189,6 @@ export class SingleLamp extends Component {
   }
 
   searchChange(value) {
-    // this.props.actions.onChange('search', value);
     this.setState({ search: this.state.search.update('value', v => value) });
   }
 
@@ -255,8 +242,6 @@ export class SingleLamp extends Component {
         <div className="heading">
           <Select className="domain" data={domain}
             onChange={(selectIndex) => this.domainChange(selectIndex)} />
-          {/*<Select className="device" data={device}
-                     onChange={(selectIndex)=>this.deviceChange(selectIndex)}/>*/}
           <SearchText className="search" placeholder={search.get('placeholder')} value={search.get('value')}
             onChange={value => this.searchChange(value)} submit={() => this.searchSubmit()} />
         </div>
@@ -303,7 +288,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      // onChange: onChange
     }, dispatch),
   };
 }
