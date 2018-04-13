@@ -551,14 +551,16 @@ ul {
     height: 40px;
     padding: 10px 0px 10px 25px;
     line-height: 20px;
-    background: #e6e6e6;
+    background: #cce7ed;
     color:#333744;
 }
 
 .tree-list .tree-1 > li span.toggled {
-    top:2px;
+    top:1px;
     margin-right: 12px;
     color: #646771;
+
+    font-size: 10px;
 }
 
 .tree-list .tree-2{

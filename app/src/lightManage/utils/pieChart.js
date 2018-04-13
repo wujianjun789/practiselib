@@ -4,10 +4,14 @@
 // import { intlFormat } from '../util/index';
 export default function PieChart(data) {
   let width = data.width ? data.width : data.wrapper.offsetWidth;
-  // var width = 148;
   var height = data.height ? data.height : data.wrapper.offsetHeight;
-  // var height = 170;  
   let dataset = data.data;
+  //当数据为空时，给数据一个默认值，保证图形正常显示
+  for (let i=0; i<dataset.length; i++){
+    if (i==0&&dataset[i]==0){
+      dataset[i]=1;
+    }
+  }
   let ID = data.wrapper.id;
   // let parent = d3.select(`#${ID}`);
   let parent = d3.select(data.wrapper);
@@ -32,21 +36,12 @@ export default function PieChart(data) {
     .append('g')
     .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
-  //   var path = svg.datum(dataset).selectAll('path')
   svg.datum(dataset).selectAll('path')
     .data(pie)
     .enter().append('path')
     .attr('fill', function(d, i) { return color(i); })
     .attr('d', arc)
     .each(function(d) { this._current = d; }); // store the initial angles
-
-  // function arcTween(a) {
-  //   var i = d3.interpolate(this._current, a);
-  //   this._current = i(0);
-  //   return function(t) {
-  //     return arc(i(t));
-  //   };
-  // }
 
   return {
     destroy: function() {

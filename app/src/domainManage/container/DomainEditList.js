@@ -100,7 +100,6 @@ export class DomainEditList extends Component {
         // this.requestSearch();
 
         getDomainConfig(response=>{
-            console.log(response);
             this.domain = response;
             this.requestSearch();
         })
@@ -210,7 +209,7 @@ export class DomainEditList extends Component {
     addDomain(){
         const {listMode, selectDomain} = this.state
         const {actions} = this.props;
-        actions.overlayerShow(<DomainPopup id="addDomain" title={this.formatIntl('domain.add')} data={{domainId:"", domainName:"",
+        actions.overlayerShow(<DomainPopup id="addDomain" title={this.formatIntl('domain.add')} domainConfig={this.domain} data={{domainId:"", domainName:"",
                 lat:"", lng:"", prevDomain:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.domainList}}
                                            onConfirm={(data)=>{
@@ -227,7 +226,7 @@ export class DomainEditList extends Component {
                                                             this.requestDomain();
                                                             this.requestSearch();
                                                         }, error=>{
-                                                            console.log('error:', error);
+                                                            // console.log('error:', error);
                                                             actions.addNotify(0, error);
                                                         });
                                                    }} onCancel={()=>{actions.overlayerHide();actions.removeAllNotify()}}/>);
@@ -236,7 +235,7 @@ export class DomainEditList extends Component {
     editDomain(){
         const {listMode, selectDomain} = this.state
         const {actions} = this.props;
-        let lat="", lng="",updateId="",name="",parentId="";
+        let lat="", lng="",updateId="",name="",parentId="",zoom=null;
 
         if(selectDomain.position && selectDomain.position.length){
             let latlng = selectDomain.position[0];
@@ -250,8 +249,9 @@ export class DomainEditList extends Component {
             name = data.name;
         }
 
-        actions.overlayerShow(<DomainPopup id="updateDomain" title={this.formatIntl('domain.edit')} data={{domainId:updateId, domainName:name,
-                lat:lat, lng:lng, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
+        zoom = selectDomain.zoom;
+        actions.overlayerShow(<DomainPopup id="updateDomain" title={this.formatIntl('domain.edit')} domainConfig={this.domain} data={{domainId:updateId, domainName:name,
+                lat:lat, lng:lng, zoom:zoom, prevDomain:selectDomain.parentId?selectDomain.parentId:''}}
                                            domainList={{titleKey:'name', valueKey:'name', options:this.getDomainParentList()}}
                                            onConfirm={(data)=>{
                                                                     let domain = {};
