@@ -172,7 +172,8 @@ export class Fault extends Component {
     const { pageSize, current } = page.toJS();
     if (domainList.options.length) {
       const domainId = domainList.options[domainList.index]['id'];
-      const level = levelList.options[levelList.index]['name'];
+      // const level = levelList.options[levelList.index]['name'];
+      const level = levelList.index;
       const offset = pageSize * (current - 1);
       const limit = pageSize;
       getFaultOrAlertList(
