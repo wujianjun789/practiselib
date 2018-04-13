@@ -1,0 +1,17 @@
+[
+  {
+    "id": 0,
+    "field": "name",
+    "title": "lightManage.list.name"
+  },
+  {
+    "id": 1,
+    "field": "online",
+    "title": "lightManage.list.communication"
+  },
+  {
+    "id": 2,
+    "field": "updateTime",
+    "title": "lightManage.list.lastUpdate"
+  }
+]

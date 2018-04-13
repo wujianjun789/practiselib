@@ -1,0 +1,52 @@
+[
+  {
+    "id": 0,
+    "field": "name",
+    "title": "lightManage.list.name"
+  },
+  {
+    "id": 1,
+    "field": "online",
+    "title": "lightManage.list.communication"
+  },
+  {
+    "id": 2,
+    "field": "brightness",
+    "title": "lightManage.list.brightness"
+  },
+  {
+    "id": 3,
+    "field": "voltage",
+    "title": "lightManage.list.voltage"
+  },
+  {
+    "id": 4,
+    "field": "current",
+    "title": "lightManage.list.current"
+  },
+  {
+    "id": 5,
+    "field": "power",
+    "title": "lightManage.list.power"
+  },
+  {
+    "id": 6,
+    "field": "totalPower",
+    "title": "lightManage.list.energyConsumption"
+  },
+  {
+    "id": 7,
+    "field": "lightTime",
+    "title": "lightManage.list.poweronTime"
+  },
+  {
+    "id": 8,
+    "field": "runningTime",
+    "title": "lightManage.list.runningTime"
+  },
+  {
+    "id": 9,
+    "field": "updateTime",
+    "title": "lightManage.list.lastUpdate"
+  }
+]

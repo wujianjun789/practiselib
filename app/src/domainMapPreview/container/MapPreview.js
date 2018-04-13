@@ -29,7 +29,7 @@ export class MapPreview extends Component{
             mapId: "mapPreview",
             domainList: [],
 
-            search:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
+            search:{placeholder:this.formatIntl('domain.input.placeholder'), value:'', curIndex:-1},
             placeholderList: [],
 
             curDomainList: [],//device or domain
@@ -49,6 +49,8 @@ export class MapPreview extends Component{
 
         this.responseTime = -1;
         this.responseTimeout = null;
+
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.onChange = this.onChange.bind(this);
         this.updatePlaceholder = this.updatePlaceholder.bind(this);
@@ -83,6 +85,12 @@ export class MapPreview extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     initDomainList(data){
@@ -136,8 +144,9 @@ export class MapPreview extends Component{
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
             })
             if(this.mounted){
-                this.responseTime && clearTimeout(this.responseTimeout);
-                this.responseTimeout = setTimeout(()=>{
+                // console.log('responseTimeout:',this.responseTimeout);
+                // this.responseTimeout && clearTimeout(this.responseTimeout);
+                // this.responseTimeout = setTimeout(()=>{
 
                 timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList},()=>{
                     let deviceLen = [];
@@ -158,12 +167,12 @@ export class MapPreview extends Component{
                             }
 
                             if (deviceLen.length == data.length){
-                                this.mounted && this.setState({curDomainList: this.state.curDomainList});
+                                // this.mounted && this.setState({curDomainList: this.state.curDomainList});
                             }
                         })
                     })
                 })
-            }, 33);
+            // }, 33);
             }
         })
         
