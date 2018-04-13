@@ -48,7 +48,10 @@ class SystemOperationIndex extends Component {
     for(let i = 0;i<TreeData.length;i++){
       let childNode = TreeData[i];
       if(childNode.children){
-        return this.getActiveNode(childNode.children)
+        let result = this.getActiveNode(childNode.children);
+        if (result!==null){
+          return result;
+        }
       }else {
         if(childNode.link==pathname){
           return childNode;

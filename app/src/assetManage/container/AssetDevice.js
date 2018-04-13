@@ -262,7 +262,7 @@ export class AssetDevice extends Component {
                       </td>
                       :
                       <td><span role="presentation" className="btn"
-                        onClick={this.rowAdd}>+{this.formatIntl('equipment.add')}</span> </td>}
+                        onClick={this.rowAdd}><span className="icon_add">+</span>{this.formatIntl('equipment.add')}</span> </td>}
                   </tr>;
                 })
               }
