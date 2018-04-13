@@ -19,6 +19,7 @@ import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup,
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
+import AddDevicePopup from '../component/AddDevicePopup'
 
 class LatlngStrategy extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class LatlngStrategy extends Component {
         allChecked:false,
         checked:[],
       },
+      selectedDevices:[]      
     };
     this.columns =  [
       {id: 0, field:'name', title:this.formatIntl('app.strategy.name')},
@@ -144,12 +146,16 @@ class LatlngStrategy extends Component {
       let allDevicesData = [];
       let selectedDevices = [];
       let selectedDevicesData = [];
-        
-      if (devices) {
+      if (devices && devices.length) {
         const promise = new Promise((resolve, reject) => {
           let len = 0;
           devices.map(id => {
-            getAssetsBaseById(parseInt(id, 10), (res) => {
+            getAssetsBaseById(id, (res) => {
+              if(!res.id){
+                res.id = id;
+                res.name = '失效设备'+id;
+                res.ssgwId = null;
+              }
               len++;
               selectedDevices.push(res);
               //所有网关Id          
@@ -157,7 +163,6 @@ class LatlngStrategy extends Component {
               if (len == devices.length) {
                 resolve(gatewayIds);
               }
-                        
             });
           });
         });
@@ -166,7 +171,11 @@ class LatlngStrategy extends Component {
           return new Promise((resolve, reject) => {
             let len = 0;
             gatewayIds.map(id => {
-              getAssetsBaseById(parseInt(id, 10), (res) => {
+              getAssetsBaseById(id, (res) => {
+                if(!res.id){
+                  res.id = 'nogateway';
+                  res.name = '无网关';
+                }
                 len++;
                 //所有网关
                 gateways.push(res);
@@ -176,33 +185,50 @@ class LatlngStrategy extends Component {
               });
             });
           });
-                
         }).then(gateways => {
           return new Promise((resolve, reject) => {
-            let len = 0;                    
+            let len = 0;
             gateways.forEach(item => {
               //网关白名单中的选中设备
-              selectedDevicesData.push(Object.assign({}, item, {
-                whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)}));
-              getWhiteListById(item.id, (res) => {
-                len++;
-                allDevicesData.push(Object.assign({}, item, {whiteList:res}));
-                if (len == gateways.length) {
-                  resolve({selectedDevicesData, allDevicesData});
-                }
-              });
+              if(item.id == 'nogateway'){
+                let whiteList = [];
+                selectedDevices.map(device=>{
+                  if(!device.ssgwId){
+                    whiteList.push(device)
+                  }
+                })
+                selectedDevicesData.push(Object.assign({}, item, {
+                  whiteList:whiteList
+                }));
+              }
+              else{
+                selectedDevicesData.push(Object.assign({}, item, {
+                  whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)
+                }));
+              }
+
+              //网关白名单中的所有设备
+              // getWhiteListById(item.id, (res) => {
+              //   len++;
+              //   allDevicesData.push(Object.assign({}, item, {whiteList:res}));
+              //   if (len == gateways.length) {
+              //     resolve({selectedDevicesData, allDevicesData});
+              //   }
+              // });
+              this.setState({selectedDevices:selectedDevicesData})
+              this.initDeviceData('selectedDevicesData', selectedDevicesData);
             });
           });
-                
-        }).then(({selectedDevicesData, allDevicesData}) => {
-          this.initChecked(devices, selectedDevicesData, allDevicesData);
-          this.initDeviceData('selectedDevicesData', selectedDevicesData);
-          this.initDeviceData('allDevicesData', allDevicesData);
-        });
+        })
+        // .then(({selectedDevicesData, allDevicesData}) => {
+        //   this.setState({selectedDevices:selectedDevicesData})
+        //   this.initChecked(devices, selectedDevicesData, allDevicesData);
+        //   this.initDeviceData('selectedDevicesData', selectedDevicesData);
+        //   this.initDeviceData('allDevicesData', allDevicesData);
+        // });
       } else {
-        this.setState({selectedDevicesData:Immutable.fromJS([]), allDevicesData:Immutable.fromJS([])});
+        this.setState({selectedDevicesData:Immutable.fromJS([]),selectedDevices:[]});
       }
-    
     }
     
     initDeviceData=(key, data) => {
@@ -626,7 +652,17 @@ class LatlngStrategy extends Component {
                       <span>{`${this.formatIntl('sysOperation.include')}：${selectItem.devices 
                         ? selectItem.devices.length : 0}${this.formatIntl('sysOperation.devices')}`}</span>
                       <button className="btn btn-primary pull-right" onClick={() => { 
-                        !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded'); 
+                        // !sidebarInfo.collapsed && this.collapseHandler('devicesExpanded'); 
+                        this.props.actions.overlayerShow(<AddDevicePopup className='device-edit-popup' 
+                          title={this.formatIntl('app.strategy.select.devices')} id={selectItem.id} devicesId={selectItem.devices?selectItem.devices:[]}
+                          selectedDevicesData={this.state.selectedDevices} overlayerHide={this.props.actions.overlayerHide} 
+                          onConfirm={(data)=>{
+                            updateStrategy({
+                              id:selectItem.id,
+                              devices:data,
+                            }, this.requestSearch);
+                            this.props.actions.overlayerHide();
+                          }}/>)
                       }}>{this.formatIntl('button.edit')}</button>                                   
                     </div>
                     <Table className="selectedDevices" collapsed columns={this.deviceColumns}

@@ -228,10 +228,7 @@ class TimeStrategy extends Component {
         //   this.initDeviceData('allDevicesData', allDevicesData);
         // });
       } else {
-        this.setState({selectedDevicesData:Immutable.fromJS([]), allDevices:{
-          allChecked:false,
-          checked:[],
-        }});
+        this.setState({selectedDevicesData:Immutable.fromJS([]),selectedDevices:[]});
       }
     }
     
