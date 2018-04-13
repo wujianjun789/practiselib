@@ -20,6 +20,7 @@ import {getStringlistByLanguage, validEnglishStr, validChinaStr} from '../../uti
 import {getLanguage, getObjectByKey, getIndexByKey, getElementOffwidth} from '../../util/index'
 import {FormattedMessage,injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
+import {getDomainConfig} from '../../util/network';
 
 import lodash from 'lodash';
 
@@ -51,6 +52,7 @@ class DomainEditTopology extends Component{
         }
 
         this.domainList = [];
+        this.domain = [];
 
         this.getDatalist = this.getDatalist.bind(this);
         this.renderChild = this.renderChild.bind(this);
@@ -76,8 +78,13 @@ class DomainEditTopology extends Component{
 
     componentWillMount(){
         this.mounted = true;
-        this.requestDomain();
-        this.requestCurDomain(null);
+        getDomainConfig(response=>{
+            this.domain = response;
+            this.requestDomain();
+            this.requestCurDomain(null);
+        })
+
+
     }
 
     componentWillUnmount(){
@@ -93,15 +100,29 @@ class DomainEditTopology extends Component{
     }
 
     initDomain(parentId, data){
+        let list = data.map(domain=>{
+            const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
+            const zoom = domainConfig.zoom;
+            return Object.assign({}, domain, {zoom:zoom})
+        })
+
         if(parentId == null){
-            this.setState({domainList:data})
+            this.setState({domainList:list})
             return;
         }
         if(this.state.IsUpdate && this.state.domainUpdate.id){
             this.state.domainList = this.delDomain(this.state.domainUpdate.id, this.state.domainList);
         }
 
-        let newlist = this.updateDomain(parentId, data, this.state.domainList);
+        let newlist = this.updateDomain(parentId, list, this.state.domainList);
+
+        // let list = newlist.map(domain=>{
+        //     const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
+        //     const zoom = domainConfig.zoom;
+        //     return Object.assign({}, domain, {parentName:domain.parent?domain.parent.name:intlFormat({en:'null',zh:'无'}),
+        //         zoom:zoom})
+        // })
+
         this.setState({domainList:newlist});
     }
 
@@ -123,7 +144,6 @@ class DomainEditTopology extends Component{
     }
 
     updateDomain(parentId, data, list){
-        console.log('parentId:', parentId, 'list:', list);
         return list.map(domain=>{
             if(this.IsCurGroup(parentId, list)){
                 if(this.state.IsUpdate && data && data.length){
@@ -208,6 +228,7 @@ class DomainEditTopology extends Component{
             return;
         }else{
             let selectDomain = this.state.selectDomain;
+            selectDomain.zoom = domain.zoom;
             selectDomain.latlng = domain.geoPoint;
             selectDomain.position.splice(0)
             selectDomain.position.push(Object.assign({}, {"device_id":domain.id, "device_type":"DEVICE", IsCircleMarker:true}, domain.geoPoint))
@@ -434,7 +455,7 @@ class DomainEditTopology extends Component{
                         })
                     }
                 </div>
-                <SideBarInfo mapDevice={selectDomain} collapseHandler={this.collpseHandler}
+                <SideBarInfo mapOptions={{zoom:selectDomain.zoom}} mapDevice={selectDomain} collapseHandler={this.collpseHandler}
                              className={propertyCollapse?'propertyCollapse':''}>
                     <div className="panel panel-default device-statics-info">
                         <div className="panel-heading" role="propertyButton" onClick={this.propertyCollapse}>

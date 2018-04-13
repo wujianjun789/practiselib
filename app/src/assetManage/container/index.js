@@ -60,7 +60,10 @@ class AssetManageIndex extends Component {
         return data[i];
       }else{
         if(data[i].children){
-          return this.getMathNode(data[i].children, pathname);
+          const node = this.getMathNode(data[i].children, pathname);
+          if(node){
+            return node;
+          }
         }
 
       }
