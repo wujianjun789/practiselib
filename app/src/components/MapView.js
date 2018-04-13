@@ -62,12 +62,12 @@ export default class MapView extends Component {
             }
             this.state.map[mapData.id].clearMarker();
             this.mapTimeOut && clearTimeout(this.mapTimeOut);
-            this.mapTimeOut = setTimeout(()=>{
+            // this.mapTimeOut = setTimeout(()=>{
                 this.state.map[mapData.id].updateMap({
                     id: mapData.id,
                     latlng: latlng
                 }, option, mapCallFun);
-            }, 33);
+            // }, 33);
 
             if (mapData.position && mapData.position.length) {
                 let deviceList = {};
@@ -98,7 +98,6 @@ export default class MapView extends Component {
     }
 
     render() {
-        console.log('render:.................................');
         const {className='', mapData, mapIcon=false} = this.props;
         return <div className={"map-view "+(mapIcon?"map-icon ":" ")+className} ref={this.renderMap} id={mapData && mapData.id}></div>
     }

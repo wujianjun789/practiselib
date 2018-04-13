@@ -136,8 +136,9 @@ export class MapPreview extends Component{
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
             })
             if(this.mounted){
-                this.responseTime && clearTimeout(this.responseTimeout);
-                this.responseTimeout = setTimeout(()=>{
+                // console.log('responseTimeout:',this.responseTimeout);
+                // this.responseTimeout && clearTimeout(this.responseTimeout);
+                // this.responseTimeout = setTimeout(()=>{
 
                 timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList},()=>{
                     let deviceLen = [];
@@ -158,12 +159,12 @@ export class MapPreview extends Component{
                             }
 
                             if (deviceLen.length == data.length){
-                                this.mounted && this.setState({curDomainList: this.state.curDomainList});
+                                // this.mounted && this.setState({curDomainList: this.state.curDomainList});
                             }
                         })
                     })
                 })
-            }, 33);
+            // }, 33);
             }
         })
         
