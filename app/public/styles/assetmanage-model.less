@@ -79,13 +79,33 @@
 
             .icon_edit{
               color: #8a8a8a;
-          
+              .text{
+                margin-left: 2px;
+                margin-right: 5px;
+                float: left;
+                margin-top: 1px;
+              }
             }
             .edit{
               color: gray;
             }
             .icon_delete{
+              // ::before{
+              //   color: #fa6262 !important;
+              // }
               color: #fa6262;
+              .text{
+                // color: #fa6262;
+                margin-left: 2px;
+                margin-right: 3px;
+                float: left;
+                margin-top: 1px;
+              }
+            }
+            .icon_delete::before{
+              // padding-top: 1px;
+              // padding-bottom: 1px;
+              color: #fa6262 !important
             }
             .delete{
               color: #fa6262;

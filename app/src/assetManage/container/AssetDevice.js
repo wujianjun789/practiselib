@@ -252,11 +252,16 @@ export class AssetDevice extends Component {
                       <td className="edit">
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
-                            className="icon_edit">{this.formatIntl('equipment.edit')}</span>
+                            className="icon_edit">
+                            <span className="text">{this.formatIntl('equipment.edit')}</span>
+                          </span>
                         </a>
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
-                            className="icon_delete">{this.formatIntl('equipment.delete')}</span></a>
+                            className="icon_delete">
+                            <span className="text">{this.formatIntl('equipment.delete')}</span>
+                          </span>
+                            </a>
                       </td>
                       :
                       <td><span role="presentation" className="btn"
