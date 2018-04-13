@@ -209,6 +209,12 @@ export class ModelSearch extends Component{
         for(let j=searchValue.length-1;j>0;j--){
 			if(searchValue.charAt(j)==' '){}else{
 				searchValue=searchValue.substr(0,j+1);
+				for(let i=0;i<searchValue.length;i++){
+                		if(searchValue.charAt(i)==' '){}else{
+                			searchValue=searchValue.substr(i)
+                			break;
+                		}
+                }
 				break;
 			}
 		}
@@ -290,17 +296,6 @@ export class ModelSearch extends Component{
         switch (key){
             case "search": //特殊处理
                 if (event.target.value){
-                	console.log(event.target.value)
-                	let val=' ';
-                	let str=event.target.value;
-                	for(let i=0;i<str.length;i++){
-                		if(str.charAt(i)==' '){}else{
-                			str=str.substr(i)
-                			break;
-                		}
-                	}
-                	console.log(str)
-                	
                     this.setState({search:this.state.search.update("value",v=>event.target.value), interactive:true,IsSearchResult:false});
                 }else{
                     this.setState({search:this.state.search.update("value",v=>event.target.value)});
