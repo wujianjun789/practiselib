@@ -14,7 +14,7 @@ import SearchText from '../../components/SearchText';
 
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 import {getMapConfig, getDomainConfig} from '../../util/network';
-import {getDomainList, getDomainByDomainLevelWithCenter} from '../../api/domain';
+import {getDomainList, getDomainByDomainLevelWithCenter, getDomainListByParentId} from '../../api/domain';
 import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
 
 import {DOMAIN_LEVEL} from '../../common/util/index';
@@ -46,6 +46,9 @@ export class MapPreview extends Component{
         this.domainConfig = null;
         this.domainLevel = DOMAIN_LEVEL+1;
         this.domainCurLevel = 0;
+
+        this.responseTime = -1;
+        this.responseTimeout = null;
 
         this.onChange = this.onChange.bind(this);
         this.updatePlaceholder = this.updatePlaceholder.bind(this);
@@ -114,48 +117,55 @@ export class MapPreview extends Component{
     }
 
     requestCurDomain(){
-    	
+        this.responseTime = new Date().getTime();
         if(this.domainCurLevel==this.domainLevel){
-            getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, null, data=>{
-                let devPositionList = data.map(item=>{
-                    let gePoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
-                    return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
-                })
-                this.mounted && this.setState({curDomainList: data, positionList:devPositionList});
-            })
+            // getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, null, data=>{
+            //     let devPositionList = data.map(item=>{
+            //         let gePoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+            //         return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
+            //     })
+            //     this.mounted && this.setState({curDomainList: data, positionList:devPositionList});
+            // })
+            this.mounted && this.setState({curDomainList: [], positionList:[]});
             return false;
         }
 
-        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, this.responseTime, (data, timestamp)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
             })
+            if(this.mounted){
+                // console.log('responseTimeout:',this.responseTimeout);
+                // this.responseTimeout && clearTimeout(this.responseTimeout);
+                // this.responseTimeout = setTimeout(()=>{
 
-            this.mounted && this.setState({curDomainList: data, positionList:positionList},()=>{
-                let deviceLen = [];
-                const locale = this.props.intl;
-                data.map(item=>{
-                    const itemLen = item.name.length;
-                    getAssetsBaseByDomain(item.id, asset=>{
-                        deviceLen.push(item.id);
-                        let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
-                            return domain.id == item.id
+                timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList},()=>{
+                    let deviceLen = [];
+                    const locale = this.props.intl;
+                    data.map(item=>{
+                        const itemLen = item.name.length;
+                        getDomainListByParentId(item.id, (parentId,asset)=>{
+                        // getAssetsBaseByDomain(item.id, asset=>{
+                            deviceLen.push(item.id);
+                            let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
+                                return domain.id == item.id
+                            })
+
+                            if(curIndex>-1 && curIndex<this.state.curDomainList.length){
+                                this.state.curDomainList[curIndex].detail = item.name.slice(0, DOMAIN_NAME_LENGTH-6)+
+                                  (itemLen>DOMAIN_NAME_LENGTH-6 ? "...":"")+
+                                  ' \n'+asset.length/*+this.props.intl.formatMessage({id:'map.device.tip'})*/;
+                            }
+
+                            if (deviceLen.length == data.length){
+                                // this.mounted && this.setState({curDomainList: this.state.curDomainList});
+                            }
                         })
-
-                        if(curIndex>-1 && curIndex<this.state.curDomainList.length){
-                            this.state.curDomainList[curIndex].detail = item.name.slice(0, DOMAIN_NAME_LENGTH-6)+
-                              (itemLen>DOMAIN_NAME_LENGTH-6 ? "...":"")+
-                              ' \n'+asset.length/*+this.props.intl.formatMessage({id:'map.device.tip'})*/;
-                        }
-
-                        if (deviceLen.length == data.length){
-                            this.mounted && this.setState({curDomainList: this.state.curDomainList});
-                        }
                     })
                 })
-
-            });
+            // }, 33);
+            }
         })
         
     }
