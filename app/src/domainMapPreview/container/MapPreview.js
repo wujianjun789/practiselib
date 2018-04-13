@@ -29,7 +29,7 @@ export class MapPreview extends Component{
             mapId: "mapPreview",
             domainList: [],
 
-            search:{placeholder:'输入域名称搜索', value:'', curIndex:-1},
+            search:{placeholder:this.formatIntl('domain.input.placeholder'), value:'', curIndex:-1},
             placeholderList: [],
 
             curDomainList: [],//device or domain
@@ -49,6 +49,8 @@ export class MapPreview extends Component{
 
         this.responseTime = -1;
         this.responseTimeout = null;
+
+        this.formatIntl = this.formatIntl.bind(this);
 
         this.onChange = this.onChange.bind(this);
         this.updatePlaceholder = this.updatePlaceholder.bind(this);
@@ -83,6 +85,12 @@ export class MapPreview extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    formatIntl(formatId){
+        const {intl} = this.props;
+        return intl?intl.formatMessage({id:formatId}):null;
+        // return formatId;
     }
 
     initDomainList(data){
