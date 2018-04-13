@@ -49,7 +49,7 @@ export class SingleLampCon extends Component {
       deviceCollapse: false,
       whiteListCollapse:false,      
       page: Immutable.fromJS({
-        pageSize: 5,
+        pageSize: 15,
         current: 1,
         total: 0,
       }),
@@ -120,8 +120,6 @@ export class SingleLampCon extends Component {
   }
 
   componentWillMount() {
-    console.log("sideBarNode:", this.props.route.sideBarNode);
-    
     this.mounted = true;
     this.initData();
   }
@@ -248,7 +246,6 @@ export class SingleLampCon extends Component {
   }
 
   domainHandler(key,id) {
-    // let id = e.target.id;
     const { model, selectDevice, domainList, modelList,whitelistData } = this.state;
     const { overlayerShow, overlayerHide } = this.props.actions;
     let curType = modelList.options.length ? modelList.options[0] : null;
@@ -277,10 +274,7 @@ export class SingleLampCon extends Component {
         break;
       }
       case 'sys-update': {
-        // let latlng = selectDevice.position.length ? selectDevice.position[0] : { lat: '', lng: '' };
-        // let data = selectDevice.data.length ? selectDevice.data[0] : null;
         let curDevice = getObjectByKey(this.state.data,'id',id);
-        console.log(curDevice.toJS())
         const dataInit2 = {
           id: curDevice ? curDevice.get('id') : null,
           name: curDevice ? curDevice.get('name') : null,
@@ -324,14 +318,11 @@ export class SingleLampCon extends Component {
     let selectedItem = selectDevice.data[0];
      if (key === 'sys-upgrade') {
         if (id){  //单设备升级
-          console.log('this.state.data：', this.state.data);
-          //需要传入的数据：
           const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
     
           overlayerShow(<DeviceUpgradePopup id={id} className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
             intl={this.props.intl} tableData={this.state.data}
              onConfirm={(data) => {
-              // console.log("shengjishuju:",data);
             }} />);
         }else {
           //多设备升级
@@ -386,7 +377,11 @@ export class SingleLampCon extends Component {
       'device_id': item.id, 'device_type':
         getDeviceTypeByModel(item.extendType)
     }, item.geoPoint));
+    selectDevice.version = item.version;
+    selectDevice.softVersion = item.softVersion;
+    selectDevice.hardVersion = item.hardVersion;
     this.setState({ selectDevice: selectDevice });
+    this.state.model == 'ssgw' && this.requestWhiteListCount();
   }
 
   searchSubmit() {
@@ -406,7 +401,6 @@ export class SingleLampCon extends Component {
 
 
   domainSelect(event) {
-    // this.props.actions.domainSelectChange(index);
     let index = event.target.selectedIndex;
     let { domainList } = this.state;
     domainList.index = index;
@@ -471,9 +465,9 @@ export class SingleLampCon extends Component {
             <span className="icon icon_collapse pull-right"></span>
           </div>
           <div className={'panel-body domain-property ' + (deviceCollapse ? 'collapsed' : '')}>
-              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.product.version' })}：V1.2</span></div>
-              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.hardware.version' })}：V1.2</span></div>
-              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.software.version' })}：V1.2</span></div>
+              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.product.version' })}：{selectDevice.version}</span></div>
+              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.hardware.version' })}：{selectDevice.softVersion}</span></div>
+              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.software.version' })}：{selectDevice.hardVersion}</span></div>
           </div>
         </div>
         {this.state.model == 'ssgw' && <div className="panel panel-default device-statics-info whitelist">

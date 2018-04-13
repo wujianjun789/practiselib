@@ -31,13 +31,12 @@ export default class MapView extends Component {
     }
 
     componentDidUpdate() {
-
-        const {mapData, panLatlng, panCallFun} = this.props;
-        this.initMap();
-        if (panLatlng) {
-            this.state.map[mapData.id].mapPanTo(panLatlng);
-            panCallFun && panCallFun();
-        }
+      const {mapData, panLatlng, panCallFun} = this.props;
+      this.initMap();
+      if (panLatlng) {
+        this.state.map[mapData.id].mapPanTo(panLatlng);
+        panCallFun && panCallFun();
+      }
     }
 
     componentWillUnmount() {
@@ -68,7 +67,7 @@ export default class MapView extends Component {
                     id: mapData.id,
                     latlng: latlng
                 }, option, mapCallFun);
-            }, 66);
+            }, 33);
 
             if (mapData.position && mapData.position.length) {
                 let deviceList = {};
@@ -94,11 +93,12 @@ export default class MapView extends Component {
 
     renderMap(ref) {
         if (ref) {
-            // this.initMap();
+            this.initMap();
         }
     }
 
     render() {
+        console.log('render:.................................');
         const {className='', mapData, mapIcon=false} = this.props;
         return <div className={"map-view "+(mapIcon?"map-icon ":" ")+className} ref={this.renderMap} id={mapData && mapData.id}></div>
     }

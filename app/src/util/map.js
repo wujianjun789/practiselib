@@ -647,12 +647,13 @@ export default class Map{
                 bounds: bounds,
                 distance: bounds._southWest.distanceTo(bounds._northEast)
             });
-        }, 300);
+        }, 33);
     }
 
     mapZoomEnd(event) {
         // this.clearMarker();
         let map = event.target;
+        this.map.off('zoomend', this.mapZoomEnd, this);
         let bounds = map.getBounds();
         this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
         this.mapZoomendTimeout = setTimeout(()=>{
@@ -663,7 +664,7 @@ export default class Map{
                 bounds: bounds,
                 distance: bounds._southWest.distanceTo(bounds._northEast)
             })
-        }, 330)
+        }, 33)
     }
 
     markerClick(event) {
@@ -679,7 +680,7 @@ export default class Map{
                 y: event.originalEvent.clientY,
                 latlng: marker.getLatLng()
             });
-        }, 330)
+        }, 33)
     }
 
     markerOver(event) {
@@ -875,9 +876,13 @@ export default class Map{
         this.curMapData = null;
         this.layer = null;
 
-        this.map && this.map.hasLayer(this.drawItems) && this.map.removeLayer(this.drawItems);
-        this.map && this.map.remove();
-        this.map = null;
+        if(this.map){
+            this.map.off('dragend', this.mapMoveEnd, this);
+            this.map.off('zoomend', this.mapZoomEnd, this);
+            this.map.hasLayer(this.drawItems) && this.map.removeLayer(this.drawItems);
+            this.map.remove();
+            this.map = null;
+        }
 
         this.deviceControl = null;
         this.IsDrawControl = false;

@@ -342,7 +342,7 @@ export function updateDataOrigin(data, key) {
 
 }
 
-export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
+export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, timestamp, cb) {
 
   let headers = getHttpHeader();
   let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
@@ -359,9 +359,9 @@ export function getAssetsByDomainLevelWithCenter(domainLevel, map, model, cb) {
   httpRequest(HOST_IP + '/assets?filter=' + encodeURIComponent(JSON.stringify({ 'where': param })), {
     headers: headers,
     method: 'GET',
-  }, response => {
-    cb && cb(response);
-  });
+  }, (response, res, param) => {
+    cb && cb(response, param);
+  }, timestamp);
 }
 
 export function getSearchAssetsByDomainWithCenter(domain, map, model, name, offset, limit, cb) {

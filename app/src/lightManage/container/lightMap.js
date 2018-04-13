@@ -554,7 +554,7 @@ export class lightMap extends Component{
     }
 
     requestCurAssets(){
-        getAssetsByDomainLevelWithCenter(this.domainLevel, this.map, "ssslc", (data)=>{
+        getAssetsByDomainLevelWithCenter(this.domainLevel, this.map, "ssslc", new Date().getTime(), (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
@@ -575,7 +575,7 @@ export class lightMap extends Component{
 //          })
 //          return false;
 //      }
-        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, (data)=>{
+        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, new Date().getTime(), (data)=>{
             let positionList = data.map(item=>{
                 let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});

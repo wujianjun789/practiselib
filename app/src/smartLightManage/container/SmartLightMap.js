@@ -210,7 +210,7 @@ export class SmartLightMap extends Component{
         const {model, search, tableIndex} = this.state;
 
         if(this.domainCurLevel != this.domainLevel){
-            getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, data=>{this.mounted && this.updateSearch(data)});
+            getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, new Date().getTime(), data=>{this.mounted && this.updateSearch(data)});
         }else{
             let searchType = this.searchPromptList[tableIndex].id;
 

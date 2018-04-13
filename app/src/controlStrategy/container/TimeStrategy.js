@@ -228,10 +228,7 @@ class TimeStrategy extends Component {
         //   this.initDeviceData('allDevicesData', allDevicesData);
         // });
       } else {
-        this.setState({selectedDevicesData:Immutable.fromJS([]), allDevices:{
-          allChecked:false,
-          checked:[],
-        }});
+        this.setState({selectedDevicesData:Immutable.fromJS([]),selectedDevices:[]});
       }
     }
     
@@ -275,7 +272,8 @@ class TimeStrategy extends Component {
             this.requestSearch();
             actions.overlayerHide();
           });
-        }} onCancel={() => {
+        }} onCancel={(update) => {
+          update && this.requestSearch();
           actions.overlayerHide();
         }}/>);
     }
@@ -292,7 +290,8 @@ class TimeStrategy extends Component {
               this.requestSearch();
               actions.overlayerHide();                        
             });
-          }} onCancel={() => {
+          }} onCancel={(update) => {
+            update && this.requestSearch();
             actions.overlayerHide();
           }}/>);
         return;
