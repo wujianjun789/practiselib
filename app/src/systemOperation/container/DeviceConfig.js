@@ -49,7 +49,7 @@ export class SingleLampCon extends Component {
       deviceCollapse: false,
       whiteListCollapse:false,      
       page: Immutable.fromJS({
-        pageSize: 5,
+        pageSize: 15,
         current: 1,
         total: 0,
       }),
@@ -382,7 +382,11 @@ export class SingleLampCon extends Component {
       'device_id': item.id, 'device_type':
         getDeviceTypeByModel(item.extendType)
     }, item.geoPoint));
+    selectDevice.version = item.version;
+    selectDevice.softVersion = item.softVersion;
+    selectDevice.hardVersion = item.hardVersion;
     this.setState({ selectDevice: selectDevice });
+    this.state.model == 'ssgw' && this.requestWhiteListCount();
   }
 
   searchSubmit() {
@@ -466,9 +470,9 @@ export class SingleLampCon extends Component {
             <span className="icon icon_collapse pull-right"></span>
           </div>
           <div className={'panel-body domain-property ' + (deviceCollapse ? 'collapsed' : '')}>
-              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.product.version' })}：V1.2</span></div>
-              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.hardware.version' })}：V1.2</span></div>
-              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.software.version' })}：V1.2</span></div>
+              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.product.version' })}：{selectDevice.version}</span></div>
+              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.hardware.version' })}：{selectDevice.softVersion}</span></div>
+              <div className="version"><span>{this.props.intl.formatMessage({ id: 'sysOperation.software.version' })}：{selectDevice.hardVersion}</span></div>
           </div>
         </div>
         {this.state.model == 'ssgw' && <div className="panel panel-default device-statics-info whitelist">
