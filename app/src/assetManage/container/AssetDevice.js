@@ -194,8 +194,6 @@ export class AssetDevice extends Component {
         actions.overlayerHide();
       }}
       onConfirm={(data) => {
-        //data={type, power, serviceLife, manufacturer, detail, ...others}
-        //根据data中的参数更新设备型号，并将结果传入API实现数据的更改
         let name = data.name;
         let power = data.power;
         let life = data.life;
@@ -223,7 +221,6 @@ export class AssetDevice extends Component {
   render() {
     const { data, assetPropertyList, assetTypeList, keyField } = this.state;
     let length = assetTypeList.length;
-    console.log(this.state.model, keyField);
     return (
       <Content>
         <div className="row heading">
@@ -252,11 +249,16 @@ export class AssetDevice extends Component {
                       <td className="edit">
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
-                            className="icon_edit">{this.formatIntl('equipment.edit')}</span>
+                            className="icon_edit">
+                            <span className="text">{this.formatIntl('equipment.edit')}</span>
+                          </span>
                         </a>
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
-                            className="icon_delete">{this.formatIntl('equipment.delete')}</span></a>
+                            className="icon_delete">
+                            <span className="text">{this.formatIntl('equipment.delete')}</span>
+                          </span>
+                            </a>
                       </td>
                       :
                       <td><span role="presentation" className="btn"
