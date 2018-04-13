@@ -120,8 +120,6 @@ export class SingleLampCon extends Component {
   }
 
   componentWillMount() {
-    console.log("sideBarNode:", this.props.route.sideBarNode);
-    
     this.mounted = true;
     this.initData();
   }
@@ -277,7 +275,6 @@ export class SingleLampCon extends Component {
       }
       case 'sys-update': {
         let curDevice = getObjectByKey(this.state.data,'id',id);
-        console.log(curDevice.toJS())
         const dataInit2 = {
           id: curDevice ? curDevice.get('id') : null,
           name: curDevice ? curDevice.get('name') : null,
@@ -321,8 +318,6 @@ export class SingleLampCon extends Component {
     let selectedItem = selectDevice.data[0];
      if (key === 'sys-upgrade') {
         if (id){  //单设备升级
-          console.log('this.state.data：', this.state.data);
-          //需要传入的数据：
           const { overlayerHide, overlayerShow, addNotify } = this.props.actions;
     
           overlayerShow(<DeviceUpgradePopup id={id} className='deviceUpgrade-popup' overlayerHide={overlayerHide} requestSearch={this.requestSearch}
