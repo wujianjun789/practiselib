@@ -109,6 +109,7 @@ export default {
     'button.hangUp': 'Hang up',
     'button.rename': 'Rename',
     'button.publish': 'Publish',
+    'button.copy': 'Copy',
 
     //模型名字翻译
     'ssads.name': 'LED display',

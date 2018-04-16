@@ -328,6 +328,19 @@ class TimeStrategy extends Component {
     })
   }
 
+  tableCopy=(row) => {
+    let keys = ['name',"level","start","end","excuteTime","devices","execution","retryNumber","retryInterval","groupId"]
+    let data = {type:0};
+    
+    keys.map(key=>{
+      if(row.toJS().hasOwnProperty(key)) data[key]=row.get(key);
+    })
+
+    addStrategy(data, () => {
+      this.requestSearch();
+    });
+  }
+
   updateSelectItem=(item) => {
     let selectItem = item;
     if (!item.plans) {
@@ -521,7 +534,7 @@ class TimeStrategy extends Component {
       <div className="table-container">
         <Table className="strategy" keyField="key" collapsed isEdit={true} columns={this.columns}
           data={strategyData} activeId={selectItem && selectItem.key} rowClick={this.tableClick} 
-          rowEdit={this.tableEdit} rowDelete={this.tableDelete} collapseClick={this.collapseClick}/>
+          rowEdit={this.tableEdit} rowDelete={this.tableDelete} rowCopy={this.tableCopy} collapseClick={this.collapseClick}/>
       </div>
       <div className={`container-fluid sidebar-info ${sidebarInfo.collapsed ? 'sidebar-collapse' : ''}`}>
         <div className="row collapse-container" role="presentation" onClick={() => this.collapseHandler('collapsed')}>
