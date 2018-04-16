@@ -85,6 +85,7 @@ export default {
     //按钮
     ' ': ' ',
     'button.add': '添加',
+    'button.handle': '操作',
     'button.edit': '编辑',
     'button.delete': '删除',
     'button.confirm': '确认',

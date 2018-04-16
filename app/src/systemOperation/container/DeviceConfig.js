@@ -439,7 +439,7 @@ export class DeviceConfig extends Component {
             {this.props.intl.formatMessage({ id: 'button.add' })}</button>
           <div className="btn-group">
             <button id="sys-maintenance" className="btn btn-gray dropdown-toggle"
-              data-toggle="dropdown">操作<span className="caret"></span>
+              data-toggle="dropdown">{this.props.intl.formatMessage({ id: 'button.handle' })}<span className="caret"></span>
             </button>
             <div className="dropdown-menu" role="menu">
               <span className="glyphicon glyphicon-triangle-top" id="iconbox"></span>

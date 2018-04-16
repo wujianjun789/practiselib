@@ -84,6 +84,7 @@ export default {
     //按钮
     ' ': ' ',
     'button.add': 'Add',
+    'button.handle': 'Handle',
     'button.edit': 'Edit',
     'button.delete': 'Delete',
     'button.confirm': 'Confirm',
