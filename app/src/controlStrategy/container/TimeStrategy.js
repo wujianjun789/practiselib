@@ -159,7 +159,7 @@ class TimeStrategy extends Component {
             len++;
             selectedDevices.push(res);
             //所有网关Id          
-            !gatewayIds.includes(res.ssgwId) && gatewayIds.push(res.ssgwId);
+            (res.ssgwId && !gatewayIds.includes(res.ssgwId)) && gatewayIds.push(res.ssgwId);
             if (len == devices.length) {
               resolve(gatewayIds);
             }
@@ -172,10 +172,6 @@ class TimeStrategy extends Component {
           let len = 0;
           gatewayIds.map(id => {
             getAssetsBaseById(id, (res) => {
-              if(!res.id){
-                res.id = 'nogateway';
-                res.name = '无网关';
-              }
               len++;
               //所有网关
               gateways.push(res);
@@ -187,25 +183,22 @@ class TimeStrategy extends Component {
         });
       }).then(gateways => {
         return new Promise((resolve, reject) => {
-          let len = 0;
+          let whiteList = [];
+          selectedDevices.map(device=>{
+            if(!device.ssgwId){
+              whiteList.push(device)
+            }
+          })
+          whiteList.length >0 && selectedDevicesData.push({
+            id:'nogateway',
+            name:'无网关',
+            whiteList:whiteList
+          });
           gateways.forEach(item => {
             //网关白名单中的选中设备
-            if(item.id == 'nogateway'){
-              let whiteList = [];
-              selectedDevices.map(device=>{
-                if(!device.ssgwId){
-                  whiteList.push(device)
-                }
-              })
-              selectedDevicesData.push(Object.assign({}, item, {
-                whiteList:whiteList
-              }));
-            }
-            else{
-              selectedDevicesData.push(Object.assign({}, item, {
-                whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)
-              }));
-            }
+            selectedDevicesData.push(Object.assign({}, item, {
+              whiteList:getListByKey2(selectedDevices, 'ssgwId', item.id)
+            }));
 
             //网关白名单中的所有设备
             // getWhiteListById(item.id, (res) => {
