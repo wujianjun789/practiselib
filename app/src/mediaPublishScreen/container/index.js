@@ -81,7 +81,7 @@ export class MediaPublishScreen extends Component {
   };
   initDeviceData = () => {
     if (!this._isMounted) {
-      return;
+      return false;
     }
     if (this.state.currentDomain) {
       const {
@@ -312,18 +312,8 @@ export class MediaPublishScreen extends Component {
   }
   render() {
     const {
-      sidebarCollapse,
-      deviceCollapse,
-      operationCollapse,
-      mapCollapse,
-      domainList,
-      currentDomain,
-      deviceList,
-      currentDevice,
-      selectDevice,
-      search: { value, placeholder },
-      page: { total, current, limit },
-      playScheme,
+      sidebarCollapse, deviceCollapse, operationCollapse, mapCollapse, domainList, currentDomain, deviceList,
+      currentDevice, selectDevice, search: { value, placeholder }, page: { total, current, limit }, playScheme,
       currentPlan
     } = this.state;
 
@@ -333,8 +323,7 @@ export class MediaPublishScreen extends Component {
     return (
       <Content
         id="media-publish-screen"
-        class={`${sidebarCollapse ? 'mr60' : ''}`}
-      >
+        class={`${sidebarCollapse ? 'mr60' : ''}`}>
         <div class="content-left">
           <div class="heading">
             <Select
@@ -342,23 +331,20 @@ export class MediaPublishScreen extends Component {
               className="select-domain"
               options={domainList}
               current={currentDomain}
-              onChange={this.handleSelectDomain}
-            />
+              onChange={this.handleSelectDomain}/>
             <SearchText
               className="search-text"
               placeholder={placeholder}
               value={value}
               onChange={this.handleSearchValue}
-              submit={this.handleSearchSubmit}
-            />
+              submit={this.handleSearchSubmit}/>
           </div>
           <div class="body">
             <Table
               columns={this.deviceColumns}
               data={Immutable.fromJS(deviceList)}
               activeId={deviceList.length && currentDevice.id}
-              rowClick={this.selectDevice}
-            />
+              rowClick={this.selectDevice}/>
             <div class={`page-center ${total === 0 ? 'hidden' : ''}`}>
               <Page
                 class="page"
@@ -372,70 +358,45 @@ export class MediaPublishScreen extends Component {
           </div>
         </div>
         <div
-          class={`sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}
-        >
+          class={`sidebar-info ${sidebarCollapse ? 'sidebar-collapse' : ''}`}>
           <div
             class="row collapse-container"
             role="presentation"
-            onClick={this.handleCollapseAll}
-          >
-            <span
-              class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}
-            />
+            onClick={this.handleCollapseAll}>
+            <span class={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}/>
           </div>
-          <div class="panel panel-default">
-            <div
-              class="panel-heading"
-              role="presentation"
-              onClick={() => this.handleCollapse('deviceCollapse')}
-            >
+          <div class={"panel panel-default "+(deviceCollapse?"deviceCollapse":"")}>
+            <div class="panel-heading" role="presentation" onClick={() => this.handleCollapse('deviceCollapse')}>
               <span class="icon_select" />选中设备
               <span class="icon icon_collapse pull-right" />
             </div>
             <div class={`panel-body ${deviceCollapse ? 'screen-hidden' : ''}`}>
-              <span
-                title={currentDevice === null ? '无设备' : currentDevice.name}
-              >
+              <span title={currentDevice === null ? '无设备' : currentDevice.name}>
                 {currentDevice === null ? '无设备' : currentDevice.name}
               </span>
-              <button
-                onClick={this.handleViewDevice}
-                class="btn btn-primary pull-right"
-                disabled={currentDevice === null ? true : false}
-              >
+              <button onClick={this.handleViewDevice} class="btn btn-primary pull-right"
+                disabled={currentDevice === null ? true : false}>
                 预览
               </button>
             </div>
           </div>
-          <div class="panel panel-default">
+          <div class={"panel panel-default "+(operationCollapse?"operationCollapse":"")}>
             <div
               class="panel-heading"
               role="presentation"
-              onClick={() => this.handleCollapse('operationCollapse')}
-            >
+              onClick={() => this.handleCollapse('operationCollapse')}>
               <span class="icon_touch" />设备操作
               <span class="icon icon_collapse pull-right" />
             </div>
-            <div
-              class={`panel-body ${operationCollapse ? 'screen-hidden' : ''}`}
-            >
+            <div class={`panel-body ${operationCollapse ? 'screen-hidden' : ''}`}>
               <div class="item">
                 <form onSubmit={this.handleSubmit}>
                   <span>设备开关：</span>
-                  <input
-                    type="radio"
-                    name="operation"
-                    value="open"
-                    defaultChecked
-                  />
+                  <input type="radio" name="operation" value="open" defaultChecked/>
                   <span class="action">开</span>
                   <input type="radio" name="operation" value="close" />
                   <span class="action">关</span>
-                  <button
-                    class="btn btn-primary pull-right"
-                    type="submit"
-                    disabled={currentDevice === null ? true : false}
-                  >
+                  <button class="btn btn-primary pull-right" type="submit" disabled={currentDevice === null ? true : false}>
                     应用
                   </button>
                 </form>
@@ -447,8 +408,7 @@ export class MediaPublishScreen extends Component {
                   className="play-scheme"
                   options={playScheme}
                   current={currentPlan}
-                  onChange={this.handleSelectPlayScheme}
-                />
+                  onChange={this.handleSelectPlayScheme}/>
                 <button
                   class="btn btn-primary pull-right"
                   onClick={this.handlePlanApply}
@@ -456,19 +416,17 @@ export class MediaPublishScreen extends Component {
                     currentDevice !== null && currentPlan !== null
                       ? false
                       : true
-                  }
-                >
+                  }>
                   应用
                 </button>
               </div>
             </div>
           </div>
-          <div class="panel panel-default">
+          <div class={"panel panel-default "+(mapCollapse?"mapCollapse":"")}>
             <div
               class="panel-heading"
               role="presentation"
-              onClick={() => this.handleCollapse('mapCollapse')}
-            >
+              onClick={() => this.handleCollapse('mapCollapse')}>
               <span class="icon_map" />
               <span>地图位置</span>
               <span class="icon icon_collapse pull-right" />
@@ -477,8 +435,7 @@ export class MediaPublishScreen extends Component {
               class={`panel-body map-container ${
                 mapCollapse ? 'screen-hidden' : ''
               }`}
-              style={{ top: top }}
-            >
+              style={{ top: top }}>
               <MapView option={{ mapZoom: false }} mapData={selectDevice} />
             </div>
           </div>

@@ -27,6 +27,13 @@
         }
     }
     .sidebar-info {
+        .panel{
+            &.deviceCollapse, &.operationCollapse, &.mapCollapse{
+                .icon_collapse{
+                    transform: rotate(180deg);
+                }
+            }
+        }
         .panel-body {
             .item {
                 height: 30px;
