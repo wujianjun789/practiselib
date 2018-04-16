@@ -192,10 +192,10 @@ class PlayerPicAsset extends PureComponent {
         <div className="form-group pull-right clipsRage">
           <label className="control-label">{this.props.intl.formatMessage({id:'mediaPublish.fragmentRange'})}</label>
           <div className="input-container input-w-2">
-            <TimePicker disabled={property.playType == '0'} size="large" style={{ width: '88px' }}
+            <TimePicker disabled={property.playType == '0'}  style={{ width: '88px' }}
               onChange={value => this.timeChange('playTimeBegin', value)} value={property.playTimeBegin} />
-            <span className="text" style={{display: "inline-block", width: '34px', "textAlign": "center"}}><FormattedMessage id="mediaPublish.to"/></span>
-            <TimePicker disabled={property.playType == '0'} size="large" style={{ width: '88px' }}
+            <span className="text" style={{display: "inline-block", width: '34px', "textAlign": "center"}}>-</span>
+            <TimePicker disabled={property.playType == '0'} style={{ width: '88px' }}
               onChange={value => this.timeChange('playTimeEnd', value)} value={property.playTimeEnd} />
             <span className={prompt.clipsRage ? 'prompt ' : 'prompt hidden'}>
               <FormattedMessage id="mediaPublish.check"/></span>

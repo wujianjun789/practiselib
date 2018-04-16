@@ -6,7 +6,7 @@ const ProgramHeader = (props) => {
   return (
     <div id="header-wapper">
       <div className="time-picker-wapper">
-        <DatePicker className="time-picker" size="large" onChange={(date, dateString) => { selectDate(date, dateString); }} defaultValue={defaultValue}/>
+        <DatePicker format="YYYY/MM/DD" className="time-picker" size="large" onChange={(date, dateString) => { selectDate(date, dateString); }} defaultValue={defaultValue}/>
       </div>  
       <ul id="header">  
         {timeShaft.map((item, index) => {
