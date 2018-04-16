@@ -242,10 +242,10 @@ export default {
     'permission.grade': 'Grade',
 
     //系统运维
-    'sysOperation.device.config': 'Device config',
-    'sysOperation.whiteList': 'WhiteList',
+    'sysOperation.device.config': 'Device',
+    'sysOperation.whiteList': 'Whitelist',
     'sysOperation.include': 'Include',
-    'sysOperation.devices': 'devices',
+    'sysOperation.devices': 'Devices',
     'sysOperation.input.device': 'Input device name',
     'sysOperation.domain': 'Domain',
     'sysOperation.type': 'Type',
@@ -263,7 +263,7 @@ export default {
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
     'sysOperation.device.version': 'Device version',
-    'sysOperation.product.version': 'Product version',
+    'sysOperation.product.version': 'Version',
     'sysOperation.hardware.version': 'Hardware version',
     'sysOperation.software.version': 'Software version',
 
