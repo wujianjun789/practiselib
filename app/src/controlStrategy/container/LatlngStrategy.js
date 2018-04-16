@@ -112,7 +112,7 @@ class LatlngStrategy extends Component {
           if (parent.plans) {
             parent.plans.map(item => {
               item.hidden = parent.collapsed;
-              item.timeRange = item.start.split('T')[0] +' '+ this.formatIntl('mediaPublish.to') +' '+ item.end.split('T')[0];
+              item.timeRange = item.start.split('T')[0].replace(/-/g, '/') +' - '+ item.end.split('T')[0].replace(/-/g, '/');
               result.push(item);
             });
           }
@@ -121,9 +121,8 @@ class LatlngStrategy extends Component {
             if (item.name.indexOf(search.get('value')) > -1) {
               parent.collapsed = false;
               result.push(parent);
-
               item.hidden = parent.collapsed;
-              item.timeRange = item.start.split('T')[0] +' '+ this.formatIntl('mediaPublish.to') +' '+ item.end.split('T')[0];
+              item.timeRange = item.start.split('T')[0].replace(/-/g, '/') +' - '+ item.end.split('T')[0].replace(/-/g, '/');
               result.push(item);
             }
           });
@@ -579,9 +578,9 @@ class LatlngStrategy extends Component {
                     <div className="form-group date-range">
                       <label title={this.formatIntl('app.date.range')}>{this.formatIntl('app.date.range')}</label>
                       <div className="input-container">
-                        <input type="text" className="form-control" value={selectItem.start} disabled="disabled"/>
+                        <input type="text" className="form-control" value={selectItem.start.split('T')[0].replace(/-/g, '/')} disabled="disabled"/>
                         <span>{this.formatIntl('mediaPublish.to')}</span>
-                        <input type="text" className="form-control" value={selectItem.end} disabled="disabled"/>
+                        <input type="text" className="form-control" value={selectItem.end.split('T')[0].replace(/-/g, '/')} disabled="disabled"/>
                       </div>
                     </div>
 
