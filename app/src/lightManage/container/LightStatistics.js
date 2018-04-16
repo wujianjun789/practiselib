@@ -18,6 +18,7 @@ export class LightStatistics extends Component {
     super(props);
     this.state = {
       color1:['#4169E1', '#C0C0C0', '#FF6347'],
+      // color1:['#00bcff', '#d3d8dd', '#ff5c68'],
       color2:['#3BCCFF', '#39A7FE'],
       color3:['#645FFF'],
       energyOption: 'month',
