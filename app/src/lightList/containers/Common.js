@@ -195,7 +195,9 @@ export default function common(DeviceOperation) {
       );
     };
     onRowClick = currentDevice => {
-      this.setState({ currentDevice: currentDevice.toJS() });
+      this.setState({ currentDevice: currentDevice.toJS() }, () => {
+        this.updateSelectDevice(this.state.currentDevice);
+      });
     };
     render() {
       const {
