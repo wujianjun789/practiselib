@@ -15,7 +15,7 @@ import Immutable from 'immutable';
 import {getObjectByKeyObj, getIndexByKey, getProByKey, getIndexsByKey, spliceInArray, 
   getObjectByKey, getListKeyByKey, IsExitInArray3, getListByKey2} from '../../util/algorithm';
 import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup, 
-  addStrategy, updateStrategy, updateGroup} from '../../api/plan';
+  addStrategy, updateStrategy, updateGroup,getPlanById} from '../../api/plan';
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
@@ -330,7 +330,10 @@ class TimeStrategy extends Component {
     }
 
     tableClick=(row) => {
-      this.updateSelectItem(row.toJS());
+      row.get('plans')?this.updateSelectItem(row.toJS()):getPlanById(row.get("id"),(res)=>{
+        res.key='plan'+res.id;
+        this.updateSelectItem(res);
+      })
     }
 
     updateSelectItem=(item) => {
@@ -398,7 +401,7 @@ class TimeStrategy extends Component {
         };
       }
       updateStrategy({id:selectItem.id, execution:selectItem.execution, 
-        excuteTime:selectItem.excuteTime.hour()*3600 + selectItem.excuteTime.minute()*60 + selectItem.excuteTime.second()}, this.requestSearch);
+        excuteTime:selectItem.excuteTime.hour()*3600 + selectItem.excuteTime.minute()*60 + selectItem.excuteTime.second()});
     }
 
     collapseClick=(id, key, data) => {
@@ -640,10 +643,11 @@ class TimeStrategy extends Component {
                           title={this.formatIntl('app.strategy.select.devices')} id={selectItem.id} devicesId={selectItem.devices?selectItem.devices:[]}
                           selectedDevicesData={this.state.selectedDevices} overlayerHide={this.props.actions.overlayerHide} 
                           onConfirm={(data)=>{
+                            this.setState({selectItem:Object.assign({},selectItem,{devices:data})},()=>this.getDeviceData(data))
                             updateStrategy({
                               id:selectItem.id,
                               devices:data,
-                            }, this.requestSearch);
+                            });
                             this.props.actions.overlayerHide();
                           }}/>)
                       }}>{this.formatIntl('button.edit')}</button>                                   
