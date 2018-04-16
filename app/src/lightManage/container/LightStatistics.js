@@ -17,6 +17,9 @@ export class LightStatistics extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      color1:['#4169E1', '#C0C0C0', '#FF6347'],
+      color2:['#3BCCFF', '#39A7FE'],
+      color3:['#645FFF'],
       energyOption: 'month',
       energyFilt: {
         id: '',
@@ -336,8 +339,7 @@ export class LightStatistics extends Component {
   }
 
   renderChart(ref) {
-    const { domainStatus } = this.state;
-
+    const { domainStatus,color1, color2, color3 } = this.state;
     if (ref == null) {
       this.destroyBarChart();
       this.destroyPieChart();
@@ -354,19 +356,19 @@ export class LightStatistics extends Component {
         domainStatus.deviceOnlineError ? domainStatus.deviceOnlineError : 0,
         domainStatus.deviceOffline ? domainStatus.deviceOffline : 0,
         ];
-        this.drawChart(ref, data);
+        this.drawChart(ref, data, color1);
       } else if (refId == 'planState') {
         // data = [8, 4];
         data = [domainStatus.palnSuccess ? domainStatus.palnSuccess : 0,
         domainStatus.planFail ? domainStatus.planFail : 0];
-        this.drawChart(ref, data);
+        this.drawChart(ref, data, color2);
       } else if (refId == 'lightState') {
         // data = [9, 2];
         data = [domainStatus.lightOnPercent ? (domainStatus.lightOnPercent) * 100 : 0,
         (1 - domainStatus.lightOnPercent) ? (1 - domainStatus.lightOnPercent) * 100 : 0,
         ];
         // console.log("data:", data);
-        this.drawChart(ref, data);
+        this.drawChart(ref, data, color3);
       } else {
         return;
       }
@@ -374,7 +376,7 @@ export class LightStatistics extends Component {
   }
 
 
-  drawChart(ref, data) {
+  drawChart(ref, data, color) {
     if (ref.id == 'energyStatistics') {
       this.barchart = new BarChart({
         wrapper: ref,
@@ -393,6 +395,7 @@ export class LightStatistics extends Component {
         data: data,
         width: boxLeftwidth,
         height: '170',
+        color:color,
       });
       this.piechart && this.state.piechartList.push(this.piechart);
     }
@@ -451,11 +454,11 @@ export class LightStatistics extends Component {
                       <div className="fontbold font">{this.formatIntl('lightManage.Statistics.domain')}： <span>{`${this.state.domainList.value}`}</span></div>
                       <div className="fontbold font">{this.formatIntl('lightManage.Statistics.deviceCount')}：<span>
                         {`${domainStatus.deviceTotal ? domainStatus.deviceTotal : ''}`}</span></div>
-                      <div className="dot color1"></div><div className="font">{this.formatIntl('lightManage.Statistics.deviceOnlineRunning')}：<span>
+                      <div className="dot color11"></div><div className="font">{this.formatIntl('lightManage.Statistics.deviceOnlineRunning')}：<span>
                         {`${domainStatus.deviceOnlineRunning ? domainStatus.deviceOnlineRunning : ''}`}</span></div>
-                      <div className="dot color2"></div><div className="font">{this.formatIntl('lightManage.Statistics.deviceOnlineError')}：<span>
+                      <div className="dot color12"></div><div className="font">{this.formatIntl('lightManage.Statistics.deviceOnlineError')}：<span>
                         {`${domainStatus.deviceOnlineError ? domainStatus.deviceOnlineError : ''}`}</span></div>
-                      <div className="dot color3"></div><div className="font">{this.formatIntl('lightManage.Statistics.deviceOffline')}：<span>
+                      <div className="dot color13"></div><div className="font">{this.formatIntl('lightManage.Statistics.deviceOffline')}：<span>
                         {`${domainStatus.deviceOffline ? domainStatus.deviceOffline : ''}`}</span></div>
                     </div>
                   </div>
@@ -475,9 +478,9 @@ export class LightStatistics extends Component {
                       <div className="fontbold font">{this.formatIntl('lightManage.Statistics.domain')}： <span>{`${this.state.domainList.value}`}</span></div>
                       <div className="fontbold font">{this.formatIntl('lightManage.Statistics.planCount')}：<span>
                         {`${domainStatus.planTotal ? domainStatus.planTotal : ''}`}</span></div>
-                      <div className="dot color1"></div><div className="font">{this.formatIntl('lightManage.Statistics.palnSuccess')}：<span>
+                      <div className="dot color21"></div><div className="font">{this.formatIntl('lightManage.Statistics.palnSuccess')}：<span>
                         {`${domainStatus.palnSuccess ? domainStatus.palnSuccess : ''}`}</span></div>
-                      <div className="dot color2"></div><div className="font">{this.formatIntl('lightManage.Statistics.planFail')}：<span>
+                      <div className="dot color22"></div><div className="font">{this.formatIntl('lightManage.Statistics.planFail')}：<span>
                         {`${domainStatus.planFail ? domainStatus.planFail : ''}`}</span></div>
                     </div>
                   </div>
