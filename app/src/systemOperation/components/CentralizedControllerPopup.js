@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 
 import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../util/index';
+import lodash from 'lodash';
+
 export default class CentralizedControllerPopup extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +29,7 @@ export default class CentralizedControllerPopup extends Component {
         id: false,
       },
     };
+    this.domain = this.props.domainConfig;
 
     this.onChange = this.onChange.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -44,9 +47,20 @@ export default class CentralizedControllerPopup extends Component {
     // }
 
     if (id == 'domain') {
-      this.setState({
-        domainId: this.props.domainList.options[e.target.selectedIndex].id,
-      });
+      console.log(this.props.domainList);
+      const {options} = this.props.domainList;
+      let curIndex = e.target.selectedIndex;
+
+      const domain = options[curIndex];
+      const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
+      const zoom = domainConfig?domainConfig.zoom:null;
+
+      let data = {[id]:domain.id, zoom:zoom};
+      if(domain.geoPoint){
+        data = Object.assign({}, data, domain.geoPoint);
+      }
+
+      this.setState(data);
     }
 
     let value = e.target.value;

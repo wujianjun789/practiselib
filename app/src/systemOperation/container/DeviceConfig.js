@@ -36,9 +36,12 @@ import DeviceReplacePopup from '../components/DeviceReplacePopup';
 import DeviceUpgradePopup from '../components/DeviceUpgradePopup';
 import SingleDeviceReplacePopup from '../components/SingleDeviceReplacePopup';
 import { replaceDevice } from '../../api/import';
+
+import { requestWhiteListCountById } from '../../api/domain';
+import {getDomainConfig} from '../../util/network';
+
 import {getObjectByKeyObj,getObjectByKey} from '../../util/algorithm';
 import {trimString} from '../../util/string';
-import { requestWhiteListCountById } from '../../api/domain';
 
 export class DeviceConfig extends Component {
   constructor(props) {
@@ -79,6 +82,7 @@ export class DeviceConfig extends Component {
       data: Immutable.fromJS([]),
     };
 
+    this.domain = null;
     this.columns = [
       {
         id: 0,
@@ -144,6 +148,12 @@ export class DeviceConfig extends Component {
           })
         });
       });
+
+      getDomainConfig(response=>{
+        if(this.mounted){
+          this.domain = response;
+        }
+      })
       
     }
   }
@@ -257,7 +267,7 @@ export class DeviceConfig extends Component {
 
         overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup"
           title={this.props.intl.formatMessage({ id: 'sysOperation.addDevice' })} model={this.state.model}
-          data={dataInit} domainList={domainList} modelList={modelList}
+          domainConfig={this.domain} data={dataInit} domainList={domainList} modelList={modelList}
           overlayerHide={overlayerHide} onConfirm={(data) => {
             postAssetsByModel(model, data, () => {
               this.requestSearch();
@@ -278,7 +288,7 @@ export class DeviceConfig extends Component {
         };
         overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup"
           title={this.props.intl.formatMessage({ id: 'sysOperation.lamp.control' })}
-          data={dataInit2} domainList={domainList} modelList={modelList}
+          domainConfig={this.domain} data={dataInit2} domainList={domainList} modelList={modelList}
           overlayerHide={overlayerHide} onConfirm={data => {
             updateAssetsByModel(model, data, (data) => {
               this.requestSearch();
