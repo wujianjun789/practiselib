@@ -15,7 +15,7 @@ import Immutable from 'immutable';
 import {getObjectByKeyObj, getIndexByKey, getProByKey, getIndexsByKey, spliceInArray, 
   getObjectByKey, getListKeyByKey, IsExitInArray3, getListByKey2} from '../../util/algorithm';
 import {getGroupListPlan, getNoGroupStrategy, delStrategy, delGroup, 
-  addStrategy, updateStrategy, updateGroup} from '../../api/plan';
+  addStrategy, updateStrategy, updateGroup, getPlanById} from '../../api/plan';
 import {getAssetsBaseById} from '../../api/asset';
 import {getWhiteListById} from '../../api/domain';
 import { Promise } from 'es6-promise';
@@ -112,7 +112,7 @@ class LatlngStrategy extends Component {
           if (parent.plans) {
             parent.plans.map(item => {
               item.hidden = parent.collapsed;
-              item.timeRange = item.start.split('T')[0] +' '+ this.formatIntl('mediaPublish.to') +' '+ item.end.split('T')[0];
+              item.timeRange = item.start.split('T')[0].replace(/-/g, '/') +' - '+ item.end.split('T')[0].replace(/-/g, '/');
               result.push(item);
             });
           }
@@ -121,9 +121,8 @@ class LatlngStrategy extends Component {
             if (item.name.indexOf(search.get('value')) > -1) {
               parent.collapsed = false;
               result.push(parent);
-
               item.hidden = parent.collapsed;
-              item.timeRange = item.start.split('T')[0] +' '+ this.formatIntl('mediaPublish.to') +' '+ item.end.split('T')[0];
+              item.timeRange = item.start.split('T')[0].replace(/-/g, '/') +' - '+ item.end.split('T')[0].replace(/-/g, '/');
               result.push(item);
             }
           });
@@ -329,7 +328,10 @@ class LatlngStrategy extends Component {
     }
 
     tableClick=(row) => {
-      this.updateSelectItem(row.toJS());
+      row.get('plans')?this.updateSelectItem(row.toJS()):getPlanById(row.get("id"),(res)=>{
+        res.key='plan'+res.id;
+        this.updateSelectItem(res);
+      })
     }
 
     updateSelectItem=(item) => {
@@ -414,7 +416,7 @@ class LatlngStrategy extends Component {
         selectItem.excuteTime = 0;
       }
       updateStrategy({id:selectItem.id, execution:selectItem.execution, excuteTime:selectItem.excuteTime,
-        excuteOffset:selectItem.excuteOffset}, this.requestSearch);
+        excuteOffset:selectItem.excuteOffset});
     }
 
     collapseClick=(id, key, data) => {
@@ -576,9 +578,9 @@ class LatlngStrategy extends Component {
                     <div className="form-group date-range">
                       <label title={this.formatIntl('app.date.range')}>{this.formatIntl('app.date.range')}</label>
                       <div className="input-container">
-                        <input type="text" className="form-control" value={selectItem.start} disabled="disabled"/>
+                        <input type="text" className="form-control" value={selectItem.start.split('T')[0].replace(/-/g, '/')} disabled="disabled"/>
                         <span>{this.formatIntl('mediaPublish.to')}</span>
-                        <input type="text" className="form-control" value={selectItem.end} disabled="disabled"/>
+                        <input type="text" className="form-control" value={selectItem.end.split('T')[0].replace(/-/g, '/')} disabled="disabled"/>
                       </div>
                     </div>
 
@@ -657,10 +659,11 @@ class LatlngStrategy extends Component {
                           title={this.formatIntl('app.strategy.select.devices')} id={selectItem.id} devicesId={selectItem.devices?selectItem.devices:[]}
                           selectedDevicesData={this.state.selectedDevices} overlayerHide={this.props.actions.overlayerHide} 
                           onConfirm={(data)=>{
+                            this.setState({selectItem:Object.assign({},selectItem,{devices:data})},()=>this.getDeviceData(data))
                             updateStrategy({
                               id:selectItem.id,
                               devices:data,
-                            }, this.requestSearch);
+                            });
                             this.props.actions.overlayerHide();
                           }}/>)
                       }}>{this.formatIntl('button.edit')}</button>                                   
