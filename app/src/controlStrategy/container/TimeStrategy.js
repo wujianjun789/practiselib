@@ -329,11 +329,11 @@ class TimeStrategy extends Component {
   }
 
   tableCopy=(row) => {
-    let keys = ['name',"level","start","end","excuteTime","devices","execution","retryNumber","retryInterval","groupId"]
-    let data = {type:0};
-    
+    let keys = ['name',"type","level","start","end","excuteTime","devices","execution","retryNumber","retryInterval","groupId"]
+    let data = {};
+    data.groupId = row.get('groupId')?row.get('groupId'):null;
     keys.map(key=>{
-      if(row.toJS().hasOwnProperty(key)) data[key]=row.get(key);
+      if(row.toJS().hasOwnProperty(key) && key != 'groupId') data[key]=row.get(key);
     })
 
     addStrategy(data, () => {
