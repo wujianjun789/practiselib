@@ -47,7 +47,6 @@ export default class CentralizedControllerPopup extends Component {
     // }
 
     if (id == 'domain') {
-      console.log(this.props.domainList);
       const {options} = this.props.domainList;
       let curIndex = e.target.selectedIndex;
 
