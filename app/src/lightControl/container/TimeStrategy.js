@@ -489,7 +489,7 @@ class TimeStrategy extends Component {
           </div>
           <div className="panel panel-default">
             <div
-              className="panel-heading"
+              className={"panel-heading "+(sidebarInfo.propertyCollapsed ? 'collapsed' : '')}
               role="presentation"
               onClick={() => {
                 !sidebarInfo.collapsed &&
@@ -654,7 +654,7 @@ class TimeStrategy extends Component {
               </div> */}
               <div className="panel panel-default strategy-info">
                 <div
-                  className="panel-heading"
+                  className={"panel-heading "+(sidebarInfo.parameterCollapsed ? 'collapsed' : '')}
                   role="presentation"
                   onClick={() => {
                     !sidebarInfo.collapsed &&
@@ -707,7 +707,7 @@ class TimeStrategy extends Component {
               </div>
               <div className="panel panel-default group-tast-record">
                 <div
-                  className="panel-heading"
+                  className={"panel-heading "+(sidebarInfo.recordCollapsed ? 'collapsed' : '')}
                   role="presentation"
                   onClick={() => {
                     !sidebarInfo.collapsed &&

@@ -535,7 +535,7 @@ class TimeStrategy extends Component {
           {
             !selectItem.id || selectItem.plans ?
               <div className="panel panel-default group-info">
-                <div className="panel-heading" role="presentation" 
+                <div className={"panel-heading "+(sidebarInfo.propertyCollapsed ? 'collapsed' : '')} role="presentation" 
                   onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed'); }}>
                   <span className="icon_select"></span>{this.formatIntl('app.select.group')}
                   <span className="icon icon_collapse pull-right"></span>
@@ -553,7 +553,7 @@ class TimeStrategy extends Component {
               :
               <div className="panel-strategy">
                 <div className="panel panel-default">
-                  <div className="panel-heading" role="presentation"
+                  <div className={"panel-heading "+(sidebarInfo.propertyCollapsed ? 'collapsed' : '')} role="presentation"
                     onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('propertyCollapsed'); }}>
                     <span className="icon_select"></span>
                     <p className="name" title={selectItem.name}>{selectItem.name}</p>
@@ -592,7 +592,7 @@ class TimeStrategy extends Component {
                   </div>
                 </div>
                 <div className="panel panel-default strategy-info">
-                  <div className="panel-heading" role="presentation" 
+                  <div className={"panel-heading "+(sidebarInfo.parameterCollapsed ? 'collapsed' : '')} role="presentation" 
                     onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('parameterCollapsed'); }}>
                     <span className="icon_control"></span>{this.formatIntl('app.strategy.property')}
                     <span className="icon icon_collapse pull-right"></span>                    
@@ -625,7 +625,7 @@ class TimeStrategy extends Component {
                   </div>
                 </div>
                 <div className="panel panel-default device-info">
-                  <div className="panel-heading" role="presentation"
+                  <div className={"panel-heading "+(sidebarInfo.devicesCollapsed ? 'collapsed' : '')} role="presentation"
                     onClick={() => { !sidebarInfo.collapsed && this.collapseHandler('devicesCollapsed'); }}>
                     <span className="icon_device_list"></span>{this.formatIntl('app.strategy.devices')}
                     <span className="icon icon_collapse pull-right"></span>               

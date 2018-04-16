@@ -333,7 +333,7 @@ export class Fault extends Component {
         >
           <div className="panel panel-default statistical-info">
             <div
-              className="panel-heading"
+              className={"panel-heading "+(infoCollapse ? 'collapsed' : '')}
               role="presentation"
               onClick={() => {
                 !collapse && this.collapseHandler('infoCollapse');
@@ -345,7 +345,7 @@ export class Fault extends Component {
               })}
               <span className="icon icon_collapse pull-right" />
             </div>
-            <div className={'panel-body' + (infoCollapse ? 'collapsed' : '')}>
+            <div className={'panel-body ' + (infoCollapse ? 'collapsed' : '')}>
               <div className="left">
                 <div id="alarm" className="circle" ref={this.drawChart} />
               </div>
