@@ -84,6 +84,7 @@ export default {
     //按钮
     ' ': ' ',
     'button.add': 'Add',
+    'button.handle': 'Handle',
     'button.edit': 'Edit',
     'button.delete': 'Delete',
     'button.confirm': 'Confirm',
@@ -342,14 +343,14 @@ export default {
     'lightManage.Statistics.totalEnergy': 'Total energy',
     'lightManage.Statistics.deviceState': 'Device status',
     'lightManage.Statistics.domain': 'Domain',
-    'lightManage.Statistics.deviceCount': 'Count',
-    'lightManage.Statistics.deviceOnlineRunning': 'Online',
-    'lightManage.Statistics.deviceOnlineError': 'Error',
+    'lightManage.Statistics.deviceCount': 'Total',
+    'lightManage.Statistics.deviceOnlineRunning': 'Normal',
+    'lightManage.Statistics.deviceOnlineError': 'Fault',
     'lightManage.Statistics.deviceOffline': 'Offline',
     'lightManage.Statistics.planState': 'Planning action status',
-    'lightManage.Statistics.planCount': 'Count',
+    'lightManage.Statistics.planCount': 'Total',
     'lightManage.Statistics.palnSuccess': 'Success',
-    'lightManage.Statistics.planFail': 'Fail',
+    'lightManage.Statistics.planFail': 'Failed',
     'lightManage.Statistics.lightOn': 'Lighting rate',
 
     //照明列表
