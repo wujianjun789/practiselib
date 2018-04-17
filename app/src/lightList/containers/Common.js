@@ -273,7 +273,7 @@ export default function common(DeviceOperation) {
                 }
               />
             </div>
-            <div className="panel panel-default panel-custom">
+            <div className={"panel panel-default panel-custom "+(operationCollapse?"operationCollapse":"")}>
               <div
                 className="panel-heading"
                 role="presentation"
@@ -284,11 +284,11 @@ export default function common(DeviceOperation) {
                   id: 'lightManage.list.operation'
                 })}
                 <span
-                  class={`icon pull-right glyphicon ${
+                  class={`icon pull-right glyphicon icon_collapse /*${
                     operationCollapse
                       ? 'glyphicon-chevron-down'
                       : 'glyphicon-chevron-up'
-                  }`}
+                  }*/`}
                 />
               </div>
               <div
@@ -302,7 +302,7 @@ export default function common(DeviceOperation) {
                 />
               </div>
             </div>
-            <div class="panel panel-default">
+            <div class={"panel panel-default "+(mapCollapse?"mapCollapse":"")}>
               <div
                 class="panel-heading"
                 role="presentation"
@@ -315,11 +315,11 @@ export default function common(DeviceOperation) {
                   })}
                 </span>
                 <span
-                  class={`icon pull-right glyphicon ${
+                  class={`icon pull-right glyphicon icon_collapse /*${
                     mapCollapse
                       ? 'glyphicon-chevron-down'
                       : 'glyphicon-chevron-up'
-                  }`}
+                  }*/`}
                 />
               </div>
               <div
