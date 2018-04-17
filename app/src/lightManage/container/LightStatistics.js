@@ -17,7 +17,8 @@ export class LightStatistics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      color1:['#4169E1', '#C0C0C0', '#FF6347'],
+      color1:['#FE929E', '#FF9F02', '#FE3E5B'],
+      // color1:['#4169E1', '#C0C0C0', '#FF6347'],
       // color1:['#00bcff', '#d3d8dd', '#ff5c68'],
       color2:['#3BCCFF', '#39A7FE'],
       color3:['#645FFF'],

@@ -170,7 +170,7 @@ export default function BarChart(data) {
       }
         break;
       case '3':
-        time = `${hours}${hoursintl}`;
+        time = hours%2==1?`${hours}${hoursintl}`:'';
         break;
       default:
         break;
