@@ -45,6 +45,10 @@ export default class Table extends Component {
         this.props.rowClick && this.props.rowClick(row);
     }
 
+    rowCopy(row) {
+        this.props.rowCopy && this.props.rowCopy(row);
+    }
+
     collapsedClick(rowKey){
         this.props.collapseClick && this.props.collapseClick(rowKey,this.props.className,this.props.data);
     }
@@ -91,6 +95,7 @@ export default class Table extends Component {
                                 }
                                 {
                                     isEdit && (row.get('id')!==0?<td className="edit">
+                                                {!row.get('plans') && <a className="btn" onClick={()=>keyField && this.rowCopy(row)}><span className="icon_copy"></span><span className="copy"><FormattedMessage id='button.copy'/></span></a>}                                    
                                                 <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.edit'/></span></a>
                                                 <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete'/></span></a>
                                             </td>

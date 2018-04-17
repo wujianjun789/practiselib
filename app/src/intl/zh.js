@@ -109,6 +109,7 @@ export default {
     'button.hangUp': '挂起',
     'button.rename': '重命名',
     'button.publish': '发布',
+    'button.copy': '复制',
 
     //模型名字翻译
     'ssads.name': '广告屏',
@@ -265,7 +266,7 @@ export default {
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
     'sysOperation.device.version': '设备版本',
-    'sysOperation.product.version': '产品版本',
+    'sysOperation.product.version': '版本',
     'sysOperation.hardware.version': '硬件版本',
     'sysOperation.software.version': '软件版本',
 

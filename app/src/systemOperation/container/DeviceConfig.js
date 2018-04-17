@@ -479,7 +479,7 @@ export class DeviceConfig extends Component {
             <span className="icon icon_collapse  pull-right"></span>              
           </div>
           <div className={'panel-body domain-property ' + (whiteListCollapse ? 'collapsed' : '')}>
-            <span className="domain-name">{selectDevice.whiteCount}{this.formatIntl('sysOperation.devices')}</span>
+            <span className="domain-name">{selectDevice.whiteCount+' '}{this.formatIntl('sysOperation.devices')}</span>
             <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={()=> this.domainHandler('sys-whitelist') }
               disabled={ data.size == 0 }>{this.formatIntl('button.edit')}
             </button>
