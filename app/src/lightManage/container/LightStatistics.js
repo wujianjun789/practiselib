@@ -369,7 +369,8 @@ export class LightStatistics extends Component {
         (1 - domainStatus.lightOnPercent) ? (1 - domainStatus.lightOnPercent) * 100 : 0,
         ];
         // console.log("data:", data);
-        this.drawChart(ref, data, color3);
+        let showText=true
+        this.drawChart(ref, data, color3,showText);
       } else {
         return;
       }
@@ -377,7 +378,7 @@ export class LightStatistics extends Component {
   }
 
 
-  drawChart(ref, data, color) {
+  drawChart(ref, data, color,showText) {
     if (ref.id == 'energyStatistics') {
       this.barchart = new BarChart({
         wrapper: ref,
@@ -397,6 +398,7 @@ export class LightStatistics extends Component {
         width: boxLeftwidth,
         height: '170',
         color:color,
+        showText:showText,
       });
       this.piechart && this.state.piechartList.push(this.piechart);
     }
