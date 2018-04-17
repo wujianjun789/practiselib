@@ -560,9 +560,14 @@ ul {
     margin-right: 12px;
     color: #646771;
 
-    font-size: 10px;
+    font-size: 8px;
+
+    line-height: 0;
 }
 
+.tree-list .tree-1 > li span.bottom{
+    transform: rotate(90deg);
+}
 .tree-list .tree-2{
     overflow: hidden;
 }
