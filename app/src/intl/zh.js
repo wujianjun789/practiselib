@@ -109,6 +109,7 @@ export default {
     'button.hangUp': '挂起',
     'button.rename': '重命名',
     'button.publish': '发布',
+    'button.copy': '复制',
 
     //模型名字翻译
     'ssads.name': '广告屏',
@@ -261,6 +262,7 @@ export default {
     'sysOperation.select': '选择列表文件路径',
     'sysOperation.cover': '覆盖已有设备',
     'sysOperation.input.asset': '请输入素材名称',
+    'sysOperation.input.device': '请输入设备名称',
     'sysOperation.select.sensor': '选择传感器：',
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
@@ -342,7 +344,7 @@ export default {
     'lightManage.Statistics.month': '月',
     'lightManage.Statistics.day': '日',
     'lightManage.Statistics.energy': '能耗图',
-    'lightManage.Statistics.totalEnergy': '设备总能耗图',
+    'lightManage.Statistics.totalEnergy': '总能耗',
     'lightManage.Statistics.deviceState': '设备状态',
     'lightManage.Statistics.domain': '域',
     'lightManage.Statistics.deviceCount': '总设备',

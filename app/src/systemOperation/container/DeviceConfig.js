@@ -439,14 +439,26 @@ export class DeviceConfig extends Component {
             {this.props.intl.formatMessage({ id: 'button.add' })}</button>
           <div className="btn-group">
             <button id="sys-maintenance" className="btn btn-gray dropdown-toggle"
-              data-toggle="dropdown">{this.props.intl.formatMessage({ id: 'button.handle' })}<span className="caret"></span>
+              // data-toggle="dropdown">{this.props.intl.formatMessage({ id: 'button.handle' })}<span className="caret"></span>
+              data-toggle="dropdown">. . .
             </button>
             <div className="dropdown-menu" role="menu">
               <span className="glyphicon glyphicon-triangle-top" id="iconbox"></span>
               <div className="listBox">
-                <span className="icon_import" title={this.props.intl.formatMessage({ id: 'button.import' })} onClick={this.importHandler}></span>
-                <span className="icon_upgrade2" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })} onClick={()=>this.deviceHandler('sys-upgrade')}></span>
-                <span className="icon_replace" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })} onClick={()=>this.deviceHandler('sys-replace')}></span>
+                <div className="span icon_import" title={this.props.intl.formatMessage({ id: 'button.import' })} onClick={this.importHandler}>
+                  <span>{this.props.intl.formatMessage({ id: 'button.import' })}</span>
+                </div>
+                <div className="line" ></div>
+                <div className="span icon_upgrade2" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })} onClick={()=>this.deviceHandler('sys-upgrade')}>
+                <span>{this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })}</span>
+                </div>
+                <div className="line" ></div>
+                {/* <button id="sys-maintenance" className="icon_replace btn btn-gray dropdown-toggle"
+                  data-toggle="dropdown">{this.props.intl.formatMessage({ id: 'button.handle' })}
+                </button> */}
+                <div className="span icon_replace" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })} onClick={()=>this.deviceHandler('sys-replace')}>
+                <span>{this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })}</span>
+                </div>
               </div>
             </div>
           </div>

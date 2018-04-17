@@ -151,18 +151,26 @@ export default function BarChart(data) {
         break;
       case '2':
         switch(day){
-          case 1:time = intlFormat({ en: '1st', zh: '1月' });
+          case 1:time = `${month}/${day}`;
           break;
-          case 2:time = intlFormat({ en: '2nd', zh: '2月' });
+          case 5:time = `${month}/${day}`;
           break;
-          case 3:time = intlFormat({ en: '3rd', zh: '3月' });
+          case 10:time = `${month}/${day}`;
+          break;
+          case 15:time = `${month}/${day}`;
+          break;
+          case 20:time = `${month}/${day}`;
+          break;
+          case 25:time = `${month}/${day}`;
+          break;
+          case 30:time = `${month}/${day}`;
           break;
           default:
-          time = `${day}${dayintl}`;
+          time ='';
       }
         break;
       case '3':
-        time = `${hours}${hoursintl}`;
+        time = hours%2==1?`${hours}${hoursintl}`:'';
         break;
       default:
         break;

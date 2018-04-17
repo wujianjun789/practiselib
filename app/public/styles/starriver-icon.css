@@ -265,3 +265,7 @@
   content: "\e930";
   color: #fff;
 }
+.icon_copy:before {
+  content: "\e942";
+  color: #808080;
+}

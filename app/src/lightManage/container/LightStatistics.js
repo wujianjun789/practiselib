@@ -17,7 +17,8 @@ export class LightStatistics extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      color1:['#4169E1', '#C0C0C0', '#FF6347'],
+      color1:['#FE929E', '#FF9F02', '#FE3E5B'],
+      // color1:['#4169E1', '#C0C0C0', '#FF6347'],
       // color1:['#00bcff', '#d3d8dd', '#ff5c68'],
       color2:['#3BCCFF', '#39A7FE'],
       color3:['#645FFF'],
@@ -369,7 +370,8 @@ export class LightStatistics extends Component {
         (1 - domainStatus.lightOnPercent) ? (1 - domainStatus.lightOnPercent) * 100 : 0,
         ];
         // console.log("data:", data);
-        this.drawChart(ref, data, color3);
+        let showText=true
+        this.drawChart(ref, data, color3,showText);
       } else {
         return;
       }
@@ -377,7 +379,7 @@ export class LightStatistics extends Component {
   }
 
 
-  drawChart(ref, data, color) {
+  drawChart(ref, data, color,showText) {
     if (ref.id == 'energyStatistics') {
       this.barchart = new BarChart({
         wrapper: ref,
@@ -397,6 +399,7 @@ export class LightStatistics extends Component {
         width: boxLeftwidth,
         height: '170',
         color:color,
+        showText:showText,
       });
       this.piechart && this.state.piechartList.push(this.piechart);
     }

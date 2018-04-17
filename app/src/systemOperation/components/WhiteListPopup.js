@@ -15,7 +15,7 @@ export default class WhiteListPopup extends Component {
     super(props);
     this.state = {
       whiteList: [],     /*白名单列表*/
-      search: {placeholder: 'sysOperation.input.asset', value: ''},
+      search: {placeholder: 'sysOperation.input.device', value: ''},
       assetsList: [],        /*可添加的设备列表*/
       activeIndex:-1,
     };

@@ -109,6 +109,7 @@ export default {
     'button.hangUp': 'Hang up',
     'button.rename': 'Rename',
     'button.publish': 'Publish',
+    'button.copy': 'Copy',
 
     //模型名字翻译
     'ssads.name': 'LED display',
@@ -259,6 +260,7 @@ export default {
     'sysOperation.select': 'Select the list file path',
     'sysOperation.cover': 'Cover existing devices',
     'sysOperation.input.asset': 'Please input asset name',
+    'sysOperation.input.device': 'Please input device name',
     'sysOperation.select.sensor': 'Select sensor：',
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
@@ -340,7 +342,7 @@ export default {
     'lightManage.Statistics.month': 'Month',
     'lightManage.Statistics.day': 'Day',
     'lightManage.Statistics.energy': 'Energy consumption',
-    'lightManage.Statistics.totalEnergy': 'Total energy',
+    'lightManage.Statistics.totalEnergy': 'Total',
     'lightManage.Statistics.deviceState': 'Device status',
     'lightManage.Statistics.domain': 'Domain',
     'lightManage.Statistics.deviceCount': 'Total',

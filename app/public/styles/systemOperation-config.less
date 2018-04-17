@@ -33,6 +33,11 @@
             // margin-left: 25px;
             border: 0;
             color: #fff;
+
+        }
+        #sys-maintenance{
+          min-width: 30px;
+          font-size: 7px;
         }
 
         button{
@@ -46,14 +51,16 @@
           .caret{
             margin-left: 4px;
           }
+
         }
         .dropdown-menu{
           min-width: 60px;
           // height: 40px;
           margin: 0px;
           padding: 0px;
-          left: -30px;
+          left: -53px;
           top: 40px;
+          border: 0px;
           .glyphicon {
               position: absolute;
               top: -11px;
@@ -61,15 +68,36 @@
             }
             .listBox{
               background-color: #495264;
+              width:70px;
+              height:90px;
               border-radius: 4px;
-              padding: 5px 10px;
+              // padding: 5px 10px;
+              position: absolute;
+              left: 18px;
               span{
+                margin-left: 5px
+              }
+              .span{
+                padding:7px;
+                padding-left: 10px;
+                // height:30px;
                 color: #fff;
-                font-size: 16px;
+                border-bottom: 1px;
+                font-size: 14px;
                 cursor: pointer;
-                &:nth-child(2){
-                  margin: 0 10px;
-                }
+                // &:nth-child(2){
+                //   // margin: 0 10px;
+                //   border-box: 1px;
+                //   color:rgb(255,255,255)
+                // // }
+                // &.icon_upgrade2{
+                //   padding:0px;
+                //   border: 10px;
+                // }
+              }
+              .line{
+                height:1px;
+                border-bottom:1px solid rgb(130, 130, 130);
               }
             }
         }
@@ -543,7 +571,7 @@
 }
 
 .import-popup {
-  width: 654px;
+  width: 510px;
   .modal-body{
     padding-bottom: 0;
     .row{
@@ -551,7 +579,7 @@
       font-size: 14px;
       color: #808080;
       .import-select{
-        width: 413px;
+        width: 320px;
         height: 32px;
         border: 1px solid #e6e6e6;
         background-color: #f2f2f2;
