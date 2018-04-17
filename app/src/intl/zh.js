@@ -31,6 +31,7 @@ export default {
     'sysOperation.selected.device': '选中设备',
     'app.device.operation': '设备操作',
 
+    'app.all':'所有',
     'app.type': '类别',
     'app.unit': '单位',
     'app.param': '当前参数',
@@ -311,10 +312,8 @@ export default {
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
     'sysOperation.alarm.param': '告警参数',
-    'sysOperation.fault.param': '故障参数',
-    'sysOperation.alarm.device.model': '设备模型',
-    'sysOperation.alarm.level': '级别',
-    'sysOperation.fault.level': '故障级别',
+    'sysOperation.device.type': '设备模型',
+    'sysOperation.alarm.level': '告警级别',
     'sysOperation.alarm.threshold': '阈值',
     'sysOperation.alarm.test.value': '检测值',
     'sysOperation.alarm.time': '告警时间',
@@ -323,15 +322,14 @@ export default {
     'sysOperation.fault.status': '故障状态',
     'sysOperation.alarm.person': '处理人',
     'sysOperation.alarm.handle.time': '处理时间',
-    'sysOperation.fault.id': '故障编号',
 
-    'sysOperation.statistical.info': '统计信息',
+    'sysOperation.statistical.info': '统计',
     'sysOperation.fault.statistical.info': '故障统计信息',
 
-    'sysOperation.count.deadly': '致命数',
-    'sysOperation.count.serious': '严重数',
-    'sysOperation.count.general': '一般数',
-    'sysOperation.count.hint': '提示数',
+    'sysOperation.fatal': '致命',
+    'sysOperation.serious': '严重',
+    'sysOperation.common': '一般',
+    'sysOperation.prompt': '提示',
     'sysOperation.noCount': '未读取',
 
     // 照明统计

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import '../../public/styles/table.less';
 import {FormattedMessage} from 'react-intl';
+import {trimString} from '../util/string';
 
 /**
  * Table 组件
@@ -69,7 +70,8 @@ export default class Table2 extends Component {
                         </th>
                         {
                             columns.map((item, index)=> {
-                                return <th key={index}><FormattedMessage id={item.title}/></th>
+                                let title = trimString(item.title)
+                                return <th key={index}>{title?<FormattedMessage id={title}/>:''}</th>
                             })
                         }
                         {
