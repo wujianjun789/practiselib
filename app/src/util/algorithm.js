@@ -399,3 +399,33 @@ export function getListObjectByKey(list, key) {
 
     return newList;
 }
+
+/**
+ * 函数节流方法
+ * @param Function fn 延时调用函数
+ * @param Number delay 延迟多长时间
+ * @param Number atleast 至少多长时间触发一次
+ * @return Function 延迟执行的方法
+ */
+export function throttle(fn, delay, atleast) {
+    let timer = null;
+    let previous = null;
+
+    return function (param) {
+        var now = +new Date().getTime();
+
+        if ( !previous ) previous = now;
+        if ( atleast && now - previous > atleast ) {
+            fn(param);
+            // 重置上一次开始时间为本次结束时间
+            previous = now;
+            clearTimeout(timer);
+        } else {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                fn(param);
+                previous = null;
+            }, delay);
+        }
+    }
+};
