@@ -262,6 +262,7 @@ export default {
     'sysOperation.select': '选择列表文件路径',
     'sysOperation.cover': '覆盖已有设备',
     'sysOperation.input.asset': '请输入素材名称',
+    'sysOperation.input.device': '请输入设备名称',
     'sysOperation.select.sensor': '选择传感器：',
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
