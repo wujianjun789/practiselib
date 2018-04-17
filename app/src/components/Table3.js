@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import '../../public/styles/table.less';
-import Collapse from 'antd/lib/collapse/Collapse';
 /**
  * Table 组件
  * keyField:string 指定key

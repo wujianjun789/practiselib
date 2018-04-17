@@ -5,8 +5,8 @@ import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import 'antd/lib/date-picker/style';
-import 'antd/lib/checkbox/style';
+import 'antd/lib/date-picker/style/css';
+import 'antd/lib/checkbox/style/css';
 import '../../../public/styles/mediaPublish-playList.less';
 
 import HeadBar from '../../components/HeadBar';
