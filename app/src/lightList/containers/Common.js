@@ -16,6 +16,7 @@ import {
 import { getDeviceTypeByModel } from '../../util/index';
 import Immutable from 'immutable';
 
+
 export default function common(DeviceOperation) {
   class Common extends React.Component {
     state = {
@@ -124,7 +125,7 @@ export default function common(DeviceOperation) {
       let count = 0;
       let newList = [];
       list.map((item, index) => {
-        getDeviceStatusById(item.id, res => {
+        getDeviceStatusById(this.model,item.id, this.state.currentDomain.id,res => {
           count++;
           for (let i of Object.keys(res.status)) {
             item[i] = res.status[i];

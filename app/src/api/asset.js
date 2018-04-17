@@ -626,9 +626,15 @@ export const getDeviceStatusByModelAndId = (model, id) => cb => {
     }
   );
 };
-export const getDeviceStatusById = (id, cb) => {
+export const getDeviceStatusById = (model,id,domainId, cb) => {
+  let params=JSON.stringify({
+    where:{
+      model,
+      domain_id:domainId
+    }
+  })
   httpRequest(
-    `${HOST_IP}/statuses/${id}`,
+    `${HOST_IP}/statuses/${id}?filter=`+encodeURIComponent(params),
     {
       headers: getHttpHeader(),
       method: 'GET'
