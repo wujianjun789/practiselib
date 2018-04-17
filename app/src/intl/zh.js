@@ -342,7 +342,7 @@ export default {
     'lightManage.Statistics.month': '月',
     'lightManage.Statistics.day': '日',
     'lightManage.Statistics.energy': '能耗图',
-    'lightManage.Statistics.totalEnergy': '设备总能耗图',
+    'lightManage.Statistics.totalEnergy': '总能耗',
     'lightManage.Statistics.deviceState': '设备状态',
     'lightManage.Statistics.domain': '域',
     'lightManage.Statistics.deviceCount': '总设备',

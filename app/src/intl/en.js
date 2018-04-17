@@ -340,7 +340,7 @@ export default {
     'lightManage.Statistics.month': 'Month',
     'lightManage.Statistics.day': 'Day',
     'lightManage.Statistics.energy': 'Energy consumption',
-    'lightManage.Statistics.totalEnergy': 'Total energy',
+    'lightManage.Statistics.totalEnergy': 'Total',
     'lightManage.Statistics.deviceState': 'Device status',
     'lightManage.Statistics.domain': 'Domain',
     'lightManage.Statistics.deviceCount': 'Total',
