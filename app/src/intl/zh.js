@@ -2,8 +2,8 @@ export default {
   locale: 'zh',
   messages: {
     //公共
-    name: '名称',
-    id: '编号',
+    'name': '名称',
+    'id': '编号',
 
     'app.year': '年',
     'app.month': '月',
@@ -37,7 +37,6 @@ export default {
     'app.set.param': '设置参数',
 
     'app.input.minute': '输入分钟数',
-    '': '',
 
     'app.timetable': '时间表',
     'app.sensor': '传感器',
@@ -83,7 +82,6 @@ export default {
     'app.work.state': '工作状态',
 
     //按钮
-    ' ': ' ',
     'button.add': '添加',
     'button.handle': '操作',
     'button.edit': '编辑',
@@ -118,7 +116,7 @@ export default {
 
     //用户中心
     'update.password': '密码',
-    exit: '注销',
+    'exit': '注销',
     'sure.exit': '确认退出？',
     'new.password': '新密码',
     'old.password': '旧密码',
@@ -140,8 +138,9 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    illegal: '不合法',
-    deviceNumIllegal: '输入的设备编号不合法！',
+    'illegal': '不合法',
+    'illegalDeviceId':'请输入16位字符',
+    'deviceNumIllegal': '输入的设备编号不合法！',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',

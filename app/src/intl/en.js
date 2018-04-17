@@ -2,8 +2,8 @@ export default {
   locale: 'en',
   messages: {
     //公共
-    name: 'Name',
-    id: 'Id',
+    'name': 'Name',
+    'id': 'Id',
 
     'app.year': 'year',
     'app.month': 'month',
@@ -36,7 +36,6 @@ export default {
     'app.set.param': 'set param',
 
     'app.input.minute': 'input minute',
-    '': '',
 
     'app.timetable': 'Schedule',
     'app.sensor': 'Sensor',
@@ -82,7 +81,6 @@ export default {
     'app.work.state': 'work state',
 
     //按钮
-    ' ': ' ',
     'button.add': 'Add',
     'button.handle': 'Handle',
     'button.edit': 'Edit',
@@ -118,7 +116,7 @@ export default {
 
     //用户中心
     'update.password': 'Password',
-    exit: 'Sign out',
+    'exit': 'Sign out',
     'sure.exit': 'Are you sure to exit？',
     'new.password': 'New password',
     'old.password': 'Old password',
@@ -140,8 +138,9 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    illegal: 'Illegal',
-    deviceNumIllegal: 'Device num illegal !',
+    'illegal': 'Illegal',
+    'illegalDeviceId':'Please enter 16 characters',
+    'deviceNumIllegal': 'Device num illegal !',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',

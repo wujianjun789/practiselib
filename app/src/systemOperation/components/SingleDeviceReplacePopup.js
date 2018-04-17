@@ -12,7 +12,7 @@ import { getObjectByKeyObj } from '../../util/algorithm';
 import { FormattedMessage, FormattedDate } from 'react-intl';
 import SearchText from '../../components/SearchText';
 import { intlFormat } from '../../util/index';
-import { MACValid } from '../../util/index';
+import { MACValid ,checkDeviceId} from '../../util/index';
 
 
 export default class SingleDeviceReplacePopup extends Component {
@@ -37,7 +37,7 @@ export default class SingleDeviceReplacePopup extends Component {
 
     onChange(e){
         let {search} = this.state;
-        let value = e.target.value;
+        let value=checkDeviceId(e.target.value,search.value)
         let prompt = false;
         prompt = !MACValid(value);
         search = Object.assign({},{...search},{value:value});

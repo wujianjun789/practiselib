@@ -4,15 +4,32 @@ import PanelFooter from '../../components/PanelFooter';
 import Select from '../../components/Select.1';
 import MapView from '../../components/MapView';
 import PropTypes from 'prop-types';
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-import { Name2Valid, latlngValid, lngValid, latValid, MACValid } from '../../util/index';
+import {
+  Name2Valid,
+  latlngValid,
+  lngValid,
+  latValid,
+  MACValid,
+  checkDeviceId
+} from '../../util/index';
+
 import lodash from 'lodash';
 
 export default class CentralizedControllerPopup extends Component {
   constructor(props) {
     super(props);
-    const {id = '', name = '', modelId = '', model = '', domainId = '', domain = '', lng = 0, lat = 0} = props.data;
+    const {
+      id = '',
+      name = '',
+      modelId = '',
+      model = '',
+      domainId = '',
+      domain = '',
+      lng = 0,
+      lat = 0
+    } = props.data;
     this.state = {
       id: id,
       name: name,
@@ -26,8 +43,8 @@ export default class CentralizedControllerPopup extends Component {
         lng: false,
         lat: false,
         name: false,
-        id: false,
-      },
+        id: false
+      }
     };
     this.domain = this.props.domainConfig;
 
@@ -47,15 +64,17 @@ export default class CentralizedControllerPopup extends Component {
     // }
 
     if (id == 'domain') {
-      const {options} = this.props.domainList;
+      const { options } = this.props.domainList;
       let curIndex = e.target.selectedIndex;
 
       const domain = options[curIndex];
-      const domainConfig = lodash.find(this.domain, doma=>{ return doma.id == domain.level })
-      const zoom = domainConfig?domainConfig.zoom:null;
+      const domainConfig = lodash.find(this.domain, doma => {
+        return doma.id == domain.level;
+      });
+      const zoom = domainConfig ? domainConfig.zoom : null;
 
-      let data = {[id]:domain.id, zoom:zoom};
-      if(domain.geoPoint){
+      let data = { [id]: domain.id, zoom: zoom };
+      if (domain.geoPoint) {
         data = Object.assign({}, data, domain.geoPoint);
       }
 
@@ -79,7 +98,7 @@ export default class CentralizedControllerPopup extends Component {
       newValue = value; //过滤非法数据
       prompt = !Name2Valid(newValue); //判定输入数量
     } else if (id == 'id') {
-      newValue = value;
+      newValue = checkDeviceId(value, this.state.id);
       prompt = !MACValid(newValue);
     } else {
       newValue = value;
@@ -88,27 +107,36 @@ export default class CentralizedControllerPopup extends Component {
     this.setState({
       [id]: newValue,
       prompt: Object.assign({}, this.state.prompt, {
-        [id]: prompt,
-      }),
+        [id]: prompt
+      })
     });
-
   }
 
   renderHtmlForModel() {
     // if (this.props.model === "screen") {
     //     return null
     // }
-    return <div className="form-group clearfix">
-      <label htmlFor="model" className="fixed-width-left control-label">
-        <FormattedMessage id="sysOperation.type"/>：</label>
-      <div className="fixed-width-right">
-        <Select id="model" className="form-control" titleField={ this.props.modelList.titleField }
-          valueField={ this.props.modelList.valueField } options={ this.props.modelList.options }
-          value={ this.state.model } onChange={ this.onChange } 
-          disabled={!!(this.props.model === 'xes' && this.props.popId == 'edit')}/>
+    return (
+      <div className="form-group clearfix">
+        <label htmlFor="model" className="fixed-width-left control-label">
+          <FormattedMessage id="sysOperation.type" />：
+        </label>
+        <div className="fixed-width-right">
+          <Select
+            id="model"
+            className="form-control"
+            titleField={this.props.modelList.titleField}
+            valueField={this.props.modelList.valueField}
+            options={this.props.modelList.options}
+            value={this.state.model}
+            onChange={this.onChange}
+            disabled={
+              !!(this.props.model === 'xes' && this.props.popId == 'edit')
+            }
+          />
+        </div>
       </div>
-    </div>;
-
+    );
   }
 
   onCancel() {
@@ -124,68 +152,175 @@ export default class CentralizedControllerPopup extends Component {
     let obj = {};
     let prompt = {};
     if (data.zoom) {
-      obj = Object.assign({}, {zoom:data.zoom});
+      obj = Object.assign({}, { zoom: data.zoom });
     }
 
     if (data.latlng) {
-      obj = Object.assign({}, obj, {lng:data.latlng.lng}, {lat:data.latlng.lat});
-      prompt = Object.assign({}, {lng:false}, {lat:false});
+      obj = Object.assign(
+        {},
+        obj,
+        { lng: data.latlng.lng },
+        { lat: data.latlng.lat }
+      );
+      prompt = Object.assign({}, { lng: false }, { lat: false });
     }
-    this.setState(Object.assign({}, this.state, obj, {prompt: Object.assign({}, this.state.prompt, prompt)}));
+    this.setState(
+      Object.assign({}, this.state, obj, {
+        prompt: Object.assign({}, this.state.prompt, prompt)
+      })
+    );
   }
 
   render() {
-    const {className, title, domainList, popId} = this.props;
-    const {id, name, domain, zoom, lng, lat, prompt} = this.state;
-    let valid = prompt.id || prompt.name || !domainList || !domainList.options.length || prompt.lng || prompt.lat || !id || !name || !lng || !lat;
-    const footer = <PanelFooter funcNames={ ['onCancel', 'onConfirm'] } btnTitles={['button.cancel', 'button.confirm']} btnClassName={ ['btn-default', 'btn-primary'] } btnDisabled={ [false, valid] } onCancel={ this.onCancel }
-      onConfirm={ this.onConfirm } />;
+    const { className, title, domainList, popId } = this.props;
+    const { id, name, domain, zoom, lng, lat, prompt } = this.state;
+    let valid =
+      prompt.id ||
+      prompt.name ||
+      !domainList ||
+      !domainList.options.length ||
+      prompt.lng ||
+      prompt.lat ||
+      !id ||
+      !name ||
+      !lng ||
+      !lat;
+    const footer = (
+      <PanelFooter
+        funcNames={['onCancel', 'onConfirm']}
+        btnTitles={['button.cancel', 'button.confirm']}
+        btnClassName={['btn-default', 'btn-primary']}
+        btnDisabled={[false, valid]}
+        onCancel={this.onCancel}
+        onConfirm={this.onConfirm}
+      />
+    );
     return (
-      <div className={ className }>
-        <Panel title={ title } closeBtn={ true } closeClick={ this.onCancel }>
+      <div className={className}>
+        <Panel title={title} closeBtn={true} closeClick={this.onCancel}>
           <div className="popup-left">
             <div className="form-group clearfix">
-              <label htmlFor="id" className="fixed-width-left control-label"><FormattedMessage id="sysOperation.id"/>：</label>
+              <label htmlFor="id" className="fixed-width-left control-label">
+                <FormattedMessage id="sysOperation.id" />：
+              </label>
               <div className="fixed-width-right">
-                <input type="text" className={ 'form-control ' } id="id" placeholder="id" value={ id } maxLength={ 16 } onChange={ this.onChange } disabled={ popId == 'edit' }/>
-                <span className={ prompt.id ? 'prompt ' : 'prompt hidden' }><FormattedMessage id="illegal"/></span>
+                <input
+                  type="text"
+                  className={'form-control '}
+                  id="id"
+                  placeholder="id"
+                  value={id}
+                  maxLength={16}
+                  onChange={this.onChange}
+                  disabled={popId == 'edit'}
+                />
+                <span className={prompt.id ? 'prompt ' : 'prompt hidden'}>
+                  <FormattedMessage id="illegalDeviceId" />
+                </span>
               </div>
             </div>
             <div className="form-group clearfix">
-              <label htmlFor="name" className="fixed-width-left control-label"><FormattedMessage id="name"/>：</label>
+              <label htmlFor="name" className="fixed-width-left control-label">
+                <FormattedMessage id="name" />：
+              </label>
               <div className="fixed-width-right">
-                <input type="text" className={ 'form-control ' } id="name" placeholder="name" value={ name } maxLength={ 16 } onChange={ this.onChange }/>
-                <span className={ prompt.name ? 'prompt ' : 'prompt hidden' }><FormattedMessage id="illegal"/></span>
+                <input
+                  type="text"
+                  className={'form-control '}
+                  id="name"
+                  placeholder="name"
+                  value={name}
+                  maxLength={16}
+                  onChange={this.onChange}
+                />
+                <span className={prompt.name ? 'prompt ' : 'prompt hidden'}>
+                  <FormattedMessage id="illegal" />
+                </span>
               </div>
             </div>
-            { this.renderHtmlForModel() }
+            {this.renderHtmlForModel()}
             <div className="form-group clearfix">
-              <label htmlFor="domain" className="fixed-width-left control-label"><FormattedMessage id="sysOperation.domain"/>：</label>
+              <label
+                htmlFor="domain"
+                className="fixed-width-left control-label"
+              >
+                <FormattedMessage id="sysOperation.domain" />：
+              </label>
               <div className="fixed-width-right">
-                <Select id="domain" className="form-control" titleField={ domainList.titleField } valueField={ domainList.valueField } options={ domainList.options } value={ domain }
-                  onChange={ this.onChange } />
-                <span className={ !domainList || !domainList.options || domainList.options.length == 0 ? 'prompt' : 'prompt hidden' }><FormattedMessage id="add.Domain"/></span>
+                <Select
+                  id="domain"
+                  className="form-control"
+                  titleField={domainList.titleField}
+                  valueField={domainList.valueField}
+                  options={domainList.options}
+                  value={domain}
+                  onChange={this.onChange}
+                />
+                <span
+                  className={
+                    !domainList ||
+                    !domainList.options ||
+                    domainList.options.length == 0
+                      ? 'prompt'
+                      : 'prompt hidden'
+                  }
+                >
+                  <FormattedMessage id="add.Domain" />
+                </span>
               </div>
             </div>
             <div className="form-group clearfix">
-              <label htmlFor="lng" className="fixed-width-left control-label"><FormattedMessage id="map.lng"/>：</label>
+              <label htmlFor="lng" className="fixed-width-left control-label">
+                <FormattedMessage id="map.lng" />：
+              </label>
               <div className="fixed-width-right">
-                <input type="text" className={ 'form-control ' } id="lng" placeholder="lng" value={ lng } onChange={ this.onChange } />
-                <span className={ prompt.lng ? 'prompt ' : 'prompt hidden' }><FormattedMessage id="illegal"/></span>
+                <input
+                  type="text"
+                  className={'form-control '}
+                  id="lng"
+                  placeholder="lng"
+                  value={lng}
+                  onChange={this.onChange}
+                />
+                <span className={prompt.lng ? 'prompt ' : 'prompt hidden'}>
+                  <FormattedMessage id="illegal" />
+                </span>
               </div>
             </div>
             <div className="form-group clearfix">
-              <label htmlFor="lat" className="fixed-width-left control-label"><FormattedMessage id="map.lat"/>：</label>
+              <label htmlFor="lat" className="fixed-width-left control-label">
+                <FormattedMessage id="map.lat" />：
+              </label>
               <div className="fixed-width-right">
-                <input type="text" className={ 'form-control ' } id="lat" placeholder="lat" value={ lat } onChange={ this.onChange } />
-                <span className={ prompt.lat ? 'prompt ' : 'prompt hidden' }><FormattedMessage id="illegal"/></span>
+                <input
+                  type="text"
+                  className={'form-control '}
+                  id="lat"
+                  placeholder="lat"
+                  value={lat}
+                  onChange={this.onChange}
+                />
+                <span className={prompt.lat ? 'prompt ' : 'prompt hidden'}>
+                  <FormattedMessage id="illegal" />
+                </span>
               </div>
             </div>
-            { footer }
+            {footer}
           </div>
           <div className="popup-map">
-            <MapView mapIcon={true} option={ { mapZoom: false, zoom:zoom } } mapData={ { id: 'CentralizedPopup', latlng: { lng: lng, lat: lat },
-              position: [/*{ "device_id": id, "device_type": "DEVICE", lng: lng, lat: lat }*/], data: [{ id: id, name: name }] } } mapCallFun={ { mapDragendHandler: this.mapDragend } } />
+            <MapView
+              mapIcon={true}
+              option={{ mapZoom: false, zoom: zoom }}
+              mapData={{
+                id: 'CentralizedPopup',
+                latlng: { lng: lng, lat: lat },
+                position: [
+                  /*{ "device_id": id, "device_type": "DEVICE", lng: lng, lat: lat }*/
+                ],
+                data: [{ id: id, name: name }]
+              }}
+              mapCallFun={{ mapDragendHandler: this.mapDragend }}
+            />
           </div>
         </Panel>
       </div>
