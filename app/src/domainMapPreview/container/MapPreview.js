@@ -196,6 +196,7 @@ export class MapPreview extends Component{
                 const domainConfig = lodash.find(this.domainConfig, domain=>{ return domain.id === item.level});
                 if(domainConfig){
                     this.map.zoom = domainConfig.zoom;
+                    this.domainCurLevel = item.level;
                 }
                 this.mounted && this.setState({panLatlng:item.geoPoint});
                 break;
