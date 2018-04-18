@@ -3,7 +3,6 @@ import common from './Common';
 import Select from '../../components/Select.1';
 import { injectIntl } from 'react-intl';
 import { message } from 'antd';
-import 'antd/lib/message/style/css';
 import { updateAssetsRpcById } from '../../api/asset';
 import columns from '../TableData/ssgwTable.json';
 
