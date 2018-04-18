@@ -6,9 +6,7 @@ import Table from '../../../components/Table';
 import Page from '../../../components/Page';
 import Select from '../../component/select';
 import Chart from '../../component/chart';
-import { DatePicker, message } from 'antd';
-import 'antd/lib/message/style/css'
-import Modal from 'antd/lib/modal';
+import { DatePicker, message,Modal } from 'antd';
 import '../../../../public/styles/antd-modal.less';
 import { getYesterday, getToday } from '../../../util/time';
 import { getChildDomainList } from '../../../api/domain';

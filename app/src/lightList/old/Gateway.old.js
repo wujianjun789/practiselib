@@ -19,7 +19,6 @@ import {
 } from '../../api/asset';
 import { getMomentDate, momentDateFormat } from '../../util/time';
 import { message } from 'antd';
-import 'antd/lib/message/style/css';
 import { getDeviceTypeByModel } from '../../util/index';
 import { injectIntl } from 'react-intl';
 class Gateway extends Component {
