@@ -21,7 +21,6 @@ import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
 import { getDeviceTypeByModel } from '../../util/index';
 import { message } from 'antd';
-import 'antd/lib/message/style/css';
 import { injectIntl } from 'react-intl';
 class SingleLampCon extends Component {
   constructor(props) {

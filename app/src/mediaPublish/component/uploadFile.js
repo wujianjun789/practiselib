@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Modal from 'antd/lib/modal'
+import {Modal} from 'antd'
 import '../../../public/styles/antd-modal.less'
 import {FormattedMessage,injectIntl, FormattedDate} from 'react-intl';
 

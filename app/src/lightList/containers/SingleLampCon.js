@@ -5,7 +5,6 @@ import { injectIntl } from 'react-intl';
 import { getLightLevelConfig } from '../../util/network';
 import { updateAssetsRpcById } from '../../api/asset';
 import { message } from 'antd';
-import 'antd/lib/message/style/css';
 
 import columns from '../TableData/ssslcTable.json';
 class DeviceOperation extends React.Component {

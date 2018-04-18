@@ -20,7 +20,6 @@ import { overlayerShow, overlayerHide } from '../../common/actions/overlayer';
 import { getModelTypeByModel, updateModelTypeByModel } from '../../api/asset';
 import { addNotify } from '../../common/actions/notifyPopup';
 import NotifyPopup from '../../common/containers/NotifyPopup';
-import { message } from 'antd';
 
 export class Gateway extends Component {
   constructor(props) {
