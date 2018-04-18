@@ -156,7 +156,6 @@ export class MapPreview extends Component{
                 // console.log('responseTimeout:',this.responseTimeout);
                 // this.responseTimeout && clearTimeout(this.responseTimeout);
                 // this.responseTimeout = setTimeout(()=>{
-
                 timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList},()=>{
                     let deviceLen = [];
                     const locale = this.props.intl;
@@ -188,6 +187,7 @@ export class MapPreview extends Component{
     }
 
     searchSubmit(){
+        console.log('searchSubmit:');
         const {domainList, search} = this.state;
         for(let i=0;i<domainList.length;i++){
             let item = domainList[i];

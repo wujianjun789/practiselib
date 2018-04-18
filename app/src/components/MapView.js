@@ -40,7 +40,8 @@ export default class MapView extends Component {
           && this.preMap.latlng
           && L.latLng(this.preMap.latlng)
           && this.preMap.zoom === option.zoom
-          && L.latLng(this.preMap.latlng).equals(L.latLng(mapData.latlng))){
+          && L.latLng(this.preMap.latlng).equals(L.latLng(mapData.latlng))
+          && lodash.isEqual(this.preMap.position, mapData.position)){
             return false;
         }
 
@@ -69,7 +70,8 @@ export default class MapView extends Component {
         const {option, mapData} = this.props;
         this.preMap = {
             zoom:option.zoom,
-            latlng:mapData.latlng
+            latlng:mapData.latlng,
+            position: mapData.position
         };
     }
 
@@ -111,7 +113,7 @@ export default class MapView extends Component {
                 this.timeout && clearTimeout(this.timeout);
                 this.timeout = setTimeout(()=>{
                     this.state.map[mapData.id].updateMapDevice(mapData.position, deviceList, markerCallFun)
-                }, 300)
+                }, 33)
             }
         }
     }
