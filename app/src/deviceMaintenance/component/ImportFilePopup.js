@@ -29,14 +29,12 @@ export default class ImportFilePopup extends Component {
         // console.log("显示被导入的文件名");
         if (e.target.value) {
             this.setState({ placeholder:e.target.value, replaceSuccess: true });
-            // alert("导入成功")
         } else {
-            // alert("导入失败")
         }
     }
 
     onClick() {
-        console.log('导入文件');
+        // console.log('导入文件');
     }
 
     onCancel() {

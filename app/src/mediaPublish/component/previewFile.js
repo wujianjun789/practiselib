@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import {Modal} from 'antd'
+import {Modal,message} from 'antd'
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -26,7 +26,7 @@ class PreviewFile extends Component {
         }
         const isLt100M = file.size / 1024 / 1024 < 100;
         if (!isLt100M) {
-            alert('文件大小超过限制(100M)');
+            message.info('文件大小超过限制(100M)');
             return;
         }
         if (/^image\/.+$/.test(file.type)) {
@@ -54,7 +54,7 @@ class PreviewFile extends Component {
                 this.setState({ name: file.name, path: file.name, url: null, show: show, data: file, type: 'text' })
             }
         } else {
-            alert('The file format is not supported');
+            message.info('The file format is not supported');
             return;
         }
     }
