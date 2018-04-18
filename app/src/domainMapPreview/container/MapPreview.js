@@ -193,6 +193,10 @@ export class MapPreview extends Component{
             let item = domainList[i];
             if(!search.value || item.name.indexOf(search.value)>-1){
                 this.map.center = item.geoPoint;
+                const domainConfig = lodash.find(this.domainConfig, domain=>{ return domain.id === item.level});
+                if(domainConfig){
+                    this.map.zoom = domainConfig.zoom;
+                }
                 this.mounted && this.setState({panLatlng:item.geoPoint});
                 break;
             }
