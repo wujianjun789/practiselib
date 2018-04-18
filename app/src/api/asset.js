@@ -506,15 +506,7 @@ export function getAssetsByDomainLevelWithCenter(
   );
 }
 
-export function getSearchAssetsByDomainWithCenter(
-  domain,
-  map,
-  model,
-  name,
-  offset,
-  limit,
-  cb
-) {
+export function getSearchAssetsByDomainWithCenter(domain, map, model, name, offset, limit, cb) {
   const headers = getHttpHeader();
   let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
   if (domain.level == 1) {
@@ -542,13 +534,7 @@ export function getSearchAssetsByDomainWithCenter(
   );
 }
 
-export function getSearchAssetCountByDomainWithCenter(
-  domain,
-  map,
-  model,
-  name,
-  cb
-) {
+export function getSearchAssetCountByDomainWithCenter(domain, map, model, name, cb) {
   const headers = getHttpHeader();
   let nearParam = { maxDistance: map.distance / 1000, unit: 'kilometers' };
   if (domain.level == 1) {
@@ -558,32 +544,23 @@ export function getSearchAssetCountByDomainWithCenter(
   const param = {
     geoPoint: Object.assign({}, { near: map.center }, nearParam)
   };
-  let paramStr = JSON.stringify(
-    Object.assign({}, param, getSearchParam(domain.id, model, name))
-  );
+  let paramStr = JSON.stringify({
+    where: Object.assign({}, param, getSearchParam(domain.id, model, name))
+  });
   httpRequest(
-    HOST_IP + '/assets/count?where=' + encodeURIComponent(paramStr),
+    HOST_IP + '/assets?filter=' + encodeURIComponent(paramStr),
     {
       headers: headers,
       method: 'GET'
     },
     response => {
-      cb && cb(response);
+      cb && cb({count:response?response.length:0});
     }
   );
 }
 
 //获取故障、告警列表
-export function getFaultOrAlertList(
-  model,
-  domainId,
-  level,
-  start,
-  end,
-  offset,
-  limit,
-  cb
-) {
+export function getFaultOrAlertList(model, domainId, level, start, end, offset, limit, cb) {
   const _querystring = JSON.stringify({
     where: {
       domain_id: domainId,
@@ -626,9 +603,15 @@ export const getDeviceStatusByModelAndId = (model, id) => cb => {
     }
   );
 };
-export const getDeviceStatusById = (id, cb) => {
+export const getDeviceStatusById = (model,id,domainId, cb) => {
+  let params=JSON.stringify({
+    where:{
+      model,
+      domain_id:domainId
+    }
+  })
   httpRequest(
-    `${HOST_IP}/statuses/${id}`,
+    `${HOST_IP}/statuses/${id}?filter=`+encodeURIComponent(params),
     {
       headers: getHttpHeader(),
       method: 'GET'

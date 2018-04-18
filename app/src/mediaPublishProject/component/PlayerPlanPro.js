@@ -240,7 +240,7 @@ class PlayerPlanPro extends PureComponent {
           </div>
           <div className="form-group pull-right endDate">
             <label className="control-label"
-              htmlFor={property.endDate.key}>{property.endDate.title}</label>
+              htmlFor={property.endDate.key}>{/*property.endDate.title*/}-</label>
             <div className="input-container input-w-2">
               <DatePicker id="endDate" format="YYYY/MM/DD" placeholder="" style={{ width: '85px' }}
                 defaultValue={property.endDate.value} value={property.endDate.value} onChange={value => this.dateChange('endDate', value)} />
@@ -253,16 +253,16 @@ class PlayerPlanPro extends PureComponent {
             <label className="control-label"
               htmlFor={property.startTime.key}>{property.startTime.title}</label>
             <div className="input-container input-w-2">
-              <TimePicker size="large" placeholder={property.startTime.placeholder}  style={{ width: '85px' }}
+              <TimePicker  placeholder={property.startTime.placeholder}  style={{ width: '85px' }}
                 onChange={value => this.dateChange('startTime', value)} defaultValue={property.startTime.value} value={property.startTime.value} />
               <div className={prompt.startTime ? 'prompt ' : 'prompt hidden'}><FormattedMessage id="mediaPublish.check"/></div>
             </div>
           </div>
           <div className="form-group pull-right endTime">
             <label className="control-label"
-              htmlFor={property.endTime.key}>{property.endTime.title}</label>
+              htmlFor={property.endTime.key}>{/*property.endTime.title*/}-</label>
             <div className="input-container input-w-2">
-              <TimePicker  size="large" placeholder={property.endTime.placeholder} style={{ width: '85px' }}
+              <TimePicker  placeholder={property.endTime.placeholder} style={{ width: '85px' }}
                 onChange={value => this.dateChange('endTime', value)} defaultValue={property.endTime.value}value={property.endTime.value} />
               <div className={prompt.endTime ? 'prompt ' : 'prompt hidden'}>{'请选择结束时间'}</div>
             </div>

@@ -3,7 +3,7 @@ import Content from '../../../components/Content';
 import Select from '../../component/select';
 import PieChart from '../../../components/PieChart';
 import { getChildDomainList } from '../../../api/domain';
-import { getStatDeviceCount } from '../../../api/reporter';
+import { getFaultCount, getLightCount } from '../../../api/reporter';
 import '../../../../public/styles/media-publish-stat.less';
 import '../../../../public/styles/reporterManage-lighting.less';
 import { injectIntl } from 'react-intl';
@@ -11,20 +11,19 @@ class Lighting extends React.Component {
   state = {
     domainList: [{ name: '选择域' }],
     currentDomain: null,
-    count: 0,
-    inline: 0,
-    outline: 0,
-    normal: 0,
+    onlineTotal: 0,
+    light: 0,
+    deviceTotal: 0,
     fault: 0
   };
   componentWillMount() {
     this._isMounted = true;
   }
-  componentDidMount() {
-    this.initDomainData();
-  }
   componentWillUnmount() {
     this._isMounted = false;
+  }
+  componentDidMount() {
+    this.initDomainData();
   }
   initDomainData = () => {
     getChildDomainList(data => {
@@ -41,9 +40,13 @@ class Lighting extends React.Component {
     );
   };
   initDeviceData = () => {
-    getStatDeviceCount(this.state.currentDomain, res => {
-      const { count, inline, outline, normal, fault } = res;
-      this.setState({ count, inline, outline, normal, fault });
+    getFaultCount('ssslc', this.state.currentDomain.id, res => {
+      const { deviceTotal, fault } = res;
+      this.setState({ deviceTotal, fault });
+    });
+    getLightCount('ssslc', this.state.currentDomain.id, res => {
+      const { onlineTotal, light } = res;
+      this.setState({ onlineTotal, light });
     });
   };
   onChangeHandler = e => {
@@ -62,24 +65,23 @@ class Lighting extends React.Component {
     const {
       domainList,
       currentDomain,
-      count,
-      inline,
-      outline,
-      normal,
+      onlineTotal,
+      light,
+      deviceTotal,
       fault
     } = this.state;
     const dataSource1 = {
       key: 'lighting',
       values: [
-        { region: 'inline', count: inline },
-        { region: 'outline', count: outline }
+        { region: 'light', count: light },
+        { region: 'nolight', count: onlineTotal - light }
       ]
     };
     const dataSource2 = {
       key: 'failure',
       values: [
-        { region: 'normal', count: normal },
-        { region: 'fault', count: fault }
+        { region: 'fault', count: fault },
+        { region: 'normal', count: deviceTotal - fault }
       ]
     };
     return (
@@ -101,22 +103,20 @@ class Lighting extends React.Component {
                 id="normal-device"
                 className="left"
                 dataSource={dataSource1}
-                color={['#fa919c', '#f83d59']}
+                color={['#f83d59', '#fa919c']}
               />
-              <span class={`device-null-tip ${count ? 'hidden' : ''}`}>
+              <span class={`device-null-tip ${onlineTotal ? 'hidden' : ''}`}>
                 {formatMessage({ id: 'app.report.noDevice' })}
               </span>
               <div class="right">
                 <h5>
-                  {formatMessage({ id: 'app.report.deviceCount' })}：{count}
+                  {formatMessage({ id: 'app.report.onlineTotal' })}：{
+                    onlineTotal
+                  }
                 </h5>
                 <p>
-                  <i class="dot normal-inline" />
-                  {formatMessage({ id: 'app.report.online' })}：{inline}
-                </p>
-                <p>
-                  <i class="dot normal-outline" />
-                  {formatMessage({ id: 'app.report.offline' })}：{outline}
+                  <i class="dot light-dot" />
+                  {formatMessage({ id: 'app.report.light' })}：{light}
                 </p>
               </div>
             </div>
@@ -129,19 +129,17 @@ class Lighting extends React.Component {
                 className="left"
                 dataSource={dataSource2}
               />
-              <span class={`device-null-tip ${count ? 'hidden' : ''}`}>
+              <span class={`device-null-tip ${deviceTotal ? 'hidden' : ''}`}>
                 {formatMessage({ id: 'app.report.noDevice' })}
               </span>
               <div class="right">
                 <h5>
-                  {formatMessage({ id: 'app.report.deviceCount' })}：{count}
+                  {formatMessage({ id: 'app.report.deviceTotal' })}：{
+                    deviceTotal
+                  }
                 </h5>
                 <p>
-                  <i class="dot fault-inline" />
-                  {formatMessage({ id: 'app.report.normal' })}：{normal}
-                </p>
-                <p>
-                  <i class="dot fault-outline" />
+                  <i class="dot fault-dot" />
                   {formatMessage({ id: 'app.report.error' })}：{fault}
                 </p>
               </div>

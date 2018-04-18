@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 import '../../public/styles/table.less';
-import Collapse from 'antd/lib/collapse/Collapse';
 /**
  * Table 组件
  * keyField:string 指定key
@@ -43,6 +42,10 @@ export default class Table extends Component {
 
     rowClick(row){
         this.props.rowClick && this.props.rowClick(row);
+    }
+
+    rowCopy(row) {
+        this.props.rowCopy && this.props.rowCopy(row);
     }
 
     collapsedClick(rowKey){
@@ -91,6 +94,7 @@ export default class Table extends Component {
                                 }
                                 {
                                     isEdit && (row.get('id')!==0?<td className="edit">
+                                                {!row.get('plans') && <a className="btn" onClick={()=>keyField && this.rowCopy(row)}><span className="icon_copy"></span><span className="copy"><FormattedMessage id='button.copy'/></span></a>}                                    
                                                 <a className="btn" onClick={()=>keyField && this.rowEdit(row.get(keyField))}><span className="icon_edit"></span><span className="update"><FormattedMessage id='button.edit'/></span></a>
                                                 <a className="btn" onClick={()=>keyField && this.rowDelete(row.get(keyField))}><span className="icon_delete"></span><span className="del"><FormattedMessage id='button.delete'/></span></a>
                                             </td>

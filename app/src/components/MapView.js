@@ -18,6 +18,9 @@ export default class MapView extends Component {
         }
         this.timeout = null;
         this.mapTimeOut = null;
+
+        this.preMap = null;
+        this.updatePreMap = this.updatePreMap.bind(this);
         this.initMap = this.initMap.bind(this);
         this.renderMap = this.renderMap.bind(this);
     }
@@ -28,6 +31,22 @@ export default class MapView extends Component {
         }, error=>{
             throw error;
         })
+    }
+
+    shouldComponentUpdate(){
+        const {option, mapData} = this.props;
+        if(this.state.map[mapData.id]
+          && this.preMap
+          && this.preMap.latlng
+          && L.latLng(this.preMap.latlng)
+          && this.preMap.zoom === option.zoom
+          && L.latLng(this.preMap.latlng).equals(L.latLng(mapData.latlng))
+          && lodash.isEqual(this.preMap.position, mapData.position)){
+            return false;
+        }
+
+        this.updatePreMap();
+        return true;
     }
 
     componentDidUpdate() {
@@ -47,11 +66,19 @@ export default class MapView extends Component {
         }
     }
 
+    updatePreMap(){
+        const {option, mapData} = this.props;
+        this.preMap = {
+            zoom:option.zoom,
+            latlng:mapData.latlng,
+            position: mapData.position
+        };
+    }
+
     initMap() {
         const {option, mapData, mapCallFun=null, markerCallFun=null} = this.props;
         const {zoom} = this.state;
         let {latlng={lat: null, lng: null}} = mapData;
-
         if( option && !option.zoom){
             option.zoom = zoom;
         }
@@ -86,7 +113,7 @@ export default class MapView extends Component {
                 this.timeout && clearTimeout(this.timeout);
                 this.timeout = setTimeout(()=>{
                     this.state.map[mapData.id].updateMapDevice(mapData.position, deviceList, markerCallFun)
-                }, 300)
+                }, 33)
             }
         }
     }

@@ -42,25 +42,29 @@ export class Fault extends Component {
       },
       levelList: {
         titleField: 'title',
-        valueField: 'name',
+        valueField: 'value',
         index: 0,
-        value: 'deadly',
+        value: 0,
         options: [
           {
-            title: '致命',
-            name: 'deadly'
+            title: this.formatIntl('app.all'),
+            value: 0
           },
           {
-            title: '严重',
-            name: 'seriousness'
+            title: this.formatIntl('sysOperation.fatal'),
+            value: 1
           },
           {
-            title: '一般',
-            name: 'ordinary'
+            title: this.formatIntl('sysOperation.serious'),
+            value: 2
           },
           {
-            title: '提示',
-            name: 'energy'
+            title: this.formatIntl('sysOperation.common'),
+            value: 3
+          },
+          {
+            title: this.formatIntl('sysOperation.prompt'),
+            value: 4
           }
         ]
       },
@@ -77,21 +81,22 @@ export class Fault extends Component {
     this.columns = [
       {
         id: 0,
-        field: 'model',
-        title: this.props.intl.formatMessage({
-          id: 'sysOperation.alarm.device.model'
-        })
+        field: 'type',
+        title: this.props.intl.formatMessage({ id: 'sysOperation.alarm.type' })
       },
       {
         id: 1,
+        field: 'model',
+        title: this.props.intl.formatMessage({
+          id: 'sysOperation.device.type'
+        })
+      },
+      {
+        id: 2,
         field: 'name',
         title: this.props.intl.formatMessage({ id: 'app.device.name' })
       },
-      {
-        id: 3,
-        field: 'param',
-        title: this.props.intl.formatMessage({ id: 'sysOperation.alarm.param' })
-      },
+      
       {
         id: 3,
         field: 'level',
@@ -114,7 +119,7 @@ export class Fault extends Component {
       {
         id: 6,
         field: 'time',
-        title: this.props.intl.formatMessage({ id: 'sysOperation.fault.time' })
+        title: this.props.intl.formatMessage({ id: 'sysOperation.alarm.time' })
       }
     ];
   }
@@ -220,7 +225,7 @@ export class Fault extends Component {
     let index = event.target.selectedIndex;
     let list = this.state[key];
     list.index = index;
-    list.value = list.options[index].name;
+    list.value = list.options[index].value;
     this.setState({ [key]: list }, () => {
       this.requestSearch();
     });
@@ -299,7 +304,7 @@ export class Fault extends Component {
             <DatePicker
               id="startDate"
               format="YYYY/MM/DD"
-              placeholder="开始日期"
+              placeholder={this.formatIntl('mediaPublish.startDate')}
               style={{ width: '106px' }}
               defaultValue={start}
               value={start}
@@ -309,7 +314,7 @@ export class Fault extends Component {
             <DatePicker
               id="endDate"
               format="YYYY/MM/DD"
-              placeholder="结束日期"
+              placeholder={this.formatIntl('mediaPublish.endDate')}
               style={{ width: '106px' }}
               defaultValue={end}
               value={end}
@@ -333,7 +338,7 @@ export class Fault extends Component {
         >
           <div className="panel panel-default statistical-info">
             <div
-              className="panel-heading"
+              className={"panel-heading "+(infoCollapse ? 'collapsed' : '')}
               role="presentation"
               onClick={() => {
                 !collapse && this.collapseHandler('infoCollapse');
@@ -345,35 +350,35 @@ export class Fault extends Component {
               })}
               <span className="icon icon_collapse pull-right" />
             </div>
-            <div className={'panel-body' + (infoCollapse ? 'collapsed' : '')}>
+            <div className={'panel-body ' + (infoCollapse ? 'collapsed' : '')}>
               <div className="left">
                 <div id="alarm" className="circle" ref={this.drawChart} />
               </div>
               <div className="right">
                 <div className="count deadly">
                   <div className="dot" />
-                  {this.formatIntl('sysOperation.count.deadly')} :{' '}
+                  {this.formatIntl('sysOperation.fatal')} :{' '}
                   {statisticalInfo.deadly
                     ? statisticalInfo.deadly
                     : this.formatIntl('sysOperation.noCount')}
                 </div>
                 <div className="count serious">
                   <div className="dot" />
-                  {this.formatIntl('sysOperation.count.serious')} :{' '}
+                  {this.formatIntl('sysOperation.serious')} :{' '}
                   {statisticalInfo.serious
                     ? statisticalInfo.serious
                     : this.formatIntl('sysOperation.noCount')}
                 </div>
                 <div className="count general">
                   <div className="dot" />
-                  {this.formatIntl('sysOperation.count.general')} :{' '}
+                  {this.formatIntl('sysOperation.common')} :{' '}
                   {statisticalInfo.general
                     ? statisticalInfo.general
                     : this.formatIntl('sysOperation.noCount')}
                 </div>
                 <div className="count hint">
                   <div className="dot" />
-                  {this.formatIntl('sysOperation.count.hint')} :{' '}
+                  {this.formatIntl('sysOperation.prompt')} :{' '}
                   {statisticalInfo.hint
                     ? statisticalInfo.hint
                     : this.formatIntl('sysOperation.noCount')}

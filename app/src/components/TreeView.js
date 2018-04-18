@@ -106,7 +106,7 @@ export class TreeView extends Component{
                         return <li key={index} className={'node '+(!this.props.IsCancelSelect && node.active ? 'active':'')}>
                                     <Link to={node.link}>
                                     <div onClick={()=>this.onToggle(node)} title={name}>
-                                        <span className={'glyphicon '+(node.toggled ? 'glyphicon-triangle-bottom':'glyphicon-triangle-right')+' toggled'}></span>
+                                        <span className={'glyphicon '+(node.toggled ? 'icon_arrow-right bottom':'icon_arrow-right')+' toggled'}></span>
                                         {value}
                                         {this.renderRemove(node)}
                                         {index<datalist.length-1 && this.renderMove(node, "glyphicon-triangle-bottom")}

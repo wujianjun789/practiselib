@@ -36,9 +36,12 @@ import DeviceReplacePopup from '../components/DeviceReplacePopup';
 import DeviceUpgradePopup from '../components/DeviceUpgradePopup';
 import SingleDeviceReplacePopup from '../components/SingleDeviceReplacePopup';
 import { replaceDevice } from '../../api/import';
+
+import { requestWhiteListCountById } from '../../api/domain';
+import {getDomainConfig} from '../../util/network';
+
 import {getObjectByKeyObj,getObjectByKey} from '../../util/algorithm';
 import {trimString} from '../../util/string';
-import { requestWhiteListCountById } from '../../api/domain';
 
 export class DeviceConfig extends Component {
   constructor(props) {
@@ -79,6 +82,7 @@ export class DeviceConfig extends Component {
       data: Immutable.fromJS([]),
     };
 
+    this.domain = null;
     this.columns = [
       {
         id: 0,
@@ -144,6 +148,12 @@ export class DeviceConfig extends Component {
           })
         });
       });
+
+      getDomainConfig(response=>{
+        if(this.mounted){
+          this.domain = response;
+        }
+      })
       
     }
   }
@@ -257,7 +267,7 @@ export class DeviceConfig extends Component {
 
         overlayerShow(<CentralizedControllerPopup popId="add" className="centralized-popup"
           title={this.props.intl.formatMessage({ id: 'sysOperation.addDevice' })} model={this.state.model}
-          data={dataInit} domainList={domainList} modelList={modelList}
+          domainConfig={this.domain} data={dataInit} domainList={domainList} modelList={modelList}
           overlayerHide={overlayerHide} onConfirm={(data) => {
             postAssetsByModel(model, data, () => {
               this.requestSearch();
@@ -278,7 +288,7 @@ export class DeviceConfig extends Component {
         };
         overlayerShow(<CentralizedControllerPopup popId="edit" className="centralized-popup"
           title={this.props.intl.formatMessage({ id: 'sysOperation.lamp.control' })}
-          data={dataInit2} domainList={domainList} modelList={modelList}
+          domainConfig={this.domain} data={dataInit2} domainList={domainList} modelList={modelList}
           overlayerHide={overlayerHide} onConfirm={data => {
             updateAssetsByModel(model, data, (data) => {
               this.requestSearch();
@@ -429,14 +439,26 @@ export class DeviceConfig extends Component {
             {this.props.intl.formatMessage({ id: 'button.add' })}</button>
           <div className="btn-group">
             <button id="sys-maintenance" className="btn btn-gray dropdown-toggle"
-              data-toggle="dropdown">操作<span className="caret"></span>
+              // data-toggle="dropdown">{this.props.intl.formatMessage({ id: 'button.handle' })}<span className="caret"></span>
+              data-toggle="dropdown">. . .
             </button>
             <div className="dropdown-menu" role="menu">
               <span className="glyphicon glyphicon-triangle-top" id="iconbox"></span>
               <div className="listBox">
-                <span className="icon_import" title={this.props.intl.formatMessage({ id: 'button.import' })} onClick={this.importHandler}></span>
-                <span className="icon_upgrade2" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })} onClick={()=>this.deviceHandler('sys-upgrade')}></span>
-                <span className="icon_replace" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })} onClick={()=>this.deviceHandler('sys-replace')}></span>
+                <div className="span icon_import" title={this.props.intl.formatMessage({ id: 'button.import' })} onClick={this.importHandler}>
+                  <span>{this.props.intl.formatMessage({ id: 'button.import' })}</span>
+                </div>
+                <div className="line" ></div>
+                <div className="span icon_upgrade2" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })} onClick={()=>this.deviceHandler('sys-upgrade')}>
+                <span>{this.props.intl.formatMessage({ id: 'sysOperation.deviceUpgrade' })}</span>
+                </div>
+                <div className="line" ></div>
+                {/* <button id="sys-maintenance" className="icon_replace btn btn-gray dropdown-toggle"
+                  data-toggle="dropdown">{this.props.intl.formatMessage({ id: 'button.handle' })}
+                </button> */}
+                <div className="span icon_replace" title={this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })} onClick={()=>this.deviceHandler('sys-replace')}>
+                <span>{this.props.intl.formatMessage({ id: 'sysOperation.deviceReplace' })}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -469,7 +491,7 @@ export class DeviceConfig extends Component {
             <span className="icon icon_collapse  pull-right"></span>              
           </div>
           <div className={'panel-body domain-property ' + (whiteListCollapse ? 'collapsed' : '')}>
-            <span className="domain-name">{selectDevice.whiteCount}{this.formatIntl('sysOperation.devices')}</span>
+            <span className="domain-name">{selectDevice.whiteCount+' '}{this.formatIntl('sysOperation.devices')}</span>
             <button id="sys-whitelist" className="btn btn-primary pull-right" onClick={()=> this.domainHandler('sys-whitelist') }
               disabled={ data.size == 0 }>{this.formatIntl('button.edit')}
             </button>

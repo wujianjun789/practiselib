@@ -16,6 +16,7 @@ import {
 import { getDeviceTypeByModel } from '../../util/index';
 import Immutable from 'immutable';
 
+
 export default function common(DeviceOperation) {
   class Common extends React.Component {
     state = {
@@ -124,7 +125,7 @@ export default function common(DeviceOperation) {
       let count = 0;
       let newList = [];
       list.map((item, index) => {
-        getDeviceStatusById(item.id, res => {
+        getDeviceStatusById(this.model,item.id, this.state.currentDomain.id,res => {
           count++;
           for (let i of Object.keys(res.status)) {
             item[i] = res.status[i];
@@ -195,7 +196,9 @@ export default function common(DeviceOperation) {
       );
     };
     onRowClick = currentDevice => {
-      this.setState({ currentDevice: currentDevice.toJS() });
+      this.setState({ currentDevice: currentDevice.toJS() }, () => {
+        this.updateSelectDevice(this.state.currentDevice);
+      });
     };
     render() {
       const {
@@ -270,7 +273,7 @@ export default function common(DeviceOperation) {
                 }
               />
             </div>
-            <div className="panel panel-default panel-custom">
+            <div className={"panel panel-default panel-custom "+(operationCollapse?"operationCollapse":"")}>
               <div
                 className="panel-heading"
                 role="presentation"
@@ -281,11 +284,11 @@ export default function common(DeviceOperation) {
                   id: 'lightManage.list.operation'
                 })}
                 <span
-                  class={`icon pull-right glyphicon ${
+                  class={`icon pull-right glyphicon icon_collapse /*${
                     operationCollapse
                       ? 'glyphicon-chevron-down'
                       : 'glyphicon-chevron-up'
-                  }`}
+                  }*/`}
                 />
               </div>
               <div
@@ -299,7 +302,7 @@ export default function common(DeviceOperation) {
                 />
               </div>
             </div>
-            <div class="panel panel-default">
+            <div class={"panel panel-default "+(mapCollapse?"mapCollapse":"")}>
               <div
                 class="panel-heading"
                 role="presentation"
@@ -312,11 +315,11 @@ export default function common(DeviceOperation) {
                   })}
                 </span>
                 <span
-                  class={`icon pull-right glyphicon ${
+                  class={`icon pull-right glyphicon icon_collapse /*${
                     mapCollapse
                       ? 'glyphicon-chevron-down'
                       : 'glyphicon-chevron-up'
-                  }`}
+                  }*/`}
                 />
               </div>
               <div

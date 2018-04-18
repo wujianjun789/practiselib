@@ -2,8 +2,8 @@ export default {
   locale: 'zh',
   messages: {
     //公共
-    name: '名称',
-    id: '编号',
+    'name': '名称',
+    'id': '编号',
 
     'app.year': '年',
     'app.month': '月',
@@ -31,13 +31,13 @@ export default {
     'sysOperation.selected.device': '选中设备',
     'app.device.operation': '设备操作',
 
+    'app.all':'所有',
     'app.type': '类别',
     'app.unit': '单位',
     'app.param': '当前参数',
     'app.set.param': '设置参数',
 
     'app.input.minute': '输入分钟数',
-    '': '',
 
     'app.timetable': '时间表',
     'app.sensor': '传感器',
@@ -83,8 +83,8 @@ export default {
     'app.work.state': '工作状态',
 
     //按钮
-    ' ': ' ',
     'button.add': '添加',
+    'button.handle': '操作',
     'button.edit': '编辑',
     'button.delete': '删除',
     'button.confirm': '确认',
@@ -108,6 +108,7 @@ export default {
     'button.hangUp': '挂起',
     'button.rename': '重命名',
     'button.publish': '发布',
+    'button.copy': '复制',
 
     //模型名字翻译
     'ssads.name': '广告屏',
@@ -116,7 +117,7 @@ export default {
 
     //用户中心
     'update.password': '密码',
-    exit: '注销',
+    'exit': '注销',
     'sure.exit': '确认退出？',
     'new.password': '新密码',
     'old.password': '旧密码',
@@ -138,8 +139,9 @@ export default {
 
     //提示
     'app.not.found': '没有找到结果',
-    illegal: '不合法',
-    deviceNumIllegal: '输入的设备编号不合法！',
+    'illegal': '不合法',
+    'illegalDeviceId':'请输入16位字符',
+    'deviceNumIllegal': '输入的设备编号不合法！',
     'import.format.error': '导入Excel格式有误',
     'add.Domain': '请添加域',
     'password.error': '密码只能为字母或数字',
@@ -260,11 +262,12 @@ export default {
     'sysOperation.select': '选择列表文件路径',
     'sysOperation.cover': '覆盖已有设备',
     'sysOperation.input.asset': '请输入素材名称',
+    'sysOperation.input.device': '请输入设备名称',
     'sysOperation.select.sensor': '选择传感器：',
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
     'sysOperation.device.version': '设备版本',
-    'sysOperation.product.version': '产品版本',
+    'sysOperation.product.version': '版本',
     'sysOperation.hardware.version': '硬件版本',
     'sysOperation.software.version': '软件版本',
 
@@ -309,10 +312,8 @@ export default {
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
     'sysOperation.alarm.param': '告警参数',
-    'sysOperation.fault.param': '故障参数',
-    'sysOperation.alarm.device.model': '设备模型',
-    'sysOperation.alarm.level': '级别',
-    'sysOperation.fault.level': '故障级别',
+    'sysOperation.device.type': '设备模型',
+    'sysOperation.alarm.level': '告警级别',
     'sysOperation.alarm.threshold': '阈值',
     'sysOperation.alarm.test.value': '检测值',
     'sysOperation.alarm.time': '告警时间',
@@ -321,15 +322,14 @@ export default {
     'sysOperation.fault.status': '故障状态',
     'sysOperation.alarm.person': '处理人',
     'sysOperation.alarm.handle.time': '处理时间',
-    'sysOperation.fault.id': '故障编号',
 
-    'sysOperation.statistical.info': '统计信息',
+    'sysOperation.statistical.info': '统计',
     'sysOperation.fault.statistical.info': '故障统计信息',
 
-    'sysOperation.count.deadly': '致命数',
-    'sysOperation.count.serious': '严重数',
-    'sysOperation.count.general': '一般数',
-    'sysOperation.count.hint': '提示数',
+    'sysOperation.fatal': '致命',
+    'sysOperation.serious': '严重',
+    'sysOperation.common': '一般',
+    'sysOperation.prompt': '提示',
     'sysOperation.noCount': '未读取',
 
     // 照明统计
@@ -341,17 +341,17 @@ export default {
     'lightManage.Statistics.month': '月',
     'lightManage.Statistics.day': '日',
     'lightManage.Statistics.energy': '能耗图',
-    'lightManage.Statistics.totalEnergy': '设备总能耗图',
+    'lightManage.Statistics.totalEnergy': '总能耗',
     'lightManage.Statistics.deviceState': '设备状态',
     'lightManage.Statistics.domain': '域',
-    'lightManage.Statistics.deviceCount': '设备数',
-    'lightManage.Statistics.deviceOnlineRunning': '在线正常数',
-    'lightManage.Statistics.deviceOnlineError': '在线故障数',
-    'lightManage.Statistics.deviceOffline': '离线数',
+    'lightManage.Statistics.deviceCount': '总设备',
+    'lightManage.Statistics.deviceOnlineRunning': '正常',
+    'lightManage.Statistics.deviceOnlineError': '故障',
+    'lightManage.Statistics.deviceOffline': '离线',
     'lightManage.Statistics.planState': '计划执行状态',
-    'lightManage.Statistics.planCount': '计划数',
-    'lightManage.Statistics.palnSuccess': '成功计划数',
-    'lightManage.Statistics.planFail': '失败计划数',
+    'lightManage.Statistics.planCount': '总数',
+    'lightManage.Statistics.palnSuccess': '成功',
+    'lightManage.Statistics.planFail': '失败',
     'lightManage.Statistics.lightOn': '亮灯率',
 
     //照明列表
@@ -399,10 +399,9 @@ export default {
     'app.report.responsePrompt': '返回的数据为空',
     'app.report.lightingRate': '亮灯率',
     'app.report.failureRate': '故障率',
-    'app.report.deviceCount': '设备数',
-    'app.report.online': '在线',
-    'app.report.offline': '离线',
-    'app.report.normal': '正常',
+    'app.report.onlineTotal': '在线总数',
+    'app.report.light': '亮灯',
+    'app.report.deviceTotal': '设备总数',
     'app.report.error': '故障',
     'app.report.noDevice': '暂无设备',
     'app.report.noData': '暂无数据',

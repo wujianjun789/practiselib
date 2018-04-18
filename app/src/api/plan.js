@@ -104,6 +104,21 @@ export function getGroupListPlan(type, cb) {
 }
 
 /**
+ * 通过计划id获取计划
+ * @param {*} id 
+ * @param {*} cb 
+ */
+export function getPlanById(id, cb) {
+  let headers = getHttpHeader();
+  httpRequest(HOST_IP + '/plans/'+id, {
+    headers:headers,
+    method: 'GET',
+  }, response => {
+    cb && cb(response);
+  });
+}
+
+/**
  * 添加分组
  */
 export function addGroup(data, cb) {

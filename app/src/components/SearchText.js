@@ -30,13 +30,15 @@ export default class SearchText extends Component{
     itemClick(value, index){
         this.props.itemClick && this.props.itemClick(index);
         this.props.onChange && this.props.onChange(value);
+        this.timeOut && clearTimeout(this.timeOut);
         this.timeOut = setTimeout(()=>{this.onClick()}, 33);
 
         this.setState({interactive:false})
     }
 
     onChange(event) {
-        this.props.onChange && this.props.onChange(event && event.target.value);
+        const value = event.target.value;
+        this.props.onChange && this.props.onChange(value);
         this.setState({interactive:true});
     }
 
@@ -84,6 +86,8 @@ export default class SearchText extends Component{
 
                 tableIndex = -1;
                 break;
+            default:
+            break;
         }
 
         this.setState({tableIndex:tableIndex});

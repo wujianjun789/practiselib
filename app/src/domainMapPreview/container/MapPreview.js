@@ -15,12 +15,13 @@ import SearchText from '../../components/SearchText';
 import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
 import {getMapConfig, getDomainConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter, getDomainListByParentId} from '../../api/domain';
-import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
+// import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
 
 import {DOMAIN_LEVEL} from '../../common/util/index';
 import {DOMAIN_NAME_LENGTH} from '../../common/util/constant';
 
-import {getDomainLevelByMapLevel, getDeviceTypeByModel} from '../../util/index';
+import {getDomainLevelByMapLevel} from '../../util/index';
+import {throttle} from '../../util/algorithm';
 import lodash from 'lodash';
 export class MapPreview extends Component{
     constructor(props){
@@ -49,9 +50,12 @@ export class MapPreview extends Component{
 
         this.responseTime = -1;
         this.responseTimeout = null;
+        this.onChangeTimeout = null;
+
+        this.throttle = null;
+        this.lastTime = 0;
 
         this.formatIntl = this.formatIntl.bind(this);
-
         this.onChange = this.onChange.bind(this);
         this.updatePlaceholder = this.updatePlaceholder.bind(this);
         this.itemClick = this.itemClick.bind(this);
@@ -67,6 +71,7 @@ export class MapPreview extends Component{
 
     componentWillMount(){
         this.mounted = true;
+        this.throttle = throttle(this.updatePlaceholder, 33, 1000);
         getMapConfig(data=>{
             if(this.mounted){
                 this.mapConfig = data;
@@ -80,7 +85,12 @@ export class MapPreview extends Component{
                 })
             }
         });
-        getDomainList(data=>{ this.mounted && this.initDomainList(data)})
+        getDomainList(data=>{ this.mounted && this.initDomainList(data)});
+    }
+
+    shouldComponentUpdate(){
+
+        return true;
     }
 
     componentWillUnmount(){
@@ -111,10 +121,9 @@ export class MapPreview extends Component{
 
     onChange(value){
         const { search } = this.state;
-
         let newValue = Object.assign({}, search, {value:value});
         this.setState({search:newValue}, ()=>{
-            setTimeout(()=>{this.updatePlaceholder()}, 33);
+            this.throttle();
         });
     }
 
@@ -147,7 +156,6 @@ export class MapPreview extends Component{
                 // console.log('responseTimeout:',this.responseTimeout);
                 // this.responseTimeout && clearTimeout(this.responseTimeout);
                 // this.responseTimeout = setTimeout(()=>{
-
                 timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList},()=>{
                     let deviceLen = [];
                     const locale = this.props.intl;
@@ -179,11 +187,17 @@ export class MapPreview extends Component{
     }
 
     searchSubmit(){
+        console.log('searchSubmit:');
         const {domainList, search} = this.state;
         for(let i=0;i<domainList.length;i++){
             let item = domainList[i];
             if(!search.value || item.name.indexOf(search.value)>-1){
                 this.map.center = item.geoPoint;
+                const domainConfig = lodash.find(this.domainConfig, domain=>{ return domain.id === item.level});
+                if(domainConfig){
+                    this.map.zoom = domainConfig.zoom;
+                    this.domainCurLevel = item.level;
+                }
                 this.mounted && this.setState({panLatlng:item.geoPoint});
                 break;
             }

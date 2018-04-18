@@ -2,8 +2,8 @@ export default {
   locale: 'en',
   messages: {
     //公共
-    name: 'Name',
-    id: 'Id',
+    'name': 'Name',
+    'id': 'Id',
 
     'app.year': 'year',
     'app.month': 'month',
@@ -30,13 +30,13 @@ export default {
     'sysOperation.selected.device': 'Selected Device',
     'app.device.operation': 'device operation',
 
+    'app.all':'All',
     'app.type': 'type',
     'app.unit': 'unit',
     'app.param': 'param',
     'app.set.param': 'set param',
 
     'app.input.minute': 'input minute',
-    '': '',
 
     'app.timetable': 'Schedule',
     'app.sensor': 'Sensor',
@@ -82,8 +82,8 @@ export default {
     'app.work.state': 'work state',
 
     //按钮
-    ' ': ' ',
     'button.add': 'Add',
+    'button.handle': 'Handle',
     'button.edit': 'Edit',
     'button.delete': 'Delete',
     'button.confirm': 'Confirm',
@@ -108,6 +108,7 @@ export default {
     'button.hangUp': 'Hang up',
     'button.rename': 'Rename',
     'button.publish': 'Publish',
+    'button.copy': 'Copy',
 
     //模型名字翻译
     'ssads.name': 'LED display',
@@ -116,7 +117,7 @@ export default {
 
     //用户中心
     'update.password': 'Password',
-    exit: 'Sign out',
+    'exit': 'Sign out',
     'sure.exit': 'Are you sure to exit？',
     'new.password': 'New password',
     'old.password': 'Old password',
@@ -138,8 +139,9 @@ export default {
 
     //提示
     'app.not.found': 'Not Found',
-    illegal: 'Illegal',
-    deviceNumIllegal: 'Device num illegal !',
+    'illegal': 'Illegal',
+    'illegalDeviceId':'Please enter 16 characters',
+    'deviceNumIllegal': 'Device num illegal !',
     'import.format.error': 'Import Excel format is incorrect',
     'add.Domain': 'Please add domain first',
     'password.error': 'The password can only be letters or number',
@@ -241,10 +243,10 @@ export default {
     'permission.grade': 'Grade',
 
     //系统运维
-    'sysOperation.device.config': 'Device config',
-    'sysOperation.whiteList': 'WhiteList',
+    'sysOperation.device.config': 'Device',
+    'sysOperation.whiteList': 'Whitelist',
     'sysOperation.include': 'Include',
-    'sysOperation.devices': 'devices',
+    'sysOperation.devices': 'Devices',
     'sysOperation.input.device': 'Input device name',
     'sysOperation.domain': 'Domain',
     'sysOperation.type': 'Type',
@@ -258,11 +260,12 @@ export default {
     'sysOperation.select': 'Select the list file path',
     'sysOperation.cover': 'Cover existing devices',
     'sysOperation.input.asset': 'Please input asset name',
+    'sysOperation.input.device': 'Please input device name',
     'sysOperation.select.sensor': 'Select sensor：',
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
     'sysOperation.device.version': 'Device version',
-    'sysOperation.product.version': 'Product version',
+    'sysOperation.product.version': 'Version',
     'sysOperation.hardware.version': 'Hardware version',
     'sysOperation.software.version': 'Software version',
 
@@ -306,28 +309,25 @@ export default {
     'sysOperation.alarm': 'Alarm',
     'sysOperation.fault': 'Fault',
     'sysOperation.fault.manage': 'Fault',
-    'sysOperation.alarm.type': 'Alarm type',
-    'sysOperation.alarm.param': 'Alarm param',
-    'sysOperation.fault.param': 'Fault param',
-    'sysOperation.alarm.device.model': 'Device model',
-    'sysOperation.alarm.level': 'Alarm level',
-    'sysOperation.fault.level': 'Fault level',
+    'sysOperation.alarm.type': 'Alarm Type',
+    'sysOperation.alarm.param': 'Alarm Param',
+    'sysOperation.device.type': 'Device Type',
+    'sysOperation.alarm.level': 'Alarm Level',
     'sysOperation.alarm.threshold': 'Threshold',
-    'sysOperation.alarm.test.value': 'Test value',
-    'sysOperation.alarm.time': 'Report time',
-    'sysOperation.fault.time': 'Fault time',
+    'sysOperation.alarm.test.value': 'Detected Value',
+    'sysOperation.alarm.time': 'Alarm Time',
     'sysOperation.alarm.status': 'Alarm status',
     'sysOperation.fault.status': 'Fault status',
     'sysOperation.alarm.person': 'Handle person',
     'sysOperation.alarm.handle.time': 'Handle time',
-    'sysOperation.fault.id': 'Fault id',
 
-    'sysOperation.statistical.info': 'Statistical info',
+    'sysOperation.statistical.info': 'Statistics',
     'sysOperation.fault.statistical.info': 'Fault statistical info',
-    'sysOperation.count.deadly': 'Deadly',
-    'sysOperation.count.serious': 'Serious',
-    'sysOperation.count.general': 'General',
-    'sysOperation.count.hint': 'Hint',
+
+    'sysOperation.fatal': 'Fatal',
+    'sysOperation.serious': 'Serious',
+    'sysOperation.common': 'Common',
+    'sysOperation.prompt': 'Prompt',
     'sysOperation.noCount': 'No count',
 
     // 照明统计
@@ -339,17 +339,17 @@ export default {
     'lightManage.Statistics.month': 'Month',
     'lightManage.Statistics.day': 'Day',
     'lightManage.Statistics.energy': 'Energy consumption',
-    'lightManage.Statistics.totalEnergy': 'Total energy',
+    'lightManage.Statistics.totalEnergy': 'Total',
     'lightManage.Statistics.deviceState': 'Device status',
     'lightManage.Statistics.domain': 'Domain',
-    'lightManage.Statistics.deviceCount': 'Count',
-    'lightManage.Statistics.deviceOnlineRunning': 'Online',
-    'lightManage.Statistics.deviceOnlineError': 'Error',
+    'lightManage.Statistics.deviceCount': 'Total',
+    'lightManage.Statistics.deviceOnlineRunning': 'Normal',
+    'lightManage.Statistics.deviceOnlineError': 'Fault',
     'lightManage.Statistics.deviceOffline': 'Offline',
     'lightManage.Statistics.planState': 'Planning action status',
-    'lightManage.Statistics.planCount': 'Count',
+    'lightManage.Statistics.planCount': 'Total',
     'lightManage.Statistics.palnSuccess': 'Success',
-    'lightManage.Statistics.planFail': 'Fail',
+    'lightManage.Statistics.planFail': 'Failed',
     'lightManage.Statistics.lightOn': 'Lighting rate',
 
     //照明列表
@@ -397,10 +397,9 @@ export default {
     'app.report.responsePrompt': 'The returned data is empty',
     'app.report.lightingRate': 'lighting rate',
     'app.report.failureRate': 'failure rate',
-    'app.report.deviceCount': 'device count',
-    'app.report.online': 'online',
-    'app.report.offline': 'offline',
-    'app.report.normal': 'normal',
+    'app.report.onlineTotal': 'total online',
+    'app.report.light': 'light',
+    'app.report.deviceTotal': 'total devices',
     'app.report.error': 'fault',
     'app.report.noDevice': 'No device',
     'app.report.noData': 'No data',
@@ -460,7 +459,7 @@ export default {
     'app.status.pause': 'Are you sure to pause the selected ',
 
     'app.input.device.name': 'input device name',
-    'app.device.name': 'device name',
+    'app.device.name': 'Device Name',
     'app.online.state': 'online state',
     'app.fault.state': 'fault state',
     'app.current.brightness': 'current brightness',

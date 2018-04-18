@@ -6,6 +6,8 @@ export default function PieChart(data) {
   let width = data.width ? data.width : data.wrapper.offsetWidth;
   var height = data.height ? data.height : data.wrapper.offsetHeight;
   let dataset = data.data;
+  let rate = data.rate?data.rate:'100%'
+  let showText = data.showText?true:false
   //当数据为空时，给数据一个默认值，保证图形正常显示
   for (let i=0; i<dataset.length; i++){
     if (i==0&&dataset[i]==0){
@@ -43,6 +45,14 @@ export default function PieChart(data) {
     .attr('d', arc)
     .each(function(d) { this._current = d; }); // store the initial angles
 
+  showText&&svg.append('text')
+  .attr('x', -40)
+  .attr('y', 13)
+  .style('fill', color)
+  .style('font-size', '35px')
+  .style('font-weight', '300')
+  .text(rate);
+  
   return {
     destroy: function() {
       parent.select('svg').remove();

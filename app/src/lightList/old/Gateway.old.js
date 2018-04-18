@@ -17,13 +17,11 @@ import {
   getDeviceStatusByModelAndId,
   updateAssetsRpcById
 } from '../../api/asset';
-import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
-import { getDeviceTypeByModel } from '../../util/index';
 import { message } from 'antd';
-import 'antd/lib/message/style/css';
+import { getDeviceTypeByModel } from '../../util/index';
 import { injectIntl } from 'react-intl';
-class SingleLampCon extends Component {
+class Gateway extends Component {
   constructor(props) {
     super(props);
     const { formatMessage } = this.props.intl;
@@ -40,39 +38,40 @@ class SingleLampCon extends Component {
         })
       },
       sidebarCollapse: false,
+      deviceCollapse: false,
       operationCollapse: false,
       mapCollapse: false,
       currentDevice: null,
       selectDevice: {
-        id: 'lightListLamp',
+        id: 'lightListGateway',
         position: [],
         data: []
       },
       deviceList: [],
-      currentDomain: null,
+      currentDomain: '',
       domainList: {
         titleField: 'name',
         valueField: 'name',
         options: []
       },
-      currentSwitchStatus: 'on',
-      deviceSwitchList: {
+      currentControlMode: 'remote',
+      controlModeList: {
         titleField: 'title',
         valueField: 'value',
         options: [
-          { value: 'on', title: formatMessage({ id: 'lightManage.list.on' }) },
-          { value: 'off', title: formatMessage({ id: 'lightManage.list.off' }) }
+          {
+            title: formatMessage({ id: 'lightManage.list.remote' }),
+            value: 'remote'
+          },
+          {
+            title: formatMessage({ id: 'lightManage.list.auto' }),
+            value: 'auto'
+          }
         ]
-      },
-      currentBrightness: 0,
-      brightnessList: {
-        titleField: 'title',
-        valueField: 'value',
-        options: []
       }
     };
 
-    this.model = 'ssslc';
+    this.model = 'ssgw';
 
     this.columns = [
       {
@@ -82,63 +81,27 @@ class SingleLampCon extends Component {
         })
       },
       {
+        accessor: 'domain',
+        title: formatMessage({
+          id: 'lightManage.list.domain'
+        })
+      },
+      {
         accessor: 'online',
         title: formatMessage({
-          id: 'lightManage.list.onlineStatus'
+          id: 'lightManage.list.communication'
         })
       },
       {
         accessor: 'device',
         title: formatMessage({
-          id: 'lightManage.list.deviceStatus'
-        })
-      },
-      {
-        accessor: 'switch',
-        title: formatMessage({
-          id: 'lightManage.list.switchStatus'
-        })
-      },
-      {
-        accessor: 'brightness',
-        title: formatMessage({
-          id: 'lightManage.list.brightness'
-        })
-      },
-      {
-        accessor: 'voltage',
-        title: formatMessage({
-          id: 'lightManage.list.voltage'
-        })
-      },
-      {
-        accessor: 'current',
-        title: formatMessage({
-          id: 'lightManage.list.current'
-        })
-      },
-      {
-        accessor: 'power',
-        title: formatMessage({
-          id: 'lightManage.list.power'
-        })
-      },
-      {
-        accessor: 'totalPower',
-        title: formatMessage({
-          id: 'lightManage.list.energyConsumption'
+          id: 'lightManage.list.gatewayDeviceStatus'
         })
       },
       {
         accessor: 'runningTime',
         title: formatMessage({
           id: 'lightManage.list.runningTime'
-        })
-      },
-      {
-        accessor: 'lightTime',
-        title: formatMessage({
-          id: 'lightManage.list.poweronTime'
         })
       },
       {
@@ -168,8 +131,8 @@ class SingleLampCon extends Component {
     this.initDeviceData = this.initDeviceData.bind(this);
     this.updateDeviceData = this.updateDeviceData.bind(this);
     this.updatePageSize = this.updatePageSize.bind(this);
-    this.updateBrightnessList = this.updateBrightnessList.bind(this);
   }
+
   componentWillMount() {
     this.mounted = true;
     this.initData();
@@ -183,7 +146,6 @@ class SingleLampCon extends Component {
     getChildDomainList(data => {
       this.mounted && this.updateDomainData(data, this.initDeviceData);
     });
-    getLightLevelConfig(this.updateBrightnessList);
   }
 
   updateDomainData(data, cb) {
@@ -264,22 +226,6 @@ class SingleLampCon extends Component {
     this.setState({ page: { ...this.state.page, total: data.count } });
   }
 
-  updateBrightnessList(data) {
-    // ["关", 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    let opt = [];
-    data.shift(); // 删除"关"
-    data.forEach(value => {
-      let val = value;
-      let title = `${val}`;
-      opt.push({ value: val, title });
-    });
-    this.setState({
-      brightnessList: Object.assign({}, this.state.brightnessList, {
-        options: opt
-      })
-    });
-  }
-
   onChange(e) {
     const { id, value } = e.target;
     switch (id) {
@@ -289,11 +235,8 @@ class SingleLampCon extends Component {
         ];
         this.setState({ currentDomain }, this.initDeviceData);
         break;
-      case 'deviceSwitch':
-        this.setState({ currentSwitchStatus: value });
-        break;
-      case 'dimming':
-        this.setState({ currentBrightness: value });
+      case 'controlMode':
+        this.setState({ currentControlMode: value });
         break;
     }
   }
@@ -307,7 +250,7 @@ class SingleLampCon extends Component {
 
   searchChange(value) {
     this.setState({
-      search: { ...this.state.search, value }
+      search: { ...this.state.search, value: value }
     });
   }
 
@@ -327,10 +270,11 @@ class SingleLampCon extends Component {
       this.updateSelectDevice(this.state.currentDevice);
     });
   }
-  switchApply = () => {
+  apply = () => {
     const { id } = this.state.currentDevice;
-    const { currentSwitchStatus } = this.state;
-    updateAssetsRpcById(id, { status: currentSwitchStatus }, res => {
+    const { currentControlMode } = this.state;
+    console.log('here');
+    updateAssetsRpcById(id, { mode: currentControlMode }, res => {
       if (res.success) {
         message.success('操作成功');
       } else {
@@ -338,10 +282,10 @@ class SingleLampCon extends Component {
       }
     });
   };
-  dimmingApply = () => {
+  checkTime = () => {
     const { id } = this.state.currentDevice;
-    const { currentBrightness } = this.state;
-    updateAssetsRpcById(id, { brightness: currentBrightness }, res => {
+    console.log('here');
+    updateAssetsRpcById(id, { updateTime: true }, res => {
       if (res.success) {
         message.success('操作成功');
       } else {
@@ -356,6 +300,7 @@ class SingleLampCon extends Component {
     const {
       page: { total, current, limit },
       sidebarCollapse,
+      deviceCollapse,
       operationCollapse,
       mapCollapse,
       currentDevice,
@@ -364,18 +309,17 @@ class SingleLampCon extends Component {
       search: { value, placeholder },
       currentDomain,
       domainList,
-      deviceSwitchList,
-      brightnessList,
-      currentSwitchStatus,
-      currentBrightness
+      currentControlMode,
+      controlModeList
     } = this.state;
     const { formatMessage } = this.props.intl;
+    // const offset1 = deviceCollapse ? 60 : 0;
     const offset2 = operationCollapse ? 135 : 0;
+    // const top = 349 - offset1 - offset2;
     const top = 247 - offset2;
     const disabled = deviceList.length == 0 ? true : false;
-    console.log('hh', domainList);
     return (
-      <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
+      <Content className={`list-lcc ${sidebarCollapse ? 'collapse' : ''}`}>
         <div className="content-left">
           <div className="heading">
             <Select
@@ -435,14 +379,6 @@ class SingleLampCon extends Component {
               className={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}
             />
           </div>
-          {/* <div className="panel panel-default panel-1">
-                    <div className="panel-heading">
-                        <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
-                            </div>
-                    <div className="panel-body">
-                        <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
-                    </div>
-                </div> */}
           <div className="panel panel-default panel-custom">
             <div
               className="panel-heading"
@@ -450,7 +386,9 @@ class SingleLampCon extends Component {
               onClick={() => this.handleCollapse('operationCollapse')}
             >
               <span className="icon_touch" />
-              {formatMessage({ id: 'lightManage.list.operation' })}
+              {formatMessage({
+                id: 'lightManage.list.operation'
+              })}
               <span class="icon icon_collapse pull-right" />
             </div>
             <div
@@ -458,44 +396,46 @@ class SingleLampCon extends Component {
             >
               <div>
                 <span className="tit">
-                  {formatMessage({ id: 'lightManage.list.switch' })}：
+                  {formatMessage({
+                    id: 'lightManage.list.controlMode'
+                  })}：
                 </span>
                 <Select
-                  id="deviceSwitch"
-                  titleField={deviceSwitchList.titleField}
-                  valueField={deviceSwitchList.valueField}
-                  options={deviceSwitchList.options}
-                  value={currentSwitchStatus}
+                  id="controlMode"
+                  titleField={controlModeList.titleField}
+                  valueField={controlModeList.valueField}
+                  options={controlModeList.options}
+                  value={currentControlMode}
                   onChange={this.onChange}
                   disabled={disabled}
                 />
                 <button
                   className="btn btn-primary"
                   disabled={disabled}
-                  onClick={this.switchApply}
+                  onClick={this.apply}
                 >
-                  {formatMessage({ id: 'lightManage.list.apply' })}
+                  {formatMessage({
+                    id: 'lightManage.list.apply'
+                  })}
                 </button>
               </div>
               <div>
                 <span className="tit">
-                  {formatMessage({ id: 'lightManage.list.dimming' })}：
+                  {formatMessage({
+                    id: 'lightManage.list.timing'
+                  })}：
                 </span>
-                <Select
-                  id="dimming"
-                  titleField={brightnessList.titleField}
-                  valueField={brightnessList.valueField}
-                  options={brightnessList.options}
-                  value={currentBrightness}
-                  onChange={this.onChange}
-                  disabled={disabled}
-                />
+                <span className="note">
+                  {formatMessage({ id: 'lightManage.list.checkTime' })}
+                </span>
                 <button
                   className="btn btn-primary"
                   disabled={disabled}
-                  onClick={this.dimmingApply}
+                  onClick={this.checkTime}
                 >
-                  {formatMessage({ id: 'lightManage.list.apply' })}
+                  {formatMessage({
+                    id: 'lightManage.list.apply'
+                  })}
                 </button>
               </div>
             </div>
@@ -508,7 +448,9 @@ class SingleLampCon extends Component {
             >
               <span class="icon_map" />
               <span>
-                {formatMessage({ id: 'lightManage.list.mapPosition' })}
+                {formatMessage({
+                  id: 'lightManage.list.mapPosition'
+                })}
               </span>
               <span class="icon icon_collapse pull-right" />
             </div>
@@ -527,9 +469,8 @@ class SingleLampCon extends Component {
   }
 }
 
+export default injectIntl(Gateway);
 /**
- *                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+ *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>
  */
-
-export default injectIntl(SingleLampCon);

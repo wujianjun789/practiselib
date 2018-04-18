@@ -64,7 +64,7 @@ module.exports = {
 
   },
   plugins: [
-    new webpack.BannerPlugin('starriver_pro V0.9'),
+    new webpack.BannerPlugin('starriver_pro V0.12.0'),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DllReferencePlugin({

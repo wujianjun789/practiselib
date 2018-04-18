@@ -6,8 +6,7 @@ import Select1 from '../../component/select.1';
 import SearchText from '../../../components/SearchText';
 import Table from '../../../components/Table';
 import Page from '../../../components/Page';
-import { DatePicker } from 'antd';
-import Modal from 'antd/lib/modal';
+import { DatePicker,Modal } from 'antd';
 import '../../../../public/styles/antd-modal.less';
 
 import '../../../../public/styles/reporterManage-device.less';

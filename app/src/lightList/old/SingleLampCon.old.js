@@ -17,12 +17,12 @@ import {
   getDeviceStatusByModelAndId,
   updateAssetsRpcById
 } from '../../api/asset';
+import { getLightLevelConfig } from '../../util/network';
 import { getMomentDate, momentDateFormat } from '../../util/time';
-import { message } from 'antd';
-import 'antd/lib/message/style/css';
 import { getDeviceTypeByModel } from '../../util/index';
+import { message } from 'antd';
 import { injectIntl } from 'react-intl';
-class Gateway extends Component {
+class SingleLampCon extends Component {
   constructor(props) {
     super(props);
     const { formatMessage } = this.props.intl;
@@ -39,40 +39,39 @@ class Gateway extends Component {
         })
       },
       sidebarCollapse: false,
-      deviceCollapse: false,
       operationCollapse: false,
       mapCollapse: false,
       currentDevice: null,
       selectDevice: {
-        id: 'lightListGateway',
+        id: 'lightListLamp',
         position: [],
         data: []
       },
       deviceList: [],
-      currentDomain: '',
+      currentDomain: null,
       domainList: {
         titleField: 'name',
         valueField: 'name',
         options: []
       },
-      currentControlMode: 'remote',
-      controlModeList: {
+      currentSwitchStatus: 'on',
+      deviceSwitchList: {
         titleField: 'title',
         valueField: 'value',
         options: [
-          {
-            title: formatMessage({ id: 'lightManage.list.remote' }),
-            value: 'remote'
-          },
-          {
-            title: formatMessage({ id: 'lightManage.list.auto' }),
-            value: 'auto'
-          }
+          { value: 'on', title: formatMessage({ id: 'lightManage.list.on' }) },
+          { value: 'off', title: formatMessage({ id: 'lightManage.list.off' }) }
         ]
+      },
+      currentBrightness: 0,
+      brightnessList: {
+        titleField: 'title',
+        valueField: 'value',
+        options: []
       }
     };
 
-    this.model = 'ssgw';
+    this.model = 'ssslc';
 
     this.columns = [
       {
@@ -82,27 +81,63 @@ class Gateway extends Component {
         })
       },
       {
-        accessor: 'domain',
-        title: formatMessage({
-          id: 'lightManage.list.domain'
-        })
-      },
-      {
         accessor: 'online',
         title: formatMessage({
-          id: 'lightManage.list.communication'
+          id: 'lightManage.list.onlineStatus'
         })
       },
       {
         accessor: 'device',
         title: formatMessage({
-          id: 'lightManage.list.gatewayDeviceStatus'
+          id: 'lightManage.list.deviceStatus'
+        })
+      },
+      {
+        accessor: 'switch',
+        title: formatMessage({
+          id: 'lightManage.list.switchStatus'
+        })
+      },
+      {
+        accessor: 'brightness',
+        title: formatMessage({
+          id: 'lightManage.list.brightness'
+        })
+      },
+      {
+        accessor: 'voltage',
+        title: formatMessage({
+          id: 'lightManage.list.voltage'
+        })
+      },
+      {
+        accessor: 'current',
+        title: formatMessage({
+          id: 'lightManage.list.current'
+        })
+      },
+      {
+        accessor: 'power',
+        title: formatMessage({
+          id: 'lightManage.list.power'
+        })
+      },
+      {
+        accessor: 'totalPower',
+        title: formatMessage({
+          id: 'lightManage.list.energyConsumption'
         })
       },
       {
         accessor: 'runningTime',
         title: formatMessage({
           id: 'lightManage.list.runningTime'
+        })
+      },
+      {
+        accessor: 'lightTime',
+        title: formatMessage({
+          id: 'lightManage.list.poweronTime'
         })
       },
       {
@@ -132,8 +167,8 @@ class Gateway extends Component {
     this.initDeviceData = this.initDeviceData.bind(this);
     this.updateDeviceData = this.updateDeviceData.bind(this);
     this.updatePageSize = this.updatePageSize.bind(this);
+    this.updateBrightnessList = this.updateBrightnessList.bind(this);
   }
-
   componentWillMount() {
     this.mounted = true;
     this.initData();
@@ -147,6 +182,7 @@ class Gateway extends Component {
     getChildDomainList(data => {
       this.mounted && this.updateDomainData(data, this.initDeviceData);
     });
+    getLightLevelConfig(this.updateBrightnessList);
   }
 
   updateDomainData(data, cb) {
@@ -227,6 +263,22 @@ class Gateway extends Component {
     this.setState({ page: { ...this.state.page, total: data.count } });
   }
 
+  updateBrightnessList(data) {
+    // ["关", 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    let opt = [];
+    data.shift(); // 删除"关"
+    data.forEach(value => {
+      let val = value;
+      let title = `${val}`;
+      opt.push({ value: val, title });
+    });
+    this.setState({
+      brightnessList: Object.assign({}, this.state.brightnessList, {
+        options: opt
+      })
+    });
+  }
+
   onChange(e) {
     const { id, value } = e.target;
     switch (id) {
@@ -236,8 +288,11 @@ class Gateway extends Component {
         ];
         this.setState({ currentDomain }, this.initDeviceData);
         break;
-      case 'controlMode':
-        this.setState({ currentControlMode: value });
+      case 'deviceSwitch':
+        this.setState({ currentSwitchStatus: value });
+        break;
+      case 'dimming':
+        this.setState({ currentBrightness: value });
         break;
     }
   }
@@ -251,7 +306,7 @@ class Gateway extends Component {
 
   searchChange(value) {
     this.setState({
-      search: { ...this.state.search, value: value }
+      search: { ...this.state.search, value }
     });
   }
 
@@ -271,11 +326,10 @@ class Gateway extends Component {
       this.updateSelectDevice(this.state.currentDevice);
     });
   }
-  apply = () => {
+  switchApply = () => {
     const { id } = this.state.currentDevice;
-    const { currentControlMode } = this.state;
-    console.log('here');
-    updateAssetsRpcById(id, { mode: currentControlMode }, res => {
+    const { currentSwitchStatus } = this.state;
+    updateAssetsRpcById(id, { status: currentSwitchStatus }, res => {
       if (res.success) {
         message.success('操作成功');
       } else {
@@ -283,10 +337,10 @@ class Gateway extends Component {
       }
     });
   };
-  checkTime = () => {
+  dimmingApply = () => {
     const { id } = this.state.currentDevice;
-    console.log('here');
-    updateAssetsRpcById(id, { updateTime: true }, res => {
+    const { currentBrightness } = this.state;
+    updateAssetsRpcById(id, { brightness: currentBrightness }, res => {
       if (res.success) {
         message.success('操作成功');
       } else {
@@ -301,7 +355,6 @@ class Gateway extends Component {
     const {
       page: { total, current, limit },
       sidebarCollapse,
-      deviceCollapse,
       operationCollapse,
       mapCollapse,
       currentDevice,
@@ -310,17 +363,18 @@ class Gateway extends Component {
       search: { value, placeholder },
       currentDomain,
       domainList,
-      currentControlMode,
-      controlModeList
+      deviceSwitchList,
+      brightnessList,
+      currentSwitchStatus,
+      currentBrightness
     } = this.state;
     const { formatMessage } = this.props.intl;
-    // const offset1 = deviceCollapse ? 60 : 0;
     const offset2 = operationCollapse ? 135 : 0;
-    // const top = 349 - offset1 - offset2;
     const top = 247 - offset2;
     const disabled = deviceList.length == 0 ? true : false;
+    console.log('hh', domainList);
     return (
-      <Content className={`list-lcc ${sidebarCollapse ? 'collapse' : ''}`}>
+      <Content className={`list-lc ${sidebarCollapse ? 'collapse' : ''}`}>
         <div className="content-left">
           <div className="heading">
             <Select
@@ -380,6 +434,14 @@ class Gateway extends Component {
               className={sidebarCollapse ? 'icon_horizontal' : 'icon_vertical'}
             />
           </div>
+          {/* <div className="panel panel-default panel-1">
+                    <div className="panel-heading">
+                        <span className="icon_select"></span>{this.props.intl.formatMessage({id:'sysOperation.selected.device'})}
+                            </div>
+                    <div className="panel-body">
+                        <span title={currentDevice == null ? '' : currentDevice.name}>{currentDevice == null ? '' : currentDevice.name}</span>
+                    </div>
+                </div> */}
           <div className="panel panel-default panel-custom">
             <div
               className="panel-heading"
@@ -387,9 +449,7 @@ class Gateway extends Component {
               onClick={() => this.handleCollapse('operationCollapse')}
             >
               <span className="icon_touch" />
-              {formatMessage({
-                id: 'lightManage.list.operation'
-              })}
+              {formatMessage({ id: 'lightManage.list.operation' })}
               <span class="icon icon_collapse pull-right" />
             </div>
             <div
@@ -397,46 +457,44 @@ class Gateway extends Component {
             >
               <div>
                 <span className="tit">
-                  {formatMessage({
-                    id: 'lightManage.list.controlMode'
-                  })}：
+                  {formatMessage({ id: 'lightManage.list.switch' })}：
                 </span>
                 <Select
-                  id="controlMode"
-                  titleField={controlModeList.titleField}
-                  valueField={controlModeList.valueField}
-                  options={controlModeList.options}
-                  value={currentControlMode}
+                  id="deviceSwitch"
+                  titleField={deviceSwitchList.titleField}
+                  valueField={deviceSwitchList.valueField}
+                  options={deviceSwitchList.options}
+                  value={currentSwitchStatus}
                   onChange={this.onChange}
                   disabled={disabled}
                 />
                 <button
                   className="btn btn-primary"
                   disabled={disabled}
-                  onClick={this.apply}
+                  onClick={this.switchApply}
                 >
-                  {formatMessage({
-                    id: 'lightManage.list.apply'
-                  })}
+                  {formatMessage({ id: 'lightManage.list.apply' })}
                 </button>
               </div>
               <div>
                 <span className="tit">
-                  {formatMessage({
-                    id: 'lightManage.list.timing'
-                  })}：
+                  {formatMessage({ id: 'lightManage.list.dimming' })}：
                 </span>
-                <span className="note">
-                  {formatMessage({ id: 'lightManage.list.checkTime' })}
-                </span>
+                <Select
+                  id="dimming"
+                  titleField={brightnessList.titleField}
+                  valueField={brightnessList.valueField}
+                  options={brightnessList.options}
+                  value={currentBrightness}
+                  onChange={this.onChange}
+                  disabled={disabled}
+                />
                 <button
                   className="btn btn-primary"
                   disabled={disabled}
-                  onClick={this.checkTime}
+                  onClick={this.dimmingApply}
                 >
-                  {formatMessage({
-                    id: 'lightManage.list.apply'
-                  })}
+                  {formatMessage({ id: 'lightManage.list.apply' })}
                 </button>
               </div>
             </div>
@@ -449,9 +507,7 @@ class Gateway extends Component {
             >
               <span class="icon_map" />
               <span>
-                {formatMessage({
-                  id: 'lightManage.list.mapPosition'
-                })}
+                {formatMessage({ id: 'lightManage.list.mapPosition' })}
               </span>
               <span class="icon icon_collapse pull-right" />
             </div>
@@ -470,8 +526,9 @@ class Gateway extends Component {
   }
 }
 
-export default injectIntl(Gateway);
 /**
- *  <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
+ *                            <Table columns={this.columns} keyField='id' data={deviceList} rowClick={this.tableClick}
                                 activeId={currentDevice == null ? '' : currentDevice.id}/>
  */
+
+export default injectIntl(SingleLampCon);
