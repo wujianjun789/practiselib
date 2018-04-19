@@ -330,7 +330,7 @@ export class lightMap extends Component{
     }
 
     handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
-    		
+    		console.log("handleInfo")
             if(tableIndex===0&&IsSearchResult){
             	
                     //如果是根据设备名称搜索
@@ -360,6 +360,7 @@ export class lightMap extends Component{
             }else{
                     //如果是点击地图图标
                     if(this.domainCurLevel===this.map.zoomStep+1){
+                    	console.log(this.domainCurLevel+"设备级别")
                         //如果地图级别是设备级别，则移动到指定坐标并显示状态信息
                         this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
 //						this.setState({IsSearch:false, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:true, IsOpenPoleControl:false},()=>{
@@ -367,13 +368,16 @@ export class lightMap extends Component{
 //	                    	requestCurAssets();
 //		                });
                     }else if(this.domainCurLevel<this.map.zoomStep+1){
+                    	console.log(this.domainCurLevel+"域级别")
                         //如果地图级别是域级别，则向下一个地图级别并显示信息
                         let zoom = 0;
-                        if(this.domainCurLevel==this.map.zoomStep){
-                        	zoom=this.domain[this.domainCurLevel-1].zoomRange[1]+1;
-                        }else{
-                        	zoom=this.domain[this.domainCurLevel-1].zoomRange[0];
-                        }
+                        if(this.domainCurLevel>this.map.zoomStep){
+			            	zoom=this.map.zoom;
+			            }else if(this.domainCurLevel==this.map.zoomStep){
+			            	zoom=this.domain[this.domainCurLevel-1].zoomRange[1]+1;
+			            }else{
+			            	zoom=this.domain[this.domainCurLevel].zoomRange[0];
+			            }
                         this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
 //						this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{
 //							console.log("点击域")
@@ -406,6 +410,7 @@ export class lightMap extends Component{
 //      positionList.push(position);
 	    //如果是点击地图图标
         if(this.domainCurLevel===this.map.zoomStep+1){
+        	console.log(this.domainCurLevel+"设备级别")
             //如果地图级别是设备级别，则移动到指定坐标并显示状态信息
             this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
             this.requestCurAssets();
@@ -415,12 +420,15 @@ export class lightMap extends Component{
 //	                    	requestCurAssets()
 //		                });
         }else if(this.domainCurLevel<this.map.zoomStep+1){
+        	console.log(this.domainCurLevel+"域级别")
             //如果地图级别是域级别，则向下一个地图级别并显示信息
             let zoom = 0;
-            if(this.domainCurLevel==this.map.zoomStep){
+            if(this.domainCurLevel>this.map.zoomStep){
+            	zoom=this.map.zoom;
+            }else if(this.domainCurLevel==this.map.zoomStep){
             	zoom=this.domain[this.domainCurLevel-1].zoomRange[1]+1;
             }else{
-            	zoom=this.domain[this.domainCurLevel-1].zoomRange[0];
+            	zoom=this.domain[this.domainCurLevel].zoomRange[0];
             }
             this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
 //						this.setState({IsSearch:true, IsOpenFault:true, interactive:false, IsSearchResult:false, IsOpenPoleInfo:false, IsOpenPoleControl:false},()=>{
@@ -518,10 +526,18 @@ export class lightMap extends Component{
     }
 
     mapDragend(data){
+//  	console.log(data)
+//  	this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+//      this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
+//      if(this.map.zoom>this.domain[this.map.zoomStep-1].zoomRange[1]){
+//          this.requestCurAssets();
+//      }else{
+//          this.requestCurDomain();
+//      }
     }
 
     mapZoomend(data){
-		
+		console.log(data)
         this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
         this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
         if(this.map.zoom>this.domain[this.map.zoomStep-1].zoomRange[1]){
@@ -533,8 +549,8 @@ export class lightMap extends Component{
     }
 
     markerClick(data){
-    	
-        if(this.map.zoom>this.domain[this.map.zoomStep-1].zoomRange[1]+1){
+    	console.log(data)
+        if(this.domainCurLevel>this.map.zoomStep){
             getAssetsBaseById(data.id,(data)=>{
                 this.itemClick(Immutable.fromJS(data))
             })
@@ -543,7 +559,7 @@ export class lightMap extends Component{
             if(this.domainCurLevel==this.map.zoomStep){
             	zoom=this.domain[this.domainCurLevel-1].zoomRange[1]+1;
             }else{
-            	zoom=this.domain[this.domainCurLevel-1].zoomRange[0];
+            	zoom=this.domain[this.domainCurLevel].zoomRange[0];
             }
             this.setState({positionList:[],curList:[]},()=>{
             	this.map = Object.assign({}, this.map, {zoom:zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
@@ -685,7 +701,7 @@ export class lightMap extends Component{
         }
         return (
             <Content>
-                <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={this.panLatlng} panCallFun={this.panCallFun}/>
+                <MapView option={{ zoom:this.map.zoom }} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curList}} mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={this.panLatlng} panCallFun={this.panCallFun}/>
                 <ModelSearch handleInfo={this.handleInfo} />
                 <NotifyPopup />
             </Content>

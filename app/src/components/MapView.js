@@ -18,7 +18,6 @@ export default class MapView extends Component {
         }
         this.timeout = null;
         this.mapTimeOut = null;
-
         this.preMap = null;
         this.updatePreMap = this.updatePreMap.bind(this);
         this.initMap = this.initMap.bind(this);
