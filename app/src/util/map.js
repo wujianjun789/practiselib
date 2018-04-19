@@ -3,7 +3,8 @@
  */
 import {getMapConfig} from '../util/network';
 
-let pattern = /[^\d{1,}\.\d{1,}|\d{1,}]/g;
+let pattern = /[^\d{1,}\.\d{1,}|\d{1,}]/g;//输入数字和小数点
+const numberValid = /^(-?\d+)(\.\d+)?$/;//是否是浮点数
 export default class Map{
     constructor(){
         //地图
@@ -70,7 +71,7 @@ export default class Map{
             return false;
         }
 
-        if (!data || !data.latlng || !data.latlng.lat || !data.latlng.lng) {
+        if (!data || !data.latlng || !numberValid.test(data.latlng.lat) || !numberValid.test(data.latlng.lng)) {
             this.latlng = options.center;
         } else {
             if(data.latlng.lat.toString().replace(pattern,'') && data.latlng.lng.toString().replace(pattern,'')){
@@ -102,7 +103,7 @@ export default class Map{
     }
 
     mapPanTo(latlng) {
-        if (!latlng || !latlng.lat || !latlng.lng) {
+        if (!latlng || !numberValid.test(latlng.lat) || !numberValid.test(latlng.lng)) {
             return false;
         }
 
@@ -174,7 +175,7 @@ export default class Map{
     onLineMap(type, options) {
         var option = {maxZoom: options.maxZoom, minZoom: options.minZoom}
 
-        if(this.latlng && this.latlng.length && this.latlng[0] && this.latlng[1]){
+        if(this.latlng && this.latlng.length && (numberValid.test(this.latlng[0])) && numberValid.test(this.latlng[1])){
             this.map.setView(this.latlng, options.zoom);
         }
 
@@ -380,7 +381,8 @@ export default class Map{
                 //     // removeMarker(marker)
                 //     // markerList.splice(markerIndex);
             } else {
-                if(data.lat && data.lng && data.lat.toString().replace(pattern,'') && data.lng.toString().replace(pattern,'')){
+                if(numberValid.test(data.lat) && numberValid.test(data.lng) && data.lat.toString().replace(pattern,'') && data.lng.toString().replace(pattern,'')){
+
                     _this.markerPosList.push(data);
                     let device = _this.getDevicesByTypeAndId(_this.id, data.device_type, data.device_id);
                     let labelInfo = '';
