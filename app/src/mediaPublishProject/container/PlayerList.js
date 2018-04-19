@@ -154,8 +154,7 @@ export class PlayerList extends Component {
         addProject(data, (response) => {
           actions.overlayerHide();
           this.props.router.push({
-            pathname: '/mediaPublish/playProject/' + response.id,
-            state: { item: response },
+            pathname: '/mediaPublish/playProject/' + response.id
           });
         });
       }} />);
@@ -208,16 +207,9 @@ export class PlayerList extends Component {
     const { actions } = this.props;
     const row = getObjectByKey(this.state.data, 'id', id);
     const obj = row ? row.toJS() : {};
-    const data = {
-      id: obj.id,
-      name: obj.name,
-      width: obj.width,
-      height: obj.height,
-    };
 
     this.props.router.push({
-      pathname: '/mediaPublish/playProject/' + obj.id,
-      state: { item: data },
+      pathname: '/mediaPublish/playProject/' + obj.id
     });
   }
 

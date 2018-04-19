@@ -22,14 +22,13 @@ import { addNotify, removeAllNotify } from '../../common/actions/notifyPopup';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { initProject, initPlan, addPlayerPlan, treeOnMove, treeOnRemove, applyClick } from '../action/index';
-import {initPlanDate} from '../util/index';
+import {getProjectById} from '../../api/mediaPublish';
 
 import PlayerProgram from '../component/PlayerProgram/index';
 
 import {projectFilterDate} from '../util/index';
 
 import moment from 'moment';
-import lodash from 'lodash';
 export class PlayProject extends Component {
   constructor(props) {
     super(props);
@@ -65,11 +64,14 @@ export class PlayProject extends Component {
 
   initProject() {
     const { router, actions } = this.props;
-    if (router && router.location) {
-      const routerState = router.location.state;
-      const project = routerState ? routerState.item : null;
-      project && actions.initProject(project);
-    }
+    const projectId = router.params.project;
+    getProjectById({id: projectId}, response=>{
+      if(response && response.id === projectId){
+        actions.initProject(response);
+      }
+    }, error=>{
+
+    })
   }
 
   applyClick(id, data) {
@@ -103,7 +105,6 @@ export class PlayProject extends Component {
     const {project, plan, actions} = this.props;
     this.props.router.push({
       pathname: '/mediaPublish/playProject/' + project.id + '/' + plan.id,
-      state: { project:project, item: plan },
     });
 
   }

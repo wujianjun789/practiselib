@@ -37,14 +37,12 @@ import {initProject, initPlan, initScene, initZone, initItem, initCurnode, reque
   addItemToArea, playerAssetSelect, playerAssetLibUpdate} from '../action/index';
 
 import {HOST_IP, getMediaPublishPreview, getMediaPublishPreviewJson} from '../../util/network';
-import {uploadMaterialFile, getScenePreview, getSceneById} from '../../api/mediaPublish';
+import {uploadMaterialFile, getScenePreview, getProjectById, getProgramById, getSceneById} from '../../api/mediaPublish';
 
 import {tranformAssetType} from '../util/index';
 
 import moment from 'moment';
 import lodash from 'lodash';
-import {HOST_IP_FILE} from '../../util/network';
-
 export class PlayPlan extends Component {
   constructor(props) {
     super(props);
@@ -105,18 +103,25 @@ export class PlayPlan extends Component {
     });
 
     this.updateSceneTree();
-    if (this.props.plan) {
-      actions.requestSceneList(this.props.plan.id);
-    } else {
-      if (router && router.location) {
-        const routerState = router.location.state;
-        const project = routerState ? routerState.project : null;
-        const plan = routerState ? routerState.item : null;
-        project && actions.initProject(project);
-        plan && actions.initPlan(plan);
-        setTimeout(() => {plan && actions.requestSceneList(plan.id);}, 66);
+
+    const projectId = router.params.project
+    getProjectById({id:projectId}, response=>{
+      if(response && response.id === projectId){
+        actions.initProject(response);
+        const planId = router.params.plan;
+        getProgramById(projectId, planId, respons=>{
+          if(respons && respons.id === parseInt(planId)){
+            actions.initPlan(respons);
+            setTimeout(() => {respons && actions.requestSceneList(respons.id);}, 66);
+          }
+        }, erro=>{
+
+        })
       }
-    }
+
+    }, error=>{
+
+    })
   }
 
   componentDidUpdate() {
@@ -584,7 +589,7 @@ export class PlayPlan extends Component {
 
     return <div className={'container ' + 'mediaPublish-playPlan ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={{
-        pathname: '/mediaPublish/playProject/' + (project ? project.id : ''),
+        pathname: '/mediaPublish/playProject/' + router.params.project,
         state: { item: project },
       }} />
       <SideBar isEdit={false} onClick={this.headbarClick}>

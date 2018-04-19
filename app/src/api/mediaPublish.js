@@ -20,7 +20,7 @@ export function uploadMaterialFile(list, index) {
 //统计
 export function getStatDeviceCount(cb) {
   //模拟实现
-  console.log('发起请求')
+  // console.log('发起请求')
   setTimeout(() => {
     const res = {
       count: 500,
@@ -136,7 +136,7 @@ export function getPublishProjectList(cb) {
   });
 }
 
-export function getProjectById(data, cb) {
+export function getProjectById(data, cb, errCb) {
   let headers = getHttpHeader();
 
   let url = HOST_IP + '/projects/' + data.id;
@@ -145,6 +145,8 @@ export function getProjectById(data, cb) {
     method: 'GET',
   }, response => {
     cb && cb(response);
+  }, null, error=>{
+    errCb && errCb();
   });
 }
 
@@ -212,7 +214,7 @@ export function getProgramList(projectId, cb) {
   });
 }
 
-export function getProgramById(projectId, id, cb) {
+export function getProgramById(projectId, id, cb, errCb) {
   let headers = getHttpHeader();
 
   let url = HOST_IP + '/projects/' + projectId + '/programs/' + id;
@@ -221,6 +223,8 @@ export function getProgramById(projectId, id, cb) {
     method: 'GET',
   }, response => {
     cb && cb(response);
+  }, null, error=>{
+    errCb && errCb()
   });
 }
 
