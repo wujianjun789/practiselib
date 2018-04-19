@@ -138,7 +138,7 @@ export class PlayPlan extends Component {
     actions.initItem(null);
     actions.initCurnode(null);
 
-    this.previewTimeout && clearTimeout(this.previewTimeout);
+    this.previewTimeout && clearInterval(this.previewTimeout);
     this.previewItemTimeout && clearTimeout(this.previewItemTimeout);
 
     window.onresize = event => {
@@ -382,15 +382,20 @@ export class PlayPlan extends Component {
      */
     getScenePreview(project.id, plan.id, scene.id, response => {
       this.previewHandler();
+      this.previewTimeout = setInterval(()=>{this.previewHandler()}, 1000);
     });
 
-     actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => { actions.overlayerHide(); }}/>);
+     actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => {
+      this.previewTimeout && clearInterval(this.previewTimeout);
+      actions.overlayerHide();
+     }}/>);
   }
 
   previewHandler(){
     const {project, plan, scene, actions} = this.props;
     getSceneById(project.id, plan.id, scene.id, response=>{
       if(response.md5 === response.md5Preview){
+        this.previewTimeout && clearInterval(this.previewTimeout);
         let totalTime = 0;
         const imgArray = [];
         let imgArray2 = [];
@@ -417,8 +422,6 @@ export class PlayPlan extends Component {
         } catch (error) {
           // console.log(error);
         }
-      }else{
-        this.previewTimeout = setTimeout(()=>{this.previewHandler()}, 1000);
       }
     })
   }
