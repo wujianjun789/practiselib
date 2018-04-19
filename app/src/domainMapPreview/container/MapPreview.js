@@ -12,7 +12,7 @@ import MapView from '../../components/MapView';
 
 import SearchText from '../../components/SearchText';
 
-import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup'
+import {addNotify, removeAllNotify} from '../../common/actions/notifyPopup';
 import {getMapConfig, getDomainConfig} from '../../util/network';
 import {getDomainList, getDomainByDomainLevelWithCenter, getDomainListByParentId} from '../../api/domain';
 // import {getAssetsBaseByDomain,getAssetsByDomainLevelWithCenter} from '../../api/asset';
@@ -29,13 +29,10 @@ export class MapPreview extends Component{
         this.state = {
             mapId: "mapPreview",
             domainList: [],
-
             search:{placeholder:this.formatIntl('domain.input.placeholder'), value:'', curIndex:-1},
             placeholderList: [],
-
             curDomainList: [],//device or domain
             positionList: [],
-
             panLatlng: null
         }
 
@@ -89,7 +86,6 @@ export class MapPreview extends Component{
     }
 
     shouldComponentUpdate(){
-
         return true;
     }
 
@@ -143,7 +139,7 @@ export class MapPreview extends Component{
             //     })
             //     this.mounted && this.setState({curDomainList: data, positionList:devPositionList});
             // })
-            this.mounted && this.setState({curDomainList: [], positionList:[]});
+            this.mounted && this.setState({curDomainList:[], positionList:[]});
             return false;
         }
 
@@ -187,7 +183,6 @@ export class MapPreview extends Component{
     }
 
     searchSubmit(){
-        console.log('searchSubmit:');
         const {domainList, search} = this.state;
         for(let i=0;i<domainList.length;i++){
             let item = domainList[i];
@@ -211,9 +206,8 @@ export class MapPreview extends Component{
     }
 
     mapDragend(data){
-        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-
-        this.requestCurDomain();
+//      this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+//      this.requestCurDomain();
     }
 
     mapZoomend(data){
@@ -244,12 +238,13 @@ export class MapPreview extends Component{
 
     render(){
         const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
-        return <Content className="map-preview">
-            <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
-                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
-            <SearchText IsTip={true} datalist={placeholderList} placeholder={search.placeholder} value={search.value}
+        return  <Content className="map-preview">
+        <SearchText IsTip={true} datalist={placeholderList} placeholder={search.placeholder} value={search.value}
                         onChange={this.onChange} itemClick={this.itemClick} submit={this.searchSubmit}/>
-            </Content>
+            		<MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
+                     mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
+            		
+            	</Content>
     }
 }
 

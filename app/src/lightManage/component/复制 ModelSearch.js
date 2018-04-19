@@ -254,59 +254,6 @@ export class ModelSearch extends Component{
         this.setState({modifyNow:n});
     }
 
-	handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
-    		console.log("handleInfo")
-            if(tableIndex===0&&IsSearchResult){
-                    //如果是根据设备名称搜索
-                    if(this.domainCurLevel===5){
-                        //如果域级别是设备级别，则移动到指定坐标
-                        this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                        this.requestCurDomain();
-                        this.setSize();
-                    }else{
-                        //如果域级别不是是设备级别，则地图跳转到设备级别并移动到指定坐标
-                        this.map = Object.assign({}, this.map, {zoom:this.domain[this.map.zoomStep-1].zoomRange[1]+1,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                    }
-                    
-            }else if(tableIndex===1&&IsSearchResult){
-                    //如果是根据域名称搜索
-                    if(curList[0].level===this.domainCurLevel){
-                        //如果域级别与搜索域级别相同，则移动到指定坐标
-                        this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                        console.log(this.map)
-                        this.requestCurDomain();
-                    }else{
-                        //如果域级别与搜索域级别不相同，则计算出地图级别并跳转到此级别并移动到指定坐标
-                        console.log("=================================")
-                        let zoom = this.domain[curList[0].level-1].zoomRange[0];
-                        console.log(zoom)
-                        this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                    }
-                    
-            }else{
-                    //如果是点击地图图标
-                    if(this.domainCurLevel===this.map.zoomStep+1){
-                    	console.log(this.domainCurLevel+"设备级别")
-                        //如果地图级别是设备级别，则移动到指定坐标并显示状态信息
-                        this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                    }else if(this.domainCurLevel<this.map.zoomStep+1){
-                    	console.log(this.domainCurLevel+"域级别")
-                        //如果地图级别是域级别，则向下一个地图级别并显示信息
-                        let zoom = 0;
-                        if(this.domainCurLevel>this.map.zoomStep){
-			            	zoom=this.map.zoom;
-			            }else if(this.domainCurLevel==this.map.zoomStep){
-			            	zoom=this.domain[this.domainCurLevel-1].zoomRange[1]+1;
-			            }else{
-			            	zoom=this.domain[this.domainCurLevel].zoomRange[0];
-			            }
-                        this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                   	}else{
-                    }
-            }
-            this.setState({ searchList:Immutable.fromJS([item]) });
-    }
-
     updateSearch(data,tableIndex,type){
         let searchType = this.searchPromptList[tableIndex].id;
         let searchList = Immutable.fromJS(data);
@@ -390,7 +337,7 @@ export class ModelSearch extends Component{
     }
 
     itemClick(item){
-    	console.log(this.props.handleInfo)
+    	console.log(item)
         let curList = [];
         let positionList = [];
         let searchList = '';
