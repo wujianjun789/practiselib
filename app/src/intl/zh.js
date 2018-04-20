@@ -82,6 +82,11 @@ export default {
     'app.resolution': '屏分辨率',
     'app.work.state': '工作状态',
 
+    'app.move.up': '上移',
+    'app.move.down': '下移',
+
+    'app.delete': '删除',
+
     //按钮
     'button.add': '添加',
     'button.handle': '操作',
@@ -249,7 +254,6 @@ export default {
     'sysOperation.whiteList': '白名单',
     'sysOperation.include': '包含',
     'sysOperation.devices': '个设备',
-    'sysOperation.input.device': '输入设备名称',
     'sysOperation.domain': '域',
     'sysOperation.type': '类型',
     'sysOperation.id': '设备编号',
@@ -307,7 +311,6 @@ export default {
     'sysOperation.deviceDomain': '域',
 
     //故障管理
-    'sysOperation.alarm': '告警',
     'sysOperation.fault': '故障',
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
@@ -637,6 +640,12 @@ export default {
     'mediaPublish.date.alert': '请输入正确日期',
     'mediaPublish.scene.submit.alert': '请提交播放场景',
     'mediaPublish.area.submit.alert': '请提交播放区域',
+    'mediaPublish.plan.select.alert':'请选择播放计划',
+    'mediaPublish.plan.submit.alert':'请提交新建计划',
+
+    'mediaPublish.plan.add':'添加播放计划',
+    'mediaPublish.plan.edit':'编辑播放计划',
+    'mediaPublish.scene.add':'添加播放场景',
 
     //以前的
     'app.link.index': '首页',

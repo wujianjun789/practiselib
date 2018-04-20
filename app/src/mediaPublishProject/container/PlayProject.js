@@ -112,7 +112,7 @@ export class PlayProject extends Component {
   editAlert() {
     const {plan, actions} = this.props;
     if (!plan) {
-      actions.addNotify(0, '请选择播放计划。');
+      actions.addNotify(0, this.formatIntl('mediaPublish.plan.select.alert'));
       return false;
     }
     return true;
@@ -121,7 +121,7 @@ export class PlayProject extends Component {
   addAlert() {
     const {plan, actions} = this.props;
     if (plan && typeof plan.id === 'string' && plan.id.indexOf('plan') > -1) {
-      actions.addNotify(0, '请提交新建计划。');
+      actions.addNotify(0, this.formatIntl('mediaPublish.plan.submit.alert'));
       return false;
     }
 
@@ -141,10 +141,10 @@ export class PlayProject extends Component {
     const {sidebarInfo, curDate} = this.state;
     const {router, data, project, plan, actions} = this.props;
 
-    const programList = projectFilterDate(data, curDate);
+    const programList = projectFilterDate(data, curDate, this.props.plan);
     return <div className={'container ' + 'mediaPublish-playProject ' + (sidebarInfo.collapsed ? 'sidebar-collapse' : '')}>
       <HeadBar moduleName="app.mediaPublish" router={router} url={'/mediaPublish/playerProject'}/>
-      <SideBar isEdit={true} isPopup={true} onClick={this.headbarClick}>
+      <SideBar isEdit={true} isPopup={true} formatIntl={this.formatIntl} onClick={this.headbarClick}>
         <ul className="plan-list">
           {
             data.map(plan => {
