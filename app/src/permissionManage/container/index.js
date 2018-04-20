@@ -18,6 +18,7 @@ import {getMomentDate, momentDateFormat} from '../../util/time';
 import ModulePopup from './ModulePopup';
 import {getModule} from '../../app/action';
 import {FormattedMessage, injectIntl} from 'react-intl';
+import {getModuleDefaultConfig} from '../../util/network';
 
 export class PermissionManage extends Component {
   constructor(props) {
@@ -61,6 +62,9 @@ export class PermissionManage extends Component {
     const {action} = this.props;
     action && action.getModule();
     this.requestData();
+    getModuleDefaultConfig(response => {
+      this.moduleDefault = response;
+    });
   }
 
   componentDidMount() {
@@ -157,7 +161,7 @@ export class PermissionManage extends Component {
 
   rowModuleEdit(id) {
     let row = getObjectByKeyObj(this.state.datas, 'id', id);
-    this.props.action.overlayerShow(<ModulePopup className="user-module-edit-popup" title={<FormattedMessage id="permission.module"/>} id={id} modules={this.props.modules} data= {row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
+    this.props.action.overlayerShow(<ModulePopup className="user-module-edit-popup" title={<FormattedMessage id="permission.module"/>} id={id} allModules={this.props.modules} modules={this.moduleDefault[row.role.name]} data ={row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
   }
 
   confirmClick(datas, isEdit) {
