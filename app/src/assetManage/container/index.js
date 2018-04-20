@@ -23,6 +23,11 @@ class AssetManageIndex extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      pathname: ""
+    }
+
+    this.initModel = this.initModel.bind(this);
     this.initTreeData = this.initTreeData.bind(this);
     this.onToggle = this.onToggle.bind(this);
 
@@ -31,14 +36,24 @@ class AssetManageIndex extends Component {
 
   componentWillMount() {
     this.mounted = true;
-    getModelData(() => {this.mounted && this.initTreeData();});
+    this.initModel();
   }
 
   componentWillUnmount() {
     this.mounted = false;
   }
 
-  componentDidMount() {
+  componentDidUpdate(){
+    console.log(this.props);
+    const {location} = this.props;
+    if(location.pathname !== this.state.pathname){
+      this.setState({pathname: location.pathname}, ()=>{
+        this.initModel();
+      });
+    }
+  }
+  initModel(){
+    getModelData(() => {this.mounted && this.initTreeData();});
   }
 
   initTreeData() {
