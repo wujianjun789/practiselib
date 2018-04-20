@@ -49,10 +49,6 @@ export default class UserPopup extends Component{
             let curIndex = this.props.isEdit?getIndexByKey2(list,'id',this.props.data.roleId):0;
             this.setState({role:this.state.role.update('list',v=>Immutable.fromJS(list)).update('index',v=>curIndex).update('value',v=>curRole.value)})
         })
-
-        getModuleDefaultConfig(response=>{
-            this.moduleDefault = response;
-        })
     }
 
     onCancel(){
@@ -72,7 +68,6 @@ export default class UserPopup extends Component{
             lastName:lastName.get('value'),
             firstName:firstName.get('value'),
             roleId:role.getIn(['list',role.get('index'),'id']),
-            modules:this.moduleDefault[role.getIn(['list', role.get('index'),'name'])]
         }
         this.props.onConfirm(datas,this.props.isEdit);
         this.props.overlayerHide();
