@@ -88,11 +88,6 @@ export class MapPreview extends Component{
         getDomainList(data=>{ this.mounted && this.initDomainList(data)});
     }
 
-    shouldComponentUpdate(){
-
-        return true;
-    }
-
     componentWillUnmount(){
         this.mounted = false;
     }
@@ -153,6 +148,7 @@ export class MapPreview extends Component{
                 return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
             })
             if(this.mounted){
+                // console.log(timestamp, this.responseTime, positionList);
                 // console.log('responseTimeout:',this.responseTimeout);
                 // this.responseTimeout && clearTimeout(this.responseTimeout);
                 // this.responseTimeout = setTimeout(()=>{
@@ -175,7 +171,7 @@ export class MapPreview extends Component{
                             }
 
                             if (deviceLen.length == data.length){
-                                // this.mounted && this.setState({curDomainList: this.state.curDomainList});
+                                this.mounted && this.setState({curDomainList: this.state.curDomainList});
                             }
                         })
                     })
@@ -244,6 +240,7 @@ export class MapPreview extends Component{
 
     render(){
         const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
+        // console.log("map:",this.map);
         return <Content className="map-preview">
             <MapView option={{zoom:this.map.zoom}} mapData={{id:mapId, latlng:this.map.center, position:positionList, data:curDomainList}}
                      mapCallFun={{mapDragendHandler:this.mapDragend, mapZoomendHandler:this.mapZoomend, markerClickHandler:this.markerClick}} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
