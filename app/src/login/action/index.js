@@ -12,6 +12,7 @@ export const loginHandler = (username, password,cbFail) => dispatch => {
     login({username:username, password:password}, response=>{
         getUserById(response.userId,res=>{
                 response.role = res.role.name;
+                response.modules = res.modules;
                 setAuth(response);
                 dispatch({ type: AUTH, auth: getAuth()});
               })
