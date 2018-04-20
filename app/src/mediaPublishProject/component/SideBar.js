@@ -22,18 +22,18 @@ export default class HeadBar extends Component {
 
   render() {
     const {IsPopup} = this.state;
-    const {isEdit, isPopup} = this.props;
+    const {isEdit, isPopup, formatIntl} = this.props;
     return <div className="sidebar">
       <div className="edit-container">
-        <div className="glyphicon glyphicon-plus"
+        <div className="glyphicon glyphicon-plus" title={formatIntl(isEdit?'mediaPublish.plan.add':'mediaPublish.scene.add')}
           onClick={(event) => {event.stopPropagation();event.preventDefault();this.onClick('add')}} role="presentation"></div>
-        <div className="glyphicon icon_delete pull-right"
+        <div className="glyphicon icon_delete pull-right" title={formatIntl('app.delete')}
           onClick={() => this.onClick('remove')} role="presentation"></div>
-        <div className="glyphicon glyphicon-arrow-down pull-right"
+        <div className="glyphicon glyphicon-arrow-down pull-right" title={formatIntl("app.move.down")}
           onClick={() => this.onClick('down')} role="presentation"></div>
-        <div className="glyphicon glyphicon-arrow-up pull-right"
+        <div className="glyphicon glyphicon-arrow-up pull-right" title={formatIntl("app.move.up")}
           onClick={() => this.onClick('up')} role="presentation"></div>
-        <div className={'glyphicon icon_edit pull-right ' + (isEdit ? '' : 'hidden')}
+        <div className={'glyphicon icon_edit pull-right ' + (isEdit ? '' : 'hidden')} title={formatIntl('mediaPublish.plan.edit')}
           onClick={() => this.onClick('edit')} role="presentation"></div>
       </div>
       <div className={'add-poppup ' + (IsPopup && isPopup ? 'active' : '')}>

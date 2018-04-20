@@ -32,11 +32,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
-@font-face {
-  font-family: 'anticon';
-  src: url('../font/font_zck90zmlh7hf47vi.woff') format('woff')
-}
 /* FONT AWESOME CORE
  * -------------------------- */
 [class^="icon-"],
@@ -1488,12 +1483,12 @@ a .icon-flip-vertical:before {
 }
 
 .icon-charger{
-  background: url("../images/icon/icon_chongdianz.png");
+  background: url("./images/icon_chongdianz.png");
   background-size: 15px 14px;
 }
 
 .icon-intelligent{
-  background: url("../images/icon/icon＿zihuideng.png") 0 0 no-repeat;
+  background: url("./images/icon_zhihuideng.png") 0 0 no-repeat;
   background-size: 10px 14px;
 }
 /*.icon-battery{*/
@@ -1503,6 +1498,6 @@ a .icon-flip-vertical:before {
 /*}*/
 
 .icon-lamp{
-  background: url("../images/icon_lamp_nc.png") 0 0 no-repeat;
+  background: url("./images/icon_lamp_nc.png") 0 0 no-repeat;
   background-size: 9.9px 11.1px;
 }

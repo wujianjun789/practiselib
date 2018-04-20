@@ -370,14 +370,16 @@ class Lc extends Component {
               <DatePicker
                 class="start-date"
                 placeholder="选择起始日期"
+                format= 'YYYY/MM/DD'
                 value={startDate}
                 allowClear={false}
                 onChange={this.startDateChange}
               />
-              <span> {formatMessage({ id: 'app.report.to' })}</span>
+              <span>-</span>
               <DatePicker
                 class="start-date"
                 placeholder="选择结束日期"
+                format= 'YYYY/MM/DD'
                 value={endDate}
                 allowClear={false}
                 onChange={this.endDateChange}

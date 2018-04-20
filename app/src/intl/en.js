@@ -81,6 +81,11 @@ export default {
     'app.resolution': 'resolution',
     'app.work.state': 'work state',
 
+    'app.move.up': 'move up',
+    'app.move.down': 'move down',
+
+    'app.delete': 'delete',
+
     //按钮
     'button.add': 'Add',
     'button.handle': 'Handle',
@@ -247,7 +252,6 @@ export default {
     'sysOperation.whiteList': 'Whitelist',
     'sysOperation.include': 'Include',
     'sysOperation.devices': 'Devices',
-    'sysOperation.input.device': 'Input device name',
     'sysOperation.domain': 'Domain',
     'sysOperation.type': 'Type',
     'sysOperation.id': 'ID',
@@ -642,6 +646,12 @@ export default {
     'mediaPublish.date.alert': 'date error',
     'mediaPublish.scene.submit.alert': 'Please submit scene',
     'mediaPublish.area.submit.alert': 'Please submit zone',
+    'mediaPublish.plan.select.alert':'Please Select plan',
+    'mediaPublish.plan.submit.alert':'Please submit plan',
+
+    'mediaPublish.plan.add':'add plan',
+    'mediaPublish.plan.edit':'edit plan',
+    'mediaPublish.scene.add':'add scene',
 
     //last
     'app.link.index': 'home',
