@@ -78,6 +78,7 @@ export class MapPreview extends Component{
                     if(this.mounted){
                         this.domainConfig = data;
                         this.map.zoom = data[0].zoom;
+                        this.setState(this.map);
                     }
                 })
             }
