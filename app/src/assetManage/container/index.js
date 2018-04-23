@@ -15,7 +15,7 @@ import SideBar from '../../components/SideBar';
 import Overlayer from '../../common/containers/Overlayer';
 
 import {getModelData, TreeData} from '../../data/assetModels';
-import {treeViewInit} from '../../common/actions/treeView';
+import {treeViewInit, onToggleById} from '../../common/actions/treeView';
 
 import {sideBarToggled} from '../action/index';
 import {treeViewNavigator} from '../../common/util/index';
@@ -43,14 +43,19 @@ class AssetManageIndex extends Component {
     this.mounted = false;
   }
 
-  componentDidUpdate(){
-    console.log(this.props);
-    const {location} = this.props;
-    if(location.pathname !== this.state.pathname){
-      this.setState({pathname: location.pathname}, ()=>{
-        this.initModel();
-      });
+  componentWillReceiveProps(nextProps){
+    if(nextProps.location.pathname !==  this.props.location.pathname){
+      this.props.actions.onToggleById(nextProps.location.pathname);
     }
+  }
+  componentDidUpdate(){
+    // console.log(this.props);
+    // const {location} = this.props;
+    // if(location.pathname !== this.state.pathname){
+    //   this.setState({pathname: location.pathname}, ()=>{
+    //     this.initModel();
+    //   });
+    // }
   }
   initModel(){
     getModelData(() => {this.mounted && this.initTreeData();});
@@ -123,6 +128,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       treeViewInit: treeViewInit,
+      onToggleById: onToggleById,
       sideBarToggled: sideBarToggled,
     }, dispatch),
   };

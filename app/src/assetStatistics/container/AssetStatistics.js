@@ -95,20 +95,30 @@ export class SingleLamp extends Component {
 
   componentWillMount() {
     this.mounted = true;
+    this.setState({model: this.props.params.asset}, ()=>{
+      this.requestSearch();
+    })
     getModelData(() => { this.mounted && this.initTreeData(); });
     getChildDomainList(data => { this.mounted && this.initDomain(data); });
   }
 
-  componentDidUpdate(){
-    const{sidebarNode} = this.props;
-    if(this.props.sidebarNode!==null){
-        if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
-            this.setState({model:sidebarNode.id}, ()=>{
-                this.requestSearch()
-            });
-        }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.params.asset !== this.props.params.asset){
+      this.setState({model: this.props.params.asset}, ()=>{
+        this.requestSearch();
+      })
     }
   }
+  // componentDidUpdate(){
+  //   const{sidebarNode} = this.props;
+  //   if(this.props.sidebarNode!==null){
+  //       if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
+  //           this.setState({model:sidebarNode.id}, ()=>{
+  //               this.requestSearch()
+  //           });
+  //       }
+  //   }
+  // }
 
   componentWillUnmount() {
     this.mounted = false;

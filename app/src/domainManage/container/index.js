@@ -12,7 +12,7 @@ import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
 import {TreeData} from '.././../data/domainModel'
-import {treeViewInit} from '../../common/actions/treeView'
+import {treeViewInit, onToggleById} from '../../common/actions/treeView'
 import {sideBarToggled} from '../action/index'
 class DomainManageIndex extends Component{
     constructor(props){
@@ -32,12 +32,18 @@ class DomainManageIndex extends Component{
     componentDidMount(){
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.location.pathname !== this.props.location.pathname){
+            this.props.actions.onToggleById(nextProps.location.pathname);
+        }
+    }
+
     initTreeData(){
         this.props.actions.treeViewInit(TreeData);
     }
 
     onToggle(node){
-        this.props.actions.sideBarToggled(node);
+        // this.props.actions.sideBarToggled(node);
     }
 
     render(){
@@ -70,6 +76,7 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
             treeViewInit: treeViewInit,
+            onToggleById: onToggleById,
             sideBarToggled: sideBarToggled
         }, dispatch)
     }

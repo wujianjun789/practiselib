@@ -4,6 +4,7 @@
 import {
     TREEVIEW_INIT,
     TREEVIEW_TOGGLE,
+    TREEVIEW_TOGGLE_ID,
     TREEVIEW_MOVE,
     TREEVIEW_REMOVE
 } from '../actionTypes/treeView'
@@ -20,6 +21,13 @@ export function onToggle(node) {
     return {
         type:TREEVIEW_TOGGLE,
         data:node
+    }
+}
+
+export function onToggleById(pathname) {
+    return {
+        type: TREEVIEW_TOGGLE_ID,
+        data:pathname
     }
 }
 

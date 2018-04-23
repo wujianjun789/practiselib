@@ -8,7 +8,7 @@ import HeadBar from '../components/HeadBar';
 import SideBar from '../components/SideBar';
 import Overlayer from '../common/containers/Overlayer';
 import {TreeData} from '../data/reporterModel';
-import {treeViewInit} from '../common/actions/treeView';
+import {treeViewInit, onToggleById} from '../common/actions/treeView';
 
 class ReporterManage extends Component{
     constructor(props){
@@ -27,6 +27,12 @@ class ReporterManage extends Component{
 
     componentWillUnmount(){
         this.mounted = false;
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.location.pathname !== this.props.location.pathname){
+            this.props.actions.onToggleById(nextProps.location.pathname);
+        }
     }
 
     initTreeData(){
@@ -52,6 +58,7 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
             treeViewInit: treeViewInit,
+            onToggleById: onToggleById
         }, dispatch)
     };
 }

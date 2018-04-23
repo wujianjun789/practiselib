@@ -9,7 +9,7 @@ import SystemOperation from '../systemOperation/container/index';
 import SmartLightManage from '../smartLightManage/container/index';
 import LightManage from '../lightManage/container/index';
 import ReporterManage from '../reporterManage';
-import MediaPublish from '../mediaPublish/container/index';
+import MediaPublish from '../mediaPublishProject/container/index';
 
 import { isAuthenticated, isAdmined, isLogged, hasAsset, hasDomain, hasPermission, hasMaintenance, hasLight, hasReport, hasPublish} from '../authentication/authWrapper';
 const Authenticated = isAuthenticated(props => props.children);

@@ -52,33 +52,41 @@ export class AssetDevice extends Component {
   }
 
   componentWillMount() {
-    let { model, assetPropertyList } = this.state;
-    let mode = model;
-    switch(this.props.route.path){
-        case "lc":
-            mode='ssslc';
-            break;
-        case "gateway":
-            mode='ssgw';
-            break;
-        default:
-            mode = model;
-    }
+    const mode = this.props.params.asset;
+    // switch(this.props.route.path){
+    //     case "lc":
+    //         mode='ssslc';
+    //         break;
+    //     case "gateway":
+    //         mode='ssgw';
+    //         break;
+    //     default:
+    //         mode = model;
+    // }
     this.mounted = true;
     this.setState({model:mode},()=>{
         this.getModelType();
     })
   }
 
-  componentDidUpdate(){
-    const{sidebarNode} = this.props;
-    if(this.props.sidebarNode!==null){
-        if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
-            this.setState({model:sidebarNode.id}, ()=>{
-                this.getModelType();
-            });
-        }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.params.asset !== this.props.params.asset){
+      this.setState({model:nextProps.params.asset}, ()=>{
+        this.getModelType();
+      });
     }
+  }
+
+  componentDidUpdate(){
+    // console.log('didUpdate:');
+    // const{sidebarNode} = this.props;
+    // if(this.props.sidebarNode!==null){
+    //     if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
+    //         this.setState({model:sidebarNode.id}, ()=>{
+    //             this.getModelType();
+    //         });
+    //     }
+    // }
   }
 
   componentWillUnmount() {
