@@ -43,6 +43,7 @@ export default class Map{
         this.markerDraggable = false;
 
         this.mapDragendTimeout = 0;
+        this.mapMoveendTimeout = 0;
         this.mapZoomendTimeout = 0;
         this.markerClickTimeout = 0;
 
@@ -145,8 +146,8 @@ export default class Map{
                 });
             }
         }
-
-        this.map.on('dragend', this.mapMoveEnd, this);
+        this.map.on('dragend', this.mapDragEnd, this);
+        this.map.on('moveend', this.mapMoveEnd, this);
         this.map.on('zoomend', this.mapZoomEnd, this);
     }
 
@@ -165,9 +166,7 @@ export default class Map{
                 default:
                     break;
             }
-
             this.customControl(data);
-
             this.markerControl(false, options);
         }
     }
@@ -635,10 +634,10 @@ export default class Map{
             this.markerHandler(this.id, 'delete', deletedData);
         })
     }
-
-    mapMoveEnd(event) {
+    
+    mapDragEnd(event) {
         let map = event.target;
-        map.off("dragend", this.mapMoveEnd, this);
+        map.off("dragend", this.mapDragEnd, this);
         let bounds = map.getBounds();
         this.mapDragendTimeout && clearTimeout(this.mapDragendTimeout);
         this.mapDragendTimeout = setTimeout(()=>{
@@ -651,11 +650,27 @@ export default class Map{
             });
         }, 33);
     }
+    
+    mapMoveEnd(event) {
+        let map = event.target;
+        //map.off("moveend", this.mapMoveEnd, this);
+        let bounds = map.getBounds();
+        this.mapMoveendTimeout && clearTimeout(this.mapMoveendTimeout);
+        this.mapMoveendTimeout = setTimeout(()=>{
+            this.mapMoveendHandler({
+                mapId:map.options.id,
+                latlng:map.getCenter(),
+                zoom: map.getZoom(),
+                bounds: bounds,
+                distance: bounds._southWest.distanceTo(bounds._northEast)
+            });
+        }, 33);
+    }
 
     mapZoomEnd(event) {
         // this.clearMarker();
         let map = event.target;
-        this.map.off('zoomend', this.mapZoomEnd, this);
+        //this.map.off('zoomend', this.mapZoomEnd, this);
         let bounds = map.getBounds();
         this.mapZoomendTimeout && clearTimeout(this.mapZoomendTimeout);
         this.mapZoomendTimeout = setTimeout(()=>{
@@ -742,6 +757,12 @@ export default class Map{
     mapZoomendHandler(data) {
         if(this.callFun.mapZoomendHandler){
             this.callFun.mapZoomendHandler.call(null, data);
+        }
+    }
+
+    mapMoveendHandler(data){
+        if(this.callFun.mapMoveendHandler){
+            this.callFun.mapMoveendHandler.call(null, data);
         }
     }
 
@@ -879,7 +900,8 @@ export default class Map{
         this.layer = null;
 
         if(this.map){
-            this.map.off('dragend', this.mapMoveEnd, this);
+            this.map.off('dragend', this.mapDragEnd, this);
+            this.map.off('moveend', this.mapMoveEnd, this);
             this.map.off('zoomend', this.mapZoomEnd, this);
             this.map.hasLayer(this.drawItems) && this.map.removeLayer(this.drawItems);
             this.map.remove();
@@ -893,6 +915,8 @@ export default class Map{
     destroy() {
         clearTimeout(this.updateTime);
         clearTimeout(this.mapZoomendTimeout);
+        clearTimeout(this.mapDragendTimeout);
+        clearTimeout(this.mapMoveendTimeout);
         this.clearMarker();
         this.destroyMap();
     }
