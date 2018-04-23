@@ -12,6 +12,7 @@ import PieChart from '../utils/pieChart';
 import { getDomainList } from '../../api/domain';
 import { getEnergy, getDomainStatusByDomainId } from '../../api/statistics';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import { getChildDomainList } from '../../api/domain';
 
 export class LightStatistics extends Component {
   constructor(props) {
@@ -155,7 +156,12 @@ export class LightStatistics extends Component {
   }
 
   initData() {
-    getDomainList(data => {
+    // getDomainList(data => {
+    //   console.log("domaindata:", data)
+    //   this.mounted && this.updateDomainData(data);
+    // });
+    getChildDomainList(data => {
+      console.log("childdomaindata:", data)
       this.mounted && this.updateDomainData(data);
     });
   }
