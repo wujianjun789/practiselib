@@ -270,8 +270,8 @@ export default {
     'sysOperation.select.sensor': '选择传感器：',
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
-    'sysOperation.device.version': '设备版本',
-    'sysOperation.product.version': '版本',
+    'sysOperation.device.version': '版本',
+    'sysOperation.product.version': '产品版本',
     'sysOperation.hardware.version': '硬件版本',
     'sysOperation.software.version': '软件版本',
 

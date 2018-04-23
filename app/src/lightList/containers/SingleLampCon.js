@@ -31,11 +31,13 @@ class DeviceOperation extends React.Component {
       options: []
     }
   };
-  componentWillMount() {
+  componentDidMount() {
     this._isMounted = true;
+    if(this.props.currentDevice!==''&&this.props.currentDevice.switchStatus&&this.props.currentDevice.brightness!==undefined){
+      this.setState({currentSwitchStatus:this.props.currentDevice.switchStatus,currentBrightness:this.props.currentDevice.brightness})
+    }
     getLightLevelConfig(this.updateBrightnessList);
   }
-
   onChange = e => {
     const { id, value } = e.target;
     switch (id) {
@@ -48,22 +50,15 @@ class DeviceOperation extends React.Component {
     }
   };
   updateBrightnessList = data => {
-    if (!this._isMounted) {
+    if (!this._isMounted||!data.length) {
       return;
     }
-    // ["关", 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    let opt = [];
-    data.shift(); // 删除"关"
-    data.forEach(value => {
-      let val = value;
-      let title = `${val}`;
-      opt.push({ value: val, title });
-    });
-    this.setState({
-      brightnessList: Object.assign({}, this.state.brightnessList, {
-        options: opt
-      })
-    });
+    const options=[];
+    data.shift(); // 删除第一项'关'
+    data.forEach(item=>{
+      options.push({value:item,title:`${item}`})
+    })
+    this.setState({brightnessList:{...this.state.brightnessList,options}})
   };
   switchApply = () => {
     const { id } = this.props.currentDevice;
@@ -87,6 +82,12 @@ class DeviceOperation extends React.Component {
       }
     });
   };
+  componentWillReceiveProps(nextProps){
+    // 伪代码， 对照api接口修改字段即可
+    if(nextProps.currentDevice!==''&&nextProps.currentDevice.switchStatus!==undefined&&nextProps.currentDevice.brightness!==undefined){
+      this.setState({currentSwitchStatus:nextProps.currentDevice.switchStatus,currentBrightness:nextProps.currentDevice.brightness})
+    }
+  }
   render() {
     const { disabled } = this.props;
     const { formatMessage } = this.props.intl;

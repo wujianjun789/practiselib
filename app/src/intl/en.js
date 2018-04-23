@@ -268,8 +268,8 @@ export default {
     'sysOperation.select.sensor': 'Select sensor：',
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
-    'sysOperation.device.version': 'Device version',
-    'sysOperation.product.version': 'Version',
+    'sysOperation.device.version': 'Version',
+    'sysOperation.product.version': 'Product version',
     'sysOperation.hardware.version': 'Hardware version',
     'sysOperation.software.version': 'Software version',
 
