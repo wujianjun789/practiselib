@@ -405,9 +405,10 @@ export default class Map{
 
 
      getMarkerById(type, id) {
-        for (var index in this.markerList) {
-            if (this.markerList[index].options.type == type && this.markerList[index].options.id == id) {
-                return this.markerList[index];
+        for (let index=0; index<this.markerList.length;index++) {
+            let marker = this.markerList[index];
+            if (marker.options.type == type && marker.options.id == id) {
+                return marker;
             }
         }
 
@@ -415,9 +416,10 @@ export default class Map{
     }
 
      getMarkerDataById(type, id) {
-        for (var x in this.markerPosList) {
-            if (this.markerPosList[x].device_type == type && this.markerPosList[x].device_id == id) {
-                return this.markerPosList[x];
+        for (let  x=0;x<this.markerPosList.length;x++) {
+            let markerData = this.markerPosList[x];
+            if (markerData.device_type == type && markerData.device_id == id) {
+                return markerData;
             }
         }
 
