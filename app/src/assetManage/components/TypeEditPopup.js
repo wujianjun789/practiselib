@@ -88,7 +88,7 @@ export default class TypeEditPopup extends Component {
     let valid = prompt.name || prompt.description || prompt.power || prompt.life || prompt.manufacture;
     let footer = <PanelFooter funcNames={['onCancel', 'onConfirm']} btnTitles={['button.cancel', 'button.confirm']}
       btnClassName={['btn-default', 'btn-primary']}
-      btnDisabled={[false, !name || valid]} onCancel={this.onCancel} onConfirm={this.onConfirm} />;
+      btnDisabled={[false, !name]} onCancel={this.onCancel} onConfirm={this.onConfirm} />;
 
     return <div className="type-popup">
       <Panel title={this.props.title} closeBtn={true} closeClick={this.onCancel} >
@@ -102,7 +102,7 @@ export default class TypeEditPopup extends Component {
             </div>
           </div>
           <div className="form-group row">
-            <label className="fixed-width-left control-label " htmlFor="description">{intlFormat({ en: 'Description', zh: '描述:' })}</label>
+            <label className="fixed-width-left control-label " htmlFor="description">{intlFormat({ en: 'Description', zh: '描述 :' })}</label>
             <div className="fixed-width-right">
               <input type="email" className={'form-control '} id="description" placeholder={intlFormat({ en: 'please input the description', zh: '输入描述' })} value={description}
                 onChange={this.onChange} />
@@ -111,31 +111,31 @@ export default class TypeEditPopup extends Component {
           </div>
           {hasPower &&
             <div className="form-group row">
-              <label className="fixed-width-left control-label " htmlFor="power">{intlFormat({ en: 'Power', zh: '功率：' })}</label>
+              <label className="fixed-width-left control-label " htmlFor="power">{intlFormat({ en: 'Power(W)', zh: '功率(W): ' })}</label>
               <div className="fixed-width-right">
                 <input type="email" className={'form-control '} id="power" placeholder={intlFormat({ en: 'please input the power', zh: '输入功率' })} value={power}
                   onChange={this.onChange} />
-                <span className={prompt.power ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入功率' })}</span>
+                {/* <span className={prompt.power ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入功率' })}</span> */}
               </div>
             </div>
           }
           {hasLife &&
             <div className="form-group row">
-              <label className="fixed-width-left control-label " htmlFor="life">{intlFormat({ en: 'Life-circle', zh: '寿命：' })}</label>
+              <label className="fixed-width-left control-label " htmlFor="life">{intlFormat({ en: 'Life(Hour)', zh: '寿命(小时): ' })}</label>
               <div className="fixed-width-right">
                 <input type="email" className={'form-control '} id="life" placeholder={intlFormat({ en: 'Please input the serviceLife', zh: '输入使用寿命' })} value={life}
                   onChange={this.onChange} />
-                <span className={prompt.life ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入使用寿命' })}</span>
+                {/* <span className={prompt.life ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入使用寿命' })}</span> */}
               </div>
             </div>
           }
           {hasManufacture &&
             <div className="form-group row">
-              <label className="fixed-width-left control-label " htmlFor="manufacture">{intlFormat({ en: 'Manufacture', zh: '厂商:' })}</label>
+              <label className="fixed-width-left control-label " htmlFor="manufacture">{intlFormat({ en: 'Manufacture', zh: '厂商: ' })}</label>
               <div className="fixed-width-right">
                 <input type="email" className={'form-control '} id="manufacture" placeholder={intlFormat({ en: 'please input the manufacturer', zh: '输入厂商' })} value={manufacture}
                   onChange={this.onChange} />
-                <span className={prompt.manufacture ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入厂商' })}</span>
+                {/* <span className={prompt.manufacture ? 'prompt ' : 'prompt hidden'}>{intlFormat({ en: 'illegal', zh: '请输入厂商' })}</span> */}
               </div>
             </div>
           }

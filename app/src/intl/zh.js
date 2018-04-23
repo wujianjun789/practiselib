@@ -192,8 +192,8 @@ export default {
     //名称	描述	功率	使用寿命	厂商	编辑
     'equipment.name': '名称',
     'equipment.description': '描述',
-    'equipment.power': '功率',
-    'equipment.life': '寿命',
+    'equipment.power': '功率(W)',
+    'equipment.life': '寿命(小时)',
     'equipment.manufacturer': '厂商',
     'equipment.edit': '编辑',
 
