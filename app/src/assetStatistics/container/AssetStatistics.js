@@ -212,7 +212,7 @@ export class SingleLamp extends Component {
         })
       })
     } else {
-      const latlng = data.get('geoPoint').toJS();
+      const latlng = data.get('geoPoint')?data.get('geoPoint').toJS():'';
       this.setState({
         selectDevice: Object.assign({}, this.state.selectDevice, {
           latlng: latlng,
