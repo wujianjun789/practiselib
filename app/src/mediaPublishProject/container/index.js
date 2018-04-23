@@ -45,12 +45,12 @@ class MediaPublishIndex extends Component {
     let parentPath = '';
     let childPath = '';
     const {routes} = this.props;
-    if (routes.length > 3) {
-      parentPath = routes[3].path;
+    if (routes.length > 4) {
+      parentPath = routes[4].path;
     }
 
-    if (routes.length > 4) {
-      childPath = routes[4].path;
+    if (routes.length > 5) {
+      childPath = routes[5].path;
     }
     return <div className={'container mediaPublish-' + parentPath + ' ' + parentPath + '-' + childPath}>
       <HeadBar moduleName="app.mediaPublish" router={this.props.router}/>
