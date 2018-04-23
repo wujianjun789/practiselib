@@ -24,6 +24,7 @@ import { getDeviceTypeByModel } from '../../util/index';
 import { getObjectByKey } from '../../util/algorithm';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
+import { trimString } from '../../util/string';
 
 import Immutable from 'immutable';
 export class SingleLamp extends Component {
@@ -132,7 +133,8 @@ export class SingleLamp extends Component {
     let domainId = domain.getIn(['list', domain.get('index'), 'id']);
     let modelId = model;
     let name = search.get('value');
-    name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
+    // name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
+    name=trimString(name);
     getSearchCount(domainId, modelId, name, (data) => this.mounted && this.initPageTotal(data));
     getSearchAssets(domainId, modelId, name, offset, size, data => this.mounted && this.searchResult(data));
   }
