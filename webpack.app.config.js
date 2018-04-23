@@ -11,9 +11,9 @@ module.exports = {
   entry: ['babel-polyfill',path.resolve(__dirname, 'app/src/root/index.js')],
   output: {
     path: path.resolve(__dirname, 'dist', 'app', 'public'),
-    filename: '[name].bundle.js',
+    filename: '[name].[chunkhash:8].bundle.js',
     publicPath: '/',
-    chunkFilename: '[name].[chunkhash].chunk.js',
+    chunkFilename: '[name].[chunkhash:8].chunk.js',
   },
 
   module: {
@@ -40,7 +40,7 @@ module.exports = {
               loader:'less-loader',
               options:{
                 modifyVars:theme,
-              },
+              }
             },
           ],
         }),
@@ -73,7 +73,7 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
-      filename: 'commons.js',
+      filename: 'commons.[hash:8].js',
     }),
     new webpack.DefinePlugin({
       'process.env': {
@@ -96,6 +96,6 @@ module.exports = {
         warnings: false,
       },
     }),
-    new ExtractTextPlugin('styles.css'),
+    new ExtractTextPlugin('styles.[chunkhash:8].css'),
   ],
 };

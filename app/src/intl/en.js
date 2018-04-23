@@ -81,6 +81,11 @@ export default {
     'app.resolution': 'resolution',
     'app.work.state': 'work state',
 
+    'app.move.up': 'move up',
+    'app.move.down': 'move down',
+
+    'app.delete': 'delete',
+
     //按钮
     'button.add': 'Add',
     'button.handle': 'Handle',
@@ -187,8 +192,8 @@ export default {
     //名称	描述	功率	使用寿命	厂商	编辑
     'equipment.name': 'Name',
     'equipment.description': 'Description',
-    'equipment.power': 'Power',
-    'equipment.life': 'Life-circle',
+    'equipment.power': 'Power(W)',
+    'equipment.life': 'Life-circle(Hour)',
     'equipment.manufacturer': 'Manufacturer',
     'equipment.edit': 'Edit',
 
@@ -247,7 +252,6 @@ export default {
     'sysOperation.whiteList': 'Whitelist',
     'sysOperation.include': 'Include',
     'sysOperation.devices': 'Devices',
-    'sysOperation.input.device': 'Input device name',
     'sysOperation.domain': 'Domain',
     'sysOperation.type': 'Type',
     'sysOperation.id': 'ID',
@@ -264,8 +268,8 @@ export default {
     'sysOperation.select.sensor': 'Select sensor：',
     'sysOperation.label': 'Label：',
     'sysOperation.input.id': 'Input id to add',
-    'sysOperation.device.version': 'Device version',
-    'sysOperation.product.version': 'Version',
+    'sysOperation.device.version': 'Version',
+    'sysOperation.product.version': 'Product version',
     'sysOperation.hardware.version': 'Hardware version',
     'sysOperation.software.version': 'Software version',
 
@@ -642,6 +646,12 @@ export default {
     'mediaPublish.date.alert': 'date error',
     'mediaPublish.scene.submit.alert': 'Please submit scene',
     'mediaPublish.area.submit.alert': 'Please submit zone',
+    'mediaPublish.plan.select.alert':'Please Select plan',
+    'mediaPublish.plan.submit.alert':'Please submit plan',
+
+    'mediaPublish.plan.add':'add plan',
+    'mediaPublish.plan.edit':'edit plan',
+    'mediaPublish.scene.add':'add scene',
 
     //last
     'app.link.index': 'home',

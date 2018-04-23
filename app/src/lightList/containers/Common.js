@@ -127,12 +127,13 @@ export default function common(DeviceOperation) {
       list.map((item, index) => {
         getDeviceStatusById(this.model,item.id, this.state.currentDomain.id,res => {
           count++;
+          // 此处来处理设备的状态
           for (let i of Object.keys(res.status)) {
             item[i] = res.status[i];
           }
           newList.push(item);
           if (count === newList.length) {
-            this.setState({ deviceList: newList });
+            this.setState({ deviceList: newList,currentDevice:newList[0] });
           }
         });
       });

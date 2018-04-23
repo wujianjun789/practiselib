@@ -13,7 +13,7 @@ import SideBar from '../../components/SideBar'
 import Overlayer from '../../common/containers/Overlayer'
 
 import {TreeData} from '.././../data/smartLightModel'
-import {treeViewInit} from '../../common/actions/treeView'
+import {treeViewInit, onToggleById} from '../../common/actions/treeView'
 // import {sideBarToggled} from '../action/index'
 class SystemOperationIndex extends Component{
     constructor(props){
@@ -35,6 +35,12 @@ class SystemOperationIndex extends Component{
     componentDidMount(){
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.location.pathname !== this.props.location.pathname){
+            this.props.actions.onToggleById(nextProps.location.pathname);
+        }
+    }
+
     initTreeData(){
         this.props.actions.treeViewInit(TreeData);
     }
@@ -48,12 +54,12 @@ class SystemOperationIndex extends Component{
         let parentPath = "";
         let childPath = "";
         const {routes} = this.props;
-        if(routes.length>3){
-            parentPath = routes[3].path;
+        if(routes.length>4){
+            parentPath = routes[4].path;
         }
 
-        if(routes.length>4){
-            childPath = routes[4].path;
+        if(routes.length>5){
+            childPath = routes[5].path;
         }
 
         return <div className={"container smartLight-"+parentPath+" "+parentPath+"-"+childPath}>
@@ -75,6 +81,7 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
             treeViewInit: treeViewInit,
+            onToggleById: onToggleById,
             // sideBarToggled: sideBarToggled
         }, dispatch)
     }

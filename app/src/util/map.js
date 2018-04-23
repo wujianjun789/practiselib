@@ -391,7 +391,8 @@ export default class Map{
                         labelInfo = device.name;
                     }
 
-                    let newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), Map.getCustomMarkerByDeviceType(data.device_type, 0, data.digital), data.digital);
+                    const customMarker = Map.getCustomMarkerByDeviceType(data.device_type, 4, data.digital);
+                    let newMarker = _this.drawMarker(data.IsCircleMarker, data.device_type, data.device_id, L.latLng([data.lat, data.lng]), customMarker, data.digital);
                     if (newMarker) {
                         _this.loadMarkerLabel(newMarker, labelInfo, data.IsCircleMarker);
                         _this.drawItems && _this.drawItems.addLayer(newMarker) && _this.markerList.push(newMarker);
@@ -403,9 +404,10 @@ export default class Map{
 
 
      getMarkerById(type, id) {
-        for (var index in this.markerList) {
-            if (this.markerList[index].options.type == type && this.markerList[index].options.id == id) {
-                return this.markerList[index];
+        for (let index=0; index<this.markerList.length;index++) {
+            let marker = this.markerList[index];
+            if (marker.options.type == type && marker.options.id == id) {
+                return marker;
             }
         }
 
@@ -413,9 +415,10 @@ export default class Map{
     }
 
      getMarkerDataById(type, id) {
-        for (var x in this.markerPosList) {
-            if (this.markerPosList[x].device_type == type && this.markerPosList[x].device_id == id) {
-                return this.markerPosList[x];
+        for (let  x=0;x<this.markerPosList.length;x++) {
+            let markerData = this.markerPosList[x];
+            if (markerData.device_type == type && markerData.device_id == id) {
+                return markerData;
             }
         }
 
@@ -806,7 +809,7 @@ export default class Map{
      * @param type设备类型
      * @param status设备状态
      */
-    static markerIcon = {'CONTROLLER':'lightbulb', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent',
+    static markerIcon = {'CONTROLLER':'sitemap', 'DEVICE':'lightbulb', 'ISTREETLIGHT':'intelligent',
         'CHARGER':'charger', 'POLE':'lightbulb', 'PLC':'plc', 'SCREEN':'mobile-phone'}
     static getCustomMarkerByDeviceType(type, status, digital) {
         if(type == 'DIGITAL'){
@@ -816,7 +819,7 @@ export default class Map{
         return L.AwesomeMarkers.icon({icon: Map.markerIcon[type]?Map.markerIcon[type]:'lightbulb', color:Map.getColorByStatus(status)});
     }
 
-    static markerColor = ['red', 'green', 'cadetblue', 'darkblue'];
+    static markerColor = ['red', 'green', 'cadetblue', 'darkblue', 'blue'];
     static getColorByStatus(status) {
         let color = 'red'
         if(status>-1 && status<Map.markerColor.length){

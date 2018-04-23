@@ -527,7 +527,7 @@
       overflow-x: hidden;
     }
     .panel.panel-default {
-      width: 300px;
+      width: 100%;
       border: none;
       border-radius: 0;
       box-shadow: none;
@@ -552,7 +552,7 @@
           margin: 2.5px 7.5px 7.5px 0;
         }
         >.name{
-          width: 220px;
+          width: 200px;
           float: left;
           margin: 0;
           overflow: hidden;
@@ -570,10 +570,10 @@
           margin-bottom: 0;
          
           >label{
-            width: 60px;
-            margin-right: 10px;
-            margin-bottom: 0;
-            padding: 0;
+            width: 20%;
+            padding-right: 10px;
+            // margin-bottom: 0;
+            // padding: 0;
             font-size: 14px;
             color: #4d4d4d;
             text-align: right;
@@ -586,29 +586,32 @@
           > .input-container{
             position: relative;
             display: inline-block;
-            width: 200px;
+            width: 80%;
             >.ant-time-picker .ant-time-picker-input{
               font-size: 14px;
             }
           }
         }
         > .form-group.retry{
-          width:135px;
+          width:50%;
           float: left;
+          >label{
+            width: 40%;
+          }
           > .input-container{
-            width: 65px;
+            width: 60%;
           }
         }
         >.date-range{
           >.input-container{
             >input{
-              width:85px;
+              width:43%;
               display: inline-block;
               padding: 6px;
             }
             >span{
-              margin-right: 8px;
-              margin-left: 8px;              
+              margin-right: 3%;
+              margin-left: 3%;              
             }
           }
           

@@ -48,7 +48,7 @@ export class DomainEditList extends Component {
             },
 
             page: Immutable.fromJS({
-                pageSize: 10,
+                pageSize: 15,
                 current: 1,
                 total: 0
             }),

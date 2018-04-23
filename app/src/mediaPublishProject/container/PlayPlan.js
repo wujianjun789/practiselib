@@ -592,7 +592,7 @@ export class PlayPlan extends Component {
         pathname: '/mediaPublish/playProject/' + router.params.project,
         state: { item: project },
       }} />
-      <SideBar isEdit={false} onClick={this.headbarClick}>
+      <SideBar isEdit={false} formatIntl={this.formatIntl} onClick={this.headbarClick}>
         <TreeView className="mediaPublish" IsPrompt={IsPrompt} IsCancelSelect={IsCancelSelect} onToggle={ (node) => this.onToggle(node) }/>
       </SideBar>
 

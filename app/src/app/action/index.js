@@ -7,15 +7,13 @@ import {
     MODULE_INIT
 } from '../actionType/index'
 export function getModule(cb) {
-    let headers = getHttpHeader();
-
-    return dispatch=>{
-        let user = getCookie("user");
-       getModuleConfig(user, response=>{
-			dispatch({type:MODULE_INIT, data:response});
-			cb && cb();
-       }, err=>{
-           throw (err);
-       })
-    }
+  return dispatch=>{
+    let user = getCookie("user");
+    getModuleConfig(user, response=>{
+      dispatch({type:MODULE_INIT, data:response});
+      cb && cb();
+    }, err=>{
+       throw (err);
+   })
+  }
 }

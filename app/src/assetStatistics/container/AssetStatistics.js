@@ -24,6 +24,7 @@ import { getDeviceTypeByModel } from '../../util/index';
 import { getObjectByKey } from '../../util/algorithm';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import { intlFormat } from '../../util/index';
+import { trimString } from '../../util/string';
 
 import Immutable from 'immutable';
 export class SingleLamp extends Component {
@@ -95,20 +96,30 @@ export class SingleLamp extends Component {
 
   componentWillMount() {
     this.mounted = true;
+    this.setState({model: this.props.params.asset}, ()=>{
+      this.requestSearch();
+    })
     getModelData(() => { this.mounted && this.initTreeData(); });
     getChildDomainList(data => { this.mounted && this.initDomain(data); });
   }
 
-  componentDidUpdate(){
-    const{sidebarNode} = this.props;
-    if(this.props.sidebarNode!==null){
-        if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
-            this.setState({model:sidebarNode.id}, ()=>{
-                this.requestSearch()
-            });
-        }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.params.asset !== this.props.params.asset){
+      this.setState({model: nextProps.params.asset}, ()=>{
+        this.requestSearch();
+      })
     }
   }
+  // componentDidUpdate(){
+  //   const{sidebarNode} = this.props;
+  //   if(this.props.sidebarNode!==null){
+  //       if(this.state.model!==sidebarNode.id&&!sidebarNode.children){
+  //           this.setState({model:sidebarNode.id}, ()=>{
+  //               this.requestSearch()
+  //           });
+  //       }
+  //   }
+  // }
 
   componentWillUnmount() {
     this.mounted = false;
@@ -122,7 +133,8 @@ export class SingleLamp extends Component {
     let domainId = domain.getIn(['list', domain.get('index'), 'id']);
     let modelId = model;
     let name = search.get('value');
-    name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
+    // name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
+    name=trimString(name);
     getSearchCount(domainId, modelId, name, (data) => this.mounted && this.initPageTotal(data));
     getSearchAssets(domainId, modelId, name, offset, size, data => this.mounted && this.searchResult(data));
   }
@@ -212,7 +224,7 @@ export class SingleLamp extends Component {
         })
       })
     } else {
-      const latlng = data.get('geoPoint').toJS();
+      const latlng = data.get('geoPoint')?data.get('geoPoint').toJS():'';
       this.setState({
         selectDevice: Object.assign({}, this.state.selectDevice, {
           latlng: latlng,

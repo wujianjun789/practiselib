@@ -26,6 +26,11 @@ class DeviceOperation extends React.Component {
       ]
     }
   };
+  componentDidMount(){
+    if(this.props.currentDevice!==''&&this.props.currentDevice.controlMode!==undefined){
+      this.setState({currentControlMode:this.props.currentDevice.controlMode})
+    }
+  }
   onChange = e => {
     const { id, value } = e.target;
     switch (id) {
@@ -55,8 +60,14 @@ class DeviceOperation extends React.Component {
       }
     });
   };
-  componentDidUpdate() {
-    console.log(this.state);
+  // componentDidUpdate() {
+  //   console.log(this.state);
+  // }
+  componentWillReceiveProps(nextProps){
+      // 伪代码 ，对照api接口修改字段即可
+    if(nextProps.currentDevice!==''&&nextProps.currentDevice.controlMode!==undefined){
+      this.setState({currentControlMode:nextProps.currentDevice.controlMode})
+    }
   }
   render() {
     const { disabled } = this.props;

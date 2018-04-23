@@ -82,6 +82,11 @@ export default {
     'app.resolution': '屏分辨率',
     'app.work.state': '工作状态',
 
+    'app.move.up': '上移',
+    'app.move.down': '下移',
+
+    'app.delete': '删除',
+
     //按钮
     'button.add': '添加',
     'button.handle': '操作',
@@ -187,8 +192,8 @@ export default {
     //名称	描述	功率	使用寿命	厂商	编辑
     'equipment.name': '名称',
     'equipment.description': '描述',
-    'equipment.power': '功率',
-    'equipment.life': '寿命',
+    'equipment.power': '功率(W)',
+    'equipment.life': '寿命(小时)',
     'equipment.manufacturer': '厂商',
     'equipment.edit': '编辑',
 
@@ -249,7 +254,6 @@ export default {
     'sysOperation.whiteList': '白名单',
     'sysOperation.include': '包含',
     'sysOperation.devices': '个设备',
-    'sysOperation.input.device': '输入设备名称',
     'sysOperation.domain': '域',
     'sysOperation.type': '类型',
     'sysOperation.id': '设备编号',
@@ -266,8 +270,8 @@ export default {
     'sysOperation.select.sensor': '选择传感器：',
     'sysOperation.label': '标签：',
     'sysOperation.input.id': '输入编号添加',
-    'sysOperation.device.version': '设备版本',
-    'sysOperation.product.version': '版本',
+    'sysOperation.device.version': '版本',
+    'sysOperation.product.version': '产品版本',
     'sysOperation.hardware.version': '硬件版本',
     'sysOperation.software.version': '软件版本',
 
@@ -307,7 +311,6 @@ export default {
     'sysOperation.deviceDomain': '域',
 
     //故障管理
-    'sysOperation.alarm': '告警',
     'sysOperation.fault': '故障',
     'sysOperation.fault.manage': '故障管理',
     'sysOperation.alarm.type': '告警类别',
@@ -637,6 +640,12 @@ export default {
     'mediaPublish.date.alert': '请输入正确日期',
     'mediaPublish.scene.submit.alert': '请提交播放场景',
     'mediaPublish.area.submit.alert': '请提交播放区域',
+    'mediaPublish.plan.select.alert':'请选择播放计划',
+    'mediaPublish.plan.submit.alert':'请提交新建计划',
+
+    'mediaPublish.plan.add':'添加播放计划',
+    'mediaPublish.plan.edit':'编辑播放计划',
+    'mediaPublish.scene.add':'添加播放场景',
 
     //以前的
     'app.link.index': '首页',

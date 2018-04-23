@@ -15,7 +15,7 @@ import SideBar from '../../components/SideBar';
 import Overlayer from '../../common/containers/Overlayer';
 
 import {getModelData, TreeData} from '../../data/assetModels';
-import {treeViewInit} from '../../common/actions/treeView';
+import {treeViewInit, onToggleById} from '../../common/actions/treeView';
 
 import {sideBarToggled} from '../action/index';
 import {treeViewNavigator} from '../../common/util/index';
@@ -23,6 +23,11 @@ class AssetManageIndex extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      pathname: ""
+    }
+
+    this.initModel = this.initModel.bind(this);
     this.initTreeData = this.initTreeData.bind(this);
     this.onToggle = this.onToggle.bind(this);
 
@@ -31,14 +36,29 @@ class AssetManageIndex extends Component {
 
   componentWillMount() {
     this.mounted = true;
-    getModelData(() => {this.mounted && this.initTreeData();});
+    this.initModel();
   }
 
   componentWillUnmount() {
     this.mounted = false;
   }
 
-  componentDidMount() {
+  componentWillReceiveProps(nextProps){
+    if(nextProps.location.pathname !==  this.props.location.pathname){
+      this.props.actions.onToggleById(nextProps.location.pathname);
+    }
+  }
+  componentDidUpdate(){
+    // console.log(this.props);
+    // const {location} = this.props;
+    // if(location.pathname !== this.state.pathname){
+    //   this.setState({pathname: location.pathname}, ()=>{
+    //     this.initModel();
+    //   });
+    // }
+  }
+  initModel(){
+    getModelData(() => {this.mounted && this.initTreeData();});
   }
 
   initTreeData() {
@@ -81,12 +101,12 @@ class AssetManageIndex extends Component {
     let parentPath = '';
     let childPath = '';
     const {routes} = this.props;
-    if (routes.length > 3) {
-      parentPath = routes[3].path;
+    if (routes.length > 4) {
+      parentPath = routes[4].path;
     }
 
-    if (routes.length > 4) {
-      childPath = routes[4].path;
+    if (routes.length > 5) {
+      childPath = routes[5].path;
     }
 
     return <div className={'container ' + 'asset-' + parentPath + ' ' + parentPath + '-' + childPath}>
@@ -108,6 +128,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       treeViewInit: treeViewInit,
+      onToggleById: onToggleById,
       sideBarToggled: sideBarToggled,
     }, dispatch),
   };

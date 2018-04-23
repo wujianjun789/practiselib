@@ -18,7 +18,7 @@ import SideBar from '../../components/SideBar';
 import Overlayer from '../../common/containers/Overlayer';
 
 import { getModelData, TreeData } from '.././../data/systemModel';
-import { treeViewInit } from '../../common/actions/treeView';
+import { treeViewInit, onToggleById } from '../../common/actions/treeView';
 import { sideBarToggled } from '../action/index';
 
 import {treeViewNavigator} from '../../common/util/index';
@@ -41,7 +41,11 @@ class SystemOperationIndex extends Component {
     this.mounted = false;
   }
 
-  componentDidMount() {}
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.location.pathname !== this.props.location.pathname){
+      this.props.actions.onToggleById(nextProps.location.pathname);
+    }
+  }
 
   getActiveNode(TreeData){
     let pathname = this.props.location.pathname;//当前页面路径
@@ -82,12 +86,12 @@ class SystemOperationIndex extends Component {
     let parentPath = '';
     let childPath = '';
     const {routes} = this.props;
-    if (routes.length > 3) {
-      parentPath = routes[3].path;
+    if (routes.length > 4) {
+      parentPath = routes[4].path;
     }
 
-    if (routes.length > 4) {
-      childPath = routes[4].path;
+    if (routes.length > 5) {
+      childPath = routes[5].path;
     }
 
     return <div className={ 'container systemOperation-' + parentPath + ' ' + parentPath + '-' + childPath }>
@@ -109,6 +113,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       treeViewInit: treeViewInit,
+      onToggleById: onToggleById,
       sideBarToggled: sideBarToggled,
     }, dispatch),
   };

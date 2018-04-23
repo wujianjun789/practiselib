@@ -162,11 +162,16 @@ export class DeviceConfig extends Component {
     this.mounted = false;
   }
 
-  componentDidUpdate() {
-    const {sidebarNode} = this.props;
-    if(sidebarNode && !sidebarNode.children && sidebarNode.id != this.state.model){
-      this.setState({model:sidebarNode.id},this.initData)
+  componentWillReceiveProps(nextProps){
+    if(nextProps.params.asset !== this.props.params.asset){
+      this.setState({model:nextProps.params.asset},this.initData);
     }
+  }
+  componentDidUpdate() {
+    // const {sidebarNode} = this.props;
+    // if(sidebarNode && !sidebarNode.children && sidebarNode.id != this.state.model){
+    //   this.setState({model:sidebarNode.id},this.initData)
+    // }
   }
 
   formatIntl(formatId) {

@@ -46,7 +46,7 @@ export default class ModulePopup extends Component{
     }
 
     render() {
-        let {className = '',title = '',modules,id,data=[]} = this.props;
+        let {className = '',title = '',modules,id,data=[],allModules} = this.props;
         let {moduleList} = this.state;
         let footer = <PanelFooter funcNames={['onCancel','onConfirm']} btnTitles={['button.cancel','button.confirm']} btnClassName={['btn-default', 'btn-primary']} btnDisabled={[false, false]} onCancel={this.onCancel} onConfirm={this.onConfirm}/>;
         return (
@@ -60,9 +60,9 @@ export default class ModulePopup extends Component{
                                 modules.map((item,index)=>{
                                     return <li key = {index}>
                                         {    
-                                            IsExitInArray(moduleList,item.key)?<span className='list-node-add'><FormattedMessage id='permission.added'/></span>:<span className='glyphicon glyphicon-plus' onClick={()=>this.moduleAdd(item.key)}></span>
+                                            IsExitInArray(moduleList,item)?<span className='list-node-add'><FormattedMessage id='permission.added'/></span>:<span className='glyphicon glyphicon-plus' onClick={()=>this.moduleAdd(item)}></span>
                                         }
-                                        {<FormattedMessage id={item.title}/>}                                    
+                                        {<FormattedMessage id={getObjectByKeyObj(allModules,'key',item)['title']}/>}                                    
                                     </li>
                                 })
                             }
@@ -74,7 +74,7 @@ export default class ModulePopup extends Component{
                                     moduleList.map((item,index)=>{
                                         return <li key = {index}>
                                             <span className="icon-table-delete" onClick={()=>this.moduleDelete(item)}></span>
-                                            {<FormattedMessage id={getObjectByKeyObj(modules,'key',item)['title']}/>}
+                                            {<FormattedMessage id={getObjectByKeyObj(allModules,'key',item)['title']}/>}
                                         </li>
                                     })
                                 }

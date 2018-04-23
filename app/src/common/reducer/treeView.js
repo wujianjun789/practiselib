@@ -4,6 +4,7 @@
 import {
     TREEVIEW_INIT,
     TREEVIEW_TOGGLE,
+    TREEVIEW_TOGGLE_ID,
     TREEVIEW_MOVE,
     TREEVIEW_REMOVE
 } from '../actionTypes/treeView'
@@ -19,6 +20,8 @@ export default function treeView(state=initialState, action) {
             return treeViewInit(state, action.data, action.refresh);
         case TREEVIEW_TOGGLE:
             return onToggle(state, action.data);
+        case TREEVIEW_TOGGLE_ID:
+            return onToggleById(state, action.data);
         case TREEVIEW_MOVE:
             return onMove(state, action.data);
         case TREEVIEW_REMOVE:
@@ -39,9 +42,9 @@ function treeViewInit(state, data, refresh) {
     let url = paths.pop();
     let urlParent = paths.pop();
 
-    let searNode = searchNode(data, urlParent);
+    let searNode = searchNode(data, urlParent, null);
     let curParentNode = searNode? Object.assign({}, searNode,{level:1}):searNode;
-    let sear2Node = searchNode(data, url);
+    let sear2Node = searchNode(data, url, searNode);
     let curNode = sear2Node? Object.assign({}, sear2Node, {level:curParentNode?2:1}):sear2Node;
 
 
@@ -79,6 +82,37 @@ function onToggle(state, data) {
     return Object.assign({}, state, {datalist:list});
 }
 
+function onToggleById(state, data) {
+    let path = data;
+    let paths = path.split("/");
+    let url = paths.pop();
+    let urlParent = paths.pop();
+
+    let searNode = searchNode(state.datalist, urlParent, null);
+    let curParentNode = searNode? Object.assign({}, searNode,{level:1}):searNode;
+    let sear2Node = searchNode(state.datalist, url, searNode);
+    let curNode = sear2Node? Object.assign({}, sear2Node, {level:curParentNode?2:1}):sear2Node;
+
+    let list = state.datalist;
+    if(curNode && curNode.children){
+        curNode.children = addTreeLevel(curNode.children, curNode.level+1);
+    }
+
+    if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
+        list = update(list, 1, null, curParentNode);
+    }
+
+    if(curNode && !curNode.toggled){
+        list = update(list, 1, null, curNode);
+    }
+
+    if(curNode && curNode.children && curNode.children.length){
+        list = update(list, 1, null, curNode.children[0]);
+    }
+
+    return Object.assign({}, state, {datalist:list});
+}
+
 function onMove(state, data) {
     let list = move(state.datalist, data);
     return Object.assign({}, state, {datalist:list});
@@ -89,14 +123,14 @@ function onRemove(state, data) {
     return Object.assign({}, state, {datalist:list});
 }
 
-function searchNode(list, id) {
+function searchNode(list, id, parent) {
     for(var key in list){
         let curNode = list[key];
-        if(curNode.id == id){
+        if(!parent && curNode.id == id){
             return curNode;
         }
 
-        if(curNode.children){
+        if(parent && curNode.id === parent.id && curNode.children){
             let childCurNode = searchNode(curNode.children, id);
             if(childCurNode){
                 return childCurNode;
@@ -157,7 +191,7 @@ function update(list, index, parentId, data) {
         // }
 
         if(node.level == data.level && node.id == data.id && !node.IsEndNode && node.children && node.children.length){
-            node.toggled = !node.toggled;
+            node.toggled = true;
             if(!node.defaultSelect){
                 if(node.toggled && node.children && node.children.length){//默认选中第一个子节点
                     for(var i=0;i<node.children.length;i++){

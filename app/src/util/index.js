@@ -113,8 +113,10 @@ export function getClassByModel(key) {
 export function getDeviceTypeByModel(key) {
   switch (key) {
     case 'lc':
+    case 'ssgw':
       return 'CONTROLLER';
     case 'led':
+    case 'ssslc':
       return 'DEVICE';
     case 'plc':
       return 'PLC';
