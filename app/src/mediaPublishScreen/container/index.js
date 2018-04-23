@@ -41,7 +41,7 @@ export class MediaPublishScreen extends Component {
       data: []
     },
     search: { value: '', placeholder: '输入设备名称' },
-    page: { total: 0, current: 1, limit: 10 },
+    page: { total: 0, current: 1, limit: 15 },
     playScheme: [
       { name: '无', id: 'empty' },
       { name: '方案管理...', id: 'manage' }
