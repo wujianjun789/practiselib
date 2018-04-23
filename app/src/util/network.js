@@ -241,11 +241,14 @@ export function getDomainConfig(responseFun, errFun) {
     })
 }
 
+let userId = "";
 let moduleConfig = null;
 export function getModuleConfig(user, responseFun, errFun) {
-    if(moduleConfig){
+    if(user && user.id === userId && moduleConfig){
         return responseFun && responseFun.apply(null, [moduleConfig]);
     }
+
+    userId = user.id;
 
     httpRequest('/config/module?user='+encodeURIComponent(JSON.stringify(user)),{
         method: 'GET',
