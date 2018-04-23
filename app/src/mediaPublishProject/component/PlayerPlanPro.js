@@ -4,6 +4,7 @@
 import React, { PureComponent } from 'react';
 
 import { DatePicker, Checkbox, TimePicker} from 'antd';
+import  zhCN from 'antd/lib/locale-provider/zh_CN';
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -233,7 +234,7 @@ class PlayerPlanPro extends PureComponent {
             <label className="control-label"
               htmlFor={property.startDate.key}>{property.startDate.title}</label>
             <div className="input-container input-w-2">
-              <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="" style={{ width: '85px' }}
+              <DatePicker id="startDate" format="YYYY/MM/DD" placeholder="" style={{ width: '85px' }} local={zhCN}
                 defaultValue={property.startDate.value} value={property.startDate.value} onChange={value => this.dateChange('startDate', value)} />
               <div className={prompt.startDate ? 'prompt ' : 'prompt hidden'}><FormattedMessage id="mediaPublish.check"/></div>
             </div>

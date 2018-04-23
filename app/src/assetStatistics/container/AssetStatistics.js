@@ -105,7 +105,7 @@ export class SingleLamp extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.params.asset !== this.props.params.asset){
-      this.setState({model: this.props.params.asset}, ()=>{
+      this.setState({model: nextProps.params.asset}, ()=>{
         this.requestSearch();
       })
     }
