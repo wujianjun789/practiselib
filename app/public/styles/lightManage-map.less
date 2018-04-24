@@ -279,12 +279,11 @@
               .pro{
                 padding-top: 4px;
                 padding-bottom: 4px;
-                color:#333; 
+                color:dimgray; 
                 span{
                   display: inline-block;
                   width: 75px;
                   padding-right:15px;
-                  color:#333;
                   text-align: left;
                   &.glyphicon{
                     text-align: left;
@@ -390,6 +389,25 @@
         }
       }
     }
+    .pole-info{
+        .panel-heading {
+            .panel-title {
+                font-weight:bold;
+                .close{
+                    display:inline-block;
+                    position:absolute;
+                    top:0px;
+                    right:0px;
+                    font-size:32px;
+                    font-weight:lighter;
+                    line-height:36px;
+                    width:40px;
+                    height:40px;
+                    text-align:center;
+                }
+            }
+        }
+    }
     .pole-control{
       margin-bottom: 0;
       position:relative;
@@ -401,16 +419,23 @@
         z-index:3;
         background: #eaedf1;
         border: 0;
+        height:40px;
         color:#333;
-        .glyphicon{
-          position: absolute;
-          opacity:.2;
-          top: 14px;
-          right: 11px;
-        }
         .panel-title {
           font-size:14px;
+          font-weight:bold;
           color:#333;
+          .glyphicon{
+              position: absolute;
+              font-size: 15px;
+              opacity:.25;
+              top: 0px;
+              right: 0px;
+              height:40px;
+              width:40px;
+              text-align:center;
+              line-height:40px;
+          }
         }
       }
 

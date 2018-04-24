@@ -455,8 +455,7 @@ export class ModelSearch extends Component{
                     <div ref="poleInfo" id="poleInfo" className={"panel panel-info pole-info "+(IsOpenPoleInfo?"":"hidden")}
                          style={Object.assign({"marginBottom":(this.controlStyle.maxHeight>0?20:0)+"px"},{"maxHeight":this.infoStyle.maxHeight+"px"})}>
                         <div className={"panel-heading "+(this.infoStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":(this.infoStyle.maxHeight>40?40:this.infoStyle.maxHeight)+"px"}}>
-                            <h3 className={"panel-title "+(this.infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0]?searchListToJS[0].name:''}</h3>
-                            <button type="button" className="close" onClick={()=>this.poleInfoCloseClick()}><span>&times;</span></button>
+                            <h3 className={"panel-title "+(this.infoStyle.maxHeight<30?"hidden":"")}>{searchListToJS[0]?searchListToJS[0].name:''}<span className={"close"} onClick={()=>this.poleInfoCloseClick()}>&times;</span></h3>
                         </div>
                         <div className={"panel-body "+(this.infoStyle.maxHeight<40?"hidden":"")} style={{"maxHeight":(this.infoStyle.maxHeight>40?this.infoStyle.maxHeight-40:0)+"px"}}>
                             { this.renderInfo(curId,this.state[curId]) }
@@ -465,8 +464,9 @@ export class ModelSearch extends Component{
                     <div className={"panel panel-info pole-control "+(IsSearch || !IsControl || this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":this.controlStyle.maxHeight+"px"}}>
                         <div className={"panel-heading "+(this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}} onClick={this.onToggle}>
-                            <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{this.props.intl.formatMessage({id:'app.device.control'})}</h3>
-                            <span className={"glyphicon "+(IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} role="triangle-toggle"></span>
+                            <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{this.props.intl.formatMessage({id:'app.device.control'})}
+                            	<span className={"glyphicon "+(IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} role="triangle-toggle"></span>
+                            </h3>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
                              style={{"maxHeight":(this.controlStyle.maxHeight>40?this.controlStyle.maxHeight-40:0)+"px",
