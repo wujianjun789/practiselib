@@ -38,51 +38,7 @@ export default (
                 cb(null, require('../assetManage/container/AssetDevice').default);
               }, 'starriverpro.assetmanage.asset');
             }} />
-            {/*<Route path="gateway" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/AssetDevice').default);
-              }, 'starriverpro.assetmanage.gateway');
-            }} />
-            <Route path="sensor" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/AssetDevice').default);
-              }, 'starriverpro.assetmanage.sensor');
-            }} />
-            <Route path="screen" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/AssetDevice').default);
-              }, 'starriverpro.assetmanage.screen');
-            }} />*/}
-            {/* <Route path="lc" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/SingleLamp').default);
-              }, 'starriverpro.assetmanage.singleLamp');
-            }} /> */}
-            {/* <Route path="gateway" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/Gateway').default);
-              }, 'starriverpro.assetmanage.gateway');
-            }} /> */}
-            {/* <Route path="sensor" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/Sensor').default);
-              }, 'starriverpro.assetmanage.sensor');
-            }} />
-            <Route path="screen" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/Screen').default);
-              }, 'starriverpro.assetmanage.screen');
-            }} /> */}
-            <Route path="pole" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/Pole').default);
-              }, 'starriverpro.assetmanage.pole');
-            }} />
-            <Route path="xes" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetManage/container/Xes').default);
-              }, 'starriverpro.assetmanage.xes');
-            }} />
+
           </Route>
           <Route path="statistics">
             <Route path=":asset" getComponent={(nextState, cb) => {
@@ -90,33 +46,6 @@ export default (
                 cb(null, require('../assetStatistics/container/AssetStatistics').default);
               }, 'starriverpro.assetmanage.assetStatistics');
             }} />
-            {/* <Route path="gateway" getComponent={(nextState, cb) => {
-
-              require.ensure([], (require) => {
-                cb(null, require('../assetStatistics/container/Gateway').default);
-              }, 'starriverpro.assetmanage.gateway');
-            }} />
-            <Route path="sensor" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetStatistics/container/Sensor').default);
-              }, 'starriverpro.assetmanage.sensor');
-            }} /> */}
-            {/* <Route path="screen" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetStatistics/container/Screen').default);
-              }, 'starriverpro.assetmanage.screen');
-            }} />
-            <Route path="pole" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetStatistics/container/Pole').default);
-              }, 'starriverpro.assetmanage.pole');
-            }} />
-            <Route path="xes" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../assetStatistics/container/Xes').default);
-              }, 'starriverpro.assetmanage.xes');
-            }} />*/}
-
           </Route>
         </Route>
       </Route>      
@@ -152,31 +81,6 @@ export default (
                 cb(null, require('../systemOperation/container/DeviceConfig').default);
               }, 'starriverpro.systemoperation.asset');
             }}/>
-            {/*<Route path="lc" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../systemOperation/container/DeviceConfig').default);
-              }, 'starriverpro.systemoperation.singlelampcontroller');
-            }} model='ssslc'/>
-            <Route path="sensor" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../systemOperation/container/DeviceConfig').default);
-              }, 'starriverpro.systemoperation.sensor');
-            }} model='sses'/>
-            <Route path="screen" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../systemOperation/container/DeviceConfig').default);
-              }, 'starriverpro.systemoperation.screen');
-            }} model='ssads'/>
-            <Route path="xes" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../systemOperation/container/Xes').default);
-              }, 'starriverpro.systemoperation.xes');
-            }} />
-            <Route path="pole" getComponent={(nextState, cb) => {
-              require.ensure([], (require) => {
-                cb(null, require('../systemOperation/container/Pole').default);
-              }, 'starriverpro.systemoperation.pole');
-            }} />*/}
           </Route>
           <Route path="strategy">
             <Route path="timeTable" getComponent={(nextState, cb) => {
