@@ -36,7 +36,8 @@ export class MapPreview extends Component{
             curDomainList: [],//device or domain
             positionList: [],
             panLatlng: null,
-            loading: true
+            loading: true,
+            aaa:0
         }
 
         this.map = {
@@ -85,11 +86,17 @@ export class MapPreview extends Component{
                 this.map = Object.assign({}, this.map, data, {zoomStep:DOMAIN_LEVEL});
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
                 getDomainConfig(data=>{
-                    if(this.mounted){
-                        this.domainConfig = data;
-                        //this.map.zoom = data[0].zoom;
-                        getDomainList(data=>{ this.mounted && this.initDomainList(data)});
-                    }
+                	this.domainConfig = data;
+                	getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, "ssslc", this.responseTime, data=>{
+		                let devPositionList = data.map(item=>{
+		                   let gePoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+		                   //return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
+		                   return Object.assign(gePoint, {"device_type":"DEVICE", "device_id":item.id});
+		                })
+		                let curDomainList = data;
+                        getDomainList(data=>{ this.mounted && setTimeout(()=>{this.setState({ curDomainList:curDomainList, positionList:devPositionList, domainList:data, loading:false })},1500)});
+		            })
+                    
                 })
             }
         });
@@ -106,11 +113,17 @@ export class MapPreview extends Component{
                 this.map = Object.assign({}, this.map, data, {zoomStep:DOMAIN_LEVEL});
                 this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
                 getDomainConfig(data=>{
-                    if(this.mounted){
-                        this.domainConfig = data;
-                        //this.map.zoom = data[0].zoom;
-                        getDomainList(data=>{ this.mounted && this.initDomainList(data)});
-                    }
+                	this.domainConfig = data;
+                	getAssetsByDomainLevelWithCenter(this.domainCurLevel, this.map, "ssslc", this.responseTime, data=>{
+		                let devPositionList = data.map(item=>{
+		                   let gePoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
+		                   //return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
+		                   return Object.assign(gePoint, {"device_type":"DEVICE", "device_id":item.id});
+		                })
+		                let curDomainList = data;
+                        getDomainList(data=>{ this.mounted && setTimeout(()=>{this.setState({ curDomainList:curDomainList, positionList:devPositionList, domainList:data, loading:false })},1500)});
+		            })
+                    
                 })
             }
         });
@@ -150,7 +163,7 @@ export class MapPreview extends Component{
     handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
             if(tableIndex===0&&IsSearchResult){
                     //如果是根据设备名称搜索
-                    if(this.domainCurLevel===5){
+                    if(this.domainCurLevel===this.domainLevel){
                         //如果域级别是设备级别，则移动到指定坐标
                         this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
                         //this.setSize();
@@ -158,9 +171,7 @@ export class MapPreview extends Component{
                         //如果域级别不是是设备级别，则地图跳转到设备级别并移动到指定坐标
                         this.map = Object.assign({}, this.map, {zoom:this.domainConfig[this.map.zoomStep-1].zoomRange[1]+1,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
                     }
-                    console.log("11111")
-                    this.requestCurDomain(item);
-                    
+                    this.requestCurDomain();
             }else if(tableIndex===1&&IsSearchResult){
                     //如果是根据域名称搜索
                     if(curList[0].level===this.domainCurLevel){
@@ -171,8 +182,7 @@ export class MapPreview extends Component{
                         let zoom = this.domainConfig[curList[0].level-1].zoomRange[0];
                         this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
                     }
-                    console.log("22222")
-                    this.requestCurDomain(item);
+                    this.requestCurDomain();
             }else{
                     //如果是点击地图图标
                     if(this.domainCurLevel===this.domainLevel){
@@ -192,8 +202,7 @@ export class MapPreview extends Component{
                     }else{
                     	
                     }
-                    console.log("33333")
-                    this.requestCurDomain(item);
+                    this.requestCurDomain();
            }
             
             
@@ -201,7 +210,7 @@ export class MapPreview extends Component{
 
     initDomainList(data){
         if(this.mounted){
-        	setTimeout(()=>{this.setState({domainList:data,loading:false})},1500);
+        	
         }
     }
 
@@ -231,8 +240,8 @@ export class MapPreview extends Component{
         this.setState({search:newValue});
     }
 
-    requestCurDomain(item){
-//  	this.setState({curDomainList:[], positionList:[]},()=>{
+    requestCurDomain(){
+  	//this.setState({curDomainList:[], positionList:[]},()=>{
     		this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
 	        this.responseTime = new Date().getTime();
 	        if(this.domainCurLevel==this.domainLevel){
@@ -242,22 +251,18 @@ export class MapPreview extends Component{
 	                   //return Object.assign(gePoint, {"device_type":getDeviceTypeByModel(item.extendType), "device_id":item.id});
 	                   return Object.assign(gePoint, {"device_type":"DEVICE", "device_id":item.id});
 	                })
-	                this.mounted && this.setState({curDomainList:data, positionList:devPositionList, searchList:Immutable.fromJS([item])});
+	                this.mounted && this.setState({curDomainList:data, positionList:devPositionList});
 	            })
-					//this.mounted && this.setState({curDomainList:[], positionList:[]});
-				return false;	
+				//this.mounted && this.setState({curDomainList:[], positionList:[]});
+				return false;
 	        }
-	
 	        getDomainByDomainLevelWithCenter(this.domainCurLevel, this.map, this.responseTime, (data, timestamp)=>{
 	            let positionList = data.map(item=>{
 	                let geoPoint = item.geoPoint ? item.geoPoint : {lat:"", lng:""};
 	                return Object.assign(geoPoint, {"device_type":"DEVICE", "device_id":item.id, IsCircleMarker: true});
 	            })
 	            if(this.mounted){
-	                //console.log('responseTimeout:',this.responseTimeout);
-	                //this.responseTimeout && clearTimeout(this.responseTimeout);
-	                //this.responseTimeout = setTimeout(()=>{
-	                timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList, searchList:Immutable.fromJS([item])},()=>{
+	                timestamp === this.responseTime && this.setState({curDomainList: data, positionList:positionList},()=>{
 	                    let deviceLen = [];
 	                    const locale = this.props.intl;
 	                    data.map(item=>{
@@ -268,13 +273,11 @@ export class MapPreview extends Component{
 	                            let curIndex = lodash.findIndex(this.state.curDomainList, domain=>{
 	                                return domain.id == item.id
 	                            })
-	
 	                            if(curIndex>-1 && curIndex<this.state.curDomainList.length){
 	                                this.state.curDomainList[curIndex].detail = item.name.slice(0, DOMAIN_NAME_LENGTH-6)+
 	                                  (itemLen>DOMAIN_NAME_LENGTH-6 ? "...":"")+
 	                                  ' \n'+asset.length/*+this.props.intl.formatMessage({id:'map.device.tip'})*/;
 	                            }
-	
 	                            if (deviceLen.length == data.length){
 	                                //this.mounted && this.setState({curDomainList: this.state.curDomainList});
 	                            }
@@ -284,7 +287,7 @@ export class MapPreview extends Component{
 	            	//}, 33);
 	            }
 	        })
-//      });
+        //});
     }
 
     searchSubmit(){
@@ -311,7 +314,7 @@ export class MapPreview extends Component{
     }
     
 //  mapDragend(data){
-//
+//		console.log(data)
 //  }
 
     mapMoveend(data){
@@ -320,7 +323,7 @@ export class MapPreview extends Component{
     		if(this.map.center.lat==data.latlng.lat&&this.map.center.lng==data.latlng.lng&&this.map.zoom==data.zoom){
     			//console.log("||||||||||||||||||||||")
     		}else{
-    			console.log("－－－－－－－－－－－－")
+    			//console.log("－－－－－－－－－－－－")
     			this.map = Object.assign({}, this.map, {zoom:data.zoom, center:{lng:data.latlng.lng,lat:data.latlng.lat}, distance:data.distance});
 				this.requestCurDomain();
     		}
@@ -330,24 +333,34 @@ export class MapPreview extends Component{
     	}
 
     }
-
+//	mapMovestart(data){
+//		console.log(data)
+//	}
 //  mapZoomend(data){
 //
 //  }
 
     markerClick(data){
-    	
-        if(this.domainCurLevel < this.domainLevel){
-            this.domainCurLevel += 1;
-            let nextDomain = lodash.find(this.domainConfig, data=>{ return data.id == this.domainCurLevel });
-            if(nextDomain){
-                this.map = Object.assign({}, this.map, {zoom:nextDomain.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-            }else{
-                this.map = Object.assign({}, this.map, {zoom:this.mapConfig.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
-            }
-            this.requestCurDomain();
+    	if(this.domainCurLevel==this.domainLevel){
+    		this.map = Object.assign({}, this.map, { center:{lng:data.latlng.lng, lat:data.latlng.lat} });
+    	}else if(this.domainCurLevel == this.map.zoomStep){
+			this.map = Object.assign({}, this.map, {zoom:this.domainConfig[this.domainCurLevel-1].zoomRange[1]+1, center:{lng:data.latlng.lng, lat:data.latlng.lat} });
+        }else{
+        	this.map = Object.assign({}, this.map, {zoom:this.domainConfig[this.domainCurLevel].zoomRange[0], center:{lng:data.latlng.lng, lat:data.latlng.lat} });
         }
-
+        this.setState({positionList:[],curDomainList:[]},()=>{
+        	setTimeout(()=>{this.requestCurDomain()},300)
+        	
+        })
+        //;
+//          this.domainCurLevel += 1;
+//          let nextDomain = lodash.find(this.domainConfig, data=>{ return data.id == this.domainCurLevel });
+//          if(nextDomain){
+//              this.map = Object.assign({}, this.map, {zoom:nextDomain.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+//          }else{
+//              this.map = Object.assign({}, this.map, {zoom:this.mapConfig.zoom, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
+//          }
+//          this.requestCurDomain();
         // if(this.map.zoom+this.map.zoomStep <= this.map.maxZoom){
         //     this.map = Object.assign({}, this.map, {zoom:data.zoom+this.map.zoomStep, center:{lng:data.latlng.lng, lat:data.latlng.lat}});
         //     this.domainCurLevel = getDomainLevelByMapLevel(this.domainLevel, this.map);
@@ -357,11 +370,12 @@ export class MapPreview extends Component{
     }
 
     render(){
+    	console.log("render")
         const {mapId, search, placeholderList, curDomainList, positionList, panLatlng} = this.state;
         return <Content className="map-preview">
         			<Spin className="ant-spin-container-lightMap" size="large" tip="正在加载地图数据..." spinning={this.state.loading}></Spin>
 		            <MapView option = {{ zoom:this.map.zoom }} mapData = {{ id:mapId, latlng:this.map.center, position:positionList, data:curDomainList }}
-		                     mapCallFun={{ mapMoveendHandler:this.mapMoveend, markerClickHandler:this.markerClick }} panLatlng={panLatlng} panCallFun={this.panCallFun}/>
+		                    mapCallFun={{ mapMoveendHandler:this.mapMoveend, markerClickHandler:this.markerClick }} panLatlng={panLatlng} panCallFun={this.panCallFun} />
 		            <ModelSearch handleInfo={this.handleInfo} />
 		        </Content>
          

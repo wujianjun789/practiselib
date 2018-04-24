@@ -41,23 +41,27 @@ export default class Map{
         this.activeBtn = null;
         //marker是否可拖拽
         this.markerDraggable = false;
-
+		
+		this.mapMovestartTimeout = 0;
+		this.mapDragstartTimeout = 0;
         this.mapDragendTimeout = 0;
         this.mapMoveendTimeout = 0;
         this.mapZoomendTimeout = 0;
         this.markerClickTimeout = 0;
 
         this.callFun = {};
+        
+        this.tileLayers=false;
     }
 
     updateMap(data, option, callFun) {
+    	
         let options = this.options;
         options = Object.assign({}, options, option);
 
         if (options.hasOwnProperty("mapOffline") && options.hasOwnProperty("mapType")) {
         }else {
             return getMapConfig(response=>{
-
                 this.options = Object.assign({}, this.options, response);
                 this.updateMap(data, option, callFun)
             }, error=>{
@@ -89,6 +93,7 @@ export default class Map{
         this.initMap(data, options);
 
         this.setMapView(data, options);
+        
     }
 
     updateMapDevice(data, deviceData, callFun) {
@@ -118,7 +123,8 @@ export default class Map{
                 let options = {
                     id:data.id,
                     attributionControl: false,
-                    zoomControl: false
+                    zoomControl: false,
+                    inertia: false
                 }
 
                 if (mapOffline == 0 && option.mapType == 'baidu') {
@@ -173,13 +179,17 @@ export default class Map{
 
     onLineMap(type, options) {
         var option = {maxZoom: options.maxZoom, minZoom: options.minZoom}
-
         if(this.latlng && this.latlng.length && (numberValid.test(this.latlng[0])) && numberValid.test(this.latlng[1])){
             this.map.setView(this.latlng, options.zoom);
         }
-
+		
         if (type == 'google') {
-            return L.tileLayer.chinaProvider('Google.Normal.Map', option).addTo(this.map);
+        	if(!this.tileLayers){
+        		this.tileLayers=!this.tileLayers;
+        		return L.tileLayer.chinaProvider('Google.Normal.Map', option).addTo(this.map);
+        	}else{
+        		return false;
+        	}
         }
 
         if (type == 'gaoDe') {
@@ -212,13 +222,12 @@ export default class Map{
                 }
             }).addTo(this.map);
         }
-
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', option).addTo(this.map);
     }
 
     offLineMap(options) {
         var option = {maxZoom: options.maxZoom, minZoom: options.minZoom, zoom: options.zoom}
-
+		
         L.TileLayer.prototype.getTileUrl = function (tilePoint) {
 
             return L.Util.template(this._url, L.extend({
@@ -228,7 +237,7 @@ export default class Map{
                 y: this.decimalToHex(tilePoint.y, 8)
             }, this.options));
         }
-
+		
         L.tileLayer('offlineMap/L{z}/R{y}/C{x}.png', {
             attribution: 'Map data &copy;',
             maxZoom: option.maxZoom,
@@ -638,9 +647,41 @@ export default class Map{
         })
     }
     
+    mapMoveStart(event) {
+        let map = event.target;
+        //map.off("movestart", this.mapMoveStart, this);
+//      let bounds = map.getBounds();
+//      this.mapDragstartTimeout && clearTimeout(this.mapDragstartTimeout);
+//      this.mapDragstartTimeout = setTimeout(()=>{
+//          this.mapDragstartHandler({
+//              mapId:map.options.id,
+//              latlng:map.getCenter(),
+//              zoom: map.getZoom(),
+//              bounds: bounds,
+//              distance: bounds._southWest.distanceTo(bounds._northEast)
+//          });
+//      }, 33);
+    }
+    
+    mapDragStart(event) {
+        let map = event.target;
+        map.off("moveend", this.mapMoveEnd, this);
+        let bounds = map.getBounds();
+        this.mapDragstartTimeout && clearTimeout(this.mapDragstartTimeout);
+        this.mapDragstartTimeout = setTimeout(()=>{
+            this.mapDragstartHandler({
+                mapId:map.options.id,
+                latlng:map.getCenter(),
+                zoom: map.getZoom(),
+                bounds: bounds,
+                distance: bounds._southWest.distanceTo(bounds._northEast)
+            });
+        }, 33);
+    }
+    
     mapDragEnd(event) {
         let map = event.target;
-        map.off("dragend", this.mapDragEnd, this);
+        //map.off("dragend", this.mapDragEnd, this);
         let bounds = map.getBounds();
         this.mapDragendTimeout && clearTimeout(this.mapDragendTimeout);
         this.mapDragendTimeout = setTimeout(()=>{
@@ -766,6 +807,12 @@ export default class Map{
     mapMoveendHandler(data){
         if(this.callFun.mapMoveendHandler){
             this.callFun.mapMoveendHandler.call(null, data);
+        }
+    }
+
+    mapDragstartHandler(data){
+        if(this.callFun.mapDragstartHandler){
+            this.callFun.mapDragstartHandler.call(null, data);
         }
     }
 
@@ -903,6 +950,7 @@ export default class Map{
         this.layer = null;
 
         if(this.map){
+        	this.map.off('dragstart', this.mapDragEnd, this);
             this.map.off('dragend', this.mapDragEnd, this);
             this.map.off('moveend', this.mapMoveEnd, this);
             this.map.off('zoomend', this.mapZoomEnd, this);
@@ -918,6 +966,7 @@ export default class Map{
     destroy() {
         clearTimeout(this.updateTime);
         clearTimeout(this.mapZoomendTimeout);
+        clearTimeout(this.mapDragstartTimeout);
         clearTimeout(this.mapDragendTimeout);
         clearTimeout(this.mapMoveendTimeout);
         this.clearMarker();

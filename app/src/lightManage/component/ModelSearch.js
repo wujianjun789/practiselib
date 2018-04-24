@@ -33,21 +33,13 @@ export class ModelSearch extends Component{
         this.state = {
             searchOffset:0,
             modifyNow: 0,
-            domainList: [],
             domainSearch:{placeholder:this.props.intl.formatMessage({id:'app.input.device.name'}), value:'', curIndex:-1},
-            panLatlng: null,
-            placeholderList: [],
-            curPositionList:[],
             curList: [],
-            mapId: "lightMap",
 
             /* 新增－20170915 */
-            model:"pole",
             interactive:false,
             tableIndex: 0,
             /*    0:设备;  1:域;    */
-            tmapLatlng:{lng: 121.49971691534425, lat: 31.239658843127756},
-            deviceId:"",
             IsSearch: true,
             IsSearchResult: false,
             
@@ -77,29 +69,12 @@ export class ModelSearch extends Component{
             curDevice:Immutable.fromJS([]),
             positionList:[],
             searchList:Immutable.fromJS([]),
-            deviceList:[],
-            domainList:{
-                titleField: 'name',
-                valueField: 'name',
-                index: 0,
-                value: "",
-                options: [
-                    {id: 1, title: 'domain01', value: 'domain01'},
-                    {id: 2, title: 'domain02', value: 'domain02'},
-                    {id: 3, title: 'domain03', value: 'domain03'},
-                    {id: 4, title: 'domain04', value: 'domain04'},
-                    {id: 5, title: 'domain05', value: 'domain05'},
-                    {id: 6, title: 'domain06', value: 'domain06'},
-                    {id: 7, title: 'domain07', value: 'domain07'}
-                ]
-            },
             isMouseEnter:false
         }
 
         this.map = {
             center:{ lng: 121.49971691534425, lat: 31.239658843127756 }
         };
-        this.panLatlng = null;
         this.listStyle = {"maxHeight":"200px"};
         this.infoStyle = {"maxHeight":"352"};
         this.controlStyle= {"maxHeight":"220"};
@@ -109,19 +84,6 @@ export class ModelSearch extends Component{
         this.andNot= 0;
 
         this.screen = Immutable.fromJS({})
-        this.faultKeys = ["sys_fault", "vram_fault", "disp_module_fault", "disp_module_power_fault", "single_pixel_tube_fault",
-            "detection_sys_fault", "ac_fault", "lightning_arrester_fault", "photosensor_fault", "abnormal_temperature_fault",
-            "door_switch_fault"];
-
-        this.deviceTypes = [
-            {id:"pole", className:"icon_pole"},
-            {id:"screen", className:"icon_screen"},
-            {id:"camera", className:"icon_camera"},
-            {id:"lamp", className:"icon_lc"},
-            {id:"charge", className:"icon_charge_pole"}
-        ];
-
-        this.deviceList = []
 
         this.lightList = {id:"lightValue",value:"10",options:[
             {id:"1", value:0}, {id:"2", value:10}, {id:"3", value:20}, {id:"4", value:30}, {id:"5", value:40},
@@ -144,8 +106,6 @@ export class ModelSearch extends Component{
         this.itemClick = this.itemClick.bind(this);
         this.poleInfoCloseClick = this.poleInfoCloseClick.bind(this);
         this.onToggle = this.onToggle.bind(this);
-        this.searchDeviceSelect = this.searchDeviceSelect.bind(this);
-        this.infoDeviceSelect = this.infoDeviceSelect.bind(this);
         this.closeClick = this.closeClick.bind(this);
 
         /*  新增－t  */
@@ -155,13 +115,7 @@ export class ModelSearch extends Component{
         /*  新增－t－20170915  */
         this.searchPromptList = [{id:"device", value:this.props.intl.formatMessage({id:'app.device'})},{id:"domain", value:this.props.intl.formatMessage({id:'app.domain'})}];
         this.requestSearch = this.requestSearch.bind(this);
-        this.onBlur = this.onBlur.bind(this);
         this.updateSearch = this.updateSearch.bind(this);
-        //this.requestPoleAsset = this.requestPoleAsset.bind(this);
-        //this.updatePoleAsset = this.updatePoleAsset.bind(this);
-        this.domainList = [];
-        this.stopProp = this.stopProp.bind(this);
-        this.isMouseEnterSet = this.isMouseEnterSet.bind(this);
         this.modifyNow = this.modifyNow.bind(this);
         this.searchCancel = this.searchCancel.bind(this);
 
@@ -203,7 +157,7 @@ export class ModelSearch extends Component{
 
     /*  新增－t－20170915  */
     requestSearch(offset){
-        const {model, search, tableIndex} = this.state;
+        const { search, tableIndex} = this.state;
         let searchType = this.searchPromptList[tableIndex].id;
         let searchValue = search.get("value");
         for(let j=searchValue.length-1;j>0;j--){
@@ -218,7 +172,6 @@ export class ModelSearch extends Component{
 				break;
 			}
 		}
-        console.log(searchValue)
         let offsetV = offset;
         let limitV = 6;
         !offsetV||offsetV<0?offsetV=0:offsetV;
@@ -254,67 +207,10 @@ export class ModelSearch extends Component{
         this.setState({modifyNow:n});
     }
 
-	handleInfo(curList,positionList,item,tableIndex,IsSearchResult){
-    		console.log("handleInfo")
-            if(tableIndex===0&&IsSearchResult){
-                    //如果是根据设备名称搜索
-                    if(this.domainCurLevel===5){
-                        //如果域级别是设备级别，则移动到指定坐标
-                        this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                        this.requestCurDomain();
-                        this.setSize();
-                    }else{
-                        //如果域级别不是是设备级别，则地图跳转到设备级别并移动到指定坐标
-                        this.map = Object.assign({}, this.map, {zoom:this.domain[this.map.zoomStep-1].zoomRange[1]+1,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                    }
-                    
-            }else if(tableIndex===1&&IsSearchResult){
-                    //如果是根据域名称搜索
-                    if(curList[0].level===this.domainCurLevel){
-                        //如果域级别与搜索域级别相同，则移动到指定坐标
-                        this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                        console.log(this.map)
-                        this.requestCurDomain();
-                    }else{
-                        //如果域级别与搜索域级别不相同，则计算出地图级别并跳转到此级别并移动到指定坐标
-                        console.log("=================================")
-                        let zoom = this.domain[curList[0].level-1].zoomRange[0];
-                        console.log(zoom)
-                        this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                    }
-                    
-            }else{
-                    //如果是点击地图图标
-                    if(this.domainCurLevel===this.map.zoomStep+1){
-                    	console.log(this.domainCurLevel+"设备级别")
-                        //如果地图级别是设备级别，则移动到指定坐标并显示状态信息
-                        this.map = Object.assign({}, this.map, {center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                    }else if(this.domainCurLevel<this.map.zoomStep+1){
-                    	console.log(this.domainCurLevel+"域级别")
-                        //如果地图级别是域级别，则向下一个地图级别并显示信息
-                        let zoom = 0;
-                        if(this.domainCurLevel>this.map.zoomStep){
-			            	zoom=this.map.zoom;
-			            }else if(this.domainCurLevel==this.map.zoomStep){
-			            	zoom=this.domain[this.domainCurLevel-1].zoomRange[1]+1;
-			            }else{
-			            	zoom=this.domain[this.domainCurLevel].zoomRange[0];
-			            }
-                        this.map = Object.assign({}, this.map, {zoom:zoom,center:{lng:curList[0].geoPoint.lng, lat:curList[0].geoPoint.lat}});
-                   	}else{
-                    }
-            }
-            this.setState({ searchList:Immutable.fromJS([item]) });
-    }
-
     updateSearch(data,tableIndex,type){
         let searchType = this.searchPromptList[tableIndex].id;
         let searchList = Immutable.fromJS(data);
         this.setState({searchList:searchList,tableIndex:tableIndex,IsSearchResult:true},()=>{});
-    }
-
-    isMouseEnterSet(){
-        this.setState({isMouseEnter:!this.state.isMouseEnter},()=>{});
     }
 
     setSize(){
@@ -337,14 +233,6 @@ export class ModelSearch extends Component{
         return formatId;
     }
 
-    onBlur(event){
-        this.timeOut = setTimeout(()=>{this.setState({interactive:false,IsSearchResult:false})}, 1000)
-    }
-
-    stopProp(event){
-        event.nativeEvent.stopPropagation();
-    }
-
     onChange(key, event){
         switch (key){
             case "search": //特殊处理
@@ -354,43 +242,23 @@ export class ModelSearch extends Component{
                     this.setState({search:this.state.search.update("value",v=>event.target.value)});
                 }
                 break;
-            case "screenSwitch":
-                this.screenSwitch.value = this.screenSwitch.options[event.target.selectedIndex].value;
-                this.setState(this.screenSwitch);
-                break;
-            case "timeTable":
-                this.setState({timeTableList: this.state.timeTableList.update("value", v=>this.state.timeTableList.getIn(["options", event.target.selectedIndex, "name"]))})
-                break;
             case "lightSwitch":
                 this.lightSwitch.value = this.lightSwitch.options[event.target.selectedIndex].value;
                 this.setState(this.lightSwitch);
-                break;
-            case "strategy":
-                this.setState({strategyList:this.state.strategyList.update("value", v=>this.state.strategyList.getIn(["options", event.target.selectedIndex, "name"]))})
                 break;
             case "handler":
                 this.lightList.value = this.lightList.options[event.target.selectedIndex].value;
                 this.setState(this.lightList);
                 break;
-            case "focus":
-                this.setState({camera:this.state.camera.update("focus", v=>event.target.value)});
-                break;
-            case "preset":
-                this.presetList.value = this.presetList.options[event.target.selectedIndex].value;
-                this.setState(this.presetList);
-                break;
+            default:
+        		return false;
         }
-    }
-
-    faultClick(event){
-        this.setState({IsOpenFault: true, faultStyle:{"top":(event.pageY+20)+"px"}});
     }
 
     submit(key){
     }
 
     itemClick(item){
-    	console.log(this.props.handleInfo)
         let curList = [];
         let positionList = [];
         let searchList = '';
@@ -423,16 +291,6 @@ export class ModelSearch extends Component{
 
     backHandler(){
         this.setState({IsSearch:true,IsSearchResult:true,IsOpenPoleInfo:false}, ()=>{
-            this.setSize();
-        });
-    }
-
-    searchDeviceSelect(id){
-        return;
-    }
-
-    infoDeviceSelect(id){
-        this.setState({curId:id, IsOpenFault:false}, ()=>{
             this.setSize();
         });
     }
@@ -474,16 +332,6 @@ export class ModelSearch extends Component{
         return this.formatIntl(sf ? 'abnormal':'normal');
     }
 
-    IsHaveFault(parentPro, faultKeys){
-        let faultList = [];
-        for(var i=0;i<faultKeys.length;i++){
-            if(parentPro.get(faultKeys[i]) === 1){
-                faultList.push(faultKeys[i]);
-            }
-        }
-        return faultList;
-    }
-
     renderState(parentPro, key, name, IsTransform, unit){
         if(key === "resolution"){
             if(parentPro && parentPro.has("width") && parentPro.has("height")){
@@ -513,9 +361,6 @@ export class ModelSearch extends Component{
                             {this.renderState(props, "online", "在线状态", true)}
                             {this.renderState(props, "brightness", "当前亮度")}
                             {
-                                <div className="fault-container"><span className="name">{this.formatIntl('工作状态')}:</span><span onClick={(event)=>{faultList.length>0 && this.faultClick(event)}} role="button">{faultList.length>0?"故障":"运行正常"}</span></div>
-                            }
-                            {
                                 faultList.length>0 &&
                                 <Panel className={"faultPanel panel-primary "+(IsOpenFault?'':'hidden')} style={faultStyle} title={this.formatIntl('fault_info')} closeBtn={true} closeClick={this.closeClick}>
                                     {
@@ -535,7 +380,7 @@ export class ModelSearch extends Component{
                 const {strategyList} = this.state;
                 return <div className="row state-control lamp">
                         <div className="form-group switch">
-                            <label className="apply_label">灯亮开关:</label>
+                            <label className="apply_label">开关:</label>
                             <select className="form-control" value={this.lightSwitch.value} onChange={event=>this.onChange("lightSwitch", event)}>
 						      	{
                                     this.lightSwitch.options.map(sw=>{
@@ -545,19 +390,8 @@ export class ModelSearch extends Component{
 						    </select>
                             <button className="btn btn-primary apply_btn" onClick={event=>this.submit("lightSwitch")}>应用</button>
                         </div>
-                        <div className="form-group strategy">
-                            <label className="apply_label">策略调光:</label>
-                            <select className="form-control" value={strategyList.get("value")} onChange={event=>this.onChange("strategy", event)}>
-                                {
-                                    strategyList.get("options").map(strategy=>{
-                                        return <option key={strategy.get("id")}>{strategy.get("name")}</option>
-                                    })
-                                }
-                            </select>
-                            <button className="btn btn-primary apply_btn" onClick={event=>this.submit("strategy")}>应用</button>
-                        </div>
                         <div className="form-group handler">
-                            <label className="apply_label">手动调光:</label>
+                            <label className="apply_label">调光:</label>
                             <select className="form-control" value={this.lightList.value} onChange={(event)=>{this.onChange("handler", event)}}>
                                 {
                                     this.lightList.options.map(light=>{
@@ -573,7 +407,7 @@ export class ModelSearch extends Component{
 
     render(){
         
-        const {searchOffset, panLatlng, curList, mapId, deviceId, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
+        const {searchOffset, curList, search, interactive, IsSearch, IsSearchResult, curId, searchList, tableIndex,
             listStyle, infoStyle, controlStyle, positionList,  IsOpenPoleInfo, IsOpenPoleControl} = this.state;
         let IsControl = false;
         let searchListToJS = searchList.toJS();
@@ -632,7 +466,7 @@ export class ModelSearch extends Component{
                         <div className={"panel-heading "+(this.controlStyle.maxHeight===0?"hidden":"")} style={{"maxHeight":(this.controlStyle.maxHeight>40?40:this.controlStyle.maxHeight)+"px","borderBottom":(this.controlStyle.maxHeight<=40?0:1)+"px",
                         "paddingBottom":(this.controlStyle.maxHeight<40?0:12)+"px","paddingTop":(this.controlStyle.maxHeight<30?0:12)+"px"}} onClick={this.onToggle}>
                             <h3 className={"panel-title "+(this.controlStyle.maxHeight<19?"hidden":"")}>{this.props.intl.formatMessage({id:'app.device.control'})}</h3>
-                            <span className={"glyphicon "+ (IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} role="triangle-toggle"></span>
+                            <span className={"glyphicon "+(IsOpenPoleControl?"glyphicon-triangle-bottom ":"glyphicon-triangle-right ")+(this.controlStyle.maxHeight<27?"hidden":"")} role="triangle-toggle"></span>
                         </div>
                         <div className={"panel-body "+(!IsOpenPoleControl || this.controlStyle.maxHeight<=40?"hidden":"")}
                              style={{"maxHeight":(this.controlStyle.maxHeight>40?this.controlStyle.maxHeight-40:0)+"px",
@@ -644,11 +478,6 @@ export class ModelSearch extends Component{
         )
     }
 }
-//                          <ul className="btn-group">
-//                              {
-//                                 searchListToJS[0] && <li className={(this.infoStyle.maxHeight<88?"hidden ":" ")+(curId==="lamp"?"btn btn-primary":"")} onClick={()=>this.infoDeviceSelect("lamp")} role="button"><span className={"this"+(curId==="lamp"?"_hover":"")}><span className="icon_lc"></span></span></li>
-//                              }
-//                          </ul>
 
 const mapStateToProps = (state) => {
     return {
