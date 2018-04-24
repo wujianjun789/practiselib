@@ -88,7 +88,7 @@ export class SingleLamp extends Component {
     this.searchSubmit = this.searchSubmit.bind(this);
     this.initTreeData = this.initTreeData.bind(this);
     this.initDomain = this.initDomain.bind(this);
-    this.searchResult = this.searchResult.bind(this);
+    this.initAssetList = this.initAssetList.bind(this);
     this.deviceTotal = this.deviceTotal.bind(this);
     this.requestSearch = this.requestSearch.bind(this);
     this.initPageTotal = this.initPageTotal.bind(this);
@@ -136,7 +136,8 @@ export class SingleLamp extends Component {
     // name =name.replace(/^\s+|\s+$/g,"");//过滤字符两边空格
     name=trimString(name);
     getSearchCount(domainId, modelId, name, (data) => this.mounted && this.initPageTotal(data));
-    getSearchAssets(domainId, modelId, name, offset, size, data => this.mounted && this.searchResult(data));
+    getSearchAssets(domainId, modelId, name, offset, size,
+       data => this.mounted && this.initAssetList(data));
   }
 
   initTreeData() {
@@ -162,7 +163,7 @@ export class SingleLamp extends Component {
     this.setState({ page: page, deviceInfo: { total: data.count } });
   }
 
-  searchResult(data) {
+  initAssetList(data) {
     let list = data.map(item => {
       let curDomain = getObjectByKey(this.state.domain.get('list'), 'id', item.domainId);
       return Object.assign({}, { domain: curDomain ? curDomain.get('name') : '' },
@@ -172,6 +173,13 @@ export class SingleLamp extends Component {
         let item = this.state.data.get(0);
         this.tableClick(item);
     });
+    // if (list.length) {
+    //   let item = list[0];
+    //   this.tableClick(Immutable.fromJS(item));
+    // } else {
+    //   this.setState({ selectDevice: Object.assign({}, this.state.selectDevice, { data: [] }) });
+    // }
+
   }
 
   deviceTotal(data) {

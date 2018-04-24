@@ -32,19 +32,23 @@ export default class MapView extends Component {
         })
     }
 
-    shouldComponentUpdate(){
+    componentWillReceiveProps(nextProps){
+        // console.log('nextProps:', nextProps.mapData, this.props.mapData);
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
         const {option, mapData} = this.props;
-        if(this.state.map[mapData.id]
-          && this.preMap
-          && this.preMap.latlng
-          && L.latLng(this.preMap.latlng)
-          && this.preMap.zoom === option.zoom
-          && L.latLng(this.preMap.latlng).equals(L.latLng(mapData.latlng))
-          && lodash.isEqual(this.preMap.position, mapData.position)){
+      
+        if(this.state.map[nextProps.mapData.id]
+          && nextProps.mapData.latlng
+          && L.latLng(nextProps.mapData.latlng)
+          && (!nextProps.option.zoom || nextProps.option.zoom === option.zoom)
+          && L.latLng(nextProps.mapData.latlng).equals(L.latLng(mapData.latlng))
+          && lodash.isEqual(nextProps.mapData.position, mapData.position)){
             return false;
         }
 
-        this.updatePreMap();
+        // this.updatePreMap();
         return true;
     }
 
