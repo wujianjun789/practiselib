@@ -41,7 +41,9 @@ export class TreeView extends Component{
 
     onRemove(node){
         const {actions} = this.props;
-        setTimeout(()=>{actions && actions.onRemove(node)}, 33);
+        // setTimeout(()=>{
+            actions && actions.onRemove(node)
+        // }, 33);
         this.setState({update: true});
         this.props.onRemove && this.props.onRemove(node);
     }
@@ -49,8 +51,12 @@ export class TreeView extends Component{
     onToggle(node){
         const {actions,className} = this.props
         if(className === "mediaPublish"){node.defaultSelect = true;}
-        setTimeout(()=>{ actions && actions.onToggle(node)}, 33);
+
         this.props.onToggle && this.props.onToggle(node);
+
+        // setTimeout(()=>{
+            actions && actions.onToggle(node)
+        // }, 33);
     }
 
     getHeight(datalist){

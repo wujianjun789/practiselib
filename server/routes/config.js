@@ -33,56 +33,60 @@ router.get('/domain', function (req, res, next) {
 })
 
 router.get('/module', function (req, res, next) {
-    let user = JSON.parse(req.query.user);
-    // console.log(user, user.id, user.role, user.userId, "%%%%%%%");
+    const userJson = req.query.user;
+    if(userJson){
+        const user = JSON.parse(req.query.user);
 
-    let options = {
-        host: client.HOST,
-        port: client.PORT,
-        path: client.PATH+"/users/"+user.userId,
-        method: 'GET',
-        headers: {
-            // "Accept": "application/json",
-            'Content-Type': 'application/json'
-        }
-    }
-
-    let httpReq = http.request(options, response=>{
-        let body = '';
-        response.on('data', data=>{
-            body += data;
-        })
-
-        response.on('end', ()=>{
-            // console.log('body:', body, JSON.parse(body).roleId);
-            let modules = JSON.parse(body).modules;
-            if(user.role=="admin"){
-                res.json(client.module);
-            }else{
-
-                let moduList = [];
-
-                if(!modules){
-                    moduList = [{"key": "asset", "title": "资产管理", "link": "/assetManage/manage"}];
-                }else{
-                    modules.forEach(mod=>{
-                        let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
-                        if(curMod){
-                            moduList.push(curMod);
-                        }
-                    })
-                }
-
-                res.json(moduList);
+        let options = {
+            host: client.HOST,
+            port: client.PORT,
+            path: client.PATH+"/users/"+user.userId,
+            method: 'GET',
+            headers: {
+                // "Accept": "application/json",
+                'Content-Type': 'application/json'
             }
+        }
+
+        let httpReq = http.request(options, response=>{
+            let body = '';
+            response.on('data', data=>{
+                body += data;
+            })
+
+            response.on('end', ()=>{
+                // console.log('body:', body, JSON.parse(body).roleId);
+                let modules = JSON.parse(body).modules;
+                if(user.role=="admin"){
+                    res.json(client.module);
+                }else{
+
+                    let moduList = [];
+
+                    if(!modules){
+                        moduList = [{"key": "asset", "title": "资产管理", "link": "/assetManage/manage"}];
+                    }else{
+                        modules.forEach(mod=>{
+                            let curMod = lodash.find(client.module, modu=>{return modu.key == mod});
+                            if(curMod){
+                                moduList.push(curMod);
+                            }
+                        })
+                    }
+
+                    res.json(moduList);
+                }
+            })
         })
-    })
 
-    httpReq.on('error', e=>{
-        console.log("message:",e.message);
-    })
+        httpReq.on('error', e=>{
+            console.log("message:",e.message);
+        })
 
-    httpReq.end();
+        httpReq.end();
+    }else{
+        res.json("invalid params");
+    }
 });
 
 router.get('/moduleDefault', function(req, res, next){

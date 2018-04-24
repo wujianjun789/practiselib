@@ -140,7 +140,6 @@
 }
 .icon_gateway:before {
   content: "\e91f";
-  color: #4a5064;
 }
 .icon_gateway_c1:before {
   content: "\e920";
