@@ -16,6 +16,7 @@ export default class MapView extends Component {
             zoom: "",
             map:{}
         }
+        this.zoom = '';
         this.timeout = null;
         this.mapTimeOut = null;
         this.preMap = null;
@@ -26,7 +27,8 @@ export default class MapView extends Component {
 
     componentWillMount(){
         getMapConfig(response=>{
-            this.setState({zoom:response.zoom})
+        	this.zoom=response.zoom;
+            //this.setState({zoom:response.zoom})
         }, error=>{
             throw error;
         })
@@ -83,7 +85,7 @@ export default class MapView extends Component {
         const {zoom} = this.state;
         let {latlng={lat: null, lng: null}} = mapData;
         if( option && !option.zoom){
-            option.zoom = zoom;
+            option.zoom = this.zoom;
         }
 
         if (mapData) {
@@ -106,9 +108,7 @@ export default class MapView extends Component {
                     if(!deviceList[key]){
                         deviceList[key] = [];
                     }
-
                     const deviceData = lodash.find(mapData.data, dd=>{ return dd.id == pos["device_id"] })
-
                     deviceData && deviceList[key].push(deviceData);
                 })
 
@@ -128,6 +128,7 @@ export default class MapView extends Component {
     }
 
     render() {
+    	console.log("MapView render")
         const {className='', mapData, mapIcon=false} = this.props;
         return <div className={"map-view "+(mapIcon?"map-icon ":" ")+className} ref={this.renderMap} id={mapData && mapData.id}></div>
     }

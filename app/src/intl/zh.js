@@ -511,6 +511,9 @@ export default {
     'mediaPublish.quit': '退出',
     'mediaPublish.property': '属性',
     'mediaPublish.materialLib': '素材库',
+    'mediaPublish.scene': '场景',
+    'mediaPublish.area': '区域',
+    'mediaPublish.asset': '素材',
 
     'mediaPublish.screen': '场景名称',
     'mediaPublish.materialName': '素材名称',

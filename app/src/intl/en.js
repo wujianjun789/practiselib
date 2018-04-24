@@ -513,6 +513,9 @@ export default {
     'mediaPublish.quit': 'Quit',
     'mediaPublish.property': 'Property',
     'mediaPublish.materialLib': 'Material library',
+    'mediaPublish.scene': 'Scene',
+    'mediaPublish.area': 'Area',
+    'mediaPublish.asset': 'Asset',
 
     'mediaPublish.screen': 'name',
     'mediaPublish.materialName': 'name',
