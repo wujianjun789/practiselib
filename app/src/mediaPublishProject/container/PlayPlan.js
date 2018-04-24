@@ -545,11 +545,11 @@ export class PlayPlan extends Component {
     }
     switch (curNode.type) {
     case 'scene':
-      return '场景';
+      return this.formatIntl('mediaPublish.scene');
     case 'area':
-      return '区域';
+      return this.formatIntl('mediaPublish.area');
     default:
-      return '素材';
+      return this.formatIntl('mediaPublish.asset');
     }
   }
 
@@ -635,7 +635,7 @@ export class PlayPlan extends Component {
           <div ref="assetProperty" className="panel panel-default asset-property">
             <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
               <span className={'icon_info'}></span>
-              {this.getPropertyName(curNode) + this.formatIntl('mediaPublish.property')}
+              {this.getPropertyName(curNode) +' '+ this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} style={sideInfoHeight}>

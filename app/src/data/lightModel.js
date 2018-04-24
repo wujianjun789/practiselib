@@ -81,14 +81,14 @@ export const TreeData = [
         class: 'icon_calendar',
         active: false,
         link: '/light/control/timeStrategy'
-      },
+      }/*,
       {
         id: 'latlngStrategy',
         name: 'app.latlng.strategy',
         class: 'icon_latlng',
         active: false,
         link: '/light/control/latlngStrategy'
-      }
+      }*/
     ]
   }
 ];

@@ -32,37 +32,38 @@ export default function treeView(state=initialState, action) {
 }
 
 function treeViewInit(state, data, refresh) {
+    console.log(refresh);
     let list = addTreeLevel(data, 1);
     if(!refresh){
       return Object.assign({}, state, {datalist: list});
     }
 
-    let path = location.pathname;
-    let paths = path.split("/");
-    let url = paths.pop();
-    let urlParent = paths.pop();
-
-    let searNode = searchNode(data, urlParent, null);
-    let curParentNode = searNode? Object.assign({}, searNode,{level:1}):searNode;
-    let sear2Node = searchNode(data, url, searNode);
-    let curNode = sear2Node? Object.assign({}, sear2Node, {level:curParentNode?2:1}):sear2Node;
-
-
-    if(curNode && curNode.children){
-        curNode.children = addTreeLevel(curNode.children, curNode.level+1);
-    }
-
-    if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
-        list = update(list, 1, null, curParentNode);
-    }
-
-    if(curNode && !curNode.toggled){
-        list = update(list, 1, null, curNode);
-    }
-
-    if(curNode && curNode.children && curNode.children.length){
-        list = update(list, 1, null, curNode.children[0]);
-    }
+    // let path = location.pathname;
+    // let paths = path.split("/");
+    // let url = paths.pop();
+    // let urlParent = paths.pop();
+    //
+    // let searNode = searchNode(data, urlParent, null);
+    // let curParentNode = searNode? Object.assign({}, searNode,{level:1}):searNode;
+    // let sear2Node = searchNode(data, url, searNode);
+    // let curNode = sear2Node? Object.assign({}, sear2Node, {level:curParentNode?2:1}):sear2Node;
+    //
+    //
+    // if(curNode && curNode.children){
+    //     curNode.children = addTreeLevel(curNode.children, curNode.level+1);
+    // }
+    //
+    // if(curNode && !curNode.children && curParentNode && !curParentNode.toggled){
+    //     list = update(list, 1, null, curParentNode);
+    // }
+    //
+    // if(curNode && !curNode.toggled){
+    //     list = update(list, 1, null, curNode);
+    // }
+    //
+    // if(curNode && curNode.children && curNode.children.length){
+    //     list = update(list, 1, null, curNode.children[0]);
+    // }
 
     return Object.assign({}, state, {datalist:list});
 }
@@ -191,7 +192,7 @@ function update(list, index, parentId, data) {
         // }
 
         if(node.level == data.level && node.id == data.id && !node.IsEndNode && node.children && node.children.length){
-            node.toggled = true;
+            node.toggled = !node.toggled;
             if(!node.defaultSelect){
                 if(node.toggled && node.children && node.children.length){//默认选中第一个子节点
                     for(var i=0;i<node.children.length;i++){
