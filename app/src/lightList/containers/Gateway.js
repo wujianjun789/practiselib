@@ -3,7 +3,7 @@ import common from './Common';
 import Select from '../../components/Select.1';
 import { injectIntl } from 'react-intl';
 import { message } from 'antd';
-import { updateAssetsRpcById } from '../../api/asset';
+import { updateAssetsRpcById, checkTimeRpcById } from '../../api/asset';
 import columns from '../TableData/ssgwTable.json';
 
 class DeviceOperation extends React.Component {
@@ -26,9 +26,14 @@ class DeviceOperation extends React.Component {
       ]
     }
   };
-  componentDidMount(){
-    if(this.props.currentDevice!==''&&this.props.currentDevice.controlMode!==undefined){
-      this.setState({currentControlMode:this.props.currentDevice.controlMode})
+  componentDidMount() {
+    if (
+      this.props.currentDevice !== '' &&
+      this.props.currentDevice.controlMode !== undefined
+    ) {
+      this.setState({
+        currentControlMode: this.props.currentDevice.controlMode
+      });
     }
   }
   onChange = e => {
@@ -42,31 +47,42 @@ class DeviceOperation extends React.Component {
   controlModeApply = () => {
     const { id } = this.props.currentDevice;
     const { currentControlMode } = this.state;
-    updateAssetsRpcById(id, { mode: currentControlMode }, res => {
-      if (res.success) {
-        message.success('操作成功');
-      } else {
-        message.error('操作失败');
-      }
-    });
+    message.info('暂无api');
+    // updateAssetsRpcById(id, { mode: currentControlMode }, res => {
+    //   if (res.success) {
+    //     message.success('操作成功');
+    //   } else {
+    //     message.error('操作失败');
+    //   }
+    // });
   };
   checkTimeApply = () => {
     const { id } = this.props.currentDevice;
-    updateAssetsRpcById(id, { updateTime: true }, res => {
-      if (res.success) {
-        message.success('操作成功');
-      } else {
-        message.error('操作失败');
+    checkTimeRpcById(
+      id,
+      'device-common:clock',
+      new Date().toISOString(),
+      res => {
+        if (res.success) {
+          message.success('操作成功');
+        } else {
+          message.error('操作失败');
+        }
       }
-    });
+    );
   };
   // componentDidUpdate() {
   //   console.log(this.state);
   // }
-  componentWillReceiveProps(nextProps){
-      // 伪代码 ，对照api接口修改字段即可
-    if(nextProps.currentDevice!==''&&nextProps.currentDevice.controlMode!==undefined){
-      this.setState({currentControlMode:nextProps.currentDevice.controlMode})
+  componentWillReceiveProps(nextProps) {
+    // 伪代码 ，对照api接口修改字段即可
+    if (
+      nextProps.currentDevice !== '' &&
+      nextProps.currentDevice.controlMode !== undefined
+    ) {
+      this.setState({
+        currentControlMode: nextProps.currentDevice.controlMode
+      });
     }
   }
   render() {

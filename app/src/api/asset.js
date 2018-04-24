@@ -627,9 +627,9 @@ export const getDeviceStatusById = (model,id,domainId, cb) => {
  * @param {object} data
  * @param {function} cb
  */
-export const updateAssetsRpcById = (id, data, cb) => {
+export const updateAssetsRpcById = (id,urlString, data, cb) => {
   httpRequest(
-    `${HOST_IP}/assets/${id}/rpc`,
+    `${HOST_IP}/assets/${id}/action/${urlString}`,
     {
       headers: getHttpHeader(),
       method: 'POST',
@@ -641,6 +641,19 @@ export const updateAssetsRpcById = (id, data, cb) => {
   );
 };
 
+export const checkTimeRpcById=(id,urlString,data,cb)=>{
+  httpRequest(
+    `${HOST_IP}/assets/${id}/set/${urlString}`,
+    {
+      headers: getHttpHeader(),
+      method: 'POST',
+      body: JSON.stringify(data)
+    },
+    response => {
+      cb && cb(response);
+    }
+  );
+}
 /**
  * 删除设备型号
  * @param {number | string } id

@@ -63,7 +63,13 @@ class DeviceOperation extends React.Component {
   switchApply = () => {
     const { id } = this.props.currentDevice;
     const { currentSwitchStatus } = this.state;
-    updateAssetsRpcById(id, { status: currentSwitchStatus }, res => {
+    let status;
+    if(currentSwitchStatus==='on'){
+      status=1
+    }else if(currentSwitchStatus==='off'){
+      status=0
+    }
+    updateAssetsRpcById(id,'device-sensor:switch-status', [{index:0,status}], res => {
       if (res.success) {
         message.success('操作成功');
       } else {
@@ -74,7 +80,7 @@ class DeviceOperation extends React.Component {
   dimmingApply = () => {
     const { id } = this.props.currentDevice;
     const { currentBrightness } = this.state;
-    updateAssetsRpcById(id, { brightness: currentBrightness }, res => {
+    updateAssetsRpcById(id,'device-sensor:dim-level', [{index:0,level:currentBrightness}], res => {
       if (res.success) {
         message.success('操作成功');
       } else {
