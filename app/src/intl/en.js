@@ -184,26 +184,27 @@ export default {
     'asset.assetTypes': 'EquipmentModal',
     'asset.type': 'Asset types',
     'asset.param': 'Default params',
-    //名称，描述，单位，精度
     'asset.name': 'Name',
     'asset.detail': 'Detail',
     'asset.unit': 'Unit',
     'asset.accuracy': 'Accuracy',
-    //名称	描述	功率	使用寿命	厂商	编辑
     'equipment.name': 'Name',
     'equipment.description': 'Description',
     'equipment.power': 'Power(W)',
     'equipment.life': 'Life-circle(Hour)',
     'equipment.manufacturer': 'Manufacturer',
-    'equipment.edit': 'Edit',
 
-    'equipment.modify': 'Modify',
-    'equipment.delete': 'Delete',
-    'equipment.add': 'Add',
+    'asset.isDeleteDevice': 'Delete the device ?',
+    'asset.modifyDevice': 'Modify device',
+    'asset.addDevice': 'Add device',
 
-    'equipment.isDeleteDevice': 'Delete the device ?',
-    'equipment.modifyDevice': 'Modify device',
-    'equipment.addDevice': 'Add device',
+    'asset.statistics.input': 'please input the name',
+    'asset.statistics.id': 'ID',
+    'asset.statistics.name': 'Name',
+    'asset.statistics.product': 'Product Ver.',
+    'asset.statistics.software': 'Software Ver.',
+    'asset.statistics.hardware': 'Hardware Ver.',
+    'asset.statistics.type': 'Type',
 
     //域管理
     'domain.input.placeholder': 'Search for domain name',

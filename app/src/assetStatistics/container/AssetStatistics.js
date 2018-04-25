@@ -40,7 +40,7 @@ export class SingleLamp extends Component {
       ]),
       domain: Immutable.fromJS({ list: [/*{id:1, value:'域'},{id:2, value:'域2'}*/], index: 0, value: '域' }),
       // device:Immutable.fromJS({list:[{id:1, value:'灯集中控制器'},{id:2, value:'集中控制'}], index:0, value:'灯集中控制器'}),
-      search: Immutable.fromJS({ placeholder: intlFormat({ en: 'please input the name', zh: '输入设备名称' }), value: '' }),
+      search: Immutable.fromJS({ placeholder: this.formatIntl('asset.statistics.input'), value: '' }),
       // search: Immutable.fromJS({ placeholder: '输入素材名称', value: '' }),
       collapse: false,
       deviceCollapse: false,
@@ -71,12 +71,12 @@ export class SingleLamp extends Component {
 
 
     this.columns = [
-      { field: 'id', title: intlFormat({ en: 'ID', zh: '编号' }) },
-      { field: 'name', title: intlFormat({ en: 'Name', zh: '名称' }) },
-      { field: 'product', title: intlFormat({ en: 'Product Ver.', zh: '产品版本' }) },
-      { field: 'software', title: intlFormat({ en: 'Software Ver.', zh: '软件版本' }) },
-      { field: 'hardware', title: intlFormat({ en: 'Hardware Ver.', zh: '硬件版本' }) },
-      { field: 'type', title: intlFormat({ en: 'Type', zh: '型号' }) },
+      { field: 'id', title: this.formatIntl('asset.statistics.id') },
+      { field: 'name', title: this.formatIntl('asset.statistics.name') },
+      { field: 'product', title: this.formatIntl('asset.statistics.product') },
+      { field: 'software', title: this.formatIntl('asset.statistics.software') },
+      { field: 'hardware', title: this.formatIntl('asset.statistics.hardware') },
+      { field: 'type',  title: this.formatIntl('asset.statistics.type') },
     ];
 
     this.collapseHandler = this.collapseHandler.bind(this);
@@ -92,6 +92,7 @@ export class SingleLamp extends Component {
     this.deviceTotal = this.deviceTotal.bind(this);
     this.requestSearch = this.requestSearch.bind(this);
     this.initPageTotal = this.initPageTotal.bind(this);
+    this.formatIntl = this.formatIntl.bind(this);
   }
 
   componentWillMount() {
@@ -123,6 +124,11 @@ export class SingleLamp extends Component {
 
   componentWillUnmount() {
     this.mounted = false;
+  }
+
+  formatIntl(formatId) {
+    const { intl } = this.props;
+    return intl ? intl.formatMessage({ id: formatId }) : null;
   }
 
   requestSearch() {
@@ -278,7 +284,7 @@ export class SingleLamp extends Component {
           <div className="panel panel-default device-statics-info">
             <div className="panel-heading" role="presentation"
               onClick={() => { !collapse && this.collapseHandler('deviceCollapse'); }}>
-              <span className="icon_chart"></span>{intlFormat({ en: 'Statistics', zh: '统计' })}
+              <span className="icon_chart"></span>{this.formatIntl('asset.statistics')}
               <span className="icon icon_collapse statistics pull-right"></span>
             </div>
             <div className="panel-body view">

@@ -129,7 +129,7 @@ export class AssetDevice extends Component {
     const { actions } = this.props;
     let curId = id; //当前要删除的型号的Id
     actions.overlayerShow(<ConfirmPopup iconClass="icon_popup_delete"
-      tips={this.formatIntl('equipment.isDeleteDevice')} cancel={() => { actions.overlayerHide(); }}
+      tips={this.formatIntl('asset.isDeleteDevice')} cancel={() => { actions.overlayerHide(); }}
       confirm={() => {
         this.deleteModalTypeById(curId);
         actions.overlayerHide();
@@ -147,7 +147,7 @@ export class AssetDevice extends Component {
       }
     }
 
-    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.modifyDevice')}
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('asset.modifyDevice')}
       data={data}
       idEdit={false}
       hasPower={true}
@@ -191,7 +191,7 @@ export class AssetDevice extends Component {
     data.power = '';
     data.life = '';
     data.manufacture = '';
-    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('equipment.addDevice')}
+    actions.overlayerShow(<TypeEditPopup id="updateType" title={this.formatIntl('asset.addDevice')}
       addNotify={actions.addNotify}
       data={data}
       hasPower={true}
@@ -257,19 +257,19 @@ export class AssetDevice extends Component {
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowEdit(row[keyField]); }} role="presentation"
                             className="icon_edit">
-                            <span className="text">{this.formatIntl('equipment.edit')}</span>
+                            <span className="text">{this.formatIntl('button.edit')}</span>
                           </span>
                         </a>
                         <a className="btn" role="presentation">
                           <span onClick={() => { this.rowDelete(row[keyField]); }} role="presentation"
                             className="icon_delete">
-                            <span className="text">{this.formatIntl('equipment.delete')}</span>
+                            <span className="text">{this.formatIntl('button.delete')}</span>
                           </span>
                             </a>
                       </td>
                       :
                       <td><span role="presentation" className="btn"
-                        onClick={this.rowAdd}><span className="icon_add">+</span>{this.formatIntl('equipment.add')}</span> </td>}
+                        onClick={this.rowAdd}><span className="icon_add">+</span>{this.formatIntl('button.add')}</span> </td>}
                   </tr>;
                 })
               }
