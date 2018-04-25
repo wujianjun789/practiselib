@@ -220,8 +220,8 @@ export default class Lc extends Component {
             const { currentParam, selectedMultiDeviceIdList, selectedMultiDeviceList } = this.state;
             const deviceList = selectedMultiDeviceIdList.map(item => ({ asset: item }));
             getHistoriesDataInDevice('prop', currentParam, deviceList, start, end, 'asset', selectedMultiDeviceList, 'name', res => {
-                if (typeof res === 'string') {
-                    message.info(res);
+                if (!res) {
+                    // message.info(res);
                     return;
                 }
 
@@ -232,8 +232,8 @@ export default class Lc extends Component {
             const { currentDeviceId, selectedMultiParamIdList, selectedMultiParamList } = this.state;
             const paramList = selectedMultiParamIdList.map(item => ({ prop: item }));
             getHistoriesDataInDevice('asset', currentDeviceId, paramList, start, end, 'prop', selectedMultiParamList, 'param', res => {
-                if (typeof res === 'string') {
-                    message.info(res);
+                if (!res) {
+                    // message.info(res);
                     return;
                 }
                 this.setState({ data: res })

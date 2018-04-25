@@ -383,23 +383,20 @@ export default {
     'lightManage.control.success': 'success',
 
     // 报表管理
-    'app.report.stat': 'Statistics',
     'app.report.energy': 'Energy',
     'app.report.lighting': 'Lighting',
-    'app.report.selectTime': 'Date range',
-    'app.report.to': 'to',
+    'app.report.selectTime': 'date range',
     'app.report.prompt': 'Please select the correct date',
     'app.report.statParams': 'statistics params',
-    'app.report.apply': 'Apply',
     'app.report.responsePrompt': 'Empty result',
-    'app.report.lightingRate': 'Lighting rate',
+    'app.report.noData': 'No data',
     'app.report.failureRate': 'Failure rate',
     'app.report.onlineTotal': 'Total online',
     'app.report.light': 'Lights on',
     'app.report.deviceTotal': 'Total devices',
     'app.report.error': 'Failed devices',
     'app.report.noDevice': 'No device',
-    'app.report.noData': 'No data',
+
 
     //智慧路灯
     'app.search.placeholder.name': 'Search name or domain',

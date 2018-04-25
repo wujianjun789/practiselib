@@ -122,7 +122,7 @@ export function getHistoriesDataInDevice(
     },
     response => {
       if (!response.length) {
-        cb && cb('返回的数据为空');
+        cb && cb();
         return;
       }
       const _obj = _.groupBy(response, item => {
@@ -164,7 +164,7 @@ export function getHistoriesDataInStat(mode, id, start, end, name, cb) {
     },
     response => {
       if (!response.length) {
-        cb && cb('返回的数据为空');
+        cb && cb();
         return;
       }
       const _data = [];

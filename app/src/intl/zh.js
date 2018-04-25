@@ -384,23 +384,20 @@ export default {
     'lightManage.control.success': '成功',
 
     // 报表管理
-    'app.report.stat': '统计',
     'app.report.energy': '能耗',
     'app.report.lighting': '照明',
     'app.report.selectTime': '选择周期',
-    'app.report.to': '至',
     'app.report.prompt': '请选择正确的日期',
     'app.report.statParams': '统计参数',
-    'app.report.apply': '应用',
     'app.report.responsePrompt': '返回的数据为空',
-    'app.report.lightingRate': '亮灯率',
+    'app.report.noData': '暂无数据',
     'app.report.failureRate': '故障率',
     'app.report.onlineTotal': '在线总数',
     'app.report.light': '亮灯',
     'app.report.deviceTotal': '设备总数',
     'app.report.error': '故障',
     'app.report.noDevice': '暂无设备',
-    'app.report.noData': '暂无数据',
+
 
     //智慧路灯
     'app.search.placeholder.name': '搜索名称或域',

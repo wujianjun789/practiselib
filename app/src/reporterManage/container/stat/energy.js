@@ -202,8 +202,8 @@ class Lc extends Component {
         end,
         name,
         res => {
-          if (typeof res === 'string') {
-            message.info(res);
+          if (!res) {
+            message.info(this.props.intl.formatMessage({id:'app.report.responsePrompt'}));
             return;
           }
           this.setState({ data: res });
@@ -213,10 +213,11 @@ class Lc extends Component {
     if (currentMode === 'domain') {
       const { id, name } = currentDomain;
       getHistoriesDataInStat('domains', id, start, end, name, res => {
-        if (typeof res === 'string') {
+        if (!res) {
           /* 注意 : 此处为测试代码，后续删除并修复问题*/
-          message.info(res);
-          this.forceUpdate();
+          message.info(this.props.intl.formatMessage({id:'app.report.responsePrompt'}));
+          this.setState({data:[]})
+          // this.forceUpdate();
           return;
         }
         this.setState({ data: res });
@@ -403,7 +404,7 @@ class Lc extends Component {
                     disabled={applyDisabled}
                     onClick={this.onClickHandler}
                   >
-                    {formatMessage({ id: 'app.report.apply' })}
+                    {formatMessage({ id: 'button.apply' })}
                   </button>
                 </div>
               </div>

@@ -97,7 +97,7 @@ class Lighting extends React.Component {
         </div>
         <div class="contaienr">
           <div class="media-publish-stat">
-            <h4>{formatMessage({ id: 'app.report.lightingRate' })}</h4>
+            <h4>{formatMessage({ id: 'lightManage.Statistics.lightOn' })}</h4>
             <div class="normal-device clearfix">
               <PieChart
                 id="normal-device"
@@ -140,7 +140,7 @@ class Lighting extends React.Component {
                 </h5>
                 <p>
                   <i class="dot fault-dot" />
-                  {formatMessage({ id: 'app.report.error' })}：{fault}
+                  {formatMessage({ id: 'sysOperation.fault' })}：{fault}
                 </p>
               </div>
             </div>

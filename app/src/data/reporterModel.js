@@ -28,7 +28,7 @@ export const TreeData = [
     },*/
   {
     id: 'stat',
-    name: 'app.report.stat',
+    name: 'app.statistics',
     toggled: false,
     active: false,
     link: '/reporterManage/stat',
