@@ -204,8 +204,8 @@ export class MapPreview extends Component{
     }
 
     mapDragend(data){
-//      this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
-//      this.requestCurDomain();
+        this.map = Object.assign({}, this.map, {center:{lng:data.latlng.lng, lat:data.latlng.lat}, distance:data.distance});
+        this.requestCurDomain();
     }
 
     mapZoomend(data){

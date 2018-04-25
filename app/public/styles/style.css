@@ -1120,7 +1120,9 @@ ul {
     cursor: pointer;
 }
 
-.user-center > .user-icon:hover {background:#52586e;}
+.user-center > .user-icon:hover {
+    background:#52586e;
+}
 
 .user-center > .user-icon span {
     color:#fff;
@@ -1131,11 +1133,11 @@ ul {
     font-size:24px;
 }
 .user-center > .user-icon span:before {
-position:absolute;
-top:0px;
-left:0px;
-height:24px;
-width:24px;
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:24px;
+    width:24px;
 }
 
 .user-center > .user-icon > .icon.icon-usr {
@@ -1157,7 +1159,7 @@ width:24px;
 }
 
 .user-center > ul.user-list > li {
-    width: 140px;
+    width: 150px;
     height: 40px;
     line-height: 40px;
     border-bottom: 1px solid #f8f8f8;
