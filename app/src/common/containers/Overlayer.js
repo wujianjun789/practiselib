@@ -5,55 +5,55 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 export class Overlayer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            overlayerPulse: false
-        };
-        this.handlerBodyScrollBar = this.handlerBodyScrollBar.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      overlayerPulse: false,
+    };
+    this.handlerBodyScrollBar = this.handlerBodyScrollBar.bind(this);
+  }
 
-    overlayerClick(e) {
-        if(e.target.id == 'animate') {
-            this.setState({overlayerPulse: true});
-            setTimeout(()=>{this.setState({overlayerPulse: false})}, 100);
-        } else {
-            return ;
-        }
+  overlayerClick(e) {
+    if (e.target.id == 'animate') {
+      this.setState({overlayerPulse: true});
+      setTimeout(() => {this.setState({overlayerPulse: false});}, 100);
+    } else {
+      return;
     }
+  }
 
-    /**
+  /**
      * 显示弹框时，隐藏body滚动条
      * @param {Boolean} show
      */
-    handlerBodyScrollBar(show) {
-        if(show) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
+  handlerBodyScrollBar(show) {
+    if (show) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
     }
+  }
 
-    render() {
-        const {overlayer} = this.props;
-        const {isShowDialog, page} = overlayer;
+  render() {
+    const {overlayer} = this.props;
+    const {isShowDialog, page} = overlayer;
 
-        this.handlerBodyScrollBar(isShowDialog);
+    this.handlerBodyScrollBar(isShowDialog);
         
-        return (
-            <div className={`overlayer ${isShowDialog ? 'overlayer-show':''}`} onClick={(e)=>this.overlayerClick(e)}>
-                <div id="animate" className={this.state.overlayerPulse ? 'overlayer-pulse' : ''}>
-                    {page}
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div className={`overlayer ${isShowDialog ? 'overlayer-show' : ''}`} onClick={(e) => this.overlayerClick(e)}>
+        <div id="animate" className={this.state.overlayerPulse ? 'overlayer-pulse' : ''}>
+          {page}
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        overlayer: state.overlayer
-    }
-}
+  return {
+    overlayer: state.overlayer,
+  };
+};
 
 export default connect(mapStateToProps)(Overlayer);

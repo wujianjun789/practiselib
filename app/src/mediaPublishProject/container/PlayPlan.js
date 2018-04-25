@@ -68,7 +68,9 @@ export class PlayPlan extends Component {
 
       sideInfoHeight:{'height': 'auto'},
       IsCancelSelect: false,
-      IsPrompt: false
+      IsPrompt: false,
+      // this state control imgPreview scalingSize
+      scale:1,
     };
     this.previewUrl = '';
     this.previewTimeout = null;
@@ -104,24 +106,24 @@ export class PlayPlan extends Component {
 
     this.updateSceneTree();
 
-    const projectId = router.params.project
-    getProjectById({id:projectId}, response=>{
-      if(response && response.id === projectId){
+    const projectId = router.params.project;
+    getProjectById({id:projectId}, response => {
+      if (response && response.id === projectId) {
         actions.initProject(response);
         const planId = router.params.plan;
-        getProgramById(projectId, planId, respons=>{
-          if(respons && respons.id === parseInt(planId)){
+        getProgramById(projectId, planId, respons => {
+          if (respons && respons.id === parseInt(planId)) {
             actions.initPlan(respons);
             setTimeout(() => {respons && actions.requestSceneList(respons.id);}, 66);
           }
-        }, erro=>{
+        }, erro => {
 
-        })
+        });
       }
 
-    }, error=>{
+    }, error => {
 
-    })
+    });
   }
 
   componentDidUpdate() {
@@ -342,11 +344,11 @@ export class PlayPlan extends Component {
     this.previewItemTimeout && clearTimeout(this.previewItemTimeout);
 
     // this.previewItemTimeout = setTimeout(()=>{
-      this.props.actions.initItem(item);
-      this.props.actions.initCurnode(item);
-      this.props.actions.playerAssetSelect(item);
-      this.setState({IsCancelSelect: true, IsPrompt: true}, ()=>{
-      });
+    this.props.actions.initItem(item);
+    this.props.actions.initCurnode(item);
+    this.props.actions.playerAssetSelect(item);
+    this.setState({IsCancelSelect: true, IsPrompt: true}, () => {
+    });
     // }, 66);
   }
 
@@ -387,19 +389,19 @@ export class PlayPlan extends Component {
      */
     getScenePreview(project.id, plan.id, scene.id, response => {
       this.previewHandler();
-      this.previewTimeout = setInterval(()=>{this.previewHandler()}, 1000);
+      this.previewTimeout = setInterval(() => {this.previewHandler();}, 1000);
     });
 
-     actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => {
+    actions.overlayerShow(<ProjectPreview totalTime={100} imgArray={[]} closeClick={() => {
       this.previewTimeout && clearInterval(this.previewTimeout);
       actions.overlayerHide();
-     }}/>);
+    }}/>);
   }
 
-  previewHandler(){
+  previewHandler() {
     const {project, plan, scene, actions} = this.props;
-    getSceneById(project.id, plan.id, scene.id, response=>{
-      if(response.md5 === response.md5Preview){
+    getSceneById(project.id, plan.id, scene.id, response => {
+      if (response.md5 === response.md5Preview) {
         this.previewTimeout && clearInterval(this.previewTimeout);
         let totalTime = 0;
         const imgArray = [];
@@ -428,28 +430,28 @@ export class PlayPlan extends Component {
           // console.log(error);
         }
       }
-    })
+    });
   }
   
   zoomOutHandler = () => {
-    const { scaling: curScaling } = this.state;
+    const { scale: curScaling } = this.state;
     const scaling = curScaling + 0.3;
     if (scaling > 2) {
       return false;
     }
     this.setState({
-      scaling: scaling,
+      scale: scaling,
     });
   }
 
   zoomInHandler = () => {
-    const { scaling: curScaling } = this.state;
+    const { scale: curScaling } = this.state;
     const scaling = curScaling - 0.3;
     if (scaling < 0) {
       return false;
     }
     this.setState({
-      scaling: scaling,
+      scale: scaling,
     });
   }
 
@@ -554,7 +556,7 @@ export class PlayPlan extends Component {
   }
 
   render() {
-    const {sidebarInfo, sideInfoHeight, IsCancelSelect, IsPrompt} = this.state;
+    const {sidebarInfo, sideInfoHeight, IsCancelSelect, IsPrompt, scale} = this.state;
     const {data, project, plan, scene, zone, item, curNode, router, actions} = this.props;
     const playerListAsset = zone && zone.children ? zone.children : [];
 
@@ -583,7 +585,7 @@ export class PlayPlan extends Component {
         }
 
         return {id: zon.id, style:{width:position.w, height:position.h, left:position.x, top:position.y},
-          src:index > -1 ? ("data:image/png;base64,"+item.image) : ''};
+          src:index > -1 ? ('data:image/png;base64,' + item.image) : ''};
       });
     }
 
@@ -599,13 +601,13 @@ export class PlayPlan extends Component {
       <Content className="play-plan">
         <div className="left preview-container">
           <div className="form-group control-container-top">
-            <div className={'form-group add-zone ' + (curNode && curNode.type === 'scene' ? '' : 'hidden')} onClick={() => this.addZone()}>
-              <span className="icon glyphicon glyphicon-plus"></span><span className="word">添加区域</span></div>
-            <div className={'form-group play-container ' + (curNode && curNode.type === 'scene' ? '' : 'hidden')} onClick={() => this.playHandler()}>
+            <div className={'form-group add-zone ' + (curNode && curNode.type === 'scene' ? '' : 'hidden')} onClick={() => this.addZone()} role="presentation">
+              <span className="icon glyphicon glyphicon-plus"></span><span className="word"><FormattedMessage id="mediaPublish.addPlayArea" /></span></div>
+            <div className={'form-group play-container ' + (curNode && curNode.type === 'scene' ? '' : 'hidden')} onClick={() => this.playHandler()} role="presentation">
               <span className="icon icon_play"></span><span className="word"><FormattedMessage id="mediaPublish.play" /></span></div>
-            <div className="form-group zoom-out-container" onClick={() => this.zoomOutHandler()}>
+            <div className="form-group zoom-out-container" onClick={() => this.zoomOutHandler()} role="presentation">
               <span className="icon icon_enlarge"></span><span className="word"><FormattedMessage id="mediaPublish.enlarge" /></span></div>
-            <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()}>
+            <div className="form-group zoom-in-container" onClick={() => this.zoomInHandler()} role="presentation">
               <span className="icon icon_reduce"></span><span className="word"><FormattedMessage id="mediaPublish.narrow" /></span></div>
           </div>
           <div className="img-container" ref={(preview) => this._imgPreview = preview}>
@@ -623,7 +625,7 @@ export class PlayPlan extends Component {
             * 2. selectedId:Number --- actived area's id
             * 3. projectSize:{width,height} --- project width && height
             */}  
-            <ImgPreview wrapperSize={this.state.imgPreviewWrapperSize} previewProps={{areaList:areaList, selectedId:zone && zone.id, projectSize:{width:project && project.width, height:project && project.height}}}/>
+            <ImgPreview scale={scale} wrapperSize={this.state.imgPreviewWrapperSize} previewProps={{areaList:areaList, selectedId:zone && zone.id, projectSize:{width:project && project.width, height:project && project.height}}}/>
           </div>
         </div>
         <div className="mediaPublish-footer">
@@ -635,7 +637,7 @@ export class PlayPlan extends Component {
           <div ref="assetProperty" className="panel panel-default asset-property">
             <div className={'panel-heading pro-title ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} onClick={() => { this.sidebarClick('propertyCollapsed'); }}>
               <span className={'icon_info'}></span>
-              {this.getPropertyName(curNode) +' '+ this.formatIntl('mediaPublish.property')}
+              {this.getPropertyName(curNode) + ' ' + this.formatIntl('mediaPublish.property')}
               <span className="icon icon_collapse pull-right"></span>
             </div>
             <div className={'panel-body ' + (sidebarInfo.propertyCollapsed ? 'property-collapsed' : '')} style={sideInfoHeight}>
@@ -663,7 +665,7 @@ const mapStateToProps = state => {
     item: state.mediaPublishProject.item,
     curNode: state.mediaPublishProject.curNode,
     IsUpdateTree: state.mediaPublishProject.IsUpdateTree,
-    playerAssetLibUpdate: state.mediaPublishProject.playerAssetLibUpdate
+    playerAssetLibUpdate: state.mediaPublishProject.playerAssetLibUpdate,
   };
 };
 
@@ -675,7 +677,7 @@ const mapDispatchToProps = (dispatch) => {
       initItem: initItem, initCurnode: initCurnode, requestSceneList: requestSceneList, requestZoneList: requestZoneList,
       requestItemList: requestItemList, updateTreeJudge: updateTreeJudge, addPlayerSceneArea: addPlayerSceneArea,
       treeOnMove: treeOnMove, treeOnRemove: treeOnRemove, playerAssetRemove, playerAssetMove: playerAssetMove, applyClick: applyClick,
-      clearTreeState: clearTreeState, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect, playerAssetLibUpdate: playerAssetLibUpdate
+      clearTreeState: clearTreeState, addItemToArea: addItemToArea, playerAssetSelect: playerAssetSelect, playerAssetLibUpdate: playerAssetLibUpdate,
     }, dispatch),
   };
 };

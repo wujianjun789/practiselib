@@ -514,6 +514,7 @@ export default {
     'mediaPublish.scene': '场景',
     'mediaPublish.area': '区域',
     'mediaPublish.asset': '素材',
+    'mediaPublish.preview': '预览',
 
     'mediaPublish.screen': '场景名称',
     'mediaPublish.materialName': '素材名称',
@@ -784,6 +785,6 @@ export default {
     'manage.rfid.name': '名称',
     'manage.rfid.domain': '域',
     'manage.rfid.add': '新增RFID',
-    'manage.rfid.edit': '编辑RFID'
-  }
+    'manage.rfid.edit': '编辑RFID',
+  },
 };
