@@ -76,7 +76,7 @@ export class PermissionManage extends Component {
 
   formatIntl(formatId) {
     const {intl} = this.props;
-    return intl ? intl.formatMessage({id:formatId}):null;
+    return intl ? intl.formatMessage({id:formatId}) : null;
     // return formatId;
   }
 
@@ -135,7 +135,7 @@ export class PermissionManage extends Component {
           roleName = {title:'permission.guest', cls:'guest'};
         }
         item.roleLabel = <div className="role-icon"><span className={`icon btn-${roleName.cls}` }>{<FormattedMessage id={roleName.title}/>}</span></div>;
-        item.lastLoginDate = item.lastLoginDate ? momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'), 'YYYY-MM-DD HH:mm:ss'):'';
+        item.lastLoginDate = item.lastLoginDate ? momentDateFormat(getMomentDate(item.lastLoginDate, 'YYYY-MM-DDTHH:mm:ss.SSSZ'), 'YYYY-MM-DD HH:mm:ss') : '';
       }
       return item;
     });
@@ -161,7 +161,7 @@ export class PermissionManage extends Component {
 
   rowModuleEdit(id) {
     let row = getObjectByKeyObj(this.state.datas, 'id', id);
-    this.props.action.overlayerShow(<ModulePopup className="user-module-edit-popup" title={<FormattedMessage id="permission.module"/>} id={id} allModules={this.props.modules} modules={this.moduleDefault[row.role.name]} data ={row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
+    this.props.action.overlayerShow(<ModulePopup className="user-module-edit-popup" title={<FormattedMessage id="permission.module"/>} id={id} allModules={this.props.modules} modules={this.moduleDefault[row.role.name]} data={row.modules} onConfirm={this.confirmClick} overlayerHide={this.props.action.overlayerHide}/>);
   }
 
   confirmClick(datas, isEdit) {
@@ -177,14 +177,14 @@ export class PermissionManage extends Component {
     return (
       <div className="container permission-manage">
         <HeadBar moduleName="app.permission.manage" router={this.props.router}/>
-        <div className ="content ">
-          <div className ="heading">
+        <div className="content ">
+          <div className="heading">
             <SearchText className="search" placeholder={ this.formatIntl(search.get('placeholder'))} value={search.get('value')} onChange={(value) => this.searchChange(value)} submit={() => this.searchSubmit()}/>
             <button className="btn btn-primary" onClick={this.onClick}><FormattedMessage id="button.add"/></button>
           </div>
           <div className="table-container">
-            <Table2 columns={this.columns} data ={this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit} rowModuleEdit={this.rowModuleEdit}/>
-            <Page className={'page ' + (page.total == 0 ? 'hidden':'')} showSizeChanger pageSize={page.pageSize}
+            <Table2 columns={this.columns} data={this.state.datas} isEdit rowDelete={this.rowDelete} rowEdit={this.rowEdit} rowDomainEdit={this.rowDomainEdit} rowModuleEdit={this.rowModuleEdit}/>
+            <Page className={'page ' + (page.total == 0 ? 'hidden' : '')} showSizeChanger pageSize={page.pageSize}
               current={page.current} total={page.total} onChange={this.onChange} />
           </div>
         </div>

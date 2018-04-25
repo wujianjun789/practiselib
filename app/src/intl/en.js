@@ -503,6 +503,7 @@ export default {
     'mediaPublish.inputSchemeName': 'please input plan name',
     'mediaPublish.resolution': 'resolution',
     'mediaPublish.playPlan': 'play project',
+    'mediaPublish.preview': 'Preview',
 
     'mediaPublish.screenSize': 'screen size',
     'mediaPublish.prompt': 'Only letters, numbers, and underscores',
@@ -792,6 +793,6 @@ export default {
     'manage.rfid.name': 'Name',
     'manage.rfid.domain': 'Domain',
     'manage.rfid.add': 'Add RFID',
-    'manage.rfid.edit': 'Edit RFID'
-  }
+    'manage.rfid.edit': 'Edit RFID',
+  },
 };

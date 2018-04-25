@@ -19,6 +19,7 @@ const { areaList: initAreaList, selectedId: initSelectedId, projectSize: initPro
 function renderAreaList(areaList, selectedId) {
   const renderList = areaList.map((area) => {
     const { id, style } = area;
+    // console.log('AreaStyle----------', style);
     const className = id === selectedId ? 'active' : '';
     return (
       <div className={`areaEle ${className}`} key={id} style={style}>
