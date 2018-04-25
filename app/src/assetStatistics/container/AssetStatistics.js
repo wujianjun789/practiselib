@@ -71,8 +71,8 @@ export class SingleLamp extends Component {
 
 
     this.columns = [
-      { field: 'id', title: this.formatIntl('asset.statistics.id') },
-      { field: 'name', title: this.formatIntl('asset.statistics.name') },
+      { field: 'id', title: this.formatIntl('id') },
+      { field: 'name', title: this.formatIntl('name') },
       { field: 'product', title: this.formatIntl('asset.statistics.product') },
       { field: 'software', title: this.formatIntl('asset.statistics.software') },
       { field: 'hardware', title: this.formatIntl('asset.statistics.hardware') },

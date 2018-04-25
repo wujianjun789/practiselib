@@ -37,7 +37,7 @@ export class AssetDevice extends Component {
     };
 
     this.assetTypeColumns = [  //ssslc设备型号表头定义types, name, description, power, life, manufacture
-      { field: 'name', title: this.formatIntl('equipment.name')},
+      { field: 'name', title: this.formatIntl('name')},
       { field: 'description', title: this.formatIntl('equipment.description') },
       { field: 'power', title: this.formatIntl('equipment.power') },
       { field: 'life', title: this.formatIntl('equipment.life') },
